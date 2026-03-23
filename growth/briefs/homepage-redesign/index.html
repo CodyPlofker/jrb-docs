@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Homepage Redesign — Strategic Brief</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, sans-serif; color: #1a1a1a; background: #fafaf8; line-height: 1.6; }
+
+    .brief { max-width: 860px; margin: 0 auto; padding: 0 32px 80px; }
+
+    /* Cover */
+    .cover { min-height: 70vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 80px 0 60px; border-bottom: 3px solid #000; margin-bottom: 64px; }
+    .cover__tag { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: #888; margin-bottom: 24px; }
+    .cover__title { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 400; line-height: 1.1; margin-bottom: 16px; max-width: 650px; }
+    .cover__subtitle { font-size: 18px; font-weight: 300; color: #555; margin-bottom: 32px; max-width: 550px; line-height: 1.5; }
+    .cover__meta { display: flex; gap: 32px; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* Typography */
+    .section-num { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: #888; margin-bottom: 8px; }
+    h2 { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 400; line-height: 1.2; margin-bottom: 24px; }
+    h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; margin-top: 32px; }
+    p { margin-bottom: 16px; font-size: 15px; color: #333; }
+    .section { margin-bottom: 64px; }
+
+    /* Stats */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 32px 0; }
+    .stat { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 20px; text-align: center; }
+    .stat__number { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+    .stat__label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .5px; color: #888; }
+    .stat--accent { border-color: #000; background: #000; color: #fff; }
+    .stat--accent .stat__label { color: rgba(255,255,255,.6); }
+    .stat--accent .stat__number { color: #fff; }
+    @media (max-width: 768px) { .stats { grid-template-columns: 1fr 1fr; } }
+
+    /* Insights */
+    .insight { background: #fff; border-left: 3px solid #000; padding: 20px 24px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+    .insight__title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .insight__body { font-size: 14px; color: #555; margin-bottom: 0; }
+    .insight--red { border-color: #c0392b; }
+    .insight--green { border-color: #27ae60; }
+
+    /* Quotes */
+    .quote { border-left: 3px solid #ddd; padding: 16px 24px; margin: 20px 0; font-style: italic; color: #555; font-size: 15px; }
+    .quote__source { font-style: normal; font-size: 12px; color: #999; margin-top: 8px; display: block; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+    th { text-align: left; padding: 10px 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: #888; border-bottom: 2px solid #000; }
+    td { padding: 10px 12px; border-bottom: 1px solid #eee; color: #333; }
+    tr:last-child td { border-bottom: none; }
+
+    /* Bar charts */
+    .bar-chart { margin: 24px 0; }
+    .bar-row { display: grid; grid-template-columns: 220px 1fr 50px; gap: 12px; align-items: center; margin-bottom: 8px; }
+    .bar-label { font-size: 13px; color: #333; text-align: right; }
+    .bar-track { height: 24px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
+    .bar-fill { height: 100%; background: #000; border-radius: 4px; }
+    .bar-fill--accent { background: #c0392b; }
+    .bar-value { font-size: 13px; font-weight: 600; }
+
+    /* Architecture cards */
+    .arch-card { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 24px; margin: 16px 0; display: grid; grid-template-columns: 48px 1fr auto; gap: 16px; align-items: start; }
+    .arch-card__num { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #ccc; text-align: center; padding-top: 2px; }
+    .arch-card__title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .arch-card__desc { font-size: 13px; color: #666; margin-bottom: 0; line-height: 1.5; }
+    .arch-card__evidence { font-size: 11px; color: #888; margin-top: 6px; }
+    .arch-card__link { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: #000; text-decoration: none; white-space: nowrap; padding-top: 4px; }
+    .arch-card__link:hover { text-decoration: underline; }
+    .arch-card--priority { border-color: #000; border-width: 2px; }
+
+    /* Source badges */
+    .sources { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+    .source-badge { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; padding: 4px 10px; border-radius: 20px; background: #f0f0f0; color: #666; }
+    .source-badge--typeform { background: #e8f4fd; color: #2980b9; }
+    .source-badge--listenlabs { background: #fdf2e8; color: #c0392b; }
+    .source-badge--brand { background: #f0e8fd; color: #8e44ad; }
+
+    /* Misc */
+    .divider { border: none; border-top: 1px solid #eee; margin: 48px 0; }
+    .cta-link { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: #000; text-decoration: none; padding: 12px 24px; border: 2px solid #000; border-radius: 4px; transition: all .2s; }
+    .cta-link:hover { background: #000; color: #fff; }
+
+    /* TOC */
+    .toc { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 24px 32px; margin: 32px 0; }
+    .toc__title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 16px; }
+    .toc__item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f5f5f5; }
+    .toc__item:last-child { border-bottom: none; }
+    .toc__item a { font-size: 14px; color: #333; text-decoration: none; }
+    .toc__item a:hover { color: #000; text-decoration: underline; }
+    .toc__item span { font-size: 12px; color: #ccc; }
+
+    /* Callout box */
+    .callout { background: #000; color: #fff; border-radius: 8px; padding: 32px; margin: 32px 0; }
+    .callout h3 { color: #fff; margin-top: 0; }
+    .callout p { color: rgba(255,255,255,.7); }
+    .callout strong { color: #fff; }
+  </style>
+</head>
+<body>
+
+<div class="brief">
+
+  <!-- COVER -->
+  <div class="cover">
+    <p class="cover__tag">Strategic Brief</p>
+    <h1 class="cover__title">Homepage Redesign</h1>
+    <p class="cover__subtitle">Data-driven homepage architecture built on 78 survey responses, 24 user recordings, and competitive benchmarking. What customers actually want vs what we're showing them.</p>
+    <div class="cover__meta">
+      <span>Jones Road Beauty</span>
+      <span>March 2026</span>
+      <span>Prepared by Cody Plofker</span>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <p class="toc__title">In This Brief</p>
+    <div class="toc__item"><a href="#problem">The Problem</a><span>01</span></div>
+    <div class="toc__item"><a href="#audience">Who's Shopping</a><span>02</span></div>
+    <div class="toc__item"><a href="#behavior">How They Behave</a><span>03</span></div>
+    <div class="toc__item"><a href="#gaps">What's Missing</a><span>04</span></div>
+    <div class="toc__item"><a href="#architecture">Recommended Section Architecture</a><span>05</span></div>
+    <div class="toc__item"><a href="#requirements">Content Requirements</a><span>06</span></div>
+    <div class="toc__item"><a href="#success">Success Metrics</a><span>07</span></div>
+  </div>
+
+  <!-- 01: THE PROBLEM -->
+  <div class="section" id="problem">
+    <p class="section-num">01</p>
+    <h2>The Problem</h2>
+
+    <p>The JRB homepage gets the most traffic of any page on the site — but it's not optimized for what customers actually want to do when they land there. Only 14.1% of customers think the homepage is fine as-is. The other 85.9% are telling us exactly what's missing.</p>
+
+    <div class="stats">
+      <div class="stat stat--accent">
+        <div class="stat__number">50%</div>
+        <div class="stat__label">Say "New Arrivals" is missing</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">44%</div>
+        <div class="stat__label">Want more Bobbi content</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">42%</div>
+        <div class="stat__label">Want "shop by concern"</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">17%</div>
+        <div class="stat__label">Hero gets attention</div>
+      </div>
+    </div>
+
+    <div class="insight insight--red">
+      <p class="insight__title">The Hero Attention Problem</p>
+      <p class="insight__body">ListenLabs eye-tracking shows only 17% of visitors notice the hero section. 63% of first-scan attention goes to featured products. The hero is the most expensive real estate on the site — and it's being ignored.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 02: WHO'S SHOPPING -->
+  <div class="section" id="audience">
+    <p class="section-num">02</p>
+    <h2>Who's Shopping</h2>
+
+    <p>The Typeform survey (78 responses) reveals a clear picture of our homepage audience. Understanding who they are shapes every section decision.</p>
+
+    <h3>Age Distribution</h3>
+    <div class="bar-chart">
+      <div class="bar-row"><span class="bar-label">65+</span><div class="bar-track"><div class="bar-fill" style="width:35.9%"></div></div><span class="bar-value">35.9%</span></div>
+      <div class="bar-row"><span class="bar-label">55-64</span><div class="bar-track"><div class="bar-fill" style="width:34.6%"></div></div><span class="bar-value">34.6%</span></div>
+      <div class="bar-row"><span class="bar-label">45-54</span><div class="bar-track"><div class="bar-fill" style="width:23.1%"></div></div><span class="bar-value">23.1%</span></div>
+      <div class="bar-row"><span class="bar-label">35-44</span><div class="bar-track"><div class="bar-fill" style="width:6.4%"></div></div><span class="bar-value">6.4%</span></div>
+    </div>
+    <p style="font-size:13px;color:#888;">70.5% are 55+. 93.6% are 45+. But Tracksuit data shows the brand aspires younger (35+).</p>
+
+    <h3>Shopping Style</h3>
+    <div class="bar-chart">
+      <div class="bar-row"><span class="bar-label">Depends on the day</span><div class="bar-track"><div class="bar-fill" style="width:44.9%"></div></div><span class="bar-value">44.9%</span></div>
+      <div class="bar-row"><span class="bar-label">Restocker (go straight to it)</span><div class="bar-track"><div class="bar-fill" style="width:19.2%"></div></div><span class="bar-value">19.2%</span></div>
+      <div class="bar-row"><span class="bar-label">Researcher (reads everything)</span><div class="bar-track"><div class="bar-fill" style="width:19.2%"></div></div><span class="bar-value">19.2%</span></div>
+      <div class="bar-row"><span class="bar-label">Browser (explores + discovers)</span><div class="bar-track"><div class="bar-fill" style="width:16.7%"></div></div><span class="bar-value">16.7%</span></div>
+    </div>
+
+    <h3>Device</h3>
+    <p><strong>50% phone</strong> · 25.6% mix · 14.1% desktop · 10.3% tablet. The homepage must be mobile-first.</p>
+
+    <div class="insight insight--green">
+      <p class="insight__title">The Implication</p>
+      <p class="insight__body">The homepage serves multiple modes: restockers who need fast nav, browsers who want discovery, and researchers who want depth. The architecture must serve all three — fast paths to product AND rich content for exploration.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 03: HOW THEY BEHAVE -->
+  <div class="section" id="behavior">
+    <p class="section-num">03</p>
+    <h2>How They Behave on the Homepage</h2>
+
+    <h3>First Action — What They Do Immediately</h3>
+    <div class="bar-chart">
+      <div class="bar-row"><span class="bar-label">Go to navigation menu</span><div class="bar-track"><div class="bar-fill bar-fill--accent" style="width:38.5%"></div></div><span class="bar-value">38.5%</span></div>
+      <div class="bar-row"><span class="bar-label">Scroll to browse featured</span><div class="bar-track"><div class="bar-fill" style="width:28.2%"></div></div><span class="bar-value">28.2%</span></div>
+      <div class="bar-row"><span class="bar-label">Look for bestsellers/new</span><div class="bar-track"><div class="bar-fill" style="width:28.2%"></div></div><span class="bar-value">28.2%</span></div>
+      <div class="bar-row"><span class="bar-label">Look for sales</span><div class="bar-track"><div class="bar-fill" style="width:2.6%"></div></div><span class="bar-value">2.6%</span></div>
+      <div class="bar-row"><span class="bar-label">Use search bar</span><div class="bar-track"><div class="bar-fill" style="width:2.6%"></div></div><span class="bar-value">2.6%</span></div>
+      <div class="bar-row"><span class="bar-label">Take the quiz</span><div class="bar-track"><div class="bar-fill" style="width:0%"></div></div><span class="bar-value">0%</span></div>
+    </div>
+
+    <div class="callout">
+      <h3>Nobody Uses the Quiz First</h3>
+      <p>0% of respondents use the quiz as their first homepage action. The quiz is a tool customers use <em>after</em> they've decided to buy — not a discovery mechanism. The homepage should prioritize <strong>product discovery</strong> (bestsellers, new arrivals, categories) over quiz/shade tools.</p>
+    </div>
+
+    <h3>What Matters Most — Priority Ranking (1 = Most Important)</h3>
+    <table>
+      <tr><th>Rank</th><th>Item</th><th>Avg Rank</th><th>#1 Picks</th><th>Top-3 Rate</th></tr>
+      <tr><td><strong>1</strong></td><td><strong>New arrivals / new products</strong></td><td>1.69</td><td>51.3%</td><td>94.9%</td></tr>
+      <tr><td>2</td><td>Current promotions or sales</td><td>2.53</td><td>20.5%</td><td>80.8%</td></tr>
+      <tr><td>3</td><td>Clear product categories</td><td>3.97</td><td>17.9%</td><td>41.0%</td></tr>
+      <tr><td>4</td><td>Bestsellers</td><td>4.08</td><td>2.6%</td><td>33.3%</td></tr>
+      <tr><td>5</td><td>Bobbi content (videos, tips)</td><td>4.18</td><td>6.4%</td><td>32.1%</td></tr>
+      <tr><td>6</td><td>Quiz or shade finder</td><td>5.71</td><td>1.3%</td><td>7.7%</td></tr>
+      <tr><td>7</td><td>Customer reviews / social proof</td><td>6.37</td><td>0%</td><td>9.0%</td></tr>
+      <tr><td>8</td><td>Editorial content / brand story</td><td>7.47</td><td>0%</td><td>1.3%</td></tr>
+    </table>
+
+    <div class="insight">
+      <p class="insight__title">New Arrivals is the Runaway Winner</p>
+      <p class="insight__body">51.3% ranked New Arrivals as their #1 homepage priority. 94.9% put it in their top 3. No other item comes close. This should be the most prominent homepage section after the hero.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 04: WHAT'S MISSING -->
+  <div class="section" id="gaps">
+    <p class="section-num">04</p>
+    <h2>What's Missing</h2>
+
+    <p>We asked: "What's MISSING from the JRB homepage that would make your experience better?" Only 14.1% said nothing. Here's what the other 85.9% told us:</p>
+
+    <div class="bar-chart">
+      <div class="bar-row"><span class="bar-label">New Arrivals section</span><div class="bar-track"><div class="bar-fill bar-fill--accent" style="width:50%"></div></div><span class="bar-value">50.0%</span></div>
+      <div class="bar-row"><span class="bar-label">More Bobbi content</span><div class="bar-track"><div class="bar-fill" style="width:43.6%"></div></div><span class="bar-value">43.6%</span></div>
+      <div class="bar-row"><span class="bar-label">Shop by skin type/concern</span><div class="bar-track"><div class="bar-fill" style="width:42.3%"></div></div><span class="bar-value">42.3%</span></div>
+      <div class="bar-row"><span class="bar-label">Product demo videos</span><div class="bar-track"><div class="bar-fill" style="width:28.2%"></div></div><span class="bar-value">28.2%</span></div>
+      <div class="bar-row"><span class="bar-label">Shade quiz — easier to find</span><div class="bar-track"><div class="bar-fill" style="width:20.5%"></div></div><span class="bar-value">20.5%</span></div>
+      <div class="bar-row"><span class="bar-label">"Where to start" guide</span><div class="bar-track"><div class="bar-fill" style="width:15.4%"></div></div><span class="bar-value">15.4%</span></div>
+      <div class="bar-row"><span class="bar-label">Bestsellers (more prominent)</span><div class="bar-track"><div class="bar-fill" style="width:12.8%"></div></div><span class="bar-value">12.8%</span></div>
+      <div class="bar-row"><span class="bar-label">Nothing — it's great</span><div class="bar-track"><div class="bar-fill" style="width:14.1%;background:#27ae60;"></div></div><span class="bar-value">14.1%</span></div>
+    </div>
+    <p style="font-size:12px;color:#888;">Source: Typeform survey — "What's MISSING from the JRB homepage?" (multi-select, up to 3)</p>
+
+    <h3>The ListenLabs First-Scan Data</h3>
+    <p>Where do visitors actually look first when they land on the homepage?</p>
+
+    <table>
+      <tr><th>Element</th><th>% Noticing</th><th>Implication</th></tr>
+      <tr><td><strong>Featured products</strong></td><td><strong>63%</strong></td><td>Products ARE the homepage — make them prominent</td></tr>
+      <tr><td>Product categories/navigation</td><td>29%</td><td>Nav is a primary path — keep it clear</td></tr>
+      <tr><td>Hero section/main banner</td><td>17%</td><td>Low ROI — hero is being ignored</td></tr>
+      <tr><td>Clean beauty messaging</td><td>17%</td><td>Noticed but not dominant</td></tr>
+      <tr><td>Tutorial/how-to content</td><td>4%</td><td>Not a homepage priority</td></tr>
+    </table>
+
+    <div class="insight insight--red">
+      <p class="insight__title">The Age Perception Problem</p>
+      <p class="insight__body">Multiple 45+ prospects felt the homepage was "oriented towards people much younger than me, like maybe Gen Z." Tracksuit brand health data shows JRB's audience skews 65+ with "Mature" imagery. But the brand aspires to reach 35+. The homepage needs to thread this needle — aspirational but inclusive, not skewing too young or too old.</p>
+    </div>
+    <div class="sources">
+      <span class="source-badge source-badge--listenlabs">ListenLabs (3/23 prospects)</span>
+      <span class="source-badge source-badge--brand">Tracksuit brand health data</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 05: RECOMMENDED ARCHITECTURE -->
+  <div class="section" id="architecture">
+    <p class="section-num">05</p>
+    <h2>Recommended Section Architecture</h2>
+
+    <p>10 homepage sections, ordered by customer priority and behavior data. Each has 1–4 design variations to review.</p>
+
+    <p><a href="https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/" class="cta-link">View all section variations →</a></p>
+
+    <div class="arch-card arch-card--priority">
+      <div class="arch-card__num">1</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Hero</p>
+        <p class="arch-card__desc">Rethink the hero — it only gets 17% attention. Options: product-led (featured bestseller), category entry (fastest path to products), Bobbi-led (founder authority), or minimal text with trust strip. The hero should drive action, not just brand mood.</p>
+        <p class="arch-card__evidence">📊 17% attention · 38.5% go straight to nav · 28.2% scroll to browse</p>
+      </div>
+      <a href="https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card arch-card--priority">
+      <div class="arch-card__num">2</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">New Arrivals</p>
+        <p class="arch-card__desc">The #1 most-wanted homepage section. 51.3% ranked it first. 50% say it's MISSING. Must include product name, price, star ratings, and review count on every card — proof signals that ListenLabs says featured products need.</p>
+        <p class="arch-card__evidence">📊 51.3% ranked #1 · 50% say missing · 94.9% top-3</p>
+      </div>
+      <a href="https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card arch-card--priority">
+      <div class="arch-card__num">3</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Bobbi's Picks / Content</p>
+        <p class="arch-card__desc">43.6% say Bobbi content is missing from the homepage. Options: curated product picks with Bobbi quotes, video-forward tutorial section, editorial quote block, or "Bobbi's Tip" recurring card. 55% rate Bobbi importance 5/5.</p>
+        <p class="arch-card__evidence">📊 43.6% say missing · 55% rate Bobbi 5/5 · 51.9% go to Bobbi social for education</p>
+      </div>
+      <a href="https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card arch-card--priority">
+      <div class="arch-card__num">4</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Shop by Concern / Skin Type</p>
+        <p class="arch-card__desc">42.3% say this is missing. Options: visual concern cards (Glow, Hydration, Sensitive, Anti-Aging), "I want to..." interactive chooser, horizontal skin type strip, or image-backed concern cards.</p>
+        <p class="arch-card__evidence">📊 42.3% say missing (#3 gap)</p>
+      </div>
+      <a href="https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">5</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Featured Products / Bestsellers</p>
+        <p class="arch-card__desc">63% of first-scan attention goes to featured products. Current tiles lack proof signals — need visible ratings, review counts, and prices on every card. "Bestseller" tags on top performers.</p>
+        <p class="arch-card__evidence">📊 63% first-scan attention · ListenLabs: needs proof on tiles</p>
+      </div>
+      <a href="https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/" class="arch-card__link">1 variation →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">6</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">"Where to Start" Guide</p>
+        <p class="arch-card__desc">New customer onboarding in 3 steps: Take the Quiz → Try a Mini → Watch Bobbi. Particularly important for paid traffic landing on the homepage with zero brand context.</p>
+        <p class="arch-card__evidence">📊 15.4% say missing · Critical for prospect acquisition</p>
+      </div>
+      <a href="https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/" class="arch-card__link">1 variation →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">7</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Quiz / Shade Finder Promo</p>
+        <p class="arch-card__desc">20.5% want the quiz easier to find. But it should NOT be the primary homepage CTA (0% use it first). Place it mid-page as a secondary path — dark two-column with shade swatches.</p>
+        <p class="arch-card__evidence">📊 20.5% want easier to find · 0% use as first action</p>
+      </div>
+      <a href="https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/" class="arch-card__link">1 variation →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">8</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Press / As Seen In</p>
+        <p class="arch-card__desc">Brand credibility signal. Every competitor has press badges. Scrolling logo bar with a short press quote. Vogue, Allure, Elle, Glamour, InStyle.</p>
+        <p class="arch-card__evidence">📊 Competitive table stakes · MERIT has Allure Best of Beauty badge on PDP</p>
+      </div>
+      <a href="https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/" class="arch-card__link">1 variation →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">9</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Social Proof / Reviews</p>
+        <p class="arch-card__desc">76K+ reviews, 4.3 avg, 80% recommend. Big stats with mini review quotes. The "Glaring Zero" problem — reviews must be visible early, not just on PDP.</p>
+        <p class="arch-card__evidence">📊 "Reviews showing zero kills conversion" · 16/23 prospects: reviews important</p>
+      </div>
+      <a href="https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/" class="arch-card__link">1 variation →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">10</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Routine Builder — "Your 5-Minute Morning"</p>
+        <p class="arch-card__desc">4-product routine (WTF → Miracle Balm → Best Pencil → Mascara) with step numbers, prices, and "Shop the routine" CTA. Cross-sell + education in one section.</p>
+        <p class="arch-card__evidence">📊 41.6% value = "replaces products" · 30.3% want routine context</p>
+      </div>
+      <a href="https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/" class="arch-card__link">1 variation →</a>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 06: CONTENT REQUIREMENTS -->
+  <div class="section" id="requirements">
+    <p class="section-num">06</p>
+    <h2>Content Requirements</h2>
+
+    <h3>Photography Needed</h3>
+    <table>
+      <tr><th>Asset</th><th>For Section</th><th>Notes</th></tr>
+      <tr><td>Age-diverse hero imagery (35-65+)</td><td>Hero</td><td>Thread the needle: aspirational but inclusive</td></tr>
+      <tr><td>Lifestyle product photography</td><td>New Arrivals, Bestsellers</td><td>Must show product in use, not just flatlay</td></tr>
+      <tr><td>Bobbi BTS / tutorial stills</td><td>Bobbi Content</td><td>Bobbi creating, formulating, teaching — not posing</td></tr>
+      <tr><td>Concern/skin type lifestyle shots</td><td>Shop by Concern</td><td>Models representing glow, hydration, sensitive skin</td></tr>
+    </table>
+
+    <h3>Video Needed</h3>
+    <table>
+      <tr><th>Asset</th><th>For Section</th><th>Notes</th></tr>
+      <tr><td>Bobbi 5-minute routine video</td><td>Bobbi Content V2</td><td>The #1 video customers want to see</td></tr>
+      <tr><td>Product demo clips (15-30s)</td><td>Featured Products (hover)</td><td>28.2% want product demo videos on homepage</td></tr>
+    </table>
+
+    <h3>Data Needed</h3>
+    <table>
+      <tr><th>Data</th><th>For Section</th><th>Source</th></tr>
+      <tr><td>Review counts per product</td><td>New Arrivals, Bestsellers</td><td>Junip API</td></tr>
+      <tr><td>Star ratings per product</td><td>All product cards</td><td>Junip API</td></tr>
+      <tr><td>Press quotes (attributed)</td><td>Press section</td><td>PR team</td></tr>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 07: SUCCESS METRICS -->
+  <div class="section" id="success">
+    <p class="section-num">07</p>
+    <h2>Success Metrics</h2>
+
+    <table>
+      <tr><th>Metric</th><th>Current</th><th>Target</th><th>How We'll Measure</th></tr>
+      <tr><td>Homepage → PDP click-through rate</td><td>Baseline TBD</td><td>+20%</td><td>GA4 / Intelligems</td></tr>
+      <tr><td>Homepage bounce rate</td><td>Baseline TBD</td><td>-15%</td><td>GA4</td></tr>
+      <tr><td>New Arrivals section engagement</td><td>N/A (doesn't exist)</td><td>Top-3 clicked section</td><td>Section click tracking</td></tr>
+      <tr><td>Quiz starts from homepage</td><td>Baseline TBD</td><td>+30%</td><td>Quiz analytics</td></tr>
+      <tr><td>Cross-sell from routine section</td><td>N/A (doesn't exist)</td><td>5%+ add-to-cart rate</td><td>Section ATC tracking</td></tr>
+      <tr><td>"Homepage is great as-is" (follow-up survey)</td><td>14.1%</td><td>40%+</td><td>Post-redesign Typeform</td></tr>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <div style="text-align:center;padding:40px 0;">
+    <p style="font-size:12px;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">View the designs</p>
+    <a href="https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/" class="cta-link">Open Homepage Section Variations →</a>
+  </div>
+
+</div>
+
+</body>
+</html>
