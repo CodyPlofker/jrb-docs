@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jurni Landing Page Audit — Jones Road Beauty</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, sans-serif; background: #f8f7f5; color: #1a1a1a; line-height: 1.5; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 40px 24px; }
+
+  header { margin-bottom: 48px; }
+  header h1 { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+  header p { font-size: 15px; color: #666; max-width: 680px; }
+  header .source { display: inline-block; margin-top: 8px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #0ea5e9; background: #e0f2fe; padding: 4px 10px; border-radius: 4px; }
+
+  .summary-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 48px; }
+  .summary-card { background: #fff; border: 1px solid #e8e5e0; border-radius: 8px; padding: 24px; }
+  .summary-card .label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #888; margin-bottom: 8px; }
+  .summary-card .value { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; }
+  .summary-card .sub { font-size: 13px; color: #999; margin-top: 4px; }
+
+  .assessment { background: #fff; border: 1px solid #e8e5e0; border-radius: 8px; padding: 32px; margin-bottom: 48px; }
+  .assessment h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+  .difficulty-bar { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .difficulty-bar .bar-track { flex: 1; height: 12px; background: #eee; border-radius: 6px; overflow: hidden; }
+  .difficulty-bar .bar-fill { height: 100%; width: 80%; background: linear-gradient(90deg, #f59e0b, #ef4444); border-radius: 6px; }
+  .difficulty-bar .bar-label { font-size: 14px; font-weight: 700; color: #ef4444; white-space: nowrap; }
+  .assessment ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .assessment li { font-size: 14px; color: #555; padding-left: 20px; position: relative; }
+  .assessment li::before { content: ''; position: absolute; left: 0; top: 7px; width: 8px; height: 8px; border-radius: 50%; }
+  .assessment li.risk::before { background: #ef4444; }
+  .assessment li.info::before { background: #f59e0b; }
+  .assessment li.ok::before { background: #10b981; }
+
+  .category { margin-bottom: 40px; }
+  .category-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid #1a1a1a; flex-wrap: wrap; }
+  .category-header h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
+  .category-header .tag { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 10px; border-radius: 4px; color: #fff; }
+  .tag-listicle { background: #8b5cf6; }
+  .tag-creator { background: #0ea5e9; }
+  .tag-trojan { background: #f59e0b; }
+  .tag-multi { background: #10b981; }
+  .tag-other { background: #64748b; }
+  .category-stats { font-size: 14px; color: #888; margin-left: auto; }
+  .category-stats strong { color: #1a1a1a; font-weight: 700; }
+
+  .table-wrap { background: #fff; border: 1px solid #e8e5e0; border-radius: 8px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 900px; }
+  th { text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #888; padding: 14px 16px; border-bottom: 1px solid #eee; background: #fafaf8; }
+  th.right { text-align: right; }
+  td { padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #f0f0ee; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover { background: #fafaf8; }
+  .page-name { font-weight: 600; color: #1a1a1a; }
+  .page-type { display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; padding: 3px 8px; border-radius: 3px; }
+  .page-type.listicle { background: #f3e8ff; color: #7c3aed; }
+  .page-type.multi-product { background: #e0f2fe; color: #0284c7; }
+  .page-type.creator { background: #fce7f3; color: #be185d; }
+  .page-type.trojan { background: #ffedd5; color: #c2410c; }
+  .page-type.generic { background: #f0f0ee; color: #555; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .num.orders { font-weight: 700; }
+  .num.revenue { font-weight: 600; color: #059669; }
+  .num.sessions { color: #555; }
+  .num.cvr { color: #7c3aed; font-weight: 600; }
+  .total-row td { font-weight: 700; background: #fafaf8; border-top: 2px solid #e8e5e0; }
+
+  .footnote { margin-top: 40px; padding: 20px 24px; background: #fff; border: 1px solid #e8e5e0; border-radius: 8px; font-size: 13px; color: #888; line-height: 1.7; }
+  .footnote strong { color: #555; }
+  .footnote code { background: #f0f0ee; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+
+  .inactive-section { margin-top: 48px; }
+  .inactive-section h2 { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: #888; }
+  .inactive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px; }
+  .inactive-chip { font-size: 13px; padding: 8px 12px; background: #fff; border: 1px solid #e8e5e0; border-radius: 6px; color: #888; }
+  .inactive-chip .status { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-left: 6px; padding: 2px 6px; border-radius: 3px; }
+  .status-inactive { background: #fee2e2; color: #b91c1c; }
+  .status-draft { background: #fef3c7; color: #92400e; }
+  .status-hidden { background: #f1f5f9; color: #64748b; }
+
+  @media (max-width: 900px) {
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .assessment ul { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Jurni Landing Page Audit</h1>
+    <p>Complete inventory of all Jurni funnels with sessions, orders, revenue, and conversion rates. Data pulled directly from the Jurni MCP.</p>
+    <span class="source">Source: Jurni MCP &middot; Last 30 Days &middot; Generated Mar 23, 2026</span>
+  </header>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="label">30-Day Revenue</div>
+      <div class="value">$1.02M</div>
+      <div class="sub">All Jurni funnels</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">30-Day Sessions</div>
+      <div class="value">1.17M</div>
+      <div class="sub">Traffic through Jurni</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">30-Day Orders</div>
+      <div class="value">11,511</div>
+      <div class="sub">Attributed to Jurni</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Total Funnels</div>
+      <div class="value">213</div>
+      <div class="sub">All time created</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Running Now</div>
+      <div class="value">~70</div>
+      <div class="sub">Active status funnels</div>
+    </div>
+  </div>
+
+  <div class="assessment">
+    <h2>Migration Difficulty Assessment</h2>
+    <div class="difficulty-bar">
+      <div class="bar-track"><div class="bar-fill"></div></div>
+      <div class="bar-label">HIGH</div>
+    </div>
+    <ul>
+      <li class="risk">$1M+ monthly revenue flows through Jurni — critical paid media infrastructure</li>
+      <li class="risk">1.17M sessions/month — ad campaigns across Meta, Pinterest, TikTok all point to Jurni URLs</li>
+      <li class="info">Top 10 funnels account for ~$344K (34% of total) — start migration there</li>
+      <li class="info">~70 funnels are RUNNING, ~143 are inactive/draft — only active ones need migration</li>
+      <li class="ok">Page types are consistent (listicle, creator, trojan horse) — templatize for rebuild</li>
+      <li class="ok">Many funnels are A/B variants of same concept — consolidate during migration</li>
+    </ul>
+  </div>
+
+  <!-- TOP FUNNELS BY REVENUE -->
+  <div class="category">
+    <div class="category-header">
+      <h2>Top Funnels by Revenue (Last 30 Days)</h2>
+      <div class="category-stats">Sorted by 30-day revenue, descending</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Funnel Name</th>
+            <th>Type</th>
+            <th class="right">Sessions</th>
+            <th class="right">Orders</th>
+            <th class="right">Revenue</th>
+            <th class="right">CVR</th>
+            <th class="right">AOV</th>
+            <th class="right">RPS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td class="page-name">EyeshadowStick|Listicle|V1</td>
+            <td><span class="page-type listicle">Listicle</span></td>
+            <td class="num sessions">74,061</td>
+            <td class="num orders">990</td>
+            <td class="num revenue">$82,438</td>
+            <td class="num cvr">1.34%</td>
+            <td class="num">$83</td>
+            <td class="num">$1.11</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td class="page-name">EyeshadowStick|Listicle|V2</td>
+            <td><span class="page-type listicle">Listicle</span></td>
+            <td class="num sessions">67,224</td>
+            <td class="num orders">851</td>
+            <td class="num revenue">$69,710</td>
+            <td class="num cvr">1.27%</td>
+            <td class="num">$82</td>
+            <td class="num">$1.04</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td class="page-name">MMB|Listicle|V1</td>
+            <td><span class="page-type listicle">Listicle</span></td>
+            <td class="num sessions">39,259</td>
+            <td class="num orders">504</td>
+            <td class="num revenue">$39,574</td>
+            <td class="num cvr">1.28%</td>
+            <td class="num">$79</td>
+            <td class="num">$1.01</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td class="page-name">EmilyDiDonato|Creator|EyeshadowStick|MultiProduct|V2</td>
+            <td><span class="page-type creator">Creator</span></td>
+            <td class="num sessions">30,763</td>
+            <td class="num orders">481</td>
+            <td class="num revenue">$35,494</td>
+            <td class="num cvr">1.56%</td>
+            <td class="num">$74</td>
+            <td class="num">$1.15</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td class="page-name">MMB|Listicle|V2</td>
+            <td><span class="page-type listicle">Listicle</span></td>
+            <td class="num sessions">35,086</td>
+            <td class="num orders">459</td>
+            <td class="num revenue">$34,319</td>
+            <td class="num cvr">1.31%</td>
+            <td class="num">$75</td>
+            <td class="num">$0.98</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td class="page-name">ProfessionalMom|Multi-Product|Listicle|V1</td>
+            <td><span class="page-type multi-product">Multi-Product</span></td>
+            <td class="num sessions">22,141</td>
+            <td class="num orders">235</td>
+            <td class="num revenue">$25,451</td>
+            <td class="num cvr">1.06%</td>
+            <td class="num">$108</td>
+            <td class="num">$1.15</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td class="page-name">WTFGeneric</td>
+            <td><span class="page-type generic">Generic PDP</span></td>
+            <td class="num sessions">30,219</td>
+            <td class="num orders">240</td>
+            <td class="num revenue">$24,091</td>
+            <td class="num cvr">0.79%</td>
+            <td class="num">$100</td>
+            <td class="num">$0.80</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td class="page-name">LipRecharge|Listicle|ProblemFirst|V1</td>
+            <td><span class="page-type listicle">Listicle</span></td>
+            <td class="num sessions">27,551</td>
+            <td class="num orders">289</td>
+            <td class="num revenue">$19,486</td>
+            <td class="num cvr">1.05%</td>
+            <td class="num">$67</td>
+            <td class="num">$0.71</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td class="page-name">DustyRose&amp;Sunkissed|Listicle|V3</td>
+            <td><span class="page-type listicle">Listicle</span></td>
+            <td class="num sessions">19,202</td>
+            <td class="num orders">170</td>
+            <td class="num revenue">$17,087</td>
+            <td class="num cvr">0.89%</td>
+            <td class="num">$101</td>
+            <td class="num">$0.89</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td class="page-name">BodyCollection|Listicle|V1</td>
+            <td><span class="page-type listicle">Listicle</span></td>
+            <td class="num sessions">30,925</td>
+            <td class="num orders">133</td>
+            <td class="num revenue">$16,052</td>
+            <td class="num cvr">0.43%</td>
+            <td class="num">$121</td>
+            <td class="num">$0.52</td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td class="page-name">EmilyDiDonato|Creator|MB|MultiProduct|V1</td>
+            <td><span class="page-type creator">Creator</span></td>
+            <td class="num sessions">11,465</td>
+            <td class="num orders">125</td>
+            <td class="num revenue">$14,593</td>
+            <td class="num cvr">1.09%</td>
+            <td class="num">$117</td>
+            <td class="num">$1.27</td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td class="page-name">MB|Skincare|Regular|Listicle|Older|V1</td>
+            <td><span class="page-type listicle">Listicle</span></td>
+            <td class="num sessions">3,715</td>
+            <td class="num orders">122</td>
+            <td class="num revenue">$13,153</td>
+            <td class="num cvr">3.28%</td>
+            <td class="num">$108</td>
+            <td class="num">$3.54</td>
+          </tr>
+          <tr>
+            <td>13</td>
+            <td class="page-name">ComplexionSet|Creator|TrojanHorse|V1</td>
+            <td><span class="page-type trojan">Trojan Horse</span></td>
+            <td class="num sessions">6,927</td>
+            <td class="num orders">103</td>
+            <td class="num revenue">$12,313</td>
+            <td class="num cvr">1.49%</td>
+            <td class="num">$120</td>
+            <td class="num">$1.78</td>
+          </tr>
+          <tr>
+            <td>14</td>
+            <td class="page-name">Multi-Product|Listicle|Generic|v1</td>
+            <td><span class="page-type multi-product">Multi-Product</span></td>
+            <td class="num sessions">17,039</td>
+            <td class="num orders">79</td>
+            <td class="num revenue">$8,584</td>
+            <td class="num cvr">0.46%</td>
+            <td class="num">$109</td>
+            <td class="num">$0.50</td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td class="page-name">LipRecharge|Listicle|SocialProof|V2</td>
+            <td><span class="page-type listicle">Listicle</span></td>
+            <td class="num sessions">11,237</td>
+            <td class="num orders">106</td>
+            <td class="num revenue">$7,118</td>
+            <td class="num cvr">0.94%</td>
+            <td class="num">$67</td>
+            <td class="num">$0.63</td>
+          </tr>
+          <tr>
+            <td>16</td>
+            <td class="page-name">ShawnJohnson|Creator|MultiProduct|V2</td>
+            <td><span class="page-type creator">Creator</span></td>
+            <td class="num sessions">5,269</td>
+            <td class="num orders">67</td>
+            <td class="num revenue">$6,547</td>
+            <td class="num cvr">1.27%</td>
+            <td class="num">$98</td>
+            <td class="num">$1.24</td>
+          </tr>
+          <tr>
+            <td>17</td>
+            <td class="page-name">MB|Listicle|SkincareTest|Older|V1</td>
+            <td><span class="page-type listicle">Listicle</span></td>
+            <td class="num sessions">1,923</td>
+            <td class="num orders">64</td>
+            <td class="num revenue">$5,764</td>
+            <td class="num cvr">3.33%</td>
+            <td class="num">$90</td>
+            <td class="num">$3.00</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="3"><strong>Top 17 Measured Funnels</strong></td>
+            <td class="num">434K</td>
+            <td class="num">5,018</td>
+            <td class="num revenue">$431K</td>
+            <td class="num cvr">1.16%</td>
+            <td class="num">$86</td>
+            <td class="num">$0.99</td>
+          </tr>
+          <tr class="total-row" style="background:#f0f0ee">
+            <td colspan="3"><strong>ALL JURNI (Shop Total — 30 Days)</strong></td>
+            <td class="num">1.17M</td>
+            <td class="num">11,511</td>
+            <td class="num revenue">$1.02M</td>
+            <td class="num cvr">0.98%</td>
+            <td class="num">$89</td>
+            <td class="num">$0.87</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PAGE TYPE BREAKDOWN -->
+  <div class="category">
+    <div class="category-header">
+      <h2>Funnel Type Breakdown</h2>
+      <div class="category-stats">Based on naming analysis of all 213 funnels</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Description</th>
+            <th class="right">Running</th>
+            <th>Examples</th>
+            <th>Migration Complexity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="page-type listicle">Listicle</span></td>
+            <td>Editorial-style product roundups, "reasons why" pages</td>
+            <td class="num">~35</td>
+            <td style="font-size:13px;color:#666">EyeshadowStick, DustyRose, BodyCollection, MMB, LipRecharge, MB Skincare, SPF, Classic Lip</td>
+            <td style="color:#f59e0b;font-weight:600">Medium — templatize then duplicate</td>
+          </tr>
+          <tr>
+            <td><span class="page-type creator">Creator</span></td>
+            <td>Influencer landing pages with product bundles</td>
+            <td class="num">~20</td>
+            <td style="font-size:13px;color:#666">EmilyDiDonato, ShawnJohnson, AlanaHosn, ShenaeGrimes, BethennyFrankel, TonyaMorris</td>
+            <td style="color:#f59e0b;font-weight:600">Medium — same template, swap creator</td>
+          </tr>
+          <tr>
+            <td><span class="page-type trojan">Trojan Horse</span></td>
+            <td>Product pages disguised as editorial content</td>
+            <td class="num">~15</td>
+            <td style="font-size:13px;color:#666">ComplexionSet, Classic Lip, HeroKit, Pinterest TrojanHorse, MakeupTravelKit</td>
+            <td style="color:#10b981;font-weight:600">Low — closest to standard PDP</td>
+          </tr>
+          <tr>
+            <td><span class="page-type multi-product">Multi-Product</span></td>
+            <td>Bundle/set pages with multiple product CTAs</td>
+            <td class="num">~10</td>
+            <td style="font-size:13px;color:#666">ProfessionalMom, Generic Multi-Product, Pinterest Multi-Product, Moms variants</td>
+            <td style="color:#f59e0b;font-weight:600">Medium — need cart/ATC logic</td>
+          </tr>
+          <tr>
+            <td><span class="page-type generic">Generic / Other</span></td>
+            <td>Sale teasers, sign-ups, email confirmation, AEO, templates</td>
+            <td class="num">~20</td>
+            <td style="font-size:13px;color:#666">WTFGeneric, SaleTeaser, Email/SMS Sign-Up, AEO pages, Open Casting Call</td>
+            <td style="color:#10b981;font-weight:600">Low — utility pages, simple builds</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MIGRATION PRIORITY -->
+  <div class="category">
+    <div class="category-header">
+      <h2>Recommended Migration Priority</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Priority</th>
+            <th>What to Migrate</th>
+            <th class="right">30d Revenue</th>
+            <th class="right">30d Sessions</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:800;color:#ef4444">P0</td>
+            <td class="page-name">EyeshadowStick Listicles (V1 + V2) — top revenue driver</td>
+            <td class="num revenue">$152K</td>
+            <td class="num sessions">141K</td>
+            <td style="font-size:13px">Build 1 Shopify listicle template, 2 variants</td>
+          </tr>
+          <tr>
+            <td style="font-weight:800;color:#ef4444">P0</td>
+            <td class="page-name">MMB Listicles (V1 + V2) — Mini Miracle Balm</td>
+            <td class="num revenue">$74K</td>
+            <td class="num sessions">74K</td>
+            <td style="font-size:13px">Reuse listicle template, swap product</td>
+          </tr>
+          <tr>
+            <td style="font-weight:800;color:#ef4444">P0</td>
+            <td class="page-name">Emily DiDonato creator pages (2 active funnels)</td>
+            <td class="num revenue">$50K</td>
+            <td class="num sessions">42K</td>
+            <td style="font-size:13px">Build 1 creator template, reuse across all creators</td>
+          </tr>
+          <tr>
+            <td style="font-weight:800;color:#f59e0b">P1</td>
+            <td class="page-name">LipRecharge Listicles (V1 + V2) — new, scaling fast</td>
+            <td class="num revenue">$27K</td>
+            <td class="num sessions">39K</td>
+            <td style="font-size:13px">Reuse listicle template</td>
+          </tr>
+          <tr>
+            <td style="font-weight:800;color:#f59e0b">P1</td>
+            <td class="page-name">ProfessionalMom + WTFGeneric + Multi-Product Generic</td>
+            <td class="num revenue">$58K</td>
+            <td class="num sessions">69K</td>
+            <td style="font-size:13px">Build multi-product + generic PDP templates</td>
+          </tr>
+          <tr>
+            <td style="font-weight:800;color:#f59e0b">P1</td>
+            <td class="page-name">DustyRose Listicle V3 + BodyCollection V1</td>
+            <td class="num revenue">$33K</td>
+            <td class="num sessions">50K</td>
+            <td style="font-size:13px">Reuse listicle template</td>
+          </tr>
+          <tr>
+            <td style="font-weight:800;color:#0ea5e9">P2</td>
+            <td class="page-name">MB Skincare Listicles (Older + Younger) — best CVR (3.3%)</td>
+            <td class="num revenue">$19K</td>
+            <td class="num sessions">6K</td>
+            <td style="font-size:13px">Reuse listicle template, high-value niche</td>
+          </tr>
+          <tr>
+            <td style="font-weight:800;color:#0ea5e9">P2</td>
+            <td class="page-name">ComplexionSet TrojanHorse + remaining trojan pages</td>
+            <td class="num revenue">$12K</td>
+            <td class="num sessions">7K</td>
+            <td style="font-size:13px">Build trojan horse template</td>
+          </tr>
+          <tr>
+            <td style="font-weight:800;color:#0ea5e9">P2</td>
+            <td class="page-name">All remaining creator pages (~15 funnels)</td>
+            <td class="num revenue">~$7K</td>
+            <td class="num sessions">~5K</td>
+            <td style="font-size:13px">Stamp out using creator template</td>
+          </tr>
+          <tr>
+            <td style="font-weight:800;color:#64748b">P3</td>
+            <td class="page-name">Utility pages (sign-ups, sale teasers, confirmations, AEO)</td>
+            <td class="num revenue">~$5K</td>
+            <td class="num sessions">~3K</td>
+            <td style="font-size:13px">Simple Shopify pages or Klaviyo LPs</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- INACTIVE FUNNELS -->
+  <div class="inactive-section">
+    <h2>Inactive / Draft / Hidden Funnels (~143 funnels — safe to ignore)</h2>
+    <p style="font-size:13px;color:#999;margin-bottom:12px">These funnels are not receiving meaningful traffic. No migration needed — can be archived when Jurni is removed.</p>
+    <div class="inactive-grid">
+      <div class="inactive-chip">Open Casting Call (x5) <span class="status status-inactive">Inactive</span></div>
+      <div class="inactive-chip">New AEO Page (x6) <span class="status status-draft">Draft</span></div>
+      <div class="inactive-chip">BodyCollection Duplicates (x7) <span class="status status-draft">Draft</span></div>
+      <div class="inactive-chip">Various test/template pages (x20+) <span class="status status-inactive">Inactive</span></div>
+      <div class="inactive-chip">Holiday/Seasonal (expired) <span class="status status-inactive">Inactive</span></div>
+      <div class="inactive-chip">Classic Lip duplicates <span class="status status-inactive">Inactive</span></div>
+      <div class="inactive-chip">AEO pages (v1/v2) <span class="status status-inactive">Inactive</span></div>
+      <div class="inactive-chip">Beauty guides (hidden) <span class="status status-hidden">Hidden</span></div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <strong>Data source:</strong> Jurni MCP (<code>get_shop_analytics</code> + <code>get_funnel_metrics</code>), last 30 days ending Mar 23, 2026.<br>
+    <strong>Key insight:</strong> You need ~4 templates (listicle, creator, trojan horse, multi-product) to cover 90%+ of the active Jurni footprint. EyeshadowStick listicles alone are $152K/mo — protect those URLs first.<br>
+    <strong>Redirect plan:</strong> Every migrated page needs a 301 redirect from the old <code>myshop.jonesroadbeauty.com</code> URL to the new Shopify page to preserve ad campaign links.<br>
+    <strong>Top performer:</strong> MB|Skincare Older listicle has the best CVR at 3.33% and $3.00 RPS — small traffic but extremely high intent. Worth scaling post-migration.
+  </div>
+
+</div>
+</body>
+</html>
