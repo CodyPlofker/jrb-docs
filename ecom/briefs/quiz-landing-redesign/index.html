@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Landing Page Redesign — Team Brief</title>
+
+  <style>
+    /* ---- Font Faces ---- */
+    @font-face {
+      font-family: 'Canela';
+      src: url('fonts/canela-light.static.woff2') format('woff2');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'GeogrotesqueCondBoldWeb';
+      src: url('fonts/geogrotesque-cond-bold.static.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'RingsideWideWeb';
+      src: url('fonts/ringside-wide-book.static.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'BaseMonoWideWeb';
+      src: url('fonts/base-mono-wide-thin.static.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ---- Reset & Base ---- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.65;
+      color: #000;
+      background: #fff;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- Layout ---- */
+    .page {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 60px 28px 80px;
+    }
+
+    /* ---- Typography ---- */
+    h1 {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+    h2 {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 28px;
+      line-height: 1.25;
+      margin-bottom: 18px;
+      padding-top: 48px;
+    }
+    h3 {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+      padding-top: 28px;
+    }
+    p { margin-bottom: 14px; }
+    strong { font-weight: 700; }
+
+    /* ---- Section Labels ---- */
+    .section-label {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #999;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      border-bottom: 1px solid #000;
+      padding-bottom: 32px;
+      margin-bottom: 8px;
+    }
+    .header .subtitle {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #666;
+      margin-bottom: 0;
+    }
+
+    /* ---- Table of Contents ---- */
+    .toc {
+      padding: 24px 0 16px;
+      border-bottom: 1px solid #e5e5e5;
+      margin-bottom: 8px;
+    }
+    .toc-title {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #999;
+      margin-bottom: 12px;
+    }
+    .toc ol {
+      list-style: none;
+      counter-reset: toc-counter;
+      padding-left: 0;
+    }
+    .toc li {
+      counter-increment: toc-counter;
+      margin-bottom: 6px;
+    }
+    .toc li::before {
+      content: counter(toc-counter, decimal-leading-zero) ".";
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      color: #999;
+      margin-right: 10px;
+      display: inline-block;
+      width: 28px;
+    }
+    .toc a {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 14px;
+      color: #000;
+      text-decoration: none;
+      border-bottom: 1px solid #e5e5e5;
+      transition: border-color 0.2s ease;
+    }
+    .toc a:hover {
+      border-color: #000;
+    }
+
+    /* ---- Dividers ---- */
+    .section-divider {
+      border: none;
+      border-top: 1px solid #e5e5e5;
+      margin: 0;
+    }
+
+    /* ---- Lists ---- */
+    ul, ol {
+      padding-left: 22px;
+      margin-bottom: 14px;
+    }
+    li { margin-bottom: 6px; }
+
+    /* ---- Bullet points with mono markers ---- */
+    .data-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    .data-list li {
+      padding-left: 18px;
+      position: relative;
+      margin-bottom: 8px;
+    }
+    .data-list li::before {
+      content: "--";
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      position: absolute;
+      left: 0;
+      top: 2px;
+      color: #999;
+    }
+
+    /* ---- Tables ---- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    thead th {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 2px solid #000;
+      color: #000;
+    }
+    tbody td {
+      padding: 9px 12px;
+      border-bottom: 1px solid #e5e5e5;
+      vertical-align: top;
+    }
+    tbody tr:nth-child(even) {
+      background: #faf9f7;
+    }
+
+    /* ---- Comparison Columns ---- */
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+    .comparison-card {
+      border: 1px solid #e5e5e5;
+      padding: 24px;
+    }
+    .comparison-card h3 {
+      padding-top: 0;
+      margin-bottom: 14px;
+    }
+    .comparison-card .card-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #666;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .comparison-card p,
+    .comparison-card li {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ---- Status Pills ---- */
+    .status {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      padding: 3px 8px 2px;
+      border-radius: 2px;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1.4;
+    }
+    .status--needed {
+      background: #f6f2eb;
+      color: #8a6d3b;
+    }
+    .status--placeholder {
+      background: #eee;
+      color: #666;
+    }
+    .status--resolved {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    /* ---- Page Structure List ---- */
+    .structure-list {
+      list-style: none;
+      padding-left: 0;
+      counter-reset: structure;
+    }
+    .structure-list li {
+      counter-increment: structure;
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      margin-bottom: 0;
+    }
+    .structure-list li::before {
+      content: counter(structure, decimal-leading-zero);
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      color: #999;
+      flex-shrink: 0;
+      width: 22px;
+    }
+    .structure-list .section-name {
+      font-weight: 700;
+    }
+    .structure-list .section-bg {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      color: #999;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    /* ---- Metric List ---- */
+    .metric-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    .metric-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 0;
+    }
+    .metric-list .metric-tag {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: #999;
+      flex-shrink: 0;
+    }
+    .metric-list .metric-tag--primary {
+      color: #000;
+      font-weight: 700;
+    }
+
+    /* ---- Recommendation Block ---- */
+    .recommendation {
+      background: #f6f2eb;
+      padding: 28px 28px 24px;
+      margin-top: 8px;
+      margin-bottom: 24px;
+    }
+    .recommendation h3 {
+      padding-top: 0;
+    }
+    .recommendation p {
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    /* ---- Inline Code ---- */
+    code {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 12px;
+      background: #f6f2eb;
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+    /* ---- Links ---- */
+    a {
+      color: #000;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    a:hover {
+      text-decoration-thickness: 2px;
+    }
+
+    /* ---- Footer ---- */
+    .footer {
+      margin-top: 56px;
+      padding-top: 20px;
+      border-top: 1px solid #000;
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #666;
+    }
+
+    /* ---- Key Insight callout ---- */
+    .callout {
+      border-left: 3px solid #000;
+      padding: 12px 0 12px 20px;
+      margin: 18px 0 20px;
+    }
+    .callout p {
+      margin-bottom: 0;
+      font-style: italic;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 640px) {
+      h1 { font-size: 30px; }
+      h2 { font-size: 24px; padding-top: 36px; }
+      .comparison { grid-template-columns: 1fr; gap: 20px; }
+      .page { padding: 36px 18px 60px; }
+      table { font-size: 13px; }
+      thead th, tbody td { padding: 8px 8px; }
+    }
+
+    /* ---- Print ---- */
+    @media print {
+      body { font-size: 12px; }
+      .page { max-width: 100%; padding: 20px 0; }
+      h1 { font-size: 28px; }
+      h2 { font-size: 20px; padding-top: 24px; }
+      .comparison { grid-template-columns: 1fr 1fr; }
+      .comparison-card { border: 1px solid #ccc; }
+      a { text-decoration: none; color: #000; }
+      a[href]::after { content: " (" attr(href) ")"; font-size: 10px; color: #666; }
+      .toc a[href]::after { content: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ========== HEADER ========== -->
+  <header class="header">
+    <h1>Quiz Landing Page Redesign</h1>
+    <p class="subtitle">Team Brief — March 2026</p>
+  </header>
+
+  <!-- ========== TABLE OF CONTENTS ========== -->
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#problem">Problem Statement</a></li>
+      <li><a href="#research">Research &amp; Inspiration</a></li>
+      <li><a href="#direction">Strategic Direction</a></li>
+      <li><a href="#variations">Two Variations</a></li>
+      <li><a href="#structure">Page Structure</a></li>
+      <li><a href="#metrics">Key Metrics to Watch</a></li>
+      <li><a href="#content-needs">Content Needs</a></li>
+      <li><a href="#references">Design Files &amp; References</a></li>
+      <li><a href="#recommendation">Recommendation</a></li>
+    </ol>
+  </nav>
+
+  <!-- ========== 1. PROBLEM STATEMENT ========== -->
+  <hr class="section-divider">
+  <section id="problem">
+    <span class="section-label">01</span>
+    <h2>Problem statement</h2>
+
+    <p>The current quiz landing page (<code>/pages/quiz-landing</code>) underperforms across every funnel metric. The quiz selector -- the page's core value prop -- is buried below a full-viewport video hero and a 6-quiz grid that dilutes intent.</p>
+
+    <ul class="data-list">
+      <li><strong>Traffic:</strong> 11.8K desktop / 18.5K mobile sessions, 976 conversions (3/3 - 3/15/2026)</li>
+      <li><strong>Hero waste:</strong> Video hero takes the full viewport -- quiz options are buried below the fold</li>
+      <li><strong>Scroll drop-off:</strong> 40-50% of visitors leave before reaching the quiz grid</li>
+      <li><strong>Quiz grid bloat:</strong> 6 quizzes, but Row 3 (Bronzer, Tinted Powder) gets roughly 30% visibility</li>
+      <li><strong>Dead content:</strong> "Still need help?" section has near-zero engagement</li>
+    </ul>
+
+    <div class="callout">
+      <p>The quiz selector IS the page's value prop, but it is treated as secondary content.</p>
+    </div>
+  </section>
+
+  <!-- ========== 2. RESEARCH & INSPIRATION ========== -->
+  <hr class="section-divider">
+  <section id="research">
+    <span class="section-label">02</span>
+    <h2>Research &amp; inspiration</h2>
+
+    <ul class="data-list">
+      <li><strong>AG1 stepped funnel:</strong> The action IS the page. No wasted hero, no passive content above the primary CTA.</li>
+      <li><strong>Merit Beauty shade quiz:</strong> Clean "FIND MY SHADE" as the primary conversion path -- single-purpose hero.</li>
+      <li><strong>Heatmap insight:</strong> Row 1 quizzes are the hottest zones. Simplifying to 2 paths captures the majority of intent.</li>
+      <li><strong>Bobbi Brown credibility:</strong> Founder authority serves as a powerful trust anchor further down the page.</li>
+    </ul>
+  </section>
+
+  <!-- ========== 3. STRATEGIC DIRECTION ========== -->
+  <hr class="section-divider">
+  <section id="direction">
+    <span class="section-label">03</span>
+    <h2>Strategic direction</h2>
+
+    <ul class="data-list">
+      <li><strong>6 quizzes down to 2 paths:</strong> Miracle Balm (live) + Consolidated Complexion Quiz (in development)</li>
+      <li><strong>Passive directory becomes active funnel:</strong> The page pre-sells the quiz, not a product grid</li>
+      <li><strong>Quiz selector above the fold</strong> on all devices -- desktop and mobile</li>
+      <li><strong>Full page becomes a "pre-sell" experience:</strong> Every section below the hero exists to build confidence and drive quiz starts</li>
+    </ul>
+  </section>
+
+  <!-- ========== 4. TWO VARIATIONS ========== -->
+  <hr class="section-divider">
+  <section id="variations">
+    <span class="section-label">04</span>
+    <h2>Two variations</h2>
+
+    <div class="comparison">
+
+      <!-- V2-A -->
+      <div class="comparison-card">
+        <h3>V2-A: Flipped Hero</h3>
+        <span class="card-label">Layout</span>
+        <p><strong>Desktop:</strong> Quiz cards LEFT, model image RIGHT.<br>
+        <strong>Mobile:</strong> Image hidden, quiz cards first.</p>
+
+        <span class="card-label">Rationale</span>
+        <p>Western left-to-right reading pattern places quiz cards in the primary scan position. The model image provides emotional warmth on desktop without competing for attention.</p>
+
+        <span class="card-label">Trade-off</span>
+        <p>Loses the emotional hook of the model image on mobile. Returning visitors who already trust the brand will benefit most from this layout.</p>
+
+        <span class="card-label">Best for</span>
+        <p>Returning visitors who already trust the brand.</p>
+      </div>
+
+      <!-- V2-B -->
+      <div class="comparison-card">
+        <h3>V2-B: No Hero Image</h3>
+        <span class="card-label">Layout</span>
+        <p><strong>Desktop &amp; mobile:</strong> Centered quiz selector, no image. Maximum above-the-fold conversion real estate.</p>
+
+        <span class="card-label">Rationale</span>
+        <p>AG1 pattern -- the best-converting pages have zero hero imagery. Every pixel above the fold drives quiz starts.</p>
+
+        <span class="card-label">Trade-off</span>
+        <p>Less aspirational. May feel "utility" vs "brand." Mitigated by the qualification section, Bobbi credibility, and testimonials providing warmth below the fold.</p>
+
+        <span class="card-label">Best for</span>
+        <p>Fastest path to quiz start -- pure conversion play.</p>
+      </div>
+
+    </div>
+
+    <h3>Comparison</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>V2-A Flipped</th>
+          <th>V2-B No Image</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Image on desktop</td>
+          <td>Yes (right)</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Image on mobile</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Quiz cards position</td>
+          <td>Left (above fold)</td>
+          <td>Center (above fold)</td>
+        </tr>
+        <tr>
+          <td>Emotional impact</td>
+          <td>Medium</td>
+          <td>Low</td>
+        </tr>
+        <tr>
+          <td>Conversion focus</td>
+          <td>High</td>
+          <td>Highest</td>
+        </tr>
+        <tr>
+          <td>Content dependencies</td>
+          <td>Hero image needed</td>
+          <td>None</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========== 5. PAGE STRUCTURE ========== -->
+  <hr class="section-divider">
+  <section id="structure">
+    <span class="section-label">05</span>
+    <h2>Page structure</h2>
+    <p>Both variations share the same 11-section page. The hero varies by variation; everything below is identical.</p>
+
+    <ol class="structure-list">
+      <li>
+        <span class="section-name">Hero</span>
+        <span>Varies by variation (V2-A flipped layout / V2-B centered, no image)</span>
+        <span class="section-bg">--</span>
+      </li>
+      <li>
+        <span class="section-name">Guarantee Strip</span>
+        <span>Free shipping, returns, satisfaction guarantee</span>
+        <span class="section-bg">#f6f2eb</span>
+      </li>
+      <li>
+        <span class="section-name">Press Logo Bar</span>
+        <span>Scrolling press quotes with inline SVG logos</span>
+        <span class="section-bg">#000</span>
+      </li>
+      <li>
+        <span class="section-name">Stats Bar</span>
+        <span>500K+ quizzes, 94% accuracy, 4.5 avg rating, 60s to complete</span>
+        <span class="section-bg">#fff</span>
+      </li>
+      <li>
+        <span class="section-name">How It Works</span>
+        <span>3-step walkthrough of the quiz experience</span>
+        <span class="section-bg">#f6f2eb</span>
+      </li>
+      <li>
+        <span class="section-name">"Is This Quiz For You?"</span>
+        <span>Checklist of qualifying criteria + lifestyle image</span>
+        <span class="section-bg">#fff</span>
+      </li>
+      <li>
+        <span class="section-name">Bobbi Credibility</span>
+        <span>Founder story and brand authority</span>
+        <span class="section-bg">#000</span>
+      </li>
+      <li>
+        <span class="section-name">Video Testimonials</span>
+        <span>3 customer video cards with pull quotes</span>
+        <span class="section-bg">#fff</span>
+      </li>
+      <li>
+        <span class="section-name">Review Cards</span>
+        <span>3 highlighted customer reviews</span>
+        <span class="section-bg">#f6f2eb</span>
+      </li>
+      <li>
+        <span class="section-name">Before/After Results</span>
+        <span>3 transformation photo pairs</span>
+        <span class="section-bg">#fff</span>
+      </li>
+      <li>
+        <span class="section-name">Final CTA</span>
+        <span>Repeat quiz selector or single "Take the Quiz" button</span>
+        <span class="section-bg">#fff</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ========== 6. KEY METRICS ========== -->
+  <hr class="section-divider">
+  <section id="metrics">
+    <span class="section-label">06</span>
+    <h2>Key metrics to watch</h2>
+
+    <ul class="metric-list">
+      <li>
+        <span class="metric-tag metric-tag--primary">Primary</span>
+        <span>Quiz start rate</span>
+      </li>
+      <li>
+        <span class="metric-tag">Secondary</span>
+        <span>Time to first interaction</span>
+      </li>
+      <li>
+        <span class="metric-tag">Secondary</span>
+        <span>Scroll depth to quiz cards (target: 100%)</span>
+      </li>
+      <li>
+        <span class="metric-tag">Monitor</span>
+        <span>Bounce rate (V2-B risk: may increase without visual hook)</span>
+      </li>
+      <li>
+        <span class="metric-tag">Monitor</span>
+        <span>New vs returning visitor performance</span>
+      </li>
+      <li>
+        <span class="metric-tag">Monitor</span>
+        <span>Mobile vs desktop conversion delta</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ========== 7. CONTENT NEEDS ========== -->
+  <hr class="section-divider">
+  <section id="content-needs">
+    <span class="section-label">07</span>
+    <h2>Content needs</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Status</th>
+          <th>Section</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Hero model image</td>
+          <td><span class="status status--needed">Needed</span></td>
+          <td>Hero (V2-A only)</td>
+        </tr>
+        <tr>
+          <td>Quiz card product images</td>
+          <td><span class="status status--needed">Needed</span></td>
+          <td>Hero</td>
+        </tr>
+        <tr>
+          <td>Complexion quiz URL</td>
+          <td><span class="status status--placeholder">Placeholder</span></td>
+          <td>Hero</td>
+        </tr>
+        <tr>
+          <td>"500K+ quizzes taken" verification</td>
+          <td><span class="status status--needed">Needed</span></td>
+          <td>Stats Bar</td>
+        </tr>
+        <tr>
+          <td>"94% accuracy" source</td>
+          <td><span class="status status--needed">Needed</span></td>
+          <td>Stats Bar</td>
+        </tr>
+        <tr>
+          <td>3 video thumbnails + quotes</td>
+          <td><span class="status status--needed">Needed</span></td>
+          <td>Video Testimonials</td>
+        </tr>
+        <tr>
+          <td>3 before/after photo pairs</td>
+          <td><span class="status status--needed">Needed</span></td>
+          <td>Results</td>
+        </tr>
+        <tr>
+          <td>Approved Bobbi Brown portrait</td>
+          <td><span class="status status--needed">Needed</span></td>
+          <td>Bobbi Section</td>
+        </tr>
+        <tr>
+          <td>Qualification section lifestyle image</td>
+          <td><span class="status status--needed">Needed</span></td>
+          <td>Quiz For You</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========== 8. DESIGN FILES & REFERENCES ========== -->
+  <hr class="section-divider">
+  <section id="references">
+    <span class="section-label">08</span>
+    <h2>Design files &amp; references</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Resource</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Paper designs (5 artboards)</td>
+          <td><a href="https://paper.design" target="_blank">paper.design</a> -- File: "Quiz Landing"</td>
+        </tr>
+        <tr>
+          <td>Figma</td>
+          <td>Pending import via html.to.design plugin</td>
+        </tr>
+        <tr>
+          <td>HTML mockup: Original</td>
+          <td><code>index.html</code> (<a href="http://localhost:8902" target="_blank">localhost:8902</a>)</td>
+        </tr>
+        <tr>
+          <td>HTML mockup: V2-A Flipped</td>
+          <td><code>v2-flipped.html</code></td>
+        </tr>
+        <tr>
+          <td>HTML mockup: V2-B No Image</td>
+          <td><code>v2-no-image.html</code></td>
+        </tr>
+        <tr>
+          <td>Shopify staging theme</td>
+          <td><a href="https://jonesroad.myshopify.com/admin/themes/147729383574/editor" target="_blank">Theme editor</a></td>
+        </tr>
+        <tr>
+          <td>Template</td>
+          <td><code>page.cclp-quiz-landing.json</code> on "Cody CC Test"</td>
+        </tr>
+        <tr>
+          <td>Git branch</td>
+          <td><code>overnight/quiz-landing-redesign</code></td>
+        </tr>
+        <tr>
+          <td>Heatmap data</td>
+          <td><a href="https://portal.heatmap.com/heatmaps/2821/5235436/" target="_blank">portal.heatmap.com/heatmaps/2821/5235436/</a></td>
+        </tr>
+        <tr>
+          <td>Project directory</td>
+          <td><code>~/Desktop/01-Projects/jrb-quiz-landing-redesign/</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========== 9. RECOMMENDATION ========== -->
+  <hr class="section-divider">
+  <section id="recommendation">
+    <span class="section-label">09</span>
+    <h2>Recommendation</h2>
+
+    <div class="recommendation">
+      <h3>Test both variations</h3>
+      <p>We recommend testing both V2-A and V2-B against the current page as an A/B test. V2-A is the safer bet -- it retains brand imagery on desktop and provides an emotional anchor for first-time visitors. V2-B is the bolder play -- maximum conversion focus with zero visual distractions above the fold. Both solve the core problem: quiz cards above the fold on every device.</p>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    Prepared by Cody Plofker — March 2026
+  </footer>
+
+</div>
+
+</body>
+</html>
