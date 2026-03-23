@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JRB Brand Health Deep Dive — Tracksuit Analysis</title>
+<style>
+  :root {
+    --jrb-black: #000;
+    --jrb-warm: #f6f2eb;
+    --jrb-pink: #ff2e92;
+    --red: #dc3545;
+    --green: #28a745;
+    --yellow: #ffc107;
+    --blue: #4a90d9;
+    --purple: #6b4c9a;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-600: #6c757d;
+    --gray-800: #343a40;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--gray-800);
+    background: var(--gray-100);
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+
+  /* Header */
+  .header {
+    background: var(--jrb-black);
+    color: white;
+    padding: 48px 24px;
+    text-align: center;
+  }
+  .header h1 { font-size: 32px; font-weight: 300; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .header .subtitle { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.7; }
+  .header .date { font-size: 13px; margin-top: 16px; opacity: 0.5; }
+
+  /* Executive Summary */
+  .exec-summary {
+    background: white;
+    border-left: 4px solid var(--jrb-pink);
+    padding: 32px;
+    margin: 32px 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .exec-summary h2 { font-size: 18px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; color: var(--jrb-pink); }
+  .exec-summary p { margin-bottom: 12px; font-size: 15px; }
+
+  /* Section */
+  .section {
+    background: white;
+    padding: 32px;
+    margin: 24px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .section h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--gray-200);
+  }
+  .section h3 { font-size: 16px; font-weight: 600; margin: 20px 0 12px; }
+  .section p { margin-bottom: 12px; font-size: 15px; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  th {
+    background: var(--gray-800);
+    color: white;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  tr:hover td { background: var(--gray-100); }
+  tr.highlight td { background: #fff3cd; font-weight: 600; }
+  tr.jrb td { background: #f0e6ff; font-weight: 600; }
+
+  /* Metric Cards */
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .metric-card {
+    background: var(--gray-100);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .metric-card .label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray-600);
+    margin-bottom: 8px;
+  }
+  .metric-card .value {
+    font-size: 36px;
+    font-weight: 700;
+  }
+  .metric-card .context {
+    font-size: 12px;
+    color: var(--gray-600);
+    margin-top: 4px;
+  }
+  .metric-card.red .value { color: var(--red); }
+  .metric-card.green .value { color: var(--green); }
+  .metric-card.yellow .value { color: var(--yellow); }
+  .metric-card.blue .value { color: var(--blue); }
+
+  /* Insight Callouts */
+  .insight {
+    background: #f0e6ff;
+    border-left: 4px solid var(--purple);
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+  }
+  .insight strong { color: var(--purple); }
+
+  .warning {
+    background: #fff3cd;
+    border-left: 4px solid var(--yellow);
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+  }
+
+  /* Bar Charts */
+  .bar-chart { margin: 16px 0; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+  }
+  .bar-label {
+    width: 160px;
+    font-size: 13px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .bar-track {
+    flex: 1;
+    height: 28px;
+    background: var(--gray-200);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    min-width: 40px;
+  }
+  .bar-fill.jrb { background: var(--purple); }
+  .bar-fill.comp { background: #aaa; }
+  .bar-fill.leader { background: var(--green); }
+  .bar-fill.avg { background: var(--blue); opacity: 0.7; }
+
+  /* Pending sections */
+  .pending {
+    background: var(--gray-100);
+    border: 2px dashed var(--gray-200);
+    padding: 40px;
+    text-align: center;
+    border-radius: 8px;
+    color: var(--gray-600);
+    font-style: italic;
+  }
+
+  /* Hypothesis Cards */
+  .hyp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .hyp-card {
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+  }
+  .hyp-card.confirmed { border-left: 4px solid var(--green); }
+  .hyp-card.partial { border-left: 4px solid var(--yellow); }
+  .hyp-card.needs-data { border-left: 4px solid var(--gray-600); }
+  .hyp-card h4 { font-size: 14px; margin-bottom: 8px; }
+  .hyp-card p { font-size: 13px; color: var(--gray-600); }
+  .hyp-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .hyp-tag.green { background: #d4edda; color: #155724; }
+  .hyp-tag.yellow { background: #fff3cd; color: #856404; }
+  .hyp-tag.gray { background: var(--gray-200); color: var(--gray-600); }
+
+  @media (max-width: 768px) {
+    .container { padding: 20px 16px; }
+    .section { padding: 20px; }
+    .metric-grid { grid-template-columns: 1fr 1fr; }
+    .hyp-grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 24px; }
+    table { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="subtitle">Jones Road Beauty</div>
+  <h1>Brand Health Deep Dive</h1>
+  <div class="date">Tracksuit Data Analysis | Dec 2025 — Feb 2026 | Premium Makeup &amp; Cosmetics | US</div>
+</div>
+
+<div class="container">
+
+<!-- Executive Summary -->
+<div class="exec-summary">
+  <h2>Executive Summary</h2>
+  <p><strong>JRB's only significant brand health weakness is "Is worth paying more for"</strong> — scoring 38% vs the 44% competitor average (6th of 7 brands). All other brand statements are at or above average. JRB actually <strong>leads the competitive set</strong> on "Is for people like me."</p>
+  <p>This single metric is the <strong>#2 conversion driver</strong> in the category, directly explaining JRB's below-average awareness-to-consideration conversion (67% vs 75% competitor average).</p>
+  <p>Brand imagery reveals JRB's dominant associations are <strong>"Natural" and "Mature"</strong> — functional and approachable, but not aspirational. Competitors scoring highest on premium (Westman Atelier, Haus Labs) are associated with "Iconic," "Bold," and "Trendy."</p>
+  <p>JRB's aware audience <strong>skews dramatically older</strong> (peaks at 65+ vs category peak at 25-34), <strong>wealthier</strong> ($100K+ over-indexed), and <strong>more homogeneous</strong>. The audience <em>can</em> afford premium — they just don't perceive JRB as <em>worth</em> a premium.</p>
+</div>
+
+<!-- Key Metrics -->
+<div class="section">
+  <h2>Key Metrics at a Glance</h2>
+  <div class="metric-grid">
+    <div class="metric-card red">
+      <div class="label">Worth Paying More</div>
+      <div class="value">38%</div>
+      <div class="context">vs 44% comp avg (-6pts)</div>
+    </div>
+    <div class="metric-card green">
+      <div class="label">For People Like Me</div>
+      <div class="value">40%</div>
+      <div class="context">vs 37% comp avg (+3pts) #1</div>
+    </div>
+    <div class="metric-card yellow">
+      <div class="label">A→C Conversion</div>
+      <div class="value">67%</div>
+      <div class="context">vs 75% comp avg (last place)</div>
+    </div>
+    <div class="metric-card blue">
+      <div class="label">Awareness</div>
+      <div class="value">15%</div>
+      <div class="context">vs 16% comp avg (mid-pack)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Brand Statements -->
+<div class="section">
+  <h2>1. Brand Statement Comparison — All Brands</h2>
+  <p>Among consumers <strong>aware</strong> of each brand, what % believe the statement is true.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Statement</th>
+        <th>JRB</th>
+        <th>Comp Avg</th>
+        <th>Haus Labs</th>
+        <th>ILIA</th>
+        <th>MERIT</th>
+        <th>Tower 28</th>
+        <th>Westman A.</th>
+        <th>JRB Rank</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Uses clean ingredients</td>
+        <td><strong>54%</strong></td>
+        <td>51%</td>
+        <td>42%</td>
+        <td>56%</td>
+        <td>45%</td>
+        <td>52%</td>
+        <td>57%</td>
+        <td>4th</td>
+      </tr>
+      <tr>
+        <td>Meets my needs</td>
+        <td><strong>42%</strong></td>
+        <td>44%</td>
+        <td>40%</td>
+        <td>38%</td>
+        <td>48%</td>
+        <td>45%</td>
+        <td>48%</td>
+        <td>5th</td>
+      </tr>
+      <tr class="highlight">
+        <td><strong>Worth paying more for</strong></td>
+        <td><strong style="color:var(--red)">38%</strong></td>
+        <td><strong>44%</strong></td>
+        <td>49%</td>
+        <td>36%</td>
+        <td>40%</td>
+        <td>42%</td>
+        <td>52%</td>
+        <td style="color:var(--red)"><strong>6th</strong></td>
+      </tr>
+      <tr>
+        <td>Brand I trust</td>
+        <td><strong>46%</strong></td>
+        <td>46%</td>
+        <td>51%</td>
+        <td>37%</td>
+        <td>46%</td>
+        <td>42%</td>
+        <td>54%</td>
+        <td>4th (tie)</td>
+      </tr>
+      <tr class="jrb">
+        <td>For people like me</td>
+        <td><strong style="color:var(--green)">40%</strong></td>
+        <td>37%</td>
+        <td>38%</td>
+        <td>35%</td>
+        <td>35%</td>
+        <td>39%</td>
+        <td>40%</td>
+        <td style="color:var(--green)"><strong>1st (tie)</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="insight">
+    <strong>Key Finding:</strong> "Worth paying more for" is JRB's ONLY significant underperformance (-6pts). JRB actually LEADS on "for people like me" (+3pts). Trust is at average. The problem is precisely and narrowly about premium value perception.
+  </div>
+</div>
+
+<!-- Worth Paying More Visual -->
+<div class="section">
+  <h2>2. "Worth Paying More For" — Competitive Ranking</h2>
+  <div class="bar-chart">
+    <div class="bar-row">
+      <div class="bar-label">Westman Atelier</div>
+      <div class="bar-track"><div class="bar-fill leader" style="width:74%">52%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Haus Labs</div>
+      <div class="bar-track"><div class="bar-fill leader" style="width:70%">49%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Comp Average</div>
+      <div class="bar-track"><div class="bar-fill avg" style="width:63%">44%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Tower 28</div>
+      <div class="bar-track"><div class="bar-fill comp" style="width:60%">42%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">MERIT</div>
+      <div class="bar-track"><div class="bar-fill comp" style="width:57%">40%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label"><strong>Jones Road</strong></div>
+      <div class="bar-track"><div class="bar-fill jrb" style="width:54%">38%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">ILIA</div>
+      <div class="bar-track"><div class="bar-fill comp" style="width:51%">36%</div></div>
+    </div>
+  </div>
+  <div class="warning">
+    <strong>The Westman Atelier Paradox:</strong> Westman Atelier has the LOWEST awareness (6%) but the HIGHEST premium perception (52%). You don't need more people to know about you — you need the people who DO know about you to understand why you're worth more.
+  </div>
+</div>
+
+<!-- Full Funnel -->
+<div class="section">
+  <h2>3. Full Funnel — All Brands</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Brand</th>
+        <th>Awareness</th>
+        <th>Consideration</th>
+        <th>Usage</th>
+        <th>Preference</th>
+        <th>A&rarr;C Conv</th>
+        <th>C&rarr;U Conv</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Haus Labs</td><td>24%</td><td>18%</td><td>10%</td><td>10%</td><td>75%</td><td>56%</td>
+      </tr>
+      <tr>
+        <td>ILIA</td><td>21%</td><td>15%</td><td>9%</td><td>8%</td><td>71%</td><td>53%</td>
+      </tr>
+      <tr>
+        <td>Tower 28</td><td>15%</td><td>12%</td><td>6%</td><td>6%</td><td style="color:var(--green)"><strong>80%</strong></td><td>50%</td>
+      </tr>
+      <tr>
+        <td>Comp Avg</td><td>16%</td><td>12%</td><td>7%</td><td>6%</td><td>75%</td><td>50%</td>
+      </tr>
+      <tr class="jrb">
+        <td><strong>Jones Road</strong></td><td><strong>15%</strong></td><td><strong>10%</strong></td><td><strong>5%</strong></td><td><strong>4%</strong></td><td style="color:var(--red)"><strong>67%</strong></td><td style="color:var(--red)"><strong>40%</strong></td>
+      </tr>
+      <tr>
+        <td>MERIT</td><td>14%</td><td>10%</td><td>6%</td><td>5%</td><td>71%</td><td>50%</td>
+      </tr>
+      <tr>
+        <td>Westman Atelier</td><td>6%</td><td>4%</td><td>2%</td><td>1%</td><td>67%</td><td>25%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Conversion Drivers (What Matters for Awareness &rarr; Consideration)</h3>
+  <table>
+    <thead>
+      <tr><th>Driver</th><th>Importance</th><th>JRB Performance</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Is for people like me</td><td>2.6x (#1)</td><td>41%</td><td style="color:var(--green)">Leads set</td></tr>
+      <tr class="highlight"><td><strong>Is worth paying more for</strong></td><td><strong>2.1x (#2)</strong></td><td><strong>33%</strong></td><td style="color:var(--red)"><strong>Near bottom</strong></td></tr>
+      <tr><td>Meets my needs</td><td>1.9x (#3)</td><td>38%</td><td style="color:var(--yellow)">Slightly below avg</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Brand Imagery -->
+<div class="section">
+  <h2>4. Brand Imagery — How Consumers Perceive JRB vs Haus Labs</h2>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16px;">
+    <div>
+      <h3 style="color:var(--purple)">Jones Road</h3>
+      <p><strong>Dominant:</strong> Natural (largest), Expensive, Clean, Luxurious, Mature</p>
+      <p><strong>Common:</strong> Good, Quality, Great, Easy, Unique, Premium, Innovative, Elegant</p>
+      <p><strong>Unique to JRB:</strong> High quality, Reputable, Anti aging, High end, <span style="color:var(--red); font-weight:600">Mature</span></p>
+    </div>
+    <div>
+      <h3 style="color:var(--jrb-pink)">Haus Labs (49% premium)</h3>
+      <p><strong>Dominant:</strong> Innovative, Premium, Quality, Luxurious</p>
+      <p><strong>Common:</strong> Unique, Bold, Iconic, Cosmetic, Clean, Good, Great, Expensive, Trendy</p>
+      <p><strong>Unique to Haus Labs:</strong> <span style="color:var(--green); font-weight:600">Inclusive, Popular, Amazing</span></p>
+    </div>
+  </div>
+  <div class="insight">
+    <strong>Key Finding:</strong> JRB's #1 association is "Natural" — functional, not aspirational. "Mature" is UNIQUE to JRB (no other brand has it). Haus Labs has "Iconic," "Bold," "Trendy" — identity-driven words JRB completely lacks. "Natural" + "Mature" = approachable older brand. "Innovative" + "Bold" + "Iconic" = aspirational premium brand.
+  </div>
+</div>
+
+<!-- Demographics -->
+<div class="section">
+  <h2>5. Demographic Profile — JRB Aware Audience vs. Category</h2>
+
+  <h3>Age Distribution — JRB Skews Much Older</h3>
+  <table>
+    <thead>
+      <tr><th>Age</th><th>Category</th><th>JRB Aware</th><th>Gap</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>18-24</td><td>13%</td><td>6%</td><td style="color:var(--red)">-7pts</td></tr>
+      <tr><td>25-34</td><td>23%</td><td>14%</td><td style="color:var(--red)"><strong>-9pts</strong></td></tr>
+      <tr><td>35-44</td><td>18%</td><td>14%</td><td style="color:var(--red)">-4pts</td></tr>
+      <tr><td>45-54</td><td>17%</td><td>20%</td><td style="color:var(--green)">+3pts</td></tr>
+      <tr><td>55-64</td><td>15%</td><td>22%</td><td style="color:var(--green)"><strong>+7pts</strong></td></tr>
+      <tr><td>65+</td><td>15%</td><td>25%</td><td style="color:var(--green)"><strong>+10pts</strong></td></tr>
+    </tbody>
+  </table>
+  <div class="warning">
+    <strong>The category peaks at 25-34. JRB peaks at 65+.</strong> JRB massively under-indexes with 18-34 year-olds and over-indexes with 55+. The "Mature" imagery tag is a direct reflection of who actually knows the brand.
+  </div>
+
+  <h3>Household Income — JRB Audience Is Wealthier</h3>
+  <table>
+    <thead>
+      <tr><th>Income</th><th>Category</th><th>JRB Aware</th><th>Gap</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>&lt;$25K</td><td>19%</td><td>14%</td><td>-5pts</td></tr>
+      <tr><td>$25-50K</td><td>21%</td><td>21%</td><td>0</td></tr>
+      <tr><td>$50-75K</td><td>18%</td><td>17%</td><td>-1pt</td></tr>
+      <tr><td>$75-100K</td><td>13%</td><td>11%</td><td>-2pts</td></tr>
+      <tr><td>$100-150K</td><td>13%</td><td>18%</td><td style="color:var(--green)"><strong>+5pts</strong></td></tr>
+      <tr><td>$150K+</td><td>12%</td><td>17%</td><td style="color:var(--green)"><strong>+5pts</strong></td></tr>
+    </tbody>
+  </table>
+  <div class="insight">
+    <strong>Key Finding:</strong> 35% of JRB's aware audience earns $100K+ (vs 25% of the category). The audience CAN afford premium prices. The "worth paying more" gap is not about price sensitivity — it's about perceived value.
+  </div>
+
+  <h3>Ethnicity</h3>
+  <table>
+    <thead>
+      <tr><th>Ethnicity</th><th>Category</th><th>JRB Aware</th><th>Gap</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>White/Caucasian</td><td>71%</td><td>80%</td><td>+9pts</td></tr>
+      <tr><td>Hispanic/Latino</td><td>14%</td><td>8%</td><td style="color:var(--red)">-6pts</td></tr>
+      <tr><td>Black/African American</td><td>13%</td><td>10%</td><td>-3pts</td></tr>
+      <tr><td>Asian</td><td>6%</td><td>5%</td><td>-1pt</td></tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top:16px;"><strong>Note on demographic limitations:</strong> Tracksuit's sample sizes are too small for age-specific statement breakdowns for JRB (15% awareness creates insufficient sub-samples). We cannot determine from Tracksuit how "worth paying more for" varies by age group. This is a key gap the targeted survey must address.</p>
+</div>
+
+<!-- Hypotheses -->
+<div class="section">
+  <h2>6. Hypothesis Scorecard</h2>
+  <div class="hyp-grid">
+    <div class="hyp-card confirmed">
+      <span class="hyp-tag green">Strongly Supported</span>
+      <h4>H1: JRB = "Natural/Clean/Mature" — Not "Premium/Aspirational"</h4>
+      <p>Imagery confirms: "Natural" and "Mature" dominate. Clean is strongest statement but doesn't differentiate. Missing identity signals that premium brands have.</p>
+    </div>
+    <div class="hyp-card confirmed">
+      <span class="hyp-tag green">Supported</span>
+      <h4>H2: This is a brand identity problem, not a product problem</h4>
+      <p>JRB leads on "for people like me" and is at avg on trust. People don't lack affinity — they lack a REASON to pay more. The gap is specifically in premium value signals.</p>
+    </div>
+    <div class="hyp-card partial">
+      <span class="hyp-tag yellow">Partially Supported</span>
+      <h4>H3: Demographic skew suppresses premium perception</h4>
+      <p>JRB's 65+ audience skew is dramatic. But we can't yet prove this CAUSES lower premium perception. Need survey with age cross-tabs to validate.</p>
+    </div>
+    <div class="hyp-card confirmed">
+      <span class="hyp-tag green">Supported</span>
+      <h4>H4: A&rarr;C conversion gap is driven by "worth paying more"</h4>
+      <p>JRB has worst conversion (67%) and premium is the #2 driver. Improving premium perception should mechanically improve conversion.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Review Mining -->
+<div class="section">
+  <h2>7. Customer Review Analysis (362K Reviews)</h2>
+
+  <h3>Value / Premium Perception</h3>
+  <div class="metric-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+    <div class="metric-card green">
+      <div class="label">"Worth It" Mentions</div>
+      <div class="value">1,750</div>
+    </div>
+    <div class="metric-card red">
+      <div class="label">"Expensive" Mentions</div>
+      <div class="value">3,114</div>
+    </div>
+    <div class="metric-card blue">
+      <div class="label">"Premium" Mentions</div>
+      <div class="value">1,339</div>
+    </div>
+  </div>
+  <div class="insight">
+    <strong>Key Finding:</strong> Negative price sentiment outpaces positive by 1.8x — BUT many "expensive" mentions are about UK shipping costs, not product pricing. <strong>When the product works for someone, price is rarely an objection.</strong> The value perception problem is a product-fit problem in disguise.
+  </div>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+    <div style="background: #d4edda; padding: 16px; border-radius: 8px;">
+      <h4 style="margin-bottom:8px; color:#155724;">When It Works (5-star)</h4>
+      <p style="font-size:13px; font-style:italic;">"Items are a bit pricey, but each one has been worth it!"</p>
+      <p style="font-size:13px; font-style:italic;">"Could not be more thrilled. Totally worth every penny!"</p>
+      <p style="font-size:13px; font-style:italic;">"Best investment yet... more than what I'd hoped"</p>
+    </div>
+    <div style="background: #f8d7da; padding: 16px; border-radius: 8px;">
+      <h4 style="margin-bottom:8px; color:#721c24;">When It Doesn't (1-2 star)</h4>
+      <p style="font-size:13px; font-style:italic;">"It's like any other drug store tinted moisturizer only it HIGH-PRICED."</p>
+      <p style="font-size:13px; font-style:italic;">"Advertises to real women, even the elderly, but charges luxury brand pricing."</p>
+      <p style="font-size:13px; font-style:italic;">"Great marketing but don't think I'll be tempted again."</p>
+    </div>
+  </div>
+
+  <h3>Top Unmet Needs</h3>
+  <table>
+    <thead><tr><th>Need</th><th>Mentions</th><th>Implication</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Samples / trial sizes</strong></td><td><strong>20,452</strong></td><td>Biggest risk barrier — people want to try before committing at this price</td></tr>
+      <tr><td>In-store / try before buy</td><td>9,705</td><td>DTC-only creates a trial gap competitors don't have</td></tr>
+      <tr><td>Sustainability / refills</td><td>15,098</td><td>Packaging perception problem — "not recyclable/refillable"</td></tr>
+      <tr><td>SPF</td><td>2,784</td><td>#1 product feature gap vs ILIA (Super Serum SPF 40)</td></tr>
+      <tr><td>Tutorials / guidance</td><td>significant</td><td>Customers don't know how to use products correctly</td></tr>
+      <tr><td>More shades</td><td>significant</td><td>Coverage gaps in specific categories</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Identity: "Finally, Someone Sees Me" (Women 50+)</h3>
+  <p>~7,000 age-related identity mentions. JRB has built an extraordinarily deep emotional bond with women 50-75+.</p>
+  <div style="background: #f0e6ff; padding: 16px; border-radius: 8px; margin: 12px 0;">
+    <p style="font-size:13px; font-style:italic; margin-bottom:8px;">"I am in my 50s and I feel like I finally found what is good for me and looks good on me."</p>
+    <p style="font-size:13px; font-style:italic; margin-bottom:8px;">"Exactly what this 70 year old skin has been longing for."</p>
+    <p style="font-size:13px; font-style:italic; margin-bottom:8px;">"I will never get used to my rapidly aging face, but Jones Road products have helped me embrace this stage of life."</p>
+    <p style="font-size:13px; font-style:italic;">"I am 75 (soon) and my daughter is 40. We share in our love for Jones Road."</p>
+  </div>
+
+  <h3>Trust: Bobbi IS The Brand</h3>
+  <div class="metric-grid" style="grid-template-columns: 1fr 1fr;">
+    <div class="metric-card blue">
+      <div class="label">"Bobbi Brown" Mentions</div>
+      <div class="value" style="font-size:28px;">14,314</div>
+      <div class="context">More than any product attribute</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">"Clean Beauty" Mentions</div>
+      <div class="value" style="font-size:28px;">482</div>
+      <div class="context">30x less than Bobbi herself</div>
+    </div>
+  </div>
+  <p style="margin-top:12px;">Bobbi Brown is the trust mechanism, discovery path, AND emotional connection. "Clean" is secondary. Trust breaks when customer service fails — the betrayal feels personal.</p>
+
+  <h3>Brand Loyalty Is Real</h3>
+  <div class="metric-grid" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
+    <div class="metric-card">
+      <div class="label">"Replaced Everything"</div>
+      <div class="value" style="font-size:24px;">223</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">"Game Changer"</div>
+      <div class="value" style="font-size:24px;">2,659</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">"Natural/Simple"</div>
+      <div class="value" style="font-size:24px;">25,067</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">Gift/Referral</div>
+      <div class="value" style="font-size:24px;">9,459</div>
+    </div>
+  </div>
+
+  <h3>The "Greasy Paradox" — #1 Complaint</h3>
+  <div class="warning">
+    <strong>27,606 mentions</strong> of greasy/sticky/tacky (overwhelmingly Miracle Balm). This is the inverse of the #1 brand promise (dewy, glowy, natural). The same attribute that delights the 67% five-star base alienates a vocal minority. This is <strong>texture polarization</strong>, not a quality issue — and it directly feeds the "not worth the price" perception for those it doesn't work for.
+  </div>
+</div>
+
+<!-- Reddit/Web -->
+<div class="section">
+  <h2>8. Reddit &amp; Web Consumer Perception</h2>
+
+  <h3>5 Root Causes for Low "Worth Paying More For"</h3>
+  <table>
+    <thead><tr><th>#</th><th>Root Cause</th><th>Evidence</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><strong>No functional premium</strong></td>
+        <td>ILIA has SPF/skincare actives. Westman has luxury packaging. JRB's premium rests on Bobbi's name + "clean" — and clean is being eroded by ingredient scrutiny.</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>Active dupe erosion</strong></td>
+        <td>Miracle Balm has $5-$13 dupes with 99% ingredient matches (BayFree, Makeup Revolution). "Miracle Balm Knock Off" is a popular search term.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>Sensorial negatives</strong></td>
+        <td>Premium brands win on sensorial experience. JRB gets negative marks: "sticky", "rancid oil smell", "cheap plastic packaging."</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>No retail validation</strong></td>
+        <td>Not being in Sephora/Ulta is a credibility gap. "Why isn't Jones Road at Sephora?" is a common search.</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>Subtraction-based value</strong></td>
+        <td>JRB sells what's NOT in the product (clean = removal). Premium brands sell what you uniquely GET. Consumers pay premiums for addition, not subtraction.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="insight">
+    <strong>The Core Insight:</strong> JRB's value proposition is <strong>subtraction-based</strong> (clean = what we DON'T include) rather than <strong>addition-based</strong> (what unique benefit you GET). Consumers pay premiums for what they gain, not what's removed. This is the fundamental positioning gap.
+  </div>
+
+  <h3>Clean Beauty Credibility Under Fire</h3>
+  <ul style="font-size:14px;">
+    <li>Organic Beauty Lover review: described as one of the "lowest on the spectrum of clean beauty"</li>
+    <li>Synthetic wax controversy — JRB's own clean standards may be contradicted by ingredient analysis</li>
+    <li>Undisclosed natural flavors and synthetic dyes present in some products</li>
+    <li>No public statement on ethical mica sourcing</li>
+  </ul>
+
+  <h3>What Consumers DO Pay More For (McKinsey 2025 + Reddit)</h3>
+  <table>
+    <thead><tr><th>Premium Signal</th><th>Brand Example</th><th>JRB Gap</th></tr></thead>
+    <tbody>
+      <tr><td>Visible results + clinical credibility</td><td>Charlotte Tilbury "Magic Cream"</td><td>No clinical positioning</td></tr>
+      <tr><td>Proprietary ingredients</td><td>Haus Labs "Fermented Arnica"</td><td>No recognized proprietary ingredients</td></tr>
+      <tr><td>Elevated packaging / sensorial</td><td>Westman Atelier frosted glass</td><td>Plastic packaging signals "casual"</td></tr>
+      <tr><td>Heritage / ritual story</td><td>Tatcha Japanese heritage</td><td>No heritage/ritual beyond Bobbi's name</td></tr>
+      <tr><td>SPF + skincare actives</td><td>ILIA Super Serum Skin Tint SPF 40</td><td>No SPF, no actives</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Competitive Analysis -->
+<div class="section">
+  <h2>9. Competitive Brand Strategy Analysis</h2>
+  <p>6 premium signals the highest-scoring competitors deploy that JRB is missing.</p>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;">
+    <div style="background:var(--gray-100); padding:20px; border-radius:8px;">
+      <h4 style="margin-bottom:8px;">1. Proprietary Innovation Language</h4>
+      <p style="font-size:13px;"><strong>Haus Labs:</strong> "HausTech Powered," "Fermented Arnica" (patent-pending), "BioFerment 7 Complex"</p>
+      <p style="font-size:13px;"><strong>JRB gap:</strong> Uses generic "clean" claims. No proprietary ingredient story.</p>
+    </div>
+    <div style="background:var(--gray-100); padding:20px; border-radius:8px;">
+      <h4 style="margin-bottom:8px;">2. Packaging as Luxury Object</h4>
+      <p style="font-size:13px;"><strong>Westman:</strong> Bespoke aluminum, magnetic closures, custom-mixed colors</p>
+      <p style="font-size:13px;"><strong>JRB gap:</strong> Packaging communicates "practical/approachable" — the opposite of aspirational.</p>
+    </div>
+    <div style="background:var(--gray-100); padding:20px; border-radius:8px;">
+      <h4 style="margin-bottom:8px;">3. Fashion-World Adjacency</h4>
+      <p style="font-size:13px;"><strong>Westman:</strong> Vogue/Balenciaga world. <strong>MERIT:</strong> TOVE, Brandon Maxwell collabs</p>
+      <p style="font-size:13px;"><strong>JRB gap:</strong> Positioned in beauty utility space, not fashion luxury.</p>
+    </div>
+    <div style="background:var(--gray-100); padding:20px; border-radius:8px;">
+      <h4 style="margin-bottom:8px;">4. Selective Distribution Ladder</h4>
+      <p style="font-size:13px;"><strong>Westman:</strong> Started at Barneys/Bergdorf, then carefully entered Sephora (38 doors)</p>
+      <p style="font-size:13px;"><strong>JRB gap:</strong> Discovered through Facebook ads, not luxury retail gatekeepers.</p>
+    </div>
+    <div style="background:var(--gray-100); padding:20px; border-radius:8px;">
+      <h4 style="margin-bottom:8px;">5. No-Discount Pricing Discipline</h4>
+      <p style="font-size:13px;"><strong>MERIT:</strong> Explicitly abstains from flash sales and welcome discounts</p>
+      <p style="font-size:13px;"><strong>JRB gap:</strong> DTC brands typically use promotions. Every discount erodes "worth paying more."</p>
+    </div>
+    <div style="background:var(--gray-100); padding:20px; border-radius:8px;">
+      <h4 style="margin-bottom:8px;">6. Specific Ownable Claim</h4>
+      <p style="font-size:13px;"><strong>Tower 28:</strong> "Only brand 100% NEA certified." <strong>Haus Labs:</strong> "Supercharged clean artistry"</p>
+      <p style="font-size:13px;"><strong>JRB gap:</strong> "Clean no-makeup makeup" is shared by multiple competitors. Needs unique territory.</p>
+    </div>
+  </div>
+
+  <div class="warning">
+    <strong>The Core Paradox:</strong> JRB's strengths in DTC, performance marketing, and approachability — the things that drive revenue — are the same things that suppress premium perception. Tower 28 and Haus Labs price at or BELOW JRB yet score higher on premium. <strong>The gap is perception, not price.</strong>
+  </div>
+
+  <h3>Competitive Premium Ranking vs. Key Signals</h3>
+  <table>
+    <thead><tr><th>Brand</th><th>Pay More Score</th><th>Price Range</th><th>Packaging</th><th>Distribution</th><th>Key Differentiator</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Westman Atelier</strong></td><td style="color:var(--green)"><strong>52%</strong></td><td>$38-$88</td><td>Bespoke aluminum, luxury</td><td>Bergdorf &rarr; Sephora (38)</td><td>Hollywood MUA luxury artistry</td></tr>
+      <tr><td><strong>Haus Labs</strong></td><td style="color:var(--green)"><strong>49%</strong></td><td>$20-$52</td><td>Frosted glass, premium feel</td><td>Sephora globally</td><td>Lady Gaga + "Supercharged" innovation</td></tr>
+      <tr><td>Tower 28</td><td>42%</td><td>$15-$36</td><td>Clean, fun</td><td>Sephora + Ulta</td><td>Only 100% NEA certified brand</td></tr>
+      <tr><td>MERIT</td><td>40%</td><td>$24-$38</td><td>Dark blue-gray + gold, fashion accessory feel</td><td>Sephora</td><td>"Capsule wardrobe of beauty"</td></tr>
+      <tr class="jrb"><td><strong>Jones Road</strong></td><td style="color:var(--red)"><strong>38%</strong></td><td>$22-$38</td><td>Practical plastic</td><td>DTC only + owned stores</td><td>Bobbi Brown + clean</td></tr>
+      <tr><td>ILIA</td><td>36%</td><td>$30-$70</td><td>Refillable, sustainable</td><td>Sephora + Ulta</td><td>SPF skincare-makeup hybrid</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Survey -->
+<div class="section">
+  <h2>10. Draft Survey Instrument</h2>
+  <p>Full 25-question survey designed to diagnose the "worth paying more for" gap. See <code>survey-draft.md</code> for the complete instrument with analysis plan.</p>
+
+  <h3>Key Questions by Area</h3>
+  <table>
+    <thead><tr><th>Area</th><th>Key Question</th><th>Why It Matters</th></tr></thead>
+    <tbody>
+      <tr><td>Premium perception</td><td>"What makes a beauty brand worth paying more for?"</td><td>Reveals consumer's premium value framework</td></tr>
+      <tr><td>Premium perception</td><td>"Rate each brand 1-10 on how premium it feels"</td><td>Direct competitive premium comparison with age cross-tabs</td></tr>
+      <tr><td>Premium perception</td><td>"JRB is ___, but compared to premium brands, it's not quite ___"</td><td>Reveals what JRB HAS vs what it LACKS</td></tr>
+      <tr><td>Identity</td><td>"Who do you think JRB is designed for?"</td><td>Tests "Mature" perception from Tracksuit imagery</td></tr>
+      <tr><td>Identity</td><td>"What age group do you associate with JRB?"</td><td>Directly validates the age perception issue</td></tr>
+      <tr><td>Needs</td><td>"What product category is JRB missing?"</td><td>Identifies specific gaps suppressing "meets my needs"</td></tr>
+      <tr><td>Founder</td><td>"Did you know Bobbi Brown founded JRB?"</td><td>Tests whether a key premium signal is reaching consumers</td></tr>
+      <tr><td>Competitive</td><td>"What does [your preferred brand] have that JRB doesn't?"</td><td>Direct competitive advantage voice</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Critical Cross-Tabs</h3>
+  <ul style="font-size:14px; margin-top:12px;">
+    <li><strong>All questions &times; Age group</strong> &mdash; Does premium perception vary by age? Is the 65+ skew driving the low score?</li>
+    <li><strong>Premium rating &times; Acquisition channel</strong> &mdash; Does HOW you discover JRB affect premium perception?</li>
+    <li><strong>Premium rating &times; Customer status</strong> &mdash; Do buyers perceive premium differently than non-buyers?</li>
+    <li><strong>"See myself" score &times; Premium rating</strong> &mdash; Does identity connection correlate with willingness to pay more?</li>
+  </ul>
+</div>
+
+<!-- Strategic Framework -->
+<div class="section">
+  <h2>11. Strategic Framework — What Would Fix This?</h2>
+
+  <h3>The Diagnosis in One Sentence</h3>
+  <p style="font-size:16px; font-weight:600; margin-bottom:20px;">JRB's value proposition is <strong>subtraction-based</strong> ("clean = what we don't include") in a market that pays premiums for <strong>addition</strong> ("what unique benefit you get"). The brand is known for what it's NOT, not for what it uniquely IS.</p>
+
+  <h3>5 Root Causes (Validated by Research)</h3>
+  <table>
+    <thead><tr><th>#</th><th>Root Cause</th><th>Evidence Source</th><th>Fixability</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>No functional premium differentiator</strong> (no SPF, no actives, no proprietary ingredient)</td><td>Reddit, competitor analysis</td><td style="color:var(--yellow);">Medium (requires R&amp;D)</td></tr>
+      <tr><td>2</td><td><strong>Packaging signals "practical" not "premium"</strong> (plastic vs Westman's aluminum)</td><td>Reddit, competitor analysis, reviews</td><td style="color:var(--green);">Actionable</td></tr>
+      <tr><td>3</td><td><strong>Dupe erosion of hero product</strong> ($5-$13 Miracle Balm dupes with 99% ingredient match)</td><td>Reddit, HuffPost, Mumsnet</td><td style="color:var(--red);">Hard (structural)</td></tr>
+      <tr><td>4</td><td><strong>"Clean" claim under fire</strong> (ingredient transparency gaps documented)</td><td>Organic Beauty Lover, Conscious Bunny</td><td style="color:var(--green);">Actionable</td></tr>
+      <tr><td>5</td><td><strong>DTC discovery = low-prestige signal</strong> (found via Facebook ads, not Sephora/Bergdorf)</td><td>Reddit, competitor analysis</td><td style="color:var(--yellow);">Medium (distribution strategy)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Quick Wins (Testable in 30-60 Days)</h3>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;">
+    <div style="background:#d4edda; padding:16px; border-radius:8px;">
+      <h4 style="margin-bottom:6px; font-size:14px;">A. Test "addition-based" messaging in ads</h4>
+      <p style="font-size:13px;">Instead of "clean ingredients," test messaging around what JRB uniquely GIVES: "Bobbi Brown's 40 years of expertise in every product" or "The only makeup trusted by women who've tried everything."</p>
+    </div>
+    <div style="background:#d4edda; padding:16px; border-radius:8px;">
+      <h4 style="margin-bottom:6px; font-size:14px;">B. Develop proprietary ingredient language</h4>
+      <p style="font-size:13px;">Brand existing formulations with ownable names. Haus Labs did this with "Fermented Arnica" — it's the same ingredient but branded to feel proprietary and innovative.</p>
+    </div>
+    <div style="background:#d4edda; padding:16px; border-radius:8px;">
+      <h4 style="margin-bottom:6px; font-size:14px;">C. Launch trial/sample program</h4>
+      <p style="font-size:13px;">20,452 review mentions of wanting samples. At $38 price point with texture polarization, trial reduces risk and converts skeptics. Every customer who tries and loves it becomes an evangelist.</p>
+    </div>
+    <div style="background:#d4edda; padding:16px; border-radius:8px;">
+      <h4 style="margin-bottom:6px; font-size:14px;">D. Shore up clean credibility</h4>
+      <p style="font-size:13px;">Proactively address the ingredient transparency gaps before they become a bigger issue. Get third-party certifications that prove the claim. Tower 28 did this with NEA certification.</p>
+    </div>
+  </div>
+
+  <h3>Strategic Options (6-12 Month Horizon)</h3>
+  <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 16px;">
+    <div style="background:var(--gray-100); padding:20px; border-radius:8px; border-top: 3px solid var(--purple);">
+      <h4 style="margin-bottom:8px;">Option A: Own Mature Premium</h4>
+      <p style="font-size:13px;">Lean into the 50+ audience. 7,000 reviews express deep emotional loyalty from this demo. Position JRB as THE premium expert brand for women 45+ who've outgrown trend-driven beauty. Make "Mature" a strength.</p>
+      <p style="font-size:12px; color:var(--gray-600); margin-top:8px;"><strong>Pro:</strong> Authentic to current audience and Bobbi's story. Deep loyalty base.</p>
+      <p style="font-size:12px; color:var(--gray-600);"><strong>Con:</strong> Limits TAM. Category skews 25-34. "Mature" doesn't naturally signal premium.</p>
+    </div>
+    <div style="background:var(--gray-100); padding:20px; border-radius:8px; border-top: 3px solid var(--jrb-pink);">
+      <h4 style="margin-bottom:8px;">Option B: Build Bobbi's Brand World</h4>
+      <p style="font-size:13px;">Bobbi is mentioned in 14,314 reviews. Leverage her 40-year expertise into a premium brand world that goes beyond "clean." Think: editorial content, makeup artistry education, beauty philosophy &mdash; making JRB the expert's brand, not just the clean brand.</p>
+      <p style="font-size:12px; color:var(--gray-600); margin-top:8px;"><strong>Pro:</strong> Leverages strongest existing asset. Differentiates from competitors.</p>
+      <p style="font-size:12px; color:var(--gray-600);"><strong>Con:</strong> Founder-dependent. Slow to move metrics.</p>
+    </div>
+    <div style="background:var(--gray-100); padding:20px; border-radius:8px; border-top: 3px solid var(--green);">
+      <h4 style="margin-bottom:8px;">Option C: Elevate the Experience</h4>
+      <p style="font-size:13px;">Packaging upgrade (Westman's aluminum vs JRB's plastic is the starkest gap). Enhanced sensorial experience. Retail expansion into prestige doors. Refillable/sustainable packaging (15,098 review mentions). "Premium" is often felt, not told.</p>
+      <p style="font-size:12px; color:var(--gray-600); margin-top:8px;"><strong>Pro:</strong> Directly addresses multiple root causes. Tangible.</p>
+      <p style="font-size:12px; color:var(--gray-600);"><strong>Con:</strong> Expensive. Long implementation timeline.</p>
+    </div>
+  </div>
+
+  <div class="insight" style="margin-top:20px;">
+    <strong>Recommended approach:</strong> Quick Wins A-D immediately + Option B as the long-term strategy. Bobbi Brown IS the premium signal — she's mentioned 30x more than "clean" in reviews. The opportunity is to build a premium brand world around Bobbi's expertise, not around ingredient subtraction. The survey will validate which direction resonates most with both the current 50+ audience and the 25-44 growth opportunity.
+  </div>
+</div>
+
+<!-- Methodology -->
+<div class="section" style="background: var(--gray-200); font-size: 13px; color: var(--gray-600);">
+  <h2 style="font-size: 14px; border-bottom-color: #ccc;">Methodology</h2>
+  <p><strong>Source:</strong> Tracksuit brand health tracker | <strong>Category:</strong> Premium Makeup &amp; Cosmetics | <strong>Market:</strong> United States</p>
+  <p><strong>Date range:</strong> Dec 2025 &mdash; Feb 2026 (current) | Sep 2025 &mdash; Nov 2025 (trend comparison)</p>
+  <p><strong>Competitive set:</strong> Haus Labs, ILIA, MERIT, Tower 28, Westman Atelier</p>
+  <p><strong>Statements:</strong> "Those who are aware of the brand when aided believe it..."</p>
+  <p><strong>Compiled:</strong> March 18, 2026 | Overnight autonomous research session</p>
+</div>
+
+</div>
+</body>
+</html>
