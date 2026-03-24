@@ -33,7 +33,7 @@
     @font-face {
       font-family: 'BaseMonoWideWeb';
       src: url('fonts/BaseMonoWideThin_6014.ttf') format('truetype');
-      font-weight: 550;
+      font-weight: 400;
       font-style: normal;
       font-display: swap;
     }
@@ -67,6 +67,7 @@
       background: #fff;
       line-height: 100%;
       letter-spacing: .025em;
+      text-rendering: optimizeLegibility;
     }
 
     img {
@@ -91,11 +92,20 @@
       letter-spacing: .4px;
       text-transform: uppercase;
       text-decoration: none;
+      white-space: nowrap;
       border: 1px solid #000;
       background: #000;
       color: #fff;
       cursor: pointer;
-      transition: all .3s cubic-bezier(.39, .575, .565, 1);
+      transition: background .4s cubic-bezier(.39, .575, .565, 1),
+                  border-color .4s cubic-bezier(.39, .575, .565, 1),
+                  color .4s cubic-bezier(.39, .575, .565, 1);
+    }
+
+    .has-mouse .button:not(:disabled):hover {
+      background: #fff;
+      border-color: #d0d0d0;
+      color: #000;
     }
 
     @media (min-width: 769px) {
@@ -111,10 +121,22 @@
       color: #000;
     }
 
+    .has-mouse .button--outline:not(:disabled):hover {
+      background: #000;
+      border-color: #000;
+      color: #fff;
+    }
+
     .button--white {
       background: #fff;
       color: #000;
       border-color: #fff;
+    }
+
+    .has-mouse .button--white:not(:disabled):hover {
+      background: #000;
+      border-color: #000;
+      color: #fff;
     }
 
     .button--sm {
@@ -141,7 +163,8 @@
       font-weight: 700;
       font-size: 18px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.18px;
+      line-height: 22px;
       color: #000;
     }
 
@@ -202,7 +225,7 @@
     }
 
     .page-header {
-      padding: 32px 24px;
+      padding: 32px 32px;
       border-bottom: 1px solid #ededed;
     }
 
@@ -239,7 +262,7 @@
     .section-divider {
       background: #000;
       color: #fff;
-      padding: 20px 24px;
+      padding: 20px 32px;
       font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
       font-weight: 700;
       font-size: 20px;
@@ -254,12 +277,12 @@
 
     .variation-label {
       background: #f6f2eb;
-      padding: 10px 24px;
+      padding: 10px 32px;
       font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
       font-size: 12px;
       font-weight: 550;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: .4px;
       color: #000;
       border-bottom: 1px solid #e0dbd4;
     }
@@ -286,7 +309,7 @@
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
-      padding: 0 24px;
+      padding: 0 32px;
     }
 
     .pdp-nav__track::-webkit-scrollbar {
@@ -307,12 +330,17 @@
       padding: 14px 16px;
       cursor: pointer;
       white-space: nowrap;
-      transition: opacity .2s ease, border-color .2s ease;
+      transition: opacity .4s cubic-bezier(.39, .575, .565, 1),
+                  border-color .4s cubic-bezier(.39, .575, .565, 1);
     }
 
     .pdp-nav__tab--active {
       opacity: 1;
       border-bottom-color: #000;
+    }
+
+    .has-mouse .pdp-nav__tab:hover {
+      opacity: 0.7;
     }
 
     @media (min-width: 769px) {
@@ -329,7 +357,7 @@
 
     /* --- 3.1: Full model imagery grid --- */
     .versatility-v1 {
-      padding: 64px 24px;
+      padding: 56px 32px;
     }
 
     .versatility-v1__header {
@@ -338,13 +366,15 @@
     }
 
     .versatility-v1__header .eyebrow {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .versatility-v1__grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
     }
 
     .versatility-v1__card {
@@ -355,7 +385,7 @@
       aspect-ratio: 3/4;
       overflow: hidden;
       border-radius: 3px;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       background: #f6f2eb;
     }
 
@@ -363,6 +393,11 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform .4s cubic-bezier(.39, .575, .565, 1);
+    }
+
+    .has-mouse .versatility-v1__card:hover .versatility-v1__img img {
+      transform: scale(1.03);
     }
 
     .versatility-v1__use-label {
@@ -370,7 +405,7 @@
       font-weight: 700;
       font-size: 15px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: .98px;
       color: #000;
       margin-bottom: 6px;
     }
@@ -385,7 +420,7 @@
 
     .versatility-v1__footer {
       text-align: center;
-      margin-top: 40px;
+      margin-top: 48px;
     }
 
     .versatility-v1__footer-text {
@@ -398,7 +433,7 @@
 
     @media (max-width: 768px) {
       .versatility-v1 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .versatility-v1__grid {
         grid-template-columns: repeat(2, 1fr);
@@ -411,16 +446,17 @@
 
     /* --- 3.3: Contained editorial with overlay text (NOT full-bleed) --- */
     .versatility-v3 {
-      padding: 64px 24px;
+      padding: 56px 32px;
+      background: #f6f2eb;
     }
 
     .versatility-v3__header {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 48px;
     }
 
     .versatility-v3__header .eyebrow {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .versatility-v3__header .body-text {
@@ -432,7 +468,7 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 16px;
-      max-width: 960px;
+      max-width: 1000px;
       margin: 0 auto;
     }
 
@@ -451,6 +487,11 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform .4s cubic-bezier(.39, .575, .565, 1);
+    }
+
+    .has-mouse .versatility-v3__feature:hover .versatility-v3__feature-img img {
+      transform: scale(1.03);
     }
 
     .versatility-v3__feature-overlay {
@@ -458,8 +499,8 @@
       bottom: 0;
       left: 0;
       right: 0;
-      padding: 20px 16px;
-      background: linear-gradient(transparent, rgba(0,0,0,.65));
+      padding: 24px 16px;
+      background: linear-gradient(transparent, rgba(0,0,0,.7));
       color: #fff;
     }
 
@@ -478,7 +519,7 @@
       font-weight: 700;
       font-size: 15px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: .98px;
       margin-bottom: 4px;
     }
 
@@ -491,7 +532,7 @@
 
     @media (max-width: 768px) {
       .versatility-v3 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .versatility-v3__layout {
         grid-template-columns: repeat(2, 1fr);
@@ -509,7 +550,7 @@
 
     /* --- 4.1: Two-column, square Bobbi image, product-specific quote, no CTA --- */
     .bobbi-v1 {
-      padding: 64px 24px;
+      padding: 56px 32px;
     }
 
     .bobbi-v1__layout {
@@ -559,7 +600,7 @@
       font-weight: 700;
       font-size: 15px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: .98px;
       color: #000;
       margin-bottom: 4px;
     }
@@ -604,7 +645,7 @@
 
     @media (max-width: 768px) {
       .bobbi-v1 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .bobbi-v1__layout {
         grid-template-columns: 1fr;
@@ -619,7 +660,7 @@
     /* --- 4.3: Black background editorial --- */
     .bobbi-v3 {
       background: #000;
-      padding: 64px 24px;
+      padding: 56px 32px;
     }
 
     .bobbi-v3__layout {
@@ -678,7 +719,7 @@
       font-weight: 700;
       font-size: 15px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: .98px;
       color: #fff;
       margin-bottom: 4px;
     }
@@ -692,7 +733,7 @@
 
     @media (max-width: 768px) {
       .bobbi-v3 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .bobbi-v3__layout {
         grid-template-columns: 1fr;
@@ -711,7 +752,8 @@
 
     /* --- 6.1: Two-column, no swatches, stats + quote card flush with image --- */
     .shade-v1 {
-      padding: 64px 24px;
+      padding: 56px 32px;
+      background: #f6f2eb;
     }
 
     .shade-v1__layout {
@@ -724,7 +766,7 @@
     }
 
     .shade-v1__content .eyebrow {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .shade-v1__content .headline {
@@ -741,8 +783,8 @@
       gap: 24px;
       margin-bottom: 32px;
       padding: 24px 0;
-      border-top: 1px solid #ededed;
-      border-bottom: 1px solid #ededed;
+      border-top: 1px solid rgba(0,0,0,.1);
+      border-bottom: 1px solid rgba(0,0,0,.1);
     }
 
     .shade-v1__stat {
@@ -752,10 +794,10 @@
     .shade-v1__stat-num {
       font-family: 'Canela', serif;
       font-weight: 300;
-      font-size: 28px;
+      font-size: 32px;
       letter-spacing: 0.5px;
       color: #000;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .shade-v1__stat-label {
@@ -785,7 +827,7 @@
     }
 
     .shade-v1__quote-card {
-      background: #f6f2eb;
+      background: #fff;
       padding: 24px;
       border-radius: 0 0 3px 3px;
     }
@@ -801,10 +843,10 @@
     }
 
     .shade-v1__quote-stars {
-      color: #000;
-      font-size: 14px;
-      letter-spacing: 2px;
-      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      margin-bottom: 10px;
     }
 
     .shade-v1__quote-author {
@@ -815,7 +857,7 @@
 
     @media (max-width: 768px) {
       .shade-v1 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .shade-v1__layout {
         grid-template-columns: 1fr;
@@ -825,8 +867,7 @@
 
     /* --- 6.3: Standard image, quiz-forward with stats --- */
     .shade-v3 {
-      padding: 64px 24px;
-      background: #f6f2eb;
+      padding: 56px 32px;
     }
 
     .shade-v3__layout {
@@ -851,7 +892,7 @@
     }
 
     .shade-v3__content .eyebrow {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .shade-v3__content .headline {
@@ -875,10 +916,10 @@
     .shade-v3__stat-num {
       font-family: 'Canela', serif;
       font-weight: 300;
-      font-size: 26px;
+      font-size: 28px;
       letter-spacing: 0.5px;
       color: #000;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .shade-v3__stat-label {
@@ -898,18 +939,19 @@
       display: flex;
       align-items: baseline;
       gap: 14px;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(0,0,0,.1);
+      padding: 14px 0;
+      border-bottom: 1px solid #ededed;
     }
 
     .shade-v3__step:first-child {
-      border-top: 1px solid rgba(0,0,0,.1);
+      border-top: 1px solid #ededed;
     }
 
     .shade-v3__step-num {
       font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
       font-weight: 700;
       font-size: 15px;
+      letter-spacing: .98px;
       color: #000;
       flex-shrink: 0;
       width: 20px;
@@ -936,7 +978,7 @@
 
     @media (max-width: 768px) {
       .shade-v3 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .shade-v3__layout {
         grid-template-columns: 1fr;
@@ -954,7 +996,8 @@
 
     /* --- 7.1: "What's in it vs What's not" two-column split --- */
     .ingredients-v1 {
-      padding: 64px 24px;
+      padding: 56px 32px;
+      background: #f6f2eb;
     }
 
     .ingredients-v1__header {
@@ -963,7 +1006,7 @@
     }
 
     .ingredients-v1__header .eyebrow {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .ingredients-v1__layout {
@@ -980,11 +1023,11 @@
     }
 
     .ingredients-v1__col--in {
-      background: #f6f2eb;
+      background: #fff;
     }
 
     .ingredients-v1__col--out {
-      background: #f8f8f8;
+      background: #fff;
     }
 
     .ingredients-v1__col-header {
@@ -1023,7 +1066,7 @@
       font-weight: 700;
       font-size: 18px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.18px;
       color: #000;
     }
 
@@ -1087,7 +1130,7 @@
 
     @media (max-width: 768px) {
       .ingredients-v1 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .ingredients-v1__layout {
         grid-template-columns: 1fr;
@@ -1100,8 +1143,7 @@
 
     /* --- 7.2: Visual ingredient cards + clean "excluded" list (no pills) --- */
     .ingredients-v2 {
-      padding: 64px 24px;
-      background: #f6f2eb;
+      padding: 56px 32px;
     }
 
     .ingredients-v2__header {
@@ -1110,7 +1152,7 @@
     }
 
     .ingredients-v2__header .eyebrow {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .ingredients-v2__header .body-text {
@@ -1127,7 +1169,7 @@
     }
 
     .ingredients-v2__card {
-      background: #fff;
+      background: #f6f2eb;
       border-radius: 3px;
       padding: 28px 20px;
       text-align: center;
@@ -1176,7 +1218,7 @@
       font-weight: 700;
       font-size: 15px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: .98px;
       color: #000;
       margin-bottom: 16px;
     }
@@ -1194,7 +1236,7 @@
       font-size: 13px;
       color: #6f6f6f;
       padding: 8px 16px;
-      background: rgba(255,255,255,.6);
+      background: #f8f8f8;
       border: 1px solid #ededed;
       border-radius: 2px;
       text-decoration: line-through;
@@ -1209,7 +1251,7 @@
 
     @media (max-width: 768px) {
       .ingredients-v2 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .ingredients-v2__in-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1227,7 +1269,8 @@
 
     /* --- 9.2: 3 before/after slider concept, full width --- */
     .ugc-v2 {
-      padding: 64px 24px;
+      padding: 56px 32px;
+      background: #f6f2eb;
     }
 
     .ugc-v2__header {
@@ -1236,7 +1279,7 @@
     }
 
     .ugc-v2__header .eyebrow {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .ugc-v2__stat-inline {
@@ -1263,7 +1306,13 @@
       position: relative;
       overflow: hidden;
       border-radius: 3px;
-      background: #f6f2eb;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(16, 24, 40, .04);
+      transition: box-shadow .4s cubic-bezier(.39, .575, .565, 1);
+    }
+
+    .has-mouse .ugc-v2__slider:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
     }
 
     .ugc-v2__slider-img {
@@ -1292,9 +1341,10 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       background: #fff;
+      border: 1px solid rgba(0,0,0,.1);
       border-radius: 100%;
       display: flex;
       align-items: center;
@@ -1332,7 +1382,7 @@
     }
 
     .ugc-v2__slider-info {
-      padding: 16px;
+      padding: 16px 16px 18px;
     }
 
     .ugc-v2__slider-name {
@@ -1353,7 +1403,7 @@
 
     @media (max-width: 768px) {
       .ugc-v2 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .ugc-v2__slider-row {
         grid-template-columns: 1fr;
@@ -1365,8 +1415,7 @@
 
     /* --- 9.3: Before/after cards with copy, no big-radius bubbles --- */
     .ugc-v3 {
-      padding: 64px 24px;
-      background: #f8f8f8;
+      padding: 56px 32px;
     }
 
     .ugc-v3__header {
@@ -1375,7 +1424,7 @@
     }
 
     .ugc-v3__header .eyebrow {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .ugc-v3__cards {
@@ -1390,6 +1439,12 @@
       background: #fff;
       border-radius: 3px;
       overflow: hidden;
+      box-shadow: 0 1px 2px rgba(16, 24, 40, .04);
+      transition: box-shadow .4s cubic-bezier(.39, .575, .565, 1);
+    }
+
+    .has-mouse .ugc-v3__card:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
     }
 
     .ugc-v3__card-imgs {
@@ -1460,14 +1515,14 @@
     }
 
     .ugc-v3__card-stars {
-      color: #000;
-      font-size: 14px;
-      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 1px;
     }
 
     @media (max-width: 768px) {
       .ugc-v3 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .ugc-v3__cards {
         grid-template-columns: 1fr;
@@ -1484,7 +1539,7 @@
 
     /* --- 11.1: Two-column spec table on warm bg --- */
     .spec-v1 {
-      padding: 64px 24px;
+      padding: 56px 32px;
       background: #f6f2eb;
     }
 
@@ -1510,7 +1565,7 @@
     }
 
     .spec-v1__content .eyebrow {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .spec-v1__content .headline--sm {
@@ -1548,7 +1603,7 @@
 
     @media (max-width: 768px) {
       .spec-v1 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .spec-v1__layout {
         grid-template-columns: 1fr;
@@ -1571,7 +1626,7 @@
 
     /* --- 12.1: Policy cards on warm bg with outline buttons --- */
     .guarantee-v1 {
-      padding: 64px 24px;
+      padding: 56px 32px;
       background: #f6f2eb;
     }
 
@@ -1581,7 +1636,7 @@
     }
 
     .guarantee-v1__header .eyebrow {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .guarantee-v1__header .body-text {
@@ -1600,8 +1655,14 @@
     .guarantee-v1__card {
       background: #fff;
       border-radius: 3px;
-      padding: 28px 20px;
+      padding: 32px 20px;
       text-align: center;
+      box-shadow: 0 1px 2px rgba(16, 24, 40, .04);
+      transition: box-shadow .4s cubic-bezier(.39, .575, .565, 1);
+    }
+
+    .has-mouse .guarantee-v1__card:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
     }
 
     .guarantee-v1__card-icon {
@@ -1642,7 +1703,7 @@
 
     @media (max-width: 768px) {
       .guarantee-v1 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .guarantee-v1__grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1655,7 +1716,7 @@
 
     /* --- 12.2: Timeline flow on warm bg --- */
     .guarantee-v2 {
-      padding: 64px 24px;
+      padding: 56px 32px;
       background: #f6f2eb;
     }
 
@@ -1665,7 +1726,7 @@
     }
 
     .guarantee-v2__header .eyebrow {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .guarantee-v2__header .body-text {
@@ -1742,7 +1803,7 @@
 
     @media (max-width: 768px) {
       .guarantee-v2 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .guarantee-v2__timeline {
         flex-direction: column;
@@ -1779,7 +1840,7 @@
 
     /* --- 13.1: Image + stat list, square image --- */
     .clinical-v1 {
-      padding: 64px 24px;
+      padding: 56px 32px;
     }
 
     .clinical-v1__layout {
@@ -1804,7 +1865,7 @@
     }
 
     .clinical-v1__content .eyebrow {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .clinical-v1__content .headline {
@@ -1820,8 +1881,8 @@
     .clinical-v1__stat {
       display: flex;
       align-items: baseline;
-      gap: 16px;
-      padding: 16px 0;
+      gap: 20px;
+      padding: 18px 0;
       border-bottom: 1px solid #ededed;
     }
 
@@ -1832,11 +1893,11 @@
     .clinical-v1__stat-num {
       font-family: 'Canela', serif;
       font-weight: 300;
-      font-size: 32px;
+      font-size: 36px;
       letter-spacing: 0.5px;
       color: #000;
       flex-shrink: 0;
-      width: 70px;
+      width: 80px;
     }
 
     .clinical-v1__stat-text {
@@ -1855,7 +1916,7 @@
 
     @media (max-width: 768px) {
       .clinical-v1 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .clinical-v1__layout {
         grid-template-columns: 1fr;
@@ -1866,15 +1927,15 @@
         margin: 0 auto;
       }
       .clinical-v1__stat-num {
-        font-size: 26px;
-        width: 60px;
+        font-size: 28px;
+        width: 65px;
       }
     }
 
     /* --- 13.2: Big stat cards row --- */
     .clinical-v2 {
-      padding: 64px 24px;
-      background: #f8f8f8;
+      padding: 56px 32px;
+      background: #f6f2eb;
     }
 
     .clinical-v2__header {
@@ -1883,7 +1944,7 @@
     }
 
     .clinical-v2__header .eyebrow {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .clinical-v2__grid {
@@ -1897,9 +1958,10 @@
     .clinical-v2__card {
       background: #fff;
       border-radius: 3px;
-      padding: 40px 24px;
+      padding: 48px 24px;
       text-align: center;
-      border: 1px solid #ededed;
+      border: none;
+      box-shadow: 0 1px 2px rgba(16, 24, 40, .04);
     }
 
     .clinical-v2__card-num {
@@ -1928,7 +1990,7 @@
 
     @media (max-width: 768px) {
       .clinical-v2 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .clinical-v2__grid {
         grid-template-columns: 1fr;
@@ -1944,8 +2006,7 @@
 
     /* --- 13.3: Progress bars on warm bg --- */
     .clinical-v3 {
-      padding: 64px 24px;
-      background: #f6f2eb;
+      padding: 56px 32px;
     }
 
     .clinical-v3__layout {
@@ -1958,7 +2019,7 @@
     }
 
     .clinical-v3__left .eyebrow {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .clinical-v3__left .headline--sm {
@@ -1993,13 +2054,13 @@
       font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
       font-weight: 700;
       font-size: 18px;
-      letter-spacing: .5px;
+      letter-spacing: 1.18px;
       color: #000;
     }
 
     .clinical-v3__bar-track {
-      height: 6px;
-      background: rgba(0,0,0,.08);
+      height: 8px;
+      background: #ededed;
       border-radius: 3px;
       overflow: hidden;
     }
@@ -2020,7 +2081,7 @@
 
     @media (max-width: 768px) {
       .clinical-v3 {
-        padding: 48px 16px;
+        padding: 48px 20px;
       }
       .clinical-v3__layout {
         grid-template-columns: 1fr;
@@ -2258,7 +2319,13 @@
           <img src="https://air-prod.imgix.net/1a4793e1-f455-4cbc-bc7e-89ed65c4330b.jpg?w=560&h=700&fit=crop&auto=format" alt="Shade match result">
         </div>
         <div class="shade-v1__quote-card">
-          <div class="shade-v1__quote-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="shade-v1__quote-stars" aria-label="5 out of 5 stars">
+            <svg viewBox="0 0 18 17" width="14" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+            <svg viewBox="0 0 18 17" width="14" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+            <svg viewBox="0 0 18 17" width="14" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+            <svg viewBox="0 0 18 17" width="14" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+            <svg viewBox="0 0 18 17" width="14" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+          </div>
           <p class="shade-v1__quote-text">&ldquo;The quiz nailed my shade on the first try &mdash; I&rsquo;ve never had that happen before.&rdquo;</p>
           <p class="shade-v1__quote-author">Sarah M., verified buyer</p>
         </div>
@@ -2536,7 +2603,7 @@
       <div class="ugc-v3__card">
         <div class="ugc-v3__card-imgs">
           <div class="ugc-v3__card-img">
-            <img src="https://air-prod.imgix.net/03905a65-0ca6-4a40-bf82-b15c4003b42c.jpg?w=300&h=300&fit=crop&auto=format&sat=-100" alt="Before">
+            <img src="https://air-prod.imgix.net/03905a65-0ca6-4a40-bf82-b15c4003b42c.jpg?w=300&h=300&fit=crop&auto=format" alt="Before">
           </div>
           <div class="ugc-v3__card-img">
             <img src="https://air-prod.imgix.net/03905a65-0ca6-4a40-bf82-b15c4003b42c.jpg?w=300&h=300&fit=crop&auto=format" alt="After">
@@ -2550,7 +2617,13 @@
           <p class="ugc-v3__card-quote">&ldquo;My skin has never looked this radiant with so little product.&rdquo;</p>
           <div class="ugc-v3__card-meta">
             <span class="ugc-v3__card-author">Crystal L.</span>
-            <span class="ugc-v3__card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+            <span class="ugc-v3__card-stars" aria-label="5 out of 5 stars">
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+            </span>
           </div>
         </div>
       </div>
@@ -2558,7 +2631,7 @@
       <div class="ugc-v3__card">
         <div class="ugc-v3__card-imgs">
           <div class="ugc-v3__card-img">
-            <img src="https://air-prod.imgix.net/b8ff9613-f642-4d3f-b892-7f8914c2a9f0.jpg?w=300&h=300&fit=crop&auto=format&sat=-100" alt="Before">
+            <img src="https://air-prod.imgix.net/b8ff9613-f642-4d3f-b892-7f8914c2a9f0.jpg?w=300&h=300&fit=crop&auto=format" alt="Before">
           </div>
           <div class="ugc-v3__card-img">
             <img src="https://air-prod.imgix.net/b8ff9613-f642-4d3f-b892-7f8914c2a9f0.jpg?w=300&h=300&fit=crop&auto=format" alt="After">
@@ -2572,7 +2645,13 @@
           <p class="ugc-v3__card-quote">&ldquo;Replaced my blush, bronzer, and highlighter. I&rsquo;m never going back.&rdquo;</p>
           <div class="ugc-v3__card-meta">
             <span class="ugc-v3__card-author">Linda S.</span>
-            <span class="ugc-v3__card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+            <span class="ugc-v3__card-stars" aria-label="5 out of 5 stars">
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+            </span>
           </div>
         </div>
       </div>
@@ -2580,7 +2659,7 @@
       <div class="ugc-v3__card">
         <div class="ugc-v3__card-imgs">
           <div class="ugc-v3__card-img">
-            <img src="https://air-prod.imgix.net/1f1aba1c-c948-4af7-8180-41db74c4c497.jpg?w=300&h=300&fit=crop&auto=format&sat=-100" alt="Before">
+            <img src="https://air-prod.imgix.net/1f1aba1c-c948-4af7-8180-41db74c4c497.jpg?w=300&h=300&fit=crop&auto=format" alt="Before">
           </div>
           <div class="ugc-v3__card-img">
             <img src="https://air-prod.imgix.net/1f1aba1c-c948-4af7-8180-41db74c4c497.jpg?w=300&h=300&fit=crop&auto=format" alt="After">
@@ -2594,7 +2673,13 @@
           <p class="ugc-v3__card-quote">&ldquo;The most natural-looking color I&rsquo;ve ever found. Just beautiful.&rdquo;</p>
           <div class="ugc-v3__card-meta">
             <span class="ugc-v3__card-author">Kitty M.</span>
-            <span class="ugc-v3__card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+            <span class="ugc-v3__card-stars" aria-label="5 out of 5 stars">
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+              <svg viewBox="0 0 18 17" width="13" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+            </span>
           </div>
         </div>
       </div>
@@ -2877,6 +2962,12 @@
 <div style="height:120px"></div>
 
 <script>
+/* .has-mouse detection — gates hover styles for touch devices */
+document.addEventListener('mousemove', function addMouse() {
+  document.body.classList.add('has-mouse');
+  document.removeEventListener('mousemove', addMouse);
+});
+
 (function() {
   var tabs = document.querySelectorAll('.pdp-nav__tab');
   var groups = document.querySelectorAll('.section-group');
