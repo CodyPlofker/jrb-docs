@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JRB OOH Campaign Brief — Haus Experiment Coordination</title>
+<style>
+  :root {
+    --bg: #FAFAF8;
+    --surface: #FFFFFF;
+    --text: #1A1A1A;
+    --text-secondary: #5C5C5C;
+    --border: #E2E0DC;
+    --accent: #C4593C;
+    --accent-light: #FDF0EC;
+    --tag-bg: #F0EFEC;
+    --green: #2D7A4F;
+    --green-bg: #EDF7F0;
+    --amber: #9A6700;
+    --amber-bg: #FFF8E6;
+    --red: #C4593C;
+    --red-bg: #FDF0EC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 40px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  header {
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 2px solid var(--text);
+  }
+
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+
+  header .subtitle {
+    font-size: 15px;
+    color: var(--text-secondary);
+  }
+
+  header .meta {
+    margin-top: 16px;
+    display: flex;
+    gap: 24px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  header .meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .section {
+    margin-bottom: 48px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-number {
+    background: var(--text);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    margin-top: 28px;
+  }
+
+  h3:first-of-type {
+    margin-top: 0;
+  }
+
+  p, li {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+
+  ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--text);
+  }
+
+  tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 2px solid var(--text);
+  }
+
+  tr.total td {
+    font-weight: 700;
+    background: var(--tag-bg);
+  }
+
+  .callout {
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+
+  .callout-ask {
+    background: var(--amber-bg);
+    border-left: 4px solid var(--amber);
+  }
+
+  .callout-ask .callout-label {
+    font-weight: 700;
+    color: var(--amber);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .callout-ready {
+    background: var(--green-bg);
+    border-left: 4px solid var(--green);
+  }
+
+  .callout-ready .callout-label {
+    font-weight: 700;
+    color: var(--green);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .callout-blocked {
+    background: var(--red-bg);
+    border-left: 4px solid var(--red);
+  }
+
+  .callout-blocked .callout-label {
+    font-weight: 700;
+    color: var(--red);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .tag-ready { background: var(--green-bg); color: var(--green); }
+  .tag-tbd { background: var(--amber-bg); color: var(--amber); }
+  .tag-blocked { background: var(--red-bg); color: var(--red); }
+
+  .timeline {
+    position: relative;
+    padding-left: 24px;
+    margin: 16px 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 12px;
+    font-size: 13px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -22px;
+    top: 7px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-item.blocked::before {
+    background: var(--red);
+  }
+
+  .timeline-date {
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 12px;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  a:hover {
+    border-bottom-color: var(--accent);
+  }
+
+  .docs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .doc-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.15s;
+  }
+
+  .doc-link:hover {
+    border-color: var(--text-secondary);
+  }
+
+  .doc-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .actions-table td:first-child {
+    font-weight: 600;
+    width: 36px;
+    text-align: center;
+    color: var(--text-secondary);
+  }
+
+  .actions-table td:nth-child(4) {
+    width: 100px;
+  }
+
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    position: relative;
+  }
+
+  .checklist li::before {
+    display: none;
+  }
+
+  .checklist li:last-child {
+    border-bottom: none;
+  }
+
+  .checklist input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1px;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .checklist input[type="checkbox"]:checked {
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .checklist input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 6px;
+    height: 11px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .checklist input[type="checkbox"]:checked + .check-content {
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  .check-content {
+    flex: 1;
+    transition: opacity 0.15s;
+  }
+
+  .check-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  @media print {
+    body { padding: 20px; }
+    .callout { break-inside: avoid; }
+    table { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>OOH Campaign Brief for Haus</h1>
+  <div class="subtitle">Blushing Stick + Foundation Stick — Experiment Coordination</div>
+  <div class="meta">
+    <span>Prepared: March 24, 2026</span>
+    <span>For: Sam Brady & Whitney (OMG)</span>
+    <span>To: Noah Gramitt (Haus)</span>
+  </div>
+</header>
+
+<!-- ============ SECTION 1: BLUSHING STICK ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">1</div>
+    <h2>Blushing Stick OOH &nbsp;<span class="tag tag-ready">Ready for Haus</span></h2>
+  </div>
+
+  <h3>Campaign Overview</h3>
+  <ul>
+    <li><strong>Product:</strong> Blushing Stick</li>
+    <li><strong>Campaign:</strong> "Wear Your Happy" featuring Emily D</li>
+    <li><strong>Launch:</strong> April 15, 2026</li>
+    <li><strong>Market:</strong> NYC (single market)</li>
+  </ul>
+
+  <h3>Budget & Timing</h3>
+  <table>
+    <thead>
+      <tr><th>Line Item</th><th>Budget</th><th>Timing</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Quan OOH (60 links + wildpostings)</td>
+        <td>$96,568</td>
+        <td>Links: 4/13 &ndash; 5/10 &nbsp;|&nbsp; WP: 4/13 &ndash; 5/24</td>
+      </tr>
+      <tr>
+        <td>Adgile trucks</td>
+        <td>$32,520</td>
+        <td>Launch 4/13, runs 3 months</td>
+      </tr>
+      <tr>
+        <td>Emily Store Event</td>
+        <td>$12,000</td>
+        <td>4/18</td>
+      </tr>
+      <tr class="total">
+        <td>Total OOH + Events in NYC</td>
+        <td>$141,088</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Brand lift measurement*</td>
+        <td>$8,500</td>
+        <td>Flight of OOH campaign (adjusted)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Haus Test Status</h3>
+  <ul>
+    <li>Fixed Geo Test <strong>already designed</strong> by Noah &mdash; 4-week test, &plusmn;12.8% precision using Y/Y placebo period</li>
+    <li>NY DMA Exclusion Fence created &mdash; apply to all concurrent April/May tests</li>
+    <li>Ben + Noah working on restating erroneous Feb NYC orders for cleaner placebo calculation</li>
+    <li>OOH test does <strong>not</strong> count toward the 2-test concurrent limit</li>
+    <li>Looking for <strong>lift signal</strong> (especially in GA4 mid-funnel metrics), not exact iCPA</li>
+  </ul>
+
+  <div class="callout callout-ready">
+    <div class="callout-label">Action for Sam / Whitney</div>
+    Send Noah the confirmed dates and spend:<br>
+    <strong>Start: 4/13 &nbsp;|&nbsp; Total NYC spend: $141,088 &nbsp;|&nbsp; OOH flight ends: 5/24 (wildpostings)</strong>
+  </div>
+
+  <h3>Measurement Stack</h3>
+  <ul>
+    <li><strong>Haus Fixed Geo Test:</strong> Bottom-funnel (revenue/customers) + GA4 mid-funnel if integration is ready (see Section 3)</li>
+    <li><strong>Brand lift study ($8,500 budgeted):</strong> Leaning MFour Custom Brand Lift ($10K) over HappyDemics ($8K) &mdash; MFour measures aided/unaided awareness + allows custom questions</li>
+    <li><strong>Tracksuit:</strong> Cody exploring a study timed around OOH (see Section 4)</li>
+  </ul>
+</div>
+
+<!-- ============ SECTION 2: FOUNDATION STICK ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">2</div>
+    <h2>Foundation Stick OOH &nbsp;<span class="tag tag-tbd">Markets TBD</span></h2>
+  </div>
+
+  <h3>Campaign Overview</h3>
+  <ul>
+    <li><strong>Product:</strong> Foundation Stick ("Your Skin")</li>
+    <li><strong>Experiential anchor:</strong> NYC, May 15</li>
+    <li><strong>OOH markets:</strong> Thinking 2 markets &mdash; need Haus input on selection</li>
+  </ul>
+
+  <h3>Budget & Timing</h3>
+  <table>
+    <thead>
+      <tr><th>Line Item</th><th>Budget</th><th>Timing / Location</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>OOH &mdash; NYC (primary)</td>
+        <td>~$150,000</td>
+        <td>TBD (need to brief Quan)</td>
+      </tr>
+      <tr>
+        <td>OOH &mdash; Market #2 (Austin / Chi / Nashville?)</td>
+        <td>~$50,000</td>
+        <td>TBD (need to brief Quan)</td>
+      </tr>
+      <tr>
+        <td>Experiential*</td>
+        <td>$60,000*</td>
+        <td>NYC: 5/15</td>
+      </tr>
+      <tr>
+        <td>Street sampling — NYC</td>
+        <td>$11,000</td>
+        <td>TBD</td>
+      </tr>
+      <tr>
+        <td>Street sampling — Austin</td>
+        <td>$10,000</td>
+        <td>TBD</td>
+      </tr>
+      <tr>
+        <td>Street sampling — Santa Monica</td>
+        <td>$10,000</td>
+        <td>TBD</td>
+      </tr>
+      <tr class="total">
+        <td>Total</td>
+        <td>$291,000</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Market Selection &mdash; Need Haus Input</h3>
+  <p style="margin-bottom: 12px;"><strong>NYC is confirmed as primary market.</strong> Second market under discussion. Santa Monica was dropped because the store won't be open at launch.</p>
+
+  <p style="margin-bottom: 12px;"><strong>Kirsten's rationale:</strong></p>
+  <ul>
+    <li>Use markets where JRB has existing stores &mdash; drive to store + halo effect</li>
+    <li>Prefer "walking" markets with strong foot traffic (not car-dependent like Dallas)</li>
+    <li>Ideally do OOH + sampling in the same market for compounding channel effect</li>
+    <li><strong>Recommendation:</strong> Ask for OOH options in NYC, Austin, Nashville, and Chicago. Leans Austin or Chicago. Nashville likely inexpensive.</li>
+    <li>Could also double down in Brooklyn if we want to stay heavy in NYC</li>
+  </ul>
+
+  <h3>Store-Level DTC Sales (Market Context)</h3>
+  <table>
+    <thead>
+      <tr><th>Store</th><th>Zip</th><th>Orders</th><th>Customers</th><th>Total Sales</th><th>AOV</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>UES</td><td>10028</td><td>140,756</td><td>77,672</td><td>$11.8M</td><td>$84</td></tr>
+      <tr><td>GV</td><td>10014</td><td>133,706</td><td>74,254</td><td>$11.2M</td><td>$84</td></tr>
+      <tr><td>Montclair</td><td>7042</td><td>126,308</td><td>67,054</td><td>$10.7M</td><td>$85</td></tr>
+      <tr><td>Cobble Hill</td><td>11201</td><td>126,231</td><td>70,455</td><td>$10.5M</td><td>$83</td></tr>
+      <tr><td>Williamsburg</td><td>11249</td><td>115,720</td><td>64,850</td><td>$9.7M</td><td>$83</td></tr>
+      <tr><td>Bucktown (Chi)</td><td>60647</td><td>65,734</td><td>34,123</td><td>$5.6M</td><td>$86</td></tr>
+      <tr><td>Dallas</td><td>75205</td><td>30,463</td><td>15,884</td><td>$2.7M</td><td>$89</td></tr>
+      <tr><td>Austin</td><td>78704</td><td>27,056</td><td>14,445</td><td>$2.4M</td><td>$88</td></tr>
+      <tr><td>Nashville</td><td>37204</td><td>20,172</td><td>10,725</td><td>$1.7M</td><td>$87</td></tr>
+      <tr><td>Palm Beach</td><td>33480</td><td>15,066</td><td>8,635</td><td>$1.3M</td><td>$84</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-ask">
+    <div class="callout-label">Questions for Noah (Haus)</div>
+    <ol style="padding-left: 18px; font-size: 14px; line-height: 2;">
+      <li>What's the <strong>minimum spend</strong> needed to power a geo test in a secondary DMA (Austin, Chicago, or Nashville)? Budget would be ~$50K for the secondary market.</li>
+      <li>Can we run the secondary market test <strong>side by side</strong> with the NYC test? Or do they need to be staggered?</li>
+      <li>From an experiment design standpoint, does <strong>Austin, Chicago, or Nashville</strong> work best as the second market?</li>
+      <li>Should we apply the <strong>NY DMA Exclusion Fence</strong> to Foundation Stick tests too, or is that only needed for Blushing Stick?</li>
+      <li>If OOH + sampling + experiential <strong>all hit NYC</strong> around the same time (mid-May), can Haus isolate the OOH signal? Or should we plan to measure total "brand spend" lift in that DMA?</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============ SECTION 3: GA4 ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">3</div>
+    <h2>GA4 Integration Status &nbsp;<span class="tag tag-blocked">Needs Update</span></h2>
+  </div>
+
+  <p style="margin-bottom: 16px;">Cody specifically wants GA4 mid-funnel metrics (organic search, sessions, brand search) included in the OOH experiments. Without GA4 data, Haus can only measure bottom-funnel (revenue/customers), which is limiting for an awareness channel.</p>
+
+  <h3>Timeline</h3>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">Feb 17</div>
+      Noah shared GA4 integration instructions (BigQuery partner SOP)
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Feb 18</div>
+      Ben added Haus emails to GA4 &mdash; "couldn't have been easier"
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Feb 26</div>
+      Confirmed GA4 Property ID: 342317884
+    </div>
+    <div class="timeline-item blocked">
+      <div class="timeline-date">March 2&ndash;3</div>
+      <strong>Hit BigQuery export limits.</strong> Haus pulled the BQ export link and said they'd revise their SOP.
+    </div>
+    <div class="timeline-item blocked">
+      <div class="timeline-date">Since March 3</div>
+      <strong>No visible follow-up.</strong> Status unknown.
+    </div>
+  </div>
+
+  <div class="callout callout-blocked">
+    <div class="callout-label">Ask for Noah</div>
+    What is the current status of the GA4 integration? Is it live, still blocked by the BQ export limits, or being handled via a different approach (native API)? <strong>This needs to be resolved before the Blushing Stick OOH test starts on 4/13</strong> if we want mid-funnel metrics.
+  </div>
+</div>
+
+<!-- ============ SECTION 4: TRACKSUIT ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">4</div>
+    <h2>Tracksuit Study &nbsp;<span class="tag tag-tbd">In Progress</span></h2>
+  </div>
+
+  <ul>
+    <li>JRB has Tracksuit (signed Sept 2025) for always-on brand awareness tracking</li>
+    <li>Haus does <strong>not</strong> have a native Tracksuit integration (Noah confirmed Dec 2025)</li>
+    <li>Ben explored using Fivetran to pipe Tracksuit data into the warehouse and then to Haus</li>
+    <li><strong>Cody is reaching out to Tracksuit</strong> about running a dedicated study timed around the OOH campaigns</li>
+    <li>This would provide a pre/post awareness baseline independent of Haus &mdash; complementary measurement</li>
+  </ul>
+
+  <div class="callout callout-ask">
+    <div class="callout-label">FYI for Noah</div>
+    Flag that JRB is exploring a parallel Tracksuit study so the Haus team is aware of additional measurement happening alongside their experiments. No action needed from Haus unless they have new updates on the Tracksuit integration front.
+  </div>
+</div>
+
+<!-- ============ SECTION 5: OPEN QUESTIONS ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">5</div>
+    <h2>Open Questions & Action Items</h2>
+  </div>
+
+  <ul class="checklist">
+    <li>
+      <input type="checkbox" id="q1">
+      <div class="check-content">
+        <label for="q1">Send Noah Blushing Stick confirmed dates (4/13 start) + spend ($141K in NYC DMA)</label>
+        <div class="check-meta"><span class="tag tag-ready">Ready</span> Sam / Whitney</div>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="q2">
+      <div class="check-content">
+        <label for="q2">Foundation Stick OOH flight dates (anchored around 5/15 experiential?)</label>
+        <div class="check-meta"><span class="tag tag-tbd">TBD</span> Cody / Payal / Kirsten</div>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="q3">
+      <div class="check-content">
+        <label for="q3">Finalize Foundation Stick second market &mdash; need Haus perspective on powering</label>
+        <div class="check-meta"><span class="tag tag-tbd">TBD</span> Kirsten / Cody + Noah</div>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="q4">
+      <div class="check-content">
+        <label for="q4">What's the min spend to power a geo test in Austin / Chi / Nashville (~$50K)? Can it run side by side with NYC?</label>
+        <div class="check-meta"><span class="tag tag-tbd">Ask</span> Noah (Haus)</div>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="q5">
+      <div class="check-content">
+        <label for="q5">GA4 integration &mdash; still blocked from March BQ limit issue?</label>
+        <div class="check-meta"><span class="tag tag-blocked">Blocked</span> Noah / Ben</div>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="q6">
+      <div class="check-content">
+        <label for="q6">NY DMA Exclusion Fence &mdash; apply to Foundation Stick tests too?</label>
+        <div class="check-meta"><span class="tag tag-tbd">Ask</span> Noah (Haus)</div>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="q7">
+      <div class="check-content">
+        <label for="q7">Can Haus isolate OOH vs experiential vs sampling all hitting NYC in May?</label>
+        <div class="check-meta"><span class="tag tag-tbd">Ask</span> Noah (Haus)</div>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="q8">
+      <div class="check-content">
+        <label for="q8">MFour vs HappyDemics brand lift &mdash; finalize choice</label>
+        <div class="check-meta"><span class="tag tag-tbd">Leaning MFour</span> Cody / Kirsten</div>
+      </div>
+    </li>
+    <li>
+      <input type="checkbox" id="q9">
+      <div class="check-content">
+        <label for="q9">Tracksuit study timing &mdash; coordinate with OOH flights?</label>
+        <div class="check-meta"><span class="tag tag-tbd">In progress</span> Cody</div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- ============ SECTION 6: KEY DOCS ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">6</div>
+    <h2>Key Documents & Links</h2>
+  </div>
+
+  <h3>Budgets & Plans</h3>
+  <div class="docs-list">
+    <a class="doc-link" href="https://docs.google.com/spreadsheets/d/1u9WcKlmyQAbqz_7H4okhOEA0F6mjMsFGz6P91WPJH68/edit" target="_blank">
+      <span class="doc-icon">&#128202;</span> Blushing & Foundation Stick OOH Budgets (Kirsten's spreadsheet)
+    </a>
+    <a class="doc-link" href="https://docs.google.com/spreadsheets/d/1KS81JQXi_Tb8ufnQz_nKNosl68Grlnl99unXqboSXyA/edit" target="_blank">
+      <span class="doc-icon">&#128202;</span> Campaign Builder
+    </a>
+    <a class="doc-link" href="https://docs.google.com/spreadsheets/d/15MDGDtLYLjm-iCksXUTzHjMMwQ012Xi0HR81acOZsls/edit" target="_blank">
+      <span class="doc-icon">&#128202;</span> Foundation Stick Combined Doc (rentals, budget, shade list)
+    </a>
+    <a class="doc-link" href="https://docs.google.com/presentation/d/1FYKssSXwGKM2KN0m_YPKQQpaQuVGxWjR79vItlPGVQo/edit" target="_blank">
+      <span class="doc-icon">&#128196;</span> OOH Options Presentation (Kirsten)
+    </a>
+  </div>
+
+  <h3>Haus Platform</h3>
+  <div class="docs-list">
+    <a class="doc-link" href="https://app.haus.io/o/jonesroadbeauty/settings/organization?tab=advanced-experiment-settings&subTab=geo-fence-management&org=jonesroadbeauty&region-geo-fence-id=d0208970-18b0-4689-bd2e-dca81b3c25d0" target="_blank">
+      <span class="doc-icon">&#128205;</span> NY DMA Exclusion Fence (Haus)
+    </a>
+    <a class="doc-link" href="https://www.haus.io/case-study/jones-road-beauty-uses-a-fixed-geo-test-to-measure-their-big-apple-ooh-campaign" target="_blank">
+      <span class="doc-icon">&#128214;</span> Prior NYC OOH Test Case Study (Haus)
+    </a>
+    <a class="doc-link" href="https://www.haus.io/blog/can-you-measure-the-incrementality-of-out-of-home-ooh-marketing" target="_blank">
+      <span class="doc-icon">&#128214;</span> How Haus Measures OOH (Blog)
+    </a>
+    <a class="doc-link" href="https://www.notion.so/GA4-Design-Partner-SOP-3056eeaaedd180f5b230c85db6c7d104" target="_blank">
+      <span class="doc-icon">&#128196;</span> GA4 Integration SOP (Notion)
+    </a>
+  </div>
+
+  <h3>Measurement Vendors</h3>
+  <div class="docs-list">
+    <a class="doc-link" href="https://www.dropbox.com/scl/fo/r4wxj7wuslpqx46hcmjju/ABtnlgNJEuTbhyaWEyILoqI?rlkey=bu29loanxf1toffy20fxgpbou&dl=0" target="_blank">
+      <span class="doc-icon">&#128202;</span> MFour Brand Lift Study Info ($10K)
+    </a>
+    <a class="doc-link" href="https://www.dropbox.com/scl/fo/bnplkym2qqdn3qp64gkvv/ALHlId4MQzblz_aaygHySqg?rlkey=o5ig5k30gtsivmj8roabi7iu3&dl=0" target="_blank">
+      <span class="doc-icon">&#128202;</span> HappyDemics Brand Lift Study Info ($8K)
+    </a>
+  </div>
+</div>
+
+<footer style="margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-secondary);">
+  Prepared March 24, 2026 &nbsp;&bull;&nbsp; Jones Road Beauty &nbsp;&bull;&nbsp; OOH Experiment Coordination Brief
+</footer>
+
+</body>
+</html>
