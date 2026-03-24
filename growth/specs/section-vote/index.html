@@ -1,484 +1,1559 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>JRB Section Vote</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Section Showdown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { -webkit-font-smoothing: antialiased; }
-    body { font-family: 'Inter', -apple-system, sans-serif; background: #fafaf8; color: #000; overflow-x: hidden; min-height: 100dvh; }
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface-2: #242424;
+    --border: #2a2a2a;
+    --text: #f5f5f5;
+    --text-muted: #888;
+    --text-dim: #555;
+    --accent: #6366f1;
+    --accent-glow: rgba(99, 102, 241, 0.3);
+    --green: #22c55e;
+    --green-glow: rgba(34, 197, 94, 0.15);
+    --red: #ef4444;
+    --red-glow: rgba(239, 68, 68, 0.15);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
 
-    /* ===== SCREENS ===== */
-    .screen { display: none; min-height: 100dvh; }
-    .screen--active { display: flex; flex-direction: column; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
 
-    /* ===== WELCOME ===== */
-    .welcome { align-items: center; justify-content: center; padding: 32px; text-align: center; }
-    .welcome__emoji { font-size: 64px; margin-bottom: 24px; animation: bounce 2s infinite; }
-    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-    .welcome__title { font-size: 32px; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
-    .welcome__sub { font-size: 16px; color: #666; margin-bottom: 40px; max-width: 360px; line-height: 1.5; }
-    .welcome__input { width: 100%; max-width: 320px; height: 52px; border: 2px solid #000; border-radius: 12px; font-family: inherit; font-size: 16px; font-weight: 500; padding: 0 20px; text-align: center; outline: none; transition: border-color .2s; margin-bottom: 16px; }
-    .welcome__input:focus { border-color: #000; box-shadow: 0 0 0 4px rgba(0,0,0,.08); }
-    .welcome__input::placeholder { color: #bbb; }
+  /* ── Screens ── */
+  .screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100dvh;
+    padding: 24px 16px;
+  }
+  .screen.active { display: flex; }
 
-    /* ===== PAGE CHOOSER ===== */
-    .chooser { align-items: center; justify-content: center; padding: 32px; text-align: center; }
-    .chooser__title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-    .chooser__sub { font-size: 14px; color: #666; margin-bottom: 32px; }
-    .chooser__options { display: flex; gap: 16px; }
-    .chooser__option { width: 160px; padding: 32px 20px; border: 2px solid #eee; border-radius: 16px; background: #fff; cursor: pointer; transition: all .2s; text-align: center; }
-    .chooser__option:hover { border-color: #000; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
-    .chooser__option-emoji { font-size: 40px; margin-bottom: 12px; }
-    .chooser__option-label { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-    .chooser__option-count { font-size: 12px; color: #999; margin-top: 4px; }
+  /* ── Welcome Screen ── */
+  #welcome {
+    justify-content: center;
+    gap: 40px;
+    text-align: center;
+  }
+  .welcome-icon {
+    font-size: 72px;
+    line-height: 1;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .welcome-title {
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 30%, #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .welcome-sub {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+  .input-group {
+    width: 100%;
+    max-width: 360px;
+  }
+  .input-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-align: left;
+  }
+  .input-group input {
+    width: 100%;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 18px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input-group input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+  .input-group input::placeholder { color: var(--text-dim); }
 
-    /* ===== VOTE AREA ===== */
-    .vote { padding: 0; position: relative; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 32px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #fff;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: var(--accent);
+    box-shadow: 0 4px 20px var(--accent-glow);
+  }
+  .btn-primary:hover { background: #818cf8; }
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  .btn-primary:disabled:active { transform: none; }
+  .btn-ghost {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .btn-ghost:hover { background: var(--surface-2); }
+  .btn-sm { padding: 10px 18px; font-size: 14px; }
 
-    /* Progress */
-    .progress { padding: 16px 20px 12px; background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 10; }
-    .progress__bar-track { height: 4px; background: #eee; border-radius: 2px; margin-bottom: 8px; overflow: hidden; }
-    .progress__bar-fill { height: 100%; background: #000; border-radius: 2px; transition: width .4s cubic-bezier(.22, 1, .36, 1); }
-    .progress__text { display: flex; justify-content: space-between; font-size: 12px; color: #999; font-weight: 500; }
-    .progress__section { font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: .5px; font-size: 11px; }
+  /* ── Choose Screen ── */
+  #choose {
+    justify-content: center;
+    gap: 40px;
+    text-align: center;
+  }
+  .choose-title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .choose-options {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    max-width: 420px;
+  }
+  .choose-card {
+    flex: 1;
+    padding: 32px 16px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .choose-card:hover {
+    border-color: var(--accent);
+    background: var(--surface-2);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .choose-card .emoji { font-size: 48px; margin-bottom: 12px; }
+  .choose-card .label {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .choose-card .count {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .choose-card .done-badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--green);
+  }
 
-    /* Card */
-    .card-container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; perspective: 1000px; }
-    .card { width: 100%; max-width: 420px; background: #fff; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,.08); overflow: hidden; position: relative; transition: transform .5s cubic-bezier(.22, 1, .36, 1), opacity .4s; transform-origin: center bottom; user-select: none; }
-    .card--swiping-right { transform: translateX(120%) rotate(12deg); opacity: 0; }
-    .card--swiping-left { transform: translateX(-120%) rotate(-12deg); opacity: 0; }
-    .card--entering { animation: cardEnter .4s cubic-bezier(.22, 1, .36, 1); }
-    @keyframes cardEnter { from { transform: scale(.92) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+  /* ── Voting Screen ── */
+  #voting {
+    padding-top: 16px;
+    gap: 16px;
+    min-height: 100dvh;
+  }
 
-    .card__badge { position: absolute; top: 16px; left: 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 12px; border-radius: 6px; background: #000; color: #fff; z-index: 2; }
-    .card__badge--hp { background: #1a1a2e; }
+  .vote-header {
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .vote-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .vote-header-top .back-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 500;
+    padding: 4px 0;
+    transition: color 0.15s;
+  }
+  .vote-header-top .back-btn:hover { color: var(--text); }
+  .vote-counter {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .vote-counter span { color: var(--text); }
+  .progress-track {
+    width: 100%;
+    height: 4px;
+    background: var(--surface-2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #a78bfa);
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
 
-    .card__preview { width: 100%; aspect-ratio: 4/3; background: #f6f2eb; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-    .card__preview iframe { width: 200%; height: 200%; transform: scale(.5); transform-origin: top left; border: none; pointer-events: none; }
-    .card__preview-overlay { position: absolute; inset: 0; z-index: 1; }
-    .card__preview-link { position: absolute; bottom: 12px; right: 12px; z-index: 2; font-size: 11px; font-weight: 600; color: #fff; background: rgba(0,0,0,.6); padding: 6px 12px; border-radius: 6px; text-decoration: none; backdrop-filter: blur(8px); }
+  /* ── Card ── */
+  .card-container {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+  }
 
-    .card__body { padding: 24px; }
-    .card__section { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 6px; }
-    .card__title { font-size: 20px; font-weight: 700; letter-spacing: -.3px; margin-bottom: 8px; line-height: 1.3; }
-    .card__desc { font-size: 14px; color: #666; line-height: 1.5; margin-bottom: 16px; }
-    .card__note-toggle { font-size: 13px; color: #999; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-    .card__note-toggle:hover { color: #000; }
-    .card__note-area { margin-top: 12px; display: none; }
-    .card__note-area--open { display: block; }
-    .card__note-input { width: 100%; height: 72px; border: 1px solid #eee; border-radius: 10px; padding: 12px; font-family: inherit; font-size: 14px; resize: none; outline: none; transition: border-color .2s; }
-    .card__note-input:focus { border-color: #000; }
+  .vote-card {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.08s, box-shadow 0.08s;
+    will-change: transform;
+    user-select: none;
+    position: relative;
+  }
+  .vote-card.dragging { transition: none; }
+  .vote-card.swiping-right {
+    box-shadow: 0 0 40px var(--green-glow), inset 0 0 60px var(--green-glow);
+  }
+  .vote-card.swiping-left {
+    box-shadow: 0 0 40px var(--red-glow), inset 0 0 60px var(--red-glow);
+  }
+  .vote-card.exit-right {
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+    transform: translateX(150%) rotate(20deg) !important;
+    opacity: 0;
+  }
+  .vote-card.exit-left {
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+    transform: translateX(-150%) rotate(-20deg) !important;
+    opacity: 0;
+  }
 
-    /* Vote indicator overlays */
-    .card__vote-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 80px; z-index: 5; transition: transform .2s cubic-bezier(.34, 1.56, .64, 1); pointer-events: none; }
-    .card__vote-overlay--visible { transform: translate(-50%, -50%) scale(1); }
+  .swipe-indicator {
+    position: absolute;
+    top: 20px;
+    z-index: 10;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    transition: opacity 0.15s;
+    pointer-events: none;
+  }
+  .swipe-indicator.ship {
+    right: 20px;
+    background: rgba(34, 197, 94, 0.2);
+    border: 2px solid var(--green);
+    color: var(--green);
+  }
+  .swipe-indicator.cut {
+    left: 20px;
+    background: rgba(239, 68, 68, 0.2);
+    border: 2px solid var(--red);
+    color: var(--red);
+  }
 
-    /* Actions */
-    .actions { padding: 16px 20px 32px; display: flex; justify-content: center; gap: 16px; align-items: center; }
-    .action-btn { width: 72px; height: 72px; border-radius: 50%; border: none; cursor: pointer; font-size: 28px; display: flex; align-items: center; justify-content: center; transition: all .2s; }
-    .action-btn:active { transform: scale(.9); }
-    .action-btn--cut { background: #fff0f0; color: #ff4444; border: 2px solid #ffdddd; }
-    .action-btn--cut:hover { background: #ff4444; color: #fff; border-color: #ff4444; }
-    .action-btn--ship { background: #f0fff0; color: #22cc44; border: 2px solid #ddffdd; }
-    .action-btn--ship:hover { background: #22cc44; color: #fff; border-color: #22cc44; }
-    .action-btn--skip { width: 48px; height: 48px; background: #f5f5f5; color: #999; font-size: 16px; border: 1px solid #eee; }
-    .action-btn--skip:hover { background: #eee; }
+  .card-image-wrap {
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #fff;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+  }
+  .card-image-wrap::-webkit-scrollbar { width: 4px; }
+  .card-image-wrap::-webkit-scrollbar-track { background: transparent; }
+  .card-image-wrap::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 2px; }
+  .card-image-wrap img {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+  }
+  .scroll-hint {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 36px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.45));
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .scroll-hint.visible { opacity: 1; }
+  .scroll-hint span {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
 
-    .actions__labels { display: flex; justify-content: center; gap: 80px; margin-top: -4px; padding-bottom: 8px; }
-    .actions__label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #ccc; }
+  .card-info {
+    padding: 20px 20px 12px;
+  }
+  .card-page-tag {
+    display: inline-block;
+    padding: 3px 8px;
+    background: var(--surface-2);
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-right: 6px;
+  }
+  .card-section-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: var(--accent);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+  .card-title {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .card-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
 
-    /* ===== RESULTS ===== */
-    .results { padding: 32px 20px 60px; align-items: center; }
-    .results__header { text-align: center; margin-bottom: 32px; }
-    .results__emoji { font-size: 56px; margin-bottom: 16px; }
-    .results__title { font-size: 28px; font-weight: 800; letter-spacing: -.5px; margin-bottom: 8px; }
-    .results__sub { font-size: 14px; color: #666; }
-    .results__stats { display: flex; gap: 16px; margin-bottom: 32px; }
-    .results__stat { flex: 1; text-align: center; padding: 20px; background: #fff; border-radius: 12px; border: 1px solid #eee; }
-    .results__stat-num { font-size: 32px; font-weight: 800; }
-    .results__stat-num--ship { color: #22cc44; }
-    .results__stat-num--cut { color: #ff4444; }
-    .results__stat-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; }
-    .results__list { width: 100%; max-width: 480px; }
-    .results__section-header { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #999; margin: 24px 0 8px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
-    .results__item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f5f5f5; }
-    .results__item-vote { font-size: 20px; flex-shrink: 0; }
-    .results__item-name { font-size: 14px; font-weight: 600; flex: 1; }
-    .results__item-note { font-size: 12px; color: #666; font-style: italic; margin-top: 2px; }
-    .results__actions { display: flex; gap: 12px; margin-top: 32px; width: 100%; max-width: 480px; }
+  /* Notes */
+  .notes-area {
+    padding: 0 20px 16px;
+  }
+  .notes-toggle {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 4px 0;
+    transition: color 0.15s;
+  }
+  .notes-toggle:hover { color: var(--text); }
+  .notes-input {
+    display: none;
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    min-height: 56px;
+    transition: border-color 0.2s;
+  }
+  .notes-input:focus { border-color: var(--accent); }
+  .notes-input.show { display: block; }
 
-    /* Shared button */
-    .btn { height: 48px; border-radius: 12px; font-family: inherit; font-size: 14px; font-weight: 600; border: none; cursor: pointer; padding: 0 24px; transition: all .2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex: 1; }
-    .btn--primary { background: #000; color: #fff; }
-    .btn--primary:hover { background: #222; }
-    .btn--secondary { background: #fff; color: #000; border: 2px solid #eee; }
-    .btn--secondary:hover { border-color: #000; }
+  /* ── Action buttons ── */
+  .vote-actions {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 440px;
+    justify-content: center;
+    padding: 4px 0 16px;
+  }
+  .action-btn {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .action-btn:active { transform: scale(0.9); }
+  .action-btn.cut-btn:hover {
+    border-color: var(--red);
+    background: var(--red-glow);
+    box-shadow: 0 0 20px var(--red-glow);
+  }
+  .action-btn.ship-btn:hover {
+    border-color: var(--green);
+    background: var(--green-glow);
+    box-shadow: 0 0 20px var(--green-glow);
+  }
+  .action-btn.undo-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+    align-self: center;
+  }
+  .action-btn.undo-btn:hover {
+    border-color: var(--text-muted);
+    background: var(--surface-2);
+  }
 
-    /* Confetti */
-    .confetti { position: fixed; top: -10px; z-index: 100; pointer-events: none; }
-    .confetti span { position: absolute; width: 8px; height: 8px; border-radius: 2px; animation: confettiFall 3s forwards; }
-    @keyframes confettiFall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-    }
+  /* ── Keyboard hint ── */
+  .keyboard-hint {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-align: center;
+    padding-bottom: 12px;
+  }
+  .keyboard-hint kbd {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 11px;
+    margin: 0 2px;
+  }
 
-    /* Toast */
-    .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px); background: #000; color: #fff; padding: 12px 24px; border-radius: 12px; font-size: 14px; font-weight: 500; z-index: 200; transition: transform .3s cubic-bezier(.22, 1, .36, 1); }
-    .toast--visible { transform: translateX(-50%) translateY(0); }
-  </style>
+  /* ── Results Screen ── */
+  #results {
+    padding: 40px 16px;
+    gap: 32px;
+    min-height: 100dvh;
+    align-items: center;
+    text-align: center;
+  }
+  .results-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .results-celebration {
+    font-size: 56px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .results-title {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+  }
+  .results-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .results-stats {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    max-width: 440px;
+  }
+  .stat-card {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px 12px;
+    text-align: center;
+  }
+  .stat-number {
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .stat-number.green { color: var(--green); }
+  .stat-number.red { color: var(--red); }
+  .stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+
+  .results-filter {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+  .filter-btn {
+    padding: 6px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { background: var(--surface-2); color: var(--text); }
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .results-list {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+  }
+  .results-section-header {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    padding: 16px 0 4px;
+  }
+  .result-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .result-item:hover { background: var(--surface-2); }
+  .result-item .verdict {
+    font-size: 20px;
+    flex-shrink: 0;
+    width: 28px;
+    text-align: center;
+    padding-top: 2px;
+  }
+  .result-item .info {
+    flex: 1;
+    min-width: 0;
+  }
+  .result-item .name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .result-item .desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .result-item .note {
+    font-size: 12px;
+    color: var(--accent);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  .result-item .thumb {
+    width: 56px;
+    height: 40px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 6px;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+  }
+
+  /* Modal for result image preview */
+  .preview-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .preview-modal.open { display: flex; }
+  .preview-modal-inner {
+    max-width: 600px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: var(--radius);
+    background: #fff;
+  }
+  .preview-modal-inner::-webkit-scrollbar { width: 4px; }
+  .preview-modal-inner::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 2px; }
+  .preview-modal-inner img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .preview-modal-close {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--surface);
+    color: var(--text);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+  }
+
+  .results-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .copy-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--green);
+    color: #000;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .copy-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  /* ── Confetti ── */
+  #confetti-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 480px) {
+    .welcome-title { font-size: 28px; }
+    .choose-title { font-size: 22px; }
+    .card-image-wrap { max-height: 340px; }
+    .results-title { font-size: 26px; }
+    .keyboard-hint { display: none; }
+    .action-btn { width: 64px; height: 64px; font-size: 24px; }
+  }
+</style>
 </head>
 <body>
 
-  <!-- WELCOME SCREEN -->
-  <div class="screen screen--active" id="screen-welcome">
-    <div class="welcome">
-      <div class="welcome__emoji">👋</div>
-      <h1 class="welcome__title">Section Vote</h1>
-      <p class="welcome__sub">Help us pick the best section designs for the new PDP and homepage. Swipe right to ship, left to cut.</p>
-      <input type="text" class="welcome__input" id="name-input" placeholder="Your name" autocomplete="off" autofocus>
-      <button class="btn btn--primary" style="width:100%;max-width:320px;" onclick="startVoting()">Let's go</button>
+<!-- ============ WELCOME ============ -->
+<div id="welcome" class="screen active">
+  <div>
+    <div class="welcome-icon">&#x1F525;</div>
+  </div>
+  <div>
+    <h1 class="welcome-title">Section Showdown</h1>
+    <p class="welcome-sub">Swipe right to ship it. Swipe left to cut it.<br>Your taste, your call.</p>
+  </div>
+  <div class="input-group">
+    <label>What's your name?</label>
+    <input type="text" id="name-input" placeholder="e.g. Cody" autocomplete="off" spellcheck="false">
+  </div>
+  <button class="btn btn-primary" id="start-btn" disabled>Let's go</button>
+</div>
+
+<!-- ============ CHOOSE ============ -->
+<div id="choose" class="screen">
+  <div>
+    <h2 class="choose-title">What are we judging?</h2>
+    <p class="welcome-sub" style="margin-top:8px;" id="greeting-text"></p>
+  </div>
+  <div class="choose-options">
+    <div class="choose-card" data-type="hp" id="choose-hp">
+      <div class="emoji">&#x1F3E0;</div>
+      <div class="label">Homepage</div>
+      <div class="count">16 sections</div>
+    </div>
+    <div class="choose-card" data-type="pdp" id="choose-pdp">
+      <div class="emoji">&#x1F6CD;&#xFE0F;</div>
+      <div class="label">PDP</div>
+      <div class="count">15 sections</div>
+    </div>
+  </div>
+  <button class="btn btn-ghost btn-sm" id="vote-both-btn">Or vote on everything (31)</button>
+</div>
+
+<!-- ============ VOTING ============ -->
+<div id="voting" class="screen">
+  <div class="vote-header">
+    <div class="vote-header-top">
+      <button class="back-btn" id="back-btn">&larr; Back</button>
+      <div class="vote-counter"><span id="current-num">1</span> / <span id="total-num">16</span></div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
     </div>
   </div>
 
-  <!-- PAGE CHOOSER -->
-  <div class="screen" id="screen-chooser">
-    <div class="chooser">
-      <h2 class="chooser__title">What are we voting on?</h2>
-      <p class="chooser__sub">Pick a page to review its section variations.</p>
-      <div class="chooser__options">
-        <div class="chooser__option" onclick="loadPage('pdp')">
-          <div class="chooser__option-emoji">🧴</div>
-          <div class="chooser__option-label">PDP</div>
-          <div class="chooser__option-count">15 variations</div>
-        </div>
-        <div class="chooser__option" onclick="loadPage('homepage')">
-          <div class="chooser__option-emoji">🏠</div>
-          <div class="chooser__option-label">Homepage</div>
-          <div class="chooser__option-count">16 variations</div>
-        </div>
+  <div class="card-container" id="card-container">
+    <div class="vote-card" id="vote-card">
+      <div class="swipe-indicator ship" id="ship-indicator">SHIP IT &#x1F525;</div>
+      <div class="swipe-indicator cut" id="cut-indicator">CUT IT &#x1F480;</div>
+      <div class="card-image-wrap" id="card-image-wrap">
+        <img id="card-image" src="" alt="" draggable="false">
+        <div class="scroll-hint" id="scroll-hint"><span>Scroll to see more &darr;</span></div>
       </div>
-    </div>
-  </div>
-
-  <!-- VOTING SCREEN -->
-  <div class="screen" id="screen-vote">
-    <div class="vote">
-      <div class="progress">
-        <div class="progress__bar-track"><div class="progress__bar-fill" id="progress-fill"></div></div>
-        <div class="progress__text">
-          <span class="progress__section" id="progress-section"></span>
-          <span id="progress-count"></span>
-        </div>
+      <div class="card-info">
+        <span class="card-page-tag" id="card-page-tag">HP</span>
+        <span class="card-section-badge" id="card-badge"></span>
+        <h3 class="card-title" id="card-title"></h3>
+        <p class="card-desc" id="card-desc"></p>
       </div>
-      <div class="card-container">
-        <div class="card" id="vote-card">
-          <div class="card__badge" id="card-badge"></div>
-          <div class="card__preview" id="card-preview"></div>
-          <div class="card__vote-overlay" id="overlay-ship">🔥</div>
-          <div class="card__vote-overlay" id="overlay-cut">💀</div>
-          <div class="card__body">
-            <p class="card__section" id="card-section"></p>
-            <h3 class="card__title" id="card-title"></h3>
-            <p class="card__desc" id="card-desc"></p>
-            <div class="card__note-toggle" onclick="toggleNote()">
-              <span>📝</span> <span id="note-toggle-text">Add a note</span>
-            </div>
-            <div class="card__note-area" id="note-area">
-              <textarea class="card__note-input" id="note-input" placeholder="What would you change? Any thoughts?"></textarea>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="actions">
-        <button class="action-btn action-btn--cut" onclick="vote('cut')" title="Cut it">💀</button>
-        <button class="action-btn action-btn--skip" onclick="vote('skip')" title="Skip">⏭️</button>
-        <button class="action-btn action-btn--ship" onclick="vote('ship')" title="Ship it">🔥</button>
-      </div>
-      <div class="actions__labels">
-        <span class="actions__label">Cut</span>
-        <span class="actions__label">Ship</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- RESULTS SCREEN -->
-  <div class="screen" id="screen-results">
-    <div class="results">
-      <div class="results__header">
-        <div class="results__emoji" id="results-emoji">🎉</div>
-        <h2 class="results__title" id="results-title">Done!</h2>
-        <p class="results__sub" id="results-sub"></p>
-      </div>
-      <div class="results__stats" id="results-stats"></div>
-      <div class="results__list" id="results-list"></div>
-      <div class="results__actions">
-        <button class="btn btn--primary" onclick="copyResults()">📋 Copy Results</button>
-        <button class="btn btn--secondary" onclick="voteOtherPage()">Vote Other Page</button>
+      <div class="notes-area">
+        <button class="notes-toggle" id="notes-toggle">+ Add a note</button>
+        <textarea class="notes-input" id="notes-input" placeholder="Any thoughts on this one?"></textarea>
       </div>
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
+  <div class="vote-actions">
+    <button class="action-btn cut-btn" id="cut-btn" title="Cut it">&#x1F480;</button>
+    <button class="action-btn undo-btn" id="undo-btn" title="Undo last vote">&#x21A9;&#xFE0F;</button>
+    <button class="action-btn ship-btn" id="ship-btn" title="Ship it">&#x1F525;</button>
+  </div>
+  <div class="keyboard-hint">
+    <kbd>&larr;</kbd> Cut &nbsp;&middot;&nbsp; <kbd>&rarr;</kbd> Ship &nbsp;&middot;&nbsp; <kbd>Z</kbd> Undo
+  </div>
+</div>
+
+<!-- ============ RESULTS ============ -->
+<div id="results" class="screen">
+  <div class="results-header">
+    <div class="results-celebration">&#x1F389;</div>
+    <h2 class="results-title">You're done!</h2>
+    <p class="results-sub" id="results-sub">Here's how you voted.</p>
+  </div>
+
+  <div class="results-stats">
+    <div class="stat-card">
+      <div class="stat-number green" id="stat-ship">0</div>
+      <div class="stat-label">Ship it &#x1F525;</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number red" id="stat-cut">0</div>
+      <div class="stat-label">Cut it &#x1F480;</div>
+    </div>
+  </div>
+
+  <div class="results-filter">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="ship">&#x1F525; Ship</button>
+    <button class="filter-btn" data-filter="cut">&#x1F480; Cut</button>
+  </div>
+
+  <div class="results-list" id="results-list"></div>
+
+  <div class="results-actions">
+    <button class="btn btn-primary" id="copy-btn">&#x1F4CB; Copy Results</button>
+    <button class="btn btn-ghost" id="restart-btn">Start Over</button>
+  </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="preview-modal" id="preview-modal">
+  <button class="preview-modal-close" id="preview-close">&times;</button>
+  <div class="preview-modal-inner">
+    <img id="preview-img" src="" alt="">
+  </div>
+</div>
+
+<div class="copy-toast" id="copy-toast">Copied to clipboard!</div>
+<canvas id="confetti-canvas"></canvas>
 
 <script>
-// ===== DATA =====
-const VARIATIONS = {
-  pdp: [
-    { section: 'Versatility — 4 Uses', id: 'pdp-3.1', title: 'Full model grid, routine focus', desc: 'Four model images showing each use (blush, bronzer, highlighter, all-over tint). No competitor prices — focuses on routine simplification and time savings.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
-    { section: 'Versatility — 4 Uses', id: 'pdp-3.3', title: 'Contained editorial with overlays', desc: 'Compact editorial layout (not full-bleed). Feature cards with gradient overlays showing each use case. Significantly smaller footprint.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
-    { section: 'Bobbi Credibility', id: 'pdp-4.1', title: 'Two-column with credentials', desc: 'Square Bobbi portrait + product-specific quote about why she made Miracle Balm. Credentials list. No CTA — pure authority.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
-    { section: 'Bobbi Credibility', id: 'pdp-4.3', title: 'Dark editorial variant', desc: 'Black background, square Bobbi image, white text. Same product-specific content, more dramatic.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
-    { section: 'Shade Match', id: 'pdp-6.1', title: 'Two-column with stats + quote', desc: 'Shade match stats (96% accuracy, 60 sec, 250K+ matches). Customer quote card flush below image. No swatches on page.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
-    { section: 'Shade Match', id: 'pdp-6.3', title: 'Quiz-forward with steps', desc: 'Standard image (no phone mockup). Shows quiz steps and stats. Clean, design-system compliant.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
-    { section: 'Ingredients', id: 'pdp-7.1', title: "What's in it vs What's not", desc: 'Two-column split: left shows 4 key ingredients with benefits, right shows excluded categories. Clean, scannable.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
-    { section: 'Ingredients', id: 'pdp-7.2', title: 'Visual ingredient cards', desc: 'Cards for each key ingredient. Excluded items shown as clean rectangular tags (no pill shapes). 2,700+ excluded count prominent.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
-    { section: 'UGC + Before/After', id: 'pdp-9.2', title: 'Slider before/afters (3 across)', desc: 'Three before/after slider comparisons across full width. No thumbnail images below. Clean, impactful proof.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
-    { section: 'UGC + Before/After', id: 'pdp-9.3', title: 'B/A cards with copy below', desc: 'Before/after cards with customer quote + shade info below each. Small tags for shade and skin type.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
-    { section: 'Product Spec', id: 'pdp-11.1', title: 'Spec table on warm bg', desc: 'Two-column: spec table (Good For, Feels Like, Looks Like, Smells Like, FYI) + square product image. Clean, scannable.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
-    { section: 'Shade Guarantee', id: 'pdp-12.1', title: 'Policy cards with icons', desc: 'Warm background. Three policy cards: free exchanges, 30-day returns, expert shade help. Outline button.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
-    { section: 'Shade Guarantee', id: 'pdp-12.2', title: 'Timeline flow', desc: 'Choose → Try → Swap/Return timeline. Warm background, outline buttons. Step-by-step guarantee process.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
-    { section: 'Clinical Results', id: 'pdp-13.1', title: 'Image + stat list', desc: 'Square model image + vertical stat list (94%, 93%, 87%, 80%). Aspirational — study not yet commissioned.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
-    { section: 'Clinical Results', id: 'pdp-13.2', title: 'Big stat cards', desc: 'Four large stat cards in a row. Bold Canela numbers. Warm background.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+// ─── SECTION DATA ───
+const sections = {
+  hp: [
+    { id: 'hp-1.1', file: 'hp-1.1.jpg', section: 'Hero', title: 'Split Layout', desc: 'Editorial image + brand headline, split composition' },
+    { id: 'hp-2.1', file: 'hp-2.1.jpg', section: 'New Arrivals', title: '4-Product Grid', desc: 'Grid layout with star ratings' },
+    { id: 'hp-2.3', file: 'hp-2.3.jpg', section: 'New Arrivals', title: 'Horizontal Scroll', desc: 'Horizontal scroll strip with review quotes' },
+    { id: 'hp-gwp.1', file: 'hp-gwp.1.jpg', section: 'GWP', title: 'Light Banner', desc: 'Light gray banner with product image' },
+    { id: 'hp-gwp.2', file: 'hp-gwp.2.jpg', section: 'GWP', title: 'Compact Strip', desc: 'Compact promotional strip' },
+    { id: 'hp-3.1', file: 'hp-3.1.jpg', section: 'Bobbi', title: 'Image Left + Quote', desc: 'Square image left, formulation quote right' },
+    { id: 'hp-3.2', file: 'hp-3.2.jpg', section: 'Bobbi', title: 'Reversed Layout', desc: 'Text left, image right' },
+    { id: 'hp-3.3', file: 'hp-3.3.jpg', section: 'Bobbi', title: 'Dark Editorial', desc: 'Black background editorial treatment' },
+    { id: 'hp-4.1', file: 'hp-4.1.jpg', section: 'Concern', title: 'Button Chooser', desc: 'Interactive "I want to..." button chooser' },
+    { id: 'hp-4.2', file: 'hp-4.2.jpg', section: 'Concern', title: 'Image Cards', desc: 'Image-backed concern cards' },
+    { id: 'hp-5.1', file: 'hp-5.1.jpg', section: 'Bestsellers', title: '4-Product Grid', desc: '4-product bestseller grid layout' },
+    { id: 'hp-7.1', file: 'hp-7.1.jpg', section: 'Shade Finder', title: 'Headline + Model', desc: 'Headline left, model imagery right' },
+    { id: 'hp-7.2', file: 'hp-7.2.jpg', section: 'Shade Finder', title: 'Reversed', desc: 'Model image left, headline right' },
+    { id: 'hp-9.1', file: 'hp-9.1.jpg', section: 'Social Proof', title: 'Stats + Quotes', desc: 'Stats bar with review quotes' },
+    { id: 'hp-9.2', file: 'hp-9.2.jpg', section: 'Social Proof', title: 'Value Props', desc: 'Integrated value propositions' },
+    { id: 'hp-10.1', file: 'hp-10.1.jpg', section: 'Routine', title: '4-Step Routine', desc: '4-step numbered routine layout' },
   ],
-  homepage: [
-    { section: 'Hero', id: 'hp-1.1', title: 'Brand-level split layout', desc: 'Left: brand headline + dual CTAs (Shop All + Take Quiz). Right: lifestyle image. Not product-specific.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'New Arrivals', id: 'hp-2.1', title: '4-product grid with review quotes', desc: 'Miracle Balm, Lip Recharge, WTF, Eyeshadow Stick. Product images, star ratings, review count, price, + italicized review quote under each.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'New Arrivals', id: 'hp-2.3', title: 'Horizontal scroll with quotes', desc: 'Scrollable product strip with same card format + review quotes. More browsable feel.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'Gift With Purchase', id: 'hp-gwp.1', title: 'Light gray promotional banner', desc: 'Free Miracle Balm Mini with $65+ order. Light gray background, black button, product image. No pink.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'Gift With Purchase', id: 'hp-gwp.2', title: 'Compact GWP strip', desc: 'Single-row compact banner version. Same offer, tighter footprint.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'Bobbi Section', id: 'hp-3.1', title: 'Image left + formulation quote', desc: 'Square Bobbi portrait + quote about why she started Jones Road. Warm background. Credentials.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'Bobbi Section', id: 'hp-3.2', title: 'Reversed layout', desc: 'Text left, square Bobbi image right. "She doesn\'t just wear the makeup. She makes it."', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'Bobbi Section', id: 'hp-3.3', title: 'Dark editorial variant', desc: 'Black background, square Bobbi image, white button. No pink. Quote about her career and Jones Road.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'Shop by Concern', id: 'hp-4.1', title: '"I want to..." interactive chooser', desc: 'Clickable concern buttons that swap the product grid below. Six options: Even Skin, Healthy Glow, etc. Interactive JS.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'Shop by Concern', id: 'hp-4.2', title: 'Image-backed concern cards', desc: 'Editorial photo cards with gradient overlays and concern labels. Hover zoom effect.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'Bestsellers', id: 'hp-5.1', title: 'Bestseller grid with proof', desc: 'Matches New Arrivals card pattern. Product images, ratings, prices, review counts. "Bestseller" badge.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'Find Your Shade', id: 'hp-7.1', title: 'Two-column, single CTA', desc: 'Left: headline + body + "Find My Shade" button. Right: square model image. No swatches. Generous spacing.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'Find Your Shade', id: 'hp-7.2', title: 'Alternate layout', desc: 'Different two-column arrangement. Same single CTA approach, no quiz/selfie split.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'Social Proof + Value', id: 'hp-9.1', title: 'Stats + review quotes', desc: '76K+ reviews, 2M+ products sold, 94% shade match, 4.8 avg rating. Three customer review cards below.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'Social Proof + Value', id: 'hp-9.2', title: 'Value props with messaging', desc: 'Stats woven into brand value props: Simpler Routine, Real Confidence, Clean Ingredients. Review quote at bottom.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
-    { section: 'Routine Builder', id: 'hp-10.1', title: '4-step morning routine', desc: 'WTF → Miracle Balm → Eyeshadow Stick → Lip Recharge. Step numbers, product images, prices, "Shop the Routine" CTA.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+  pdp: [
+    { id: 'pdp-3.1', file: 'pdp-3.1.jpg', section: 'Versatility', title: 'Model Imagery Grid', desc: 'Full model imagery grid layout' },
+    { id: 'pdp-3.3', file: 'pdp-3.3.jpg', section: 'Versatility', title: 'Editorial Overlay', desc: 'Contained editorial with overlay text' },
+    { id: 'pdp-4.1', file: 'pdp-4.1.jpg', section: 'Bobbi', title: 'Quote + Credentials', desc: 'Two-column with quote and credentials' },
+    { id: 'pdp-4.3', file: 'pdp-4.3.jpg', section: 'Bobbi', title: 'Black Editorial', desc: 'Black background editorial treatment' },
+    { id: 'pdp-6.1', file: 'pdp-6.1.jpg', section: 'Shade Match', title: 'Stats + Quote', desc: 'Two-column stats with quote card' },
+    { id: 'pdp-6.3', file: 'pdp-6.3.jpg', section: 'Shade Match', title: 'Quiz Forward', desc: 'Standard image, quiz-forward layout' },
+    { id: 'pdp-7.1', file: 'pdp-7.1.jpg', section: 'Ingredients', title: 'In It vs Not', desc: 'Two-column "what\'s in it vs what\'s not"' },
+    { id: 'pdp-7.2', file: 'pdp-7.2.jpg', section: 'Ingredients', title: 'Icon Cards', desc: 'Icon cards with excluded ingredient tags' },
+    { id: 'pdp-9.2', file: 'pdp-9.2.jpg', section: 'UGC / B&A', title: 'Slider Grid', desc: 'Before/after slider grid layout' },
+    { id: 'pdp-9.3', file: 'pdp-9.3.jpg', section: 'UGC / B&A', title: 'Cards + Quotes', desc: 'Before/after cards with customer quotes' },
+    { id: 'pdp-11.1', file: 'pdp-11.1.jpg', section: 'Spec', title: 'Details Table', desc: 'Product details table layout' },
+    { id: 'pdp-12.1', file: 'pdp-12.1.jpg', section: 'Guarantee', title: 'Icon Cards', desc: 'Icon cards with CTA button' },
+    { id: 'pdp-12.2', file: 'pdp-12.2.jpg', section: 'Guarantee', title: 'Timeline Flow', desc: 'Timeline flow layout' },
+    { id: 'pdp-13.1', file: 'pdp-13.1.jpg', section: 'Clinical', title: 'Model + Stats', desc: 'Two-column with model and stat highlights' },
+    { id: 'pdp-13.2', file: 'pdp-13.2.jpg', section: 'Clinical', title: 'Big Stat Cards', desc: 'Large stat cards in a row' },
   ]
 };
 
-// ===== STATE =====
-let voterName = '';
-let currentPage = '';
-let currentIndex = 0;
-let votes = [];
-let cards = [];
+// ─── STATE ───
+let state = {
+  userName: '',
+  currentType: null,
+  cardOrder: [],     // array of card ids in shuffled order
+  currentIndex: 0,
+  votes: {}          // { cardId: { vote: 'ship'|'cut', note: '' } }
+};
 
-// ===== NAVIGATION =====
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('screen--active'));
-  document.getElementById('screen-' + id).classList.add('screen--active');
+// ─── PERSISTENCE ───
+const STORAGE_KEY = 'section-showdown-v2';
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      state = { ...state, ...parsed };
+    }
+  } catch(e) { /* ignore */ }
 }
 
-function startVoting() {
-  const name = document.getElementById('name-input').value.trim();
-  if (!name) { document.getElementById('name-input').focus(); document.getElementById('name-input').style.borderColor = '#ff4444'; return; }
-  voterName = name;
-  showScreen('chooser');
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch(e) { /* ignore */ }
 }
 
-document.getElementById('name-input').addEventListener('keydown', e => { if (e.key === 'Enter') startVoting(); });
-
-function loadPage(page) {
-  currentPage = page;
-  currentIndex = 0;
-  votes = [];
-  cards = VARIATIONS[page];
-  showScreen('vote');
-  renderCard();
+function getCardsForCurrentSession() {
+  // Reconstruct cards from stored order
+  const allSections = [...sections.hp, ...sections.pdp];
+  const lookup = {};
+  allSections.forEach(c => lookup[c.id] = c);
+  return state.cardOrder.map(id => lookup[id]).filter(Boolean);
 }
 
-// ===== CARD RENDERING =====
-function renderCard() {
-  if (currentIndex >= cards.length) { showResults(); return; }
-  const v = cards[currentIndex];
-  const pct = Math.round((currentIndex / cards.length) * 100);
+// ─── DOM HELPERS ───
+const $ = id => document.getElementById(id);
+const screens = {
+  welcome: $('welcome'),
+  choose: $('choose'),
+  voting: $('voting'),
+  results: $('results')
+};
 
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-section').textContent = v.section;
-  document.getElementById('progress-count').textContent = (currentIndex + 1) + ' of ' + cards.length;
-  document.getElementById('card-badge').textContent = currentPage === 'pdp' ? 'PDP' : 'Homepage';
-  document.getElementById('card-badge').className = 'card__badge' + (currentPage === 'homepage' ? ' card__badge--hp' : '');
-  document.getElementById('card-section').textContent = v.section;
-  document.getElementById('card-title').textContent = v.title;
-  document.getElementById('card-desc').textContent = v.desc;
-
-  // Preview
-  const preview = document.getElementById('card-preview');
-  preview.innerHTML = '<div class="card__preview-overlay"></div><a href="' + v.previewUrl + '" target="_blank" class="card__preview-link">View Full Design ↗</a>';
-  preview.style.background = '#f6f2eb';
-
-  // Reset note
-  document.getElementById('note-area').classList.remove('card__note-area--open');
-  document.getElementById('note-input').value = '';
-  document.getElementById('note-toggle-text').textContent = 'Add a note';
-
-  // Animate card in
-  const card = document.getElementById('vote-card');
-  card.className = 'card card--entering';
+function showScreen(name) {
+  Object.values(screens).forEach(s => s.classList.remove('active'));
+  screens[name].classList.add('active');
+  window.scrollTo(0, 0);
 }
 
-function toggleNote() {
-  const area = document.getElementById('note-area');
-  area.classList.toggle('card__note-area--open');
-  if (area.classList.contains('card__note-area--open')) {
-    document.getElementById('note-input').focus();
-    document.getElementById('note-toggle-text').textContent = 'Close note';
+// ─── WELCOME ───
+const nameInput = $('name-input');
+const startBtn = $('start-btn');
+
+nameInput.addEventListener('input', () => {
+  startBtn.disabled = !nameInput.value.trim();
+});
+nameInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && nameInput.value.trim()) goToChoose();
+});
+startBtn.addEventListener('click', goToChoose);
+
+function goToChoose() {
+  state.userName = nameInput.value.trim();
+  saveState();
+
+  const greetings = [
+    `Alright ${state.userName}, pick your arena.`,
+    `Let's do this, ${state.userName}.`,
+    `${state.userName}'s turn to judge. Choose wisely.`,
+    `Time to be ruthless, ${state.userName}.`
+  ];
+  $('greeting-text').textContent = greetings[Math.floor(Math.random() * greetings.length)];
+
+  // Show completion badges if they've already voted
+  updateChooseScreen();
+  showScreen('choose');
+}
+
+function updateChooseScreen() {
+  const hpVoted = sections.hp.filter(c => state.votes[c.id]).length;
+  const pdpVoted = sections.pdp.filter(c => state.votes[c.id]).length;
+
+  const hpCard = $('choose-hp');
+  const pdpCard = $('choose-pdp');
+
+  // Clear old badges
+  hpCard.querySelectorAll('.done-badge').forEach(el => el.remove());
+  pdpCard.querySelectorAll('.done-badge').forEach(el => el.remove());
+
+  if (hpVoted === sections.hp.length) {
+    const badge = document.createElement('div');
+    badge.className = 'done-badge';
+    badge.textContent = 'Completed';
+    hpCard.appendChild(badge);
+  } else if (hpVoted > 0) {
+    const badge = document.createElement('div');
+    badge.className = 'done-badge';
+    badge.textContent = `${hpVoted}/${sections.hp.length} done`;
+    hpCard.appendChild(badge);
+  }
+
+  if (pdpVoted === sections.pdp.length) {
+    const badge = document.createElement('div');
+    badge.className = 'done-badge';
+    badge.textContent = 'Completed';
+    pdpCard.appendChild(badge);
+  } else if (pdpVoted > 0) {
+    const badge = document.createElement('div');
+    badge.className = 'done-badge';
+    badge.textContent = `${pdpVoted}/${sections.pdp.length} done`;
+    pdpCard.appendChild(badge);
+  }
+}
+
+// ─── CHOOSE ───
+$('choose-hp').addEventListener('click', () => startVoting('hp'));
+$('choose-pdp').addEventListener('click', () => startVoting('pdp'));
+$('vote-both-btn').addEventListener('click', () => startVoting('all'));
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startVoting(type) {
+  state.currentType = type;
+
+  let pool;
+  if (type === 'all') {
+    pool = [...sections.hp, ...sections.pdp];
   } else {
-    document.getElementById('note-toggle-text').textContent = 'Add a note';
+    pool = [...sections[type]];
+  }
+
+  // Only include cards they haven't voted on yet
+  const unvoted = pool.filter(c => !state.votes[c.id]);
+
+  if (unvoted.length === 0) {
+    // They've voted on everything — show results
+    state.cardOrder = pool.map(c => c.id);
+    state.currentIndex = pool.length;
+    saveState();
+    renderResults();
+    showScreen('results');
+    return;
+  }
+
+  state.cardOrder = shuffleArray(unvoted).map(c => c.id);
+  state.currentIndex = 0;
+  saveState();
+
+  loadCurrentCard();
+  showScreen('voting');
+}
+
+$('back-btn').addEventListener('click', () => {
+  showScreen('choose');
+  updateChooseScreen();
+});
+
+// ─── VOTING ───
+let isDragging = false;
+let startX = 0;
+let currentX = 0;
+let cardEl = $('vote-card');
+
+function loadCurrentCard() {
+  const cards = getCardsForCurrentSession();
+
+  if (state.currentIndex >= cards.length) {
+    // Rebuild full card order for results
+    let pool;
+    if (state.currentType === 'all') {
+      pool = [...sections.hp, ...sections.pdp];
+    } else {
+      pool = [...sections[state.currentType]];
+    }
+    state.cardOrder = pool.map(c => c.id);
+    saveState();
+    renderResults();
+    showScreen('results');
+    return;
+  }
+
+  const card = cards[state.currentIndex];
+  const totalCards = cards.length;
+
+  $('current-num').textContent = state.currentIndex + 1;
+  $('total-num').textContent = totalCards;
+  $('progress-fill').style.width = ((state.currentIndex) / totalCards * 100) + '%';
+
+  $('card-image').src = 'vote-images/' + card.file;
+  $('card-page-tag').textContent = card.id.startsWith('pdp') ? 'PDP' : 'HP';
+  $('card-badge').textContent = card.section;
+  $('card-title').textContent = card.title;
+  $('card-desc').textContent = card.desc;
+
+  // Reset notes
+  $('notes-input').value = '';
+  $('notes-input').classList.remove('show');
+  $('notes-toggle').textContent = '+ Add a note';
+
+  // Reset card position
+  cardEl.style.transform = '';
+  cardEl.classList.remove('exit-right', 'exit-left', 'swiping-right', 'swiping-left', 'dragging');
+  $('ship-indicator').style.opacity = 0;
+  $('cut-indicator').style.opacity = 0;
+
+  // Check if image is tall enough to scroll
+  const img = $('card-image');
+  const checkScroll = () => {
+    const wrap = $('card-image-wrap');
+    wrap.scrollTop = 0;
+    if (wrap.scrollHeight > wrap.clientHeight + 20) {
+      $('scroll-hint').classList.add('visible');
+    } else {
+      $('scroll-hint').classList.remove('visible');
+    }
+  };
+
+  if (img.complete && img.naturalHeight > 0) {
+    setTimeout(checkScroll, 50);
+  } else {
+    img.onload = () => setTimeout(checkScroll, 50);
   }
 }
 
-// ===== VOTING =====
-function vote(type) {
-  const v = cards[currentIndex];
-  const note = document.getElementById('note-input').value.trim();
-  votes.push({ section: v.section, id: v.id, title: v.title, vote: type, note: note });
-
-  // Show overlay
-  const overlayId = type === 'ship' ? 'overlay-ship' : type === 'cut' ? 'overlay-cut' : null;
-  if (overlayId) {
-    const overlay = document.getElementById(overlayId);
-    overlay.classList.add('card__vote-overlay--visible');
-    setTimeout(() => overlay.classList.remove('card__vote-overlay--visible'), 400);
+// Scroll hint hide on scroll
+$('card-image-wrap').addEventListener('scroll', function() {
+  if (this.scrollTop > 20) {
+    $('scroll-hint').classList.remove('visible');
   }
+});
+
+// Notes toggle
+$('notes-toggle').addEventListener('click', () => {
+  const inp = $('notes-input');
+  inp.classList.toggle('show');
+  if (inp.classList.contains('show')) {
+    inp.focus();
+    $('notes-toggle').textContent = '- Hide note';
+  } else {
+    $('notes-toggle').textContent = '+ Add a note';
+  }
+});
+
+// ── Drag / Swipe logic ──
+function onDragStart(x) {
+  isDragging = true;
+  startX = x;
+  currentX = 0;
+  cardEl.classList.add('dragging');
+}
+
+function onDragMove(x) {
+  if (!isDragging) return;
+  currentX = x - startX;
+  const rotation = currentX * 0.06;
+  cardEl.style.transform = `translateX(${currentX}px) rotate(${rotation}deg)`;
+
+  const progress = Math.min(Math.abs(currentX) / 120, 1);
+  if (currentX > 0) {
+    cardEl.classList.add('swiping-right');
+    cardEl.classList.remove('swiping-left');
+    $('ship-indicator').style.opacity = progress;
+    $('cut-indicator').style.opacity = 0;
+  } else if (currentX < 0) {
+    cardEl.classList.add('swiping-left');
+    cardEl.classList.remove('swiping-right');
+    $('cut-indicator').style.opacity = progress;
+    $('ship-indicator').style.opacity = 0;
+  }
+}
+
+function onDragEnd() {
+  if (!isDragging) return;
+  isDragging = false;
+  cardEl.classList.remove('dragging');
+
+  if (Math.abs(currentX) > 100) {
+    castVote(currentX > 0 ? 'ship' : 'cut');
+  } else {
+    // Snap back
+    cardEl.style.transform = '';
+    cardEl.classList.remove('swiping-right', 'swiping-left');
+    $('ship-indicator').style.opacity = 0;
+    $('cut-indicator').style.opacity = 0;
+  }
+}
+
+// Touch events — only on card-info and the card itself, not on image wrap or notes
+const dragZone = cardEl;
+dragZone.addEventListener('touchstart', e => {
+  if (e.target.closest('.notes-area')) return;
+  if (e.target.closest('.card-image-wrap')) return;
+  onDragStart(e.touches[0].clientX);
+}, { passive: true });
+dragZone.addEventListener('touchmove', e => {
+  if (!isDragging) return;
+  onDragMove(e.touches[0].clientX);
+}, { passive: true });
+dragZone.addEventListener('touchend', () => onDragEnd());
+
+// Mouse events
+dragZone.addEventListener('mousedown', e => {
+  if (e.target.closest('.notes-area')) return;
+  if (e.target.closest('.card-image-wrap')) return;
+  onDragStart(e.clientX);
+  e.preventDefault();
+});
+document.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  onDragMove(e.clientX);
+});
+document.addEventListener('mouseup', () => onDragEnd());
+
+// Button clicks
+$('cut-btn').addEventListener('click', () => castVote('cut'));
+$('ship-btn').addEventListener('click', () => castVote('ship'));
+
+// Undo
+$('undo-btn').addEventListener('click', undoVote);
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (!screens.voting.classList.contains('active')) return;
+  if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+
+  if (e.key === 'ArrowRight') castVote('ship');
+  else if (e.key === 'ArrowLeft') castVote('cut');
+  else if (e.key === 'z' || e.key === 'Z') undoVote();
+});
+
+let isAnimating = false;
+
+function castVote(vote) {
+  if (isAnimating) return;
+
+  const cards = getCardsForCurrentSession();
+  if (state.currentIndex >= cards.length) return;
+
+  isAnimating = true;
+
+  const card = cards[state.currentIndex];
+  const note = $('notes-input').value.trim();
+
+  state.votes[card.id] = { vote, note };
+  state.currentIndex++;
+  saveState();
 
   // Animate card out
-  const card = document.getElementById('vote-card');
-  if (type === 'ship') card.className = 'card card--swiping-right';
-  else if (type === 'cut') card.className = 'card card--swiping-left';
+  const exitClass = vote === 'ship' ? 'exit-right' : 'exit-left';
+  cardEl.classList.remove('swiping-right', 'swiping-left');
+  cardEl.classList.add(exitClass);
 
-  // Save to localStorage
-  saveVotes();
+  // Pop the button
+  const btn = vote === 'ship' ? $('ship-btn') : $('cut-btn');
+  btn.style.transform = 'scale(1.25)';
+  setTimeout(() => { btn.style.transform = ''; }, 200);
 
-  // Next card
-  currentIndex++;
-  setTimeout(renderCard, 350);
+  setTimeout(() => {
+    isAnimating = false;
+    cardEl.classList.remove(exitClass);
+    cardEl.style.transform = '';
+    $('ship-indicator').style.opacity = 0;
+    $('cut-indicator').style.opacity = 0;
+    loadCurrentCard();
+  }, 380);
 }
 
-// Keyboard shortcuts
-document.addEventListener('keydown', e => {
-  if (document.getElementById('screen-vote').classList.contains('screen--active')) {
-    if (document.activeElement === document.getElementById('note-input')) return;
-    if (e.key === 'ArrowRight' || e.key === 'l') vote('ship');
-    if (e.key === 'ArrowLeft' || e.key === 'h') vote('cut');
-    if (e.key === 'ArrowDown' || e.key === 's') vote('skip');
-    if (e.key === 'n') toggleNote();
-  }
-});
+function undoVote() {
+  if (isAnimating) return;
+  if (state.currentIndex === 0) return;
 
-// Touch swipe
-let touchStartX = 0;
-document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-document.addEventListener('touchend', e => {
-  if (!document.getElementById('screen-vote').classList.contains('screen--active')) return;
-  const diff = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(diff) > 80) {
-    if (diff > 0) vote('ship');
-    else vote('cut');
+  state.currentIndex--;
+  const cards = getCardsForCurrentSession();
+  const card = cards[state.currentIndex];
+  if (card) {
+    delete state.votes[card.id];
   }
-});
-
-// ===== PERSISTENCE =====
-function saveVotes() {
-  const key = 'jrb-votes-' + voterName.toLowerCase().replace(/\s+/g, '-') + '-' + currentPage;
-  localStorage.setItem(key, JSON.stringify({ name: voterName, page: currentPage, votes: votes, timestamp: new Date().toISOString() }));
+  saveState();
+  loadCurrentCard();
 }
 
-// ===== RESULTS =====
-function showResults() {
-  const shipped = votes.filter(v => v.vote === 'ship').length;
-  const cut = votes.filter(v => v.vote === 'cut').length;
-  const skipped = votes.filter(v => v.vote === 'skip').length;
+// ─── RESULTS ───
+let currentFilter = 'all';
 
-  document.getElementById('results-sub').textContent = voterName + ' voted on ' + cards.length + ' ' + (currentPage === 'pdp' ? 'PDP' : 'Homepage') + ' variations';
+function renderResults() {
+  const allCards = getCardsForCurrentSession();
+  let ships = 0, cuts = 0;
 
-  document.getElementById('results-stats').innerHTML = `
-    <div class="results__stat"><div class="results__stat-num results__stat-num--ship">${shipped}</div><div class="results__stat-label">Ship 🔥</div></div>
-    <div class="results__stat"><div class="results__stat-num results__stat-num--cut">${cut}</div><div class="results__stat-label">Cut 💀</div></div>
-    ${skipped ? '<div class="results__stat"><div class="results__stat-num">' + skipped + '</div><div class="results__stat-label">Skipped</div></div>' : ''}
-  `;
+  allCards.forEach(c => {
+    const v = state.votes[c.id];
+    if (v?.vote === 'ship') ships++;
+    if (v?.vote === 'cut') cuts++;
+  });
 
-  // Group by section
-  const sections = {};
-  votes.forEach(v => { if (!sections[v.section]) sections[v.section] = []; sections[v.section].push(v); });
+  $('stat-ship').textContent = ships;
+  $('stat-cut').textContent = cuts;
 
-  let listHtml = '';
-  Object.entries(sections).forEach(([section, items]) => {
-    listHtml += '<div class="results__section-header">' + section + '</div>';
-    items.forEach(v => {
-      const emoji = v.vote === 'ship' ? '🔥' : v.vote === 'cut' ? '💀' : '⏭️';
-      listHtml += '<div class="results__item"><span class="results__item-vote">' + emoji + '</span><div><div class="results__item-name">' + v.title + '</div>' + (v.note ? '<div class="results__item-note">"' + v.note + '"</div>' : '') + '</div></div>';
+  const quips = [
+    `${state.userName} has spoken. ${ships} sections live to fight another day.`,
+    `The verdict is in. ${cuts} section${cuts !== 1 ? 's' : ''} just got yeeted.`,
+    `${state.userName} judged ${allCards.length} sections. Here's the damage report.`,
+    `Taste level: immaculate. ${ships} shipped, ${cuts} cut.`,
+  ];
+  $('results-sub').textContent = quips[Math.floor(Math.random() * quips.length)];
+
+  renderResultsList(currentFilter);
+
+  $('progress-fill').style.width = '100%';
+
+  // Confetti
+  launchConfetti();
+}
+
+function renderResultsList(filter) {
+  const allCards = getCardsForCurrentSession();
+
+  // Group by page type
+  const grouped = {};
+  allCards.forEach(c => {
+    const v = state.votes[c.id];
+    if (!v) return;
+    if (filter !== 'all' && v.vote !== filter) return;
+
+    const type = c.id.startsWith('pdp') ? 'PDP' : 'Homepage';
+    if (!grouped[type]) grouped[type] = [];
+    grouped[type].push(c);
+  });
+
+  const list = $('results-list');
+  list.innerHTML = '';
+
+  // Maintain order: Homepage then PDP
+  ['Homepage', 'PDP'].forEach(type => {
+    const cards = grouped[type];
+    if (!cards || cards.length === 0) return;
+
+    const header = document.createElement('div');
+    header.className = 'results-section-header';
+    header.textContent = type;
+    list.appendChild(header);
+
+    cards.forEach(c => {
+      const v = state.votes[c.id];
+      if (!v) return;
+
+      const item = document.createElement('div');
+      item.className = 'result-item';
+      item.innerHTML = `
+        <span class="verdict">${v.vote === 'ship' ? '&#x1F525;' : '&#x1F480;'}</span>
+        <div class="info">
+          <div class="name">${c.section}: ${c.title}</div>
+          <div class="desc">${c.desc}</div>
+          ${v.note ? `<div class="note">&ldquo;${v.note}&rdquo;</div>` : ''}
+        </div>
+        <img class="thumb" src="vote-images/${c.file}" alt="${c.title}" loading="lazy">
+      `;
+      item.addEventListener('click', () => {
+        $('preview-img').src = 'vote-images/' + c.file;
+        $('preview-modal').classList.add('open');
+      });
+      list.appendChild(item);
     });
   });
-  document.getElementById('results-list').innerHTML = listHtml;
 
-  showScreen('results');
-  confetti();
+  if (list.children.length === 0) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'text-align:center; padding:40px 0; color:var(--text-dim); font-size:14px;';
+    empty.textContent = 'No sections match this filter.';
+    list.appendChild(empty);
+  }
 }
 
-function voteOtherPage() {
-  showScreen('chooser');
-}
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderResultsList(currentFilter);
+  });
+});
 
-function copyResults() {
-  const shipped = votes.filter(v => v.vote === 'ship');
-  const cut = votes.filter(v => v.vote === 'cut');
-  const page = currentPage === 'pdp' ? 'PDP' : 'Homepage';
+// Preview modal
+$('preview-close').addEventListener('click', () => {
+  $('preview-modal').classList.remove('open');
+});
+$('preview-modal').addEventListener('click', e => {
+  if (e.target === $('preview-modal')) {
+    $('preview-modal').classList.remove('open');
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && $('preview-modal').classList.contains('open')) {
+    $('preview-modal').classList.remove('open');
+  }
+});
 
-  let text = `🗳️ ${voterName}'s ${page} Section Votes\n`;
-  text += `${'═'.repeat(40)}\n`;
-  text += `🔥 Ship: ${shipped.length} | 💀 Cut: ${cut.length}\n\n`;
+// Copy results
+$('copy-btn').addEventListener('click', () => {
+  const allCards = getCardsForCurrentSession();
 
-  const sections = {};
-  votes.forEach(v => { if (!sections[v.section]) sections[v.section] = []; sections[v.section].push(v); });
+  let text = `SECTION SHOWDOWN RESULTS\n`;
+  text += `Voter: ${state.userName}\n`;
+  text += `Date: ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}\n`;
+  text += `${'─'.repeat(30)}\n\n`;
 
-  Object.entries(sections).forEach(([section, items]) => {
-    text += `${section}\n`;
-    items.forEach(v => {
-      const emoji = v.vote === 'ship' ? '🔥' : v.vote === 'cut' ? '💀' : '⏭️';
-      text += `  ${emoji} ${v.title}${v.note ? ' — "' + v.note + '"' : ''}\n`;
+  // Group by page type
+  const grouped = {};
+  allCards.forEach(c => {
+    const type = c.id.startsWith('pdp') ? 'PDP' : 'Homepage';
+    if (!grouped[type]) grouped[type] = [];
+    grouped[type].push(c);
+  });
+
+  ['Homepage', 'PDP'].forEach(type => {
+    const cards = grouped[type];
+    if (!cards) return;
+
+    text += `${type.toUpperCase()}\n`;
+    cards.forEach(c => {
+      const v = state.votes[c.id];
+      if (!v) return;
+      const emoji = v.vote === 'ship' ? '\u{1F525}' : '\u{1F480}';
+      text += `  ${emoji} ${c.section}: ${c.title}`;
+      if (v.note) text += ` \u2014 "${v.note}"`;
+      text += '\n';
     });
     text += '\n';
   });
 
-  navigator.clipboard.writeText(text).then(() => showToast('Copied! Paste in Slack 📋'));
-}
+  let ships = 0, cuts = 0;
+  allCards.forEach(c => {
+    const v = state.votes[c.id];
+    if (v?.vote === 'ship') ships++;
+    if (v?.vote === 'cut') cuts++;
+  });
+  text += `${'─'.repeat(30)}\n`;
+  text += `TOTALS: \u{1F525} Ship ${ships}  |  \u{1F480} Cut ${cuts}\n`;
 
-// ===== CONFETTI =====
-function confetti() {
-  const container = document.createElement('div');
-  container.className = 'confetti';
-  const colors = ['#ff4444', '#22cc44', '#000', '#f6f2eb', '#ffcc00', '#4488ff'];
-  for (let i = 0; i < 60; i++) {
-    const span = document.createElement('span');
-    span.style.left = Math.random() * window.innerWidth + 'px';
-    span.style.background = colors[Math.floor(Math.random() * colors.length)];
-    span.style.animationDelay = Math.random() * .5 + 's';
-    span.style.animationDuration = (2 + Math.random() * 2) + 's';
-    span.style.width = (6 + Math.random() * 6) + 'px';
-    span.style.height = (6 + Math.random() * 6) + 'px';
-    container.appendChild(span);
+  navigator.clipboard.writeText(text).then(() => {
+    const toast = $('copy-toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const toast = $('copy-toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+  });
+});
+
+// Restart
+$('restart-btn').addEventListener('click', () => {
+  if (!confirm('This will clear all your votes. Are you sure?')) return;
+  state.votes = {};
+  state.currentIndex = 0;
+  state.cardOrder = [];
+  state.currentType = null;
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+  saveState();
+  showScreen('choose');
+  updateChooseScreen();
+});
+
+// ─── CONFETTI ───
+function launchConfetti() {
+  const canvas = $('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = [];
+  const colors = ['#6366f1', '#a78bfa', '#22c55e', '#f59e0b', '#ef4444', '#ec4899', '#06b6d4', '#fbbf24'];
+
+  for (let i = 0; i < 180; i++) {
+    particles.push({
+      x: canvas.width * 0.5 + (Math.random() - 0.5) * canvas.width * 0.6,
+      y: -20 - Math.random() * canvas.height * 0.5,
+      w: Math.random() * 10 + 4,
+      h: Math.random() * 6 + 2,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vx: (Math.random() - 0.5) * 6,
+      vy: Math.random() * 3 + 2,
+      rotation: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 15,
+      opacity: 1,
+      delay: Math.random() * 15,
+    });
   }
-  document.body.appendChild(container);
-  setTimeout(() => container.remove(), 4000);
+
+  let frame = 0;
+  function animate() {
+    frame++;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    let alive = false;
+    particles.forEach(p => {
+      if (p.delay > 0) { p.delay--; alive = true; return; }
+      if (p.opacity <= 0) return;
+      alive = true;
+
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.1;
+      p.vx *= 0.99;
+      p.rotation += p.rotSpeed;
+
+      if (frame > 90) p.opacity -= 0.012;
+      p.opacity = Math.max(0, p.opacity);
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation * Math.PI / 180);
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+
+    if (alive) requestAnimationFrame(animate);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  requestAnimationFrame(animate);
 }
 
-// ===== TOAST =====
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('toast--visible');
-  setTimeout(() => t.classList.remove('toast--visible'), 2500);
+// Handle window resize for confetti canvas
+window.addEventListener('resize', () => {
+  const canvas = $('confetti-canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+// ─── INIT ───
+loadState();
+
+if (state.userName) {
+  nameInput.value = state.userName;
+  startBtn.disabled = false;
 }
 </script>
-
 </body>
 </html>
