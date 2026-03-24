@@ -3,27 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Section Showdown</title>
+<title>Section Review</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0f0f0f;
+    --bg: #111111;
     --surface: #1a1a1a;
-    --surface-2: #242424;
+    --surface-2: #222222;
     --border: #2a2a2a;
-    --text: #f5f5f5;
+    --text: #f0f0f0;
     --text-muted: #888;
     --text-dim: #555;
     --accent: #6366f1;
     --accent-glow: rgba(99, 102, 241, 0.3);
     --green: #22c55e;
-    --green-glow: rgba(34, 197, 94, 0.15);
+    --amber: #f59e0b;
     --red: #ef4444;
-    --red-glow: rgba(239, 68, 68, 0.15);
-    --radius: 16px;
+    --radius: 14px;
     --radius-sm: 10px;
   }
 
@@ -36,7 +35,7 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ── Screens ── */
+  /* -- Screens -- */
   .screen {
     display: none;
     flex-direction: column;
@@ -46,33 +45,21 @@
   }
   .screen.active { display: flex; }
 
-  /* ── Welcome Screen ── */
+  /* -- Welcome Screen -- */
   #welcome {
     justify-content: center;
-    gap: 40px;
+    gap: 32px;
     text-align: center;
   }
-  .welcome-icon {
-    font-size: 72px;
-    line-height: 1;
-    animation: bounce 2s ease-in-out infinite;
-  }
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
-  }
   .welcome-title {
-    font-size: 36px;
-    font-weight: 900;
+    font-size: 32px;
+    font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1.1;
-    background: linear-gradient(135deg, #fff 30%, #6366f1);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text);
   }
   .welcome-sub {
-    font-size: 16px;
+    font-size: 15px;
     color: var(--text-muted);
     margin-top: 8px;
     line-height: 1.5;
@@ -93,12 +80,12 @@
   }
   .input-group input {
     width: 100%;
-    padding: 16px 20px;
+    padding: 14px 18px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     color: var(--text);
-    font-size: 18px;
+    font-size: 17px;
     font-family: inherit;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
@@ -114,12 +101,12 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 16px 32px;
+    padding: 14px 28px;
     border: none;
     border-radius: var(--radius-sm);
     font-family: inherit;
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
     color: #fff;
@@ -144,15 +131,15 @@
   .btn-ghost:hover { background: var(--surface-2); }
   .btn-sm { padding: 10px 18px; font-size: 14px; }
 
-  /* ── Choose Screen ── */
+  /* -- Choose Screen -- */
   #choose {
     justify-content: center;
-    gap: 40px;
+    gap: 32px;
     text-align: center;
   }
   .choose-title {
-    font-size: 28px;
-    font-weight: 800;
+    font-size: 24px;
+    font-weight: 700;
     letter-spacing: -0.02em;
   }
   .choose-options {
@@ -163,7 +150,7 @@
   }
   .choose-card {
     flex: 1;
-    padding: 32px 16px;
+    padding: 28px 16px;
     background: var(--surface);
     border: 2px solid var(--border);
     border-radius: var(--radius);
@@ -174,12 +161,16 @@
   .choose-card:hover {
     border-color: var(--accent);
     background: var(--surface-2);
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     box-shadow: 0 8px 30px rgba(0,0,0,0.3);
   }
-  .choose-card .emoji { font-size: 48px; margin-bottom: 12px; }
+  .choose-card .icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+    color: var(--text-muted);
+  }
   .choose-card .label {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
     margin-bottom: 4px;
   }
@@ -199,7 +190,7 @@
     color: var(--green);
   }
 
-  /* ── Voting Screen ── */
+  /* -- Voting Screen -- */
   #voting {
     padding-top: 16px;
     gap: 16px;
@@ -208,7 +199,7 @@
 
   .vote-header {
     width: 100%;
-    max-width: 440px;
+    max-width: 640px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -238,23 +229,23 @@
   .vote-counter span { color: var(--text); }
   .progress-track {
     width: 100%;
-    height: 4px;
+    height: 3px;
     background: var(--surface-2);
     border-radius: 2px;
     overflow: hidden;
   }
   .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent), #a78bfa);
+    background: var(--accent);
     border-radius: 2px;
     transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* ── Card ── */
+  /* -- Card -- */
   .card-container {
     position: relative;
     width: 100%;
-    max-width: 440px;
+    max-width: 640px;
   }
 
   .vote-card {
@@ -263,58 +254,12 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
-    transition: transform 0.08s, box-shadow 0.08s;
-    will-change: transform;
     user-select: none;
     position: relative;
-  }
-  .vote-card.dragging { transition: none; }
-  .vote-card.swiping-right {
-    box-shadow: 0 0 40px var(--green-glow), inset 0 0 60px var(--green-glow);
-  }
-  .vote-card.swiping-left {
-    box-shadow: 0 0 40px var(--red-glow), inset 0 0 60px var(--red-glow);
-  }
-  .vote-card.exit-right {
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
-    transform: translateX(150%) rotate(20deg) !important;
-    opacity: 0;
-  }
-  .vote-card.exit-left {
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
-    transform: translateX(-150%) rotate(-20deg) !important;
-    opacity: 0;
-  }
-
-  .swipe-indicator {
-    position: absolute;
-    top: 20px;
-    z-index: 10;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: 0.02em;
-    opacity: 0;
-    transition: opacity 0.15s;
-    pointer-events: none;
-  }
-  .swipe-indicator.ship {
-    right: 20px;
-    background: rgba(34, 197, 94, 0.2);
-    border: 2px solid var(--green);
-    color: var(--green);
-  }
-  .swipe-indicator.cut {
-    left: 20px;
-    background: rgba(239, 68, 68, 0.2);
-    border: 2px solid var(--red);
-    color: var(--red);
   }
 
   .card-image-wrap {
     width: 100%;
-    max-height: 400px;
     overflow-y: auto;
     overflow-x: hidden;
     background: #fff;
@@ -355,7 +300,7 @@
   }
 
   .card-info {
-    padding: 20px 20px 12px;
+    padding: 16px 20px 8px;
   }
   .card-page-tag {
     display: inline-block;
@@ -378,13 +323,13 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
   .card-title {
-    font-size: 20px;
-    font-weight: 800;
+    font-size: 18px;
+    font-weight: 700;
     letter-spacing: -0.01em;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
   .card-desc {
     font-size: 14px;
@@ -394,7 +339,7 @@
 
   /* Notes */
   .notes-area {
-    padding: 0 20px 16px;
+    padding: 0 20px 12px;
   }
   .notes-toggle {
     background: none;
@@ -427,51 +372,83 @@
   .notes-input:focus { border-color: var(--accent); }
   .notes-input.show { display: block; }
 
-  /* ── Action buttons ── */
+  /* -- Rating Scale -- */
   .vote-actions {
-    display: flex;
-    gap: 20px;
     width: 100%;
-    max-width: 440px;
-    justify-content: center;
-    padding: 4px 0 16px;
+    max-width: 640px;
+    padding: 8px 0 8px;
   }
-  .action-btn {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
+  .rating-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    margin-bottom: 8px;
+  }
+  .rating-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-dim);
+  }
+  .rating-scale {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+  .rating-btn {
+    flex: 1;
+    height: 52px;
+    border-radius: 10px;
     border: 2px solid var(--border);
     background: var(--surface);
     cursor: pointer;
-    font-size: 28px;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: inherit;
+    color: var(--text-muted);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
+    transition: all 0.15s;
+    position: relative;
   }
-  .action-btn:active { transform: scale(0.9); }
-  .action-btn.cut-btn:hover {
-    border-color: var(--red);
-    background: var(--red-glow);
-    box-shadow: 0 0 20px var(--red-glow);
-  }
-  .action-btn.ship-btn:hover {
-    border-color: var(--green);
-    background: var(--green-glow);
-    box-shadow: 0 0 20px var(--green-glow);
-  }
-  .action-btn.undo-btn {
-    width: 48px;
-    height: 48px;
-    font-size: 18px;
-    align-self: center;
-  }
-  .action-btn.undo-btn:hover {
+  .rating-btn:hover {
     border-color: var(--text-muted);
+    color: var(--text);
     background: var(--surface-2);
   }
+  .rating-btn.selected {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 16px var(--accent-glow);
+  }
+  .rating-btn[data-score="1"]:hover { border-color: var(--red); color: var(--red); }
+  .rating-btn[data-score="1"].selected { background: var(--red); border-color: var(--red); box-shadow: 0 4px 16px rgba(239,68,68,0.3); }
+  .rating-btn[data-score="2"]:hover { border-color: #f97316; color: #f97316; }
+  .rating-btn[data-score="2"].selected { background: #f97316; border-color: #f97316; box-shadow: 0 4px 16px rgba(249,115,22,0.3); }
+  .rating-btn[data-score="3"]:hover { border-color: var(--amber); color: var(--amber); }
+  .rating-btn[data-score="3"].selected { background: var(--amber); border-color: var(--amber); box-shadow: 0 4px 16px rgba(245,158,11,0.3); }
+  .rating-btn[data-score="4"]:hover { border-color: #84cc16; color: #84cc16; }
+  .rating-btn[data-score="4"].selected { background: #84cc16; border-color: #84cc16; box-shadow: 0 4px 16px rgba(132,204,22,0.3); }
+  .rating-btn[data-score="5"]:hover { border-color: var(--green); color: var(--green); }
+  .rating-btn[data-score="5"].selected { background: var(--green); border-color: var(--green); box-shadow: 0 4px 16px rgba(34,197,94,0.3); }
 
-  /* ── Keyboard hint ── */
+  .vote-nav {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    max-width: 640px;
+    justify-content: center;
+    padding: 4px 0 16px;
+  }
+  .vote-nav .btn {
+    flex: 1;
+    max-width: 200px;
+  }
+
+  /* -- Keyboard hint -- */
   .keyboard-hint {
     font-size: 12px;
     color: var(--text-dim);
@@ -489,10 +466,10 @@
     margin: 0 2px;
   }
 
-  /* ── Results Screen ── */
+  /* -- Results Screen -- */
   #results {
     padding: 40px 16px;
-    gap: 32px;
+    gap: 28px;
     min-height: 100dvh;
     align-items: center;
     text-align: center;
@@ -503,14 +480,9 @@
     align-items: center;
     gap: 8px;
   }
-  .results-celebration {
-    font-size: 56px;
-    line-height: 1;
-    margin-bottom: 8px;
-  }
   .results-title {
-    font-size: 32px;
-    font-weight: 900;
+    font-size: 28px;
+    font-weight: 800;
     letter-spacing: -0.03em;
   }
   .results-sub {
@@ -521,27 +493,26 @@
 
   .results-stats {
     display: flex;
-    gap: 16px;
+    gap: 12px;
     width: 100%;
-    max-width: 440px;
+    max-width: 480px;
   }
   .stat-card {
     flex: 1;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    padding: 20px 12px;
+    padding: 16px 10px;
     text-align: center;
   }
   .stat-number {
-    font-size: 36px;
-    font-weight: 900;
+    font-size: 28px;
+    font-weight: 800;
     letter-spacing: -0.02em;
   }
-  .stat-number.green { color: var(--green); }
-  .stat-number.red { color: var(--red); }
+  .stat-number.accent { color: var(--accent); }
   .stat-label {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
@@ -575,7 +546,7 @@
 
   .results-list {
     width: 100%;
-    max-width: 520px;
+    max-width: 540px;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -601,13 +572,23 @@
     transition: background 0.15s;
   }
   .result-item:hover { background: var(--surface-2); }
-  .result-item .verdict {
-    font-size: 20px;
+  .result-item .score-badge {
     flex-shrink: 0;
-    width: 28px;
-    text-align: center;
-    padding-top: 2px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
   }
+  .score-1 { background: var(--red); }
+  .score-2 { background: #f97316; }
+  .score-3 { background: var(--amber); }
+  .score-4 { background: #84cc16; }
+  .score-5 { background: var(--green); }
   .result-item .info {
     flex: 1;
     min-width: 0;
@@ -652,7 +633,7 @@
   }
   .preview-modal.open { display: flex; }
   .preview-modal-inner {
-    max-width: 600px;
+    max-width: 700px;
     width: 100%;
     max-height: 85vh;
     overflow-y: auto;
@@ -713,22 +694,13 @@
     opacity: 1;
   }
 
-  /* ── Confetti ── */
-  #confetti-canvas {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  /* ── Responsive ── */
+  /* -- Responsive -- */
   @media (max-width: 480px) {
-    .welcome-title { font-size: 28px; }
-    .choose-title { font-size: 22px; }
-    .card-image-wrap { max-height: 340px; }
-    .results-title { font-size: 26px; }
+    .welcome-title { font-size: 26px; }
+    .choose-title { font-size: 20px; }
+    .results-title { font-size: 24px; }
     .keyboard-hint { display: none; }
-    .action-btn { width: 64px; height: 64px; font-size: 24px; }
+    .rating-btn { height: 46px; font-size: 16px; }
   }
 </style>
 </head>
@@ -737,38 +709,35 @@
 <!-- ============ WELCOME ============ -->
 <div id="welcome" class="screen active">
   <div>
-    <div class="welcome-icon">&#x1F525;</div>
-  </div>
-  <div>
-    <h1 class="welcome-title">Section Showdown</h1>
-    <p class="welcome-sub">Swipe right to ship it. Swipe left to cut it.<br>Your taste, your call.</p>
+    <h1 class="welcome-title">Section Review</h1>
+    <p class="welcome-sub">Rate each section on a 1&ndash;5 scale.<br>Your feedback shapes what ships.</p>
   </div>
   <div class="input-group">
-    <label>What's your name?</label>
+    <label>Your name</label>
     <input type="text" id="name-input" placeholder="e.g. Cody" autocomplete="off" spellcheck="false">
   </div>
-  <button class="btn btn-primary" id="start-btn" disabled>Let's go</button>
+  <button class="btn btn-primary" id="start-btn" disabled>Continue</button>
 </div>
 
 <!-- ============ CHOOSE ============ -->
 <div id="choose" class="screen">
   <div>
-    <h2 class="choose-title">What are we judging?</h2>
+    <h2 class="choose-title">Which sections?</h2>
     <p class="welcome-sub" style="margin-top:8px;" id="greeting-text"></p>
   </div>
   <div class="choose-options">
     <div class="choose-card" data-type="hp" id="choose-hp">
-      <div class="emoji">&#x1F3E0;</div>
+      <div class="icon">Homepage</div>
       <div class="label">Homepage</div>
       <div class="count">16 sections</div>
     </div>
     <div class="choose-card" data-type="pdp" id="choose-pdp">
-      <div class="emoji">&#x1F6CD;&#xFE0F;</div>
+      <div class="icon">PDP</div>
       <div class="label">PDP</div>
       <div class="count">15 sections</div>
     </div>
   </div>
-  <button class="btn btn-ghost btn-sm" id="vote-both-btn">Or vote on everything (31)</button>
+  <button class="btn btn-ghost btn-sm" id="vote-both-btn">Vote on everything (31)</button>
 </div>
 
 <!-- ============ VOTING ============ -->
@@ -785,8 +754,6 @@
 
   <div class="card-container" id="card-container">
     <div class="vote-card" id="vote-card">
-      <div class="swipe-indicator ship" id="ship-indicator">SHIP IT &#x1F525;</div>
-      <div class="swipe-indicator cut" id="cut-indicator">CUT IT &#x1F480;</div>
       <div class="card-image-wrap" id="card-image-wrap">
         <img id="card-image" src="" alt="" draggable="false">
         <div class="scroll-hint" id="scroll-hint"><span>Scroll to see more &darr;</span></div>
@@ -805,44 +772,50 @@
   </div>
 
   <div class="vote-actions">
-    <button class="action-btn cut-btn" id="cut-btn" title="Cut it">&#x1F480;</button>
-    <button class="action-btn undo-btn" id="undo-btn" title="Undo last vote">&#x21A9;&#xFE0F;</button>
-    <button class="action-btn ship-btn" id="ship-btn" title="Ship it">&#x1F525;</button>
+    <div class="rating-labels">
+      <span class="rating-label">Cut</span>
+      <span class="rating-label">Neutral</span>
+      <span class="rating-label">Love</span>
+    </div>
+    <div class="rating-scale" id="rating-scale">
+      <button class="rating-btn" data-score="1">1</button>
+      <button class="rating-btn" data-score="2">2</button>
+      <button class="rating-btn" data-score="3">3</button>
+      <button class="rating-btn" data-score="4">4</button>
+      <button class="rating-btn" data-score="5">5</button>
+    </div>
   </div>
+
+  <div class="vote-nav">
+    <button class="btn btn-ghost btn-sm" id="undo-btn">Undo</button>
+    <button class="btn btn-primary btn-sm" id="submit-btn" disabled>Next</button>
+  </div>
+
   <div class="keyboard-hint">
-    <kbd>&larr;</kbd> Cut &nbsp;&middot;&nbsp; <kbd>&rarr;</kbd> Ship &nbsp;&middot;&nbsp; <kbd>Z</kbd> Undo
+    <kbd>1</kbd>&ndash;<kbd>5</kbd> to rate &nbsp;&middot;&nbsp; <kbd>Enter</kbd> to submit &nbsp;&middot;&nbsp; <kbd>Z</kbd> undo
   </div>
 </div>
 
 <!-- ============ RESULTS ============ -->
 <div id="results" class="screen">
   <div class="results-header">
-    <div class="results-celebration">&#x1F389;</div>
-    <h2 class="results-title">You're done!</h2>
+    <h2 class="results-title">Review Complete</h2>
     <p class="results-sub" id="results-sub">Here's how you voted.</p>
   </div>
 
-  <div class="results-stats">
-    <div class="stat-card">
-      <div class="stat-number green" id="stat-ship">0</div>
-      <div class="stat-label">Ship it &#x1F525;</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number red" id="stat-cut">0</div>
-      <div class="stat-label">Cut it &#x1F480;</div>
-    </div>
-  </div>
+  <div class="results-stats" id="results-stats"></div>
 
   <div class="results-filter">
     <button class="filter-btn active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="ship">&#x1F525; Ship</button>
-    <button class="filter-btn" data-filter="cut">&#x1F480; Cut</button>
+    <button class="filter-btn" data-filter="high">4&ndash;5</button>
+    <button class="filter-btn" data-filter="mid">3</button>
+    <button class="filter-btn" data-filter="low">1&ndash;2</button>
   </div>
 
   <div class="results-list" id="results-list"></div>
 
   <div class="results-actions">
-    <button class="btn btn-primary" id="copy-btn">&#x1F4CB; Copy Results</button>
+    <button class="btn btn-primary" id="copy-btn">Copy Results</button>
     <button class="btn btn-ghost" id="restart-btn">Start Over</button>
   </div>
 </div>
@@ -856,10 +829,9 @@
 </div>
 
 <div class="copy-toast" id="copy-toast">Copied to clipboard!</div>
-<canvas id="confetti-canvas"></canvas>
 
 <script>
-// ─── SECTION DATA ───
+// --- SECTION DATA ---
 const sections = {
   hp: [
     { id: 'hp-1.1', file: 'hp-1.1.jpg', section: 'Hero', title: 'Split Layout', desc: 'Editorial image + brand headline, split composition' },
@@ -898,17 +870,17 @@ const sections = {
   ]
 };
 
-// ─── STATE ───
+// --- STATE ---
 let state = {
   userName: '',
   currentType: null,
-  cardOrder: [],     // array of card ids in shuffled order
+  cardOrder: [],
   currentIndex: 0,
-  votes: {}          // { cardId: { vote: 'ship'|'cut', note: '' } }
+  votes: {}   // { cardId: { score: 1-5, note: '' } }
 };
 
-// ─── PERSISTENCE ───
-const STORAGE_KEY = 'section-showdown-v2';
+// --- PERSISTENCE ---
+const STORAGE_KEY = 'section-review-v3';
 
 function loadState() {
   try {
@@ -927,14 +899,13 @@ function saveState() {
 }
 
 function getCardsForCurrentSession() {
-  // Reconstruct cards from stored order
   const allSections = [...sections.hp, ...sections.pdp];
   const lookup = {};
   allSections.forEach(c => lookup[c.id] = c);
   return state.cardOrder.map(id => lookup[id]).filter(Boolean);
 }
 
-// ─── DOM HELPERS ───
+// --- DOM HELPERS ---
 const $ = id => document.getElementById(id);
 const screens = {
   welcome: $('welcome'),
@@ -949,7 +920,7 @@ function showScreen(name) {
   window.scrollTo(0, 0);
 }
 
-// ─── WELCOME ───
+// --- WELCOME ---
 const nameInput = $('name-input');
 const startBtn = $('start-btn');
 
@@ -964,16 +935,7 @@ startBtn.addEventListener('click', goToChoose);
 function goToChoose() {
   state.userName = nameInput.value.trim();
   saveState();
-
-  const greetings = [
-    `Alright ${state.userName}, pick your arena.`,
-    `Let's do this, ${state.userName}.`,
-    `${state.userName}'s turn to judge. Choose wisely.`,
-    `Time to be ruthless, ${state.userName}.`
-  ];
-  $('greeting-text').textContent = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Show completion badges if they've already voted
+  $('greeting-text').textContent = `Hey ${state.userName}, pick a set to review.`;
   updateChooseScreen();
   showScreen('choose');
 }
@@ -985,7 +947,6 @@ function updateChooseScreen() {
   const hpCard = $('choose-hp');
   const pdpCard = $('choose-pdp');
 
-  // Clear old badges
   hpCard.querySelectorAll('.done-badge').forEach(el => el.remove());
   pdpCard.querySelectorAll('.done-badge').forEach(el => el.remove());
 
@@ -1014,7 +975,7 @@ function updateChooseScreen() {
   }
 }
 
-// ─── CHOOSE ───
+// --- CHOOSE ---
 $('choose-hp').addEventListener('click', () => startVoting('hp'));
 $('choose-pdp').addEventListener('click', () => startVoting('pdp'));
 $('vote-both-btn').addEventListener('click', () => startVoting('all'));
@@ -1038,11 +999,9 @@ function startVoting(type) {
     pool = [...sections[type]];
   }
 
-  // Only include cards they haven't voted on yet
   const unvoted = pool.filter(c => !state.votes[c.id]);
 
   if (unvoted.length === 0) {
-    // They've voted on everything — show results
     state.cardOrder = pool.map(c => c.id);
     state.currentIndex = pool.length;
     saveState();
@@ -1055,6 +1014,7 @@ function startVoting(type) {
   state.currentIndex = 0;
   saveState();
 
+  selectedScore = null;
   loadCurrentCard();
   showScreen('voting');
 }
@@ -1064,17 +1024,14 @@ $('back-btn').addEventListener('click', () => {
   updateChooseScreen();
 });
 
-// ─── VOTING ───
-let isDragging = false;
-let startX = 0;
-let currentX = 0;
-let cardEl = $('vote-card');
+// --- VOTING ---
+let selectedScore = null;
+const submitBtn = $('submit-btn');
 
 function loadCurrentCard() {
   const cards = getCardsForCurrentSession();
 
   if (state.currentIndex >= cards.length) {
-    // Rebuild full card order for results
     let pool;
     if (state.currentType === 'all') {
       pool = [...sections.hp, ...sections.pdp];
@@ -1106,11 +1063,10 @@ function loadCurrentCard() {
   $('notes-input').classList.remove('show');
   $('notes-toggle').textContent = '+ Add a note';
 
-  // Reset card position
-  cardEl.style.transform = '';
-  cardEl.classList.remove('exit-right', 'exit-left', 'swiping-right', 'swiping-left', 'dragging');
-  $('ship-indicator').style.opacity = 0;
-  $('cut-indicator').style.opacity = 0;
+  // Reset rating
+  selectedScore = null;
+  submitBtn.disabled = true;
+  document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
 
   // Check if image is tall enough to scroll
   const img = $('card-image');
@@ -1150,81 +1106,18 @@ $('notes-toggle').addEventListener('click', () => {
   }
 });
 
-// ── Drag / Swipe logic ──
-function onDragStart(x) {
-  isDragging = true;
-  startX = x;
-  currentX = 0;
-  cardEl.classList.add('dragging');
-}
-
-function onDragMove(x) {
-  if (!isDragging) return;
-  currentX = x - startX;
-  const rotation = currentX * 0.06;
-  cardEl.style.transform = `translateX(${currentX}px) rotate(${rotation}deg)`;
-
-  const progress = Math.min(Math.abs(currentX) / 120, 1);
-  if (currentX > 0) {
-    cardEl.classList.add('swiping-right');
-    cardEl.classList.remove('swiping-left');
-    $('ship-indicator').style.opacity = progress;
-    $('cut-indicator').style.opacity = 0;
-  } else if (currentX < 0) {
-    cardEl.classList.add('swiping-left');
-    cardEl.classList.remove('swiping-right');
-    $('cut-indicator').style.opacity = progress;
-    $('ship-indicator').style.opacity = 0;
-  }
-}
-
-function onDragEnd() {
-  if (!isDragging) return;
-  isDragging = false;
-  cardEl.classList.remove('dragging');
-
-  if (Math.abs(currentX) > 100) {
-    castVote(currentX > 0 ? 'ship' : 'cut');
-  } else {
-    // Snap back
-    cardEl.style.transform = '';
-    cardEl.classList.remove('swiping-right', 'swiping-left');
-    $('ship-indicator').style.opacity = 0;
-    $('cut-indicator').style.opacity = 0;
-  }
-}
-
-// Touch events — only on card-info and the card itself, not on image wrap or notes
-const dragZone = cardEl;
-dragZone.addEventListener('touchstart', e => {
-  if (e.target.closest('.notes-area')) return;
-  if (e.target.closest('.card-image-wrap')) return;
-  onDragStart(e.touches[0].clientX);
-}, { passive: true });
-dragZone.addEventListener('touchmove', e => {
-  if (!isDragging) return;
-  onDragMove(e.touches[0].clientX);
-}, { passive: true });
-dragZone.addEventListener('touchend', () => onDragEnd());
-
-// Mouse events
-dragZone.addEventListener('mousedown', e => {
-  if (e.target.closest('.notes-area')) return;
-  if (e.target.closest('.card-image-wrap')) return;
-  onDragStart(e.clientX);
-  e.preventDefault();
+// Rating buttons
+document.querySelectorAll('.rating-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedScore = parseInt(btn.dataset.score);
+    document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    submitBtn.disabled = false;
+  });
 });
-document.addEventListener('mousemove', e => {
-  if (!isDragging) return;
-  onDragMove(e.clientX);
-});
-document.addEventListener('mouseup', () => onDragEnd());
 
-// Button clicks
-$('cut-btn').addEventListener('click', () => castVote('cut'));
-$('ship-btn').addEventListener('click', () => castVote('ship'));
-
-// Undo
+// Submit vote
+submitBtn.addEventListener('click', () => castVote());
 $('undo-btn').addEventListener('click', undoVote);
 
 // Keyboard
@@ -1232,50 +1125,36 @@ document.addEventListener('keydown', e => {
   if (!screens.voting.classList.contains('active')) return;
   if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
 
-  if (e.key === 'ArrowRight') castVote('ship');
-  else if (e.key === 'ArrowLeft') castVote('cut');
-  else if (e.key === 'z' || e.key === 'Z') undoVote();
+  if (e.key >= '1' && e.key <= '5') {
+    selectedScore = parseInt(e.key);
+    document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelector(`.rating-btn[data-score="${e.key}"]`).classList.add('selected');
+    submitBtn.disabled = false;
+  } else if (e.key === 'Enter' && selectedScore !== null) {
+    castVote();
+  } else if (e.key === 'z' || e.key === 'Z') {
+    undoVote();
+  }
 });
 
-let isAnimating = false;
-
-function castVote(vote) {
-  if (isAnimating) return;
+function castVote() {
+  if (selectedScore === null) return;
 
   const cards = getCardsForCurrentSession();
   if (state.currentIndex >= cards.length) return;
 
-  isAnimating = true;
-
   const card = cards[state.currentIndex];
   const note = $('notes-input').value.trim();
 
-  state.votes[card.id] = { vote, note };
+  state.votes[card.id] = { score: selectedScore, note };
   state.currentIndex++;
   saveState();
 
-  // Animate card out
-  const exitClass = vote === 'ship' ? 'exit-right' : 'exit-left';
-  cardEl.classList.remove('swiping-right', 'swiping-left');
-  cardEl.classList.add(exitClass);
-
-  // Pop the button
-  const btn = vote === 'ship' ? $('ship-btn') : $('cut-btn');
-  btn.style.transform = 'scale(1.25)';
-  setTimeout(() => { btn.style.transform = ''; }, 200);
-
-  setTimeout(() => {
-    isAnimating = false;
-    cardEl.classList.remove(exitClass);
-    cardEl.style.transform = '';
-    $('ship-indicator').style.opacity = 0;
-    $('cut-indicator').style.opacity = 0;
-    loadCurrentCard();
-  }, 380);
+  selectedScore = null;
+  loadCurrentCard();
 }
 
 function undoVote() {
-  if (isAnimating) return;
   if (state.currentIndex === 0) return;
 
   state.currentIndex--;
@@ -1285,50 +1164,64 @@ function undoVote() {
     delete state.votes[card.id];
   }
   saveState();
+  selectedScore = null;
   loadCurrentCard();
 }
 
-// ─── RESULTS ───
+// --- RESULTS ---
 let currentFilter = 'all';
 
 function renderResults() {
   const allCards = getCardsForCurrentSession();
-  let ships = 0, cuts = 0;
+  let totalScore = 0;
+  let count = 0;
+  const scoreCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
 
   allCards.forEach(c => {
     const v = state.votes[c.id];
-    if (v?.vote === 'ship') ships++;
-    if (v?.vote === 'cut') cuts++;
+    if (v && v.score) {
+      totalScore += v.score;
+      count++;
+      scoreCounts[v.score]++;
+    }
   });
 
-  $('stat-ship').textContent = ships;
-  $('stat-cut').textContent = cuts;
+  const avgScore = count > 0 ? (totalScore / count).toFixed(1) : '0';
 
-  const quips = [
-    `${state.userName} has spoken. ${ships} sections live to fight another day.`,
-    `The verdict is in. ${cuts} section${cuts !== 1 ? 's' : ''} just got yeeted.`,
-    `${state.userName} judged ${allCards.length} sections. Here's the damage report.`,
-    `Taste level: immaculate. ${ships} shipped, ${cuts} cut.`,
-  ];
-  $('results-sub').textContent = quips[Math.floor(Math.random() * quips.length)];
+  // Build stats
+  const statsEl = $('results-stats');
+  statsEl.innerHTML = `
+    <div class="stat-card">
+      <div class="stat-number accent">${avgScore}</div>
+      <div class="stat-label">Avg Score</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:var(--green)">${scoreCounts[4] + scoreCounts[5]}</div>
+      <div class="stat-label">Scored 4-5</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:var(--red)">${scoreCounts[1] + scoreCounts[2]}</div>
+      <div class="stat-label">Scored 1-2</div>
+    </div>
+  `;
+
+  $('results-sub').textContent = `${state.userName} reviewed ${count} sections. Average score: ${avgScore}/5.`;
 
   renderResultsList(currentFilter);
-
   $('progress-fill').style.width = '100%';
-
-  // Confetti
-  launchConfetti();
 }
 
 function renderResultsList(filter) {
   const allCards = getCardsForCurrentSession();
 
-  // Group by page type
   const grouped = {};
   allCards.forEach(c => {
     const v = state.votes[c.id];
     if (!v) return;
-    if (filter !== 'all' && v.vote !== filter) return;
+
+    if (filter === 'high' && v.score < 4) return;
+    if (filter === 'mid' && v.score !== 3) return;
+    if (filter === 'low' && v.score > 2) return;
 
     const type = c.id.startsWith('pdp') ? 'PDP' : 'Homepage';
     if (!grouped[type]) grouped[type] = [];
@@ -1338,7 +1231,6 @@ function renderResultsList(filter) {
   const list = $('results-list');
   list.innerHTML = '';
 
-  // Maintain order: Homepage then PDP
   ['Homepage', 'PDP'].forEach(type => {
     const cards = grouped[type];
     if (!cards || cards.length === 0) return;
@@ -1348,6 +1240,9 @@ function renderResultsList(filter) {
     header.textContent = type;
     list.appendChild(header);
 
+    // Sort by score descending
+    cards.sort((a, b) => (state.votes[b.id]?.score || 0) - (state.votes[a.id]?.score || 0));
+
     cards.forEach(c => {
       const v = state.votes[c.id];
       if (!v) return;
@@ -1355,7 +1250,7 @@ function renderResultsList(filter) {
       const item = document.createElement('div');
       item.className = 'result-item';
       item.innerHTML = `
-        <span class="verdict">${v.vote === 'ship' ? '&#x1F525;' : '&#x1F480;'}</span>
+        <div class="score-badge score-${v.score}">${v.score}</div>
         <div class="info">
           <div class="name">${c.section}: ${c.title}</div>
           <div class="desc">${c.desc}</div>
@@ -1408,12 +1303,20 @@ document.addEventListener('keydown', e => {
 $('copy-btn').addEventListener('click', () => {
   const allCards = getCardsForCurrentSession();
 
-  let text = `SECTION SHOWDOWN RESULTS\n`;
-  text += `Voter: ${state.userName}\n`;
+  let text = `SECTION REVIEW RESULTS\n`;
+  text += `Reviewer: ${state.userName}\n`;
   text += `Date: ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}\n`;
-  text += `${'─'.repeat(30)}\n\n`;
+  text += `${'─'.repeat(40)}\n\n`;
 
-  // Group by page type
+  const scoreLabel = (s) => {
+    if (s === 1) return '1 (Cut)';
+    if (s === 2) return '2';
+    if (s === 3) return '3 (Neutral)';
+    if (s === 4) return '4';
+    if (s === 5) return '5 (Love)';
+    return s;
+  };
+
   const grouped = {};
   allCards.forEach(c => {
     const type = c.id.startsWith('pdp') ? 'PDP' : 'Homepage';
@@ -1421,37 +1324,37 @@ $('copy-btn').addEventListener('click', () => {
     grouped[type].push(c);
   });
 
+  let totalScore = 0;
+  let count = 0;
+
   ['Homepage', 'PDP'].forEach(type => {
     const cards = grouped[type];
     if (!cards) return;
 
     text += `${type.toUpperCase()}\n`;
+    cards.sort((a, b) => (state.votes[b.id]?.score || 0) - (state.votes[a.id]?.score || 0));
     cards.forEach(c => {
       const v = state.votes[c.id];
       if (!v) return;
-      const emoji = v.vote === 'ship' ? '\u{1F525}' : '\u{1F480}';
-      text += `  ${emoji} ${c.section}: ${c.title}`;
+      totalScore += v.score;
+      count++;
+      const bar = '\u2588'.repeat(v.score) + '\u2591'.repeat(5 - v.score);
+      text += `  ${bar}  ${scoreLabel(v.score)}  ${c.section}: ${c.title}`;
       if (v.note) text += ` \u2014 "${v.note}"`;
       text += '\n';
     });
     text += '\n';
   });
 
-  let ships = 0, cuts = 0;
-  allCards.forEach(c => {
-    const v = state.votes[c.id];
-    if (v?.vote === 'ship') ships++;
-    if (v?.vote === 'cut') cuts++;
-  });
-  text += `${'─'.repeat(30)}\n`;
-  text += `TOTALS: \u{1F525} Ship ${ships}  |  \u{1F480} Cut ${cuts}\n`;
+  const avg = count > 0 ? (totalScore / count).toFixed(1) : '0';
+  text += `${'─'.repeat(40)}\n`;
+  text += `AVERAGE: ${avg}/5  |  ${count} sections reviewed\n`;
 
   navigator.clipboard.writeText(text).then(() => {
     const toast = $('copy-toast');
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 2200);
   }).catch(() => {
-    // Fallback
     const ta = document.createElement('textarea');
     ta.value = text;
     document.body.appendChild(ta);
@@ -1479,75 +1382,10 @@ $('restart-btn').addEventListener('click', () => {
   updateChooseScreen();
 });
 
-// ─── CONFETTI ───
-function launchConfetti() {
-  const canvas = $('confetti-canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+// Handle window resize
+window.addEventListener('resize', () => {});
 
-  const particles = [];
-  const colors = ['#6366f1', '#a78bfa', '#22c55e', '#f59e0b', '#ef4444', '#ec4899', '#06b6d4', '#fbbf24'];
-
-  for (let i = 0; i < 180; i++) {
-    particles.push({
-      x: canvas.width * 0.5 + (Math.random() - 0.5) * canvas.width * 0.6,
-      y: -20 - Math.random() * canvas.height * 0.5,
-      w: Math.random() * 10 + 4,
-      h: Math.random() * 6 + 2,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      vx: (Math.random() - 0.5) * 6,
-      vy: Math.random() * 3 + 2,
-      rotation: Math.random() * 360,
-      rotSpeed: (Math.random() - 0.5) * 15,
-      opacity: 1,
-      delay: Math.random() * 15,
-    });
-  }
-
-  let frame = 0;
-  function animate() {
-    frame++;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    let alive = false;
-    particles.forEach(p => {
-      if (p.delay > 0) { p.delay--; alive = true; return; }
-      if (p.opacity <= 0) return;
-      alive = true;
-
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += 0.1;
-      p.vx *= 0.99;
-      p.rotation += p.rotSpeed;
-
-      if (frame > 90) p.opacity -= 0.012;
-      p.opacity = Math.max(0, p.opacity);
-
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rotation * Math.PI / 180);
-      ctx.globalAlpha = p.opacity;
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-      ctx.restore();
-    });
-
-    if (alive) requestAnimationFrame(animate);
-    else ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-  requestAnimationFrame(animate);
-}
-
-// Handle window resize for confetti canvas
-window.addEventListener('resize', () => {
-  const canvas = $('confetti-canvas');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
-
-// ─── INIT ───
+// --- INIT ---
 loadState();
 
 if (state.userName) {
