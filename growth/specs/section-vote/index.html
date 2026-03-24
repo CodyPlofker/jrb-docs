@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>JRB Section Vote</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: #fafaf8; color: #000; overflow-x: hidden; min-height: 100dvh; }
+
+    /* ===== SCREENS ===== */
+    .screen { display: none; min-height: 100dvh; }
+    .screen--active { display: flex; flex-direction: column; }
+
+    /* ===== WELCOME ===== */
+    .welcome { align-items: center; justify-content: center; padding: 32px; text-align: center; }
+    .welcome__emoji { font-size: 64px; margin-bottom: 24px; animation: bounce 2s infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    .welcome__title { font-size: 32px; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
+    .welcome__sub { font-size: 16px; color: #666; margin-bottom: 40px; max-width: 360px; line-height: 1.5; }
+    .welcome__input { width: 100%; max-width: 320px; height: 52px; border: 2px solid #000; border-radius: 12px; font-family: inherit; font-size: 16px; font-weight: 500; padding: 0 20px; text-align: center; outline: none; transition: border-color .2s; margin-bottom: 16px; }
+    .welcome__input:focus { border-color: #000; box-shadow: 0 0 0 4px rgba(0,0,0,.08); }
+    .welcome__input::placeholder { color: #bbb; }
+
+    /* ===== PAGE CHOOSER ===== */
+    .chooser { align-items: center; justify-content: center; padding: 32px; text-align: center; }
+    .chooser__title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    .chooser__sub { font-size: 14px; color: #666; margin-bottom: 32px; }
+    .chooser__options { display: flex; gap: 16px; }
+    .chooser__option { width: 160px; padding: 32px 20px; border: 2px solid #eee; border-radius: 16px; background: #fff; cursor: pointer; transition: all .2s; text-align: center; }
+    .chooser__option:hover { border-color: #000; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+    .chooser__option-emoji { font-size: 40px; margin-bottom: 12px; }
+    .chooser__option-label { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .chooser__option-count { font-size: 12px; color: #999; margin-top: 4px; }
+
+    /* ===== VOTE AREA ===== */
+    .vote { padding: 0; position: relative; }
+
+    /* Progress */
+    .progress { padding: 16px 20px 12px; background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 10; }
+    .progress__bar-track { height: 4px; background: #eee; border-radius: 2px; margin-bottom: 8px; overflow: hidden; }
+    .progress__bar-fill { height: 100%; background: #000; border-radius: 2px; transition: width .4s cubic-bezier(.22, 1, .36, 1); }
+    .progress__text { display: flex; justify-content: space-between; font-size: 12px; color: #999; font-weight: 500; }
+    .progress__section { font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: .5px; font-size: 11px; }
+
+    /* Card */
+    .card-container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; perspective: 1000px; }
+    .card { width: 100%; max-width: 420px; background: #fff; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,.08); overflow: hidden; position: relative; transition: transform .5s cubic-bezier(.22, 1, .36, 1), opacity .4s; transform-origin: center bottom; user-select: none; }
+    .card--swiping-right { transform: translateX(120%) rotate(12deg); opacity: 0; }
+    .card--swiping-left { transform: translateX(-120%) rotate(-12deg); opacity: 0; }
+    .card--entering { animation: cardEnter .4s cubic-bezier(.22, 1, .36, 1); }
+    @keyframes cardEnter { from { transform: scale(.92) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+
+    .card__badge { position: absolute; top: 16px; left: 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 12px; border-radius: 6px; background: #000; color: #fff; z-index: 2; }
+    .card__badge--hp { background: #1a1a2e; }
+
+    .card__preview { width: 100%; aspect-ratio: 4/3; background: #f6f2eb; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .card__preview iframe { width: 200%; height: 200%; transform: scale(.5); transform-origin: top left; border: none; pointer-events: none; }
+    .card__preview-overlay { position: absolute; inset: 0; z-index: 1; }
+    .card__preview-link { position: absolute; bottom: 12px; right: 12px; z-index: 2; font-size: 11px; font-weight: 600; color: #fff; background: rgba(0,0,0,.6); padding: 6px 12px; border-radius: 6px; text-decoration: none; backdrop-filter: blur(8px); }
+
+    .card__body { padding: 24px; }
+    .card__section { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 6px; }
+    .card__title { font-size: 20px; font-weight: 700; letter-spacing: -.3px; margin-bottom: 8px; line-height: 1.3; }
+    .card__desc { font-size: 14px; color: #666; line-height: 1.5; margin-bottom: 16px; }
+    .card__note-toggle { font-size: 13px; color: #999; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .card__note-toggle:hover { color: #000; }
+    .card__note-area { margin-top: 12px; display: none; }
+    .card__note-area--open { display: block; }
+    .card__note-input { width: 100%; height: 72px; border: 1px solid #eee; border-radius: 10px; padding: 12px; font-family: inherit; font-size: 14px; resize: none; outline: none; transition: border-color .2s; }
+    .card__note-input:focus { border-color: #000; }
+
+    /* Vote indicator overlays */
+    .card__vote-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 80px; z-index: 5; transition: transform .2s cubic-bezier(.34, 1.56, .64, 1); pointer-events: none; }
+    .card__vote-overlay--visible { transform: translate(-50%, -50%) scale(1); }
+
+    /* Actions */
+    .actions { padding: 16px 20px 32px; display: flex; justify-content: center; gap: 16px; align-items: center; }
+    .action-btn { width: 72px; height: 72px; border-radius: 50%; border: none; cursor: pointer; font-size: 28px; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+    .action-btn:active { transform: scale(.9); }
+    .action-btn--cut { background: #fff0f0; color: #ff4444; border: 2px solid #ffdddd; }
+    .action-btn--cut:hover { background: #ff4444; color: #fff; border-color: #ff4444; }
+    .action-btn--ship { background: #f0fff0; color: #22cc44; border: 2px solid #ddffdd; }
+    .action-btn--ship:hover { background: #22cc44; color: #fff; border-color: #22cc44; }
+    .action-btn--skip { width: 48px; height: 48px; background: #f5f5f5; color: #999; font-size: 16px; border: 1px solid #eee; }
+    .action-btn--skip:hover { background: #eee; }
+
+    .actions__labels { display: flex; justify-content: center; gap: 80px; margin-top: -4px; padding-bottom: 8px; }
+    .actions__label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #ccc; }
+
+    /* ===== RESULTS ===== */
+    .results { padding: 32px 20px 60px; align-items: center; }
+    .results__header { text-align: center; margin-bottom: 32px; }
+    .results__emoji { font-size: 56px; margin-bottom: 16px; }
+    .results__title { font-size: 28px; font-weight: 800; letter-spacing: -.5px; margin-bottom: 8px; }
+    .results__sub { font-size: 14px; color: #666; }
+    .results__stats { display: flex; gap: 16px; margin-bottom: 32px; }
+    .results__stat { flex: 1; text-align: center; padding: 20px; background: #fff; border-radius: 12px; border: 1px solid #eee; }
+    .results__stat-num { font-size: 32px; font-weight: 800; }
+    .results__stat-num--ship { color: #22cc44; }
+    .results__stat-num--cut { color: #ff4444; }
+    .results__stat-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; }
+    .results__list { width: 100%; max-width: 480px; }
+    .results__section-header { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #999; margin: 24px 0 8px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+    .results__item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f5f5f5; }
+    .results__item-vote { font-size: 20px; flex-shrink: 0; }
+    .results__item-name { font-size: 14px; font-weight: 600; flex: 1; }
+    .results__item-note { font-size: 12px; color: #666; font-style: italic; margin-top: 2px; }
+    .results__actions { display: flex; gap: 12px; margin-top: 32px; width: 100%; max-width: 480px; }
+
+    /* Shared button */
+    .btn { height: 48px; border-radius: 12px; font-family: inherit; font-size: 14px; font-weight: 600; border: none; cursor: pointer; padding: 0 24px; transition: all .2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex: 1; }
+    .btn--primary { background: #000; color: #fff; }
+    .btn--primary:hover { background: #222; }
+    .btn--secondary { background: #fff; color: #000; border: 2px solid #eee; }
+    .btn--secondary:hover { border-color: #000; }
+
+    /* Confetti */
+    .confetti { position: fixed; top: -10px; z-index: 100; pointer-events: none; }
+    .confetti span { position: absolute; width: 8px; height: 8px; border-radius: 2px; animation: confettiFall 3s forwards; }
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px); background: #000; color: #fff; padding: 12px 24px; border-radius: 12px; font-size: 14px; font-weight: 500; z-index: 200; transition: transform .3s cubic-bezier(.22, 1, .36, 1); }
+    .toast--visible { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- WELCOME SCREEN -->
+  <div class="screen screen--active" id="screen-welcome">
+    <div class="welcome">
+      <div class="welcome__emoji">👋</div>
+      <h1 class="welcome__title">Section Vote</h1>
+      <p class="welcome__sub">Help us pick the best section designs for the new PDP and homepage. Swipe right to ship, left to cut.</p>
+      <input type="text" class="welcome__input" id="name-input" placeholder="Your name" autocomplete="off" autofocus>
+      <button class="btn btn--primary" style="width:100%;max-width:320px;" onclick="startVoting()">Let's go</button>
+    </div>
+  </div>
+
+  <!-- PAGE CHOOSER -->
+  <div class="screen" id="screen-chooser">
+    <div class="chooser">
+      <h2 class="chooser__title">What are we voting on?</h2>
+      <p class="chooser__sub">Pick a page to review its section variations.</p>
+      <div class="chooser__options">
+        <div class="chooser__option" onclick="loadPage('pdp')">
+          <div class="chooser__option-emoji">🧴</div>
+          <div class="chooser__option-label">PDP</div>
+          <div class="chooser__option-count">15 variations</div>
+        </div>
+        <div class="chooser__option" onclick="loadPage('homepage')">
+          <div class="chooser__option-emoji">🏠</div>
+          <div class="chooser__option-label">Homepage</div>
+          <div class="chooser__option-count">16 variations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOTING SCREEN -->
+  <div class="screen" id="screen-vote">
+    <div class="vote">
+      <div class="progress">
+        <div class="progress__bar-track"><div class="progress__bar-fill" id="progress-fill"></div></div>
+        <div class="progress__text">
+          <span class="progress__section" id="progress-section"></span>
+          <span id="progress-count"></span>
+        </div>
+      </div>
+      <div class="card-container">
+        <div class="card" id="vote-card">
+          <div class="card__badge" id="card-badge"></div>
+          <div class="card__preview" id="card-preview"></div>
+          <div class="card__vote-overlay" id="overlay-ship">🔥</div>
+          <div class="card__vote-overlay" id="overlay-cut">💀</div>
+          <div class="card__body">
+            <p class="card__section" id="card-section"></p>
+            <h3 class="card__title" id="card-title"></h3>
+            <p class="card__desc" id="card-desc"></p>
+            <div class="card__note-toggle" onclick="toggleNote()">
+              <span>📝</span> <span id="note-toggle-text">Add a note</span>
+            </div>
+            <div class="card__note-area" id="note-area">
+              <textarea class="card__note-input" id="note-input" placeholder="What would you change? Any thoughts?"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="action-btn action-btn--cut" onclick="vote('cut')" title="Cut it">💀</button>
+        <button class="action-btn action-btn--skip" onclick="vote('skip')" title="Skip">⏭️</button>
+        <button class="action-btn action-btn--ship" onclick="vote('ship')" title="Ship it">🔥</button>
+      </div>
+      <div class="actions__labels">
+        <span class="actions__label">Cut</span>
+        <span class="actions__label">Ship</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div class="screen" id="screen-results">
+    <div class="results">
+      <div class="results__header">
+        <div class="results__emoji" id="results-emoji">🎉</div>
+        <h2 class="results__title" id="results-title">Done!</h2>
+        <p class="results__sub" id="results-sub"></p>
+      </div>
+      <div class="results__stats" id="results-stats"></div>
+      <div class="results__list" id="results-list"></div>
+      <div class="results__actions">
+        <button class="btn btn--primary" onclick="copyResults()">📋 Copy Results</button>
+        <button class="btn btn--secondary" onclick="voteOtherPage()">Vote Other Page</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA =====
+const VARIATIONS = {
+  pdp: [
+    { section: 'Versatility — 4 Uses', id: 'pdp-3.1', title: 'Full model grid, routine focus', desc: 'Four model images showing each use (blush, bronzer, highlighter, all-over tint). No competitor prices — focuses on routine simplification and time savings.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+    { section: 'Versatility — 4 Uses', id: 'pdp-3.3', title: 'Contained editorial with overlays', desc: 'Compact editorial layout (not full-bleed). Feature cards with gradient overlays showing each use case. Significantly smaller footprint.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+    { section: 'Bobbi Credibility', id: 'pdp-4.1', title: 'Two-column with credentials', desc: 'Square Bobbi portrait + product-specific quote about why she made Miracle Balm. Credentials list. No CTA — pure authority.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+    { section: 'Bobbi Credibility', id: 'pdp-4.3', title: 'Dark editorial variant', desc: 'Black background, square Bobbi image, white text. Same product-specific content, more dramatic.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+    { section: 'Shade Match', id: 'pdp-6.1', title: 'Two-column with stats + quote', desc: 'Shade match stats (96% accuracy, 60 sec, 250K+ matches). Customer quote card flush below image. No swatches on page.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+    { section: 'Shade Match', id: 'pdp-6.3', title: 'Quiz-forward with steps', desc: 'Standard image (no phone mockup). Shows quiz steps and stats. Clean, design-system compliant.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+    { section: 'Ingredients', id: 'pdp-7.1', title: "What's in it vs What's not", desc: 'Two-column split: left shows 4 key ingredients with benefits, right shows excluded categories. Clean, scannable.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+    { section: 'Ingredients', id: 'pdp-7.2', title: 'Visual ingredient cards', desc: 'Cards for each key ingredient. Excluded items shown as clean rectangular tags (no pill shapes). 2,700+ excluded count prominent.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+    { section: 'UGC + Before/After', id: 'pdp-9.2', title: 'Slider before/afters (3 across)', desc: 'Three before/after slider comparisons across full width. No thumbnail images below. Clean, impactful proof.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+    { section: 'UGC + Before/After', id: 'pdp-9.3', title: 'B/A cards with copy below', desc: 'Before/after cards with customer quote + shade info below each. Small tags for shade and skin type.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+    { section: 'Product Spec', id: 'pdp-11.1', title: 'Spec table on warm bg', desc: 'Two-column: spec table (Good For, Feels Like, Looks Like, Smells Like, FYI) + square product image. Clean, scannable.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+    { section: 'Shade Guarantee', id: 'pdp-12.1', title: 'Policy cards with icons', desc: 'Warm background. Three policy cards: free exchanges, 30-day returns, expert shade help. Outline button.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+    { section: 'Shade Guarantee', id: 'pdp-12.2', title: 'Timeline flow', desc: 'Choose → Try → Swap/Return timeline. Warm background, outline buttons. Step-by-step guarantee process.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+    { section: 'Clinical Results', id: 'pdp-13.1', title: 'Image + stat list', desc: 'Square model image + vertical stat list (94%, 93%, 87%, 80%). Aspirational — study not yet commissioned.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+    { section: 'Clinical Results', id: 'pdp-13.2', title: 'Big stat cards', desc: 'Four large stat cards in a row. Bold Canela numbers. Warm background.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/pdp-sections/' },
+  ],
+  homepage: [
+    { section: 'Hero', id: 'hp-1.1', title: 'Brand-level split layout', desc: 'Left: brand headline + dual CTAs (Shop All + Take Quiz). Right: lifestyle image. Not product-specific.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'New Arrivals', id: 'hp-2.1', title: '4-product grid with review quotes', desc: 'Miracle Balm, Lip Recharge, WTF, Eyeshadow Stick. Product images, star ratings, review count, price, + italicized review quote under each.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'New Arrivals', id: 'hp-2.3', title: 'Horizontal scroll with quotes', desc: 'Scrollable product strip with same card format + review quotes. More browsable feel.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'Gift With Purchase', id: 'hp-gwp.1', title: 'Light gray promotional banner', desc: 'Free Miracle Balm Mini with $65+ order. Light gray background, black button, product image. No pink.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'Gift With Purchase', id: 'hp-gwp.2', title: 'Compact GWP strip', desc: 'Single-row compact banner version. Same offer, tighter footprint.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'Bobbi Section', id: 'hp-3.1', title: 'Image left + formulation quote', desc: 'Square Bobbi portrait + quote about why she started Jones Road. Warm background. Credentials.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'Bobbi Section', id: 'hp-3.2', title: 'Reversed layout', desc: 'Text left, square Bobbi image right. "She doesn\'t just wear the makeup. She makes it."', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'Bobbi Section', id: 'hp-3.3', title: 'Dark editorial variant', desc: 'Black background, square Bobbi image, white button. No pink. Quote about her career and Jones Road.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'Shop by Concern', id: 'hp-4.1', title: '"I want to..." interactive chooser', desc: 'Clickable concern buttons that swap the product grid below. Six options: Even Skin, Healthy Glow, etc. Interactive JS.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'Shop by Concern', id: 'hp-4.2', title: 'Image-backed concern cards', desc: 'Editorial photo cards with gradient overlays and concern labels. Hover zoom effect.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'Bestsellers', id: 'hp-5.1', title: 'Bestseller grid with proof', desc: 'Matches New Arrivals card pattern. Product images, ratings, prices, review counts. "Bestseller" badge.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'Find Your Shade', id: 'hp-7.1', title: 'Two-column, single CTA', desc: 'Left: headline + body + "Find My Shade" button. Right: square model image. No swatches. Generous spacing.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'Find Your Shade', id: 'hp-7.2', title: 'Alternate layout', desc: 'Different two-column arrangement. Same single CTA approach, no quiz/selfie split.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'Social Proof + Value', id: 'hp-9.1', title: 'Stats + review quotes', desc: '76K+ reviews, 2M+ products sold, 94% shade match, 4.8 avg rating. Three customer review cards below.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'Social Proof + Value', id: 'hp-9.2', title: 'Value props with messaging', desc: 'Stats woven into brand value props: Simpler Routine, Real Confidence, Clean Ingredients. Review quote at bottom.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+    { section: 'Routine Builder', id: 'hp-10.1', title: '4-step morning routine', desc: 'WTF → Miracle Balm → Eyeshadow Stick → Lip Recharge. Step numbers, product images, prices, "Shop the Routine" CTA.', previewUrl: 'https://codyplofker.github.io/jrb-docs/growth/specs/homepage-sections/' },
+  ]
+};
+
+// ===== STATE =====
+let voterName = '';
+let currentPage = '';
+let currentIndex = 0;
+let votes = [];
+let cards = [];
+
+// ===== NAVIGATION =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('screen--active'));
+  document.getElementById('screen-' + id).classList.add('screen--active');
+}
+
+function startVoting() {
+  const name = document.getElementById('name-input').value.trim();
+  if (!name) { document.getElementById('name-input').focus(); document.getElementById('name-input').style.borderColor = '#ff4444'; return; }
+  voterName = name;
+  showScreen('chooser');
+}
+
+document.getElementById('name-input').addEventListener('keydown', e => { if (e.key === 'Enter') startVoting(); });
+
+function loadPage(page) {
+  currentPage = page;
+  currentIndex = 0;
+  votes = [];
+  cards = VARIATIONS[page];
+  showScreen('vote');
+  renderCard();
+}
+
+// ===== CARD RENDERING =====
+function renderCard() {
+  if (currentIndex >= cards.length) { showResults(); return; }
+  const v = cards[currentIndex];
+  const pct = Math.round((currentIndex / cards.length) * 100);
+
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-section').textContent = v.section;
+  document.getElementById('progress-count').textContent = (currentIndex + 1) + ' of ' + cards.length;
+  document.getElementById('card-badge').textContent = currentPage === 'pdp' ? 'PDP' : 'Homepage';
+  document.getElementById('card-badge').className = 'card__badge' + (currentPage === 'homepage' ? ' card__badge--hp' : '');
+  document.getElementById('card-section').textContent = v.section;
+  document.getElementById('card-title').textContent = v.title;
+  document.getElementById('card-desc').textContent = v.desc;
+
+  // Preview
+  const preview = document.getElementById('card-preview');
+  preview.innerHTML = '<div class="card__preview-overlay"></div><a href="' + v.previewUrl + '" target="_blank" class="card__preview-link">View Full Design ↗</a>';
+  preview.style.background = '#f6f2eb';
+
+  // Reset note
+  document.getElementById('note-area').classList.remove('card__note-area--open');
+  document.getElementById('note-input').value = '';
+  document.getElementById('note-toggle-text').textContent = 'Add a note';
+
+  // Animate card in
+  const card = document.getElementById('vote-card');
+  card.className = 'card card--entering';
+}
+
+function toggleNote() {
+  const area = document.getElementById('note-area');
+  area.classList.toggle('card__note-area--open');
+  if (area.classList.contains('card__note-area--open')) {
+    document.getElementById('note-input').focus();
+    document.getElementById('note-toggle-text').textContent = 'Close note';
+  } else {
+    document.getElementById('note-toggle-text').textContent = 'Add a note';
+  }
+}
+
+// ===== VOTING =====
+function vote(type) {
+  const v = cards[currentIndex];
+  const note = document.getElementById('note-input').value.trim();
+  votes.push({ section: v.section, id: v.id, title: v.title, vote: type, note: note });
+
+  // Show overlay
+  const overlayId = type === 'ship' ? 'overlay-ship' : type === 'cut' ? 'overlay-cut' : null;
+  if (overlayId) {
+    const overlay = document.getElementById(overlayId);
+    overlay.classList.add('card__vote-overlay--visible');
+    setTimeout(() => overlay.classList.remove('card__vote-overlay--visible'), 400);
+  }
+
+  // Animate card out
+  const card = document.getElementById('vote-card');
+  if (type === 'ship') card.className = 'card card--swiping-right';
+  else if (type === 'cut') card.className = 'card card--swiping-left';
+
+  // Save to localStorage
+  saveVotes();
+
+  // Next card
+  currentIndex++;
+  setTimeout(renderCard, 350);
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (document.getElementById('screen-vote').classList.contains('screen--active')) {
+    if (document.activeElement === document.getElementById('note-input')) return;
+    if (e.key === 'ArrowRight' || e.key === 'l') vote('ship');
+    if (e.key === 'ArrowLeft' || e.key === 'h') vote('cut');
+    if (e.key === 'ArrowDown' || e.key === 's') vote('skip');
+    if (e.key === 'n') toggleNote();
+  }
+});
+
+// Touch swipe
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  if (!document.getElementById('screen-vote').classList.contains('screen--active')) return;
+  const diff = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(diff) > 80) {
+    if (diff > 0) vote('ship');
+    else vote('cut');
+  }
+});
+
+// ===== PERSISTENCE =====
+function saveVotes() {
+  const key = 'jrb-votes-' + voterName.toLowerCase().replace(/\s+/g, '-') + '-' + currentPage;
+  localStorage.setItem(key, JSON.stringify({ name: voterName, page: currentPage, votes: votes, timestamp: new Date().toISOString() }));
+}
+
+// ===== RESULTS =====
+function showResults() {
+  const shipped = votes.filter(v => v.vote === 'ship').length;
+  const cut = votes.filter(v => v.vote === 'cut').length;
+  const skipped = votes.filter(v => v.vote === 'skip').length;
+
+  document.getElementById('results-sub').textContent = voterName + ' voted on ' + cards.length + ' ' + (currentPage === 'pdp' ? 'PDP' : 'Homepage') + ' variations';
+
+  document.getElementById('results-stats').innerHTML = `
+    <div class="results__stat"><div class="results__stat-num results__stat-num--ship">${shipped}</div><div class="results__stat-label">Ship 🔥</div></div>
+    <div class="results__stat"><div class="results__stat-num results__stat-num--cut">${cut}</div><div class="results__stat-label">Cut 💀</div></div>
+    ${skipped ? '<div class="results__stat"><div class="results__stat-num">' + skipped + '</div><div class="results__stat-label">Skipped</div></div>' : ''}
+  `;
+
+  // Group by section
+  const sections = {};
+  votes.forEach(v => { if (!sections[v.section]) sections[v.section] = []; sections[v.section].push(v); });
+
+  let listHtml = '';
+  Object.entries(sections).forEach(([section, items]) => {
+    listHtml += '<div class="results__section-header">' + section + '</div>';
+    items.forEach(v => {
+      const emoji = v.vote === 'ship' ? '🔥' : v.vote === 'cut' ? '💀' : '⏭️';
+      listHtml += '<div class="results__item"><span class="results__item-vote">' + emoji + '</span><div><div class="results__item-name">' + v.title + '</div>' + (v.note ? '<div class="results__item-note">"' + v.note + '"</div>' : '') + '</div></div>';
+    });
+  });
+  document.getElementById('results-list').innerHTML = listHtml;
+
+  showScreen('results');
+  confetti();
+}
+
+function voteOtherPage() {
+  showScreen('chooser');
+}
+
+function copyResults() {
+  const shipped = votes.filter(v => v.vote === 'ship');
+  const cut = votes.filter(v => v.vote === 'cut');
+  const page = currentPage === 'pdp' ? 'PDP' : 'Homepage';
+
+  let text = `🗳️ ${voterName}'s ${page} Section Votes\n`;
+  text += `${'═'.repeat(40)}\n`;
+  text += `🔥 Ship: ${shipped.length} | 💀 Cut: ${cut.length}\n\n`;
+
+  const sections = {};
+  votes.forEach(v => { if (!sections[v.section]) sections[v.section] = []; sections[v.section].push(v); });
+
+  Object.entries(sections).forEach(([section, items]) => {
+    text += `${section}\n`;
+    items.forEach(v => {
+      const emoji = v.vote === 'ship' ? '🔥' : v.vote === 'cut' ? '💀' : '⏭️';
+      text += `  ${emoji} ${v.title}${v.note ? ' — "' + v.note + '"' : ''}\n`;
+    });
+    text += '\n';
+  });
+
+  navigator.clipboard.writeText(text).then(() => showToast('Copied! Paste in Slack 📋'));
+}
+
+// ===== CONFETTI =====
+function confetti() {
+  const container = document.createElement('div');
+  container.className = 'confetti';
+  const colors = ['#ff4444', '#22cc44', '#000', '#f6f2eb', '#ffcc00', '#4488ff'];
+  for (let i = 0; i < 60; i++) {
+    const span = document.createElement('span');
+    span.style.left = Math.random() * window.innerWidth + 'px';
+    span.style.background = colors[Math.floor(Math.random() * colors.length)];
+    span.style.animationDelay = Math.random() * .5 + 's';
+    span.style.animationDuration = (2 + Math.random() * 2) + 's';
+    span.style.width = (6 + Math.random() * 6) + 'px';
+    span.style.height = (6 + Math.random() * 6) + 'px';
+    container.appendChild(span);
+  }
+  document.body.appendChild(container);
+  setTimeout(() => container.remove(), 4000);
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('toast--visible');
+  setTimeout(() => t.classList.remove('toast--visible'), 2500);
+}
+</script>
+
+</body>
+</html>
