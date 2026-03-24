@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MB Quiz Analysis — Last 30 Days</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f8f8f8;
+    color: #1a1a1a;
+    line-height: 1.6;
+    padding: 40px 20px;
+  }
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    font-size: 15px;
+    color: #888;
+    margin-bottom: 40px;
+  }
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    padding-top: 40px;
+    border-top: 1px solid #e0e0e0;
+  }
+  h2:first-of-type { border-top: none; padding-top: 0; }
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 24px 0 12px;
+    color: #333;
+  }
+  p, li {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 12px;
+  }
+  ul { padding-left: 20px; margin-bottom: 16px; }
+  li { margin-bottom: 6px; }
+
+  /* Metric cards */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .metric-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .metric-card .label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #999;
+    margin-bottom: 4px;
+  }
+  .metric-card .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #000;
+  }
+  .metric-card .note {
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+    font-size: 14px;
+  }
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #888;
+    padding: 8px 12px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+  tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  .drop-high { color: #d63031; font-weight: 600; }
+  .drop-med { color: #e17055; font-weight: 600; }
+  .drop-low { color: #00b894; font-weight: 500; }
+
+  /* Drop-off bar */
+  .drop-bar-cell { position: relative; }
+  .drop-bar {
+    display: inline-block;
+    height: 8px;
+    border-radius: 4px;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  .drop-bar.red { background: #d63031; }
+  .drop-bar.orange { background: #e17055; }
+  .drop-bar.green { background: #00b894; }
+
+  /* Section cards */
+  .insight-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .insight-card.alert {
+    border-left: 4px solid #d63031;
+  }
+  .insight-card.info {
+    border-left: 4px solid #0984e3;
+  }
+  .insight-card.success {
+    border-left: 4px solid #00b894;
+  }
+  .insight-card h3 {
+    margin-top: 0;
+    font-size: 17px;
+    color: #000;
+  }
+
+  /* Recommendation list */
+  .rec-list {
+    counter-reset: rec;
+    list-style: none;
+    padding: 0;
+  }
+  .rec-list li {
+    counter-increment: rec;
+    padding: 16px 16px 16px 56px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .rec-list li::before {
+    content: counter(rec);
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    width: 28px;
+    height: 28px;
+    background: #000;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .rec-list li strong { color: #000; }
+
+  /* Shade distribution */
+  .shade-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .shade-label {
+    width: 120px;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .shade-bar-wrap {
+    flex: 1;
+    background: #f0f0f0;
+    height: 24px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-right: 12px;
+  }
+  .shade-bar {
+    height: 100%;
+    background: #e8b4b8;
+    border-radius: 4px;
+  }
+  .shade-pct {
+    width: 50px;
+    text-align: right;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* Customer profile grid */
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 640px) {
+    .profile-grid { grid-template-columns: 1fr; }
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .profile-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .profile-card h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #888;
+    margin-bottom: 12px;
+  }
+  .profile-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+  .profile-item .pct { font-weight: 600; }
+
+  .bottom-line {
+    background: #000;
+    color: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    margin-top: 32px;
+  }
+  .bottom-line h2 {
+    color: #fff;
+    border: none;
+    padding-top: 0;
+    margin-bottom: 12px;
+  }
+  .bottom-line p {
+    color: #ccc;
+    font-size: 15px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Miracle Balm Quiz Analysis</h1>
+<p class="subtitle">Last 30 days &middot; Feb 16 – Mar 16, 2026 &middot; JRB Quiz Flow</p>
+
+<!-- Top-line metrics -->
+<div class="metrics-grid">
+  <div class="metric-card">
+    <div class="label">Unique Starts</div>
+    <div class="value">70,429</div>
+    <div class="note">42,607 in last 7 days</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Completions</div>
+    <div class="value">33,881</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Completion Rate</div>
+    <div class="value">48.1%</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Avg. Time to Complete</div>
+    <div class="value">6m 52s</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Total Responses</div>
+    <div class="value">435,568</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Emails Captured</div>
+    <div class="value">~21,182</div>
+  </div>
+</div>
+
+<!-- Drop-off funnel -->
+<h2>Question-by-Question Funnel</h2>
+<p>Actual quiz questions have very low drop-off (0–4%). The massive leaks are on non-question interstitial screens — testimonials, confirmations, and summaries.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Screen</th>
+      <th>Views</th>
+      <th>Responses</th>
+      <th>Avg. Time</th>
+      <th>Drop-off</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Intro — Find your Miracle Balm Match</td>
+      <td>46,628</td>
+      <td>—</td>
+      <td>0s</td>
+      <td class="drop-low">0%</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Choose the shade family (skin_tone)</td>
+      <td>136,635</td>
+      <td>45,154</td>
+      <td>10.8s</td>
+      <td class="drop-low">0%</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>What's your skin type? (skin_type)</td>
+      <td>78,391</td>
+      <td>48,251</td>
+      <td>26s</td>
+      <td class="drop-low">0%</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Main skin concerns (main_concerns)</td>
+      <td>74,941</td>
+      <td>46,678</td>
+      <td>14.3s</td>
+      <td class="drop-low">4%</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Makeup routine (makeup_routine)</td>
+      <td>74,006</td>
+      <td>46,614</td>
+      <td>9.1s</td>
+      <td class="drop-low">1%</td>
+    </tr>
+    <tr style="background:#fff5f5;">
+      <td>6</td>
+      <td>Testimonial 1 (social_proof_1)</td>
+      <td>27,518</td>
+      <td>—</td>
+      <td>0s</td>
+      <td class="drop-high">63%</td>
+    </tr>
+    <tr style="background:#fff5f5;">
+      <td>7</td>
+      <td>Do you know your undertone? (undertone_question)</td>
+      <td>72,077</td>
+      <td>45,327</td>
+      <td>4.6s</td>
+      <td class="drop-high">47%</td>
+    </tr>
+    <tr style="background:#fff5f5;">
+      <td>8a</td>
+      <td>What is your undertone? (undertone_select)</td>
+      <td>35,216</td>
+      <td>14,077</td>
+      <td>4.6s</td>
+      <td class="drop-high">51%</td>
+    </tr>
+    <tr>
+      <td>8b</td>
+      <td>Which tones on your skin? (undertone_discover)</td>
+      <td>82,763</td>
+      <td>30,407</td>
+      <td>23.3s</td>
+      <td class="drop-low">0%</td>
+    </tr>
+    <tr style="background:#fff5f5;">
+      <td>9</td>
+      <td>We've Got Your Undertone (undertone_confirmation)</td>
+      <td>17,409</td>
+      <td>—</td>
+      <td>0s</td>
+      <td class="drop-high">79%</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>How old are you? (age)</td>
+      <td>66,800</td>
+      <td>42,387</td>
+      <td>6.1s</td>
+      <td class="drop-low">0%</td>
+    </tr>
+    <tr style="background:#fff5f5;">
+      <td>11</td>
+      <td>Review Answers (review_answers)</td>
+      <td>24,257</td>
+      <td>—</td>
+      <td>0s</td>
+      <td class="drop-high">64%</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Did You Know... (mb_education)</td>
+      <td>23,891</td>
+      <td>—</td>
+      <td>8.7s</td>
+      <td class="drop-low">2%</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Which uses interested in? (plan_to_use)</td>
+      <td>63,400</td>
+      <td>40,077</td>
+      <td>29.8s</td>
+      <td class="drop-low">0%</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>More personalized recs? (additional_recommendations)</td>
+      <td>52,955</td>
+      <td>30,324</td>
+      <td>10.3s</td>
+      <td class="drop-med">16%</td>
+    </tr>
+    <tr style="background:#fff5f5;">
+      <td>15</td>
+      <td>Testimonial 2 (social_proof_2)</td>
+      <td>22,372</td>
+      <td>—</td>
+      <td>4.3s</td>
+      <td class="drop-high">58%</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>What's Your Name? (name_input)</td>
+      <td>47,270</td>
+      <td>25,090</td>
+      <td>12.7s</td>
+      <td class="drop-low">0%</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>Email capture (email_input)</td>
+      <td>42,312</td>
+      <td>21,182</td>
+      <td>10.5s</td>
+      <td class="drop-med">10%</td>
+    </tr>
+    <tr style="background:#fff5f5;">
+      <td>18</td>
+      <td>Here's What You've Told Us (pre_results)</td>
+      <td>20,308</td>
+      <td>—</td>
+      <td>4.5s</td>
+      <td class="drop-high">52%</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>Ready to see results? (ready_confirmation)</td>
+      <td>19,359</td>
+      <td>—</td>
+      <td>6.7s</td>
+      <td class="drop-low">5%</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>Finding your best Match (loader)</td>
+      <td>19,150</td>
+      <td>—</td>
+      <td>6.1s</td>
+      <td class="drop-low">1%</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Key insight cards -->
+<h2>Key Findings</h2>
+
+<div class="insight-card alert">
+  <h3>Interstitial Screens Are Quiz Killers</h3>
+  <p>Every screen where the user doesn't need to <em>do</em> something has a massive drop-off. Testimonials (63%, 58%), confirmations (79%, 52%), and the review screen (64%) act as natural exit points. Users see content that isn't asking them to engage, and close the tab. <strong>These 5 screens alone account for the majority of lost completions.</strong></p>
+</div>
+
+<div class="insight-card alert">
+  <h3>The Undertone Section Is a Double Problem</h3>
+  <p>It's losing the most people <em>and</em> may not be adding much value:</p>
+  <ul>
+    <li>67% of users say they DON'T know their undertone</li>
+    <li>Of those who "discover" it, 56% land on neutral — the catch-all default</li>
+    <li>The flow spans 3 screens with cumulative drop-off stacking</li>
+    <li>The confirmation screen alone has a 79% drop-off — the worst in the entire quiz</li>
+  </ul>
+</div>
+
+<div class="insight-card info">
+  <h3>Result Distribution Is Highly Concentrated</h3>
+  <p><strong>73% of all completers get just 2 shades</strong> (Dusty Rose 42%, Flushed 31%). This could be legitimate given the audience skews light/fair/pale (71% of skin tone responses), but it's worth auditing whether the algorithm is over-indexing on these shades or if the quiz truly can't differentiate within that cohort.</p>
+</div>
+
+<div class="insight-card success">
+  <h3>Actual Questions Perform Well</h3>
+  <p>Skin type, skin concerns, makeup routine, age, and plan-to-use all have 0–4% drop-off. Users are happy to answer questions — they just don't want to be interrupted with non-interactive content between them.</p>
+</div>
+
+<!-- Shade distribution -->
+<h2>Result Distribution</h2>
+<div style="max-width:600px; margin-bottom: 32px;">
+  <div class="shade-row">
+    <div class="shade-label">Dusty Rose</div>
+    <div class="shade-bar-wrap"><div class="shade-bar" style="width:100%; background:#c4868a;"></div></div>
+    <div class="shade-pct">42%</div>
+  </div>
+  <div class="shade-row">
+    <div class="shade-label">Flushed</div>
+    <div class="shade-bar-wrap"><div class="shade-bar" style="width:73%; background:#d4878c;"></div></div>
+    <div class="shade-pct">31%</div>
+  </div>
+  <div class="shade-row">
+    <div class="shade-label">Au Naturel</div>
+    <div class="shade-bar-wrap"><div class="shade-bar" style="width:26%; background:#c9a888;"></div></div>
+    <div class="shade-pct">11%</div>
+  </div>
+  <div class="shade-row">
+    <div class="shade-label">Tawny</div>
+    <div class="shade-bar-wrap"><div class="shade-bar" style="width:10%; background:#b08968;"></div></div>
+    <div class="shade-pct">4%</div>
+  </div>
+  <div class="shade-row">
+    <div class="shade-label">Sunkissed</div>
+    <div class="shade-bar-wrap"><div class="shade-bar" style="width:7%; background:#c9975e;"></div></div>
+    <div class="shade-pct">3%</div>
+  </div>
+  <div class="shade-row">
+    <div class="shade-label">Magic Hour</div>
+    <div class="shade-bar-wrap"><div class="shade-bar" style="width:7%; background:#c4946e;"></div></div>
+    <div class="shade-pct">3%</div>
+  </div>
+  <div class="shade-row">
+    <div class="shade-label">Bronze</div>
+    <div class="shade-bar-wrap"><div class="shade-bar" style="width:5%; background:#8b6e4e;"></div></div>
+    <div class="shade-pct">2%</div>
+  </div>
+  <div class="shade-row">
+    <div class="shade-label">Happy Hour</div>
+    <div class="shade-bar-wrap"><div class="shade-bar" style="width:5%; background:#c07a6e;"></div></div>
+    <div class="shade-pct">2%</div>
+  </div>
+  <div class="shade-row">
+    <div class="shade-label">All Others</div>
+    <div class="shade-bar-wrap"><div class="shade-bar" style="width:5%; background:#ccc;"></div></div>
+    <div class="shade-pct">2%</div>
+  </div>
+</div>
+
+<!-- Customer profile -->
+<h2>Customer Profile</h2>
+<div class="profile-grid">
+  <div class="profile-card">
+    <h4>Age</h4>
+    <div class="profile-item"><span>45–60</span> <span class="pct">40%</span></div>
+    <div class="profile-item"><span>60+</span> <span class="pct">35%</span></div>
+    <div class="profile-item"><span>35–44</span> <span class="pct">17%</span></div>
+    <div class="profile-item"><span>26–34</span> <span class="pct">5%</span></div>
+    <div class="profile-item"><span>18–25</span> <span class="pct">2%</span></div>
+  </div>
+  <div class="profile-card">
+    <h4>Skin Type</h4>
+    <div class="profile-item"><span>Dry</span> <span class="pct">38%</span></div>
+    <div class="profile-item"><span>Combo</span> <span class="pct">34%</span></div>
+    <div class="profile-item"><span>Normal</span> <span class="pct">23%</span></div>
+    <div class="profile-item"><span>Oily</span> <span class="pct">5%</span></div>
+  </div>
+  <div class="profile-card">
+    <h4>Makeup Routine</h4>
+    <div class="profile-item"><span>Minimal</span> <span class="pct">49%</span></div>
+    <div class="profile-item"><span>Medium</span> <span class="pct">43%</span></div>
+    <div class="profile-item"><span>Full</span> <span class="pct">8%</span></div>
+  </div>
+  <div class="profile-card">
+    <h4>Skin Tone</h4>
+    <div class="profile-item"><span>Light</span> <span class="pct">33%</span></div>
+    <div class="profile-item"><span>Fair</span> <span class="pct">27%</span></div>
+    <div class="profile-item"><span>Light-Medium</span> <span class="pct">19%</span></div>
+    <div class="profile-item"><span>Pale</span> <span class="pct">11%</span></div>
+    <div class="profile-item"><span>Medium</span> <span class="pct">7%</span></div>
+  </div>
+  <div class="profile-card">
+    <h4>Top Skin Concerns</h4>
+    <div class="profile-item"><span>Fine lines</span> <span class="pct">#1</span></div>
+    <div class="profile-item"><span>Dark circles</span> <span class="pct">#2</span></div>
+    <div class="profile-item"><span>Dryness</span> <span class="pct">#3</span></div>
+    <div class="profile-item"><span>Uneven skin tone</span> <span class="pct">#4</span></div>
+    <div class="profile-item"><span>Redness</span> <span class="pct">#5</span></div>
+  </div>
+  <div class="profile-card">
+    <h4>Device &amp; Browser</h4>
+    <div class="profile-item"><span>Mobile</span> <span class="pct">84%</span></div>
+    <div class="profile-item"><span>Desktop</span> <span class="pct">16%</span></div>
+    <div class="profile-item" style="margin-top:8px; padding-top:8px; border-top:1px solid #eee;"><span>Safari</span> <span class="pct">71%</span></div>
+    <div class="profile-item"><span>Chrome</span> <span class="pct">23%</span></div>
+  </div>
+</div>
+
+<!-- Undertone breakdown -->
+<h2>Undertone Insights</h2>
+<div class="profile-grid">
+  <div class="profile-card">
+    <h4>"Do you know your undertone?"</h4>
+    <div class="profile-item"><span>No</span> <span class="pct">67%</span></div>
+    <div class="profile-item"><span>Yes</span> <span class="pct">33%</span></div>
+  </div>
+  <div class="profile-card">
+    <h4>Undertone Results (all paths combined)</h4>
+    <div class="profile-item"><span>Neutral</span> <span class="pct">~52%</span></div>
+    <div class="profile-item"><span>Pink</span> <span class="pct">~29%</span></div>
+    <div class="profile-item"><span>Yellow</span> <span class="pct">~18%</span></div>
+    <div class="profile-item"><span>Cool / Warm</span> <span class="pct">~1%</span></div>
+  </div>
+</div>
+
+<!-- Use cases -->
+<h2>Top Miracle Balm Use Cases</h2>
+<p style="margin-bottom:16px;">From "Which uses are you most interested in?" (multi-select, 40,077 responses):</p>
+<div style="max-width:500px;">
+  <div class="shade-row">
+    <div class="shade-label">All-over tint</div>
+    <div class="shade-bar-wrap"><div class="shade-bar" style="width:100%; background:#e8b4b8;"></div></div>
+    <div class="shade-pct">#1</div>
+  </div>
+  <div class="shade-row">
+    <div class="shade-label">Blush</div>
+    <div class="shade-bar-wrap"><div class="shade-bar" style="width:80%; background:#e8b4b8;"></div></div>
+    <div class="shade-pct">#2</div>
+  </div>
+  <div class="shade-row">
+    <div class="shade-label">Bronzer</div>
+    <div class="shade-bar-wrap"><div class="shade-bar" style="width:55%; background:#e8b4b8;"></div></div>
+    <div class="shade-pct">#3</div>
+  </div>
+  <div class="shade-row">
+    <div class="shade-label">Colorless Glow</div>
+    <div class="shade-bar-wrap"><div class="shade-bar" style="width:45%; background:#e8b4b8;"></div></div>
+    <div class="shade-pct">#4</div>
+  </div>
+  <div class="shade-row">
+    <div class="shade-label">Highlighter</div>
+    <div class="shade-bar-wrap"><div class="shade-bar" style="width:35%; background:#e8b4b8;"></div></div>
+    <div class="shade-pct">#5</div>
+  </div>
+</div>
+
+<!-- Recommendations -->
+<h2>Recommendations</h2>
+<ol class="rec-list">
+  <li><strong>Remove or inline the testimonial screens.</strong> Two screens with 63% and 58% drop-off that add no quiz logic. If you need social proof, embed it as a small element within a question screen — not as a standalone step that interrupts the flow.</li>
+  <li><strong>Kill the "Review Answers" screen.</strong> 64% drop-off for zero utility. Users want results, not a summary of what they already told you.</li>
+  <li><strong>Remove the "Pre-Results" summary.</strong> 52% drop-off right before the finish line. Go straight from email capture to the loader/results.</li>
+  <li><strong>Compress the undertone flow from 3 screens to 1.</strong> A single visual undertone selector with inline education would replace the question → select/discover → confirmation chain. Given most people don't know their undertone and most results land on "neutral," evaluate whether this signal is even moving the needle on shade recommendations.</li>
+  <li><strong>Consider moving email capture earlier.</strong> Currently at step 17, only ~21K emails captured from 70K starts. Moving it right after the core questions (skin type, concerns, routine) would significantly increase capture volume.</li>
+  <li><strong>Audit the shade algorithm.</strong> 73% of results landing on 2 shades either means the algorithm isn't granular enough, or the quiz questions aren't creating enough differentiation to separate Dusty Rose from Flushed candidates.</li>
+</ol>
+
+<!-- Bottom line -->
+<div class="bottom-line">
+  <h2>Bottom Line</h2>
+  <p>The actual quiz questions perform excellently — people are happy to answer. The problem is everything <em>between</em> the questions. Testimonials, confirmations, reviews, and summaries are acting as exit ramps. Stripping those interstitials out could realistically lift completion rate from 48% to 60–65% and increase email captures proportionally — potentially an additional 8,000–12,000 emails per month.</p>
+</div>
+
+</div>
+</body>
+</html>
