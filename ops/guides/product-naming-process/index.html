@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JRB Product Naming Process</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #FAF9F7;
+    color: #1a1a1a;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 32px;
+    font-weight: 400;
+  }
+  .meta-badges {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+  .owner-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #f0ebe4;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #6b5c4c;
+  }
+  .owner-badge span {
+    font-weight: 600;
+    margin-left: 4px;
+  }
+  .channel-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #e4ecf4;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #3a5f8a;
+  }
+  .channel-badge span {
+    font-weight: 600;
+    margin-left: 4px;
+  }
+  .updated-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #f0f7f0;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #3a6b3a;
+  }
+  /* Flow */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .step {
+    width: 100%;
+    max-width: 680px;
+    background: white;
+    border: 1px solid #e8e4df;
+    border-radius: 16px;
+    padding: 28px 32px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .step:hover {
+    border-color: #c4b9ab;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transform: translateY(-1px);
+  }
+  .step.active {
+    border-color: #8B7355;
+    box-shadow: 0 4px 24px rgba(139,115,85,0.15);
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f5f0ea;
+    color: #8B7355;
+    font-weight: 700;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+  .step.active .step-number {
+    background: #8B7355;
+    color: white;
+  }
+  .step-title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    flex: 1;
+  }
+  .step-toggle {
+    font-size: 20px;
+    color: #bbb;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+  .step.active .step-toggle {
+    transform: rotate(180deg);
+    color: #8B7355;
+  }
+  .step-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  .step.active .step-details {
+    max-height: 500px;
+    opacity: 1;
+  }
+  .step-content {
+    padding-top: 20px;
+    margin-left: 56px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #555;
+  }
+  .step-content p {
+    margin-bottom: 10px;
+  }
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+  }
+  .tag-ai {
+    background: #e8f4f0;
+    color: #2d7a5f;
+  }
+  .tag-review {
+    background: #fdf0e2;
+    color: #a0712a;
+  }
+  .tag-decision {
+    background: #f0e4f4;
+    color: #7a4a8f;
+  }
+  .tag-customer {
+    background: #e4ecf4;
+    color: #3a5f8a;
+  }
+  .tag-legal {
+    background: #fce4e4;
+    color: #8a3a3a;
+  }
+  .tag-new {
+    background: #e8f4e8;
+    color: #2d6b2d;
+    border: 1px dashed #2d6b2d;
+  }
+  .people {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .person {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #faf8f5;
+    border: 1px solid #ece7e0;
+    border-radius: 20px;
+    padding: 4px 12px 4px 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #5a5046;
+  }
+  .person-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .dot-katie { background: #d4a574; }
+  .dot-cody { background: #7a9ec2; }
+  .dot-bobbi { background: #b07aaa; }
+  .dot-product { background: #7ab07a; }
+  .dot-marketing { background: #c27a7a; }
+  .dot-cab { background: #7ac2b8; }
+  .dot-claude { background: #2d7a5f; }
+  .dot-gabriela { background: #c2a77a; }
+  .dot-legal { background: #c27a7a; }
+  /* Connector */
+  .connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 40px;
+    position: relative;
+  }
+  .connector-line {
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, #d4cfc7, #c4b9ab);
+  }
+  .connector-arrow {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #c4b9ab;
+    margin-top: -1px;
+  }
+  /* Gate markers */
+  .gate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 0;
+    width: 100%;
+    max-width: 680px;
+  }
+  .gate-line {
+    height: 1px;
+    flex: 1;
+    background: repeating-linear-gradient(90deg, #d4cfc7 0px, #d4cfc7 6px, transparent 6px, transparent 12px);
+  }
+  .gate-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #b0a798;
+    white-space: nowrap;
+  }
+  /* Open question callout */
+  .callout {
+    width: 100%;
+    max-width: 680px;
+    background: #fffbf2;
+    border: 1px dashed #e0c882;
+    border-radius: 12px;
+    padding: 20px 28px;
+    margin-top: 8px;
+  }
+  .callout-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #a08030;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .callout-items {
+    font-size: 13px;
+    color: #7a6a40;
+    line-height: 1.8;
+  }
+  .callout-items li {
+    margin-left: 18px;
+  }
+  /* Legend */
+  .legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #e8e4df;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #999;
+  }
+  /* Skill status indicators */
+  .skill-status {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #f0ebe4;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .skill {
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px;
+    border-radius: 8px;
+  }
+  .skill.exists {
+    background: #f0f7f0;
+    color: #3a6b3a;
+  }
+  .skill.exists span {
+    font-size: 10px;
+    font-weight: 700;
+    background: #d4ead4;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+  .skill.needed {
+    background: #fff5f0;
+    color: #8a4a2a;
+  }
+  .skill.needed span {
+    font-size: 10px;
+    font-weight: 700;
+    background: #fde0d0;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+  /* Change note */
+  .change-note {
+    font-size: 11px;
+    color: #2d6b2d;
+    background: #f0f7f0;
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .change-note::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #2d6b2d;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  @media (max-width: 600px) {
+    .step { padding: 20px; }
+    .step-content { margin-left: 0; margin-top: 12px; }
+    h1 { font-size: 22px; }
+    .meta-badges { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Product Naming Process</h1>
+  <p class="subtitle">Jones Road Beauty — Click each step for details</p>
+  <div class="meta-badges">
+    <div class="owner-badge">Process Owner:<span>Katie</span></div>
+    <div class="channel-badge">Slack Channel:<span>#naming (creating)</span></div>
+    <div class="updated-badge">Updated 3/25/26</div>
+  </div>
+  <div class="flow">
+
+    <!-- Step 1: Naming Brief -->
+    <div class="step" onclick="toggle(this)">
+      <div class="step-header">
+        <div class="step-number">1</div>
+        <div class="step-title">Naming Brief</div>
+        <div class="step-toggle">&#9662;</div>
+      </div>
+      <div class="step-details">
+        <div class="step-content">
+          <div style="margin-bottom: 12px;">
+            <span class="tag tag-ai">AI-Assisted</span>
+            <span class="tag tag-review">Research</span>
+          </div>
+          <p>Build a comprehensive brief that includes consumer insights, competitor naming landscape, ingredients, and product positioning. Use Claude to generate:</p>
+          <p><strong>Consumer insights</strong> — what customers care about and look for in this product category.</p>
+          <p><strong>Competitor insights</strong> — how competitors name similar products, white space in the market.</p>
+          <p><strong>Ingredients</strong> — key ingredients, hero ingredients, and how they translate into naming language.</p>
+          <p><strong>Product positioning</strong> — where this product fits in the JRB lineup, key claims, and differentiators.</p>
+          <div class="people">
+            <div class="person"><div class="person-dot dot-katie"></div>Katie</div>
+            <div class="person"><div class="person-dot dot-claude"></div>Claude</div>
+          </div>
+          <div class="skill-status">
+            <div class="skill exists">Consumer Insights Skill <span>EXISTS</span></div>
+            <div class="skill needed">Competitor Insights Skill <span>NEEDS BUILD</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+    <!-- Step 2: Name Generation -->
+    <div class="step" onclick="toggle(this)">
+      <div class="step-header">
+        <div class="step-number">2</div>
+        <div class="step-title">Name Generation</div>
+        <div class="step-toggle">&#9662;</div>
+      </div>
+      <div class="step-details">
+        <div class="step-content">
+          <div style="margin-bottom: 12px;">
+            <span class="tag tag-ai">AI-Assisted</span>
+          </div>
+          <p>A dedicated Claude product naming skill runs the brief through multiple naming frameworks to produce a broad draft list of candidates.</p>
+          <p>Frameworks may include: descriptive, evocative, metaphorical, invented words, benefit-led, and ingredient-inspired approaches.</p>
+          <div class="people">
+            <div class="person"><div class="person-dot dot-katie"></div>Katie</div>
+            <div class="person"><div class="person-dot dot-claude"></div>Claude</div>
+          </div>
+          <div class="skill-status">
+            <div class="skill needed">Product Naming Skill <span>NEEDS BUILD</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+    <div class="gate"><div class="gate-line"></div><div class="gate-label">Gate 1 — First Filter</div><div class="gate-line"></div></div>
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+    <!-- Step 3: Katie + Cody Review -->
+    <div class="step" onclick="toggle(this)">
+      <div class="step-header">
+        <div class="step-number">3</div>
+        <div class="step-title">Katie + Cody Review & Shortlist</div>
+        <div class="step-toggle">&#9662;</div>
+      </div>
+      <div class="step-details">
+        <div class="step-content">
+          <div style="margin-bottom: 12px;">
+            <span class="tag tag-review">Review</span>
+          </div>
+          <p>Katie and Cody review the draft list together. Filter for names that fit the brand, aren't confusing, and feel right for the product.</p>
+          <p>Narrow down to a shortlist of top candidates to move forward.</p>
+          <div class="people">
+            <div class="person"><div class="person-dot dot-katie"></div>Katie</div>
+            <div class="person"><div class="person-dot dot-cody"></div>Cody</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+    <!-- Step 4: Legal / Trademark Screen (NEW) -->
+    <div class="step" onclick="toggle(this)">
+      <div class="step-header">
+        <div class="step-number">4</div>
+        <div class="step-title">Legal / Trademark Screen</div>
+        <div class="step-toggle">&#9662;</div>
+      </div>
+      <div class="step-details">
+        <div class="step-content">
+          <div style="margin-bottom: 12px;">
+            <span class="tag tag-legal">Legal</span>
+            <span class="tag tag-new">New Step</span>
+          </div>
+          <p>Run the shortlisted names through legal and trademark screening before they go any further. This prevents anyone from falling in love with a name that's already taken.</p>
+          <p>Previously this happened after Bobbi signed off. Moving it earlier avoids wasted time and emotional attachment to unavailable names.</p>
+          <div class="people">
+            <div class="person"><div class="person-dot dot-katie"></div>Katie</div>
+            <div class="person"><div class="person-dot dot-cody"></div>Cody</div>
+            <div class="person"><div class="person-dot dot-legal"></div>Legal</div>
+          </div>
+          <div class="change-note">Moved earlier per Katie + Cody alignment (3/25)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+    <div class="gate"><div class="gate-line"></div><div class="gate-label">Gate 2 — Legal Clear</div><div class="gate-line"></div></div>
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+    <!-- Step 5: Customer Advisory Board -->
+    <div class="step" onclick="toggle(this)">
+      <div class="step-header">
+        <div class="step-number">5</div>
+        <div class="step-title">Customer Advisory Board</div>
+        <div class="step-toggle">&#9662;</div>
+      </div>
+      <div class="step-details">
+        <div class="step-content">
+          <div style="margin-bottom: 12px;">
+            <span class="tag tag-customer">Customer Input</span>
+          </div>
+          <p>Test the shortlisted names with the customer advisory board. Get real customer signal on which names resonate, feel on-brand, and communicate the right thing about the product.</p>
+          <p>Katie runs the CAB step with Gabriela assisting. Runs once Katie and Cody align post-Claude suggestions.</p>
+          <div class="people">
+            <div class="person"><div class="person-dot dot-cab"></div>Customer Advisory Board</div>
+            <div class="person"><div class="person-dot dot-katie"></div>Katie</div>
+            <div class="person"><div class="person-dot dot-gabriela"></div>Gabriela</div>
+          </div>
+          <div class="change-note">Moved before Bobbi review — CAB input can help inform her decision</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+    <div class="gate"><div class="gate-line"></div><div class="gate-label">Gate 3 — Customer Validation</div><div class="gate-line"></div></div>
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+    <!-- Step 6: Bobbi Review -->
+    <div class="step" onclick="toggle(this)">
+      <div class="step-header">
+        <div class="step-number">6</div>
+        <div class="step-title">Bobbi Review</div>
+        <div class="step-toggle">&#9662;</div>
+      </div>
+      <div class="step-details">
+        <div class="step-content">
+          <div style="margin-bottom: 12px;">
+            <span class="tag tag-decision">Decision</span>
+          </div>
+          <p>Cody brings the shortlist to Bobbi along with CAB feedback. Bobbi weighs in on brand fit, gut feel, and any names she loves or wants to cut.</p>
+          <p>Names now have legal clearance and customer validation behind them.</p>
+          <div class="people">
+            <div class="person"><div class="person-dot dot-cody"></div>Cody</div>
+            <div class="person"><div class="person-dot dot-bobbi"></div>Bobbi</div>
+          </div>
+          <div class="change-note">Now comes after CAB — Bobbi sees customer data alongside names</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+    <!-- Step 7: Marketing Team Review -->
+    <div class="step" onclick="toggle(this)">
+      <div class="step-header">
+        <div class="step-number">7</div>
+        <div class="step-title">Marketing Team Review</div>
+        <div class="step-toggle">&#9662;</div>
+      </div>
+      <div class="step-details">
+        <div class="step-content">
+          <div style="margin-bottom: 12px;">
+            <span class="tag tag-review">Review</span>
+          </div>
+          <p>Marketing team evaluates the name(s) from a go-to-market perspective — how it works in ads, email, social, and on the website.</p>
+          <p>Considers SEO implications, campaign-ability, and how the name pairs with existing product names in the JRB portfolio.</p>
+          <div class="people">
+            <div class="person"><div class="person-dot dot-marketing"></div>Marketing Team</div>
+          </div>
+          <div class="change-note">Timing still TBD — Katie and Cody both torn on exact placement</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+    <div class="gate"><div class="gate-line"></div><div class="gate-label">Gate 4 — Final Approval</div><div class="gate-line"></div></div>
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+    <!-- Step 8: Final Sign-Off -->
+    <div class="step" onclick="toggle(this)">
+      <div class="step-header">
+        <div class="step-number">8</div>
+        <div class="step-title">Bobbi + Cody Final Sign-Off</div>
+        <div class="step-toggle">&#9662;</div>
+      </div>
+      <div class="step-details">
+        <div class="step-content">
+          <div style="margin-bottom: 12px;">
+            <span class="tag tag-decision">Final Decision</span>
+          </div>
+          <p>Bobbi and Cody give simultaneous final sign-off on the chosen name. This is the last gate before the name is locked and handed off for launch execution.</p>
+          <div class="people">
+            <div class="person"><div class="person-dot dot-bobbi"></div>Bobbi</div>
+            <div class="person"><div class="person-dot dot-cody"></div>Cody</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Open questions -->
+    <div class="callout" style="margin-top: 40px;">
+      <div class="callout-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#a08030" stroke-width="1.5"/><text x="8" y="12" text-anchor="middle" font-size="11" font-weight="700" fill="#a08030">?</text></svg>
+        Open Questions
+      </div>
+      <ul class="callout-items">
+        <li><strong>Marketing review timing</strong> — Before, after, or parallel to CAB? Both Katie and Cody are torn on this.</li>
+        <li><strong>How many names advance?</strong> — How big is the shortlist at each gate? Does the CAB see 3 finalists or 1 recommendation?</li>
+        <li><strong>Naming channel membership</strong> — Confirmed: Katie, Cody, Chrissy. TBD: Sam O? Payal and/or Kirsten from marketing?</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><span class="tag tag-ai" style="margin:0;">AI-Assisted</span> Claude helps</div>
+    <div class="legend-item"><span class="tag tag-review" style="margin:0;">Review</span> Team evaluates</div>
+    <div class="legend-item"><span class="tag tag-decision" style="margin:0;">Decision</span> Approval gate</div>
+    <div class="legend-item"><span class="tag tag-customer" style="margin:0;">Customer</span> External input</div>
+    <div class="legend-item"><span class="tag tag-legal" style="margin:0;">Legal</span> Trademark check</div>
+  </div>
+</div>
+
+<script>
+function toggle(el) {
+  const wasActive = el.classList.contains('active');
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  if (!wasActive) el.classList.add('active');
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('.step').classList.add('active');
+});
+</script>
+</body>
+</html>
