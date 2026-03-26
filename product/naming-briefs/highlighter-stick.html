@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naming Brief — Highlighter Stick</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..400&family=Instrument+Serif:ital@0;1&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #f7f6f3;
+    color: #1d1d1b;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #1d1d1b;
+    color: #fff;
+    padding: 40px 48px 0;
+  }
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 32px;
+  }
+  .header h1 {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+  }
+  .header-sub {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(255,255,255,.4);
+    letter-spacing: .3px;
+    margin-top: 6px;
+  }
+  .header-pills {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .pill {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    padding: 5px 14px 4px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .pill--owner { background: rgba(255,255,255,.08); color: rgba(255,255,255,.55); }
+  .pill--date  { background: rgba(255,255,255,.06); color: rgba(255,255,255,.35); }
+  .pill--status { background: rgba(80,160,100,.15); color: #6ec87e; }
+
+  /* ── Tabs ── */
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-top: 4px;
+  }
+  .tab {
+    padding: 14px 28px 13px;
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: .2px;
+    color: rgba(255,255,255,.35);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color .2s, border-color .2s;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tab:hover { color: rgba(255,255,255,.65); }
+  .tab.active {
+    color: #fff;
+    border-bottom-color: #c9a87c;
+  }
+  .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot--ready   { background: #6ec87e; }
+  .dot--pending { background: #e8b44a; }
+  .dot--empty   { background: rgba(255,255,255,.2); }
+
+  /* ── Content wrapper ── */
+  .content {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 48px 48px 64px;
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── Typography ── */
+  .label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #a09788;
+    margin-bottom: 18px;
+  }
+  .heading {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: -0.3px;
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+  .subtext {
+    font-size: 14px;
+    color: #7a7572;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-bottom: 36px;
+  }
+
+  /* ── Key Finding ── */
+  .key-finding {
+    background: #eee9e0;
+    border-radius: 14px;
+    padding: 32px 36px;
+    margin-bottom: 48px;
+  }
+  .key-finding .label { color: #8b7a66; margin-bottom: 14px; }
+  .key-finding p {
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: #3a3632;
+  }
+  .key-finding strong { color: #1d1d1b; font-weight: 600; }
+
+  /* ── Takeaway cards ── */
+  .takeaways {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+  .takeaway {
+    background: #fff;
+    border: 1px solid #e6e2dc;
+    border-radius: 12px;
+    padding: 24px 24px 22px;
+  }
+  .takeaway-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 10px 2px;
+    border-radius: 100px;
+    margin-bottom: 14px;
+  }
+  .takeaway-badge--opportunity { background: #e3f0eb; color: #3c7a5c; }
+  .takeaway-badge--advantage   { background: #e2eaf5; color: #4a6a94; }
+  .takeaway-badge--risk        { background: #f5ebdc; color: #8a6d3e; }
+  .takeaway h3 {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 10px;
+    letter-spacing: -0.1px;
+  }
+  .takeaway p {
+    font-size: 13px;
+    line-height: 1.65;
+    color: #6b6662;
+  }
+
+  /* ── Competitor table ── */
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 56px;
+    font-size: 13px;
+  }
+  .comp-table thead { border-bottom: 1px solid #d8d3cc; }
+  .comp-table th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: #a09788;
+    padding: 0 16px 10px;
+  }
+  .comp-table td {
+    padding: 13px 16px;
+    border-bottom: 1px solid #edebe7;
+    vertical-align: middle;
+  }
+  .comp-table tbody tr:last-child td { border-bottom: none; }
+  .comp-table .brand {
+    font-weight: 500;
+    color: #7a7572;
+    font-size: 12px;
+    letter-spacing: .2px;
+  }
+  .comp-table .product-name { font-weight: 600; color: #1d1d1b; }
+  .comp-table .price { color: #a09788; font-variant-numeric: tabular-nums; }
+  .comp-table .format { color: #7a7572; }
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .4px;
+    padding: 3px 10px 2px;
+    border-radius: 100px;
+    background: #f0ece6;
+    color: #8b7a66;
+    white-space: nowrap;
+  }
+  .tag--crowded { background: #f8e4e4; color: #945454; }
+  .tag--open    { background: #e3f0eb; color: #3c7a5c; }
+
+  /* ── Pattern breakdown ── */
+  .patterns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 56px;
+  }
+  .pat {
+    background: #fff;
+    border: 1px solid #e6e2dc;
+    border-radius: 10px;
+    padding: 20px 22px;
+  }
+  .pat.is-crowded { border-color: #e8c8c8; }
+  .pat.is-open    { border-color: #b8d8c6; }
+  .pat-top {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .pat-count {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: #a09788;
+    line-height: 1;
+  }
+  .pat.is-crowded .pat-count { color: #945454; }
+  .pat.is-open    .pat-count { color: #3c7a5c; }
+  .pat-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1d1d1b;
+  }
+  .pat-examples {
+    font-size: 12px;
+    color: #9a948e;
+    line-height: 1.55;
+  }
+
+  /* ── Competitor profiles ── */
+  .profiles {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 56px;
+  }
+  .profile {
+    background: #fff;
+    border: 1px solid #e6e2dc;
+    border-radius: 12px;
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .profile-brand {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: #7a7572;
+    margin-bottom: 4px;
+  }
+  .profile-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: #1d1d1b;
+    letter-spacing: -0.2px;
+    margin-bottom: 6px;
+  }
+  .profile-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 0;
+  }
+  .profile-meta .tag { font-size: 9px; }
+  .profile-thesis {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1d1d1b;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+  .profile-body {
+    font-size: 13px;
+    color: #6b6662;
+    line-height: 1.65;
+  }
+  .profile-claims {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .claim-pill {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .3px;
+    padding: 3px 10px 2px;
+    border-radius: 100px;
+    background: #f0ece6;
+    color: #7a7572;
+  }
+
+  /* ── Positioning map ── */
+  .pos-map {
+    background: #fff;
+    border: 1px solid #e6e2dc;
+    border-radius: 14px;
+    padding: 32px;
+    margin-bottom: 56px;
+  }
+  .pos-map .label { margin-bottom: 20px; }
+  .pos-axes {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2 / 1.2;
+    margin-bottom: 16px;
+  }
+  .pos-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #c9a87c;
+    transform: translate(-50%, -50%);
+  }
+  .pos-dot.is-jrb {
+    width: 14px;
+    height: 14px;
+    background: #1d1d1b;
+    box-shadow: 0 0 0 3px rgba(29,29,27,.15);
+    z-index: 2;
+  }
+  .pos-dot-label {
+    position: absolute;
+    font-size: 10px;
+    font-weight: 500;
+    color: #7a7572;
+    white-space: nowrap;
+    transform: translate(-50%, 0);
+    margin-top: 14px;
+  }
+  .pos-dot.is-jrb + .pos-dot-label { color: #1d1d1b; font-weight: 600; }
+
+  /* ── Price comparison ── */
+  .price-bar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 56px;
+  }
+  .price-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 50px;
+    align-items: center;
+    gap: 12px;
+  }
+  .price-row .brand {
+    font-size: 11px;
+    font-weight: 500;
+    color: #7a7572;
+    text-align: right;
+    letter-spacing: .2px;
+  }
+  .price-bar-bg {
+    height: 20px;
+    background: #edebe7;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .price-bar {
+    height: 100%;
+    background: #c9a87c;
+    border-radius: 4px;
+    transition: width .3s ease;
+  }
+  .price-bar.is-jrb { background: #1d1d1b; }
+  .price-row .price-val {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1d1d1b;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Avoid words ── */
+  .avoid-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 56px;
+  }
+  .avoid-word {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8e4e4;
+    border-radius: 100px;
+    padding: 5px 14px 4px 11px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #1d1d1b;
+  }
+  .avoid-word .x { color: #c07070; font-weight: 600; font-size: 11px; }
+  .avoid-word .owner { color: #b0a098; font-size: 11px; margin-left: 2px; }
+
+  /* ── White space directions ── */
+  .directions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 56px;
+  }
+  .dir {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    background: #fff;
+    border: 1px solid #e6e2dc;
+    border-radius: 12px;
+    padding: 24px 28px;
+  }
+  .dir-num {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #eee9e0;
+    color: #8b7a66;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+  .dir h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: -0.1px;
+  }
+  .dir p {
+    font-size: 13px;
+    color: #6b6662;
+    line-height: 1.65;
+  }
+
+  /* ── Pending state ── */
+  .pending-state {
+    text-align: center;
+    padding: 100px 40px;
+  }
+  .pending-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #eee9e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 20px;
+    opacity: .5;
+  }
+  .pending-state h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #7a7572;
+    margin-bottom: 8px;
+  }
+  .pending-state p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #a09788;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  /* ── Product card (dark) ── */
+  .product-hero {
+    background: #1d1d1b;
+    color: #fff;
+    border-radius: 16px;
+    padding: 40px 44px;
+    margin-bottom: 28px;
+  }
+  .product-hero .label { color: rgba(255,255,255,.35); margin-bottom: 10px; }
+  .product-hero h2 {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 30px;
+    font-weight: 400;
+    letter-spacing: -0.3px;
+    margin-bottom: 14px;
+  }
+  .product-hero p {
+    font-size: 14px;
+    color: rgba(255,255,255,.55);
+    line-height: 1.7;
+    max-width: 520px;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .product-cell {
+    background: #fff;
+    border: 1px solid #e6e2dc;
+    border-radius: 12px;
+    padding: 24px 26px;
+  }
+  .product-cell h4 {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: #a09788;
+    margin-bottom: 14px;
+  }
+  .product-cell ul { list-style: none; font-size: 14px; color: #3a3632; }
+  .product-cell li {
+    padding: 5px 0;
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.55;
+  }
+  .product-cell li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 13px;
+    width: 6px;
+    height: 1px;
+    background: #c9a87c;
+  }
+
+  /* ── Name list (by framework) ── */
+  .fw-group {
+    margin-bottom: 36px;
+  }
+  .fw-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e6e2dc;
+  }
+  .fw-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1d1d1b;
+    letter-spacing: -0.1px;
+  }
+  .fw-count {
+    font-size: 12px;
+    color: #a09788;
+    font-weight: 400;
+  }
+  .fw-names {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .fw-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: background .15s;
+  }
+  .fw-name:hover { background: rgba(0,0,0,.02); }
+  .fw-name-text {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #1d1d1b;
+    letter-spacing: -0.2px;
+  }
+  .fw-name.is-top .fw-name-text {
+    font-weight: 400;
+  }
+  .fw-name .star {
+    color: #c9a87c;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .fw-name .note {
+    font-size: 12px;
+    color: #a09788;
+    font-family: 'Inter', sans-serif;
+    margin-left: auto;
+  }
+  .fw-name.is-top {
+    background: #faf8f4;
+  }
+  .fw-name.is-longshot .fw-name-text {
+    color: #a09788;
+  }
+
+  /* ── Conflicts ── */
+  .conflicts {
+    background: #fff;
+    border: 1px solid #e6e2dc;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 28px;
+  }
+  .conflicts .label { margin-bottom: 14px; }
+  .conflict-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    font-size: 13px;
+  }
+  .conflict-row + .conflict-row { border-top: 1px solid #f2f0ec; }
+  .conflict-removed {
+    text-decoration: line-through;
+    color: #c07070;
+    font-weight: 500;
+  }
+  .conflict-reason { color: #a09788; }
+
+  /* ── Review notes ── */
+  .review-notes {
+    background: #faf6ed;
+    border: 1px solid #e8dfc8;
+    border-radius: 12px;
+    padding: 26px 30px;
+  }
+  .review-notes .label { color: #a08a4e; margin-bottom: 12px; }
+  .review-notes p {
+    font-size: 13.5px;
+    color: #6e6040;
+    line-height: 1.7;
+  }
+  .review-notes strong { color: #4a3e24; font-weight: 600; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .header { padding: 28px 24px 0; }
+    .header-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .header h1 { font-size: 28px; }
+    .content { padding: 32px 24px 48px; }
+    .takeaways, .patterns, .name-grid, .product-grid { grid-template-columns: 1fr; }
+    .profile { grid-template-columns: 1fr; gap: 12px; }
+    .price-row { grid-template-columns: 100px 1fr 50px; }
+    .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .tab { padding: 14px 20px 13px; white-space: nowrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<div class="header">
+  <div class="header-row">
+    <div>
+      <h1>Highlighter Stick — Naming Brief</h1>
+      <div class="header-sub">Jones Road Beauty &middot; Internal Research</div>
+    </div>
+    <div class="header-pills">
+      <span class="pill pill--date">March 2026</span>
+      <span class="pill pill--status">In Progress</span>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('competitive', this)">Competitive Landscape <span class="dot dot--ready"></span></div>
+    <div class="tab" onclick="switchTab('consumer', this)">Consumer Insights <span class="dot dot--pending"></span></div>
+    <div class="tab" onclick="switchTab('product', this)">Our Product <span class="dot dot--ready"></span></div>
+    <div class="tab" onclick="switchTab('names', this)">Rd 1 Name List <span class="dot dot--ready"></span></div>
+  </div>
+</div>
+
+<!-- ═══════════ TAB 1: COMPETITIVE LANDSCAPE ═══════════ -->
+<div class="tab-panel active" id="competitive">
+<div class="content">
+
+  <div class="key-finding">
+    <div class="label">Key Finding</div>
+    <p>The highlighter stick category is <strong>dominated by "glow" language</strong> — Glow, Luminizer, Illuminator, and Radiance appear in over half of competitor names. Meanwhile, <strong>no major competitor uses JRB's conversational or "The [Product]" naming patterns</strong> in this category, leaving wide open space for a name that sounds like something Bobbi would actually say.</p>
+  </div>
+
+  <div class="label">Strategic Takeaways</div>
+  <div class="takeaways">
+    <div class="takeaway">
+      <span class="takeaway-badge takeaway-badge--opportunity">Opportunity</span>
+      <h3>"Glow" Is the New "Moisture" — Avoid It</h3>
+      <p>6 of 12 competitors use "glow," "luminizer," "illuminator," or "radiance." Merit owns "Day Glow," RMS owns "Living Luminizer," Charlotte Tilbury owns "Beauty Light Wand." Any variation drops JRB into a sea of sameness.</p>
+    </div>
+    <div class="takeaway">
+      <span class="takeaway-badge takeaway-badge--advantage">Advantage</span>
+      <h3>Stick Format = Naming Advantage</h3>
+      <p>Most competitors put "stick" or "stix" in the name. JRB doesn't need to — the format speaks for itself. This frees the name to do something more interesting, the way "Miracle Balm" never says "multi-use."</p>
+    </div>
+    <div class="takeaway">
+      <span class="takeaway-badge takeaway-badge--risk">White Space</span>
+      <h3>The Bobbi Voice Is Wide Open</h3>
+      <p>Zero competitors use conversational, Bobbi-style naming for their highlighters. This is JRB's strongest move — the same energy as "What The Foundation" applied to highlighter.</p>
+    </div>
+  </div>
+
+  <div class="label">Positioning Deep Dive</div>
+  <div class="profiles">
+
+    <div class="profile">
+      <div>
+        <div class="profile-brand">Westman Atelier</div>
+        <div class="profile-name">Lit Up Highlight Stick</div>
+        <div class="profile-meta">
+          <span class="tag">$48</span>
+          <span class="tag">Stick</span>
+        </div>
+      </div>
+      <div>
+        <div class="profile-thesis">"Clean luxury gel in a stick — prestige positioning for the editorial glow crowd."</div>
+        <div class="profile-body">A translucent gel formula with Vitis Vita Grape Extract (claimed to firm, boost moisture, and detoxify). Positions as the highest-end stick highlighter in the category at $48 full / $26 mini. Free of silicones, parabens, PEGs, phthalates, and synthetic fragrances. Vulnerable because the luxury MUA positioning (Gucci Westman's credentials) alienates the everyday woman who just wants to look good without thinking about it — JRB's core customer.</div>
+        <div class="profile-claims">
+          <span class="claim-pill">Translucent gel formula</span>
+          <span class="claim-pill">Glassy finish</span>
+          <span class="claim-pill">Grape extract (firming)</span>
+          <span class="claim-pill">No silicones/parabens</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile">
+      <div>
+        <div class="profile-brand">Merit</div>
+        <div class="profile-name">Day Glow Highlighting Balm</div>
+        <div class="profile-meta">
+          <span class="tag">$30</span>
+          <span class="tag">Balm</span>
+        </div>
+      </div>
+      <div>
+        <div class="profile-thesis">"The minimalist's highlighter — dewy glow with zero sparkle, for the curated vanity crowd."</div>
+        <div class="profile-body">JRB's closest positioning competitor. Leads with plant-based squalane (hydration, elasticity), olive fruit oil, and a phytosterol/amino acid blend to "minimize moisture loss and support skin barrier." Positioned as "a sheer, lightweight moisturizing highlighter made for daytime wear that visibly illuminates for a dewy glow with zero sparkle." Vegan, recyclable packaging. The difference: Merit talks to a 28-year-old who curates her vanity for Instagram. JRB talks to a 45-year-old who wants to look like she got more sleep.</div>
+        <div class="profile-claims">
+          <span class="claim-pill">Zero sparkle</span>
+          <span class="claim-pill">Plant-based squalane</span>
+          <span class="claim-pill">Daytime wear</span>
+          <span class="claim-pill">Skin barrier support</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile">
+      <div>
+        <div class="profile-brand">Fenty Beauty</div>
+        <div class="profile-name">Match Stix Shimmer Skinstick</div>
+        <div class="profile-meta">
+          <span class="tag">$29</span>
+          <span class="tag">Stick</span>
+        </div>
+      </div>
+      <div>
+        <div class="profile-thesis">"Magnetized, long-wear shimmer in 10 shades — the opposite of 'natural glow.'"</div>
+        <div class="profile-body">A cream-to-powder formula that's "weightless, blendable, and designed to be layered." Magnetized stick with 10 universally flattering shades. Claims longwear and extremely lightweight. Free of gluten, parabens, phthalates. Fenty owns the "stick highlighter" format in younger consumers' minds, but plays in a completely different register — visible shimmer, not natural glow. Not a direct positioning threat to JRB because the customer profiles barely overlap.</div>
+        <div class="profile-claims">
+          <span class="claim-pill">Cream-to-powder</span>
+          <span class="claim-pill">10 shades</span>
+          <span class="claim-pill">Magnetized</span>
+          <span class="claim-pill">Longwear</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile">
+      <div>
+        <div class="profile-brand">RMS Beauty</div>
+        <div class="profile-name">Living Luminizer</div>
+        <div class="profile-meta">
+          <span class="tag">$42</span>
+          <span class="tag">Pot</span>
+        </div>
+      </div>
+      <div>
+        <div class="profile-thesis">"The OG clean beauty highlighter — cult classic, minimal formula, hasn't evolved."</div>
+        <div class="profile-body">Built on certified organic raw coconut oil, castor seed oil (fatty acids, anti-inflammatory), and full-spectrum vitamin E from Spanish sunflowers. Claims a "translucent satin-pearl glow" that's "never greasy or glittery" with an "un-made-up appearance." Non-GMO, non-nano, cruelty-free. At $42, it's proven you can do clean + glow. JRB's opportunity: RMS hasn't evolved. The pot format feels dated compared to stick convenience, and their brand lacks the conversational, approachable energy JRB brings.</div>
+        <div class="profile-claims">
+          <span class="claim-pill">Organic coconut oil</span>
+          <span class="claim-pill">Satin-pearl glow</span>
+          <span class="claim-pill">Un-made-up look</span>
+          <span class="claim-pill">Non-nano</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile">
+      <div>
+        <div class="profile-brand">Charlotte Tilbury</div>
+        <div class="profile-name">Hollywood Beauty Light Wand</div>
+        <div class="profile-meta">
+          <span class="tag">$42</span>
+          <span class="tag">Wand</span>
+        </div>
+      </div>
+      <div>
+        <div class="profile-thesis">"Hollywood glamour in a tube — one sells every 8 seconds, all aspiration."</div>
+        <div class="profile-body">Claims a "Hollywood effect glow" via proprietary "glow gel technology" with lindera extract for a high-gloss finish. 12ml in 7 shades (golds to rosy pinks). CT reportedly sells one every 8 seconds — massive viral success. But there's criticism about product volume for the price. JRB's counterposition is powerful: Bobbi would say "you don't need Hollywood lighting, you need good light." The anti-CT message practically writes itself.</div>
+        <div class="profile-claims">
+          <span class="claim-pill">Glow gel technology</span>
+          <span class="claim-pill">Lindera extract</span>
+          <span class="claim-pill">7 shades</span>
+          <span class="claim-pill">1 sold every 8 seconds</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile">
+      <div>
+        <div class="profile-brand">Rare Beauty</div>
+        <div class="profile-name">Positive Light Liquid Luminizer</div>
+        <div class="profile-meta">
+          <span class="tag">$22</span>
+          <span class="tag">Liquid</span>
+        </div>
+      </div>
+      <div>
+        <div class="profile-thesis">"Botanical self-care glow at $22 — emotional positioning, not product expertise."</div>
+        <div class="profile-body">Formula features a botanical blend of lotus, gardenia, and white water lily (soothe and nourish). Claims a "silky, second-skin formula" that "lasts all day without fading, creasing, or settling into fine lines" and "layers over makeup without disturbing what's already there." At $22, it's the most affordable in the set. Clean at Sephora. "Positive Light" is an emotional positioning play, not a product descriptor. JRB doesn't compete on price or emotional wellness — it competes on expertise and ease.</div>
+        <div class="profile-claims">
+          <span class="claim-pill">Lotus + gardenia + water lily</span>
+          <span class="claim-pill">Second-skin formula</span>
+          <span class="claim-pill">No creasing/settling</span>
+          <span class="claim-pill">Clean at Sephora</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="label">Price Landscape</div>
+  <div class="price-bar-chart">
+    <div class="price-row"><span class="brand">Bobbi Brown</span><div class="price-bar-bg"><div class="price-bar" style="width: 100%"></div></div><span class="price-val">$52</span></div>
+    <div class="price-row"><span class="brand">Westman Atelier</span><div class="price-bar-bg"><div class="price-bar" style="width: 92%"></div></div><span class="price-val">$48</span></div>
+    <div class="price-row"><span class="brand">Hourglass</span><div class="price-bar-bg"><div class="price-bar" style="width: 92%"></div></div><span class="price-val">$48</span></div>
+    <div class="price-row"><span class="brand">Charlotte Tilbury</span><div class="price-bar-bg"><div class="price-bar" style="width: 81%"></div></div><span class="price-val">$42</span></div>
+    <div class="price-row"><span class="brand">RMS Beauty</span><div class="price-bar-bg"><div class="price-bar" style="width: 81%"></div></div><span class="price-val">$42</span></div>
+    <div class="price-row"><span class="brand">NARS</span><div class="price-bar-bg"><div class="price-bar" style="width: 77%"></div></div><span class="price-val">$40</span></div>
+    <div class="price-row"><span class="brand">JRB (est.)</span><div class="price-bar-bg"><div class="price-bar is-jrb" style="width: 69%"></div></div><span class="price-val">$34–38</span></div>
+    <div class="price-row"><span class="brand">ILIA</span><div class="price-bar-bg"><div class="price-bar" style="width: 65%"></div></div><span class="price-val">$34</span></div>
+    <div class="price-row"><span class="brand">Kosas</span><div class="price-bar-bg"><div class="price-bar" style="width: 65%"></div></div><span class="price-val">$34</span></div>
+    <div class="price-row"><span class="brand">Merit</span><div class="price-bar-bg"><div class="price-bar" style="width: 58%"></div></div><span class="price-val">$30</span></div>
+    <div class="price-row"><span class="brand">Fenty Beauty</span><div class="price-bar-bg"><div class="price-bar" style="width: 56%"></div></div><span class="price-val">$29</span></div>
+    <div class="price-row"><span class="brand">Saie</span><div class="price-bar-bg"><div class="price-bar" style="width: 54%"></div></div><span class="price-val">$28</span></div>
+    <div class="price-row"><span class="brand">Milk Makeup</span><div class="price-bar-bg"><div class="price-bar" style="width: 46%"></div></div><span class="price-val">$24</span></div>
+    <div class="price-row"><span class="brand">Rare Beauty</span><div class="price-bar-bg"><div class="price-bar" style="width: 42%"></div></div><span class="price-val">$22</span></div>
+  </div>
+
+  <div class="label">Naming Landscape</div>
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Brand</th>
+        <th>Product Name</th>
+        <th>Format</th>
+        <th>Price</th>
+        <th>Pattern</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="brand">Westman Atelier</td><td class="product-name">Lit Up Highlight Stick</td><td class="format">Stick</td><td class="price">$48</td><td><span class="tag tag--crowded">Benefit-Led</span></td></tr>
+      <tr><td class="brand">Merit</td><td class="product-name">Day Glow Highlighting Balm</td><td class="format">Balm</td><td class="price">$30</td><td><span class="tag tag--crowded">Benefit-Led</span></td></tr>
+      <tr><td class="brand">Fenty Beauty</td><td class="product-name">Match Stix Shimmer Skinstick</td><td class="format">Stick</td><td class="price">$29</td><td><span class="tag">Invented</span></td></tr>
+      <tr><td class="brand">Milk Makeup</td><td class="product-name">Highlighter</td><td class="format">Stick</td><td class="price">$24</td><td><span class="tag">Descriptive</span></td></tr>
+      <tr><td class="brand">NARS</td><td class="product-name">The Multiple</td><td class="format">Stick</td><td class="price">$40</td><td><span class="tag tag--open">"The [Product]"</span></td></tr>
+      <tr><td class="brand">RMS Beauty</td><td class="product-name">Living Luminizer</td><td class="format">Pot</td><td class="price">$42</td><td><span class="tag tag--crowded">Benefit-Led</span></td></tr>
+      <tr><td class="brand">ILIA</td><td class="product-name">Illuminator</td><td class="format">Pot</td><td class="price">$34</td><td><span class="tag">Descriptive</span></td></tr>
+      <tr><td class="brand">Rare Beauty</td><td class="product-name">Positive Light Liquid Luminizer</td><td class="format">Liquid</td><td class="price">$22</td><td><span class="tag tag--crowded">Evocative</span></td></tr>
+      <tr><td class="brand">Charlotte Tilbury</td><td class="product-name">Hollywood Beauty Light Wand</td><td class="format">Wand</td><td class="price">$42</td><td><span class="tag tag--crowded">Evocative</span></td></tr>
+      <tr><td class="brand">Saie</td><td class="product-name">Glowy Super Gel</td><td class="format">Gel</td><td class="price">$28</td><td><span class="tag tag--crowded">Sensory</span></td></tr>
+      <tr><td class="brand">Bobbi Brown</td><td class="product-name">Highlighting Powder</td><td class="format">Powder</td><td class="price">$52</td><td><span class="tag">Descriptive</span></td></tr>
+      <tr><td class="brand">Danessa Myricks</td><td class="product-name">Vision Flush Glow</td><td class="format">Liquid</td><td class="price">$22</td><td><span class="tag tag--crowded">Evocative</span></td></tr>
+      <tr><td class="brand">Hourglass</td><td class="product-name">Ambient Lighting</td><td class="format">Powder</td><td class="price">$48</td><td><span class="tag">Evocative</span></td></tr>
+      <tr><td class="brand">Kosas</td><td class="product-name">Shiny Objects</td><td class="format">Powder</td><td class="price">$34</td><td><span class="tag">Evocative</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="label">Pattern Breakdown</div>
+  <div class="patterns">
+    <div class="pat is-crowded">
+      <div class="pat-top"><span class="pat-count">6</span> <span class="pat-name">Benefit-Led / "Glow"</span></div>
+      <div class="pat-examples">Day Glow, Living Luminizer, Positive Light, Lit Up, Beauty Light Wand, Vision Flush Glow</div>
+    </div>
+    <div class="pat">
+      <div class="pat-top"><span class="pat-count">3</span> <span class="pat-name">Descriptive</span></div>
+      <div class="pat-examples">Highlighter, Illuminator, Highlighting Powder</div>
+    </div>
+    <div class="pat">
+      <div class="pat-top"><span class="pat-count">3</span> <span class="pat-name">Evocative / Mood</span></div>
+      <div class="pat-examples">Ambient Lighting, Shiny Objects, Hollywood Beauty Light Wand</div>
+    </div>
+    <div class="pat">
+      <div class="pat-top"><span class="pat-count">2</span> <span class="pat-name">Sensory / Texture</span></div>
+      <div class="pat-examples">Glowy Super Gel, Match Stix Shimmer Skinstick</div>
+    </div>
+    <div class="pat is-open">
+      <div class="pat-top"><span class="pat-count">1</span> <span class="pat-name">"The [Product]"</span></div>
+      <div class="pat-examples">The Multiple (NARS) — about multi-use, not highlighting</div>
+    </div>
+    <div class="pat is-open">
+      <div class="pat-top"><span class="pat-count">0</span> <span class="pat-name">Conversational</span></div>
+      <div class="pat-examples">No competitor uses this — JRB's home turf</div>
+    </div>
+  </div>
+
+  <div class="label">Words & Phrases to Avoid</div>
+  <div class="avoid-grid">
+    <div class="avoid-word"><span class="x">&times;</span> Glow <span class="owner">Merit</span></div>
+    <div class="avoid-word"><span class="x">&times;</span> Luminizer <span class="owner">RMS</span></div>
+    <div class="avoid-word"><span class="x">&times;</span> Illuminator <span class="owner">ILIA</span></div>
+    <div class="avoid-word"><span class="x">&times;</span> Beauty Light <span class="owner">Charlotte Tilbury</span></div>
+    <div class="avoid-word"><span class="x">&times;</span> Positive Light <span class="owner">Rare Beauty</span></div>
+    <div class="avoid-word"><span class="x">&times;</span> Match Stix <span class="owner">Fenty</span></div>
+    <div class="avoid-word"><span class="x">&times;</span> Lit Up <span class="owner">Westman Atelier</span></div>
+    <div class="avoid-word"><span class="x">&times;</span> Ambient <span class="owner">Hourglass</span></div>
+    <div class="avoid-word"><span class="x">&times;</span> Glowy <span class="owner">Saie</span></div>
+    <div class="avoid-word"><span class="x">&times;</span> Shiny <span class="owner">Kosas</span></div>
+  </div>
+
+  <div class="label">White Space &mdash; Naming Directions</div>
+  <div class="directions">
+    <div class="dir">
+      <span class="dir-num">1</span>
+      <div>
+        <h3>Conversational / Bobbi Voice</h3>
+        <p>The widest-open lane. No competitor highlighter uses this approach. Think names with the energy of "Just A Sec" or "Sparkle On Top" — casual, confident, sounds like advice. This direction would be the most differentiated name in the entire category.</p>
+      </div>
+    </div>
+    <div class="dir">
+      <span class="dir-num">2</span>
+      <div>
+        <h3>"The [Product]" &mdash; Definitive Simplicity</h3>
+        <p>Only NARS plays here with "The Multiple" (which is about multi-use, not highlighting). A confident "The [something]" name would stand out against all the "Glow" and "Luminizer" names by being refreshingly direct.</p>
+      </div>
+    </div>
+    <div class="dir">
+      <span class="dir-num">3</span>
+      <div>
+        <h3>Franchise Extension &mdash; Shimmer Family</h3>
+        <p>JRB already owns "Shimmer" (Shimmer Brick, Shimmer Face Oil). A highlighter stick could extend this franchise. Risk: could feel too tied to Shimmer Brick, and "shimmer" might imply more sparkle than a natural-glow product delivers.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════ TAB 2: CONSUMER INSIGHTS ═══════════ -->
+<div class="tab-panel" id="consumer">
+<div class="content">
+  <div class="pending-state">
+    <div class="pending-icon">&#128269;</div>
+    <h3>Consumer Insights Pending</h3>
+    <p>Run <strong>/jrb-consumer-insights</strong> with highlighter survey data or review data to populate this tab.</p>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════ TAB 3: OUR PRODUCT ═══════════ -->
+<div class="tab-panel" id="product">
+<div class="content">
+
+  <div class="product-hero">
+    <div class="label">Jones Road Beauty &middot; In Development</div>
+    <h2>Highlighter Stick</h2>
+    <p>A new highlighter in stick format — on-brand with the "real skin, not makeup" philosophy. Clean, easy to use, natural-looking glow. Designed for the woman who wants to look like herself, just better lit.</p>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-cell">
+      <h4>Positioning</h4>
+      <ul>
+        <li>Real skin, not makeup — natural glow</li>
+        <li>Clean, easy-to-use stick format</li>
+        <li>Highlighter for people who don't wear highlighter</li>
+        <li>Fits next to Miracle Balm, The Bronzer</li>
+      </ul>
+    </div>
+    <div class="product-cell">
+      <h4>Key Differentiators</h4>
+      <ul>
+        <li>Natural finish (not glitter, not glass skin)</li>
+        <li>Clean ingredient story</li>
+        <li>Stick format for ease of use</li>
+        <li>Bobbi's name and credibility behind it</li>
+      </ul>
+    </div>
+    <div class="product-cell">
+      <h4>Format & Texture</h4>
+      <ul>
+        <li>Stick format (twist-up or click)</li>
+        <li>Cream-to-skin finish expected</li>
+        <li>Buildable — sheer to medium</li>
+      </ul>
+    </div>
+    <div class="product-cell">
+      <h4>Key Ingredients</h4>
+      <ul>
+        <li>TBD — awaiting formula brief from product team</li>
+        <li>Likely skin-nourishing base (aligning with JRB clean positioning)</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════ TAB 4: RD 1 NAME LIST ═══════════ -->
+<div class="tab-panel" id="names">
+<div class="content">
+
+  <div class="heading">Rd 1 Name List</div>
+  <div class="subtext">48 names across 7 frameworks, cross-checked against 14 competitors. &#9733; = top pick.</div>
+
+  <div class="fw-group">
+    <div class="fw-header">
+      <span class="fw-title">Conversational / Bobbi Voice</span>
+      <span class="fw-count">8 names</span>
+    </div>
+    <div class="fw-names">
+      <div class="fw-name is-top"><span class="star">&#9733;</span> <span class="fw-name-text">Nice Touch</span> <span class="note">"It's just a nice touch"</span></div>
+      <div class="fw-name is-top"><span class="star">&#9733;</span> <span class="fw-name-text">Good Light</span> <span class="note">Also works as "The Good Light"</span></div>
+      <div class="fw-name is-top"><span class="star">&#9733;</span> <span class="fw-name-text">Look Alive</span> <span class="note">Playful, energetic</span></div>
+      <div class="fw-name is-top"><span class="star">&#9733;</span> <span class="fw-name-text">Right Here</span> <span class="note">"Just put it right here"</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">A Little Something</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">Just Right</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">You Look Good</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">That Thing</span></div>
+    </div>
+  </div>
+
+  <div class="fw-group">
+    <div class="fw-header">
+      <span class="fw-title">"The [Product]"</span>
+      <span class="fw-count">4 names</span>
+    </div>
+    <div class="fw-names">
+      <div class="fw-name is-top"><span class="star">&#9733;</span> <span class="fw-name-text">The Highlighter</span> <span class="note">Same energy as The Bronzer</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">The High Point</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">The Bright Side</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">The Good Light</span></div>
+    </div>
+  </div>
+
+  <div class="fw-group">
+    <div class="fw-header">
+      <span class="fw-title">Wild Cards</span>
+      <span class="fw-count">7 names</span>
+    </div>
+    <div class="fw-names">
+      <div class="fw-name is-top"><span class="star">&#9733;</span> <span class="fw-name-text">Catch Light</span> <span class="note">Photography term &mdash; the reflection that makes eyes look alive</span></div>
+      <div class="fw-name is-top"><span class="star">&#9733;</span> <span class="fw-name-text">Easy Does It</span> <span class="note">"Easy does it, just a little"</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">Morning Light</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">The Wink</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">Take Five</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">Good Skin Day</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">Better Than Nothing</span></div>
+    </div>
+  </div>
+
+  <div class="fw-group">
+    <div class="fw-header">
+      <span class="fw-title">Benefit-Led</span>
+      <span class="fw-count">4 names</span>
+    </div>
+    <div class="fw-names">
+      <div class="fw-name is-top"><span class="star">&#9733;</span> <span class="fw-name-text">Wake Up Call</span> <span class="note">Makes you look like you got 8 hours of sleep</span></div>
+      <div class="fw-name is-top"><span class="star">&#9733;</span> <span class="fw-name-text">Bright Spot</span> <span class="note">Dual meaning &mdash; warm, optimistic</span></div>
+      <div class="fw-name is-longshot"><span class="fw-name-text" style="margin-left: 25px">Lit From Within</span></div>
+      <div class="fw-name is-longshot"><span class="fw-name-text" style="margin-left: 25px">Second Skin</span></div>
+    </div>
+  </div>
+
+  <div class="fw-group">
+    <div class="fw-header">
+      <span class="fw-title">Sensory / Texture</span>
+      <span class="fw-count">5 names</span>
+    </div>
+    <div class="fw-names">
+      <div class="fw-name is-top"><span class="star">&#9733;</span> <span class="fw-name-text">Light Touch</span> <span class="note">The gesture + the result</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">Warm Touch</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">Soft Catch</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">Bare Light</span></div>
+      <div class="fw-name is-longshot"><span class="fw-name-text" style="margin-left: 25px">Smooth Light</span></div>
+    </div>
+  </div>
+
+  <div class="fw-group">
+    <div class="fw-header">
+      <span class="fw-title">Descriptive + Simple</span>
+      <span class="fw-count">6 names</span>
+    </div>
+    <div class="fw-names">
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">Light Stick</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">Face Light</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">Soft Highlight</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">Highlight Balm</span></div>
+      <div class="fw-name is-longshot"><span class="fw-name-text" style="margin-left: 25px">Clean Highlight</span></div>
+      <div class="fw-name is-longshot"><span class="fw-name-text" style="margin-left: 25px">Fresh Faced</span></div>
+    </div>
+  </div>
+
+  <div class="fw-group">
+    <div class="fw-header">
+      <span class="fw-title">Franchise Extension</span>
+      <span class="fw-count">3 names</span>
+    </div>
+    <div class="fw-names">
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">Shimmer Stick</span></div>
+      <div class="fw-name"><span class="fw-name-text" style="margin-left: 25px">Shimmer Balm</span></div>
+      <div class="fw-name is-longshot"><span class="fw-name-text" style="margin-left: 25px">Shimmer Light</span></div>
+    </div>
+  </div>
+
+  <div class="conflicts">
+    <div class="label">Competitor Conflicts Removed</div>
+    <div class="conflict-row"><span class="conflict-removed">Lit Stick</span> <span class="conflict-reason">&rarr; Too close to Westman Atelier "Lit Up"</span></div>
+    <div class="conflict-row"><span class="conflict-removed">Skin Light</span> <span class="conflict-reason">&rarr; Too close to Rare Beauty "Positive Light"</span></div>
+    <div class="conflict-row"><span class="conflict-removed">Sun Kissed</span> <span class="conflict-reason">&rarr; Generic beauty phrase, not ownable</span></div>
+    <div class="conflict-row"><span class="conflict-removed">Golden Hour</span> <span class="conflict-reason">&rarr; Widely used beauty/photography term</span></div>
+  </div>
+
+  <div class="review-notes">
+    <div class="label">Notes for Review</div>
+    <p>The <strong>Conversational framework dominated</strong> this product — it produced the most JRB-feeling names and sits in the widest white space. Top picks are <strong>Catch Light</strong>, <strong>Nice Touch</strong>, and <strong>Good Light</strong> because they nail the Bobbi voice while being completely differentiated. The Franchise Extension framework (Shimmer Stick) is the safest path but doesn't have the personality of the conversational names.</p>
+  </div>
+
+</div>
+</div>
+
+<script>
+function switchTab(id, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>
