@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JRB Skincare Strategy — Deep Dive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0a0a0a;
+  --white: #ffffff;
+  --warm-bg: #f8f5f0;
+  --warm-bg-alt: #f0ebe3;
+  --accent: #c96442;
+  --accent-light: #e8d5cc;
+  --green: #2d6a4f;
+  --green-light: #d8e8df;
+  --red: #c1292e;
+  --red-light: #f5d5d6;
+  --yellow: #d4a017;
+  --yellow-light: #f5ecd0;
+  --gray-100: #f5f5f5;
+  --gray-200: #e8e8e8;
+  --gray-300: #d1d1d1;
+  --gray-500: #737373;
+  --gray-700: #404040;
+  --gray-900: #1a1a1a;
+  --font-sans: 'Inter', -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  color: var(--black);
+  background: var(--white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========== NAV ========== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100vh;
+  background: var(--black);
+  color: var(--white);
+  padding: 32px 20px;
+  overflow-y: auto;
+  z-index: 100;
+  font-size: 13px;
+}
+
+.nav__logo {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+
+.nav__subtitle {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gray-500);
+  margin-bottom: 32px;
+}
+
+.nav__section {
+  margin-bottom: 4px;
+}
+
+.nav__link {
+  display: block;
+  padding: 8px 12px;
+  color: var(--gray-300);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.15s;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.nav__link:hover {
+  color: var(--white);
+  background: rgba(255,255,255,0.08);
+}
+
+.nav__link--active {
+  color: var(--white);
+  background: rgba(255,255,255,0.12);
+  font-weight: 500;
+}
+
+.nav__number {
+  display: inline-block;
+  width: 20px;
+  color: var(--gray-500);
+  font-size: 11px;
+}
+
+/* ========== MAIN ========== */
+.main {
+  margin-left: 240px;
+  min-height: 100vh;
+}
+
+/* ========== HERO ========== */
+.hero {
+  background: var(--black);
+  color: var(--white);
+  padding: 120px 80px 80px;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.hero__eyebrow {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.hero__title {
+  font-family: var(--font-serif);
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  max-width: 700px;
+}
+
+.hero__subtitle {
+  font-size: 18px;
+  color: var(--gray-300);
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.hero__meta {
+  margin-top: 48px;
+  display: flex;
+  gap: 48px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-500);
+}
+
+.hero__meta span { color: var(--gray-300); font-weight: 500; }
+
+/* ========== SECTIONS ========== */
+.section {
+  padding: 80px;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.section--warm { background: var(--warm-bg); }
+.section--dark { background: var(--black); color: var(--white); }
+
+.section__eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.section__title {
+  font-family: var(--font-serif);
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.section__lead {
+  font-size: 18px;
+  color: var(--gray-700);
+  max-width: 700px;
+  margin-bottom: 48px;
+  line-height: 1.7;
+}
+
+.section--dark .section__lead { color: var(--gray-300); }
+
+/* ========== CARDS ========== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 28px;
+}
+
+.section--warm .card { border-color: var(--warm-bg-alt); }
+
+.card__label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gray-500);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.card__value {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.card__value--green { color: var(--green); }
+.card__value--red { color: var(--red); }
+.card__value--accent { color: var(--accent); }
+
+.card__delta {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.card__delta--up { color: var(--green); }
+.card__delta--down { color: var(--red); }
+
+.card__note {
+  font-size: 13px;
+  color: var(--gray-500);
+  margin-top: 4px;
+}
+
+/* ========== STAT ROW ========== */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.stat {
+  text-align: center;
+  padding: 24px;
+}
+
+.stat__value {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat__label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-500);
+  font-weight: 500;
+}
+
+/* ========== TABLES ========== */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 48px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-500);
+  font-weight: 600;
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--black);
+  white-space: nowrap;
+}
+
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--gray-200);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+
+.table-wrap--striped tr:nth-child(even) td {
+  background: var(--gray-100);
+}
+
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge--green { background: var(--green-light); color: var(--green); }
+.badge--red { background: var(--red-light); color: var(--red); }
+.badge--yellow { background: var(--yellow-light); color: var(--yellow); }
+.badge--neutral { background: var(--gray-100); color: var(--gray-700); }
+
+/* ========== INSIGHT BLOCKS ========== */
+.insight {
+  background: var(--warm-bg);
+  border-left: 4px solid var(--accent);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  border-radius: 0 8px 8px 0;
+}
+
+.insight__title {
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.insight__text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--gray-700);
+}
+
+/* ========== PRODUCT CARDS ========== */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.product-card {
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 28px;
+  background: var(--white);
+  position: relative;
+}
+
+.product-card__verdict {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.product-card__name {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.product-card__price {
+  font-size: 13px;
+  color: var(--gray-500);
+  margin-bottom: 16px;
+}
+
+.product-card__stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.product-card__stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-500);
+}
+
+.product-card__stat-value {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.product-card__notes {
+  font-size: 13px;
+  color: var(--gray-700);
+  line-height: 1.6;
+}
+
+.product-card__notes li {
+  margin-bottom: 4px;
+  margin-left: 16px;
+}
+
+/* ========== TIMELINE ========== */
+.timeline {
+  position: relative;
+  padding-left: 32px;
+  margin-bottom: 48px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--gray-200);
+}
+
+.timeline__item {
+  position: relative;
+  padding-bottom: 32px;
+}
+
+.timeline__item::before {
+  content: '';
+  position: absolute;
+  left: -28px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--white);
+}
+
+.timeline__phase {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.timeline__title {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.timeline__detail {
+  font-size: 14px;
+  color: var(--gray-700);
+  line-height: 1.6;
+}
+
+/* ========== QUOTE ========== */
+.quote {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-style: italic;
+  line-height: 1.5;
+  padding: 32px 0;
+  margin-bottom: 32px;
+  border-top: 2px solid var(--black);
+  border-bottom: 2px solid var(--black);
+  max-width: 700px;
+}
+
+.quote__attr {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gray-500);
+  margin-top: 16px;
+}
+
+/* ========== TWO COL ========== */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+
+.two-col--narrow-left { grid-template-columns: 2fr 3fr; }
+.two-col--narrow-right { grid-template-columns: 3fr 2fr; }
+
+/* ========== LISTS ========== */
+.check-list {
+  list-style: none;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.check-list li {
+  padding: 8px 0;
+  padding-left: 28px;
+  position: relative;
+}
+
+.check-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  margin-top: 32px;
+}
+
+h3:first-child { margin-top: 0; }
+
+p { margin-bottom: 16px; line-height: 1.7; }
+p:last-child { margin-bottom: 0; }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .nav { display: none; }
+  .main { margin-left: 0; }
+  .hero { padding: 80px 40px 60px; }
+  .hero__title { font-size: 38px; }
+  .section { padding: 60px 40px; }
+  .section__title { font-size: 30px; }
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+  .two-col { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .hero { padding: 60px 24px 40px; }
+  .hero__title { font-size: 30px; }
+  .section { padding: 40px 24px; }
+  .stat-row { grid-template-columns: 1fr 1fr; }
+  .hero__meta { flex-direction: column; gap: 8px; }
+}
+
+@media print {
+  .nav { display: none; }
+  .main { margin-left: 0; }
+  .section { break-inside: avoid; padding: 40px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== NAV ========== -->
+<nav class="nav">
+  <div class="nav__logo">Jones Road Beauty</div>
+  <div class="nav__subtitle">Skincare Strategy 2027</div>
+
+  <div class="nav__section"><a href="#executive-summary" class="nav__link"><span class="nav__number">01</span> Executive Summary</a></div>
+  <div class="nav__section"><a href="#consumer" class="nav__link"><span class="nav__number">02</span> The JRB Consumer</a></div>
+  <div class="nav__section"><a href="#current-state" class="nav__link"><span class="nav__number">03</span> Current State</a></div>
+  <div class="nav__section"><a href="#customer-voice" class="nav__link"><span class="nav__number">04</span> Customer Voice</a></div>
+  <div class="nav__section"><a href="#competitive" class="nav__link"><span class="nav__number">05</span> Competitive Landscape</a></div>
+  <div class="nav__section"><a href="#skincare-pov" class="nav__link"><span class="nav__number">06</span> The JRB Skincare POV</a></div>
+  <div class="nav__section"><a href="#portfolio" class="nav__link"><span class="nav__number">07</span> Portfolio Recommendation</a></div>
+  <div class="nav__section"><a href="#roadmap" class="nav__link"><span class="nav__number">08</span> Roadmap</a></div>
+  <div class="nav__section"><a href="#cab-survey" class="nav__link"><span class="nav__number">09</span> CAB Survey</a></div>
+  <div class="nav__section"><a href="#open-questions" class="nav__link"><span class="nav__number">10</span> Open Questions</a></div>
+</nav>
+
+<!-- ========== MAIN ========== -->
+<div class="main">
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="top">
+  <div class="hero__eyebrow">Strategic Deep Dive</div>
+  <h1 class="hero__title">The JRB Skincare Opportunity</h1>
+  <p class="hero__subtitle">A comprehensive analysis of where Jones Road Beauty stands in skincare today, where the market is heading, and what a distinctly JRB skincare line should look like.</p>
+  <div class="hero__meta">
+    <div>Prepared <span>March 25, 2026</span></div>
+    <div>Sources <span>Polar Analytics, Typeform, Granola, Tracksuit, Junip, Web Research</span></div>
+    <div>Status <span>Working Draft</span></div>
+  </div>
+</section>
+
+<!-- ========== 01. EXECUTIVE SUMMARY ========== -->
+<section class="section" id="executive-summary">
+  <div class="section__eyebrow">01 — Executive Summary</div>
+  <h2 class="section__title">JRB skincare is a $6.8M business that punches below its potential</h2>
+  <p class="section__lead">Skincare grew +11.5% YoY to $6.8M in net sales, but the portfolio has clear winners and losers. The Eye Cream ecosystem alone drives $2.3M. Meanwhile, the Multivitamin Serum is declining (-14%), the Miracle Cream is softening (-6%), and there's no SPF product in a market where 44% of customers are asking for it. The opportunity: build a skincare line that reflects the "Modern Prestige Beauty" positioning — expert-formulated, skin-first, and unapologetically simple.</p>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat__value" style="color: var(--accent)">$6.8M</div>
+      <div class="stat__label">Net Skincare Revenue</div>
+    </div>
+    <div class="stat">
+      <div class="stat__value" style="color: var(--green)">+11.5%</div>
+      <div class="stat__label">YoY Growth</div>
+    </div>
+    <div class="stat">
+      <div class="stat__value">14</div>
+      <div class="stat__label">SKUs in Portfolio</div>
+    </div>
+    <div class="stat">
+      <div class="stat__value">205K</div>
+      <div class="stat__label">Units Sold</div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <div class="insight__title">The Core Tension</div>
+    <div class="insight__text">JRB's makeup is built on a clear philosophy: <strong>"enhance, don't change."</strong> But the skincare line doesn't have an equivalent story. It's a collection of good individual products without a unifying skincare POV. Competitors like Rhode ("barrier repair"), Drunk Elephant ("clean-clinical"), and Glossier ("skin first, makeup second") all have a skincare thesis. JRB needs one — and it should flow directly from Bobbi's 35+ years of expertise: <strong>skin that's so healthy it barely needs makeup</strong>.</div>
+  </div>
+
+  <h3>Three Strategic Imperatives</h3>
+  <div class="cards">
+    <div class="card">
+      <div class="card__label">1. Define the POV</div>
+      <div class="card__value card__value--accent" style="font-size: 22px; line-height: 1.3">Expert Skin Prep</div>
+      <div class="card__note" style="margin-top: 12px">Position JRB skincare as what a legendary makeup artist would want your skin to look like BEFORE makeup. Not clinical. Not trend-chasing. The prep that makes "just enough" makeup possible.</div>
+    </div>
+    <div class="card">
+      <div class="card__label">2. Fix the Portfolio</div>
+      <div class="card__value card__value--accent" style="font-size: 22px; line-height: 1.3">Cut, Fix, Add</div>
+      <div class="card__note" style="margin-top: 12px">Kill or reformulate problem products (Multivitamin Serum rollerball, Oil Stick rancidity). Double down on winners (Eye Cream ecosystem). Fill the SPF gap. Launch the cleanser portfolio.</div>
+    </div>
+    <div class="card">
+      <div class="card__label">3. Build the Bridge</div>
+      <div class="card__value card__value--accent" style="font-size: 22px; line-height: 1.3">Skincare → Makeup</div>
+      <div class="card__note" style="margin-top: 12px">JRB's unique advantage: the founder IS a makeup artist. Every skincare product should be designed as the ideal canvas for JRB makeup. This is the bridge no competitor can build.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 02. THE JRB CONSUMER ========== -->
+<section class="section section--warm" id="consumer">
+  <div class="section__eyebrow">02 — The JRB Consumer</div>
+  <h2 class="section__title">She's older, wealthier, and more loyal than the category — but the brand reads "mature"</h2>
+  <p class="section__lead">Cross-referencing Tracksuit brand health data, 11 Typeform surveys, and Polar customer data paints a clear portrait: the core JRB consumer is 50-65+, has high household income ($100K+), values simplicity and expertise, and is deeply loyal. But the brand's perceived age skew creates a ceiling for growth.</p>
+
+  <div class="two-col">
+    <div>
+      <h3>Demographics (Tracksuit + Typeform)</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Metric</th><th>JRB</th><th>Category Avg</th></tr>
+          <tr><td>Peak Age Group</td><td><strong>65+</strong></td><td>25-34</td></tr>
+          <tr><td>$100K+ Household Income</td><td><strong>Over-indexed</strong></td><td>Average</td></tr>
+          <tr><td>"For people like me"</td><td><strong>40%</strong></td><td>37%</td></tr>
+          <tr><td>"Worth paying more for"</td><td><strong style="color: var(--red)">38%</strong></td><td>44%</td></tr>
+          <tr><td>Awareness → Consideration</td><td><strong style="color: var(--red)">67%</strong></td><td>75%</td></tr>
+          <tr><td>Brand Imagery</td><td><strong>"Natural, Mature"</strong></td><td>"Iconic, Bold"</td></tr>
+        </table>
+      </div>
+
+      <div class="insight">
+        <div class="insight__title">The Paradox</div>
+        <div class="insight__text">JRB's core customer CAN afford premium — she has $100K+ household income and over-indexes on spending. But she doesn't PERCEIVE JRB as premium. The 38% "worth paying more for" score (6th of 7 brands) isn't a price problem — it's a positioning and experience problem.</div>
+      </div>
+    </div>
+    <div>
+      <h3>What She Wants (Survey Synthesis)</h3>
+      <ul class="check-list">
+        <li><strong>Simplicity above all</strong> — "I don't want a 10-step routine" is the #1 theme across all surveys. She wants fewer, better products.</li>
+        <li><strong>Skin-first results</strong> — She cares more about how her skin looks WITHOUT makeup than with it. "Glow" and "hydration" are her top desired outcomes.</li>
+        <li><strong>Expert credibility</strong> — Bobbi Brown's name is the #1 reason she trusts the brand. But she wants products that feel expert, not just endorsed.</li>
+        <li><strong>Clean but not crunchy</strong> — She cares about clean ingredients but doesn't want to sacrifice performance. "Works AND is clean" is the expectation.</li>
+        <li><strong>SPF everywhere</strong> — 44% of Just Enough Tinted Moisturizer reviews mention wanting SPF. This is the single biggest unmet need.</li>
+        <li><strong>Travel-friendly sizes</strong> — Mini Eye Cream did $522K in its first year. She buys minis for travel, purse, and trial.</li>
+        <li><strong>Skincare benefits in makeup</strong> — Blushing Stick survey shows 70%+ want hydrating and anti-aging benefits in their blush/color products.</li>
+      </ul>
+
+      <h3>Target: Aspirational vs. Actual</h3>
+      <p>The positioning deck targets 35+ women. The actual core is 50-65+. Upcoming brand partnerships aim to pull younger, but the skincare line has to serve both — which means formulations for mature skin concerns (hydration, fine lines, firmness) with packaging and messaging that doesn't alienate a 38-year-old.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 03. CURRENT STATE ========== -->
+<section class="section" id="current-state">
+  <div class="section__eyebrow">03 — Current State</div>
+  <h2 class="section__title">Product-by-product scorecard</h2>
+  <p class="section__lead">Sales data from Polar Analytics (Shopify), last 12 months (Mar 2025 – Mar 2026) with year-over-year comparison. Customer sentiment from the 2027 Inno Kickoff meeting and Junip reviews.</p>
+
+  <div class="cards" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="card">
+      <div class="card__label">Total Skincare Revenue</div>
+      <div class="card__value">$6.78M</div>
+      <div class="card__delta card__delta--up">+11.5% YoY (from $6.08M)</div>
+    </div>
+    <div class="card">
+      <div class="card__label">Units Sold</div>
+      <div class="card__value">205K</div>
+      <div class="card__delta" style="color: var(--gray-500)">Flat YoY (205K prior)</div>
+    </div>
+    <div class="card">
+      <div class="card__label">Avg Revenue Per Unit</div>
+      <div class="card__value">$33</div>
+      <div class="card__delta card__delta--up">+11.5% (from $29.60)</div>
+      <div class="card__note">Mix shift toward higher-priced items</div>
+    </div>
+  </div>
+
+  <div class="table-wrap table-wrap--striped">
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th class="num">Net Sales</th>
+          <th class="num">YoY</th>
+          <th class="num">Units</th>
+          <th class="num">Avg Price</th>
+          <th>Verdict</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Rich Eye Cream</strong></td>
+          <td class="num">$912,971</td>
+          <td class="num" style="color: var(--green); font-weight: 600">+215%</td>
+          <td class="num">22,393</td>
+          <td class="num">$40.77</td>
+          <td><span class="badge badge--green">Star</span></td>
+        </tr>
+        <tr>
+          <td><strong>Eye Cream</strong></td>
+          <td class="num">$912,005</td>
+          <td class="num" style="color: var(--red)">-33%</td>
+          <td class="num">26,056</td>
+          <td class="num">$35.00</td>
+          <td><span class="badge badge--yellow">Watch</span></td>
+        </tr>
+        <tr>
+          <td><strong>Shimmer Face Oil</strong></td>
+          <td class="num">$867,821</td>
+          <td class="num" style="color: var(--red)">-9%</td>
+          <td class="num">27,053</td>
+          <td class="num">$32.09</td>
+          <td><span class="badge badge--yellow">Watch</span></td>
+        </tr>
+        <tr>
+          <td><strong>Light Moisture Cream</strong></td>
+          <td class="num">$768,046</td>
+          <td class="num" style="color: var(--green)">+2%</td>
+          <td class="num">18,781</td>
+          <td class="num">$40.89</td>
+          <td><span class="badge badge--green">Keep</span></td>
+        </tr>
+        <tr>
+          <td><strong>Hippie Stick</strong></td>
+          <td class="num">$762,035</td>
+          <td class="num" style="color: var(--green)">+32%</td>
+          <td class="num">21,797</td>
+          <td class="num">$34.96</td>
+          <td><span class="badge badge--green">Star</span></td>
+        </tr>
+        <tr>
+          <td><strong>Miracle Cream</strong></td>
+          <td class="num">$744,138</td>
+          <td class="num" style="color: var(--red)">-6%</td>
+          <td class="num">18,273</td>
+          <td class="num">$40.72</td>
+          <td><span class="badge badge--yellow">Reformulate</span></td>
+        </tr>
+        <tr>
+          <td><strong>Mini Eye Cream</strong></td>
+          <td class="num">$522,000</td>
+          <td class="num" style="color: var(--green)">NEW</td>
+          <td class="num">35,316</td>
+          <td class="num">$14.78</td>
+          <td><span class="badge badge--green">Star</span></td>
+        </tr>
+        <tr>
+          <td><strong>The Oil Stick</strong></td>
+          <td class="num">$384,532</td>
+          <td class="num" style="color: var(--red)">-5%</td>
+          <td class="num">14,115</td>
+          <td class="num">$27.24</td>
+          <td><span class="badge badge--red">Fix</span></td>
+        </tr>
+        <tr>
+          <td><strong>Multivitamin Serum</strong></td>
+          <td class="num">$280,229</td>
+          <td class="num" style="color: var(--red)">-14%</td>
+          <td class="num">5,588</td>
+          <td class="num">$50.15</td>
+          <td><span class="badge badge--red">Rethink</span></td>
+        </tr>
+        <tr>
+          <td><strong>Body Oil</strong></td>
+          <td class="num">$184,538</td>
+          <td class="num" style="color: var(--gray-500)">—</td>
+          <td class="num">3,570</td>
+          <td class="num">$51.69</td>
+          <td><span class="badge badge--neutral">Evaluate</span></td>
+        </tr>
+        <tr>
+          <td><strong>Soft Skin Cream Cleanser</strong></td>
+          <td class="num">$176,127</td>
+          <td class="num" style="color: var(--gray-500)">—</td>
+          <td class="num">6,074</td>
+          <td class="num">$29.00</td>
+          <td><span class="badge badge--green">Expand</span></td>
+        </tr>
+        <tr>
+          <td><strong>Oil-Free Moisturizer</strong></td>
+          <td class="num">$156,912</td>
+          <td class="num" style="color: var(--green)">+13%</td>
+          <td class="num">3,906</td>
+          <td class="num">$40.17</td>
+          <td><span class="badge badge--green">Keep</span></td>
+        </tr>
+        <tr>
+          <td><strong>Body Cream</strong></td>
+          <td class="num">$107,066</td>
+          <td class="num" style="color: var(--gray-500)">—</td>
+          <td class="num">2,490</td>
+          <td class="num">$42.98</td>
+          <td><span class="badge badge--neutral">Evaluate</span></td>
+        </tr>
+        <tr>
+          <td>Mini Hippie Stick</td>
+          <td class="num">$766</td>
+          <td class="num" style="color: var(--red)">-99.8%</td>
+          <td class="num">64</td>
+          <td class="num">$11.97</td>
+          <td><span class="badge badge--red">Kill</span></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr style="font-weight: 700; border-top: 2px solid var(--black);">
+          <td>TOTAL</td>
+          <td class="num">$6,779,187</td>
+          <td class="num" style="color: var(--green)">+11.5%</td>
+          <td class="num">205,476</td>
+          <td class="num">$33.00</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="insight">
+    <div class="insight__title">The Eye Cream Ecosystem Is The Story</div>
+    <div class="insight__text">Eye Cream ($912K) + Rich Eye Cream ($913K) + Mini Eye Cream ($522K) = <strong>$2.35M combined</strong>, representing 35% of all skincare revenue. Rich Eye Cream grew +215% and is now the #1 skincare product. This suggests strong product-market fit in the eye category — consider it the anchor for the skincare line. The original Eye Cream is declining because Rich Eye Cream is cannibalizing it (not a bad thing — customers are trading up).</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h3>Winners: What's Working</h3>
+      <ul class="check-list">
+        <li><strong>Rich Eye Cream (+215%)</strong> — Product-market fit. Rich, nourishing formula for the 50+ demo. Proving that the audience wants richer, more luxurious textures.</li>
+        <li><strong>Hippie Stick (+32%)</strong> — Clean deodorant/body product. Unique to JRB. Strong repeat purchase behavior.</li>
+        <li><strong>Mini Eye Cream ($522K, new)</strong> — Validates the mini/travel strategy. 35K+ units at $15 — this is a trial funnel into the full-size eye cream.</li>
+        <li><strong>Oil-Free Moisturizer (+13%)</strong> — Small but growing. Appeals to the combo/oily skin segment that the rest of the line skews away from.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Problems: What Needs Attention</h3>
+      <ul class="check-list">
+        <li><strong>Multivitamin Serum (-14%)</strong> — Rollerball format problematic (per Inno Kickoff). Needs complete rethink of format and delivery.</li>
+        <li><strong>Oil Stick (-5%, rancidity issue)</strong> — Product quality complaints from Inno Kickoff. Rancidity = brand trust problem.</li>
+        <li><strong>Miracle Cream (-6%)</strong> — Texture complaints noted in Inno Kickoff. May need reformulation for a lighter, more modern feel.</li>
+        <li><strong>Shimmer Face Oil (-9%)</strong> — Still #1 in units but softening. Skincare-makeup hybrid — is it skincare or is it makeup?</li>
+        <li><strong>Mini Hippie Stick (-99.8%)</strong> — Essentially discontinued. Kill and redirect resources.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 04. CUSTOMER VOICE ========== -->
+<section class="section section--warm" id="customer-voice">
+  <div class="section__eyebrow">04 — Customer Voice</div>
+  <h2 class="section__title">What customers are telling us</h2>
+  <p class="section__lead">Synthesized from the 2027 Inno Kickoff meeting (Mar 24, 2026), Junip product reviews, and 11 Typeform consumer surveys covering 5,000+ responses.</p>
+
+  <div class="quote">
+    "I think miracle cream should go." — "The serum doesn't actually do much. There aren't enough actives in it." — "Regardless, serum's probably gone."
+    <div class="quote__attr">2027 Inno Kickoff Meeting, Mar 24, 2026 — Direct quotes from the product team</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h3>From the Inno Kickoff (Mar 24, 2026)</h3>
+      <p>Key skincare findings from the product innovation meeting with Cody, Nicole, Frankie, and Chrissy. <strong>The team is more aggressive than expected</strong> — multiple products are on the chopping block:</p>
+      <ul class="check-list">
+        <li><strong>Miracle Cream: team wants to kill it.</strong> "It should go" — waxy texture, 7.8% negative review rate, some jars turn green. Bobbi loves it, which complicates things. Team tested bouncy/fluffy replacements.</li>
+        <li><strong>Multivitamin Serum: "probably gone."</strong> 10% negative rate (highest in skincare). Rollerball hated. Formula lacks efficacy — "doesn't actually do much." Likely replaced by a targeted single-concern serum.</li>
+        <li><strong>Light Moisture Cream: misnamed.</strong> "Not a light cream — it's actually rich." Status TBD — may be replaced if milky toner fills the lightweight hydration role.</li>
+        <li><strong>Oil Stick: fragrance burns off in production.</strong> Goes rancid over time. Packaging "feels cheap." A full-metal repack was developed but never launched.</li>
+        <li><strong>Hippie Stick: everyone hates the packaging except Bobbi.</strong> Push-up mechanism breaks. Positioning unclear ("what am I supposed to do with it?"). Bobbi says "show me the data."</li>
+        <li><strong>Current SPF product already exists but is bad.</strong> "Draggy and a pulse." White cast despite no-white-cast claims. Shade range is confusing. Bobbi asked about switching from mineral to chemical SPF.</li>
+        <li><strong>SPF takes 2 years to develop.</strong> This is a long-term timeline. A tinted SPF to replace Just Enough was briefed to vendors.</li>
+        <li><strong>Milky toner is the #1 new product priority.</strong> Vendors coming in that same day. Rhode Glazing Milk is the benchmark. Hydration without weight.</li>
+        <li><strong>Cleanser portfolio: balm + gel, not 3-tier.</strong> Cleansing balm for makeup removal, gel for daily use. Farmacy and Glossier Milky Jelly as benchmarks.</li>
+        <li><strong>Hydrating mist under consideration.</strong> Bobbi has been "dancing around being open to it." Use case: midday refresh over makeup.</li>
+        <li><strong>Team personally uses competitor products.</strong> Frankie uses Rhode Barrier Cream and Glazing Milk daily. Nicole uses Dr. Macrene/Eight Day. These are the benchmarks they're measuring JRB against.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>From Consumer Surveys (11 Typeforms, ~12,000 responses)</h3>
+
+      <div class="insight" style="margin-bottom: 24px">
+        <div class="insight__title">70% Want Makeup That Behaves Like Skincare</div>
+        <div class="insight__text">"Your Skin" survey (n=181): <strong>70% agree or strongly agree</strong> that they want makeup that behaves like skincare. 78% rate skincare benefits as moderately important or higher when choosing a foundation. This is the convergence JRB should own.</div>
+      </div>
+
+      <div class="insight" style="margin-bottom: 24px">
+        <div class="insight__title">72% Already See Miracle Balm as a Hybrid</div>
+        <div class="insight__text">Positioning survey (n=169): 72% categorize Miracle Balm as a "hybrid of skincare and makeup." 0% see it as pure skincare. 63% believe it improves their skin over time. <strong>MB is already a skincare-makeup bridge — the skincare line should extend this logic.</strong></div>
+      </div>
+
+      <div class="insight" style="margin-bottom: 24px">
+        <div class="insight__title">82% Find "98% Skincare + Sheer Tint" Appealing</div>
+        <div class="insight__text">When presented with a "skincare-first with a hint of tint" concept, 82% found it appealing. Top 3 desired benefits: <strong>dewy glow (95), slight tint (89), deep hydration (82)</strong>. "Skin-barrier support" also scored high (63). The consumer is ready for skincare-forward beauty.</div>
+      </div>
+
+      <div class="insight" style="margin-bottom: 24px">
+        <div class="insight__title">91% Want Equal or Greater Skincare Benefits</div>
+        <div class="insight__text">In an all-over balm, 91% want at least equal skincare benefits. Only 6% prioritize makeup payoff alone. When forced to choose between "do no harm" (28%) and "actively improve" (7%), safety wins — <strong>the baseline is "don't damage my skin."</strong></div>
+      </div>
+
+      <div class="insight" style="margin-bottom: 24px">
+        <div class="insight__title">SPF Demand Is Real: 44% of JET Reviews</div>
+        <div class="insight__text">44% of Just Enough Tinted Moisturizer reviews mention wanting SPF (only 20% of WTF reviews do — people expect SPF more in a moisturizer format). JRB already has an SPF product but it's performing poorly and the team acknowledges it's bad.</div>
+      </div>
+
+      <div class="insight">
+        <div class="insight__title">Descriptive Names Beat Abstract Positioning</div>
+        <div class="insight__text">"All-over moisturizing balm with a hint of tint" (30%) outperformed "Skincare-first glow balm" (12%). <strong>Consumers respond to concrete, benefit-forward language</strong> — not positioning jargon. This matters for how JRB names and markets skincare products.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Review Sentiment by Product (Inno Kickoff Data)</h3>
+  <p>Negative review rates from the product team's analysis, shared at the 2027 Inno Kickoff:</p>
+  <div class="cards">
+    <div class="card">
+      <div class="card__label">Highest Rated</div>
+      <div class="card__value card__value--green" style="font-size: 22px">Rich Eye Cream</div>
+      <div class="card__note">Standout highest-rated product in the skincare line. Above 4.69 average rating, under 5% negative rate. Team members use it daily.</div>
+    </div>
+    <div class="card">
+      <div class="card__label">Most Polarizing (7.8% negative)</div>
+      <div class="card__value card__value--accent" style="font-size: 22px">Miracle Cream</div>
+      <div class="card__note">Waxy texture, some jars turn green over time. Team says "it should go" but Bobbi loves it. Needs a bouncy/fluffy replacement that delivers equal hydration.</div>
+    </div>
+    <div class="card">
+      <div class="card__label">Highest Negative Rate (10%)</div>
+      <div class="card__value card__value--red" style="font-size: 22px">Multivitamin Serum</div>
+      <div class="card__note">Rollerball hated. "Doesn't actually do much" — not enough actives for brightening or dark spots. Team confirmed: "serum's probably gone."</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 05. COMPETITIVE LANDSCAPE ========== -->
+<section class="section" id="competitive">
+  <div class="section__eyebrow">05 — Competitive Landscape</div>
+  <h2 class="section__title">The prestige skincare market is crowded — but the "expert prep" lane is empty</h2>
+  <p class="section__lead">Every competitor has a skincare thesis. JRB doesn't — yet. The white space isn't in formulation or ingredients. It's in the story: no prestige beauty brand is positioning skincare as the essential prep step from a legendary makeup artist's perspective.</p>
+
+  <div class="table-wrap table-wrap--striped">
+    <table>
+      <thead>
+        <tr>
+          <th>Brand</th>
+          <th>Skincare Thesis</th>
+          <th>Hero Product</th>
+          <th class="num">Price Range</th>
+          <th>Strength</th>
+          <th>Vulnerability</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Rhode</strong><br><span style="font-size: 11px; color: var(--gray-500)">$212M rev, acquired for $1B</span></td>
+          <td>Barrier repair + glazing</td>
+          <td>Peptide Glazing Fluid</td>
+          <td class="num">$20-$36</td>
+          <td>Viral, 10 focused SKUs, tight edit</td>
+          <td>Celebrity-dependent, undercuts JRB on price</td>
+        </tr>
+        <tr>
+          <td><strong>ILIA</strong></td>
+          <td>Skincare-makeup hybrid</td>
+          <td>Super Serum Skin Tint SPF 40</td>
+          <td class="num">$26-$54</td>
+          <td>The gold standard hybrid product</td>
+          <td>Skincare line is secondary to hybrids</td>
+        </tr>
+        <tr>
+          <td><strong>Merit</strong><br><span style="font-size: 11px; color: var(--gray-500)">Launched skincare 2024-25</span></td>
+          <td>"Great Skin" minimalism</td>
+          <td>The Uniform SPF 45</td>
+          <td class="num">$16-$42</td>
+          <td>Closest JRB competitor in philosophy</td>
+          <td>Skincare line is new, unproven at scale</td>
+        </tr>
+        <tr>
+          <td><strong>Bobbi Brown (EL)</strong><br><span style="font-size: 11px; color: var(--gray-500)">17 skincare SKUs</span></td>
+          <td>Vitamin-enriched franchise</td>
+          <td>Vitamin Enriched Face Base ($69)</td>
+          <td class="num">$35-$118</td>
+          <td>Legacy hero product, Allure BOB 2025</td>
+          <td>Bobbi herself left — the "soul" is at JRB</td>
+        </tr>
+        <tr>
+          <td><strong>Charlotte Tilbury</strong><br><span style="font-size: 11px; color: var(--gray-500)">19 skincare SKUs</span></td>
+          <td>"Magic" franchise</td>
+          <td>Charlotte's Magic Cream ($32-$260)</td>
+          <td class="num">$22-$260</td>
+          <td>Aspirational luxury, strong naming</td>
+          <td>Skincare feels secondary to makeup glamour</td>
+        </tr>
+        <tr>
+          <td><strong>Westman Atelier</strong><br><span style="font-size: 11px; color: var(--gray-500)">MUA-founder parallel</span></td>
+          <td>Ultra-luxury clean skincare</td>
+          <td>Skin Activator Serum ($150)</td>
+          <td class="num">$120-$325</td>
+          <td>Proves MUA brands can sell high-end skincare</td>
+          <td>Price point excludes mass market</td>
+        </tr>
+        <tr>
+          <td><strong>Drunk Elephant</strong></td>
+          <td>Clean-clinical "smoothie" mixing</td>
+          <td>Protini Polypeptide Cream</td>
+          <td class="num">$18-$134</td>
+          <td>Strong ingredient story, cult following</td>
+          <td>Premium fatigue, acquisition drama</td>
+        </tr>
+        <tr>
+          <td><strong>Glossier</strong></td>
+          <td>"Skin first, makeup second"</td>
+          <td>Priming Moisturizer Rich</td>
+          <td class="num">$12-$35</td>
+          <td>Brand community, approachable</td>
+          <td>Lost skincare credibility post-rebrand</td>
+        </tr>
+        <tr>
+          <td><strong>Tower 28</strong></td>
+          <td>Sensitive-skin safe</td>
+          <td>SOS Daily Barrier Cream</td>
+          <td class="num">$18-$36</td>
+          <td>Dermatologist partnerships, clean</td>
+          <td>Niche positioning limits market size</td>
+        </tr>
+        <tr>
+          <td><strong>Kosas</strong></td>
+          <td>Skincare-makeup hybrid</td>
+          <td>Revealer Concealer</td>
+          <td class="num">$24-$42</td>
+          <td>Strong hybrid positioning</td>
+          <td>Skincare is secondary to color</td>
+        </tr>
+        <tr>
+          <td><strong>Summer Fridays</strong></td>
+          <td>Self-care ritual</td>
+          <td>Jet Lag Mask</td>
+          <td class="num">$22-$54</td>
+          <td>Instagrammable, strong in masks</td>
+          <td>Surface-level formulations, no expert story</td>
+        </tr>
+        <tr>
+          <td><strong>Tatcha</strong></td>
+          <td>Japanese beauty rituals</td>
+          <td>Dewy Skin Cream</td>
+          <td class="num">$25-$120</td>
+          <td>Cultural story, beautiful packaging</td>
+          <td>Ritual-heavy — conflicts with simplicity</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Strategic Takeaways</h3>
+  <div class="cards">
+    <div class="card" style="border-left: 4px solid var(--green);">
+      <div class="card__label" style="color: var(--green)">Opportunity</div>
+      <div style="font-weight: 700; font-size: 16px; margin-bottom: 12px">"EXPERT SKIN PREP" IS WHITE SPACE</div>
+      <p style="font-size: 14px; color: var(--gray-700); line-height: 1.6">No prestige brand credibly positions skincare as "what a legendary makeup artist wants your skin to look like before she starts." Charlotte Tilbury comes closest with Magic Cream but doesn't have Bobbi's 35+ years of actually working on skin. Rhode is barrier repair. Drunk Elephant is clean-clinical. JRB can own "the prep that makes minimal makeup possible."</p>
+    </div>
+    <div class="card" style="border-left: 4px solid var(--accent);">
+      <div class="card__label" style="color: var(--accent)">Advantage</div>
+      <div style="font-weight: 700; font-size: 16px; margin-bottom: 12px">THE SKINCARE→MAKEUP BRIDGE</div>
+      <p style="font-size: 14px; color: var(--gray-700); line-height: 1.6">JRB is one of very few brands where the founder's expertise is in MAKEUP, not skincare. This means every skincare product can be designed and marketed as "what Bobbi wants your skin to look like before she puts on one drop of makeup." No skincare-first brand can make this claim. No celebrity brand can either.</p>
+    </div>
+    <div class="card" style="border-left: 4px solid var(--red);">
+      <div class="card__label" style="color: var(--red)">Risk</div>
+      <div style="font-weight: 700; font-size: 16px; margin-bottom: 12px">SPF IS TABLE STAKES AND JRB HAS ZERO</div>
+      <p style="font-size: 14px; color: var(--gray-700); line-height: 1.6">ILIA's Super Serum Skin Tint SPF 40 is their #1 product. Rhode launched SPF. Every prestige brand has it. JRB has the Just Enough Tinted Moisturizer but NO SPF. With 44% of JET reviews asking for it, this isn't a "nice to have" — it's a gap that's actively losing customers to competitors.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 06. THE JRB SKINCARE POV ========== -->
+<section class="section section--dark" id="skincare-pov">
+  <div class="section__eyebrow" style="color: var(--accent)">06 — The JRB Skincare POV</div>
+  <h2 class="section__title" style="color: var(--white)">Expert skin prep: the skincare that makes "just enough" makeup possible</h2>
+  <p class="section__lead">The JRB skincare POV flows from the brand's core truth: Bobbi Brown spent 35+ years as a makeup artist. She knows what skin needs to look like BEFORE makeup goes on. JRB skincare isn't competing with dermatologists (Drunk Elephant) or celebrities (Rhode) or rituals (Tatcha). It's the professional prep — skin so healthy, so luminous, that you barely need makeup at all.</p>
+
+  <div class="two-col" style="margin-bottom: 48px;">
+    <div>
+      <h3 style="color: var(--accent)">The Positioning</h3>
+      <div class="quote" style="border-color: rgba(255,255,255,0.2); color: var(--white)">
+        "The skincare a makeup artist would create — because one did."
+        <div class="quote__attr">Proposed skincare tagline</div>
+      </div>
+      <p style="color: var(--gray-300)">This positioning works because:</p>
+      <ul class="check-list" style="color: var(--gray-300)">
+        <li><strong style="color: var(--white)">It's credible</strong> — Bobbi's expertise is in making skin look beautiful. 35+ years of working on real skin, real women, real light.</li>
+        <li><strong style="color: var(--white)">It's differentiated</strong> — No other skincare line comes from a makeup artist's perspective on what skin needs.</li>
+        <li><strong style="color: var(--white)">It connects to makeup</strong> — Every JRB skincare product is the setup for JRB makeup. The bridge is built into the DNA.</li>
+        <li><strong style="color: var(--white)">It justifies premium</strong> — "Expert-formulated" tests as the #2 premium driver in the Listen Labs survey design. Professional credibility commands price.</li>
+        <li><strong style="color: var(--white)">It serves both demos</strong> — A 38-year-old and a 62-year-old both want skin that looks great with minimal makeup. The desire is the same; the products adjust.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="color: var(--accent)">The Framework: Prep → Protect → Perfect</h3>
+      <p style="color: var(--gray-300); margin-bottom: 24px;">A 3-step skincare architecture that mirrors how a makeup artist preps a face:</p>
+
+      <div style="background: rgba(255,255,255,0.06); border-radius: 8px; padding: 28px; margin-bottom: 16px;">
+        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 8px; font-weight: 600;">Step 1: Prep</div>
+        <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px; color: var(--white);">Clean + Treat</div>
+        <p style="color: var(--gray-300); font-size: 14px;">Cleanser portfolio (3-tier), Milky Toner, Multivitamin Serum (reformulated). Remove, reset, nourish. The canvas starts here.</p>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.06); border-radius: 8px; padding: 28px; margin-bottom: 16px;">
+        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 8px; font-weight: 600;">Step 2: Protect</div>
+        <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px; color: var(--white);">Moisturize + Shield</div>
+        <p style="color: var(--gray-300); font-size: 14px;">Miracle Cream (reformulated), Light Moisture Cream, Oil-Free Moisturizer, Eye Creams, NEW SPF. Hydrate, firm, protect. The foundation (literally) for makeup.</p>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.06); border-radius: 8px; padding: 28px;">
+        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 8px; font-weight: 600;">Step 3: Perfect</div>
+        <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px; color: var(--white);">Glow + Bridge</div>
+        <p style="color: var(--gray-300); font-size: 14px;">Shimmer Face Oil, Hippie Stick, face oils. The "last step before makeup" products. These ARE the skincare-makeup bridge — the glow layer that makes "just enough" possible.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight" style="background: rgba(255,255,255,0.06); border-color: var(--accent);">
+    <div class="insight__title" style="color: var(--accent)">Why This Solves The "Worth Paying More For" Problem</div>
+    <div class="insight__text" style="color: var(--gray-300)">The brand health data shows JRB's only weakness is premium perception (38% vs 44%). "Expert skin prep" directly addresses this: it elevates the products from "nice clean beauty" to "professional-grade preparation from a world-class makeup artist." The survey data confirms "created by a true expert (not just a celebrity name)" is a top premium driver. JRB has this — the skincare just needs to tell the story.</div>
+  </div>
+</section>
+
+<!-- ========== 07. PORTFOLIO RECOMMENDATION ========== -->
+<section class="section" id="portfolio">
+  <div class="section__eyebrow">07 — Portfolio Recommendation</div>
+  <h2 class="section__title">What stays, what goes, what's new</h2>
+  <p class="section__lead">Based on sales performance, customer sentiment, competitive landscape, and strategic fit with the "Expert Skin Prep" positioning.</p>
+
+  <h3 style="color: var(--green)">Keep + Invest</h3>
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-card__verdict"><span class="badge badge--green">Star</span></div>
+      <div class="product-card__name">Rich Eye Cream</div>
+      <div class="product-card__price">$40.77 avg | +215% YoY</div>
+      <div class="product-card__stats">
+        <div><div class="product-card__stat-label">Revenue</div><div class="product-card__stat-value">$913K</div></div>
+        <div><div class="product-card__stat-label">Units</div><div class="product-card__stat-value">22.4K</div></div>
+      </div>
+      <div class="product-card__notes">
+        <ul>
+          <li>Best product-market fit in the line</li>
+          <li>Invest in mini format (Mini Eye Cream already $522K)</li>
+          <li>Consider a "Rich" sub-line for other products</li>
+          <li>Position as "the eye cream a makeup artist created"</li>
+        </ul>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-card__verdict"><span class="badge badge--green">Star</span></div>
+      <div class="product-card__name">Hippie Stick</div>
+      <div class="product-card__price">$34.96 avg | +32% YoY</div>
+      <div class="product-card__stats">
+        <div><div class="product-card__stat-label">Revenue</div><div class="product-card__stat-value">$762K</div></div>
+        <div><div class="product-card__stat-label">Units</div><div class="product-card__stat-value">21.8K</div></div>
+      </div>
+      <div class="product-card__notes">
+        <ul>
+          <li>Unique to JRB — no one else does clean deodorant/body this well in prestige</li>
+          <li>Fits "Prep" step — body care as self-care</li>
+          <li>Consider seasonal scents or limited editions</li>
+          <li>Mini format discontinued; evaluate if travel size is needed</li>
+        </ul>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-card__verdict"><span class="badge badge--green">Keep</span></div>
+      <div class="product-card__name">Light Moisture Cream</div>
+      <div class="product-card__price">$40.89 avg | +2% YoY</div>
+      <div class="product-card__stats">
+        <div><div class="product-card__stat-label">Revenue</div><div class="product-card__stat-value">$768K</div></div>
+        <div><div class="product-card__stat-label">Units</div><div class="product-card__stat-value">18.8K</div></div>
+      </div>
+      <div class="product-card__notes">
+        <ul>
+          <li>Solid, stable performer — the "everyday" moisturizer</li>
+          <li>Lighter texture appeals to younger demo and combo skin</li>
+          <li>Pairs naturally with "Protect" step</li>
+          <li>No changes needed — this is the workhorse</li>
+        </ul>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-card__verdict"><span class="badge badge--green">Keep</span></div>
+      <div class="product-card__name">Oil-Free Moisturizer</div>
+      <div class="product-card__price">$40.17 avg | +13% YoY</div>
+      <div class="product-card__stats">
+        <div><div class="product-card__stat-label">Revenue</div><div class="product-card__stat-value">$157K</div></div>
+        <div><div class="product-card__stat-label">Units</div><div class="product-card__stat-value">3.9K</div></div>
+      </div>
+      <div class="product-card__notes">
+        <ul>
+          <li>Small but growing — serves combo/oily skin</li>
+          <li>Important for portfolio breadth (not everyone is dry/mature)</li>
+          <li>Growth suggests untapped demand</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="color: var(--yellow)">Reformulate or Reposition</h3>
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-card__verdict"><span class="badge badge--yellow">Replace</span></div>
+      <div class="product-card__name">Miracle Cream</div>
+      <div class="product-card__price">$40.72 avg | -6% YoY</div>
+      <div class="product-card__stats">
+        <div><div class="product-card__stat-label">Revenue</div><div class="product-card__stat-value">$744K</div></div>
+        <div><div class="product-card__stat-label">Units</div><div class="product-card__stat-value">18.3K</div></div>
+      </div>
+      <div class="product-card__notes">
+        <ul>
+          <li><strong>Team consensus: "It should go."</strong> 7.8% negative rate, waxy texture, some jars turn green</li>
+          <li>Bobbi loves it — needs data and a compelling replacement</li>
+          <li>Team tested bouncy/fluffy textures as replacement: "richness without heaviness"</li>
+          <li>"Miracle" name has brand equity — keep the name, replace the formula</li>
+          <li>Position replacement as nighttime/intensive moisturizer</li>
+        </ul>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-card__verdict"><span class="badge badge--yellow">Watch</span></div>
+      <div class="product-card__name">Shimmer Face Oil</div>
+      <div class="product-card__price">$32.09 avg | -9% YoY</div>
+      <div class="product-card__stats">
+        <div><div class="product-card__stat-label">Revenue</div><div class="product-card__stat-value">$868K</div></div>
+        <div><div class="product-card__stat-label">Units</div><div class="product-card__stat-value">27.1K</div></div>
+      </div>
+      <div class="product-card__notes">
+        <ul>
+          <li>Highest unit volume in skincare — but declining</li>
+          <li>Is this skincare or makeup? Needs clarity</li>
+          <li>Reposition as the "Perfect" step — the glow layer</li>
+          <li>May need shade/formula refresh</li>
+        </ul>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-card__verdict"><span class="badge badge--yellow">Watch</span></div>
+      <div class="product-card__name">Eye Cream (Original)</div>
+      <div class="product-card__price">$35.00 avg | -33% YoY</div>
+      <div class="product-card__stats">
+        <div><div class="product-card__stat-label">Revenue</div><div class="product-card__stat-value">$912K</div></div>
+        <div><div class="product-card__stat-label">Units</div><div class="product-card__stat-value">26.1K</div></div>
+      </div>
+      <div class="product-card__notes">
+        <ul>
+          <li>Declining because Rich Eye Cream is cannibalizing</li>
+          <li>Still $912K — significant business</li>
+          <li>Consider repositioning as "lightweight/daytime" eye vs. Rich for "nighttime/intensive"</li>
+          <li>AM/PM eye cream pair could grow total category</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="color: var(--red)">Rethink or Kill</h3>
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-card__verdict"><span class="badge badge--red">Discontinue</span></div>
+      <div class="product-card__name">Multivitamin Serum</div>
+      <div class="product-card__price">$50.15 avg | -14% YoY</div>
+      <div class="product-card__stats">
+        <div><div class="product-card__stat-label">Revenue</div><div class="product-card__stat-value">$280K</div></div>
+        <div><div class="product-card__stat-label">Units</div><div class="product-card__stat-value">5.6K</div></div>
+      </div>
+      <div class="product-card__notes">
+        <ul>
+          <li><strong>Team confirmed: "Serum's probably gone."</strong> 10% negative rate (highest in line)</li>
+          <li>Both format AND formula are problems: "doesn't actually do much — not enough actives"</li>
+          <li>Rollerball hated. Product well-liked by some but delivery kills it</li>
+          <li>Replace with a <strong>targeted single-concern serum</strong> (dark spots, fine lines, or brightening)</li>
+          <li>Serum category commands premium ($50+) — worth re-entering with a hero</li>
+        </ul>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-card__verdict"><span class="badge badge--red">Fix</span></div>
+      <div class="product-card__name">The Oil Stick</div>
+      <div class="product-card__price">$27.24 avg | -5% YoY</div>
+      <div class="product-card__stats">
+        <div><div class="product-card__stat-label">Revenue</div><div class="product-card__stat-value">$385K</div></div>
+        <div><div class="product-card__stat-label">Units</div><div class="product-card__stat-value">14.1K</div></div>
+      </div>
+      <div class="product-card__notes">
+        <ul>
+          <li>Rancidity issue is a brand trust problem — must fix immediately</li>
+          <li>$385K is meaningful revenue to protect</li>
+          <li>Format (stick) is good — portable, easy</li>
+          <li>Reformulate for shelf stability while maintaining efficacy</li>
+        </ul>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-card__verdict"><span class="badge badge--red">Kill</span></div>
+      <div class="product-card__name">Mini Hippie Stick</div>
+      <div class="product-card__price">$11.97 avg | -99.8% YoY</div>
+      <div class="product-card__stats">
+        <div><div class="product-card__stat-label">Revenue</div><div class="product-card__stat-value">$766</div></div>
+        <div><div class="product-card__stat-label">Units</div><div class="product-card__stat-value">64</div></div>
+      </div>
+      <div class="product-card__notes">
+        <ul>
+          <li>Effectively dead — $766 total revenue</li>
+          <li>Discontinue and reallocate resources</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="color: var(--accent)">New Products to Launch</h3>
+  <div class="product-grid">
+    <div class="product-card" style="border: 2px solid var(--accent);">
+      <div class="product-card__verdict"><span class="badge" style="background: var(--accent); color: white;">Priority 1</span></div>
+      <div class="product-card__name">Tinted SPF / Just Enough Replacement</div>
+      <div class="product-card__price">Target: $38-$44 | Replaces current Everyday Sunscreen ($42)</div>
+      <div class="product-card__notes" style="padding-top: 16px">
+        <ul>
+          <li><strong>Current SPF is failing:</strong> Team says it's "draggy," has white cast despite claims, confusing shade range. Needs complete redo.</li>
+          <li><strong>44% of JET reviews request SPF.</strong> Team is testing a tinted SPF that could replace Just Enough entirely — vendor sample with "charged water" proprietary ingredient stood out.</li>
+          <li><strong>Key tension:</strong> Frankie thinks tinted SPF would cannibalize Just Enough to the point it should be a replacement. Cody cringes because "I know Bobbi."</li>
+          <li><strong>Timeline reality:</strong> "It takes 2 years to come out with an SPF." This is the longest-lead item.</li>
+          <li><strong>Open question:</strong> Mineral vs. chemical SPF. Clean mineral is "extremely hard to formulate well." Bobbi asked about going back to chemical.</li>
+          <li><strong>Competitive refs:</strong> ILIA Super Serum Skin Tint ($48), Merit The Uniform SPF 45 ($38), Elta MD tinted</li>
+        </ul>
+      </div>
+    </div>
+    <div class="product-card" style="border: 2px solid var(--accent);">
+      <div class="product-card__verdict"><span class="badge" style="background: var(--accent); color: white;">Priority 2</span></div>
+      <div class="product-card__name">Milky Toner</div>
+      <div class="product-card__price">Target: $32-$38 | New category for JRB</div>
+      <div class="product-card__notes" style="padding-top: 16px">
+        <ul>
+          <li><strong>Why now:</strong> In development per Inno Kickoff. Toners are the fastest-growing prestige skincare subcategory.</li>
+          <li><strong>Format:</strong> Milky, hydrating, barrier-support — not astringent/stripping</li>
+          <li><strong>Positioning:</strong> "The first step after cleansing — what a makeup artist reaches for first"</li>
+          <li><strong>Competitive:</strong> Rhode Barrier Restore Cream fills adjacent space; milky toner differentiates</li>
+        </ul>
+      </div>
+    </div>
+    <div class="product-card" style="border: 2px solid var(--accent);">
+      <div class="product-card__verdict"><span class="badge" style="background: var(--accent); color: white;">Priority 3</span></div>
+      <div class="product-card__name">Cleanser Duo: Balm + Gel</div>
+      <div class="product-card__price">Target: $30-$36 each | Expand from 1 to 3</div>
+      <div class="product-card__notes" style="padding-top: 16px">
+        <ul>
+          <li><strong>Team direction:</strong> "A balm and a gel — if we go as heavy as a balm, the gel is the counterpart." Keep existing Cream Cleanser ($176K) as the daily option.</li>
+          <li><strong>Cleansing Balm:</strong> For makeup removal, especially heavy mascara. Must not burn eyes (explicitly flagged). Farmacy cleansing balm is the benchmark.</li>
+          <li><strong>Gel Cleanser:</strong> For that "clean, fresh feeling." Team refs: Tula Classic, Glossier Milky Jelly. Bobbi "likes a lather."</li>
+          <li><strong>Portfolio = 3 cleansers:</strong> Cream (existing, daily) + Balm (PM, makeup removal) + Gel (AM, fresh start)</li>
+          <li><strong>The Bobbi angle:</strong> "A makeup artist always starts with clean skin." She loved the Cream Cleanser's lather in the original meeting.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 08. ROADMAP ========== -->
+<section class="section section--warm" id="roadmap">
+  <div class="section__eyebrow">08 — Roadmap</div>
+  <h2 class="section__title">Phased launch approach</h2>
+  <p class="section__lead">A 4-phase rollout that fixes what's broken first, then builds the new portfolio. Each phase has a clear narrative that builds on the last.</p>
+
+  <div class="timeline">
+    <div class="timeline__item">
+      <div class="timeline__phase">Phase 1 — Q3 2026</div>
+      <div class="timeline__title">Fix + Signal (Foundation)</div>
+      <div class="timeline__detail">
+        <ul class="check-list">
+          <li>Fix Oil Stick rancidity issue — reformulate for shelf stability</li>
+          <li>Kill Mini Hippie Stick — redirect resources</li>
+          <li>Relaunch Multivitamin Serum in dropper/pump format — same formula, new delivery</li>
+          <li>Reposition Eye Cream as "Day Eye Cream" alongside Rich Eye Cream as "Night Eye Cream"</li>
+          <li>Launch SPF product (if formulation timeline allows) or announce coming soon</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline__item">
+      <div class="timeline__phase">Phase 2 — Q4 2026 / Holiday</div>
+      <div class="timeline__title">The Prep Set (Anchor Launch)</div>
+      <div class="timeline__detail">
+        <ul class="check-list">
+          <li>Launch SPF product (if not Q3) — the headline for the "Protect" step</li>
+          <li>Launch "The Skin Prep Set" — curated skincare kit as a holiday anchor</li>
+          <li>Introduce "Prep → Protect → Perfect" framework in all skincare marketing</li>
+          <li>Mini sizes of top sellers as holiday gifts and trial funnels</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline__item">
+      <div class="timeline__phase">Phase 3 — Q1-Q2 2027</div>
+      <div class="timeline__title">Expand the Edit (New Products)</div>
+      <div class="timeline__detail">
+        <ul class="check-list">
+          <li>Launch Milky Toner — the new "Prep" step hero</li>
+          <li>Launch Cleanser #2 (gentle/milky) — expand from 1 to 2 cleansers</li>
+          <li>Reformulate Miracle Cream 2.0 — lighter texture, modernized formula</li>
+          <li>Evaluate body category (Body Cream + Body Oil) for invest/divest decision</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline__item">
+      <div class="timeline__phase">Phase 4 — Q3-Q4 2027</div>
+      <div class="timeline__title">Complete the System (Full Portfolio)</div>
+      <div class="timeline__detail">
+        <ul class="check-list">
+          <li>Launch Cleanser #3 (deep/exfoliating) — complete the 3-tier system</li>
+          <li>Evaluate skincare-makeup bridge products (serum foundations, skin tints with actives)</li>
+          <li>Consider "The JRB Skincare Routine" as a platform: 3 steps, 5 minutes, done</li>
+          <li>Full portfolio review based on 12 months of new product performance data</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 09. CAB SURVEY ========== -->
+<section class="section" id="cab-survey">
+  <div class="section__eyebrow">09 — CAB Skincare Survey</div>
+  <h2 class="section__title">12 questions for the Customer Advisory Board</h2>
+  <p class="section__lead">Recommended questions for a new Typeform survey targeting JRB's Customer Advisory Board (CAB). These fill specific gaps the existing data can't answer — especially around skincare routine details, willingness to buy JRB skincare, and price sensitivity.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 40px">#</th>
+          <th>Question</th>
+          <th>Type</th>
+          <th>Why We Need This</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1</strong></td>
+          <td>How many skincare products do you use in your morning routine? (1-2 / 3-4 / 5-6 / 7+)</td>
+          <td>Single select</td>
+          <td>Validates "simplicity" positioning — if most CAB members use 3-4, a 3-step system is right</td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td>Which skincare steps do you NEVER skip? (Rank: Cleanser, Moisturizer, Serum, Eye Cream, SPF, Toner, Mask, Oil)</td>
+          <td>Ranking</td>
+          <td>Identifies which categories are non-negotiable for portfolio prioritization</td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td>Which JRB skincare products do you currently use, if any? (Multi-select all skincare SKUs)</td>
+          <td>Multi-select</td>
+          <td>Maps CAB overlap with skincare vs. makeup — are they skincare buyers already?</td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td>If JRB launched a complete skincare routine (cleanser → treatment → moisturizer → SPF), how interested would you be? (1-10)</td>
+          <td>Scale</td>
+          <td>Demand signal for the full "Expert Skin Prep" concept</td>
+        </tr>
+        <tr>
+          <td><strong>5</strong></td>
+          <td>What is the ONE skincare product you wish JRB made? (Open-ended)</td>
+          <td>Open text</td>
+          <td>Unaided product demand — what's in their heads that we haven't thought of?</td>
+        </tr>
+        <tr>
+          <td><strong>6</strong></td>
+          <td>What non-JRB skincare brands are in your current routine? (Open-ended)</td>
+          <td>Open text</td>
+          <td>Maps competitive overlap — where are we losing wallet share?</td>
+        </tr>
+        <tr>
+          <td><strong>7</strong></td>
+          <td>How important is SPF in your daily skincare routine? (Not important / Nice to have / Essential / Already in my moisturizer or foundation)</td>
+          <td>Single select</td>
+          <td>Validates SPF priority. "Already in my moisturizer" reveals format preference.</td>
+        </tr>
+        <tr>
+          <td><strong>8</strong></td>
+          <td>For a JRB SPF product, would you prefer: (A) Standalone SPF, (B) Moisturizer with SPF built in, (C) Tinted SPF/skin tint, (D) All of the above</td>
+          <td>Single select</td>
+          <td>Format preference for the SPF launch — critical product decision</td>
+        </tr>
+        <tr>
+          <td><strong>9</strong></td>
+          <td>What's the MOST you'd pay for a JRB moisturizer? (Under $30 / $30-$40 / $40-$50 / $50-$60 / $60+)</td>
+          <td>Single select</td>
+          <td>Price ceiling for the "Protect" step — are we priced right at $40?</td>
+        </tr>
+        <tr>
+          <td><strong>10</strong></td>
+          <td>When you think of "JRB skincare," what does that mean to you? (Open-ended)</td>
+          <td>Open text</td>
+          <td>Tests whether "expert skin prep" resonates or if the brand means something else in skincare context</td>
+        </tr>
+        <tr>
+          <td><strong>11</strong></td>
+          <td>How much does Bobbi Brown's expertise influence your trust in JRB skincare specifically? (Not at all / Somewhat / Very much / It's the main reason I'd trust JRB for skincare)</td>
+          <td>Single select</td>
+          <td>Quantifies Bobbi as RTB for skincare specifically (vs. makeup where it's assumed)</td>
+        </tr>
+        <tr>
+          <td><strong>12</strong></td>
+          <td>What's your #1 skin concern right now? (Hydration / Fine lines & wrinkles / Dark spots / Dullness / Acne / Redness / Firmness / Even skin tone)</td>
+          <td>Single select</td>
+          <td>Validates product development priorities — which concern should the serum reformulation target?</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <div class="insight__title">Survey Design Notes</div>
+    <div class="insight__text">
+      <strong>Estimated completion time:</strong> 4-5 minutes (critical for CAB response rates).<br>
+      <strong>Platform:</strong> Typeform (consistent with existing JRB surveys).<br>
+      <strong>Target N:</strong> 200+ (standard for CAB panels).<br>
+      <strong>Cross-tab by:</strong> Age (35-49 vs 50+), current JRB skincare buyer (Q3), and skin concern (Q12).<br>
+      <strong>Key analysis:</strong> Q4 (interest) × Q9 (price ceiling) = willingness-to-pay matrix. Q5 (wish list) = unaided innovation pipeline. Q10 (brand meaning) = positioning validation.
+    </div>
+  </div>
+</section>
+
+<!-- ========== 10. OPEN QUESTIONS ========== -->
+<section class="section section--warm" id="open-questions">
+  <div class="section__eyebrow">10 — Open Questions</div>
+  <h2 class="section__title">What still needs validation</h2>
+  <p class="section__lead">This strategy is built on strong data, but several decisions need consumer validation through the Listen Labs survey (3-panel, 38 questions) and the CAB Typeform before finalizing.</p>
+
+  <div class="two-col">
+    <div>
+      <h3>Needs Listen Labs Validation</h3>
+      <ul class="check-list">
+        <li><strong>"Modern Prestige Beauty" category framing</strong> — Panel B tests this head-to-head vs. Premium Clean, Expert Beauty, and Skin-First. The winning frame shapes all skincare messaging.</li>
+        <li><strong>Bobbi Brown dependency in skincare</strong> — Panel A's transfer test (Q4-Q7) reveals if JRB skincare has identity beyond Bobbi. If not, the skincare launch needs to build it.</li>
+        <li><strong>Premium perception gap drivers</strong> — Panel B's open-ended Q2 ("what makes a brand worth paying more?") will reveal whether it's packaging, ingredients, experience, or story.</li>
+        <li><strong>Age perception from visuals</strong> — Panel B Q12 tests whether non-customers think the brand is "for someone my age." If 35-44 year olds say no, skincare packaging needs to signal younger.</li>
+        <li><strong>Which description commands premium?</strong> — Panel B Q5 vs Q6 tests which positioning is interesting vs. which commands premium pricing. They may differ.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Needs Bobbi / Team Input</h3>
+      <ul class="check-list">
+        <li><strong>SPF format decision</strong> — Standalone vs. built into moisturizer vs. tinted. Bobbi's perspective on how SPF integrates with her prep philosophy.</li>
+        <li><strong>Miracle Cream reformulation scope</strong> — How different can the texture be without losing the "Miracle Cream" loyalists? Is a 2.0 or a line extension better?</li>
+        <li><strong>Cleanser portfolio flavor</strong> — The 3-tier concept needs Bobbi's input on what "deep clean" vs. "gentle" means in her world.</li>
+        <li><strong>Serum strategy</strong> — Is the Multivitamin Serum reformulation enough, or should JRB have a hero active serum (Vitamin C? Peptides? Retinol?)</li>
+        <li><strong>Body category decision</strong> — Body Cream ($107K) and Body Oil ($185K) are small. Keep as extended line or divest to focus on face?</li>
+        <li><strong>"Expert Skin Prep" positioning</strong> — Does this language resonate with how Bobbi thinks about skincare? The tagline needs her endorsement to be authentic.</li>
+      </ul>
+
+      <h3>Needs More Data</h3>
+      <ul class="check-list">
+        <li><strong>Skincare customer retention</strong> — What % of skincare buyers repurchase? How does this compare to makeup?</li>
+        <li><strong>Cross-sell data</strong> — Do skincare buyers also buy makeup? What's the skincare→makeup bridge in actual purchase behavior?</li>
+        <li><strong>Skincare-only customers</strong> — How many customers buy ONLY skincare, not makeup? What does that segment look like?</li>
+        <li><strong>Subscription/replenishment opportunity</strong> — Skincare is inherently replenishable. Should JRB offer auto-replenish for core skincare?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<section class="section" style="text-align: center; padding: 48px 80px;">
+  <p style="font-size: 13px; color: var(--gray-500);">
+    JRB Skincare Strategy Deep Dive — March 2026<br>
+    Data sources: Polar Analytics (Shopify), Typeform (11 surveys), Granola (Inno Kickoff), Tracksuit (Brand Health), Junip (Reviews), Web Research<br>
+    Working draft — for internal discussion only
+  </p>
+</section>
+
+</div>
+
+<!-- ========== SCROLL SPY ========== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const links = document.querySelectorAll('.nav__link');
+  const sections = document.querySelectorAll('.section, .hero');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        links.forEach(link => {
+          link.classList.toggle('nav__link--active', link.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px' });
+
+  sections.forEach(section => {
+    if (section.id) observer.observe(section);
+  });
+});
+</script>
+
+</body>
+</html>
