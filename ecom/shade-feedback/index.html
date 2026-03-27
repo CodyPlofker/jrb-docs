@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shade AI Feedback</title>
+<style>
+  :root {
+    --bg: #09090b; --surface: #18181b; --border: #27272a; --border-hover: #3f3f46;
+    --text: #fafafa; --text-muted: #a1a1aa; --text-dim: #71717a; --text-faint: #52525b;
+    --green: #34d399; --green-bg: rgba(16,185,129,.1); --green-border: #065f46;
+    --red: #f87171; --red-bg: rgba(239,68,68,.1); --red-border: #7f1d1d;
+    --amber: #fbbf24; --amber-bg: rgba(245,158,11,.1); --amber-border: #78350f;
+    --blue: #60a5fa; --blue-bg: rgba(59,130,246,.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+
+  /* Password gate */
+  #gate { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  #gate form { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 32px; width: 320px; text-align: center; }
+  #gate h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+  #gate input { width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 14px; outline: none; margin-bottom: 12px; }
+  #gate input:focus { border-color: var(--text-dim); }
+  #gate button { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--text); color: var(--bg); font-size: 14px; font-weight: 600; cursor: pointer; }
+  #gate .error { color: var(--red); font-size: 12px; margin-top: 8px; display: none; }
+
+  /* Dashboard */
+  #dashboard { display: none; max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
+  header { margin-bottom: 32px; }
+  header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+  header p { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+
+  /* Stats bar */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 32px; }
+  @media (max-width: 600px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); }
+  .stat-value { font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; margin-top: 4px; }
+
+  /* Filter bar */
+  .filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .filter-btn { padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 12px; cursor: pointer; transition: all .15s; }
+  .filter-btn:hover { border-color: var(--text-dim); color: var(--text); }
+  .filter-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+  /* Entry cards */
+  .entry { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: border-color .15s; }
+  .entry:hover { border-color: var(--border-hover); }
+  .entry-header { padding: 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+  .entry-name { font-weight: 600; font-size: 14px; flex-shrink: 0; }
+  .entry-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; flex: 1; min-width: 0; }
+  .pill { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; border: 1px solid; white-space: nowrap; }
+  .pill-correct { background: var(--green-bg); color: var(--green); border-color: var(--green-border); }
+  .pill-wrong { background: var(--red-bg); color: var(--red); border-color: var(--red-border); }
+  .pill-partial { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-border); }
+  .pill-neutral { background: var(--blue-bg); color: var(--blue); border-color: rgba(59,130,246,.2); }
+  .entry-date { font-size: 11px; color: var(--text-faint); flex-shrink: 0; }
+  .chevron { color: var(--text-faint); transition: transform .2s; flex-shrink: 0; font-size: 12px; }
+  .chevron.open { transform: rotate(180deg); }
+
+  /* Entry detail */
+  .entry-detail { display: none; border-top: 1px solid var(--border); padding: 16px; }
+  .entry-detail.open { display: block; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 600px) { .detail-grid { grid-template-columns: 1fr; } }
+  .detail-section h4 { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin-bottom: 8px; }
+  .detail-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px; border-bottom: 1px solid rgba(39,39,42,.5); }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-label { color: var(--text-dim); }
+  .detail-value { color: var(--text); font-weight: 500; text-align: right; }
+  .detail-notes { margin-top: 12px; padding: 12px; background: var(--bg); border-radius: 8px; font-size: 13px; color: var(--text-muted); }
+  .detail-notes strong { color: var(--text-dim); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 4px; }
+
+  /* Loading */
+  .loading { text-align: center; padding: 64px 0; color: var(--text-dim); }
+  .empty { text-align: center; padding: 64px 0; color: var(--text-faint); }
+</style>
+</head>
+<body>
+
+<!-- Password gate -->
+<div id="gate">
+  <form onsubmit="return checkPassword()">
+    <h2>Shade AI Feedback</h2>
+    <input type="password" id="pw" placeholder="Password" autocomplete="off" autofocus>
+    <button type="submit">Enter</button>
+    <p class="error" id="pw-error">Wrong password</p>
+  </form>
+</div>
+
+<!-- Dashboard (hidden until auth) -->
+<div id="dashboard">
+  <header>
+    <h1>Shade AI Feedback</h1>
+    <p id="subtitle">Loading...</p>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="filters" id="filters"></div>
+
+  <div id="entries">
+    <div class="loading">Loading feedback data...</div>
+  </div>
+</div>
+
+<script>
+const API = "https://jrb-shade-ai.vercel.app/api/feedback";
+const PW_HASH = "jrb2026"; // Simple gate — not Fort Knox, just keeps it private
+let allEntries = [];
+
+function checkPassword() {
+  const pw = document.getElementById("pw").value;
+  if (pw === PW_HASH) {
+    document.getElementById("gate").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    loadData();
+  } else {
+    document.getElementById("pw-error").style.display = "block";
+  }
+  return false;
+}
+
+async function loadData() {
+  try {
+    const res = await fetch(API);
+    const data = await res.json();
+    allEntries = data.feedback || [];
+    renderStats(allEntries);
+    renderFilters(allEntries);
+    renderEntries(allEntries);
+    document.getElementById("subtitle").textContent =
+      `${allEntries.length} response${allEntries.length !== 1 ? "s" : ""} collected`;
+  } catch (err) {
+    document.getElementById("entries").innerHTML =
+      `<div class="empty">Failed to load data. The API might still be deploying.<br><small style="color:#52525b">${err.message}</small></div>`;
+  }
+}
+
+function renderStats(entries) {
+  const total = entries.length;
+  const skinCorrect = entries.filter(e => e.skinToneCorrect === "yes").length;
+  const undertoneCorrect = entries.filter(e => e.undertoneCorrect === "yes").length;
+  const skinRate = total > 0 ? Math.round((skinCorrect / total) * 100) : 0;
+  const undertoneRate = total > 0 ? Math.round((undertoneCorrect / total) * 100) : 0;
+
+  // Count entries where at least one actual shade was provided and matches a recommendation
+  const withShadeData = entries.filter(e =>
+    e.actualWtfShade || e.actualFacePencilShade || e.actualMiracleBalmShades
+  ).length;
+
+  document.getElementById("stats").innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Responses</div>
+      <div class="stat-value">${total}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Skin Tone Accuracy</div>
+      <div class="stat-value" style="color:${skinRate >= 70 ? 'var(--green)' : skinRate >= 40 ? 'var(--amber)' : 'var(--red)'}">${skinRate}%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Undertone Accuracy</div>
+      <div class="stat-value" style="color:${undertoneRate >= 70 ? 'var(--green)' : undertoneRate >= 40 ? 'var(--amber)' : 'var(--red)'}">${undertoneRate}%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">With Shade Data</div>
+      <div class="stat-value">${withShadeData}</div>
+    </div>
+  `;
+}
+
+function renderFilters(entries) {
+  const container = document.getElementById("filters");
+  const filters = [
+    { label: "All", filter: () => true },
+    { label: "Skin Tone Correct", filter: e => e.skinToneCorrect === "yes" },
+    { label: "Skin Tone Wrong", filter: e => e.skinToneCorrect === "no" },
+    { label: "Undertone Wrong", filter: e => e.undertoneCorrect === "no" },
+    { label: "Has Notes", filter: e => e.notes && e.notes.trim() },
+  ];
+
+  container.innerHTML = filters.map((f, i) =>
+    `<button class="filter-btn${i === 0 ? ' active' : ''}" data-idx="${i}">${f.label}</button>`
+  ).join("");
+
+  container.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      container.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const idx = parseInt(btn.dataset.idx);
+      const filtered = allEntries.filter(filters[idx].filter);
+      renderEntries(filtered);
+    });
+  });
+}
+
+function accuracyPill(value, label) {
+  if (!value) return "";
+  const cls = value === "yes" ? "pill-correct" : value === "no" ? "pill-wrong" : "pill-partial";
+  const icon = value === "yes" ? "✓" : value === "no" ? "✗" : "~";
+  return `<span class="pill ${cls}">${icon} ${label}</span>`;
+}
+
+function renderEntries(entries) {
+  if (entries.length === 0) {
+    document.getElementById("entries").innerHTML = `<div class="empty">No feedback entries yet.</div>`;
+    return;
+  }
+
+  document.getElementById("entries").innerHTML = entries.map((e, i) => {
+    const date = new Date(e.timestamp).toLocaleDateString("en-US", {
+      month: "short", day: "numeric", hour: "numeric", minute: "2-digit"
+    });
+
+    return `
+      <div class="entry" id="entry-${i}">
+        <div class="entry-header" onclick="toggle(${i})">
+          <span class="entry-name">${e.name || "Anonymous"}</span>
+          <div class="entry-meta">
+            ${accuracyPill(e.skinToneCorrect, "Skin tone")}
+            ${accuracyPill(e.undertoneCorrect, "Undertone")}
+            ${e.confidence ? `<span class="pill pill-neutral">${e.confidence}</span>` : ""}
+            ${e.ethnicity ? `<span class="pill pill-neutral">${e.ethnicity}</span>` : ""}
+          </div>
+          <span class="entry-date">${date}</span>
+          <span class="chevron" id="chev-${i}">▾</span>
+        </div>
+        <div class="entry-detail" id="detail-${i}">
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>AI Detection</h4>
+              <div class="detail-row"><span class="detail-label">Skin Tone</span><span class="detail-value">${e.skinToneDetected || "—"}</span></div>
+              <div class="detail-row"><span class="detail-label">Undertone</span><span class="detail-value">${e.undertoneDetected || "—"}</span></div>
+              <div class="detail-row"><span class="detail-label">Confidence</span><span class="detail-value">${e.confidence || "—"}</span></div>
+              <div class="detail-row"><span class="detail-label">Recommended MB</span><span class="detail-value">${e.recommendedMBShades || "—"}</span></div>
+              <div class="detail-row"><span class="detail-label">Recommended WTF</span><span class="detail-value">${e.recommendedWtfShade || "—"}</span></div>
+              <div class="detail-row"><span class="detail-label">Recommended FP</span><span class="detail-value">${e.recommendedFacePencil || "—"}</span></div>
+            </div>
+            <div class="detail-section">
+              <h4>Tester Feedback</h4>
+              <div class="detail-row"><span class="detail-label">Skin Tone Correct?</span><span class="detail-value">${e.skinToneCorrect || "—"}</span></div>
+              <div class="detail-row"><span class="detail-label">Undertone Correct?</span><span class="detail-value">${e.undertoneCorrect || "—"}</span></div>
+              <div class="detail-row"><span class="detail-label">Actual MB Shades</span><span class="detail-value">${e.actualMiracleBalmShades || "—"}</span></div>
+              <div class="detail-row"><span class="detail-label">Actual WTF Shade</span><span class="detail-value">${e.actualWtfShade || "—"}</span></div>
+              <div class="detail-row"><span class="detail-label">Actual Face Pencil</span><span class="detail-value">${e.actualFacePencilShade || "—"}</span></div>
+              <div class="detail-row"><span class="detail-label">Ethnicity</span><span class="detail-value">${e.ethnicity || "—"}</span></div>
+            </div>
+          </div>
+          ${e.reasoning ? `<div class="detail-notes"><strong>AI Reasoning</strong>${e.reasoning}</div>` : ""}
+          ${e.notes ? `<div class="detail-notes"><strong>Tester Notes</strong>${e.notes}</div>` : ""}
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function toggle(i) {
+  const detail = document.getElementById(`detail-${i}`);
+  const chev = document.getElementById(`chev-${i}`);
+  detail.classList.toggle("open");
+  chev.classList.toggle("open");
+}
+</script>
+</body>
+</html>
