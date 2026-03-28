@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JRB Stores Page — Research Brief</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-light: #555;
+    --ink-muted: #888;
+    --bg: #fafaf8;
+    --card-bg: #fff;
+    --border: #e8e6e1;
+    --accent: #c8a96e;
+    --green: #2d6a4f;
+    --green-bg: #ecfdf5;
+    --red: #d63031;
+    --red-bg: #fef2f2;
+    --blue: #2563eb;
+    --blue-bg: #eff6ff;
+    --tag-bg: #f0ede7;
+    --dark: #111;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  .header { padding: 48px 0 40px; border-bottom: 1px solid var(--border); }
+  .header__eyebrow {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--ink-muted); margin-bottom: 8px;
+  }
+  .header__title {
+    font-size: 38px; font-weight: 700; letter-spacing: -0.5px;
+    line-height: 1.15; margin-bottom: 8px;
+  }
+  .header__subtitle {
+    font-size: 18px; color: var(--ink-light); font-weight: 400;
+    line-height: 1.4; margin-bottom: 12px; max-width: 700px;
+  }
+  .header__meta { font-size: 13px; color: var(--ink-muted); }
+  .header__meta span { margin-right: 16px; }
+
+  /* Key Insight Callout */
+  .callout {
+    background: var(--dark); color: #fff; border-radius: 8px;
+    padding: 32px; margin: 32px 0;
+  }
+  .callout__label {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px;
+  }
+  .callout__text {
+    font-size: 22px; font-weight: 600; line-height: 1.35;
+  }
+  .callout__sub {
+    font-size: 14px; color: #aaa; margin-top: 12px; line-height: 1.5;
+  }
+
+  /* Sections */
+  .section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  .section__title {
+    font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--ink-muted); margin-bottom: 20px;
+  }
+  .section__intro {
+    font-size: 15px; color: var(--ink-light); margin-bottom: 24px;
+    max-width: 800px; line-height: 1.6;
+  }
+
+  /* Cards */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 20px;
+  }
+  .card--full { grid-column: 1 / -1; }
+  .card--accent { border-left: 3px solid var(--accent); }
+  .card--green { border-left: 3px solid var(--green); }
+  .card--red { border-left: 3px solid var(--red); }
+  .card--blue { border-left: 3px solid var(--blue); }
+  .card__number {
+    font-size: 11px; font-weight: 600; color: var(--ink-muted); margin-bottom: 4px;
+  }
+  .card__title { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .card__desc { font-size: 14px; color: var(--ink-light); line-height: 1.5; }
+  .card__quote {
+    font-size: 13px; font-style: italic; color: var(--ink-light);
+    margin-top: 10px; padding-left: 12px; border-left: 2px solid var(--border);
+  }
+
+  /* Tags */
+  .tag {
+    display: inline-block; font-size: 11px; letter-spacing: 0.5px;
+    padding: 3px 8px; border-radius: 3px; margin: 2px 2px;
+  }
+  .tag--green { background: var(--green-bg); color: var(--green); }
+  .tag--red { background: var(--red-bg); color: var(--red); }
+  .tag--blue { background: var(--blue-bg); color: var(--blue); }
+  .tag--muted { background: var(--tag-bg); color: var(--ink-light); }
+
+  /* Stats row */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .stat {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 16px; text-align: center;
+  }
+  .stat__number { font-size: 28px; font-weight: 700; color: var(--ink); }
+  .stat__label { font-size: 12px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* Principle cards */
+  .principle {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 28px; margin-bottom: 16px;
+  }
+  .principle__number {
+    font-size: 12px; font-weight: 700; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px;
+  }
+  .principle__title { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+  .principle__data {
+    font-size: 14px; color: var(--ink-light); margin-bottom: 8px; line-height: 1.5;
+  }
+  .principle__data strong { color: var(--ink); font-weight: 600; }
+  .principle__implication {
+    font-size: 14px; color: var(--green); font-weight: 500;
+    padding: 10px 14px; background: var(--green-bg); border-radius: 4px; margin-top: 10px;
+  }
+
+  /* Current state comparison */
+  .comparison {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .comparison__side { padding: 20px; }
+  .comparison__side--current { background: var(--red-bg); }
+  .comparison__side--proposed { background: var(--green-bg); }
+  .comparison__label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; margin-bottom: 10px;
+  }
+  .comparison__label--red { color: var(--red); }
+  .comparison__label--green { color: var(--green); }
+  .comparison__list { list-style: none; }
+  .comparison__list li {
+    font-size: 13px; padding: 4px 0; line-height: 1.4;
+  }
+
+  /* References */
+  .ref-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 20px;
+  }
+  .ref-card__rank {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--accent); margin-bottom: 6px;
+  }
+  .ref-card__name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .ref-card__why { font-size: 13px; color: var(--ink-light); line-height: 1.5; }
+
+  /* Store list */
+  .store-list {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  }
+  .store-pill {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 4px; padding: 10px 14px; font-size: 13px;
+  }
+  .store-pill__name { font-weight: 600; }
+  .store-pill__city { font-size: 12px; color: var(--ink-muted); }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .grid-2, .grid-3, .stats, .store-list { grid-template-columns: 1fr; }
+    .comparison { grid-template-columns: 1fr; }
+    .header__title { font-size: 28px; }
+    .callout__text { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header__eyebrow">Jones Road Beauty / Page Redesign</div>
+    <h1 class="header__title">Stores Page Research Brief</h1>
+    <p class="header__subtitle">Everything a designer needs to redesign the JRB stores page: current state analysis, competitive research, customer insights, design principles, and recommended approach.</p>
+    <div class="header__meta">
+      <span>Date: March 27, 2026</span>
+      <span>Current stores: 12</span>
+      <span>Target by EOY: 24</span>
+      <span>8 competitors audited</span>
+      <span>1,877 customer reviews analyzed</span>
+    </div>
+  </div>
+
+  <!-- KEY INSIGHT -->
+  <div class="callout">
+    <div class="callout__label">Core Insight</div>
+    <div class="callout__text">The stores page isn't a store locator. It's a shade-matching conversion page that happens to have addresses on it.</div>
+    <div class="callout__sub">Shade uncertainty is the #1 friction point across ALL data sources (10+ studies, PENTA-CONFIRMED). 19.6% of non-purchasers say trying in person would convert them. The retail store IS the shade-matching solution the site can't provide — the page needs to sell that experience, not just list locations.</div>
+  </div>
+
+  <!-- SECTION 1: CURRENT STATE -->
+  <div class="section">
+    <div class="section__title">1. Current State Analysis</div>
+    <p class="section__intro">The current page at jonesroadbeauty.com/pages/our-stores is a simple vertical directory with custom storefront illustrations. It serves the basic purpose of listing locations but misses every experience and conversion opportunity.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat__number">12</div>
+        <div class="stat__label">Stores listed</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">0</div>
+        <div class="stat__label">Nav presence</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">1</div>
+        <div class="stat__label">CTA type</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">~12x</div>
+        <div class="stat__label">Scroll depth (viewports)</div>
+      </div>
+    </div>
+
+    <div class="store-list" style="margin-bottom: 24px;">
+      <div class="store-pill"><div class="store-pill__name">Montclair</div><div class="store-pill__city">NJ</div></div>
+      <div class="store-pill"><div class="store-pill__name">Greenwich Village</div><div class="store-pill__city">NY</div></div>
+      <div class="store-pill"><div class="store-pill__name">East Hampton</div><div class="store-pill__city">NY</div></div>
+      <div class="store-pill"><div class="store-pill__name">Palm Beach</div><div class="store-pill__city">FL</div></div>
+      <div class="store-pill"><div class="store-pill__name">Bucktown</div><div class="store-pill__city">Chicago, IL</div></div>
+      <div class="store-pill"><div class="store-pill__name">Williamsburg</div><div class="store-pill__city">Brooklyn, NY</div></div>
+      <div class="store-pill"><div class="store-pill__name">Cobble Hill</div><div class="store-pill__city">Brooklyn, NY</div></div>
+      <div class="store-pill"><div class="store-pill__name">Upper East Side</div><div class="store-pill__city">NY</div></div>
+      <div class="store-pill"><div class="store-pill__name">Austin</div><div class="store-pill__city">TX</div></div>
+      <div class="store-pill"><div class="store-pill__name">Dallas</div><div class="store-pill__city">TX</div></div>
+      <div class="store-pill"><div class="store-pill__name">Chestnut Hill</div><div class="store-pill__city">MA</div></div>
+      <div class="store-pill"><div class="store-pill__name">Nashville</div><div class="store-pill__city">TN</div></div>
+    </div>
+
+    <div class="comparison">
+      <div class="comparison__side comparison__side--current">
+        <div class="comparison__label comparison__label--red">What doesn't work</div>
+        <ul class="comparison__list">
+          <li>Buried in footer only — zero nav presence</li>
+          <li>12-viewport linear scroll — can't scan stores at a glance</li>
+          <li>Illustrations instead of real store photography</li>
+          <li>Every store has identical layout — no personality</li>
+          <li>No experience marketing (what you'll DO there)</li>
+          <li>No Bobbi Brown connection to retail story</li>
+          <li>No social proof — no reviews, no UGC from store visits</li>
+          <li>No "coming soon" for 12-to-24 expansion</li>
+          <li>No shade matching messaging (the #1 reason to visit)</li>
+          <li>No "Get Directions" link, no Google Maps</li>
+          <li>Blog + bestseller sections at bottom are generic, not store-specific</li>
+        </ul>
+      </div>
+      <div class="comparison__side comparison__side--proposed">
+        <div class="comparison__label comparison__label--green">What works (keep)</div>
+        <ul class="comparison__list">
+          <li>Custom illustrations are charming and brand-distinctive</li>
+          <li>"Book An Appointment" CTA on every store</li>
+          <li>Neighborhood naming (not "Store #7")</li>
+          <li>Event inquiry email per store signals community</li>
+          <li>Warm, inviting hero copy</li>
+          <li>Store hours + contact info is complete</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: COMPETITIVE AUDIT SUMMARY -->
+  <div class="section">
+    <div class="section__title">2. Competitive Audit Summary</div>
+    <p class="section__intro">8 DTC brands audited via Chrome MCP (Warby Parker, Allbirds, Everlane, Vuori, Reformation, Away, Bonobos, Apple). 4 skipped (Aesop, Le Labo, Outdoor Voices, Glossier — redirects/404s). Full audit in <code>competitive-audit-stores.html</code>.</p>
+
+    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 12px;">Key Pattern: Store Count Determines Page Type</h3>
+    <div class="grid-3" style="margin-bottom: 24px;">
+      <div class="card card--green">
+        <div class="card__title">&lt;15 stores</div>
+        <div class="card__desc">Visual grid, editorial approach, no map needed. Photography-first.</div>
+        <div style="margin-top: 8px;">
+          <span class="tag tag--muted">Everlane (11)</span>
+          <span class="tag tag--muted">Away (~15)</span>
+          <span class="tag tag--green">JRB = here</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card__title">15-60 stores</div>
+        <div class="card__desc">Hybrid approach: brand hero + search/map utility.</div>
+        <div style="margin-top: 8px;">
+          <span class="tag tag--muted">Vuori (30+)</span>
+          <span class="tag tag--muted">Reformation (30+)</span>
+          <span class="tag tag--muted">Bonobos (60+)</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card__title">100+ stores</div>
+        <div class="card__desc">Pure utility: search-first, map-driven, minimal brand story.</div>
+        <div style="margin-top: 8px;">
+          <span class="tag tag--muted">Warby Parker (350)</span>
+          <span class="tag tag--muted">Apple (500+)</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 12px;">Competitive Whitespace (things nobody does)</h3>
+    <div class="grid-2">
+      <div class="card card--accent">
+        <div class="card__title">Store-specific product highlights</div>
+        <div class="card__desc">No brand shows which products are popular at each location. JRB could show "Try these at [location]" with shade-matching or bestsellers.</div>
+      </div>
+      <div class="card card--accent">
+        <div class="card__title">Founder connection</div>
+        <div class="card__desc">Nobody ties the founder to the retail experience. JRB has Bobbi Brown as a massive asset. "Come get color-matched the Bobbi way."</div>
+      </div>
+      <div class="card card--accent">
+        <div class="card__title">Social proof per store</div>
+        <div class="card__desc">No brand shows reviews or UGC from specific store locations. JRB could surface location-specific reviews.</div>
+      </div>
+      <div class="card card--accent">
+        <div class="card__title">Book a consultation / shade match</div>
+        <div class="card__desc">Only Warby Parker and Apple offer booking CTAs. For a beauty brand where shade matching matters, this is a massive opportunity.</div>
+      </div>
+      <div class="card card--accent">
+        <div class="card__title">"Opening soon" teaser</div>
+        <div class="card__desc">With JRB going 12-to-24, nobody showcases upcoming locations. Could build anticipation and capture interest.</div>
+      </div>
+      <div class="card card--accent">
+        <div class="card__title">Upcoming events / classes</div>
+        <div class="card__desc">Vuori mentions yoga classes but doesn't list events. No brand has a real events calendar on the stores page.</div>
+      </div>
+    </div>
+
+    <h3 style="font-size: 15px; font-weight: 600; margin: 24px 0 12px;">Top References</h3>
+    <div class="grid-3">
+      <div class="ref-card">
+        <div class="ref-card__rank">Primary Reference</div>
+        <div class="ref-card__name">Away</div>
+        <div class="ref-card__why">Similar scale (~15 stores). Triple-layer: flagship feature + map + visual grid. Every store has unique photography. "Visit us IRL" casual tone.</div>
+      </div>
+      <div class="ref-card">
+        <div class="ref-card__rank">Secondary Reference</div>
+        <div class="ref-card__name">Everlane</div>
+        <div class="ref-card__why">Almost identical store count (11 vs 12). Proves a pure visual grid works at this scale. No map, no search. Clean, photography-first.</div>
+      </div>
+      <div class="ref-card">
+        <div class="ref-card__rank">Tone Inspiration</div>
+        <div class="ref-card__name">Reformation</div>
+        <div class="ref-card__why">Best hero treatment — stunning interior photography. "Come say hi" is the most inviting tone. Simple directory beneath hero.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: CUSTOMER INSIGHTS -->
+  <div class="section">
+    <div class="section__title">3. Customer & Brand Context</div>
+    <p class="section__intro">1,609 Junip reviews mention "store" and 268 mention "in person." Richpanel CX data confirms shade matching as the #1 ticket driver. Customer intelligence from 28 studies across 5 platforms.</p>
+
+    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 12px;">Why Customers Visit Stores (from Junip reviews)</h3>
+    <div class="grid-2" style="margin-bottom: 24px;">
+      <div class="card card--green">
+        <div class="card__title">Shade Matching (#1 reason)</div>
+        <div class="card__desc">Shade uncertainty is the #1 friction point across ALL data. 46% of prospects cite shade concern. Customers call stores for shade advice, get matched in person, and convert.</div>
+        <div class="card__quote">"I called a store in Dallas... they said I should buy ivory. I trusted them since I knew I could return it. I am THRILLED!!!"</div>
+      </div>
+      <div class="card card--green">
+        <div class="card__title">Makeup Lessons & Applications</div>
+        <div class="card__desc">Makeup lessons are described as "life changing", "empowering", "exceeded expectations." Staff show techniques that drive additional product purchases.</div>
+        <div class="card__quote">"I walked in to the Montclair store and immediately felt comfortable. I didn't feel too old and didn't feel too inexperienced."</div>
+      </div>
+      <div class="card card--green">
+        <div class="card__title">Converting Hesitant Online Buyers</div>
+        <div class="card__desc">Store visits convert people who are afraid to order online. The physical experience bridges the trust gap that the website can't.</div>
+        <div class="card__quote">"I haven't worn makeup in 10+ years... I was afraid to order online. A store opened near me so I went for it!"</div>
+      </div>
+      <div class="card card--green">
+        <div class="card__title">Demand for More Locations</div>
+        <div class="card__desc">Customers actively ask for stores in their cities. Pent-up demand exists in markets JRB hasn't reached yet.</div>
+        <div class="card__quote">"JonesRoad Beauty is the best. Just wish you had a few more store fronts around the country (Midwest or southwest)!"</div>
+      </div>
+    </div>
+
+    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 12px;">Key Data Points</h3>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat__number">46%</div>
+        <div class="stat__label">Prospects cite shade concern</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">19.6%</div>
+        <div class="stat__label">Non-buyers want to try in person</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">24%</div>
+        <div class="stat__label">CX tickets are shade-related</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">44.6%</div>
+        <div class="stat__label">Non-buyers want minis/samples</div>
+      </div>
+    </div>
+
+    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 12px;">Brand Context</h3>
+    <div class="grid-2">
+      <div class="card card--blue">
+        <div class="card__title">Positioning: Modern Prestige Beauty</div>
+        <div class="card__desc">Competes UP against traditional prestige (CT, Estee Lauder), not down against clean dupes. Stores should reinforce this premium positioning.</div>
+      </div>
+      <div class="card card--blue">
+        <div class="card__title">Bobbi: Extract the Essence</div>
+        <div class="card__desc">Bobbi is the biggest asset but JRB is over-reliant. Retail should channel Bobbi's expertise philosophy without plastering her face everywhere.</div>
+      </div>
+      <div class="card card--blue">
+        <div class="card__title">Core Demo: 60+ Matriarch (28.6%)</div>
+        <div class="card__desc">Highest LTV ($398), highest repeat (61.8%). She needs physical stores for shade matching and product discovery. Store UX must serve her.</div>
+      </div>
+      <div class="card card--blue">
+        <div class="card__title">Growth Demo: 35-44 Aspirational</div>
+        <div class="card__desc">The Suburban Super-Mom has lowest loyalty (44.9% repeat). In-store experiences could be the retention lever that online can't provide.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: DESIGN PRINCIPLES -->
+  <div class="section">
+    <div class="section__title">4. Design Principles</div>
+    <p class="section__intro">5 research-backed principles to guide the redesign. Every design decision should trace back to one of these.</p>
+
+    <div class="principle">
+      <div class="principle__number">Principle 1</div>
+      <div class="principle__title">Lead with the experience, not the address</div>
+      <div class="principle__data"><strong>Data:</strong> Apple, Bonobos, Away all market what you'll DO at the store. Junip reviews confirm: shade matching, makeup lessons ("life changing"), and staff expertise are the real reasons people visit. 19.6% of non-purchasers say trying in person would convert them.</div>
+      <div class="principle__implication">The hero should sell free shade matching, consultations, makeup lessons, and events — not just list 12 addresses.</div>
+    </div>
+
+    <div class="principle">
+      <div class="principle__number">Principle 2</div>
+      <div class="principle__title">Show the stores, don't illustrate them</div>
+      <div class="principle__data"><strong>Data:</strong> Away and Everlane use real per-store photography — each store feels like a destination. JRB's illustrations are charming but hide what the experience looks like. Junip reviewers describe visits with emotional language — they want to preview the vibe.</div>
+      <div class="principle__implication">Replace illustrations with real store photography (interiors + exteriors). Each store should feel distinct, like a place worth visiting.</div>
+    </div>
+
+    <div class="principle">
+      <div class="principle__number">Principle 3</div>
+      <div class="principle__title">At 12 stores, browse — don't search</div>
+      <div class="principle__data"><strong>Data:</strong> Everlane (11 stores) uses a pure visual grid, no map. Away (~15) uses flagship + grid. Key competitive insight: &lt;15 stores = visual grid/editorial approach. JRB's current linear scroll forces you through ALL 12 sequentially.</div>
+      <div class="principle__implication">Compact visual grid that lets users scan all 12 at once. No map needed yet — introduce one at 20-25 stores.</div>
+    </div>
+
+    <div class="principle">
+      <div class="principle__number">Principle 4</div>
+      <div class="principle__title">Make shade matching the hero CTA</div>
+      <div class="principle__data"><strong>Data:</strong> Shade uncertainty is #1 friction across 10+ sources. 46% of prospects cite shade concern. 24% of CX tickets are shade-related. Junip reviews confirm in-store shade matching is the moment of conversion. The retail store IS the solution the site can't provide.</div>
+      <div class="principle__implication">Position stores as THE shade-matching destination. "Book a Shade Match" should be as prominent as general appointment booking.</div>
+    </div>
+
+    <div class="principle">
+      <div class="principle__number">Principle 5</div>
+      <div class="principle__title">Build anticipation for what's coming</div>
+      <div class="principle__data"><strong>Data:</strong> 12 to 24 by year end. No competitor does "coming soon" well (whitespace gap). Junip reviews show customers asking for stores in their cities — pent-up demand waiting to be captured.</div>
+      <div class="principle__implication">Add a "Coming Soon" section with upcoming cities. Capture interest with email signup by market.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: RECOMMENDED APPROACH -->
+  <div class="section">
+    <div class="section__title">5. Recommended Approach</div>
+    <p class="section__intro">What to build, which patterns to follow, and where to exploit whitespace.</p>
+
+    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 12px;">Page Structure (top to bottom)</h3>
+    <div style="margin-bottom: 24px;">
+      <div class="card" style="margin-bottom: 8px;">
+        <div class="card__number">SECTION 01</div>
+        <div class="card__title">Brand Hero</div>
+        <div class="card__desc">Full-bleed lifestyle photo of a real store interior or in-store experience. Headline focuses on the EXPERIENCE, not the location. Subhead sells shade matching + consultations. Two CTAs: "Book a Shade Match" (primary) + "Find a Store" (secondary). Pattern: Reformation's full-bleed hero + Away's casual "Visit us IRL" tone.</div>
+      </div>
+      <div class="card" style="margin-bottom: 8px;">
+        <div class="card__number">SECTION 02</div>
+        <div class="card__title">Experience Highlights</div>
+        <div class="card__desc">3-4 cards showing what you can DO at a JRB store: Free Shade Matching, Makeup Lessons, Private Events, Try Everything. Each with an icon/image and short copy. Pattern: Apple's in-store experience marketing.</div>
+      </div>
+      <div class="card" style="margin-bottom: 8px;">
+        <div class="card__number">SECTION 03</div>
+        <div class="card__title">Visual Store Grid</div>
+        <div class="card__desc">3-column grid of all 12 stores. Each card: real store photo (interior/exterior) + neighborhood name + city/state. Click/tap to expand details (hours, address, phone, directions, booking). Pattern: Everlane's pure visual grid + Away's per-store photography.</div>
+      </div>
+      <div class="card" style="margin-bottom: 8px;">
+        <div class="card__number">SECTION 04</div>
+        <div class="card__title">Coming Soon</div>
+        <div class="card__desc">Upcoming store openings by city. "We're growing" headline with 2026 expansion cities. Email capture: "Get notified when we open near you." Pattern: JRB whitespace — nobody does this.</div>
+      </div>
+      <div class="card" style="margin-bottom: 8px;">
+        <div class="card__number">SECTION 05</div>
+        <div class="card__title">Social Proof (optional)</div>
+        <div class="card__desc">2-3 customer quotes from Junip reviews about store experiences. Real quotes that sell the in-store experience to hesitant online shoppers. Pattern: JRB whitespace.</div>
+      </div>
+    </div>
+
+    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 12px;">Key Design Decisions</h3>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card__title">Photography > Illustration</div>
+        <div class="card__desc">Real store photos for the grid. The illustrations are charming and could live on as a secondary design element (e.g., detail page headers), but the primary browsing experience needs real photos.</div>
+      </div>
+      <div class="card">
+        <div class="card__title">Grid > Scroll</div>
+        <div class="card__desc">3-column grid on desktop, 2-column on tablet, 1-column stack on mobile. All 12 stores visible without scrolling through 12 viewports. Click to expand for details.</div>
+      </div>
+      <div class="card">
+        <div class="card__title">Experience-first copy</div>
+        <div class="card__desc">Lead with what you'll DO, not where you'll GO. "Find your perfect shade" > "Find a store." "Book a consultation" > "Get directions."</div>
+      </div>
+      <div class="card">
+        <div class="card__title">Nav presence needed</div>
+        <div class="card__desc">Stores should be accessible from the main nav or utility bar — not buried in the footer. Either under "More" or as a standalone utility link like "Find Your Shade."</div>
+      </div>
+    </div>
+
+    <h3 style="font-size: 15px; font-weight: 600; margin: 24px 0 12px;">Concept Spectrum (for Phase 4)</h3>
+    <div class="grid-3">
+      <div class="card card--green">
+        <div class="card__title">Concept A: Medium Risk</div>
+        <div class="card__desc">Keep current structure but upgrade: real photos in same layout, add experience section above store list, add "Coming Soon." Familiar but improved.</div>
+      </div>
+      <div class="card card--accent">
+        <div class="card__title">Concept B: Bold</div>
+        <div class="card__desc">Full rethink: experience-first hero, visual grid, shade-matching as the page's purpose. Store as destination, not directory. Away + Everlane hybrid.</div>
+      </div>
+      <div class="card card--red">
+        <div class="card__title">Concept C: Safe</div>
+        <div class="card__desc">Best execution of the current pattern: keep illustrations, compact the layout into a scannable grid, add "Book a Shade Match" CTA. Minimum viable upgrade.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="padding: 32px 0; text-align: center; color: var(--ink-muted); font-size: 12px;">
+    <p>JRB Stores Page Research Brief / Generated March 27, 2026</p>
+    <p style="margin-top: 4px;">Competitive audit: 8 brands / Customer data: Junip (1,877 reviews), Richpanel CX, 28 intelligence studies / Brand context: positioning deck + brand health research</p>
+  </div>
+
+</div>
+
+</body>
+</html>

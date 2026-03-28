@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JRB Stores Page — Competitive Audit</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-light: #555;
+    --ink-muted: #888;
+    --bg: #fafaf8;
+    --card-bg: #fff;
+    --border: #e8e6e1;
+    --accent: #c8a96e;
+    --green: #2d6a4f;
+    --red: #d63031;
+    --blue: #2563eb;
+    --tag-bg: #f0ede7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  .header {
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header__eyebrow {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 8px;
+  }
+  .header__title {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .header__meta {
+    font-size: 14px;
+    color: var(--ink-light);
+  }
+  .header__meta span { margin-right: 16px; }
+
+  /* Section */
+  .section {
+    padding: 40px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border-bottom: none; }
+  .section__title {
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 20px;
+  }
+
+  /* Pattern cards */
+  .pattern-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .pattern-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+  }
+  .pattern-card--full { grid-column: 1 / -1; }
+  .pattern-card__number {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    margin-bottom: 4px;
+  }
+  .pattern-card__title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .pattern-card__desc {
+    font-size: 14px;
+    color: var(--ink-light);
+    line-height: 1.5;
+  }
+  .pattern-card__brands {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .brand-tag {
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    background: var(--tag-bg);
+    border-radius: 3px;
+    color: var(--ink-light);
+  }
+
+  /* Brand cards */
+  .brand-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .brand-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+    position: relative;
+  }
+  .brand-card--star {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+  .brand-card__star {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 18px;
+  }
+  .brand-card__name {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .brand-card__count {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 12px;
+  }
+  .brand-card__features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .feature {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+  .feature--yes { background: #e8f5e9; color: var(--green); }
+  .feature--no { background: #fce4e4; color: var(--red); }
+  .brand-card__insight {
+    font-size: 13px;
+    color: var(--ink-light);
+    line-height: 1.5;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .brand-card__relevance {
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .relevance--high { color: var(--green); }
+  .relevance--medium { color: var(--accent); }
+  .relevance--low { color: var(--ink-muted); }
+
+  /* Gap cards */
+  .gap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+  .gap-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+    border-left: 3px solid var(--accent);
+  }
+  .gap-card__title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .gap-card__desc {
+    font-size: 13px;
+    color: var(--ink-light);
+    line-height: 1.5;
+  }
+
+  /* Insight callout */
+  .insight-box {
+    background: #1a1a1a;
+    color: #fff;
+    border-radius: 8px;
+    padding: 32px;
+    margin: 24px 0 0;
+  }
+  .insight-box__label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .insight-box__text {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+  .insight-box__detail {
+    font-size: 14px;
+    color: #aaa;
+    line-height: 1.6;
+  }
+
+  /* Scale spectrum */
+  .spectrum {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-top: 16px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .spectrum__band {
+    flex: 1;
+    padding: 16px 20px;
+    background: var(--card-bg);
+    border-right: 1px solid var(--border);
+  }
+  .spectrum__band:last-child { border-right: none; }
+  .spectrum__band--active {
+    background: #f0ede7;
+    border-bottom: 3px solid var(--accent);
+  }
+  .spectrum__label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .spectrum__range {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .spectrum__approach {
+    font-size: 12px;
+    color: var(--ink-light);
+  }
+  .spectrum__brands {
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-top: 6px;
+  }
+
+  /* Top refs */
+  .ref-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+  .ref-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+  }
+  .ref-card--primary {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+  .ref-card__rank {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .ref-card__name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .ref-card__url {
+    font-size: 12px;
+    color: var(--blue);
+    margin-bottom: 12px;
+    word-break: break-all;
+  }
+  .ref-card__points {
+    list-style: none;
+    padding: 0;
+  }
+  .ref-card__points li {
+    font-size: 13px;
+    color: var(--ink-light);
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+  .ref-card__points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 11px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  @media (max-width: 768px) {
+    .pattern-grid, .brand-grid, .gap-grid, .ref-grid { grid-template-columns: 1fr; }
+    .spectrum { flex-direction: column; }
+    .header__title { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header__eyebrow">Jones Road Beauty / Competitive Research</div>
+    <h1 class="header__title">Stores Page Audit</h1>
+    <div class="header__meta">
+      <span>March 27, 2026</span>
+      <span>8 brands audited</span>
+      <span>4 skipped (inaccessible)</span>
+    </div>
+  </div>
+
+  <!-- Key Insight -->
+  <div class="section">
+    <div class="insight-box">
+      <div class="insight-box__label">Key Insight</div>
+      <div class="insight-box__text">At 12 stores, you don't need a map. You need a gallery.</div>
+      <div class="insight-box__detail">Brands with fewer than 15 stores (Everlane, Away) go editorial and visual. Brands with 100+ stores (Warby Parker, Apple) go utility and map-driven. JRB at 12 stores today, growing to 24, should start editorial and add search later.</div>
+    </div>
+  </div>
+
+  <!-- Scale Spectrum -->
+  <div class="section">
+    <div class="section__title">Approach by Store Count</div>
+    <div class="spectrum">
+      <div class="spectrum__band spectrum__band--active">
+        <div class="spectrum__label">Editorial</div>
+        <div class="spectrum__range">&lt;15</div>
+        <div class="spectrum__approach">Visual grids, no search, photography-first</div>
+        <div class="spectrum__brands">Everlane (11), Away (~15)</div>
+      </div>
+      <div class="spectrum__band">
+        <div class="spectrum__label">Hybrid</div>
+        <div class="spectrum__range">15-60</div>
+        <div class="spectrum__approach">Brand hero + search/map below</div>
+        <div class="spectrum__brands">Vuori (30+), Reformation (30+), Bonobos (60+)</div>
+      </div>
+      <div class="spectrum__band">
+        <div class="spectrum__label">Utility</div>
+        <div class="spectrum__range">100+</div>
+        <div class="spectrum__approach">Search-first, map-driven, paginated</div>
+        <div class="spectrum__brands">Warby Parker (350), Apple (500+)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Universal Patterns -->
+  <div class="section">
+    <div class="section__title">Universal Patterns (table stakes)</div>
+    <div class="pattern-grid">
+      <div class="pattern-card">
+        <div class="pattern-card__number">01</div>
+        <div class="pattern-card__title">Some form of store finding</div>
+        <div class="pattern-card__desc">Search by location, map pins, or a browsable list. Every brand offers at least one.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-card__number">02</div>
+        <div class="pattern-card__title">Individual store detail pages</div>
+        <div class="pattern-card__desc">Clicking a store links to a page with hours, address, directions, sometimes booking.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-card__number">03</div>
+        <div class="pattern-card__title">Location-based naming</div>
+        <div class="pattern-card__desc">Stores are named by neighborhood/city, not numbers. "Prince Street, New York" not "Store #47".</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-card__number">04</div>
+        <div class="pattern-card__title">Open/closed status + directions</div>
+        <div class="pattern-card__desc">Real-time availability and a direct link to Google Maps directions.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Common Patterns -->
+  <div class="section">
+    <div class="section__title">Common Patterns (worth considering)</div>
+    <div class="pattern-grid">
+      <div class="pattern-card">
+        <div class="pattern-card__number">01</div>
+        <div class="pattern-card__title">Visual store grid with photography</div>
+        <div class="pattern-card__desc">Unique store photos per location. Treats each store as a visual destination, not just a pin on a map.</div>
+        <div class="pattern-card__brands">
+          <span class="brand-tag">Everlane</span>
+          <span class="brand-tag">Away</span>
+          <span class="brand-tag">Bonobos</span>
+        </div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-card__number">02</div>
+        <div class="pattern-card__title">Brand storytelling hero</div>
+        <div class="pattern-card__desc">Lead with a brand-forward hero before the utility. "Visit us IRL", "Come say hi", "A Better Fit Is In Store".</div>
+        <div class="pattern-card__brands">
+          <span class="brand-tag">Vuori</span>
+          <span class="brand-tag">Reformation</span>
+          <span class="brand-tag">Away</span>
+          <span class="brand-tag">Bonobos</span>
+        </div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-card__number">03</div>
+        <div class="pattern-card__title">Experience-first messaging</div>
+        <div class="pattern-card__desc">What you'll DO at the store, not just WHERE it is. Yoga classes, demos, personalized fit.</div>
+        <div class="pattern-card__brands">
+          <span class="brand-tag">Vuori</span>
+          <span class="brand-tag">Apple</span>
+          <span class="brand-tag">Bonobos</span>
+        </div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-card__number">04</div>
+        <div class="pattern-card__title">Flagship feature</div>
+        <div class="pattern-card__desc">Highlight a flagship or hero store separately at the top before showing all locations.</div>
+        <div class="pattern-card__brands">
+          <span class="brand-tag">Away</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand Breakdown -->
+  <div class="section">
+    <div class="section__title">Brand-by-Brand Breakdown</div>
+    <div class="brand-grid">
+
+      <div class="brand-card brand-card--star">
+        <div class="brand-card__star">&#9733;</div>
+        <div class="brand-card__name">Away</div>
+        <div class="brand-card__count">~15 stores</div>
+        <div class="brand-card__features">
+          <span class="feature feature--yes">Hero</span>
+          <span class="feature feature--yes">Map</span>
+          <span class="feature feature--yes">Photo Grid</span>
+          <span class="feature feature--yes">Detail Pages</span>
+        </div>
+        <div class="brand-card__insight">"Visit us IRL" heading. Flagship feature at top, full-width map, then 3-column visual grid. Every store has unique, personality-rich photography. Best overall execution.</div>
+        <div class="brand-card__relevance relevance--high">Relevance: Highest</div>
+      </div>
+
+      <div class="brand-card brand-card--star">
+        <div class="brand-card__star">&#9733;</div>
+        <div class="brand-card__name">Everlane</div>
+        <div class="brand-card__count">11 stores</div>
+        <div class="brand-card__features">
+          <span class="feature feature--no">No Hero</span>
+          <span class="feature feature--no">No Map</span>
+          <span class="feature feature--yes">Photo Grid</span>
+          <span class="feature feature--yes">Detail Pages</span>
+        </div>
+        <div class="brand-card__insight">Almost identical store count to JRB. Pure visual grid with gorgeous storefront photography. No map, no search. Proves you don't need utility at this scale.</div>
+        <div class="brand-card__relevance relevance--high">Relevance: Highest</div>
+      </div>
+
+      <div class="brand-card">
+        <div class="brand-card__name">Reformation</div>
+        <div class="brand-card__count">30+ stores</div>
+        <div class="brand-card__features">
+          <span class="feature feature--yes">Hero</span>
+          <span class="feature feature--no">No Map</span>
+          <span class="feature feature--no">Text Only</span>
+          <span class="feature feature--yes">Detail Pages</span>
+        </div>
+        <div class="brand-card__insight">Full-bleed hero with stunning interior photography. "Our Stores / Come say hi" — most inviting tone. Simple text directory by state below.</div>
+        <div class="brand-card__relevance relevance--high">Relevance: High</div>
+      </div>
+
+      <div class="brand-card">
+        <div class="brand-card__name">Vuori</div>
+        <div class="brand-card__count">30+ stores</div>
+        <div class="brand-card__features">
+          <span class="feature feature--yes">Hero</span>
+          <span class="feature feature--yes">Map</span>
+          <span class="feature feature--no">No Grid</span>
+          <span class="feature feature--no">No Detail Pages</span>
+        </div>
+        <div class="brand-card__insight">Brand hero with experience-first copy (yoga, community). Google Maps locator below. Good hybrid approach that could scale with JRB.</div>
+        <div class="brand-card__relevance relevance--high">Relevance: High</div>
+      </div>
+
+      <div class="brand-card">
+        <div class="brand-card__name">Bonobos</div>
+        <div class="brand-card__count">60+ stores</div>
+        <div class="brand-card__features">
+          <span class="feature feature--yes">Hero</span>
+          <span class="feature feature--yes">Search</span>
+          <span class="feature feature--yes">Photo Grid</span>
+          <span class="feature feature--yes">Detail Pages</span>
+        </div>
+        <div class="brand-card__insight">Proprietary naming — "Guideshops". Experience-first messaging: "A Better Fit Is In Store." Personalized fit promise drives store visits.</div>
+        <div class="brand-card__relevance relevance--medium">Relevance: Medium</div>
+      </div>
+
+      <div class="brand-card">
+        <div class="brand-card__name">Apple</div>
+        <div class="brand-card__count">500+ stores</div>
+        <div class="brand-card__features">
+          <span class="feature feature--no">No Hero</span>
+          <span class="feature feature--no">No Map</span>
+          <span class="feature feature--yes">Carousel</span>
+          <span class="feature feature--yes">Search</span>
+        </div>
+        <div class="brand-card__insight">Search-first with nearby stores carousel. Key takeaway: uses the page to market in-store EXPERIENCES (Vision Pro demos, expert advice, "Book a demo").</div>
+        <div class="brand-card__relevance relevance--medium">Relevance: Medium</div>
+      </div>
+
+      <div class="brand-card">
+        <div class="brand-card__name">Warby Parker</div>
+        <div class="brand-card__count">350+ stores</div>
+        <div class="brand-card__features">
+          <span class="feature feature--no">No Hero</span>
+          <span class="feature feature--yes">Map</span>
+          <span class="feature feature--no">No Grid</span>
+          <span class="feature feature--yes">Search</span>
+        </div>
+        <div class="brand-card__insight">Pure utility. Split panel: search + store list / Mapbox map. Service CTA (book eye exam) on every card. Zero brand storytelling.</div>
+        <div class="brand-card__relevance relevance--low">Relevance: Low</div>
+      </div>
+
+      <div class="brand-card">
+        <div class="brand-card__name">Allbirds</div>
+        <div class="brand-card__count">50+ stores</div>
+        <div class="brand-card__features">
+          <span class="feature feature--no">No Hero</span>
+          <span class="feature feature--yes">Map</span>
+          <span class="feature feature--no">No Grid</span>
+          <span class="feature feature--yes">Search</span>
+        </div>
+        <div class="brand-card__insight">Map + search with "all locations" text directory by state. Includes wholesale partners. No photography, no storytelling.</div>
+        <div class="brand-card__relevance relevance--medium">Relevance: Medium</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Whitespace / Gaps -->
+  <div class="section">
+    <div class="section__title">Whitespace for JRB (things nobody does)</div>
+    <div class="gap-grid">
+      <div class="gap-card">
+        <div class="gap-card__title">Founder Connection</div>
+        <div class="gap-card__desc">Nobody ties the founder to the retail experience. JRB has Bobbi Brown as a massive asset. "Get color-matched the Bobbi way."</div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Book a Consultation</div>
+        <div class="gap-card__desc">Only Warby Parker and Apple offer booking. For a beauty brand where shade matching matters, this is a massive opportunity.</div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">"Opening Soon" Teaser</div>
+        <div class="gap-card__desc">With JRB going 12 to 24 stores, showcase upcoming locations. Build anticipation and capture email signups.</div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Per-Store Products</div>
+        <div class="gap-card__desc">No brand shows which products are popular at each location. "Try these at Montclair" with shade matching or bestsellers.</div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Store-Specific Social Proof</div>
+        <div class="gap-card__desc">No brand shows reviews or UGC from specific store locations. Surface location-specific testimonials.</div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">In-Store Experiences</div>
+        <div class="gap-card__desc">Market what you'll DO there — free makeovers, skin consultations, shade matching, Bobbi masterclasses.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top References -->
+  <div class="section">
+    <div class="section__title">Top References for JRB</div>
+    <div class="ref-grid">
+      <div class="ref-card ref-card--primary">
+        <div class="ref-card__rank">Primary</div>
+        <div class="ref-card__name">Away</div>
+        <div class="ref-card__url">awaytravel.com/pages/stores</div>
+        <ul class="ref-card__points">
+          <li>Similar scale (~15 stores)</li>
+          <li>Best overall execution</li>
+          <li>Triple-layer: flagship + map + grid</li>
+          <li>Every store has unique photography</li>
+          <li>"Visit us IRL" casual tone</li>
+        </ul>
+      </div>
+      <div class="ref-card">
+        <div class="ref-card__rank">Secondary</div>
+        <div class="ref-card__name">Everlane</div>
+        <div class="ref-card__url">blog.everlane.com/stores</div>
+        <ul class="ref-card__points">
+          <li>Almost identical store count (11)</li>
+          <li>Pure visual grid, no map</li>
+          <li>Photography-first approach</li>
+          <li>Clean, minimal design</li>
+        </ul>
+      </div>
+      <div class="ref-card">
+        <div class="ref-card__rank">Inspiration</div>
+        <div class="ref-card__name">Reformation</div>
+        <div class="ref-card__url">thereformation.com/stores.html</div>
+        <ul class="ref-card__points">
+          <li>Best hero treatment</li>
+          <li>Stunning interior photography</li>
+          <li>"Come say hi" — most inviting tone</li>
+          <li>Simple directory beneath hero</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 40px 0; text-align: center; color: var(--ink-muted); font-size: 12px;">
+    Jones Road Beauty / Competitive Stores Page Audit / March 2026
+  </div>
+
+</div>
+
+</body>
+</html>
