@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System Template — Blank Fillable Reference</title>
+    <meta name="description" content="A blank, fillable design system template. Replace placeholder values with your brand's actual tokens to create a complete visual design system reference.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           Reset & Base
+           ============================================================ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --color-bg: #ffffff;
+            --color-bg-alt: #f8f9fa;
+            --color-bg-code: #1e1e2e;
+            --color-heading: #1a1a2e;
+            --color-body: #374151;
+            --color-secondary: #6b7280;
+            --color-accent: #4f46e5;
+            --color-accent-light: #eef2ff;
+            --color-border: #e5e7eb;
+            --color-placeholder: #9ca3af;
+            --color-placeholder-bg: #f3f4f6;
+            --color-do: #059669;
+            --color-do-bg: #ecfdf5;
+            --color-dont: #dc2626;
+            --color-dont-bg: #fef2f2;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-code: 'JetBrains Mono', 'Fira Code', monospace;
+            --font-display: 'Playfair Display', Georgia, serif;
+            --max-width: 800px;
+            --max-width-wide: 1000px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--color-body);
+            background: var(--color-bg);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============================================================
+           Layout
+           ============================================================ */
+        .container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+        .container--wide { max-width: var(--max-width-wide); }
+
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        section:last-of-type { border-bottom: none; }
+
+        /* ============================================================
+           Typography
+           ============================================================ */
+        h1, h2, h3, h4 { color: var(--color-heading); line-height: 1.3; }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(36px, 5vw, 52px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        p { margin-bottom: 16px; }
+        p:last-child { margin-bottom: 0; }
+
+        a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
+        a:hover { text-decoration: none; }
+
+        strong { color: var(--color-heading); font-weight: 600; }
+
+        /* ============================================================
+           Hero
+           ============================================================ */
+        .hero {
+            padding: 100px 0 80px;
+            background: var(--color-heading);
+            color: #fff;
+            border-bottom: none;
+        }
+
+        .hero h1 { color: #fff; margin-bottom: 20px; }
+
+        .hero p {
+            font-size: 18px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.75);
+            max-width: 600px;
+        }
+
+        .hero__label {
+            font-family: var(--font-code);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--color-accent);
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .hero__placeholder {
+            color: rgba(255, 255, 255, 0.4);
+            font-style: italic;
+        }
+
+        /* ============================================================
+           Table of Contents
+           ============================================================ */
+        .toc {
+            background: var(--color-bg-alt);
+            padding: 48px 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .toc__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 8px;
+        }
+
+        .toc__link {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--color-body);
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.15s;
+        }
+
+        .toc__link:hover { background: var(--color-border); text-decoration: none; }
+
+        .toc__num {
+            font-family: var(--font-code);
+            font-size: 12px;
+            color: var(--color-accent);
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        /* ============================================================
+           Section Header
+           ============================================================ */
+        .section-label {
+            font-family: var(--font-code);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--color-accent);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .section-intro {
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--color-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        /* ============================================================
+           Code Blocks
+           ============================================================ */
+        pre {
+            background: var(--color-bg-code);
+            color: #cdd6f4;
+            padding: 20px 24px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: var(--font-code);
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        code {
+            font-family: var(--font-code);
+            font-size: 0.9em;
+            background: var(--color-bg-alt);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--color-heading);
+        }
+
+        pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
+
+        .code-comment { color: #6c7086; }
+        .code-property { color: #89b4fa; }
+        .code-value { color: #a6e3a1; }
+        .code-string { color: #f9e2af; }
+        .code-keyword { color: #cba6f7; }
+        .code-selector { color: #f38ba8; }
+        .code-placeholder { color: #9ca3af; font-style: italic; }
+
+        /* ============================================================
+           Cards
+           ============================================================ */
+        .card {
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .card--example {
+            background: var(--color-bg-alt);
+            border: 1px solid var(--color-border);
+        }
+
+        .card__label {
+            font-family: var(--font-code);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--color-accent);
+            margin-bottom: 8px;
+        }
+
+        /* ============================================================
+           Comparison Grid (Do / Don't)
+           ============================================================ */
+        .compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        @media (max-width: 640px) {
+            .compare { grid-template-columns: 1fr; }
+        }
+
+        .compare__do, .compare__dont {
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .compare__do {
+            background: var(--color-do-bg);
+            border: 1px solid #a7f3d0;
+        }
+
+        .compare__dont {
+            background: var(--color-dont-bg);
+            border: 1px solid #fecaca;
+        }
+
+        .compare__label {
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .compare__do .compare__label { color: var(--color-do); }
+        .compare__dont .compare__label { color: var(--color-dont); }
+
+        /* ============================================================
+           Anatomy Table
+           ============================================================ */
+        .anatomy-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 14px;
+        }
+
+        .anatomy-table th {
+            text-align: left;
+            padding: 12px 16px;
+            background: var(--color-bg-alt);
+            border-bottom: 2px solid var(--color-border);
+            font-weight: 600;
+            color: var(--color-heading);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .anatomy-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--color-border);
+            vertical-align: top;
+        }
+
+        .anatomy-table tr:last-child td { border-bottom: none; }
+
+        /* ============================================================
+           Callout
+           ============================================================ */
+        .callout {
+            background: var(--color-accent-light);
+            border-left: 3px solid var(--color-accent);
+            padding: 20px 24px;
+            border-radius: 0 8px 8px 0;
+            margin: 24px 0;
+            font-size: 15px;
+        }
+
+        .callout p { color: var(--color-heading); }
+
+        /* ============================================================
+           Checklist
+           ============================================================ */
+        .checklist {
+            list-style: none;
+            counter-reset: step;
+            padding-left: 0;
+        }
+
+        .checklist li {
+            counter-increment: step;
+            padding: 16px 0 16px 52px;
+            position: relative;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .checklist li:last-child { border-bottom: none; }
+
+        .checklist li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 16px;
+            width: 32px;
+            height: 32px;
+            background: var(--color-accent-light);
+            color: var(--color-accent);
+            font-family: var(--font-code);
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ============================================================
+           Placeholder Styling
+           ============================================================ */
+        .ph {
+            color: var(--color-placeholder);
+            font-style: italic;
+        }
+
+        .ph-block {
+            color: var(--color-placeholder);
+            font-style: italic;
+            border: 2px dashed var(--color-border);
+            border-radius: 8px;
+            padding: 24px;
+            background: var(--color-placeholder-bg);
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        /* ============================================================
+           Placeholder Swatches
+           ============================================================ */
+        .swatches {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin: 24px 0;
+        }
+
+        .swatch {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+            font-size: 14px;
+            min-width: 200px;
+            flex: 1;
+        }
+
+        .swatch__color {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            flex-shrink: 0;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .swatch__label { font-weight: 600; color: var(--color-heading); }
+        .swatch__hex { font-family: var(--font-code); font-size: 13px; color: var(--color-secondary); }
+
+        .swatch--placeholder .swatch__color {
+            background: var(--color-placeholder-bg);
+            border: 2px dashed var(--color-placeholder);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .swatch--placeholder .swatch__color::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 4px,
+                rgba(156, 163, 175, 0.15) 4px,
+                rgba(156, 163, 175, 0.15) 5px
+            );
+        }
+
+        .swatch--placeholder .swatch__label { color: var(--color-placeholder); font-style: italic; }
+        .swatch--placeholder .swatch__hex { color: var(--color-placeholder); font-style: italic; }
+
+        /* ============================================================
+           Don't-Use Row
+           ============================================================ */
+        .dont-use {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 16px 0;
+        }
+
+        .dont-use__item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px dashed #fecaca;
+            background: #fef2f2;
+            font-size: 13px;
+            color: var(--color-placeholder);
+            font-style: italic;
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .dont-use__swatch {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            background: var(--color-placeholder-bg);
+            border: 2px dashed var(--color-placeholder);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dont-use__swatch::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                transparent 40%,
+                rgba(220, 38, 38, 0.2) 40%,
+                rgba(220, 38, 38, 0.2) 60%,
+                transparent 60%
+            );
+        }
+
+        /* ============================================================
+           Typography Specimen Cards
+           ============================================================ */
+        .type-card {
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .type-card__name {
+            font-family: var(--font-code);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--color-accent);
+            margin-bottom: 12px;
+        }
+
+        .type-card__specimen {
+            font-size: 28px;
+            color: var(--color-placeholder);
+            font-style: italic;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed var(--color-border);
+            padding-bottom: 12px;
+        }
+
+        .type-card__details {
+            font-size: 13px;
+            color: var(--color-secondary);
+            line-height: 1.8;
+        }
+
+        .type-card__details strong {
+            color: var(--color-heading);
+            font-size: 13px;
+        }
+
+        /* ============================================================
+           Border Radius Preview
+           ============================================================ */
+        .radius-grid {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin: 24px 0;
+        }
+
+        .radius-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .radius-box {
+            width: 80px;
+            height: 80px;
+            border: 2px dashed var(--color-placeholder);
+            background: var(--color-placeholder-bg);
+            position: relative;
+        }
+
+        .radius-box::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 4px,
+                rgba(156, 163, 175, 0.1) 4px,
+                rgba(156, 163, 175, 0.1) 5px
+            );
+        }
+
+        .radius-label {
+            font-family: var(--font-code);
+            font-size: 12px;
+            color: var(--color-placeholder);
+            font-style: italic;
+            text-align: center;
+        }
+
+        .radius-usage {
+            font-size: 12px;
+            color: var(--color-placeholder);
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* ============================================================
+           Do/Don't Slots
+           ============================================================ */
+        .slot-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .slot-list li {
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--color-border);
+            color: var(--color-placeholder);
+            font-style: italic;
+            font-size: 14px;
+        }
+
+        .slot-list li:last-child { border-bottom: none; }
+
+        .slot-list li::before {
+            display: none;
+        }
+
+        /* ============================================================
+           Inline list overrides
+           ============================================================ */
+        ul, ol { margin-bottom: 16px; padding-left: 24px; }
+        li { margin-bottom: 6px; }
+        li:last-child { margin-bottom: 0; }
+
+        /* ============================================================
+           Footer
+           ============================================================ */
+        .footer {
+            padding: 48px 0;
+            text-align: center;
+            color: var(--color-secondary);
+            font-size: 14px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .footer a { color: var(--color-accent); }
+
+        /* ============================================================
+           Responsive
+           ============================================================ */
+        @media (max-width: 768px) {
+            section { padding: 56px 0; }
+            h2 { font-size: 24px; }
+            .swatches { flex-direction: column; }
+            .dont-use { flex-direction: column; }
+            .radius-grid { flex-direction: column; align-items: flex-start; }
+            .compare { grid-template-columns: 1fr; }
+            .type-card__specimen { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+         1. HERO
+         ============================================================ -->
+    <section class="hero">
+        <div class="container">
+            <span class="hero__label">Design System Template</span>
+            <h1><span class="ph" style="color: rgba(255,255,255,0.4);">[Your Brand Name]</span> &mdash; Visual Design System Reference</h1>
+            <p>Replace the placeholder values below with your brand's actual tokens. Every bracket <span class="hero__placeholder">[like this]</span> is a field for you to fill in.</p>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         TABLE OF CONTENTS
+         ============================================================ -->
+    <div class="toc">
+        <div class="container">
+            <div class="toc__grid">
+                <a href="#philosophy" class="toc__link"><span class="toc__num">01</span> Design Philosophy</a>
+                <a href="#colors" class="toc__link"><span class="toc__num">02</span> Color Palette</a>
+                <a href="#typography" class="toc__link"><span class="toc__num">03</span> Typography</a>
+                <a href="#buttons" class="toc__link"><span class="toc__num">04</span> Buttons</a>
+                <a href="#spacing" class="toc__link"><span class="toc__num">05</span> Spacing Scale</a>
+                <a href="#radius" class="toc__link"><span class="toc__num">06</span> Border Radius</a>
+                <a href="#breakpoints" class="toc__link"><span class="toc__num">07</span> Breakpoints</a>
+                <a href="#rules" class="toc__link"><span class="toc__num">08</span> Do's and Don'ts</a>
+                <a href="#checklist" class="toc__link"><span class="toc__num">09</span> Getting Started</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         2. DESIGN PHILOSOPHY
+         ============================================================ -->
+    <section id="philosophy">
+        <div class="container">
+            <span class="section-label">01 &mdash; Design Philosophy</span>
+            <h2>Design Philosophy</h2>
+            <p class="section-intro">Define the core visual principles that guide every design decision.</p>
+
+            <div class="ph-block">
+                [Describe your brand's visual aesthetic in 3-5 bullet points. What feeling should every page convey? What are the core principles &mdash; minimal? bold? editorial? premium? accessible?]
+                <br><br>
+                For example:
+                <br>
+                &bull; [Principle 1 &mdash; e.g., "Clean and editorial. Every page should feel like a magazine spread."]<br>
+                &bull; [Principle 2 &mdash; e.g., "Generous white space. Let the product photography breathe."]<br>
+                &bull; [Principle 3 &mdash; e.g., "Typography-led. Type does the heavy lifting, not decoration."]<br>
+                &bull; [Principle 4 &mdash; e.g., "Warm, not clinical. Approachable luxury, not sterile premium."]<br>
+                &bull; [Principle 5 &mdash; e.g., "Mobile-first. 70%+ of traffic is mobile."]
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         3. COLOR PALETTE
+         ============================================================ -->
+    <section id="colors">
+        <div class="container">
+            <span class="section-label">02 &mdash; Color Palette</span>
+            <h2>Color Palette</h2>
+            <p class="section-intro">The exact hex values, usage rules, and wrong values to avoid.</p>
+
+            <h3>Core Colors</h3>
+            <div class="swatches">
+                <div class="swatch swatch--placeholder">
+                    <div class="swatch__color"></div>
+                    <div>
+                        <div class="swatch__label">[Primary Color]</div>
+                        <div class="swatch__hex">#______</div>
+                        <div style="font-size: 12px; color: #9ca3af; font-style: italic; margin-top: 4px;">[Usage: e.g., text, borders, buttons]</div>
+                    </div>
+                </div>
+                <div class="swatch swatch--placeholder">
+                    <div class="swatch__color"></div>
+                    <div>
+                        <div class="swatch__label">[Background Color]</div>
+                        <div class="swatch__hex">#______</div>
+                        <div style="font-size: 12px; color: #9ca3af; font-style: italic; margin-top: 4px;">[Usage: e.g., section fills, page bg]</div>
+                    </div>
+                </div>
+            </div>
+            <div class="swatches">
+                <div class="swatch swatch--placeholder">
+                    <div class="swatch__color"></div>
+                    <div>
+                        <div class="swatch__label">[Accent Color]</div>
+                        <div class="swatch__hex">#______</div>
+                        <div style="font-size: 12px; color: #9ca3af; font-style: italic; margin-top: 4px;">[Usage: e.g., CTAs, highlights, errors]</div>
+                    </div>
+                </div>
+                <div class="swatch swatch--placeholder">
+                    <div class="swatch__color"></div>
+                    <div>
+                        <div class="swatch__label">[Secondary Color]</div>
+                        <div class="swatch__hex">#______</div>
+                        <div style="font-size: 12px; color: #9ca3af; font-style: italic; margin-top: 4px;">[Usage: e.g., secondary text, borders]</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 32px;">Don't Use</h3>
+            <p style="font-size: 14px; color: var(--color-secondary); margin-bottom: 16px;">Document "close but wrong" values so AI never picks them up from the codebase.</p>
+            <div class="dont-use">
+                <div class="dont-use__item">
+                    <div class="dont-use__swatch"></div>
+                    <div>
+                        <span style="color: #dc2626; font-style: normal; font-weight: 600;">[Wrong value #1]</span><br>
+                        [Why it's wrong]
+                    </div>
+                </div>
+                <div class="dont-use__item">
+                    <div class="dont-use__swatch"></div>
+                    <div>
+                        <span style="color: #dc2626; font-style: normal; font-weight: 600;">[Wrong value #2]</span><br>
+                        [Why it's wrong]
+                    </div>
+                </div>
+                <div class="dont-use__item">
+                    <div class="dont-use__swatch"></div>
+                    <div>
+                        <span style="color: #dc2626; font-style: normal; font-weight: 600;">[Wrong value #3]</span><br>
+                        [Why it's wrong]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         4. TYPOGRAPHY
+         ============================================================ -->
+    <section id="typography">
+        <div class="container">
+            <span class="section-label">03 &mdash; Typography</span>
+            <h2>Typography</h2>
+            <p class="section-intro">Every font family, its role, size, weight, and the rules for when to use (and not use) each one.</p>
+
+            <!-- Headline Font -->
+            <div class="type-card">
+                <div class="type-card__name">Headline Font</div>
+                <div class="type-card__specimen">[Sample headline text]</div>
+                <div class="type-card__details">
+                    <strong>Font family:</strong> <span class="ph">[font-family-name]</span><br>
+                    <strong>Size:</strong> <span class="ph">[size]px</span> &nbsp;|&nbsp;
+                    <strong>Weight:</strong> <span class="ph">[weight]</span> &nbsp;|&nbsp;
+                    <strong>Line height:</strong> <span class="ph">[line-height]</span><br>
+                    <strong>Usage:</strong> <span class="ph">[what it's for &mdash; e.g., page titles, hero headlines, section headers]</span><br>
+                    <strong>Rules:</strong> <span class="ph">[ALWAYS/NEVER rules &mdash; e.g., ALWAYS use title case. NEVER use for body text.]</span>
+                </div>
+            </div>
+
+            <!-- Display / Label Font -->
+            <div class="type-card">
+                <div class="type-card__name">Display / Label Font</div>
+                <div class="type-card__specimen" style="text-transform: uppercase; letter-spacing: 2px; font-size: 16px;">[SAMPLE LABEL TEXT]</div>
+                <div class="type-card__details">
+                    <strong>Font family:</strong> <span class="ph">[font-family-name]</span><br>
+                    <strong>Size:</strong> <span class="ph">[size]px uppercase</span> &nbsp;|&nbsp;
+                    <strong>Weight:</strong> <span class="ph">[weight]</span> &nbsp;|&nbsp;
+                    <strong>Letter spacing:</strong> <span class="ph">[spacing]</span><br>
+                    <strong>Usage:</strong> <span class="ph">[what it's for &mdash; e.g., section labels, badges, eyebrows, overlines]</span><br>
+                    <strong>NEVER:</strong> <span class="ph">[what it should NOT be used for &mdash; e.g., body text, long descriptions]</span>
+                </div>
+            </div>
+
+            <!-- Button / UI Font -->
+            <div class="type-card">
+                <div class="type-card__name">Button / UI Font</div>
+                <div class="type-card__specimen" style="text-transform: uppercase; letter-spacing: 1px; font-size: 14px;">[BUTTON TEXT]</div>
+                <div class="type-card__details">
+                    <strong>Font family:</strong> <span class="ph">[font-family-name]</span><br>
+                    <strong>Size:</strong> <span class="ph">[size]px uppercase</span> &nbsp;|&nbsp;
+                    <strong>Weight:</strong> <span class="ph">[weight]</span><br>
+                    <strong>Usage:</strong> <span class="ph">[buttons, CTAs, tabs, navigation items]</span><br>
+                    <strong>Rules:</strong> <span class="ph">[e.g., ALWAYS uppercase. NEVER use below 12px.]</span>
+                </div>
+            </div>
+
+            <!-- Body Font -->
+            <div class="type-card">
+                <div class="type-card__name">Body Font</div>
+                <div class="type-card__specimen" style="font-size: 16px; font-style: normal;">[Sample body text goes here. This is what your product descriptions, paragraphs, and general content will look like.]</div>
+                <div class="type-card__details">
+                    <strong>Font family:</strong> <span class="ph">[font-family-name]</span><br>
+                    <strong>Size:</strong> <span class="ph">[size]px</span> &nbsp;|&nbsp;
+                    <strong>Weight:</strong> <span class="ph">[weight]</span> &nbsp;|&nbsp;
+                    <strong>Line height:</strong> <span class="ph">[line-height]</span><br>
+                    <strong>Usage:</strong> <span class="ph">[body text, descriptions, prices, form labels]</span><br>
+                    <strong>Rules:</strong> <span class="ph">[e.g., NEVER use bold for emphasis &mdash; use a different font instead.]</span>
+                </div>
+            </div>
+
+            <div class="callout" style="margin-top: 24px;">
+                <p><strong>Note:</strong> Document <code>@font-face</code> declarations and CSS custom properties for each font. Include fallback stacks. If fonts are self-hosted, list the CDN or asset path.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         5. BUTTONS
+         ============================================================ -->
+    <section id="buttons">
+        <div class="container">
+            <span class="section-label">04 &mdash; Buttons</span>
+            <h2>Buttons</h2>
+            <p class="section-intro">The canonical button spec. AI should never invent button styles &mdash; it should always use this.</p>
+
+            <div class="card">
+                <div class="card__label">Button Component Spec</div>
+<pre><code><span class="code-selector">.button</span> {
+  <span class="code-property">background</span>: <span class="code-placeholder">[primary-color]</span>;
+  <span class="code-property">border</span>: <span class="code-value">1px</span> <span class="code-value">solid</span> <span class="code-placeholder">[primary-color]</span>;
+  <span class="code-property">border-radius</span>: <span class="code-placeholder">[radius]</span><span class="code-value">px</span>;
+  <span class="code-property">color</span>: <span class="code-placeholder">[contrast-color]</span>;
+  <span class="code-property">font-family</span>: <span class="code-placeholder">[button-font]</span>;
+  <span class="code-property">font-size</span>: <span class="code-placeholder">[size]</span><span class="code-value">px</span>;
+  <span class="code-property">font-weight</span>: <span class="code-placeholder">[weight]</span>;
+  <span class="code-property">height</span>: <span class="code-placeholder">[height]</span><span class="code-value">px</span>;
+  <span class="code-property">letter-spacing</span>: <span class="code-placeholder">[spacing]</span>;
+  <span class="code-property">padding</span>: <span class="code-value">0</span> <span class="code-placeholder">[horizontal-padding]</span><span class="code-value">px</span>;
+  <span class="code-property">text-transform</span>: <span class="code-placeholder">[uppercase/none]</span>;
+  <span class="code-property">transition</span>: <span class="code-placeholder">[property]</span> <span class="code-placeholder">[duration]</span> <span class="code-placeholder">[easing]</span>;
+}</code></pre>
+            </div>
+
+            <div class="callout">
+                <p><strong>Include hover states, disabled states, and all variants</strong> (outline, secondary, small, large, etc.). Document what properties are locked vs. what can be overridden per-section.</p>
+            </div>
+
+            <div class="ph-block" style="margin-top: 16px;">
+                [Paste your hover state CSS here]<br>
+                [Paste your disabled state CSS here]<br>
+                [Document any secondary/outline button variants]
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         6. SPACING SCALE
+         ============================================================ -->
+    <section id="spacing">
+        <div class="container">
+            <span class="section-label">05 &mdash; Spacing Scale</span>
+            <h2>Spacing Scale</h2>
+            <p class="section-intro">Consistent spacing tokens for padding, margins, and gaps.</p>
+
+            <table class="anatomy-table">
+                <thead>
+                    <tr>
+                        <th>Token</th>
+                        <th>Value</th>
+                        <th>Usage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="ph">[tight]</span></td>
+                        <td><span class="ph">[4-8]px</span></td>
+                        <td><span class="ph">[micro gaps, small margins, icon spacing]</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="ph">[standard]</span></td>
+                        <td><span class="ph">[16-20]px</span></td>
+                        <td><span class="ph">[card padding, input padding, list gaps]</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="ph">[medium]</span></td>
+                        <td><span class="ph">[24-32]px</span></td>
+                        <td><span class="ph">[section spacing, grid gaps, content blocks]</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="ph">[large]</span></td>
+                        <td><span class="ph">[40-56]px</span></td>
+                        <td><span class="ph">[section padding, component padding, major separations]</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout">
+                <p><strong>Tip:</strong> Use CSS custom properties (<code>--spacing-tight</code>, <code>--spacing-standard</code>, etc.) so AI generates consistent values every time.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         7. BORDER RADIUS
+         ============================================================ -->
+    <section id="radius">
+        <div class="container">
+            <span class="section-label">06 &mdash; Border Radius</span>
+            <h2>Border Radius</h2>
+            <p class="section-intro">The allowed radius values and what each one is used for.</p>
+
+            <div class="radius-grid">
+                <div class="radius-item">
+                    <div class="radius-box" style="border-radius: 2px;"></div>
+                    <div class="radius-label">[small]px</div>
+                    <div class="radius-usage">[usage &mdash; e.g., buttons, inputs]</div>
+                </div>
+                <div class="radius-item">
+                    <div class="radius-box" style="border-radius: 8px;"></div>
+                    <div class="radius-label">[medium]px</div>
+                    <div class="radius-usage">[usage &mdash; e.g., cards, dropdowns]</div>
+                </div>
+                <div class="radius-item">
+                    <div class="radius-box" style="border-radius: 20px;"></div>
+                    <div class="radius-label">[large]px</div>
+                    <div class="radius-usage">[usage &mdash; e.g., pills, badges, avatars]</div>
+                </div>
+            </div>
+
+            <div class="callout">
+                <p><strong>Note:</strong> <span class="ph">[Define your minimum and maximum radius values. Should images have rounded corners? What about modals? What radius should never appear?]</span></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         8. BREAKPOINTS
+         ============================================================ -->
+    <section id="breakpoints">
+        <div class="container">
+            <span class="section-label">07 &mdash; Breakpoints</span>
+            <h2>Breakpoints</h2>
+            <p class="section-intro">Responsive design breakpoints for mobile, tablet, and desktop.</p>
+
+            <table class="anatomy-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Width</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Mobile</strong></td>
+                        <td><span class="ph">[max]px</span></td>
+                        <td><span class="ph">[mobile-first or desktop-first? What stacks? What hides?]</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tablet</strong></td>
+                        <td><span class="ph">[min]px</span></td>
+                        <td><span class="ph">[column changes, layout shifts]</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Desktop</strong></td>
+                        <td><span class="ph">[min]px</span></td>
+                        <td><span class="ph">[max-width container, full layout]</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout">
+                <p><strong>Tip:</strong> Specify which direction your media queries go (min-width mobile-first vs. max-width desktop-first) so AI writes correct <code>@media</code> rules.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         9. DO'S AND DON'TS
+         ============================================================ -->
+    <section id="rules">
+        <div class="container">
+            <span class="section-label">08 &mdash; Do's and Don'ts</span>
+            <h2>Do's and Don'ts</h2>
+            <p class="section-intro">Explicit rules that prevent the most common mistakes. Start with patterns you've seen AI get wrong.</p>
+
+            <div class="compare">
+                <div class="compare__do">
+                    <div class="compare__label">Do</div>
+                    <ul class="slot-list">
+                        <li>[Rule 1 &mdash; start with your most common mistake to prevent]</li>
+                        <li>[Rule 2 &mdash; e.g., ALWAYS use the global .button class]</li>
+                        <li>[Rule 3 &mdash; e.g., ALWAYS use title case for headlines]</li>
+                        <li>[Rule 4 &mdash; e.g., ALWAYS scope section CSS with #shopify-section-{{ section.id }}]</li>
+                        <li>[Rule 5 &mdash; e.g., ALWAYS include hover states on interactive elements]</li>
+                        <li>[Rule 6]</li>
+                    </ul>
+                </div>
+                <div class="compare__dont">
+                    <div class="compare__label">Don't</div>
+                    <ul class="slot-list">
+                        <li>[Anti-pattern 1 &mdash; what "close but wrong" values does AI reach for?]</li>
+                        <li>[Anti-pattern 2 &mdash; e.g., NEVER use #000000 for text]</li>
+                        <li>[Anti-pattern 3 &mdash; e.g., NEVER write custom button CSS]</li>
+                        <li>[Anti-pattern 4 &mdash; e.g., NEVER use border-radius: 12px (max is 8px)]</li>
+                        <li>[Anti-pattern 5 &mdash; e.g., NEVER use system fonts without the brand fallback stack]</li>
+                        <li>[Anti-pattern 6]</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         10. GETTING STARTED CHECKLIST
+         ============================================================ -->
+    <section id="checklist">
+        <div class="container">
+            <span class="section-label">09 &mdash; Getting Started</span>
+            <h2>Getting Started Checklist</h2>
+            <p class="section-intro">Follow these steps to turn this template into your working design system.</p>
+
+            <ol class="checklist">
+                <li>
+                    <strong>Fill in your colors</strong><br>
+                    <span style="color: var(--color-secondary);">Hex values for primary, background, accent, and secondary. Add 3+ wrong values to avoid.</span>
+                </li>
+                <li>
+                    <strong>Document your fonts</strong><br>
+                    <span style="color: var(--color-secondary);">Families, sizes, weights, usage rules, and @font-face declarations with fallback stacks.</span>
+                </li>
+                <li>
+                    <strong>Specify your button component</strong><br>
+                    <span style="color: var(--color-secondary);">Full CSS for default, hover, disabled, and any variants (outline, secondary, etc.).</span>
+                </li>
+                <li>
+                    <strong>Set your spacing scale</strong><br>
+                    <span style="color: var(--color-secondary);">Define 4-6 spacing tokens and document what each one is used for.</span>
+                </li>
+                <li>
+                    <strong>Write 5 ALWAYS / NEVER rules</strong><br>
+                    <span style="color: var(--color-secondary);">Start with mistakes you've already seen AI make. These are your highest-value entries.</span>
+                </li>
+                <li>
+                    <strong>Save as a skill file</strong><br>
+                    <span style="color: var(--color-secondary);">Save to <code>~/.claude/skills/my-design-system/SKILL.md</code> so Claude Code loads it automatically.</span>
+                </li>
+                <li>
+                    <strong>Build a page and run the feedback loop</strong><br>
+                    <span style="color: var(--color-secondary);">Generate a test page, compare to your live site, fix discrepancies, and add new rules. Repeat.</span>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
+    <footer class="footer">
+        <div class="container">
+            <p>Design System Template &mdash; Fill in your brand's values to create a complete visual reference.</p>
+            <p style="margin-top: 8px;">Based on the <a href="index.html">How to Build a Design System for Claude Code</a> guide.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

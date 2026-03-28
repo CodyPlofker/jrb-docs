@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jones Road Beauty — Visual Design System Reference</title>
+    <meta name="description" content="Every token rendered at actual size. This is the source of truth for the Jones Road Beauty design system.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           JRB Font Faces
+           ============================================================ */
+        @font-face {
+            font-family: 'CanelaLight';
+            src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'CanelaLightItalic';
+            src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-LightItalic.otf') format('opentype');
+            font-weight: 300;
+            font-style: italic;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'GeogrotesqueCondBoldWeb';
+            src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'BaseMonoWideWeb';
+            src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'RingsideWideWeb';
+            src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* ============================================================
+           Reset & Base (Guide Chrome)
+           ============================================================ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --color-bg: #ffffff;
+            --color-bg-alt: #f8f9fa;
+            --color-heading: #1a1a2e;
+            --color-body: #374151;
+            --color-secondary: #6b7280;
+            --color-accent: #4f46e5;
+            --color-accent-light: #eef2ff;
+            --color-border: #e5e7eb;
+            --color-do: #059669;
+            --color-do-bg: #ecfdf5;
+            --color-dont: #dc2626;
+            --color-dont-bg: #fef2f2;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-code: 'JetBrains Mono', 'Fira Code', monospace;
+            --max-width: 1000px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--color-body);
+            background: var(--color-bg);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============================================================
+           Layout
+           ============================================================ */
+        .container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+
+        section {
+            padding: 72px 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        section:last-of-type { border-bottom: none; }
+
+        /* ============================================================
+           Chrome Typography
+           ============================================================ */
+        h1, h2, h3, h4 { color: var(--color-heading); line-height: 1.3; }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--color-heading);
+        }
+
+        p { margin-bottom: 16px; }
+        p:last-child { margin-bottom: 0; }
+
+        .section-number {
+            font-family: var(--font-code);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-description {
+            font-size: 15px;
+            color: var(--color-secondary);
+            margin-bottom: 40px;
+            max-width: 680px;
+        }
+
+        /* ============================================================
+           Hero
+           ============================================================ */
+        .hero {
+            padding: 80px 0 64px;
+            background: var(--color-heading);
+            color: #fff;
+            border-bottom: none;
+        }
+        .hero h1 {
+            font-size: clamp(32px, 4vw, 44px);
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+        .hero .subtitle {
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            max-width: 560px;
+        }
+        .hero .badge {
+            display: inline-block;
+            font-family: var(--font-code);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            background: var(--color-accent-light);
+            padding: 6px 14px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        /* ============================================================
+           Navigation (sticky TOC)
+           ============================================================ */
+        .toc {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--color-border);
+            padding: 0;
+        }
+        .toc-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .toc-inner::-webkit-scrollbar { display: none; }
+        .toc a {
+            display: block;
+            padding: 14px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-secondary);
+            text-decoration: none;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .toc a:hover {
+            color: var(--color-accent);
+            border-bottom-color: var(--color-accent);
+        }
+
+        /* ============================================================
+           Color Swatches
+           ============================================================ */
+        .swatch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .swatch {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+        }
+        .swatch__color {
+            height: 100px;
+            width: 100%;
+        }
+        .swatch__info {
+            padding: 12px;
+            background: #fff;
+        }
+        .swatch__name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-heading);
+            margin-bottom: 2px;
+        }
+        .swatch__hex {
+            font-family: var(--font-code);
+            font-size: 12px;
+            color: var(--color-secondary);
+        }
+        .swatch__usage {
+            font-size: 11px;
+            color: var(--color-secondary);
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        .dont-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 20px;
+        }
+        .dont-swatch {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--color-dont);
+            position: relative;
+        }
+        .dont-swatch .swatch__color { height: 72px; }
+        .dont-swatch::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            background: var(--color-dont);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .dont-swatch::before {
+            content: '\00D7';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .dont-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-dont);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ============================================================
+           Typography Specimens
+           ============================================================ */
+        .type-specimen {
+            padding: 32px;
+            background: var(--color-bg-alt);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--color-border);
+        }
+        .type-specimen__sample {
+            margin-bottom: 16px;
+            color: #000;
+        }
+        .type-specimen__meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+        .type-tag {
+            font-family: var(--font-code);
+            font-size: 11px;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: var(--color-accent-light);
+            color: var(--color-accent);
+        }
+        .type-tag--usage {
+            background: #f0fdf4;
+            color: #15803d;
+        }
+        .type-tag--warn {
+            background: var(--color-dont-bg);
+            color: var(--color-dont);
+        }
+
+        /* ============================================================
+           Buttons
+           ============================================================ */
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-start;
+            margin-bottom: 32px;
+        }
+        .button-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+        .button-specs {
+            font-family: var(--font-code);
+            font-size: 11px;
+            color: var(--color-secondary);
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* JRB button base */
+        .jrb-button {
+            font-family: 'BaseMonoWideWeb', monospace;
+            font-size: 13px;
+            font-weight: 400;
+            height: 40px;
+            padding: 0 36px;
+            border-radius: 2px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: all 0.3s cubic-bezier(.39, .575, .565, 1);
+        }
+        .jrb-button--primary {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+        .jrb-button--white {
+            background: #fff;
+            color: #000;
+            border-color: #000;
+        }
+        .jrb-button--outline {
+            background: transparent;
+            color: #000;
+            border-color: #000;
+        }
+        .jrb-button--pink {
+            background: #ff2e92;
+            color: #fff;
+            border-color: #ff2e92;
+        }
+
+        .button-hover-note {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #92400e;
+        }
+
+        /* ============================================================
+           Spacing Scale
+           ============================================================ */
+        .spacing-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+        .spacing-label {
+            font-family: var(--font-code);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-heading);
+            min-width: 48px;
+            text-align: right;
+        }
+        .spacing-bar {
+            height: 24px;
+            background: var(--color-accent);
+            border-radius: 3px;
+            opacity: 0.8;
+        }
+        .spacing-usage {
+            font-size: 12px;
+            color: var(--color-secondary);
+            min-width: 180px;
+        }
+
+        /* ============================================================
+           Border Radius
+           ============================================================ */
+        .radius-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            margin-bottom: 24px;
+        }
+        .radius-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .radius-box {
+            width: 96px;
+            height: 96px;
+            border: 2px solid #000;
+            background: #f6f2eb;
+        }
+        .radius-value {
+            font-family: var(--font-code);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-heading);
+        }
+        .radius-usage {
+            font-size: 12px;
+            color: var(--color-secondary);
+            text-align: center;
+            max-width: 120px;
+        }
+        .radius-note {
+            font-size: 13px;
+            color: var(--color-dont);
+            font-weight: 500;
+            padding: 10px 16px;
+            background: var(--color-dont-bg);
+            border-radius: 6px;
+            border: 1px solid #fecaca;
+        }
+
+        /* ============================================================
+           Shadow Cards
+           ============================================================ */
+        .shadow-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 24px;
+        }
+        .shadow-card {
+            width: 220px;
+            height: 140px;
+            background: #fff;
+            border-radius: 3px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .shadow-card__label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-heading);
+        }
+        .shadow-card__value {
+            font-family: var(--font-code);
+            font-size: 11px;
+            color: var(--color-secondary);
+            text-align: center;
+            max-width: 180px;
+        }
+        .shadow-note {
+            font-size: 13px;
+            color: var(--color-secondary);
+            font-style: italic;
+        }
+
+        /* ============================================================
+           Easing
+           ============================================================ */
+        .easing-card {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            padding: 32px;
+            background: var(--color-bg-alt);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+        }
+        .easing-visual {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .easing-visual svg {
+            width: 100%;
+            height: 100%;
+        }
+        .easing-info {
+            flex: 1;
+        }
+        .easing-value {
+            font-family: var(--font-code);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-heading);
+            margin-bottom: 8px;
+        }
+        .easing-meta {
+            font-size: 14px;
+            color: var(--color-secondary);
+        }
+
+        /* ============================================================
+           Do's and Don'ts Grid
+           ============================================================ */
+        .dd-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 680px) {
+            .dd-grid { grid-template-columns: 1fr; }
+        }
+        .dd-column-header {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dd-column-header--do { color: var(--color-do); }
+        .dd-column-header--dont { color: var(--color-dont); }
+
+        .dd-item {
+            padding: 14px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        .dd-item--do {
+            background: var(--color-do-bg);
+            border-left: 3px solid var(--color-do);
+            color: #065f46;
+        }
+        .dd-item--dont {
+            background: var(--color-dont-bg);
+            border-left: 3px solid var(--color-dont);
+            color: #991b1b;
+        }
+        .dd-item code {
+            font-family: var(--font-code);
+            font-size: 12px;
+            background: rgba(0,0,0,0.06);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        /* ============================================================
+           Responsive
+           ============================================================ */
+        @media (max-width: 600px) {
+            .swatch-grid { grid-template-columns: repeat(2, 1fr); }
+            .dont-row { grid-template-columns: repeat(2, 1fr); }
+            .button-row { flex-direction: column; align-items: flex-start; }
+            .easing-card { flex-direction: column; align-items: flex-start; }
+            .spacing-usage { min-width: auto; font-size: 11px; }
+            .toc-inner { gap: 0; }
+            .toc a { padding: 12px 10px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+         Hero
+         ============================================================ -->
+    <div class="hero">
+        <div class="container">
+            <div class="badge">Visual Reference</div>
+            <h1>Jones Road Beauty — Visual Design System Reference</h1>
+            <p class="subtitle">Every token rendered at actual size. This is the source of truth.</p>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         Sticky TOC
+         ============================================================ -->
+    <nav class="toc">
+        <div class="toc-inner">
+            <a href="#colors">Colors</a>
+            <a href="#typography">Typography</a>
+            <a href="#buttons">Buttons</a>
+            <a href="#spacing">Spacing</a>
+            <a href="#radius">Radius</a>
+            <a href="#shadows">Shadows</a>
+            <a href="#easing">Easing</a>
+            <a href="#dos-donts">Do's & Don'ts</a>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+         1. Color Palette
+         ============================================================ -->
+    <section id="colors">
+        <div class="container">
+            <span class="section-number">01 &mdash; Color Palette</span>
+            <h2>Brand Colors</h2>
+            <p class="section-description">The six approved colors. Every element on a JRB page traces back to one of these values.</p>
+
+            <div class="swatch-grid">
+                <div class="swatch">
+                    <div class="swatch__color" style="background: #000000;"></div>
+                    <div class="swatch__info">
+                        <div class="swatch__name">Black</div>
+                        <div class="swatch__hex">#000000</div>
+                        <div class="swatch__usage">Primary text, borders, button backgrounds</div>
+                    </div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background: #f6f2eb;"></div>
+                    <div class="swatch__info">
+                        <div class="swatch__name">Warm Cream</div>
+                        <div class="swatch__hex">#f6f2eb</div>
+                        <div class="swatch__usage">Signature background</div>
+                    </div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background: #ff2e92;"></div>
+                    <div class="swatch__info">
+                        <div class="swatch__name">Hot Pink</div>
+                        <div class="swatch__hex">#ff2e92</div>
+                        <div class="swatch__usage">Brand accent, CTAs, sale badges</div>
+                    </div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background: #ffffff; border: 1px solid #e5e7eb;"></div>
+                    <div class="swatch__info">
+                        <div class="swatch__name">White</div>
+                        <div class="swatch__hex">#ffffff</div>
+                        <div class="swatch__usage">Primary background</div>
+                    </div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background: #d0d0d0;"></div>
+                    <div class="swatch__info">
+                        <div class="swatch__name">Light Gray</div>
+                        <div class="swatch__hex">#d0d0d0</div>
+                        <div class="swatch__usage">Standard borders</div>
+                    </div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch__color" style="background: #757575;"></div>
+                    <div class="swatch__info">
+                        <div class="swatch__name">Medium Gray</div>
+                        <div class="swatch__hex">#757575</div>
+                        <div class="swatch__usage">Secondary text</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dont-label">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#dc2626" stroke-width="2"/><line x1="4.5" y1="4.5" x2="11.5" y2="11.5" stroke="#dc2626" stroke-width="2"/></svg>
+                Don't use these colors
+            </div>
+            <div class="dont-row">
+                <div class="dont-swatch">
+                    <div class="swatch__color" style="background: #1A1A1A;"></div>
+                    <div class="swatch__info">
+                        <div class="swatch__hex">#1A1A1A</div>
+                        <div class="swatch__usage">Use #000 instead</div>
+                    </div>
+                </div>
+                <div class="dont-swatch">
+                    <div class="swatch__color" style="background: #FAF8F5;"></div>
+                    <div class="swatch__info">
+                        <div class="swatch__hex">#FAF8F5</div>
+                        <div class="swatch__usage">Use #f6f2eb instead</div>
+                    </div>
+                </div>
+                <div class="dont-swatch">
+                    <div class="swatch__color" style="background: #C73A3A;"></div>
+                    <div class="swatch__info">
+                        <div class="swatch__hex">#C73A3A</div>
+                        <div class="swatch__usage">Use #ff2e92 instead</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         2. Typography
+         ============================================================ -->
+    <section id="typography">
+        <div class="container">
+            <span class="section-number">02 &mdash; Typography</span>
+            <h2>Type Scale</h2>
+            <p class="section-description">Each font rendered at its exact production size. These are the real JRB fonts loaded from the CDN.</p>
+
+            <!-- Canela Light -->
+            <div class="type-specimen">
+                <div class="type-specimen__sample" style="font-family: 'CanelaLight', Georgia, serif; font-size: 38px; font-weight: 300; letter-spacing: 0.5px; line-height: 1.2;">
+                    The 10-second complexion upgrade
+                </div>
+                <div class="type-specimen__meta">
+                    <span class="type-tag">Canela Light</span>
+                    <span class="type-tag">38px</span>
+                    <span class="type-tag">letter-spacing: 0.5px</span>
+                    <span class="type-tag">sentence case</span>
+                    <span class="type-tag--usage">Large headlines, section titles</span>
+                </div>
+            </div>
+
+            <!-- Geogrotesque Cond Bold — Eyebrow -->
+            <div class="type-specimen">
+                <div class="type-specimen__sample" style="font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; line-height: 1.3;">
+                    THE PROBLEM
+                </div>
+                <div class="type-specimen__meta">
+                    <span class="type-tag">GeogrotesqueCondBold</span>
+                    <span class="type-tag">18px</span>
+                    <span class="type-tag">letter-spacing: 1px</span>
+                    <span class="type-tag">uppercase</span>
+                    <span class="type-tag--usage">Section eyebrows, small display labels</span>
+                </div>
+            </div>
+
+            <!-- Geogrotesque Cond Bold — Smaller -->
+            <div class="type-specimen">
+                <div class="type-specimen__sample" style="font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; line-height: 1.3;">
+                    INSTANT POLISH
+                </div>
+                <div class="type-specimen__meta">
+                    <span class="type-tag">GeogrotesqueCondBold</span>
+                    <span class="type-tag">15px</span>
+                    <span class="type-tag">letter-spacing: 1px</span>
+                    <span class="type-tag">uppercase</span>
+                    <span class="type-tag--warn">NEVER for large headlines</span>
+                </div>
+            </div>
+
+            <!-- BaseMonoWide -->
+            <div class="type-specimen">
+                <div class="type-specimen__sample" style="font-family: 'BaseMonoWideWeb', monospace; font-size: 13px; letter-spacing: 0.4px; text-transform: uppercase; line-height: 1.4;">
+                    SHOP NOW
+                </div>
+                <div class="type-specimen__meta">
+                    <span class="type-tag">BaseMonoWide</span>
+                    <span class="type-tag">13px</span>
+                    <span class="type-tag">letter-spacing: 0.4px</span>
+                    <span class="type-tag">uppercase</span>
+                    <span class="type-tag--usage">Buttons, CTAs, tabs</span>
+                </div>
+            </div>
+
+            <!-- RingsideWide -->
+            <div class="type-specimen">
+                <div class="type-specimen__sample" style="font-family: 'RingsideWideWeb', 'Helvetica Neue', sans-serif; font-size: 16px; line-height: 1.6;">
+                    One swipe delivers a natural glow that lasts all day.
+                </div>
+                <div class="type-specimen__meta">
+                    <span class="type-tag">RingsideWide</span>
+                    <span class="type-tag">16px</span>
+                    <span class="type-tag--usage">Body text, descriptions</span>
+                </div>
+            </div>
+
+            <!-- Canela Light Italic -->
+            <div class="type-specimen">
+                <div class="type-specimen__sample" style="font-family: 'CanelaLightItalic', Georgia, serif; font-size: 24px; font-weight: 300; font-style: italic; line-height: 1.4;">
+                    "It's the only makeup I actually use."
+                </div>
+                <div class="type-specimen__meta">
+                    <span class="type-tag">Canela Light Italic</span>
+                    <span class="type-tag">24px</span>
+                    <span class="type-tag--usage">Editorial pull quotes</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         3. Buttons
+         ============================================================ -->
+    <section id="buttons">
+        <div class="container">
+            <span class="section-number">03 &mdash; Buttons</span>
+            <h2>Button System</h2>
+            <p class="section-description">All buttons use BaseMonoWide at 13px, height 40px (44px on desktop), border-radius 2px, padding 0 36px. Never override these base properties.</p>
+
+            <div class="button-row">
+                <div class="button-card">
+                    <button class="jrb-button jrb-button--primary">SHOP NOW</button>
+                    <div class="button-specs">
+                        Primary<br>
+                        bg: #000<br>
+                        color: #fff
+                    </div>
+                </div>
+
+                <div class="button-card">
+                    <button class="jrb-button jrb-button--white">ADD TO BAG</button>
+                    <div class="button-specs">
+                        White<br>
+                        bg: #fff<br>
+                        color: #000<br>
+                        border: #000
+                    </div>
+                </div>
+
+                <div class="button-card">
+                    <button class="jrb-button jrb-button--outline">LEARN MORE</button>
+                    <div class="button-specs">
+                        Outline<br>
+                        bg: transparent<br>
+                        color: #000<br>
+                        border: #000
+                    </div>
+                </div>
+
+                <div class="button-card">
+                    <div style="background: #000; padding: 20px; border-radius: 4px;">
+                        <button class="jrb-button jrb-button--pink">SAVE 15%</button>
+                    </div>
+                    <div class="button-specs">
+                        Pink (--primary-color)<br>
+                        bg: #ff2e92<br>
+                        color: #fff
+                    </div>
+                </div>
+            </div>
+
+            <h3>Hover Behavior</h3>
+            <div class="button-hover-note">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#92400e" stroke-width="1.5"/><line x1="10" y1="6" x2="10" y2="11" stroke="#92400e" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="14" r="1" fill="#92400e"/></svg>
+                Hover is gated behind the <code style="font-family: var(--font-code); font-size: 12px; background: rgba(0,0,0,0.06); padding: 2px 5px; border-radius: 3px;">.has-mouse</code> class. On hover, the background becomes transparent and the text color flips to the original background color. Transition: 0.3s with the primary easing curve.
+            </div>
+
+            <div style="margin-top: 24px;">
+                <h3>Annotated Specs</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 500px;">
+                    <div style="font-size: 13px; color: var(--color-secondary);">Font family</div>
+                    <div style="font-family: var(--font-code); font-size: 13px; color: var(--color-heading);">BaseMonoWideWeb</div>
+                    <div style="font-size: 13px; color: var(--color-secondary);">Font size</div>
+                    <div style="font-family: var(--font-code); font-size: 13px; color: var(--color-heading);">13px (14px desktop)</div>
+                    <div style="font-size: 13px; color: var(--color-secondary);">Height</div>
+                    <div style="font-family: var(--font-code); font-size: 13px; color: var(--color-heading);">40px (44px desktop)</div>
+                    <div style="font-size: 13px; color: var(--color-secondary);">Padding</div>
+                    <div style="font-family: var(--font-code); font-size: 13px; color: var(--color-heading);">0 36px</div>
+                    <div style="font-size: 13px; color: var(--color-secondary);">Border radius</div>
+                    <div style="font-family: var(--font-code); font-size: 13px; color: var(--color-heading);">2px</div>
+                    <div style="font-size: 13px; color: var(--color-secondary);">Letter spacing</div>
+                    <div style="font-family: var(--font-code); font-size: 13px; color: var(--color-heading);">0.4px</div>
+                    <div style="font-size: 13px; color: var(--color-secondary);">Text transform</div>
+                    <div style="font-family: var(--font-code); font-size: 13px; color: var(--color-heading);">uppercase</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         4. Spacing Scale
+         ============================================================ -->
+    <section id="spacing">
+        <div class="container">
+            <span class="section-number">04 &mdash; Spacing Scale</span>
+            <h2>Spacing Tokens</h2>
+            <p class="section-description">The spacing scale used across all JRB pages. Each bar is rendered at its actual pixel width.</p>
+
+            <div style="margin-top: 32px;">
+                <div class="spacing-row">
+                    <div class="spacing-label">4px</div>
+                    <div class="spacing-bar" style="width: 4px;"></div>
+                    <div class="spacing-usage">Micro &mdash; icon-to-text gaps</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">8px</div>
+                    <div class="spacing-bar" style="width: 8px;"></div>
+                    <div class="spacing-usage">Tight &mdash; inline element gaps</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">12px</div>
+                    <div class="spacing-bar" style="width: 12px;"></div>
+                    <div class="spacing-usage">Related elements, tag groups</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">16px</div>
+                    <div class="spacing-bar" style="width: 16px;"></div>
+                    <div class="spacing-usage">Default paragraph margin, card padding</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">20px</div>
+                    <div class="spacing-bar" style="width: 20px;"></div>
+                    <div class="spacing-usage">Between form fields, list items</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">24px</div>
+                    <div class="spacing-bar" style="width: 24px;"></div>
+                    <div class="spacing-usage">Section internal padding, card gaps</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">32px</div>
+                    <div class="spacing-bar" style="width: 32px;"></div>
+                    <div class="spacing-usage">Between content groups</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">40px</div>
+                    <div class="spacing-bar" style="width: 40px;"></div>
+                    <div class="spacing-usage">Major block spacing</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">48px</div>
+                    <div class="spacing-bar" style="width: 48px;"></div>
+                    <div class="spacing-usage">Section top/bottom padding (mobile)</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">56px</div>
+                    <div class="spacing-bar" style="width: 56px;"></div>
+                    <div class="spacing-usage">Section padding (desktop)</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">80px</div>
+                    <div class="spacing-bar" style="width: 80px;"></div>
+                    <div class="spacing-usage">Hero/major section vertical padding</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         5. Border Radius
+         ============================================================ -->
+    <section id="radius">
+        <div class="container">
+            <span class="section-number">05 &mdash; Border Radius</span>
+            <h2>Corner Radius</h2>
+            <p class="section-description">JRB uses minimal, subtle rounding. Never 0px (too harsh). Never fully rounded (off-brand).</p>
+
+            <div class="radius-grid">
+                <div class="radius-card">
+                    <div class="radius-box" style="border-radius: 2px;"></div>
+                    <div class="radius-value">2px</div>
+                    <div class="radius-usage">Secondary buttons</div>
+                </div>
+                <div class="radius-card">
+                    <div class="radius-box" style="border-radius: 3px;"></div>
+                    <div class="radius-value">3px</div>
+                    <div class="radius-usage">Primary buttons, cards, form inputs</div>
+                </div>
+                <div class="radius-card">
+                    <div class="radius-box" style="border-radius: 5px;"></div>
+                    <div class="radius-value">5px</div>
+                    <div class="radius-usage">Badges</div>
+                </div>
+            </div>
+
+            <div class="radius-note">
+                Never 0px. Never fully rounded (no border-radius: 9999px).
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         6. Shadows
+         ============================================================ -->
+    <section id="shadows">
+        <div class="container">
+            <span class="section-number">06 &mdash; Shadows</span>
+            <h2>Elevation</h2>
+            <p class="section-description">JRB shadows are subtle and restrained. Always below rgba(0,0,0,.25). No brutalist shadows.</p>
+
+            <div class="shadow-grid">
+                <div class="shadow-card" style="box-shadow: 0 1px 2px rgba(16, 24, 40, .04);">
+                    <div class="shadow-card__label">Resting</div>
+                    <div class="shadow-card__value">0 1px 2px<br>rgba(16, 24, 40, .04)</div>
+                </div>
+                <div class="shadow-card" style="box-shadow: 0 2px 8px rgba(0, 0, 0, .12);">
+                    <div class="shadow-card__label">Hover</div>
+                    <div class="shadow-card__value">0 2px 8px<br>rgba(0, 0, 0, .12)</div>
+                </div>
+            </div>
+
+            <div class="shadow-note">Below rgba(0,0,0,.25) always. No brutalist shadows (e.g., 4px 4px 0px #000).</div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         7. Easing
+         ============================================================ -->
+    <section id="easing">
+        <div class="container">
+            <span class="section-number">07 &mdash; Easing</span>
+            <h2>Motion</h2>
+            <p class="section-description">One easing curve for all transitions across the entire site.</p>
+
+            <div class="easing-card">
+                <div class="easing-visual">
+                    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0.5" y="0.5" width="119" height="119" rx="4" stroke="#e5e7eb"/>
+                        <path d="M 10 110 C 56.8 41.1 77.8 110 110 10" stroke="#4f46e5" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <circle cx="10" cy="110" r="4" fill="#4f46e5"/>
+                        <circle cx="110" cy="10" r="4" fill="#4f46e5"/>
+                        <!-- Control point guides -->
+                        <line x1="10" y1="110" x2="56.8" y2="41.1" stroke="#4f46e5" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.4"/>
+                        <line x1="110" y1="10" x2="77.8" y2="110" stroke="#4f46e5" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.4"/>
+                        <circle cx="56.8" cy="41.1" r="3" fill="none" stroke="#4f46e5" stroke-width="1" opacity="0.5"/>
+                        <circle cx="77.8" cy="110" r="3" fill="none" stroke="#4f46e5" stroke-width="1" opacity="0.5"/>
+                    </svg>
+                </div>
+                <div class="easing-info">
+                    <div class="easing-value">cubic-bezier(.39, .575, .565, 1)</div>
+                    <p class="easing-meta">
+                        Primary easing for all transitions.<br>
+                        Default duration: <strong style="color: var(--color-heading);">0.4s</strong><br>
+                        Used on: hover states, accordions, drawers, reveals, carousels.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         8. Do's and Don'ts
+         ============================================================ -->
+    <section id="dos-donts">
+        <div class="container">
+            <span class="section-number">08 &mdash; Do's and Don'ts</span>
+            <h2>Rules at a Glance</h2>
+            <p class="section-description">Quick reference for brand compliance decisions.</p>
+
+            <div class="dd-grid">
+                <!-- DO's Column -->
+                <div>
+                    <div class="dd-column-header dd-column-header--do">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#059669" stroke-width="1.5"/><path d="M6 10.5L8.5 13L14 7" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        Do
+                    </div>
+                    <div class="dd-item dd-item--do">
+                        Use <strong>RingsideWide</strong> as body font (16px)
+                    </div>
+                    <div class="dd-item dd-item--do">
+                        Use <strong>Canela</strong> for section titles (sentence case, 38px)
+                    </div>
+                    <div class="dd-item dd-item--do">
+                        Use <code>#f6f2eb</code> for section backgrounds
+                    </div>
+                    <div class="dd-item dd-item--do">
+                        Gate hover effects behind <code>.has-mouse</code>
+                    </div>
+                    <div class="dd-item dd-item--do">
+                        Keep border-radius at <strong>2&ndash;3px</strong>
+                    </div>
+                    <div class="dd-item dd-item--do">
+                        Use <code>#000</code> and <code>#fff</code> as primary pair
+                    </div>
+                </div>
+
+                <!-- DON'T Column -->
+                <div>
+                    <div class="dd-column-header dd-column-header--dont">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#dc2626" stroke-width="1.5"/><line x1="7" y1="7" x2="13" y2="13" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="7" x2="7" y2="13" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        Don't
+                    </div>
+                    <div class="dd-item dd-item--dont">
+                        Don't use <strong>Geogrotesque</strong> for large headlines (use Canela)
+                    </div>
+                    <div class="dd-item dd-item--dont">
+                        Don't use <code>#1A1A1A</code>, <code>#FAF8F5</code>, or <code>#C73A3A</code>
+                    </div>
+                    <div class="dd-item dd-item--dont">
+                        Don't use emojis anywhere
+                    </div>
+                    <div class="dd-item dd-item--dont">
+                        Don't use fully rounded corners (no <code>9999px</code>)
+                    </div>
+                    <div class="dd-item dd-item--dont">
+                        Don't use viewport-unit typography (no <code>vw</code>)
+                    </div>
+                    <div class="dd-item dd-item--dont">
+                        Don't use brutalist shadows (no <code>4px 4px 0px</code>)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         Footer
+         ============================================================ -->
+    <footer style="padding: 40px 0; text-align: center; border-top: 1px solid var(--color-border);">
+        <div class="container">
+            <p style="font-size: 13px; color: var(--color-secondary); margin: 0;">
+                Jones Road Beauty &mdash; Visual Design System Reference &mdash; Generated March 2026
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
