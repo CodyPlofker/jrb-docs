@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Build a Design System for Claude Code</title>
+    <meta name="description" content="A practical guide to building a design system that gives AI perfect brand consistency. Uses Jones Road Beauty's production system as a worked example.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           Reset & Base
+           ============================================================ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --color-bg: #ffffff;
+            --color-bg-alt: #f8f9fa;
+            --color-bg-code: #1e1e2e;
+            --color-heading: #1a1a2e;
+            --color-body: #374151;
+            --color-secondary: #6b7280;
+            --color-accent: #4f46e5;
+            --color-accent-light: #eef2ff;
+            --color-border: #e5e7eb;
+            --color-do: #059669;
+            --color-do-bg: #ecfdf5;
+            --color-dont: #dc2626;
+            --color-dont-bg: #fef2f2;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-code: 'JetBrains Mono', 'Fira Code', monospace;
+            --font-display: 'Playfair Display', Georgia, serif;
+            --max-width: 800px;
+            --max-width-wide: 1000px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--color-body);
+            background: var(--color-bg);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============================================================
+           Layout
+           ============================================================ */
+        .container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+        .container--wide { max-width: var(--max-width-wide); }
+
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        section:last-of-type { border-bottom: none; }
+
+        /* ============================================================
+           Typography
+           ============================================================ */
+        h1, h2, h3, h4 { color: var(--color-heading); line-height: 1.3; }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(36px, 5vw, 52px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        p { margin-bottom: 16px; }
+        p:last-child { margin-bottom: 0; }
+
+        a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
+        a:hover { text-decoration: none; }
+
+        strong { color: var(--color-heading); font-weight: 600; }
+
+        /* ============================================================
+           Hero
+           ============================================================ */
+        .hero {
+            padding: 100px 0 80px;
+            background: var(--color-heading);
+            color: #fff;
+            border-bottom: none;
+        }
+
+        .hero h1 { color: #fff; margin-bottom: 20px; }
+
+        .hero p {
+            font-size: 18px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.75);
+            max-width: 600px;
+        }
+
+        .hero__label {
+            font-family: var(--font-code);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--color-accent);
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        /* ============================================================
+           Table of Contents
+           ============================================================ */
+        .toc {
+            background: var(--color-bg-alt);
+            padding: 48px 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .toc__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 8px;
+        }
+
+        .toc__link {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--color-body);
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.15s;
+        }
+
+        .toc__link:hover { background: var(--color-border); text-decoration: none; }
+
+        .toc__num {
+            font-family: var(--font-code);
+            font-size: 12px;
+            color: var(--color-accent);
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        /* ============================================================
+           Section Header
+           ============================================================ */
+        .section-label {
+            font-family: var(--font-code);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--color-accent);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .section-intro {
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--color-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        /* ============================================================
+           Code Blocks
+           ============================================================ */
+        pre {
+            background: var(--color-bg-code);
+            color: #cdd6f4;
+            padding: 20px 24px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: var(--font-code);
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        code {
+            font-family: var(--font-code);
+            font-size: 0.9em;
+            background: var(--color-bg-alt);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--color-heading);
+        }
+
+        pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
+
+        .code-comment { color: #6c7086; }
+        .code-property { color: #89b4fa; }
+        .code-value { color: #a6e3a1; }
+        .code-string { color: #f9e2af; }
+        .code-keyword { color: #cba6f7; }
+        .code-selector { color: #f38ba8; }
+
+        /* ============================================================
+           Cards
+           ============================================================ */
+        .card {
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .card--example {
+            background: var(--color-bg-alt);
+            border: 1px solid var(--color-border);
+        }
+
+        .card__label {
+            font-family: var(--font-code);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--color-accent);
+            margin-bottom: 8px;
+        }
+
+        /* ============================================================
+           Comparison Grid (Do / Don't)
+           ============================================================ */
+        .compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        @media (max-width: 640px) {
+            .compare { grid-template-columns: 1fr; }
+        }
+
+        .compare__do, .compare__dont {
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .compare__do {
+            background: var(--color-do-bg);
+            border: 1px solid #a7f3d0;
+        }
+
+        .compare__dont {
+            background: var(--color-dont-bg);
+            border: 1px solid #fecaca;
+        }
+
+        .compare__label {
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .compare__do .compare__label { color: var(--color-do); }
+        .compare__dont .compare__label { color: var(--color-dont); }
+
+        /* ============================================================
+           Anatomy Table
+           ============================================================ */
+        .anatomy-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 14px;
+        }
+
+        .anatomy-table th {
+            text-align: left;
+            padding: 12px 16px;
+            background: var(--color-bg-alt);
+            border-bottom: 2px solid var(--color-border);
+            font-weight: 600;
+            color: var(--color-heading);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .anatomy-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--color-border);
+            vertical-align: top;
+        }
+
+        .anatomy-table tr:last-child td { border-bottom: none; }
+
+        /* ============================================================
+           Details / Expandable
+           ============================================================ */
+        details {
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        summary {
+            padding: 16px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--color-heading);
+            background: var(--color-bg-alt);
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        summary::before {
+            content: '+';
+            font-family: var(--font-code);
+            font-size: 16px;
+            color: var(--color-accent);
+            flex-shrink: 0;
+            width: 20px;
+            text-align: center;
+        }
+
+        details[open] summary::before { content: '\2212'; }
+
+        summary::-webkit-details-marker { display: none; }
+
+        details > div { padding: 20px; }
+
+        /* ============================================================
+           Checklist
+           ============================================================ */
+        .checklist {
+            list-style: none;
+            counter-reset: step;
+        }
+
+        .checklist li {
+            counter-increment: step;
+            padding: 16px 0 16px 52px;
+            position: relative;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .checklist li:last-child { border-bottom: none; }
+
+        .checklist li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 16px;
+            width: 32px;
+            height: 32px;
+            background: var(--color-accent-light);
+            color: var(--color-accent);
+            font-family: var(--font-code);
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ============================================================
+           Flow Diagram
+           ============================================================ */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin: 24px 0;
+        }
+
+        .flow__step {
+            background: var(--color-accent-light);
+            color: var(--color-accent);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .flow__arrow {
+            color: var(--color-border);
+            font-size: 18px;
+        }
+
+        /* ============================================================
+           Callout
+           ============================================================ */
+        .callout {
+            background: var(--color-accent-light);
+            border-left: 3px solid var(--color-accent);
+            padding: 20px 24px;
+            border-radius: 0 8px 8px 0;
+            margin: 24px 0;
+            font-size: 15px;
+        }
+
+        .callout p { color: var(--color-heading); }
+
+        /* ============================================================
+           File Tree
+           ============================================================ */
+        .file-tree {
+            font-family: var(--font-code);
+            font-size: 13px;
+            line-height: 2;
+            background: var(--color-bg-code);
+            color: #cdd6f4;
+            padding: 20px 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .file-tree .folder { color: #89b4fa; }
+        .file-tree .file { color: #a6e3a1; }
+        .file-tree .comment { color: #6c7086; }
+
+        /* ============================================================
+           Inline list
+           ============================================================ */
+        ul, ol { margin-bottom: 16px; padding-left: 24px; }
+        li { margin-bottom: 6px; }
+        li:last-child { margin-bottom: 0; }
+
+        /* ============================================================
+           Color Swatches
+           ============================================================ */
+        .swatches {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin: 24px 0;
+        }
+
+        .swatch {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+            font-size: 14px;
+            min-width: 200px;
+        }
+
+        .swatch__color {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            flex-shrink: 0;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .swatch__label { font-weight: 600; color: var(--color-heading); }
+        .swatch__hex { font-family: var(--font-code); font-size: 13px; color: var(--color-secondary); }
+
+        /* ============================================================
+           Footer
+           ============================================================ */
+        .footer {
+            padding: 48px 0;
+            text-align: center;
+            color: var(--color-secondary);
+            font-size: 14px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .footer a { color: var(--color-accent); }
+
+        /* ============================================================
+           Responsive
+           ============================================================ */
+        @media (max-width: 768px) {
+            section { padding: 56px 0; }
+            h2 { font-size: 24px; }
+            pre { font-size: 12px; padding: 16px; }
+            .anatomy-table { font-size: 13px; }
+            .anatomy-table th, .anatomy-table td { padding: 10px 12px; }
+            .toc__grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+         1. HERO
+         ============================================================ -->
+    <section class="hero">
+        <div class="container">
+            <span class="hero__label">Practical Guide</span>
+            <h1>How to build a design system for Claude Code</h1>
+            <p>A step-by-step guide to creating a design system file that gives AI perfect brand consistency on every page it builds. Uses Jones Road Beauty's production system as a worked example.</p>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         TABLE OF CONTENTS
+         ============================================================ -->
+    <nav class="toc">
+        <div class="container container--wide">
+            <div class="toc__grid">
+                <a href="#why" class="toc__link"><span class="toc__num">01</span> Why it matters</a>
+                <a href="#anatomy" class="toc__link"><span class="toc__num">02</span> File anatomy</a>
+                <a href="#typography" class="toc__link"><span class="toc__num">03</span> Typography</a>
+                <a href="#colors" class="toc__link"><span class="toc__num">04</span> Colors</a>
+                <a href="#components" class="toc__link"><span class="toc__num">05</span> Components</a>
+                <a href="#file-structure" class="toc__link"><span class="toc__num">06</span> File structure</a>
+                <a href="#include-exclude" class="toc__link"><span class="toc__num">07</span> What to include</a>
+                <a href="#writing-rules" class="toc__link"><span class="toc__num">08</span> Writing strong rules</a>
+                <a href="#feedback-loop" class="toc__link"><span class="toc__num">09</span> The feedback loop</a>
+                <a href="#getting-started" class="toc__link"><span class="toc__num">10</span> Getting started</a>
+                <a href="#ecosystem" class="toc__link"><span class="toc__num">11</span> Skill ecosystem</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+         2. WHY IT MATTERS
+         ============================================================ -->
+    <section id="why">
+        <div class="container">
+            <span class="section-label">01</span>
+            <h2>Why a design system matters for AI</h2>
+            <p class="section-intro">Without a design system, every AI-generated page is a coin flip. Claude will make reasonable choices, but they'll be <em>different</em> reasonable choices each time.</p>
+
+            <p>A design system for Claude Code is a single Markdown file that Claude reads before building anything. It defines your fonts, colors, spacing, components, and rules. Once it exists, every page Claude builds automatically follows the same visual language.</p>
+
+            <h3>Three differences from a traditional style guide</h3>
+
+            <div class="card" style="margin: 24px 0;">
+                <p><strong>1. Machine-readable.</strong> Written in Markdown with CSS code snippets Claude can copy directly into the pages it builds. Not a PDF or Figma file &mdash; a text file that lives in your project.</p>
+                <p><strong>2. Prescriptive, not descriptive.</strong> Says <code>ALWAYS use #000 for body text, NEVER #555</code> instead of "body text should be dark." The explicit prohibitions are what catch mistakes.</p>
+                <p><strong>3. Living document.</strong> Updated every time you notice a pattern. Push to GitHub, and every future build benefits immediately. The system gets smarter over time.</p>
+            </div>
+
+            <details>
+                <summary>Real example: JRB's design philosophy</summary>
+                <div>
+                    <p>Here's the opening of Jones Road Beauty's production design system &mdash; the first thing Claude reads:</p>
+                    <pre><code><span class="code-comment">## Design Philosophy</span>
+
+The JRB design system embraces a <span class="code-keyword">clean, premium beauty brand aesthetic</span> with:
+- High readability and generous whitespace
+- Minimal decoration, content-first layouts
+- Premium but accessible (not luxury-distant)
+- Wide monospace (BaseMonoWideWeb) for buttons and utility text
+- Condensed bold sans (GeogrotesqueCondBoldWeb) for small display labels
+  <span class="code-comment">— NOT for large page/section headlines</span>
+- Body text in RingsideWideWeb, a refined sans-serif
+- Canela serif for section titles and editorial moments
+- Sharp 2-3px corners on buttons and cards (never 0, never rounded)
+- Warm neutral palette anchored by <span class="code-value">#f6f2eb</span> backgrounds and <span class="code-value">#000</span> text
+- Brand accent: <span class="code-value">#ff2e92</span> (hot pink/magenta)</code></pre>
+                    <p>This paragraph sets the tone for everything. Claude uses it to make judgment calls on details the rest of the file doesn't explicitly cover.</p>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         3. ANATOMY OF THE FILE
+         ============================================================ -->
+    <section id="anatomy">
+        <div class="container container--wide">
+            <span class="section-label">02</span>
+            <h2>Anatomy of a design system file</h2>
+            <p class="section-intro">A complete design system file has 8&ndash;10 sections. Here's what each covers and why it matters. You don't need all of these on day one &mdash; start with typography and colors, then expand.</p>
+
+            <table class="anatomy-table">
+                <thead>
+                    <tr>
+                        <th>Section</th>
+                        <th>What it covers</th>
+                        <th>Why it matters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Design Philosophy</strong></td>
+                        <td>Overall aesthetic direction in plain language</td>
+                        <td>Sets the tone. Claude uses this to make judgment calls on things the rest of the file doesn't explicitly cover.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CSS Methodology</strong></td>
+                        <td>BEM naming, specificity rules, nesting, property order</td>
+                        <td>Prevents inconsistent code style across pages. Claude writes cleaner CSS when the rules are explicit.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Typography</strong></td>
+                        <td>Font families, sizes, weights, usage rules, @font-face</td>
+                        <td>The #1 source of brand inconsistency without rules. Gets the most detail in any good design system.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Colors</strong></td>
+                        <td>Hex values, CSS variables, semantic colors, wrong values to avoid</td>
+                        <td>Prevents "close but wrong" color drift. The explicit Don'ts are as important as the Do's.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Spacing</strong></td>
+                        <td>Token scale (4px&ndash;96px), container max-widths, section padding</td>
+                        <td>Creates visual rhythm and consistency across pages. Prevents arbitrary padding/margin choices.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Components</strong></td>
+                        <td>Buttons, cards, accordions, forms &mdash; with full CSS</td>
+                        <td>Reusable patterns Claude can copy directly. The most impactful for productivity.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Breakpoints</strong></td>
+                        <td>Mobile-first media queries, responsive behavior</td>
+                        <td>Consistent responsive behavior. Without this, Claude guesses at breakpoint values.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Imagery</strong></td>
+                        <td>Aspect ratios for product, editorial, hero, UGC photos</td>
+                        <td>Prevents wrong crops &mdash; landscape ratios for portrait photos is a common mistake.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Do's and Don'ts</strong></td>
+                        <td>Explicit ALWAYS/NEVER rules with examples</td>
+                        <td>The highest-impact section. Catches the most mistakes. This is where you encode hard-won lessons.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout">
+                <p><strong>JRB's file is 1,586 lines.</strong> That didn't happen on day one. It started small and grew through the feedback loop described in section 9. Your V1 can be 100 lines.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         4. TYPOGRAPHY DEEP DIVE
+         ============================================================ -->
+    <section id="typography">
+        <div class="container">
+            <span class="section-label">03</span>
+            <h2>Deep dive: Typography</h2>
+            <p class="section-intro">Fonts carry more brand identity than colors. Using the wrong font in the wrong place is the most common form of brand drift &mdash; and the design system prevents it.</p>
+
+            <h3>What to document</h3>
+            <p>For each font family, you need: the CSS font-family value (with fallbacks), the weight, what it's used for, the size range, any text-transform rules, and <strong>what it should NOT be used for</strong>.</p>
+
+            <details>
+                <summary>Real example: JRB's font hierarchy table</summary>
+                <div>
+                    <p>JRB uses 5 font families, each with a specific job. This table is the single most-referenced part of their design system:</p>
+                    <pre><code><span class="code-comment">| Role                        | Font                    | Example                              |</span>
+<span class="code-comment">|-----------------------------|-------------------------|--------------------------------------|</span>
+| <span class="code-keyword">Large headlines</span> (hero, titles)  | Canela Light 300          | "The 10-second complexion upgrade"   |
+| <span class="code-keyword">Section eyebrows / LP labels</span>  | Geogrotesque Bold 18px    | "THE PROBLEM" - "HOW IT WORKS"       |
+| <span class="code-keyword">Small display labels</span>           | Geogrotesque Bold, upper  | "INSTANT POLISH"                     |
+| <span class="code-keyword">Buttons, tabs</span>                  | BaseMono Wide 11-13px     | "SHOP NOW"                           |
+| <span class="code-keyword">Trust/value text</span> (below CTA)   | RingsideWide 14px         | "Free shipping on $50+"             |
+| <span class="code-keyword">Body text, descriptions</span>        | RingsideWide Book         | "One swipe delivers a natural glow." |
+| <span class="code-keyword">Editorial moments</span>              | Canela Light Italic       | <span class="code-string">"It's the only makeup I actually use."</span> |</code></pre>
+                </div>
+            </details>
+
+            <h3>The NEVER pattern</h3>
+            <p>Documenting what a font should <em>not</em> be used for is as important as what it should be used for. Without these rules, Claude will sometimes use the wrong font in a visually plausible but off-brand way.</p>
+
+            <div class="compare">
+                <div class="compare__dont">
+                    <div class="compare__label">Weak rule</div>
+                    <p>"Geogrotesque is for display text and labels."</p>
+                    <p style="margin-top: 8px; font-size: 13px; color: var(--color-secondary);">Claude might use it for a large hero headline &mdash; it's technically "display text."</p>
+                </div>
+                <div class="compare__do">
+                    <div class="compare__label">Strong rule</div>
+                    <p>"Geogrotesque: Use for small display labels (18px), product names, accordion triggers. <strong>NEVER for large page/section headlines</strong> &mdash; those use Canela."</p>
+                </div>
+            </div>
+
+            <div class="callout">
+                <p><strong>Rule of thumb:</strong> Max 3 font families per page (excluding script/accent fonts). If you find yourself needing more, the hierarchy isn't clear enough.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         5. COLORS DEEP DIVE
+         ============================================================ -->
+    <section id="colors">
+        <div class="container">
+            <span class="section-label">04</span>
+            <h2>Deep dive: Colors</h2>
+            <p class="section-intro">Fewer colors, documented precisely. The explicit list of "wrong" colors is what makes this work &mdash; Claude sometimes generates visually similar but incorrect values.</p>
+
+            <details>
+                <summary>Real example: JRB's 3-color system</summary>
+                <div>
+                    <p>JRB uses just three primary colors. Everything else is a neutral:</p>
+                    <div class="swatches">
+                        <div class="swatch">
+                            <div class="swatch__color" style="background: #000;"></div>
+                            <div>
+                                <div class="swatch__label">Black</div>
+                                <div class="swatch__hex">#000</div>
+                            </div>
+                        </div>
+                        <div class="swatch">
+                            <div class="swatch__color" style="background: #f6f2eb;"></div>
+                            <div>
+                                <div class="swatch__label">Warm Cream</div>
+                                <div class="swatch__hex">#f6f2eb</div>
+                            </div>
+                        </div>
+                        <div class="swatch">
+                            <div class="swatch__color" style="background: #ff2e92;"></div>
+                            <div>
+                                <div class="swatch__label">Hot Pink</div>
+                                <div class="swatch__hex">#ff2e92</div>
+                            </div>
+                        </div>
+                    </div>
+                    <pre><code><span class="code-property">--primary-color</span>: <span class="code-value">#ff2e92</span>;  <span class="code-comment">/* Brand pink — CTAs, accents, sale badges */</span>
+<span class="code-property">color</span>: <span class="code-value">#000</span>;               <span class="code-comment">/* Primary text, borders, button backgrounds */</span>
+<span class="code-property">background</span>: <span class="code-value">#f6f2eb</span>;      <span class="code-comment">/* Warm off-white — signature JRB background */</span></code></pre>
+                </div>
+            </details>
+
+            <h3>Document the wrong values</h3>
+            <p>This is the single most impactful thing you can do in your color section. Without explicit prohibitions, Claude will occasionally generate "close" values that look almost right but aren't your brand:</p>
+
+            <div class="compare">
+                <div class="compare__dont">
+                    <div class="compare__label">Don't</div>
+                    <p><code>#1A1A1A</code> for black &mdash; use <code>#000</code></p>
+                    <p><code>#FAF8F5</code> for background &mdash; use <code>#f6f2eb</code></p>
+                    <p><code>#C73A3A</code> for accent &mdash; use <code>#ff2e92</code></p>
+                </div>
+                <div class="compare__do">
+                    <div class="compare__label">Do</div>
+                    <p>List every hex value you've seen Claude generate incorrectly. Each one you add prevents that mistake from ever happening again.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         6. COMPONENTS DEEP DIVE
+         ============================================================ -->
+    <section id="components">
+        <div class="container">
+            <span class="section-label">05</span>
+            <h2>Deep dive: Components</h2>
+            <p class="section-intro">Components should include copy-pasteable CSS, not just descriptions. Claude works best when it can use your exact code.</p>
+
+            <p>Start with your most-used component &mdash; usually a button. Document the full CSS declaration, hover states, variants, and common mistakes. This gives Claude a template for how detailed other components should be.</p>
+
+            <details>
+                <summary>Real example: JRB's button component</summary>
+                <div>
+                    <pre><code><span class="code-selector">.button</span> {
+  <span class="code-property">background</span>: <span class="code-value">#000</span>;
+  <span class="code-property">border</span>: <span class="code-value">1px solid #000</span>;
+  <span class="code-property">border-radius</span>: <span class="code-value">2px</span>;
+  <span class="code-property">color</span>: <span class="code-value">#fff</span>;
+  <span class="code-property">cursor</span>: <span class="code-value">pointer</span>;
+  <span class="code-property">display</span>: <span class="code-value">inline-block</span>;
+  <span class="code-property">font-family</span>: <span class="code-value">BaseMonoWideWeb, Courier, 'Courier New', sans-serif</span>;
+  <span class="code-property">font-size</span>: <span class="code-value">13px</span>;
+  <span class="code-property">font-weight</span>: <span class="code-value">550</span>;
+  <span class="code-property">height</span>: <span class="code-value">40px</span>;
+  <span class="code-property">letter-spacing</span>: <span class="code-value">.4px</span>;
+  <span class="code-property">line-height</span>: <span class="code-value">40px</span>;
+  <span class="code-property">padding</span>: <span class="code-value">0 36px</span>;
+  <span class="code-property">text-align</span>: <span class="code-value">center</span>;
+  <span class="code-property">text-transform</span>: <span class="code-value">uppercase</span>;
+  <span class="code-property">white-space</span>: <span class="code-value">nowrap</span>;
+  <span class="code-property">transition</span>: <span class="code-value">all .4s cubic-bezier(.39, .575, .565, 1)</span>;
+}
+
+<span class="code-comment">/* Hover only on devices with a mouse */</span>
+<span class="code-selector">.has-mouse .button:not(:disabled):hover</span> {
+  <span class="code-property">background</span>: <span class="code-value">#fff</span>;
+  <span class="code-property">border-color</span>: <span class="code-value">#d0d0d0</span>;
+  <span class="code-property">color</span>: <span class="code-value">#000</span>;
+}
+
+<span class="code-comment">/* Variants */</span>
+<span class="code-selector">.button--white</span>   { <span class="code-property">background</span>: <span class="code-value">#fff</span>; <span class="code-property">border-color</span>: <span class="code-value">#fff</span>; <span class="code-property">color</span>: <span class="code-value">#000</span>; }
+<span class="code-selector">.button--outline</span>  { <span class="code-property">background</span>: <span class="code-value">transparent</span>; <span class="code-property">color</span>: <span class="code-value">#000</span>; <span class="code-property">opacity</span>: <span class="code-value">.6</span>; }
+<span class="code-selector">.button--pink</span>    { <span class="code-property">background</span>: <span class="code-value">var(--primary-color)</span>; <span class="code-property">color</span>: <span class="code-value">#fff</span>; }</code></pre>
+                    <p>Every property is specified. Claude never has to guess font-size, font-weight, or border-radius &mdash; it copies from the design system directly.</p>
+                </div>
+            </details>
+
+            <div class="callout">
+                <p><strong>Key principle:</strong> Document the CSS, not a description of the CSS. "Buttons should be dark with a monospace font" is less useful than the actual CSS declaration block.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         7. FILE STRUCTURE
+         ============================================================ -->
+    <section id="file-structure">
+        <div class="container">
+            <span class="section-label">06</span>
+            <h2>File structure &mdash; where to put it</h2>
+            <p class="section-intro">The design system lives as a "skill" in Claude Code's skills directory. Claude reads it automatically when the skill is invoked.</p>
+
+            <pre class="file-tree"><code><span class="folder">~/.claude/skills/</span>
+  <span class="folder">your-design-system/</span>
+    <span class="file">SKILL.md</span>              <span class="comment"># The design system itself</span>
+    <span class="folder">references/</span>
+      <span class="file">css-standards.md</span>    <span class="comment"># Deeper CSS methodology (optional)</span>
+      <span class="file">component-lib.md</span>    <span class="comment"># Extended component catalog (optional)</span></code></pre>
+
+            <h3>The frontmatter</h3>
+            <p>Every skill file starts with YAML frontmatter that tells Claude what this skill is and when to load it:</p>
+
+            <pre><code><span class="code-keyword">---</span>
+<span class="code-property">name</span>: <span class="code-string">my-design-system</span>
+<span class="code-property">description</span>: <span class="code-string">Reference the design system for brand guidelines, component
+  patterns, colors, typography, spacing, and design tokens</span>
+<span class="code-property">allowed-tools</span>: <span class="code-string">Read, WebFetch</span>
+<span class="code-keyword">---</span>
+
+<span class="code-comment"># Your Design System</span>
+
+<span class="code-comment">## Design Philosophy</span>
+...</code></pre>
+
+            <p>After the frontmatter, write your design system in standard Markdown. Use headings for each section, code blocks for CSS, and tables for quick-reference data.</p>
+
+            <h3>Team sync via GitHub</h3>
+            <p>Store the skill in a shared GitHub repo. Team members clone it into their <code>~/.claude/skills/</code> directory. When you push an update, everyone gets the latest rules on their next <code>git pull</code>.</p>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         8. WHAT TO INCLUDE VS NOT
+         ============================================================ -->
+    <section id="include-exclude">
+        <div class="container">
+            <span class="section-label">07</span>
+            <h2>What to include vs. what not to include</h2>
+            <p class="section-intro">Scope matters. Too broad and the file becomes noise. Too narrow and it doesn't catch enough mistakes.</p>
+
+            <div class="compare">
+                <div class="compare__do">
+                    <div class="compare__label">Include</div>
+                    <ul style="padding-left: 16px;">
+                        <li>Patterns you've corrected twice or more</li>
+                        <li>Font rules with exact CSS values</li>
+                        <li>Color values <strong>and</strong> explicit "wrong" values</li>
+                        <li>Component CSS Claude can copy directly</li>
+                        <li>Rules with ALWAYS / NEVER language</li>
+                        <li>Image aspect ratios by context</li>
+                        <li>Common mistakes with corrections</li>
+                    </ul>
+                </div>
+                <div class="compare__dont">
+                    <div class="compare__label">Do not include</div>
+                    <ul style="padding-left: 16px;">
+                        <li>One-off styles for a single page</li>
+                        <li>Temporary experiments</li>
+                        <li>Contradictory rules (remove the old one first)</li>
+                        <li>Overly specific rules ("the About page hero should be 500px tall")</li>
+                        <li>Full page templates (those go in a separate skill)</li>
+                        <li>Business logic or content strategy</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="callout">
+                <p><strong>The test:</strong> If you've corrected the same thing twice, it belongs in the file. If it only applies to one page, it doesn't.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         9. WRITING STRONG RULES
+         ============================================================ -->
+    <section id="writing-rules">
+        <div class="container">
+            <span class="section-label">08</span>
+            <h2>Writing rules Claude actually follows</h2>
+            <p class="section-intro">Claude responds to definitive language. Vague rules get vague compliance. Precise rules get precise output.</p>
+
+            <h3>The ALWAYS / NEVER pattern</h3>
+            <p>The strongest rules in any design system use ALWAYS and NEVER (capitalized). This eliminates ambiguity:</p>
+
+            <div class="compare">
+                <div class="compare__dont">
+                    <div class="compare__label">Vague</div>
+                    <p>"Body text should generally be dark."</p>
+                </div>
+                <div class="compare__do">
+                    <div class="compare__label">Precise</div>
+                    <p>"Body text MUST ALWAYS be <code>#000</code>. NEVER use <code>#555</code>, <code>#666</code>, or <code>#333</code> for body text."</p>
+                </div>
+            </div>
+
+            <div class="compare">
+                <div class="compare__dont">
+                    <div class="compare__label">Vague</div>
+                    <p>"Use clean, modern fonts."</p>
+                </div>
+                <div class="compare__do">
+                    <div class="compare__label">Precise</div>
+                    <p>"Headlines: Canela Light 300, 38px desktop / 26px mobile, sentence case, 0.5px letter-spacing. NEVER use Geogrotesque for headlines."</p>
+                </div>
+            </div>
+
+            <h3>The "common mistakes" pattern</h3>
+            <p>Document what goes wrong, not just what's right. JRB's design system includes common mistakes for every major component:</p>
+
+            <details>
+                <summary>Real example: JRB's Do's and Don'ts section</summary>
+                <div>
+                    <pre><code><span class="code-comment">### Don'ts</span>
+- Don't use hard/brutalist shadows (no <span class="code-value">4px 4px 0px</span>)
+- Don't use 0px border-radius on interactive elements (minimum 2px)
+- Don't use fully rounded corners (no <span class="code-value">9999px</span>)
+- Don't apply grayscale filters to product images
+- Don't use skew or rotate transforms for layout elements
+- Don't use bright saturated colors beyond <span class="code-value">--primary-color</span>
+- Don't use viewport-unit typography (no <span class="code-value">vw</span> sizing)
+- Don't use <span class="code-value">#C73A3A</span> or other reds as the accent
+  &mdash; the brand accent is <span class="code-value">#ff2e92</span>
+- Don't use <span class="code-value">#FAF8F5</span> for backgrounds
+  &mdash; the correct warm background is <span class="code-value">#f6f2eb</span>
+- Don't use <span class="code-value">#1A1A1A</span> as primary black &mdash; use <span class="code-value">#000</span>
+- <span class="code-keyword">Don't use emojis</span> &mdash; never use emoji characters
+  anywhere in pages. Use CSS-drawn icons or inline SVGs instead.</code></pre>
+                    <p>Each rule is a lesson learned. Someone noticed Claude doing the wrong thing, and they encoded the correction so it never happens again.</p>
+                </div>
+            </details>
+
+            <h3>Specificity of values</h3>
+            <p>Concrete values always beat descriptions:</p>
+            <ul>
+                <li><code>16px</code> is better than "standard size"</li>
+                <li><code>cubic-bezier(.39, .575, .565, 1)</code> is better than "smooth easing"</li>
+                <li><code>0 1px 2px rgba(16, 24, 40, .04)</code> is better than "subtle shadow"</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         10. THE FEEDBACK LOOP
+         ============================================================ -->
+    <section id="feedback-loop">
+        <div class="container">
+            <span class="section-label">09</span>
+            <h2>The feedback loop</h2>
+            <p class="section-intro">The design system isn't a static document. It improves every time you use it. This 8-step cycle is how it grows from a basic file to a comprehensive system.</p>
+
+            <div class="flow">
+                <span class="flow__step">Build</span>
+                <span class="flow__arrow">&rarr;</span>
+                <span class="flow__step">Grade 1&ndash;100</span>
+                <span class="flow__arrow">&rarr;</span>
+                <span class="flow__step">Claude explains gaps</span>
+                <span class="flow__arrow">&rarr;</span>
+                <span class="flow__step">Fix</span>
+                <span class="flow__arrow">&rarr;</span>
+                <span class="flow__step">Spot patterns</span>
+                <span class="flow__arrow">&rarr;</span>
+                <span class="flow__step">Update system</span>
+                <span class="flow__arrow">&rarr;</span>
+                <span class="flow__step">Push to GitHub</span>
+                <span class="flow__arrow">&rarr;</span>
+                <span class="flow__step">Every future build benefits</span>
+            </div>
+
+            <ol>
+                <li><strong>Build something.</strong> Ask Claude to build a page or section.</li>
+                <li><strong>Grade it 1&ndash;100.</strong> Tell Claude: "Rate this page against our design system, 1&ndash;100."</li>
+                <li><strong>Claude grades itself.</strong> It lists what's right and what breaks rules &mdash; <em>"78/100 &mdash; headline uses Geogrotesque instead of Canela, body text is #333 instead of #000, button is pink but should be black."</em></li>
+                <li><strong>Fix the issues.</strong> Tell Claude to fix the specific problems it identified.</li>
+                <li><strong>Identify patterns.</strong> If you notice the same issue coming up repeatedly, that's a signal.</li>
+                <li><strong>Update the design system.</strong> Tell Claude: "Add a rule to our design system that [new rule]."</li>
+                <li><strong>Push to GitHub.</strong> "Push the design system changes to GitHub."</li>
+                <li><strong>Every future build benefits.</strong> The new rule is now enforced automatically.</li>
+            </ol>
+
+            <details>
+                <summary>Real example: Adding a color rule</summary>
+                <div>
+                    <p>You notice Claude keeps using <code>#555</code> gray for body text instead of <code>#000</code> black. You say:</p>
+                    <pre><code><span class="code-string">"I've noticed we keep getting body text in #555 gray instead of #000 black.
+Add a rule to the design system that body text must always be #000."</span></code></pre>
+                    <p>Claude adds to the file:</p>
+                    <pre><code><span class="code-comment">### Body Text Color</span>
+- Body/description text color: <span class="code-keyword">ALWAYS</span> <span class="code-value">#000</span>
+- <span class="code-keyword">NEVER</span> use <span class="code-value">#555</span>, <span class="code-value">#666</span>, <span class="code-value">#333</span>, or other grays for body text
+- Only exception: secondary helper text (timestamps, metadata)</code></pre>
+                    <p>That rule now applies to every page Claude builds, forever.</p>
+                </div>
+            </details>
+
+            <div class="callout">
+                <p><strong>The design system is the product. The pages are the output.</strong> Every time you catch a pattern and add a rule, every future page benefits.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         11. GETTING STARTED
+         ============================================================ -->
+    <section id="getting-started">
+        <div class="container">
+            <span class="section-label">10</span>
+            <h2>Getting started: zero to V1</h2>
+            <p class="section-intro">You don't need 1,500 lines on day one. A useful V1 takes 30&ndash;60 minutes. Here's the checklist.</p>
+
+            <ol class="checklist">
+                <li>
+                    <strong>Create the file</strong>
+                    <pre style="margin-top: 8px;"><code>mkdir -p ~/.claude/skills/my-design-system
+touch ~/.claude/skills/my-design-system/SKILL.md</code></pre>
+                </li>
+                <li>
+                    <strong>Add the frontmatter</strong>
+                    <p>Name, description, and allowed-tools (usually <code>Read, WebFetch</code>). See the file structure section above for the template.</p>
+                </li>
+                <li>
+                    <strong>Start with typography</strong>
+                    <p>Document your font families, sizes, weights, and usage rules. This prevents the most visible inconsistencies. Include CSS custom properties and <code>@font-face</code> declarations if you use custom fonts.</p>
+                </li>
+                <li>
+                    <strong>Add your colors</strong>
+                    <p>List exact hex values with CSS variable names. Include 2&ndash;3 "wrong" values to avoid &mdash; the near-matches Claude might generate.</p>
+                </li>
+                <li>
+                    <strong>Document your button</strong>
+                    <p>One component, fully specified with CSS, gives Claude a template for how detailed other components should be.</p>
+                </li>
+                <li>
+                    <strong>Write 5 ALWAYS / NEVER rules</strong>
+                    <p>The clearest, most impactful rules you already know. What's the thing you'd correct every time? Put that in the file.</p>
+                </li>
+                <li>
+                    <strong>Build a page and run the loop</strong>
+                    <p>Ask Claude to build a page. Rate it. Fix the issues. Add any new rules you discover. Your V1 will grow organically from here.</p>
+                </li>
+                <li>
+                    <strong>Optional: Extract from Figma</strong>
+                    <p>If you have Figma designs, the Figma MCP's <code>create_design_system_rules</code> tool can extract design tokens and generate a starting template automatically.</p>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         12. SKILL ECOSYSTEM
+         ============================================================ -->
+    <section id="ecosystem">
+        <div class="container">
+            <span class="section-label">11</span>
+            <h2>Advanced: The skill ecosystem</h2>
+            <p class="section-intro">A design system is just one skill. As your setup matures, it becomes part of a family of interconnected skills. This is optional for V1 &mdash; but useful to see where it can go.</p>
+
+            <p>Here's how JRB's skills work together:</p>
+
+            <div class="card card--example" style="margin: 24px 0;">
+                <table class="anatomy-table" style="margin: 0;">
+                    <thead>
+                        <tr>
+                            <th>Skill</th>
+                            <th>Purpose</th>
+                            <th>Lines</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Design System</strong></td>
+                            <td>Tokens, rules, components &mdash; the source of truth</td>
+                            <td>1,586</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Section Library</strong></td>
+                            <td>Catalog of 108 reusable sections with status and usage notes</td>
+                            <td>200</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CSS Standards</strong></td>
+                            <td>Deep CSS methodology reference (BEM, specificity, spacing tokens)</td>
+                            <td>486</td>
+                        </tr>
+                        <tr>
+                            <td><strong>QA Checker</strong></td>
+                            <td>Post-build audit that validates against the design system</td>
+                            <td>&mdash;</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Page Builder</strong></td>
+                            <td>Complete page generation workflow that loads design system first</td>
+                            <td>&mdash;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>The page builder loads the design system before writing any code. The QA checker validates the output against the same rules. The section library prevents duplicate work. Each skill references the others &mdash; but the design system is the foundation everything else builds on.</p>
+
+            <div class="callout">
+                <p><strong>Start with one file.</strong> You can always split it into a family of skills later. The single SKILL.md is the foundation &mdash; everything else is an extension.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
+    <footer class="footer">
+        <div class="container">
+            <p>Built with <a href="https://claude.ai/code" target="_blank">Claude Code</a>. This entire page is a single HTML file &mdash; proof that the approach works.</p>
+            <p style="margin-top: 8px;">JRB design system examples used with permission from Jones Road Beauty.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
