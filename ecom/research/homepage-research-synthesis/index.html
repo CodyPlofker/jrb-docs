@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Homepage Redesign — Research Synthesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #1a1a1a;
+      background: #fff;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* Page header */
+    .page-header {
+      margin-bottom: 40px;
+      padding-bottom: 32px;
+      border-bottom: 2px solid #111;
+    }
+    .page-header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      color: #111;
+    }
+    .page-header .meta {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.8;
+    }
+    .page-header .meta strong {
+      color: #333;
+      font-weight: 600;
+    }
+
+    /* Section headers */
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #111;
+      margin: 56px 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #222;
+      margin: 36px 0 12px;
+    }
+    h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+      margin: 28px 0 10px;
+    }
+
+    /* Paragraphs and inline */
+    p {
+      margin: 0 0 14px;
+    }
+    strong {
+      font-weight: 600;
+    }
+    em {
+      font-style: italic;
+    }
+
+    /* Section divider */
+    hr {
+      border: none;
+      height: 1px;
+      background: #e0e0e0;
+      margin: 48px 0;
+    }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 16px 0 24px;
+      -webkit-overflow-scrolling: touch;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    thead th {
+      background: #f5f5f5;
+      font-weight: 600;
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 2px solid #ddd;
+      white-space: nowrap;
+    }
+    tbody td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #eee;
+    }
+    tbody tr:nth-child(even) {
+      background: #fafafa;
+    }
+    tbody tr:hover {
+      background: #f0f4ff;
+    }
+
+    /* Blockquotes */
+    blockquote {
+      margin: 16px 0;
+      padding: 14px 20px;
+      border-left: 3px solid #c4a87c;
+      background: #faf8f5;
+      color: #555;
+      font-style: italic;
+      font-size: 14px;
+      line-height: 1.7;
+      border-radius: 0 4px 4px 0;
+    }
+    blockquote em {
+      font-style: normal;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin: 8px 0 16px 24px;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    li ul, li ol {
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    /* Tier badges */
+    .tier {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 3px 10px;
+      border-radius: 3px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    .tier--1 { background: #fee2e2; color: #991b1b; }
+    .tier--2 { background: #fef3c7; color: #92400e; }
+    .tier--3 { background: #e0f2fe; color: #075985; }
+    .tier--4 { background: #f1f5f9; color: #475569; }
+
+    /* Impact badges */
+    .impact {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+    .impact--high { background: #dcfce7; color: #166534; }
+    .impact--medium { background: #fef9c3; color: #854d0e; }
+    .impact--low { background: #f1f5f9; color: #64748b; }
+
+    /* Key insight callout */
+    .insight {
+      margin: 14px 0;
+      padding: 12px 16px;
+      background: #f0f4ff;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .insight strong {
+      color: #1e40af;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .container { padding: 32px 16px 60px; }
+      .page-header h1 { font-size: 24px; }
+      h2 { font-size: 20px; margin-top: 40px; }
+      h3 { font-size: 16px; }
+      table { font-size: 13px; }
+      thead th, tbody td { padding: 8px 10px; }
+      blockquote { padding: 10px 14px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1>JRB Homepage Redesign — Research Synthesis</h1>
+    <div class="meta">
+      <strong>Compiled:</strong> 2026-03-24<br>
+      <strong>Sources:</strong> Typeform Survey (91 responses, March 2026), ListenLabs Prospect Study (23 screen recordings, March 2026), ListenLabs Older Homepage Study (June 2025), Facebook Advisory Board (75 comments), Junip Review Analysis (10,000+ keyword matches), Competitive Audit (MERIT, ILIA, Rare Beauty, Rhode, Tower 28)<br>
+      <strong>Purpose:</strong> Comprehensive research brief to inform JRB homepage redesign
+    </div>
+  </header>
+
+  <!-- Section 1 -->
+  <h2>1. Quantitative Data (Typeform Survey — March 2026)</h2>
+
+  <p><strong>n = 91 completed responses</strong> from JRB Customer Advisory Board members (existing loyal customers). Note: This sample skews older and more loyal than the general customer base.</p>
+
+  <h3>Demographics (for segmentation context)</h3>
+
+  <h4>Q1: Device</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Device</th><th>Count</th><th>%</th></tr></thead>
+      <tbody>
+        <tr><td>Phone (mostly)</td><td>49</td><td>53.8%</td></tr>
+        <tr><td>A mix of devices</td><td>21</td><td>23.1%</td></tr>
+        <tr><td>Computer/laptop (mostly)</td><td>13</td><td>14.3%</td></tr>
+        <tr><td>Tablet/iPad (mostly)</td><td>8</td><td>8.8%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Q2: Shopper Type</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Count</th><th>%</th></tr></thead>
+      <tbody>
+        <tr><td>Depends on the day</td><td>40</td><td>44.0%</td></tr>
+        <tr><td>Restocker — I know what I want, I go straight to it</td><td>19</td><td>20.9%</td></tr>
+        <tr><td>Browser — I like to explore and discover new products</td><td>17</td><td>18.7%</td></tr>
+        <tr><td>Researcher — I read everything before buying</td><td>15</td><td>16.5%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Q3: Age Range</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Age</th><th>Count</th><th>%</th></tr></thead>
+      <tbody>
+        <tr><td>55-64</td><td>32</td><td>35.2%</td></tr>
+        <tr><td>65+</td><td>30</td><td>33.0%</td></tr>
+        <tr><td>45-54</td><td>23</td><td>25.3%</td></tr>
+        <tr><td>35-44</td><td>6</td><td>6.6%</td></tr>
+        <tr><td>Under 25 / 25-34</td><td>0</td><td>0.0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><em>Key note: 93.4% of survey respondents are 45+. The sample has zero respondents under 35.</em></p>
+
+  <h3>Q4: What do you do FIRST on the homepage?</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>First Action</th><th>Count</th><th>%</th></tr></thead>
+      <tbody>
+        <tr><td>Go straight to the navigation menu</td><td>34</td><td>37.4%</td></tr>
+        <tr><td>Look for bestsellers or new arrivals</td><td>29</td><td>31.9%</td></tr>
+        <tr><td>Scroll down to browse what's featured</td><td>24</td><td>26.4%</td></tr>
+        <tr><td>Look for what's on sale</td><td>2</td><td>2.2%</td></tr>
+        <tr><td>Use the search bar</td><td>2</td><td>2.2%</td></tr>
+        <tr><td>Look for the quiz</td><td>0</td><td>0.0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Key insight:</strong> Nobody's first action is to look for the quiz. The homepage serves two modes — directed navigation (37.4%) and discovery browsing (58.3% combining scroll + bestsellers). Sale-seekers are negligible in this loyal-customer cohort.
+  </div>
+
+  <h3>Q5: What matters MOST on the homepage? (Rankings — all 91 respondents ranked all 8 items)</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Item</th><th>Avg Rank</th><th>#1 Picks</th><th>Top-3 Rate</th></tr></thead>
+      <tbody>
+        <tr><td>New arrivals / new products</td><td>1.68</td><td>49 (53.8%)</td><td>94.5%</td></tr>
+        <tr><td>Current promotions or sales</td><td>2.51</td><td>17 (18.7%)</td><td>81.3%</td></tr>
+        <tr><td>Clear product categories</td><td>4.05</td><td>15 (16.5%)</td><td>39.6%</td></tr>
+        <tr><td>Bestsellers</td><td>4.10</td><td>3 (3.3%)</td><td>34.1%</td></tr>
+        <tr><td>Bobbi content (videos, tips, picks)</td><td>4.10</td><td>5 (5.5%)</td><td>33.0%</td></tr>
+        <tr><td>Quiz or shade finder</td><td>5.80</td><td>1 (1.1%)</td><td>6.6%</td></tr>
+        <tr><td>Customer reviews or social proof</td><td>6.32</td><td>1 (1.1%)</td><td>9.9%</td></tr>
+        <tr><td>Editorial content or brand story</td><td>7.44</td><td>0 (0.0%)</td><td>1.1%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Key insights:</strong>
+    <ul>
+      <li>"New arrivals" is the dominant #1 priority — 54% put it first, 94.5% put it in their top 3</li>
+      <li>"Promotions/sales" is a consistent #2 — ranks highly across all segments</li>
+      <li>"Clear product categories" matters for directed shoppers (40% top-3)</li>
+      <li>"Bestsellers" and "Bobbi content" are tied at ~34% top-3 — important but secondary</li>
+      <li>Quiz, reviews, and editorial content are very low priority ON THE HOMEPAGE for existing customers</li>
+      <li>Editorial/brand story ranks dead last (avg 7.44 out of 8) — customers don't come to the homepage for brand content</li>
+    </ul>
+  </div>
+
+  <h3>Q6: What's MISSING from the homepage? (Multi-select, up to 3)</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Missing Element</th><th>Count</th><th>% of 91</th></tr></thead>
+      <tbody>
+        <tr><td>A clear 'New Arrivals' section</td><td>45</td><td>49.5%</td></tr>
+        <tr><td>More Bobbi Brown content (videos, tips)</td><td>41</td><td>45.1%</td></tr>
+        <tr><td>Products organized by skin type or concern</td><td>36</td><td>39.6%</td></tr>
+        <tr><td>Product demo videos</td><td>25</td><td>27.5%</td></tr>
+        <tr><td>The shade quiz — easier to find</td><td>16</td><td>17.6%</td></tr>
+        <tr><td>A 'where to start' guide for new customers</td><td>15</td><td>16.5%</td></tr>
+        <tr><td>Nothing — the homepage is great as-is</td><td>14</td><td>15.4%</td></tr>
+        <tr><td>Bestsellers highlighted more prominently</td><td>12</td><td>13.2%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Key insights:</strong>
+    <ul>
+      <li>Half the customer base says New Arrivals is missing — this is the #1 gap</li>
+      <li>45% want more Bobbi content on homepage — despite ranking it #4-5 in priority, they feel it's under-represented</li>
+      <li>40% want skin-type-based organization — a navigation/taxonomy request</li>
+      <li>Only 15.4% say the homepage is great as-is — 84.6% see room for improvement</li>
+      <li>"Bestsellers highlighted more" is low (13.2%) — they can find bestsellers; it's NEW products they struggle with</li>
+    </ul>
+  </div>
+
+  <h3>Bobbi Brown Importance (Opinion Scale 1-5)</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Score</th><th>Count</th><th>%</th></tr></thead>
+      <tbody>
+        <tr><td>5 (Very important)</td><td>47</td><td>51.6%</td></tr>
+        <tr><td>4</td><td>23</td><td>25.3%</td></tr>
+        <tr><td>3</td><td>15</td><td>16.5%</td></tr>
+        <tr><td>2</td><td>4</td><td>4.4%</td></tr>
+        <tr><td>1 (Not important)</td><td>2</td><td>2.2%</td></tr>
+        <tr><td><strong>Mean</strong></td><td><strong>4.20</strong></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Key insight:</strong> 76.9% rate Bobbi at 4 or 5 out of 5. She is the brand's strongest asset for existing customers. But ListenLabs prospect data (see Section 2) shows this effect requires awareness of who Bobbi Brown is.
+  </div>
+
+  <hr>
+
+  <!-- Section 2 -->
+  <h2>2. Qualitative Insights</h2>
+
+  <h3>A. ListenLabs Prospect Study (March 2026) — 23 Non-Customers</h3>
+
+  <p><strong>Study details:</strong> 23 screen recordings of non-customers browsing JRB for the first time. Ages 35-64. Recruited from online beauty shoppers. NOTE: 10/23 (43%) could not load the website due to technical issues, limiting usable data to ~13 participants who actually browsed the site.</p>
+
+  <h4>Homepage-Specific Findings</h4>
+
+  <p><strong>Finding: Homepage impression is polarizing among prospects</strong><br>
+  There is no consistent first impression. The site reads differently to different people:</p>
+
+  <blockquote>"The page seems oriented towards people who are much younger than me, like maybe Gen Z." — Participant 0005, age 46</blockquote>
+
+  <blockquote>"The Jones Road website feels very, almost like very clinical and very antiseptic — almost like it doesn't feel welcoming or warm." — Participant 0005, age 46</blockquote>
+
+  <blockquote>"I like that it's kind of giving a retro vibe, kind of like a '90s vibe. I like that a lot." — Participant 0043, age 36</blockquote>
+
+  <blockquote>"First impressions: don't like Jones Road. I'm already aware of them and I find everything about the brand boring and unnecessary." — Participant 0138, age 35</blockquote>
+
+  <p><strong>Finding: Homepage feels "not for me" to 45+ women (3/23)</strong><br>
+  Multiple prospects over 45 felt the homepage visually skewed young, signaling it was not for their demographic.</p>
+
+  <blockquote>"The page seems oriented towards people who are much younger than me, like maybe Gen Z." — Participant 0005, age 46</blockquote>
+
+  <p><strong>Finding: Brand differentiation is unclear on first visit (5/23)</strong><br>
+  Prospects who don't already know Bobbi Brown see JRB as indistinguishable from other beauty brands. The "clean, strategic, high-grade formulations" differentiator is invisible on the homepage.</p>
+
+  <blockquote>"I don't really see what differentiates Jones Road from many of the other premium beauty products in that same category. There are just so many to choose from." — Participant 0005, age 46</blockquote>
+
+  <blockquote>"I guess I still don't know who you are. I know your name. I know what products you sell. But who are you, Jones Road?" — Participant 0121, age 49</blockquote>
+
+  <blockquote>"I would definitely have 'clean, strategic, high-grade formulations.' I would have that. And maybe I missed it, so make it where I can't miss it." — Participant 0121, age 49</blockquote>
+
+  <p><strong>Finding: Pop-up email gate creates hostile first impression (4/23)</strong><br>
+  For prospects with zero brand affinity, the first interaction with JRB is a popup asking for their email. Several called it annoying — the first impression is transactional rather than inspirational.</p>
+
+  <p><strong>Finding: Charlotte Tilbury is the direct competitor in prospects' minds</strong><br>
+  When asked to compare, prospects repeatedly cited Charlotte Tilbury — specifically its warm, welcoming site aesthetic, entertaining copy, and clear "glow" messaging.</p>
+
+  <h4>Prospect Theme Frequency Table (All Findings, Not Just Homepage)</h4>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Theme</th><th>Count (of 23)</th></tr></thead>
+      <tbody>
+        <tr><td>Shade swatches on diverse skin tones needed</td><td>19</td></tr>
+        <tr><td>Low shade confidence</td><td>17</td></tr>
+        <tr><td>Reviews important for trust</td><td>16</td></tr>
+        <tr><td>Price concern ($38 too high for untried product)</td><td>12</td></tr>
+        <tr><td>Return policy visibility</td><td>10</td></tr>
+        <tr><td>Virtual try-on wanted</td><td>10</td></tr>
+        <tr><td>Samples/minis as risk reducer</td><td>9</td></tr>
+        <tr><td>Clean/natural ingredients matter</td><td>9</td></tr>
+        <tr><td>Real people, not models</td><td>8</td></tr>
+        <tr><td>"Balm" name = lip product confusion</td><td>7</td></tr>
+        <tr><td>Videos are quantity over quality</td><td>6</td></tr>
+        <tr><td>Brand story/differentiation unclear</td><td>5</td></tr>
+        <tr><td>Want before/after photos</td><td>5</td></tr>
+        <tr><td>No lip application shown (but claims lip use)</td><td>5</td></tr>
+        <tr><td>Shade quiz too long / asks for email</td><td>4</td></tr>
+        <tr><td>Pop-up email gate annoying</td><td>4</td></tr>
+        <tr><td>Homepage feels young / not for me</td><td>3</td></tr>
+        <tr><td>Older models wanted (60+)</td><td>3</td></tr>
+        <tr><td>Shipping threshold too high</td><td>3</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>B. ListenLabs Older Homepage Study (June 2025)</h3>
+
+  <p><strong>Study date:</strong> June 3, 2025 (~9 months old — take findings with a grain of salt as the site has evolved)<br>
+  <strong>Methodology:</strong> Moderated interview with screen recording, targeting elder millennials (25-54) interested in clean beauty.</p>
+
+  <p><strong>Key findings from this earlier study that remain relevant:</strong></p>
+
+  <p><strong>First Scan Attention (What Gets Noticed First)</strong></p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Element</th><th>% Noticing</th></tr></thead>
+      <tbody>
+        <tr><td>Featured products</td><td>63%</td></tr>
+        <tr><td>Product categories/navigation</td><td>29%</td></tr>
+        <tr><td>Hero section/main banner</td><td>17%</td></tr>
+        <tr><td>Clean beauty messaging</td><td>17%</td></tr>
+        <tr><td>Tutorial/how-to content</td><td>4%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Key insight:</strong> Clean beauty messaging was noticed but not dominant at 17%. Most attention goes to featured products (63%). This validates the Typeform finding that "new arrivals" and product content matters more than brand story on the homepage.
+  </div>
+
+  <p><strong>Brand Comprehension:</strong></p>
+  <ul>
+    <li>88% rated purpose as Clear/Very Clear</li>
+    <li>88% rated design as Good/Excellent</li>
+    <li>Brand positioning is well-understood by participants</li>
+  </ul>
+
+  <p><strong>By age group (purpose clarity):</strong></p>
+  <ul>
+    <li>35-44: 77% Clear, 15% Very Clear</li>
+    <li>45-54: 56% Clear, 33% Very Clear</li>
+    <li>55+: 50% Very Clear</li>
+  </ul>
+
+  <p><strong>By age group (design appeal):</strong></p>
+  <ul>
+    <li>35-44: 46% Excellent, 38% Good</li>
+    <li>45-54: 22% Excellent, 78% Good</li>
+    <li>55+: 50% Excellent</li>
+  </ul>
+
+  <h3>C. Facebook Advisory Board (Nov 2025, 75 comments)</h3>
+
+  <p>Homepage-relevant findings extracted from the broader research:</p>
+
+  <ul>
+    <li><strong>Age representation</strong> is the single highest-engagement topic: Claire's comment ("As a 62 year old, there's no one who looks like me. If it were my first time visiting, I'd quickly move on.") received 18 reactions — the most in the entire thread</li>
+    <li><strong>Model diversity matters</strong> — multiple moms report 18-34 year olds falling in love with JRB after trying it but perceiving it as "mom's makeup" before trying. The solution is diversity across ages, not skewing old.</li>
+    <li><strong>Bobbi is the generational bridge</strong>: "Bobbi herself is the only thing that bridges the gap between the generations." — Tonya</li>
+    <li><strong>Pop-ups feel intrusive</strong> (7+ mentions): Skin type popup is annoying and repetitive for repeat visitors</li>
+  </ul>
+
+  <h3>D. Customer Open-Ended Responses (Typeform, Homepage-Relevant)</h3>
+
+  <blockquote>"I dislike the homepage in principle, it doesn't give me useful information. What I would like? First new products, then maybe trending products, kits and promotions. I would love a website that remembers who I am when I sign in." — 55-64, mixed shopper</blockquote>
+
+  <blockquote>"Can have more options to click on a 'look' and then 'get the look.' Sometimes I'm not intuitive when buying makeup and don't have time to browse and shop. I just want it made easy. Show me weekend farmers market on someone my age with my complexion and let me click &amp; buy everything." — 45-54, browser</blockquote>
+
+  <blockquote>"Mix in some photos of older models, right now the website seems like the line is geared toward 20 to 30 year olds, which isn't the feeling I had when I first started using the brand 3 years ago." — 55-64, mixed shopper</blockquote>
+
+  <blockquote>"I absolutely hate the full width drop downs that cover the whole screen right to left and then only give a small selection of the products in that category. Then when I go to said category (shop all xyz), I see the navigation menu duplicated in a different font with no drop down — this seems disjointed." — 45-54, mixed shopper</blockquote>
+
+  <blockquote>"All the products in a category need to show up immediately. Most people will not even think to scroll through to find more." — 55-64, mixed shopper</blockquote>
+
+  <blockquote>"The find the shade quiz coming up on the front page — long time repeat user so don't need this." — 45-54, browser</blockquote>
+
+  <blockquote>"Having admired Bobbi since the 90s for sticking to her unique approach to beauty, I'd like to know that's still the case. I felt that when JRB launched. Now I sometimes feel JRB is chasing demographics." — 65+, researcher</blockquote>
+
+  <hr>
+
+  <!-- Section 3 -->
+  <h2>3. Segmentation — How Needs Differ</h2>
+
+  <h3>By Age</h3>
+
+  <p><strong>First Action on Homepage:</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Age</th><th>Nav Menu</th><th>Bestsellers/New</th><th>Scroll/Browse</th></tr></thead>
+      <tbody>
+        <tr><td>35-44 (n=6)</td><td>50.0%</td><td>16.7%</td><td>33.3%</td></tr>
+        <tr><td>45-54 (n=23)</td><td>52.2%</td><td>26.1%</td><td>17.4%</td></tr>
+        <tr><td>55-64 (n=32)</td><td>31.2%</td><td>34.4%</td><td>28.1%</td></tr>
+        <tr><td>65+ (n=30)</td><td>30.0%</td><td>36.7%</td><td>30.0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Key pattern:</strong> Younger customers (35-54) are more likely to go straight to nav — they know what they want. Older customers (55+) are more likely to browse featured content and look for new arrivals. The homepage content experience matters more for the 55+ cohort.
+  </div>
+
+  <p><strong>What's Missing, by Age:</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Missing Element</th><th>35-44</th><th>45-54</th><th>55-64</th><th>65+</th></tr></thead>
+      <tbody>
+        <tr><td>New Arrivals section</td><td>33.3%</td><td>34.8%</td><td>50.0%</td><td><strong>63.3%</strong></td></tr>
+        <tr><td>Bobbi content</td><td><strong>83.3%</strong></td><td>30.4%</td><td>46.9%</td><td>46.7%</td></tr>
+        <tr><td>Skin type organization</td><td><strong>83.3%</strong></td><td>34.8%</td><td>34.4%</td><td>40.0%</td></tr>
+        <tr><td>Demo videos</td><td>33.3%</td><td>13.0%</td><td>34.4%</td><td>30.0%</td></tr>
+        <tr><td>Homepage is great as-is</td><td>0.0%</td><td><strong>26.1%</strong></td><td>18.8%</td><td>6.7%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Key patterns:</strong>
+    <ul>
+      <li>65+ customers have the strongest demand for a New Arrivals section (63.3%) — they come to the homepage looking for what's new</li>
+      <li>35-44 cohort (small sample) disproportionately wants Bobbi content and skin-type organization</li>
+      <li>45-54 is the most satisfied group (26.1% say it's great as-is)</li>
+      <li>Only 6.7% of 65+ think the homepage is fine — the oldest cohort is the least satisfied</li>
+    </ul>
+  </div>
+
+  <h3>By Device</h3>
+
+  <p><strong>First Action on Homepage:</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Device</th><th>Nav Menu</th><th>Bestsellers/New</th><th>Scroll/Browse</th></tr></thead>
+      <tbody>
+        <tr><td>Phone (n=49)</td><td>38.8%</td><td>30.6%</td><td>24.5%</td></tr>
+        <tr><td>Computer (n=13)</td><td>15.4%</td><td><strong>53.8%</strong></td><td>30.8%</td></tr>
+        <tr><td>Tablet (n=8)</td><td>37.5%</td><td>12.5%</td><td><strong>50.0%</strong></td></tr>
+        <tr><td>Mix (n=21)</td><td>47.6%</td><td>28.6%</td><td>19.0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Key pattern:</strong> Desktop users are far more likely to look for bestsellers/new arrivals first (53.8% vs 30.6% phone). Phone users go to nav menu first (38.8%). Tablet users scroll/browse. The homepage may need to serve different patterns by device.
+  </div>
+
+  <h3>By Shopper Type</h3>
+
+  <p><strong>Homepage Priority Rankings (Top-3 Rate):</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Priority Item</th><th>Restocker</th><th>Browser</th><th>Researcher</th><th>Mixed</th></tr></thead>
+      <tbody>
+        <tr><td>New arrivals</td><td><strong>100%</strong></td><td>82%</td><td>93%</td><td>98%</td></tr>
+        <tr><td>Promotions/sales</td><td>79%</td><td><strong>82%</strong></td><td>73%</td><td><strong>85%</strong></td></tr>
+        <tr><td>Categories</td><td><strong>47%</strong></td><td>29%</td><td>40%</td><td>40%</td></tr>
+        <tr><td>Bestsellers</td><td>26%</td><td><strong>41%</strong></td><td>27%</td><td>38%</td></tr>
+        <tr><td>Bobbi content</td><td>32%</td><td>29%</td><td><strong>40%</strong></td><td>32%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Key patterns:</strong>
+    <ul>
+      <li>Restockers put New Arrivals #1 at 100% top-3 rate — they know the catalog and want what's NEW</li>
+      <li>Browsers care equally about promos and new arrivals (82% each)</li>
+      <li>Researchers are the most interested in Bobbi content (40% top-3)</li>
+      <li>Clear product categories are most important to Restockers (47%) who want to navigate efficiently</li>
+    </ul>
+  </div>
+
+  <p><strong>What's Missing, by Shopper Type:</strong></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Missing Element</th><th>Restocker</th><th>Browser</th><th>Researcher</th><th>Mixed</th></tr></thead>
+      <tbody>
+        <tr><td>New Arrivals</td><td><strong>68.4%</strong></td><td>41.2%</td><td>46.7%</td><td>45.0%</td></tr>
+        <tr><td>Bobbi content</td><td><strong>52.6%</strong></td><td>47.1%</td><td>33.3%</td><td>45.0%</td></tr>
+        <tr><td>Skin type org</td><td><strong>47.4%</strong></td><td>17.6%</td><td><strong>53.3%</strong></td><td>40.0%</td></tr>
+        <tr><td>Demo videos</td><td>10.5%</td><td>23.5%</td><td><strong>40.0%</strong></td><td>32.5%</td></tr>
+        <tr><td>Fine as-is</td><td>5.3%</td><td>17.6%</td><td>20.0%</td><td>17.5%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Key pattern:</strong> Restockers have the strongest opinions about what's missing — 68.4% want New Arrivals, 52.6% want Bobbi content, and only 5.3% think it's fine. These are the most engaged customers who visit frequently and notice gaps most acutely.
+  </div>
+
+  <hr>
+
+  <!-- Section 4 -->
+  <h2>4. New vs Repeat — What Returners Need vs What Prospects Need</h2>
+
+  <p>This is the most critical segmentation for homepage design. The data reveals fundamentally different jobs-to-be-done.</p>
+
+  <h3>What RETURNING CUSTOMERS need (Typeform + Advisory Board):</h3>
+  <ol>
+    <li><strong>"What's new?"</strong> — New Arrivals is the #1 priority (94.5% top-3, 49.5% say it's missing)</li>
+    <li><strong>Efficient navigation</strong> — 37.4% go straight to nav; they know what they want</li>
+    <li><strong>Promotions and deals</strong> — 81.3% rank promos in their top 3</li>
+    <li><strong>Bobbi content</strong> — 45.1% want more Bobbi on the homepage; 4.20/5 importance rating</li>
+    <li><strong>Recognition</strong> — "I would love a website that remembers who I am" — repeat visitors don't want to be treated as strangers</li>
+    <li><strong>NOT the quiz</strong> — 0% of first actions are looking for the quiz; the shade quiz popup annoys long-time users</li>
+  </ol>
+
+  <h3>What PROSPECTS need (ListenLabs):</h3>
+  <ol>
+    <li><strong>"Who is Jones Road?"</strong> — Brand differentiation is unclear to 5/23 prospects</li>
+    <li><strong>"Is this for me?"</strong> — Homepage feels Gen Z to 45+ prospects; age representation matters</li>
+    <li><strong>Social proof / trust signals</strong> — 16/23 cite reviews as primary trust signal; "76K reviews" needs to be visible</li>
+    <li><strong>Warmth, not clinical</strong> — Charlotte Tilbury's welcoming aesthetic is cited as the benchmark; JRB reads "clinical and antiseptic" to some</li>
+    <li><strong>Product discovery via looks, not categories</strong> — Prospects don't know what to buy; they need curated entry points</li>
+    <li><strong>Clean beauty credential visibility</strong> — 9/23 care about ingredients; the clean positioning is buried</li>
+    <li><strong>NO popup as first interaction</strong> — 4/23 found the email popup off-putting as a first impression</li>
+  </ol>
+
+  <h3>The Tension:</h3>
+  <p>Returning customers want the homepage to be a <strong>dashboard</strong> (what's new, what's on sale, take me to what I want). Prospects need the homepage to be a <strong>storefront</strong> (who are you, why should I trust you, help me figure out what to buy). The homepage must serve both without compromising either.</p>
+
+  <hr>
+
+  <!-- Section 5 -->
+  <h2>5. Performance vs Brand — Conversion-Driving Elements vs Brand-Building Elements</h2>
+
+  <h3>Conversion-Driving Elements (Performance)</h3>
+  <p>These directly impact purchase behavior based on quantitative data:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Element</th><th>Evidence</th><th>Conversion Impact</th></tr></thead>
+      <tbody>
+        <tr><td>New Arrivals section</td><td>49.5% say it's missing; 94.5% rank it top-3</td><td><span class="impact impact--high">HIGH</span> — drives repeat purchase and discovery</td></tr>
+        <tr><td>Promotions/sales visibility</td><td>81.3% rank it top-3</td><td><span class="impact impact--high">HIGH</span> — direct purchase incentive</td></tr>
+        <tr><td>Clear product categories</td><td>39.6% top-3 ranking; 37.4% use nav first</td><td><span class="impact impact--high">HIGH</span> — reduces friction to product page</td></tr>
+        <tr><td>Bestsellers display</td><td>34.1% top-3; 31.9% look for them first</td><td><span class="impact impact--medium">MEDIUM</span> — social proof + discovery</td></tr>
+        <tr><td>Trust signals (review count, returns)</td><td>16/23 prospects cite reviews; 10/23 search for returns</td><td><span class="impact impact--high">HIGH for prospects</span> — critical for first purchase</td></tr>
+        <tr><td>"Try the Mini" risk reduction</td><td>9/23 prospects want samples/minis</td><td><span class="impact impact--high">HIGH for acquisition</span></td></tr>
+        <tr><td>Shade finder / quiz access</td><td>Only 6.6% rank it top-3; 17.6% say it's hard to find</td><td><span class="impact impact--low">LOW on homepage</span> — more important on PDP</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Brand-Building Elements</h3>
+  <p>These build long-term brand equity and emotional connection:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Element</th><th>Evidence</th><th>Brand Impact</th></tr></thead>
+      <tbody>
+        <tr><td>Bobbi content (videos, tips)</td><td>45.1% say it's missing; 4.20/5 importance</td><td><span class="impact impact--high">HIGH</span> — differentiator, trust-builder, generational bridge</td></tr>
+        <tr><td>Age-diverse imagery</td><td>18-reaction Advisory Board comment; 3/23 prospects felt excluded</td><td><span class="impact impact--high">HIGH</span> — signals "this brand is for me" to core 55+ cohort</td></tr>
+        <tr><td>Clean beauty messaging</td><td>17% notice rate; 9/23 prospects care about ingredients</td><td><span class="impact impact--medium">MEDIUM</span> — table stakes, not differentiator</td></tr>
+        <tr><td>Editorial/brand story</td><td>Dead last in rankings (avg 7.44)</td><td><span class="impact impact--low">LOW</span> — customers don't want this on homepage</td></tr>
+        <tr><td>Skin-type organization</td><td>39.6% say it's missing</td><td><span class="impact impact--medium">MEDIUM</span> — educational + navigational</td></tr>
+        <tr><td>Demo videos</td><td>27.5% say it's missing</td><td><span class="impact impact--medium">MEDIUM</span> — builds product understanding</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Key Insight:</strong> The data is clear that <strong>performance elements (new arrivals, promos, categories) should dominate the homepage above the fold.</strong> Brand-building elements (Bobbi content, age-diverse imagery) are important but belong in supporting positions. Editorial content is firmly unwanted. However, the brand elements that DO matter — Bobbi and age representation — function as both brand AND performance elements because they build the trust that drives purchase.
+  </div>
+
+  <hr>
+
+  <!-- Section 6 -->
+  <h2>6. Competitive Context — What Competitors Do on Their Homepages</h2>
+
+  <h3>ILIA Beauty (Primary Competitor for Homepage UX)</h3>
+  <ul>
+    <li>"FIND MY SHADE" as dedicated top-level nav link</li>
+    <li>"REWARDS" visible in nav</li>
+    <li>Full-width hero for new product launches</li>
+    <li>Clean category nav: Shop All, Bestsellers, Complexion, Eye, Lip + Cheek, Skincare, Sets, Tools</li>
+    <li>GWP promo bar</li>
+  </ul>
+
+  <h3>MERIT Beauty</h3>
+  <ul>
+    <li>Shade categorization by tone family ("The Pops", "The Neutrals")</li>
+    <li>Model-per-shade gallery thumbnails</li>
+    <li>Bundle cross-sell above fold ("5 Minute Morning")</li>
+    <li>Clean badge formatting: "Clean at MERIT, Vegan, Cruelty Free, Fragrance-free"</li>
+    <li>30-Day Shade Match Promise</li>
+  </ul>
+
+  <h3>Rare Beauty</h3>
+  <ul>
+    <li>"SHADE FINDER" as top-level nav link</li>
+    <li>"NEW" badges on shade swatches</li>
+    <li>"Limited Edition" vs "Core" categorization (urgency + permanence)</li>
+    <li>Social impact messaging near ATC</li>
+  </ul>
+
+  <h3>Charlotte Tilbury (Prospect-Cited Benchmark)</h3>
+  <ul>
+    <li>Warm, welcoming site aesthetic (cited by multiple ListenLabs prospects)</li>
+    <li>Entertaining copy</li>
+    <li>Clear "glow" positioning</li>
+    <li>Strong editorial/lifestyle photography</li>
+  </ul>
+
+  <h3>What Every Competitor Has That JRB Lacks on Homepage:</h3>
+  <ol>
+    <li>Shade Finder / "Find My Shade" in main nav</li>
+    <li>Clear product categories with visible subcategories</li>
+    <li>Prominent review count / social proof</li>
+    <li>Clean/ingredient badges</li>
+    <li>Rewards/loyalty visibility</li>
+  </ol>
+
+  <h3>What JRB Has That No Competitor Can Match:</h3>
+  <ol>
+    <li><strong>Bobbi Brown</strong> — the most credible founder in clean beauty</li>
+    <li><strong>76,000+ reviews</strong> — more than Rare Beauty (4.8K), MERIT (6.9K), Rhode (16K) combined</li>
+    <li><strong>$21.59/oz value</strong> — 2-8x more product per ounce than any competitor</li>
+    <li><strong>"Send a Selfie" personal shade matching</strong> — a unique human service</li>
+    <li><strong>4 uses per product</strong> — unmatched versatility (but must be communicated carefully to prospects)</li>
+  </ol>
+
+  <hr>
+
+  <!-- Section 7 -->
+  <h2>7. Key Tensions — Where Data Sources Conflict or Create Tradeoffs</h2>
+
+  <h3>Tension 1: New Customer vs Returning Customer Homepage</h3>
+  <ul>
+    <li><strong>Returning customers</strong> (91 Typeform responses) want: new arrivals, promos, efficient nav, Bobbi content</li>
+    <li><strong>Prospects</strong> (23 ListenLabs recordings) need: brand identity, trust signals, curated entry points, warmth</li>
+    <li><strong>Resolution:</strong> Personalized experience (logged-in vs. first-visit) or above/below-fold split where above-fold serves both (new arrivals + trust bar) and below-fold diverges</li>
+  </ul>
+
+  <h3>Tension 2: Bobbi Content — High Demand but Not Top Priority</h3>
+  <ul>
+    <li>45.1% say Bobbi content is MISSING from the homepage</li>
+    <li>But only 33% rank it in their top 3 priorities</li>
+    <li>Bobbi importance is 4.20/5 for purchase decisions</li>
+    <li>For prospects who don't know Bobbi, the founder story needs more prominence</li>
+    <li><strong>Resolution:</strong> Bobbi is a "vitamin, not a painkiller" — important for brand health but shouldn't displace conversion-driving elements. Integrate Bobbi INTO product sections (e.g., "Bobbi's Pick" tags, short video clips within product cards) rather than as a standalone section</li>
+  </ul>
+
+  <h3>Tension 3: Age Representation vs Brand Aspirationality</h3>
+  <ul>
+    <li>65+ cohort is the least satisfied with the homepage (only 6.7% say it's fine)</li>
+    <li>Prospect 0138 (age 35) found the brand "boring" — younger prospects want energy</li>
+    <li>Multiple moms report daughters seeing JRB as "mom's makeup" before trying it</li>
+    <li>Advisory Board: "Bobbi herself is the only thing that bridges the gap between generations"</li>
+    <li><strong>Resolution:</strong> Cast across ages, don't skew old OR young. Bobbi as the generational bridge. Models 35-65 with real skin, not just age-diverse casting with perfect skin.</li>
+  </ul>
+
+  <h3>Tension 4: Quiz/Shade Finder — Customers Can't Find It, Prospects Don't Trust It</h3>
+  <ul>
+    <li>17.6% of customers say the quiz should be easier to find on the homepage</li>
+    <li>But 0% of customers' FIRST action is looking for the quiz</li>
+    <li>4/23 prospects who used the quiz found it felt like a marketing funnel</li>
+    <li><strong>Resolution:</strong> Don't make the quiz a homepage hero. Instead, surface "Send a Selfie" (trusted by both groups) and put shade tools contextually near product displays, not as a standalone homepage CTA.</li>
+  </ul>
+
+  <h3>Tension 5: Product Organization — Categories vs Skin Concern vs Curated Looks</h3>
+  <ul>
+    <li>37.4% go straight to nav menu — they want product categories</li>
+    <li>39.6% say skin-type organization is missing</li>
+    <li>Prospects want curated "looks" and guided entry points</li>
+    <li><strong>Resolution:</strong> Offer multiple pathways: category nav for directed shoppers, "Shop by Concern" for researchers, and "Get the Look" for browsers/prospects. Not one-size-fits-all.</li>
+  </ul>
+
+  <h3>Tension 6: Promotions — High Priority for Customers, Risky for Brand</h3>
+  <ul>
+    <li>81.3% rank promos in top 3 for homepage</li>
+    <li>But this is a loyal-customer sample who actively seeks deals</li>
+    <li>Over-indexing on promos can cheapen brand perception for prospects</li>
+    <li>Charlotte Tilbury (prospect benchmark) leads with product story, not discounts</li>
+    <li><strong>Resolution:</strong> Promo bar is sufficient — don't make promotions the homepage hero. Let new arrivals and product content lead; promos serve as secondary pull.</li>
+  </ul>
+
+  <h3>Tension 7: Editorial Content — Customers Reject It, But Brand Needs It for Prospects</h3>
+  <ul>
+    <li>Editorial/brand story ranked dead last (avg 7.44 out of 8) by customers</li>
+    <li>But 5/23 prospects couldn't figure out who JRB is or what differentiates them</li>
+    <li><strong>Resolution:</strong> Don't create a "brand story" section. Instead, weave differentiation into every element: "76K+ reviews" as a trust signal, "Founded by Bobbi Brown" as a product credential, "Clean, strategic formulations" as a product descriptor. Let the brand story emerge from the product experience, not from a separate editorial block.</li>
+  </ul>
+
+  <hr>
+
+  <!-- Section 8 -->
+  <h2>8. Recommended Priorities — Stack-Ranked List of What the Homepage Must Do</h2>
+
+  <p>Ranked by combined frequency of demand (Typeform quantitative), conversion impact (ListenLabs qualitative), and cross-source triangulation strength.</p>
+
+  <h3><span class="tier tier--1">Tier 1</span> Non-Negotiable (Data overwhelming, conversion-critical)</h3>
+
+  <p><strong>1. Prominent, Always-Fresh "New Arrivals" Section</strong></p>
+  <ul>
+    <li>Evidence: 94.5% top-3 priority ranking; 49.5% say it's missing; 63.3% of 65+ cohort demands it; 100% of Restockers put it in top 3</li>
+    <li>Must be above the fold, clearly labeled, and genuinely updated (not the same products for weeks)</li>
+    <li>This is the single highest-demand homepage element across all segments</li>
+  </ul>
+
+  <p><strong>2. Clear, Fast Product Category Navigation</strong></p>
+  <ul>
+    <li>Evidence: 37.4% first action = nav menu; 39.6% top-3 ranking; 52.2% of 45-54 go to nav first</li>
+    <li>Open-ended complaint: "I absolutely hate the full width drop downs that cover the whole screen"</li>
+    <li>Category nav must show products directly, not require an extra "Shop All" click</li>
+    <li>Consider: restructure by concern/type alongside traditional categories</li>
+  </ul>
+
+  <p><strong>3. Visible Promotions / Current Offers</strong></p>
+  <ul>
+    <li>Evidence: 81.3% top-3 ranking; second-highest priority across all shopper types</li>
+    <li>Promo bar or banner — doesn't need to be the hero, but must be visible and current</li>
+  </ul>
+
+  <p><strong>4. Trust Signals for First-Time Visitors</strong></p>
+  <ul>
+    <li>Evidence: 16/23 prospects cite reviews as primary trust; 10/23 search for return policy; "76K reviews" is JRB's strongest competitive proof point</li>
+    <li>Must include: review count, return policy, free shipping threshold, clean beauty badges</li>
+    <li>ILIA and MERIT both surface trust signals prominently — JRB doesn't</li>
+  </ul>
+
+  <h3><span class="tier tier--2">Tier 2</span> High Priority (Strong data, significant impact)</h3>
+
+  <p><strong>5. Bobbi Brown Content Integration</strong></p>
+  <ul>
+    <li>Evidence: 45.1% say it's missing; 4.20/5 importance; 3,334 review mentions of Bobbi; +0.3-0.5 star lift when Bobbi is referenced</li>
+    <li>NOT a standalone editorial section (editorial ranks last). Instead: Bobbi's picks, short video clips, "Bobbi recommends" tags on products</li>
+    <li>For prospects: "Founded by Bobbi Brown" must be prominent — 5/23 didn't know who she is</li>
+  </ul>
+
+  <p><strong>6. "Shop by Concern" / Skin-Type Organization</strong></p>
+  <ul>
+    <li>Evidence: 39.6% say it's missing; 53.3% of Researchers want it; 83.3% of 35-44 want it</li>
+    <li>Serves both navigation (find products for MY concern) and education (learn what products address MY issue)</li>
+    <li>Also serves prospects who don't know the product catalog</li>
+  </ul>
+
+  <p><strong>7. Age-Diverse Visual Representation</strong></p>
+  <ul>
+    <li>Evidence: 18-reaction Advisory Board comment (highest engagement); 3/23 prospects felt excluded; 65+ cohort least satisfied (6.7% say homepage is fine)</li>
+    <li>Models 35-65 with real skin. Don't remove young models — add diversity across ages.</li>
+    <li>This is both a brand signal and a conversion lever: "I see someone like me using this"</li>
+  </ul>
+
+  <p><strong>8. Bestsellers Display</strong></p>
+  <ul>
+    <li>Evidence: 34.1% top-3 ranking; 31.9% first action = look for bestsellers; 41% of Browsers put it in top 3</li>
+    <li>Especially important for new visitors who don't know the catalog</li>
+    <li>Should show reviews/ratings on tiles (ListenLabs: 71% have price/value concerns)</li>
+  </ul>
+
+  <h3><span class="tier tier--3">Tier 3</span> Important Supporting Elements</h3>
+
+  <p><strong>9. Product Demo Videos</strong></p>
+  <ul>
+    <li>Evidence: 27.5% say it's missing; Researchers most interested (40%); ListenLabs: quality over quantity</li>
+    <li>Short, high-quality Bobbi demos — NOT autoplay carousels</li>
+    <li>ONE video per product feature, user-initiated play</li>
+  </ul>
+
+  <p><strong>10. "Where to Start" Guide / New Customer Path</strong></p>
+  <ul>
+    <li>Evidence: 16.5% say it's missing; 5/23 prospects had "who is Jones Road?" confusion</li>
+    <li>Curated entry point for first-time visitors — quiz-free, education-first</li>
+    <li>"New to JRB? Start here" with bestseller recommendations + Bobbi video intro</li>
+  </ul>
+
+  <p><strong>11. Shade Finder Access (Contextual, Not Hero)</strong></p>
+  <ul>
+    <li>Evidence: 17.6% want it easier to find; BUT 0% first action = look for quiz; 4/23 prospects distrust quiz</li>
+    <li>Don't make quiz a homepage hero. Surface "Send a Selfie" + shade tools contextually near product displays</li>
+    <li>Consider ILIA/MERIT model: "Find My Shade" as a nav link, not a homepage section</li>
+  </ul>
+
+  <p><strong>12. Risk-Reduction Signals for Acquisition</strong></p>
+  <ul>
+    <li>Evidence: 12/23 prospects cite price-as-risk; 9/23 want minis/samples</li>
+    <li>"Try the Mini" callout near featured products</li>
+    <li>Visible return policy: "Not your shade? Free returns."</li>
+  </ul>
+
+  <h3><span class="tier tier--4">Tier 4</span> Do NOT Prioritize on Homepage</h3>
+
+  <p><strong>13. Editorial / Brand Story Section</strong></p>
+  <ul>
+    <li>Evidence: Ranked dead last (avg 7.44 out of 8); 0 people put it #1; 1.1% top-3</li>
+    <li>Brand story should emerge from product experience, not a standalone section</li>
+    <li>Weave "Founded by Bobbi Brown" and "Clean, strategic formulations" into product sections</li>
+  </ul>
+
+  <p><strong>14. Quiz as Homepage Hero</strong></p>
+  <ul>
+    <li>Evidence: 0% first action; only 6.6% top-3; prospects distrust it</li>
+    <li>Move quiz to contextual placement (nav link, product pages)</li>
+  </ul>
+
+  <p><strong>15. Heavy Discount / Sale Emphasis</strong></p>
+  <ul>
+    <li>Evidence: Only 2.2% first action = look for what's on sale</li>
+    <li>Promos matter, but don't lead with discounts — lead with products</li>
+  </ul>
+
+  <hr>
+
+  <!-- Appendix -->
+  <h2>Appendix: Data Source Summary</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Source</th><th>Type</th><th>n</th><th>Date</th><th>Homepage Relevance</th></tr></thead>
+      <tbody>
+        <tr><td>Typeform Survey</td><td>Quantitative (loyal customers)</td><td>91</td><td>Mar 2026</td><td>DIRECT — 3 homepage-specific questions</td></tr>
+        <tr><td>ListenLabs Prospect Study</td><td>Qualitative (non-customers)</td><td>23 (13 usable)</td><td>Mar 2026</td><td>HIGH — first-impression and navigation observations</td></tr>
+        <tr><td>ListenLabs Older Study</td><td>Quant + Qual (clean beauty interested)</td><td>~24</td><td>Jun 2025</td><td>MODERATE — dated but directionally useful</td></tr>
+        <tr><td>Facebook Advisory Board</td><td>Qualitative (loyal customers)</td><td>75 comments</td><td>Nov 2025</td><td>MODERATE — homepage mentioned in broader UX discussion</td></tr>
+        <tr><td>Competitive Audit</td><td>Benchmarking</td><td>6 brands</td><td>Mar 2026</td><td>HIGH — homepage/nav pattern comparison</td></tr>
+        <tr><td>Junip Review Analysis</td><td>Keyword analysis</td><td>10,000+</td><td>Mar 2026</td><td>LOW — product-level, not homepage-level</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Limitations</h3>
+  <ol>
+    <li><strong>Typeform sample skews old and loyal:</strong> 93.4% are 45+, zero under-35 respondents. All are Advisory Board members (super-loyal). Prospect needs are under-represented in quantitative data.</li>
+    <li><strong>ListenLabs prospect sample is small:</strong> Only 13 of 23 participants actually browsed the site. Directional, not statistically significant.</li>
+    <li><strong>Older ListenLabs study is 9 months old:</strong> The site has evolved since June 2025. Findings should be treated as background context, not current state.</li>
+    <li><strong>No behavioral analytics in this synthesis:</strong> This brief contains stated preferences and observed behavior from studies, but not click-through, scroll-depth, or conversion data from actual homepage traffic. GA4/Hotjar data would strengthen or challenge these findings.</li>
+    <li><strong>Both ListenLabs URLs required authentication and could not be re-pulled fresh.</strong> Data in this synthesis draws from the locally-saved ListenLabs prospect analysis and the existing customer insights file, both of which contain extracted findings from those studies.</li>
+  </ol>
+
+</div>
+
+</body>
+</html>
