@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JRB Landing Page Build System</title>
+<style>
+  /* ========== Font Faces ========== */
+  @font-face {
+    font-family: 'Canela';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Canela';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-LightItalic.otf') format('opentype');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'GeogrotesqueCondBoldWeb';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'RingsideWideWeb';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'BaseMonoWideWeb';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* ========== Reset & Base ========== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'RingsideWideWeb', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #000;
+    background: #fff;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ========== Header ========== */
+  .page-header {
+    background: #000;
+    color: #fff;
+    padding: 60px 40px 50px;
+    text-align: center;
+  }
+  .page-header h1 {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: clamp(32px, 5vw, 56px);
+    letter-spacing: 0.02em;
+    margin-bottom: 12px;
+  }
+  .page-header .subtitle {
+    font-family: 'RingsideWideWeb', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+  .page-header .accent-line {
+    width: 60px;
+    height: 3px;
+    background: #ff2e92;
+    margin: 20px auto 0;
+  }
+
+  /* ========== Section Wrappers ========== */
+  .section {
+    padding: 60px 24px;
+  }
+  .section--warm {
+    background: #f6f2eb;
+  }
+  .section--dark {
+    background: #000;
+    color: #fff;
+  }
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-title {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: clamp(24px, 3.5vw, 38px);
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .section-subtitle {
+    font-family: 'RingsideWideWeb', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    opacity: 0.6;
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  /* ========== Legend ========== */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+    padding: 16px 24px;
+    background: #f6f2eb;
+    border-radius: 4px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .legend-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .legend-dot--red { background: #d32f2f; }
+  .legend-dot--green { background: #2e7d32; }
+  .legend-dot--blue { background: #1565c0; }
+  .legend-dot--gray { background: #9e9e9e; }
+  .legend-dot--pink { background: #ff2e92; }
+
+  /* ========== Flow Diagram ========== */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* Connector arrow between flow boxes */
+  .flow-connector {
+    width: 2px;
+    height: 32px;
+    background: #000;
+    position: relative;
+  }
+  .flow-connector::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #000;
+  }
+
+  /* Flow box base */
+  .flow-box {
+    width: 100%;
+    max-width: 680px;
+    border-radius: 4px;
+    padding: 28px 32px;
+    position: relative;
+  }
+
+  /* Trigger box */
+  .flow-box--trigger {
+    background: #000;
+    color: #fff;
+    text-align: center;
+  }
+  .flow-box--trigger .flow-box__label {
+    color: #ff2e92;
+  }
+
+  /* Mandatory gate (red) */
+  .flow-box--mandatory {
+    background: #fff;
+    border: 2px solid #d32f2f;
+    box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.08);
+  }
+  .flow-box--mandatory .flow-box__label {
+    color: #d32f2f;
+  }
+  .flow-box--mandatory .flow-box__badge {
+    background: #d32f2f;
+    color: #fff;
+  }
+
+  /* Build box (blue) */
+  .flow-box--build {
+    background: #fff;
+    border: 2px solid #1565c0;
+    box-shadow: 0 0 0 4px rgba(21, 101, 192, 0.08);
+  }
+  .flow-box--build .flow-box__label {
+    color: #1565c0;
+  }
+
+  /* QA box (green) */
+  .flow-box--qa {
+    background: #fff;
+    border: 2px solid #2e7d32;
+    box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.08);
+  }
+  .flow-box--qa .flow-box__label {
+    color: #2e7d32;
+  }
+  .flow-box--qa .flow-box__badge {
+    background: #2e7d32;
+    color: #fff;
+  }
+
+  /* Flow box internals */
+  .flow-box__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .flow-box__label {
+    font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .flow-box__badge {
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 2px;
+    background: #f6f2eb;
+    color: #000;
+  }
+  .flow-box__title {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+  .flow-box--trigger .flow-box__title {
+    font-size: 18px;
+  }
+
+  .flow-box__items {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+  }
+  .flow-box__items li {
+    font-size: 13px;
+    line-height: 1.7;
+    padding: 6px 0 6px 20px;
+    position: relative;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .flow-box__items li:last-child {
+    border-bottom: none;
+  }
+  .flow-box__items li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 13px;
+    width: 8px;
+    height: 8px;
+    border-radius: 1px;
+    background: currentColor;
+    opacity: 0.25;
+  }
+  .flow-box--mandatory .flow-box__items li::before { background: #d32f2f; opacity: 0.4; }
+  .flow-box--build .flow-box__items li::before { background: #1565c0; opacity: 0.4; }
+  .flow-box--qa .flow-box__items li::before { background: #2e7d32; opacity: 0.4; }
+
+  .flow-box__items code {
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 11px;
+    background: rgba(0,0,0,0.06);
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+  .flow-box--trigger .flow-box__items code {
+    background: rgba(255,255,255,0.12);
+    color: #ff2e92;
+  }
+
+  /* Trigger command pills */
+  .trigger-commands {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .trigger-pill {
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    background: rgba(255, 46, 146, 0.15);
+    color: #ff2e92;
+    padding: 6px 16px;
+    border-radius: 2px;
+    border: 1px solid rgba(255, 46, 146, 0.3);
+  }
+
+  /* ========== Component Grid ========== */
+  .component-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .component-card {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 4px;
+    padding: 20px 20px 18px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .component-card:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+  }
+  .component-card__number {
+    font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #ff2e92;
+    margin-bottom: 6px;
+  }
+  .component-card__name {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 18px;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .component-card__desc {
+    font-size: 12px;
+    line-height: 1.6;
+    opacity: 0.6;
+  }
+
+  /* ========== Token Comparison ========== */
+  .token-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 8px;
+  }
+  @media (max-width: 768px) {
+    .token-comparison {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .token-panel {
+    border-radius: 4px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .token-panel--old {
+    background: #fff;
+    border: 2px solid #d32f2f;
+  }
+  .token-panel--new {
+    background: #fff;
+    border: 2px solid #2e7d32;
+  }
+
+  .token-panel__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .token-panel__badge {
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .token-panel--old .token-panel__badge {
+    background: #d32f2f;
+    color: #fff;
+  }
+  .token-panel--new .token-panel__badge {
+    background: #2e7d32;
+    color: #fff;
+  }
+  .token-panel__title {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 20px;
+  }
+
+  /* Token diagram nodes */
+  .token-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .token-node {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+  }
+  .token-node--source {
+    background: #000;
+    color: #fff;
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 11px;
+  }
+  .token-node--skill {
+    background: #f6f2eb;
+    border: 1px solid rgba(0,0,0,0.1);
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 11px;
+  }
+  .token-node--error {
+    background: rgba(211, 47, 47, 0.06);
+    border: 1px dashed #d32f2f;
+    color: #d32f2f;
+    font-size: 11px;
+  }
+  .token-node--success {
+    background: rgba(46, 125, 50, 0.06);
+    border: 1px dashed #2e7d32;
+    color: #2e7d32;
+    font-size: 11px;
+  }
+
+  .token-arrow {
+    width: 2px;
+    height: 16px;
+    position: relative;
+  }
+  .token-panel--old .token-arrow {
+    background: #d32f2f;
+  }
+  .token-panel--new .token-arrow {
+    background: #2e7d32;
+  }
+  .token-arrow::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+  }
+  .token-panel--old .token-arrow::after {
+    border-top: 5px solid #d32f2f;
+  }
+  .token-panel--new .token-arrow::after {
+    border-top: 5px solid #2e7d32;
+  }
+
+  /* Fan-out arrows for the new (centralized) panel */
+  .token-fanout {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+  }
+  .token-fanout .token-node--skill {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Horizontal line connector for fan-out */
+  .token-hline {
+    width: 80%;
+    height: 2px;
+    background: #2e7d32;
+    position: relative;
+  }
+  .token-hline::before,
+  .token-hline::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 2px;
+    height: 12px;
+    background: #2e7d32;
+  }
+  .token-hline::before { left: 0; }
+  .token-hline::after { right: 0; }
+  .token-hline-mid {
+    position: absolute;
+    left: 50%;
+    top: -12px;
+    width: 2px;
+    height: 12px;
+    background: #2e7d32;
+  }
+
+  /* ========== Stats Bar ========== */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 48px;
+  }
+  .stat {
+    padding: 24px 20px;
+    text-align: center;
+    background: rgba(255,255,255,0.04);
+  }
+  .stat__number {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 36px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat__number--pink {
+    color: #ff2e92;
+  }
+  .stat__label {
+    font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.5;
+  }
+
+  /* ========== Reuse Rules ========== */
+  .reuse-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 8px;
+  }
+  .reuse-card {
+    background: #fff;
+    border-radius: 4px;
+    padding: 24px;
+    border-left: 3px solid #ff2e92;
+  }
+  .reuse-card__when {
+    font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #ff2e92;
+    margin-bottom: 6px;
+  }
+  .reuse-card__action {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+  .reuse-card__file {
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 11px;
+    background: #f6f2eb;
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 2px;
+    opacity: 0.8;
+  }
+
+  /* ========== Footer ========== */
+  .page-footer {
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 11px;
+    opacity: 0.4;
+    font-family: 'BaseMonoWideWeb', monospace;
+    letter-spacing: 0.04em;
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
+
+  /* ========== Responsive ========== */
+  @media (max-width: 600px) {
+    .page-header { padding: 40px 20px 36px; }
+    .section { padding: 40px 16px; }
+    .flow-box { padding: 20px 18px; }
+    .legend { gap: 16px; padding: 12px 16px; }
+    .trigger-commands { flex-direction: column; align-items: center; }
+    .component-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .component-card { padding: 14px; }
+    .component-card__name { font-size: 15px; }
+    .reuse-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<header class="page-header">
+  <h1>JRB Landing Page Build System</h1>
+  <p class="subtitle">How skills, design system, and component templates work together</p>
+  <div class="accent-line"></div>
+</header>
+
+<!-- ==================== SECTION 1: BUILD CHAIN ==================== -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-title">The Build Chain</h2>
+    <p class="section-subtitle">Every landing page follows this exact sequence -- no exceptions</p>
+
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot legend-dot--red"></div>
+        Mandatory Gate
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot legend-dot--blue"></div>
+        Build Phase
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot legend-dot--green"></div>
+        QA Pass
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot legend-dot--pink"></div>
+        Accent / Highlight
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot legend-dot--gray"></div>
+        Supporting Context
+      </div>
+    </div>
+
+    <!-- Flow -->
+    <div class="flow">
+
+      <!-- TRIGGER -->
+      <div class="flow-box flow-box--trigger">
+        <div class="flow-box__header">
+          <span class="flow-box__label">Trigger</span>
+        </div>
+        <div class="flow-box__title">User invokes a build skill</div>
+        <div class="trigger-commands">
+          <span class="trigger-pill">/newlandingpage</span>
+          <span class="trigger-pill">/jrb-page-builder</span>
+          <span class="trigger-pill">/jrb-section-builder</span>
+        </div>
+      </div>
+
+      <div class="flow-connector"></div>
+
+      <!-- STEP 0: MANDATORY PRE-BUILD -->
+      <div class="flow-box flow-box--mandatory">
+        <div class="flow-box__header">
+          <span class="flow-box__label">Step 0</span>
+          <span class="flow-box__badge">Mandatory</span>
+        </div>
+        <div class="flow-box__title">Pre-Build Loading</div>
+        <ul class="flow-box__items">
+          <li>Read <code>shared/component-templates.md</code> -- 14 reusable components with exact markup</li>
+          <li>Invoke <code>/jrb-design-system</code> -- load all color, typography, spacing, and button tokens</li>
+          <li>Check <code>/jrb-section-library</code> -- 108 sections indexed; search for reuse before creating new</li>
+        </ul>
+      </div>
+
+      <div class="flow-connector"></div>
+
+      <!-- STEP 1: BUILD -->
+      <div class="flow-box flow-box--build">
+        <div class="flow-box__header">
+          <span class="flow-box__label">Step 1</span>
+          <span class="flow-box__badge">Build</span>
+        </div>
+        <div class="flow-box__title">Build the Page</div>
+        <ul class="flow-box__items">
+          <li>Use component templates verbatim for standard sections (star ratings, buy boxes, FAQs, etc.)</li>
+          <li>Use design system tokens for all CSS values -- never hardcode colors, font sizes, or spacing</li>
+          <li>Use Air MCP for real product photography -- never placeholder images</li>
+          <li>Follow section reuse rules: press logos use <code>jrb11-press-logo-bar.liquid</code>, FAQ uses <code>casting-faq.liquid</code></li>
+          <li>Scope all custom CSS inside <code>#shopify-section-{{ section.id }}</code> to prevent style leaks</li>
+          <li>Apply Canela Light for headlines, Geogrotesque for labels, BaseMonoWide for buttons</li>
+        </ul>
+      </div>
+
+      <div class="flow-connector"></div>
+
+      <!-- STEP 2: QA -->
+      <div class="flow-box flow-box--qa">
+        <div class="flow-box__header">
+          <span class="flow-box__label">Step 2</span>
+          <span class="flow-box__badge">QA Gate</span>
+        </div>
+        <div class="flow-box__title">Post-Build QA</div>
+        <ul class="flow-box__items">
+          <li>Invoke <code>/jrb-qa</code> -- 37+ checklist items across typography, color, buttons, spacing, images</li>
+          <li>Fix ALL Critical issues (wrong fonts, wrong colors, placeholder images, custom button CSS)</li>
+          <li>Fix ALL Warning issues (orphan words, missing hover states, inconsistent spacing)</li>
+          <li>Present to user only after QA passes -- never ship unchecked work</li>
+        </ul>
+      </div>
+
+    </div><!-- /.flow -->
+  </div>
+</section>
+
+<!-- ==================== SECTION 2: COMPONENT LIBRARY ==================== -->
+<section class="section section--warm">
+  <div class="section-inner">
+    <h2 class="section-title">Component Template Library</h2>
+    <p class="section-subtitle">14 reusable components loaded from shared/component-templates.md</p>
+
+    <div class="component-grid">
+      <div class="component-card">
+        <div class="component-card__number">Component 01</div>
+        <div class="component-card__name">Star Rating</div>
+        <div class="component-card__desc">SVG stars with review count. Inline display for hero sections and buy boxes.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-card__number">Component 02</div>
+        <div class="component-card__name">Section Eyebrow</div>
+        <div class="component-card__desc">Uppercase label above headlines. GeogrotesqueCondBold, 11px, tracked wide.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-card__number">Component 03</div>
+        <div class="component-card__name">Buy Box</div>
+        <div class="component-card__desc">Price, ATC button, Shop Pay badge, trust icons. Full purchase module.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-card__number">Component 04</div>
+        <div class="component-card__name">Trust Badge Icons</div>
+        <div class="component-card__desc">Clean beauty, cruelty free, dermatologist tested. Inline SVG icons with labels.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-card__number">Component 05</div>
+        <div class="component-card__name">Shop Pay Badge</div>
+        <div class="component-card__desc">Installment messaging below price. 4 interest-free payments callout.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-card__number">Component 06</div>
+        <div class="component-card__name">Review Cards</div>
+        <div class="component-card__desc">Customer review with stars, name, verified badge. Grid or carousel layout.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-card__number">Component 07</div>
+        <div class="component-card__name">Junip Full Reviews</div>
+        <div class="component-card__desc">Theme-owned Junip alternative. Full review display without app dependency.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-card__number">Component 08</div>
+        <div class="component-card__name">Press Section</div>
+        <div class="component-card__desc">Logo bar for press mentions. Reuses jrb11-press-logo-bar.liquid -- never build new.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-card__number">Component 09</div>
+        <div class="component-card__name">FAQ Section</div>
+        <div class="component-card__desc">Accordion Q&A. Reuses casting-faq.liquid -- never create custom JS toggles.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-card__number">Component 10</div>
+        <div class="component-card__name">Hero with Social Proof</div>
+        <div class="component-card__desc">Full-width hero with star rating, review count, and headline. Above the fold.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-card__number">Component 11</div>
+        <div class="component-card__name">Shade Carousel</div>
+        <div class="component-card__desc">Horizontal shade swatch scroller with name labels. For multi-shade products.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-card__number">Component 12</div>
+        <div class="component-card__name">Ticker Bar</div>
+        <div class="component-card__desc">Scrolling text marquee for social proof or urgency messaging.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-card__number">Component 13</div>
+        <div class="component-card__name">Sticky CTA</div>
+        <div class="component-card__desc">Fixed bottom bar with ATC button. Appears on scroll past hero buy box.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-card__number">Component 14</div>
+        <div class="component-card__name">PDP Accordions</div>
+        <div class="component-card__desc">Ingredients, how to use, shipping info. Collapsible detail sections for PDP.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 3: TOKEN ARCHITECTURE ==================== -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-title">Token Architecture</h2>
+    <p class="section-subtitle">From scattered and conflicting to centralized and consistent</p>
+
+    <div class="token-comparison">
+
+      <!-- OLD WAY -->
+      <div class="token-panel token-panel--old">
+        <div class="token-panel__header">
+          <span class="token-panel__badge">Before</span>
+          <span class="token-panel__title">Scattered Tokens</span>
+        </div>
+        <div class="token-diagram">
+          <div class="token-node token-node--skill">/newlandingpage<br><span style="opacity:0.5;font-size:10px">embeds own color values</span></div>
+          <div class="token-node token-node--skill">/jrb-page-builder<br><span style="opacity:0.5;font-size:10px">embeds own color values</span></div>
+          <div class="token-node token-node--skill">/jrb-section-builder<br><span style="opacity:0.5;font-size:10px">embeds own color values</span></div>
+          <div style="height: 12px;"></div>
+          <div class="token-node token-node--error">
+            Conflicts: #f50a99 vs #ff2e92<br>
+            Wrong grays (#555, #666)<br>
+            Google Fonts substitutes<br>
+            Custom button CSS
+          </div>
+        </div>
+      </div>
+
+      <!-- NEW WAY -->
+      <div class="token-panel token-panel--new">
+        <div class="token-panel__header">
+          <span class="token-panel__badge">After</span>
+          <span class="token-panel__title">Centralized Tokens</span>
+        </div>
+        <div class="token-diagram">
+          <div class="token-node token-node--source">jrb-design-system/SKILL.md</div>
+          <div class="token-arrow"></div>
+          <div class="token-node token-node--source" style="font-size:10px;">shared/component-templates.md</div>
+          <div class="token-arrow"></div>
+
+          <!-- Fan-out visual -->
+          <div style="width:80%;height:2px;background:#2e7d32;position:relative;">
+            <div style="position:absolute;left:0;top:-8px;width:2px;height:10px;background:#2e7d32;"></div>
+            <div style="position:absolute;left:50%;transform:translateX(-50%);top:-8px;width:2px;height:10px;background:#2e7d32;"></div>
+            <div style="position:absolute;right:0;top:-8px;width:2px;height:10px;background:#2e7d32;"></div>
+          </div>
+          <div class="token-fanout">
+            <div class="token-node token-node--skill" style="font-size:10px;">/newlanding<wbr>page</div>
+            <div class="token-node token-node--skill" style="font-size:10px;">/jrb-page-<wbr>builder</div>
+            <div class="token-node token-node--skill" style="font-size:10px;">/jrb-section-<wbr>builder</div>
+          </div>
+          <div style="height: 8px;"></div>
+          <div class="token-node token-node--success">
+            Single source of truth<br>
+            No conflicts across skills<br>
+            Every build is brand-accurate
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.token-comparison -->
+  </div>
+</section>
+
+<!-- ==================== SECTION 4: REUSE RULES ==================== -->
+<section class="section section--warm">
+  <div class="section-inner">
+    <h2 class="section-title">Section Reuse Rules</h2>
+    <p class="section-subtitle">These sections already exist -- never rebuild them</p>
+
+    <div class="reuse-grid">
+      <div class="reuse-card">
+        <div class="reuse-card__when">When you need press logos</div>
+        <div class="reuse-card__action">Reuse the existing section</div>
+        <span class="reuse-card__file">jrb11-press-logo-bar.liquid</span>
+      </div>
+      <div class="reuse-card">
+        <div class="reuse-card__when">When you need FAQ</div>
+        <div class="reuse-card__action">Reuse the existing section</div>
+        <span class="reuse-card__file">casting-faq.liquid</span>
+      </div>
+      <div class="reuse-card">
+        <div class="reuse-card__when">When you need reviews</div>
+        <div class="reuse-card__action">Use the theme-owned equivalent</div>
+        <span class="reuse-card__file">epdp-reviews.liquid</span>
+      </div>
+      <div class="reuse-card">
+        <div class="reuse-card__when">When you need any standard section</div>
+        <div class="reuse-card__action">Search 108 sections first</div>
+        <span class="reuse-card__file">/jrb-section-library</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 5: STATS ==================== -->
+<section class="section section--dark">
+  <div class="section-inner">
+    <h2 class="section-title" style="color:#fff;">System at a Glance</h2>
+    <p class="section-subtitle" style="color:rgba(255,255,255,0.5);">The numbers behind the build system</p>
+
+    <div class="stats-bar">
+      <div class="stat">
+        <div class="stat__number stat__number--pink">14</div>
+        <div class="stat__label">Component Templates</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number stat__number--pink">108</div>
+        <div class="stat__label">Indexed Sections</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number stat__number--pink">37+</div>
+        <div class="stat__label">QA Checklist Items</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number stat__number--pink">3</div>
+        <div class="stat__label">Build Skills</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number stat__number--pink">1</div>
+        <div class="stat__label">Source of Truth</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="page-footer">
+  Jones Road Beauty -- Landing Page Build System -- March 2026
+</footer>
+
+</body>
+</html>

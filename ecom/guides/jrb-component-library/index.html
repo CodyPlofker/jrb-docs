@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Component Library</title>
+
+  <style>
+    /* =============================================================================
+       @font-face -- JRB Brand Fonts (CDN)
+       ============================================================================= */
+    @font-face {
+      font-family: 'GeogrotesqueCondBoldWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');
+      font-weight: 700; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'BaseMonoWideWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'RingsideWideWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Canela';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');
+      font-weight: 300; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Canela';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-LightItalic.otf') format('opentype');
+      font-weight: 300; font-style: italic; font-display: swap;
+    }
+
+    /* =============================================================================
+       CSS Custom Properties (JRB Design System)
+       ============================================================================= */
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --color-muted: #757575;
+      --shade-joy: #e8938b;
+      --shade-pretty: #e8a9a0;
+      --shade-bare: #d4a995;
+      --shade-chic: #c48e8e;
+      --shade-pinch: #e8a48a;
+      --shade-flush: #d47a7a;
+      --shade-cheeky: #e06b8a;
+      --shade-miami: #d98a6a;
+      --shade-noir: #6b3a4a;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    /* =============================================================================
+       Reset & Base
+       ============================================================================= */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body {
+      font-family: var(--font-body); font-size: 16px; line-height: 100%;
+      color: var(--color-black); letter-spacing: .025em;
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+      background: var(--color-white);
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* =============================================================================
+       Button Component (MANDATORY -- never override)
+       ============================================================================= */
+    .button {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 13px; font-weight: 550;
+      text-transform: uppercase; letter-spacing: .4px; height: 40px;
+      padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black);
+      background: var(--color-black); color: var(--color-white); cursor: pointer;
+      transition: background .4s var(--ease-primary), color .4s var(--ease-primary);
+    }
+    .has-mouse .button:not(:disabled):hover {
+      background: transparent; color: var(--color-black);
+    }
+    @media screen and (min-width: 768px) {
+      .button { font-size: 14px; height: 44px; }
+    }
+
+    /* =============================================================================
+       Library Layout
+       ============================================================================= */
+    .lib-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .lib-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 260px;
+      height: 100vh;
+      background: var(--color-black);
+      color: var(--color-white);
+      overflow-y: auto;
+      z-index: 200;
+      padding: 0;
+      transition: transform .3s ease;
+    }
+
+    .lib-sidebar__header {
+      padding: 32px 24px 24px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+
+    .lib-sidebar__title {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 300;
+      line-height: 1.3;
+      color: var(--color-white);
+      margin-bottom: 6px;
+    }
+
+    .lib-sidebar__subtitle {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,.4);
+    }
+
+    .lib-sidebar__nav {
+      padding: 16px 0;
+    }
+
+    .lib-sidebar__link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 24px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(255,255,255,.65);
+      text-decoration: none;
+      transition: color .2s ease, background .2s ease;
+      line-height: 1.3;
+    }
+
+    .lib-sidebar__link:hover {
+      color: var(--color-white);
+      background: rgba(255,255,255,.05);
+    }
+
+    .lib-sidebar__num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 550;
+      color: rgba(255,255,255,.3);
+      min-width: 20px;
+    }
+
+    /* Mobile toggle */
+    .lib-toggle {
+      display: none;
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 300;
+      width: 40px;
+      height: 40px;
+      background: var(--color-black);
+      color: var(--color-white);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    /* Main content */
+    .lib-main {
+      margin-left: 260px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .lib-header {
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+      padding: 48px 48px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .lib-header__title {
+      font-family: var(--font-serif);
+      font-size: 38px;
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--color-black);
+      margin-bottom: 8px;
+    }
+
+    .lib-header__meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--color-muted);
+    }
+
+    .lib-section {
+      padding: 48px 48px 64px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .lib-section__name {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 300;
+      line-height: 1.3;
+      color: var(--color-black);
+      margin-bottom: 6px;
+    }
+
+    .lib-section__desc {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--color-muted);
+      margin-bottom: 28px;
+      max-width: 600px;
+    }
+
+    .lib-preview {
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      background: #fafafa;
+    }
+
+    .lib-preview--dark {
+      background: var(--color-black);
+    }
+
+    .lib-preview--warm {
+      background: var(--color-warm-bg);
+    }
+
+    .lib-preview__inner {
+      padding: 32px;
+    }
+
+    .lib-preview__inner--flush {
+      padding: 0;
+    }
+
+    .lib-tokens {
+      margin-top: 8px;
+    }
+
+    .lib-tokens__title {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-black);
+      margin-bottom: 12px;
+    }
+
+    .lib-tokens__table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-body);
+      font-size: 13px;
+    }
+
+    .lib-tokens__table th {
+      text-align: left;
+      font-weight: 700;
+      padding: 8px 12px;
+      background: #f4f4f4;
+      border-bottom: 1px solid var(--color-border);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .lib-tokens__table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #eee;
+      vertical-align: top;
+      line-height: 1.4;
+    }
+
+    .lib-tokens__table code {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      background: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 2px;
+      color: var(--color-black);
+    }
+
+    /* Mobile responsive */
+    @media screen and (max-width: 899px) {
+      .lib-sidebar {
+        transform: translateX(-100%);
+      }
+      .lib-sidebar.is-open {
+        transform: translateX(0);
+      }
+      .lib-toggle {
+        display: flex;
+      }
+      .lib-main {
+        margin-left: 0;
+      }
+      .lib-header {
+        padding: 24px 20px 20px;
+      }
+      .lib-header__title {
+        font-size: 28px;
+        padding-left: 44px;
+      }
+      .lib-header__meta {
+        padding-left: 44px;
+      }
+      .lib-section {
+        padding: 32px 20px 48px;
+      }
+      .lib-section__name {
+        font-size: 22px;
+      }
+    }
+
+    /* =============================================================================
+       Component Styles (from performance.html)
+       ============================================================================= */
+
+    /* Hero */
+    .hero { display: flex; flex-direction: column; min-height: 0; }
+    .hero__content { padding: 40px 20px 48px; display: flex; flex-direction: column; justify-content: center; }
+    .hero__eyebrow {
+      font-family: var(--font-display); font-size: 18px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px;
+    }
+    .hero__title {
+      font-family: var(--font-serif); font-size: 26px; font-weight: 300;
+      line-height: 37px; letter-spacing: .5px; color: var(--color-black);
+      margin-block-end: 12px; text-wrap: balance;
+    }
+    .hero__subtitle {
+      font-family: var(--font-body); font-size: 16px; font-weight: 400;
+      line-height: 1.5; color: var(--color-black); margin-block-end: 8px; text-wrap: balance;
+    }
+    .hero__proof {
+      display: flex; align-items: center; gap: 8px;
+      margin-block-start: 16px; padding-block-start: 16px; border-top: 1px solid var(--color-border);
+    }
+    .hero__proof-stars { display: flex; gap: 2px; }
+    .hero__proof-stars svg { width: 14px; height: 14px; }
+    .hero__proof-text {
+      font-family: var(--font-body); font-size: 13px; font-weight: 400;
+      color: var(--color-black); letter-spacing: .025em;
+    }
+    .hero__media { aspect-ratio: 3/4; max-height: 60vh; overflow: hidden; }
+    .hero__media img { width: 100%; height: 100%; object-fit: cover; }
+    @media screen and (min-width: 768px) {
+      .hero { flex-direction: row; max-height: 400px; }
+      .hero__content { flex: 0.8; padding: 40px 40px 40px 48px; }
+      .hero__title { font-size: 32px; line-height: 44px; }
+      .hero__media { flex: 1.2; aspect-ratio: auto; max-height: 400px; }
+    }
+
+    /* Ticker */
+    .ticker { background: var(--color-black); padding: 12px 0; overflow: hidden; }
+    .ticker__track { display: flex; align-items: center; justify-content: center; gap: 16px; white-space: nowrap; }
+    .ticker__item {
+      font-family: var(--font-display); font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.5px; color: var(--color-white); flex-shrink: 0;
+    }
+    .ticker__sep { color: rgba(255,255,255,.4); font-family: var(--font-display); font-size: 11px; letter-spacing: 1.5px; }
+    @media screen and (min-width: 768px) {
+      .ticker__item { font-size: 13px; letter-spacing: 1.8px; }
+      .ticker__sep { font-size: 13px; }
+    }
+
+    /* Buy Box */
+    .buybox { background: var(--color-white); }
+    .buybox__inner { max-width: 1100px; margin: 0 auto; }
+    .buybox__layout { display: flex; flex-direction: column; gap: 32px; }
+    .buybox__gallery { display: flex; flex-direction: column; gap: 10px; }
+    .buybox__gallery-main {
+      aspect-ratio: 1/1; overflow: hidden; border-radius: 3px;
+      background: #fafafa; width: 100%;
+    }
+    .buybox__gallery-main img { width: 100%; height: 100%; object-fit: cover; transition: opacity .25s var(--ease-primary); }
+    .buybox__gallery-thumbs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; order: 1; }
+    .buybox__gallery-thumbs::-webkit-scrollbar { display: none; }
+    .buybox__thumb {
+      flex-shrink: 0; width: 64px; height: 64px; overflow: hidden;
+      border-radius: 2px; border: 1px solid var(--color-border); cursor: pointer;
+      transition: border-color .3s var(--ease-primary); background: #fafafa;
+      padding: 0; appearance: none;
+    }
+    .buybox__thumb.is-active { border-color: var(--color-black); }
+    .buybox__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .buybox__content { display: flex; flex-direction: column; }
+    .buybox__product-name {
+      font-family: var(--font-display); font-size: 22px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.18px; color: var(--color-black);
+      margin-block-end: 8px; line-height: 1.2;
+    }
+    .buybox__rating { display: flex; align-items: center; gap: 8px; margin-block-end: 20px; }
+    .buybox__stars { display: flex; align-items: center; position: relative; height: 16px; color: var(--color-black); }
+    .buybox__stars-outline { display: flex; align-items: center; }
+    .buybox__stars-outline svg, .buybox__stars-filled svg { width: 16px; height: 16px; padding: 1px; flex-shrink: 0; display: block; }
+    .buybox__stars-filled { display: flex; align-items: center; position: absolute; top: 0; left: 0; overflow: hidden; height: 100%; width: 98%; }
+    .buybox__review-count {
+      font-family: var(--font-body); font-size: 14px; font-weight: 400;
+      line-height: 100%; letter-spacing: .025em; color: var(--color-black);
+      cursor: pointer; text-decoration: underline;
+    }
+    .buybox__shade-row { display: flex; flex-wrap: wrap; gap: 10px; margin-block-end: 16px; }
+    .buybox__shade-dot {
+      width: 28px; height: 28px; border-radius: 100%;
+      border: 1px solid var(--color-border); cursor: pointer;
+      transition: border-color .2s var(--ease-primary);
+      display: flex; align-items: center; justify-content: center;
+      padding: 0; background: transparent; appearance: none;
+    }
+    .buybox__shade-dot i { display: block; width: 24px; height: 24px; border-radius: 100%; }
+    .buybox__shade-dot.is-active { border-color: var(--color-black); }
+    .has-mouse .buybox__shade-dot:hover { border-color: var(--color-black); }
+    .buybox__shade-info { font-family: var(--font-body); font-size: 14px; line-height: 1.55; color: var(--color-black); margin-block-end: 12px; }
+    .buybox__shade-name { font-weight: 600; }
+    .buybox__shade-desc { font-weight: 325; color: var(--color-muted); }
+    .buybox__atc.button {
+      display: flex; width: 100%; padding: 0; white-space: nowrap;
+      box-shadow: 0 0 19px rgba(0,0,0,.24); margin-block-end: 16px; font-size: 14px;
+    }
+    .buybox__atc-text { flex-grow: 1; min-width: 120px; text-align: center; }
+    .buybox__atc-price {
+      border-left: 1px solid rgba(255,255,255,1);
+      display: flex; align-items: center; align-self: stretch; flex-shrink: 0;
+      padding: 0 16px; color: #fff; font-family: var(--font-body); font-size: 14px;
+      transition: color .4s var(--ease-primary);
+    }
+    .has-mouse .buybox__atc.button:not(:disabled):hover .buybox__atc-price { color: var(--color-black); }
+    .buybox__trust-badges { display: flex; flex-direction: column; gap: 0; }
+    .buybox__trust-badge {
+      display: flex; align-items: center; gap: 5px;
+      font-family: var(--font-body); font-size: 14px; font-weight: 325;
+      color: var(--color-black); letter-spacing: 0;
+    }
+    .buybox__trust-badge + .buybox__trust-badge { margin-top: 16px; }
+    .buybox__trust-badge svg { width: 20px; height: 20px; flex: 0 0 20px; }
+    .buybox__trust-badge a { text-decoration: underline; color: var(--color-muted); }
+    .buybox__trust-badge .shoppay-badge { display: inline-flex; align-items: center; vertical-align: middle; gap: 1px; }
+    .buybox__trust-badge .shoppay-badge__shop {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 13px; font-weight: 700; font-style: italic; color: #757575; letter-spacing: -0.3px;
+    }
+    .buybox__trust-badge .shoppay-badge__pay {
+      display: inline-flex; align-items: center;
+      background: #757575; color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 11px; font-weight: 700; font-style: italic;
+      letter-spacing: -0.2px; padding: 1px 4px; border-radius: 3px; line-height: 1.2;
+    }
+    @media screen and (min-width: 768px) {
+      .buybox__layout { flex-direction: row; gap: 48px; }
+      .buybox__gallery { flex: 0 0 48%; flex-direction: row; gap: 12px; }
+      .buybox__gallery-thumbs { flex-direction: column; overflow-x: visible; overflow-y: auto; max-height: 480px; gap: 10px; order: 0; }
+      .buybox__gallery-main { flex: 1; order: 1; max-height: 480px; }
+      .buybox__thumb { width: 72px; height: 72px; }
+      .buybox__content { flex: 1; align-self: flex-start; padding-block-start: 8px; max-width: 480px; }
+    }
+
+    /* PDP Accordions */
+    .buybox__accordions { margin-block-start: 24px; border-top: 1px solid #d7d7d7; }
+    .buybox__accordion { border-bottom: 1px solid #d7d7d7; }
+    .buybox__accordion-trigger {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 15px 20px 16px 0; cursor: pointer; list-style: none;
+      font-family: var(--font-display); font-size: 20px; font-weight: 400;
+      letter-spacing: 0.5px; text-transform: uppercase; color: var(--color-black);
+      background: transparent; border: none; width: 100%; text-align: left; position: relative;
+    }
+    .buybox__accordion-trigger::-webkit-details-marker { display: none; }
+    .buybox__accordion-trigger::after {
+      content: ""; position: absolute; right: 0; top: 49%;
+      height: 1px; width: 17px; background-color: var(--color-black);
+    }
+    .buybox__accordion-trigger::before {
+      content: ""; position: absolute; right: 8.5px; top: 50%;
+      transform: translateY(-50%); height: 17px; width: 1px;
+      background-color: var(--color-black); opacity: 1; transition: opacity .25s ease;
+    }
+    .buybox__accordion[open] .buybox__accordion-trigger::before { opacity: 0; }
+    .buybox__accordion-body {
+      font-family: var(--font-body); font-size: 14px; font-weight: 400;
+      line-height: 1.7; color: var(--color-black); padding-block-end: 18px; padding-inline-end: 20px;
+    }
+    .buybox__accordion-body p + p { margin-block-start: 12px; }
+    .buybox__accordion-body ul { list-style: disc; padding-inline-start: 20px; margin-block-start: 8px; }
+    .buybox__accordion-body li { margin-block-end: 4px; }
+
+    /* Review Cards */
+    .cclp-reviews { padding: 56px 24px; background: var(--color-warm-bg); }
+    .cclp-reviews__inner { max-width: 1100px; margin: 0 auto; }
+    .cclp-reviews__title {
+      font-family: var(--font-serif); font-size: 32px; font-weight: 300;
+      line-height: 1.2; letter-spacing: .5px; color: var(--color-black);
+      text-align: center; text-wrap: balance; margin-block-end: 32px;
+    }
+    .cclp-reviews__grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .cclp-reviews__card {
+      background: var(--color-white); border: 1px solid var(--color-border);
+      border-radius: 3px; padding: 32px 28px;
+    }
+    .cclp-reviews__stars { display: flex; align-items: center; gap: 3px; margin-block-end: 16px; }
+    .cclp-reviews__stars svg { width: 14px; height: 14px; flex-shrink: 0; display: block; }
+    .cclp-reviews__card-title {
+      font-family: var(--font-serif); font-size: 20px; font-weight: 300;
+      line-height: 1.3; color: var(--color-black); margin-block-end: 12px;
+    }
+    .cclp-reviews__card-body {
+      font-family: var(--font-body); font-size: 14px; font-weight: 400;
+      line-height: 1.6; color: var(--color-black);
+    }
+    .cclp-reviews__card-footer {
+      border-top: 1px solid #e8e8e8; padding-top: 16px; margin-top: 16px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .cclp-reviews__card-name { font-family: var(--font-body); font-size: 13px; font-weight: 700; color: var(--color-black); }
+    .cclp-reviews__card-badge {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 550;
+      letter-spacing: 1px; text-transform: uppercase; color: rgba(0,0,0,0.5);
+    }
+    @media screen and (min-width: 768px) {
+      .cclp-reviews__title { font-size: 48px; }
+      .cclp-reviews__grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    }
+
+    /* Junip Full Reviews */
+    .junip-reviews { background: #fff; padding: 40px 24px; }
+    .junip-reviews__inner { max-width: 1100px; margin: 0 auto; }
+    .junip-reviews__stats {
+      display: flex; gap: 30px; border-top: 1px solid #e0e0e0;
+      border-bottom: 1px solid #e0e0e0; padding: 28px 35px 35px;
+    }
+    .junip-reviews__stat {
+      flex: 1; background: #f4f4f4; padding: 36px 20px;
+      text-align: center; border-radius: 4px;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .junip-reviews__stat-number {
+      font-family: var(--font-mono); font-size: 40px; font-weight: normal;
+      line-height: 1; color: var(--color-black); margin: 0;
+    }
+    .junip-reviews__stat-stars { display: flex; gap: 3px; }
+    .junip-reviews__stat-stars svg { width: 16px; height: 16px; color: var(--color-black); }
+    .junip-reviews__stat-desc {
+      font-family: var(--font-body); font-size: 1rem; font-weight: 400;
+      line-height: 1.2; color: var(--color-black);
+    }
+    .junip-reviews__filters { display: flex; align-items: center; gap: 12px; padding: 24px 0; flex-wrap: wrap; }
+    .junip-reviews__search { position: relative; flex: 0 0 220px; }
+    .junip-reviews__search-input {
+      width: 100%; height: 38px; border: 1px solid #000; border-radius: 2px;
+      padding: 0 12px 0 36px; font-family: var(--font-body); font-size: 13px;
+      color: var(--color-black); background: #fff;
+    }
+    .junip-reviews__search-input::placeholder { color: #757575; }
+    .junip-reviews__search-icon {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      width: 16px; height: 16px; color: #757575; pointer-events: none;
+    }
+    .junip-reviews__pills { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; }
+    .junip-reviews__pill {
+      border: 1px solid #000; border-radius: 2px; padding: 8px 12px;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 550;
+      text-transform: uppercase; letter-spacing: 0.4px; color: var(--color-black);
+      background: #fff; cursor: pointer; white-space: nowrap;
+    }
+    .junip-reviews__review { padding: 24px 0; border-bottom: 1px solid #e0e0e0; }
+    .junip-reviews__review-author { font-family: var(--font-body); font-size: 14px; font-weight: 700; color: var(--color-black); margin: 0; }
+    .junip-reviews__review-verified { font-family: var(--font-body); font-size: 13px; font-weight: 400; color: #757575; margin: 2px 0 12px; }
+    .junip-reviews__review-stars-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .junip-reviews__review-stars { display: flex; gap: 2px; }
+    .junip-reviews__review-stars svg { width: 14px; height: 14px; color: var(--color-black); }
+    .junip-reviews__review-stars svg.star-empty { color: #d0d0d0; }
+    .junip-reviews__review-date { font-family: var(--font-body); font-size: 13px; font-weight: 400; color: #757575; }
+    .junip-reviews__review-title { font-family: var(--font-body); font-size: 16px; font-weight: 700; color: var(--color-black); margin: 0 0 8px; }
+    .junip-reviews__review-body { font-family: var(--font-body); font-size: 14px; font-weight: 400; line-height: 1.6; color: var(--color-black); margin: 0; }
+    @media (max-width: 749px) {
+      .junip-reviews__stats { flex-direction: column; gap: 16px; padding: 20px 0; border: none; }
+      .junip-reviews__stat { padding: 28px 16px; }
+      .junip-reviews__stat-number { font-size: 24px; }
+      .junip-reviews__filters { flex-direction: column; align-items: stretch; }
+      .junip-reviews__search { flex: 1 1 100%; }
+      .junip-reviews__pills { margin-left: 0; }
+    }
+
+    /* Press Section */
+    .cclp-press { background: var(--color-black); padding: 48px 0 24px; }
+    .cclp-press__inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .cclp-press__slide { display: none; flex-direction: column; align-items: center; text-align: center; }
+    .cclp-press__slide.is-active { display: flex; }
+    .cclp-press__slide-logo { height: 20px; width: auto; margin-block-end: 20px; opacity: 1; }
+    .cclp-press__slide-quote {
+      font-family: var(--font-serif); font-size: 20px; font-weight: 300;
+      line-height: 1.5; letter-spacing: 0.3px; color: var(--color-white); text-wrap: balance;
+    }
+    .cclp-press__logos { display: none; }
+    .cclp-press__desktop-quote { display: none; }
+    .cclp-press__dots { display: flex; justify-content: center; gap: 8px; margin-block-start: 24px; }
+    .cclp-press__dot {
+      width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3);
+      cursor: pointer; transition: background .2s var(--ease-primary); border: none; padding: 0;
+    }
+    .cclp-press__dot.is-active { background: var(--color-white); }
+    .cclp-press__progress { width: 155px; height: 2px; background: #333333; margin: 16px auto 0; border-radius: 1px; overflow: hidden; }
+    .cclp-press__progress-fill { height: 100%; background: var(--color-white); width: 0%; transition: width 0.1s linear; }
+    @media screen and (min-width: 1024px) {
+      .cclp-press { padding: 64px 0 42px; }
+      .cclp-press__inner { padding: 0 40px; }
+      .cclp-press__slide { display: none !important; }
+      .cclp-press__dots { display: none; }
+      .cclp-press__logos {
+        display: flex; align-items: center; justify-content: center; gap: 48px; margin-block-end: 32px;
+      }
+      .cclp-press__logo-btn {
+        background: none; border: none; padding: 0; cursor: pointer;
+        opacity: 0.4; transition: opacity .3s var(--ease-primary); display: flex; align-items: center;
+      }
+      .cclp-press__logo-btn.is-active { opacity: 1; }
+      .cclp-press__logo-btn svg { height: 16px; width: auto; }
+      .cclp-press__desktop-quote { display: block; text-align: center; }
+      .cclp-press__desktop-quote-text {
+        font-family: var(--font-serif); font-size: 24px; font-weight: 300;
+        line-height: 1.5; letter-spacing: 0.3px; color: var(--color-white);
+        max-width: 600px; margin: 0 auto; text-wrap: balance;
+      }
+      .cclp-press__progress { margin-top: 32px; }
+    }
+
+    /* FAQ */
+    .casting-faq { padding: 60px 24px; background: var(--color-white); interpolate-size: allow-keywords; }
+    .casting-faq__inner { max-width: 745px; margin: 0 auto; }
+    .casting-faq__heading {
+      font-family: var(--font-serif); font-size: 26px; font-weight: 300;
+      line-height: 1.3; color: var(--color-black); text-align: center;
+      margin-block-end: 32px; text-wrap: balance;
+    }
+    .casting-faq__item { border-bottom: 1px solid #cccccc; }
+    .casting-faq__item:first-of-type { border-top: 1px solid #cccccc; }
+    .casting-faq__question {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 18px 0; cursor: pointer; list-style: none;
+      font-family: var(--font-display); font-size: 16px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .5px; color: var(--color-black); width: 100%;
+    }
+    .casting-faq__question::-webkit-details-marker { display: none; }
+    .casting-faq__question-icon { width: 16px; height: 16px; flex-shrink: 0; }
+    .casting-faq__question-icon .casting-faq__icon-vline { transition: opacity .3s var(--ease-primary); }
+    .casting-faq__item[open] .casting-faq__question-icon .casting-faq__icon-vline { opacity: 0; }
+    .casting-faq__item ::details-content {
+      opacity: 0; block-size: 0; overflow: hidden;
+      transition: opacity 300ms var(--ease-primary), block-size 300ms var(--ease-primary);
+    }
+    .casting-faq__item[open] ::details-content { opacity: 1; block-size: auto; }
+    .casting-faq__answer {
+      font-family: var(--font-body); font-size: 14px; font-weight: 400;
+      line-height: 25px; color: var(--color-black); padding-block-end: 20px; max-width: 600px;
+    }
+    @media screen and (min-width: 1024px) {
+      .casting-faq__heading { font-size: 38px; letter-spacing: 0.05em; }
+      .casting-faq__question { font-size: 18px; }
+      .casting-faq__answer { font-size: 16px; line-height: 20px; }
+    }
+
+    /* Shade Carousel */
+    .shade-grid { padding: 56px 20px; background: var(--color-white); }
+    .shade-grid__header { display: flex; align-items: baseline; justify-content: space-between; margin-block-end: 24px; }
+    .shade-grid__title {
+      font-family: var(--font-serif); font-size: 26px; font-weight: 300;
+      line-height: 37px; color: var(--color-black); text-wrap: balance;
+    }
+    .shade-grid__carousel { position: relative; overflow: visible; }
+    .shade-grid__scroll {
+      display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;
+      scroll-snap-type: x mandatory; padding-inline: 0;
+    }
+    .shade-grid__scroll::-webkit-scrollbar { display: none; }
+    .shade-grid__card { flex-shrink: 0; width: 160px; scroll-snap-align: start; }
+    .shade-grid__card-media { aspect-ratio: 1/1; overflow: hidden; border-radius: 3px; margin-block-end: 12px; }
+    .shade-grid__card-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+    .shade-grid__card-name {
+      font-family: var(--font-display); font-size: 15px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .98px; text-align: center; margin-block-end: 4px;
+      color: var(--color-black);
+    }
+    .shade-grid__card-desc {
+      font-family: var(--font-body); font-size: 13px; font-weight: 400;
+      color: var(--color-muted); text-align: center;
+    }
+    .shade-grid__arrow {
+      position: absolute; top: 35%; transform: translateY(-50%);
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--color-white); border: 1px solid var(--color-border);
+      display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2;
+      transition: background .2s var(--ease-primary);
+    }
+    .has-mouse .shade-grid__arrow:hover { background: var(--color-black); border-color: var(--color-black); color: var(--color-white); }
+    .shade-grid__arrow--prev { left: -18px; }
+    .shade-grid__arrow--next { right: -18px; }
+    .shade-grid__arrow svg { width: 16px; height: 16px; }
+
+    /* Sticky CTA */
+    .sticky-cta-demo {
+      background: var(--color-white); border-top: 1px solid var(--color-border);
+      padding: 12px 20px; display: flex; align-items: center;
+      justify-content: center; gap: 16px;
+    }
+    .sticky-cta__name {
+      font-family: var(--font-display); font-size: 16px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.18px; color: var(--color-black);
+    }
+    .sticky-cta__price {
+      font-family: var(--font-body); font-size: 14px; font-weight: 400; color: var(--color-black);
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Mobile sidebar toggle -->
+  <button class="lib-toggle" id="libToggle" aria-label="Toggle navigation">
+    <svg width="18" height="14" viewBox="0 0 18 14" fill="none"><line y1="1" x2="18" y2="1" stroke="white" stroke-width="2"/><line y1="7" x2="18" y2="7" stroke="white" stroke-width="2"/><line y1="13" x2="18" y2="13" stroke="white" stroke-width="2"/></svg>
+  </button>
+
+  <div class="lib-layout">
+
+    <!-- ================================================================
+         Sidebar Navigation
+         ================================================================ -->
+    <aside class="lib-sidebar" id="libSidebar">
+      <div class="lib-sidebar__header">
+        <div class="lib-sidebar__title">Component Library</div>
+        <div class="lib-sidebar__subtitle">Jones Road Beauty</div>
+      </div>
+      <nav class="lib-sidebar__nav">
+        <a href="#comp-1" class="lib-sidebar__link"><span class="lib-sidebar__num">01</span> Star Rating</a>
+        <a href="#comp-2" class="lib-sidebar__link"><span class="lib-sidebar__num">02</span> Section Eyebrow</a>
+        <a href="#comp-3" class="lib-sidebar__link"><span class="lib-sidebar__num">03</span> Buy Box</a>
+        <a href="#comp-4" class="lib-sidebar__link"><span class="lib-sidebar__num">04</span> Trust Badge Icons</a>
+        <a href="#comp-5" class="lib-sidebar__link"><span class="lib-sidebar__num">05</span> Shop Pay Badge</a>
+        <a href="#comp-6" class="lib-sidebar__link"><span class="lib-sidebar__num">06</span> Review Cards</a>
+        <a href="#comp-7" class="lib-sidebar__link"><span class="lib-sidebar__num">07</span> Junip Full Reviews</a>
+        <a href="#comp-8" class="lib-sidebar__link"><span class="lib-sidebar__num">08</span> Press Section</a>
+        <a href="#comp-9" class="lib-sidebar__link"><span class="lib-sidebar__num">09</span> FAQ Section</a>
+        <a href="#comp-10" class="lib-sidebar__link"><span class="lib-sidebar__num">10</span> Hero with Social Proof</a>
+        <a href="#comp-11" class="lib-sidebar__link"><span class="lib-sidebar__num">11</span> Shade Carousel</a>
+        <a href="#comp-12" class="lib-sidebar__link"><span class="lib-sidebar__num">12</span> Ticker Bar</a>
+        <a href="#comp-13" class="lib-sidebar__link"><span class="lib-sidebar__num">13</span> Sticky CTA</a>
+        <a href="#comp-14" class="lib-sidebar__link"><span class="lib-sidebar__num">14</span> PDP Accordions</a>
+      </nav>
+    </aside>
+
+    <!-- ================================================================
+         Main Content
+         ================================================================ -->
+    <main class="lib-main">
+
+      <header class="lib-header">
+        <h1 class="lib-header__title">JRB Component Library</h1>
+        <p class="lib-header__meta">Last updated: March 2026 &middot; 14 components &middot; Source: Emily DiDonato x Blushing Stick LP</p>
+      </header>
+
+      <!-- ============================================================
+           1. Star Rating (Junip Pattern)
+           ============================================================ -->
+      <section class="lib-section" id="comp-1">
+        <h2 class="lib-section__name">Star Rating (Junip Pattern)</h2>
+        <p class="lib-section__desc">Two-layer star system from Junip. Outline stars as base, filled stars clipped to a percentage width for partial ratings. Used in buy box, hero proof bar, and review cards.</p>
+
+        <div class="lib-preview">
+          <div class="lib-preview__inner" style="display: flex; flex-direction: column; gap: 24px;">
+            <!-- Buy box style (outline + filled overlay) -->
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-muted); margin-bottom: 12px;">Buy Box Pattern (4.9/5 = 98% fill)</div>
+              <div class="buybox__stars" aria-label="4.9 out of 5 stars" style="height: 20px;">
+                <div class="buybox__stars-outline">
+                  <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                  <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                  <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                  <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                  <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                </div>
+                <div class="buybox__stars-filled" style="width: 98%;">
+                  <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                  <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                  <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                  <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                  <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                </div>
+              </div>
+            </div>
+            <!-- Filled stars (hero/review card style) -->
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-muted); margin-bottom: 12px;">Hero / Review Card Pattern (all filled, 14px)</div>
+              <div style="display: flex; gap: 2px;">
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lib-tokens">
+          <div class="lib-tokens__title">Key Tokens</div>
+          <table class="lib-tokens__table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Star size (buy box)</td><td><code>16px</code> with 1px padding</td></tr>
+            <tr><td>Star size (hero/cards)</td><td><code>14px</code></td></tr>
+            <tr><td>Color (filled)</td><td><code>currentColor</code> (inherits #000)</td></tr>
+            <tr><td>Fill width formula</td><td><code>(rating / 5) * 100%</code></td></tr>
+            <tr><td>Empty star color</td><td><code>#d0d0d0</code></td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           2. Section Eyebrow
+           ============================================================ -->
+      <section class="lib-section" id="comp-2">
+        <h2 class="lib-section__name">Section Eyebrow</h2>
+        <p class="lib-section__desc">Used above section titles throughout the LP. GeogrotesqueCondBold, uppercase, small size. Provides section context before the Canela headline.</p>
+
+        <div class="lib-preview">
+          <div class="lib-preview__inner">
+            <p style="font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px;">Why You'll Love It</p>
+            <p style="font-family: var(--font-serif); font-size: 26px; font-weight: 300; line-height: 37px; letter-spacing: .5px; color: var(--color-black);">5 reasons to try Blushing Stick</p>
+          </div>
+        </div>
+
+        <div class="lib-tokens">
+          <div class="lib-tokens__title">Key Tokens</div>
+          <table class="lib-tokens__table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Font family</td><td><code>var(--font-display)</code> GeogrotesqueCondBold</td></tr>
+            <tr><td>Font size</td><td><code>18px</code></td></tr>
+            <tr><td>Font weight</td><td><code>700</code></td></tr>
+            <tr><td>Text transform</td><td><code>uppercase</code></td></tr>
+            <tr><td>Letter spacing</td><td><code>1px</code></td></tr>
+            <tr><td>Margin bottom</td><td><code>16px</code></td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           3. Buy Box (LP Pattern)
+           ============================================================ -->
+      <section class="lib-section" id="comp-3">
+        <h2 class="lib-section__name">Buy Box (LP Pattern)</h2>
+        <p class="lib-section__desc">Full PDP-style buy box with gallery, thumbnails, shade swatches, ATC button, trust badges, and accordions. The core conversion component on every landing page.</p>
+
+        <div class="lib-preview">
+          <div class="lib-preview__inner" style="padding: 24px;">
+            <div class="buybox">
+              <div class="buybox__inner">
+                <div class="buybox__layout">
+                  <div class="buybox__gallery">
+                    <div class="buybox__gallery-thumbs">
+                      <button class="buybox__thumb is-active"><img src="https://air-prod.imgix.net/887c4efb-5940-4d96-81d0-d2737d48eb11.jpg?w=150&h=150&fit=crop&auto=format" alt="Product group" loading="lazy"></button>
+                      <button class="buybox__thumb"><img src="https://air-prod.imgix.net/098bcfc8-53ff-48d9-8d8c-7a400b603e04.jpg?w=150&h=150&fit=crop&auto=format" alt="Joy swatch" loading="lazy"></button>
+                      <button class="buybox__thumb"><img src="https://air-prod.imgix.net/eec626af-03d8-4668-8b7c-69295e2314a2.jpg?w=150&h=150&fit=crop&auto=format" alt="Arm swatches" loading="lazy"></button>
+                    </div>
+                    <div class="buybox__gallery-main">
+                      <img src="https://air-prod.imgix.net/887c4efb-5940-4d96-81d0-d2737d48eb11.jpg?w=800&h=800&fit=crop&auto=format" alt="Blushing Stick product" loading="lazy">
+                    </div>
+                  </div>
+                  <div class="buybox__content">
+                    <h2 class="buybox__product-name">Blushing Stick</h2>
+                    <div class="buybox__rating">
+                      <div class="buybox__stars" aria-label="4.9 out of 5 stars">
+                        <div class="buybox__stars-outline">
+                          <svg viewBox="0 0 18 17"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                          <svg viewBox="0 0 18 17"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                          <svg viewBox="0 0 18 17"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                          <svg viewBox="0 0 18 17"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                          <svg viewBox="0 0 18 17"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                        </div>
+                        <div class="buybox__stars-filled" style="width: 98%;">
+                          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                        </div>
+                      </div>
+                      <span class="buybox__review-count">(1,657 Reviews)</span>
+                    </div>
+                    <div class="buybox__shade-row">
+                      <button class="buybox__shade-dot is-active" title="Joy"><i style="background: #e8938b;"></i></button>
+                      <button class="buybox__shade-dot" title="Pretty"><i style="background: #e8a9a0;"></i></button>
+                      <button class="buybox__shade-dot" title="Bare"><i style="background: #d4a995;"></i></button>
+                      <button class="buybox__shade-dot" title="Chic"><i style="background: #c48e8e;"></i></button>
+                      <button class="buybox__shade-dot" title="Pinch"><i style="background: #e8a48a;"></i></button>
+                      <button class="buybox__shade-dot" title="Flush"><i style="background: #d47a7a;"></i></button>
+                      <button class="buybox__shade-dot" title="Cheeky"><i style="background: #e06b8a;"></i></button>
+                      <button class="buybox__shade-dot" title="Miami"><i style="background: #d98a6a;"></i></button>
+                      <button class="buybox__shade-dot" title="Noir"><i style="background: #6b3a4a;"></i></button>
+                    </div>
+                    <p class="buybox__shade-info"><span class="buybox__shade-name">Joy</span><span class="buybox__shade-desc">&nbsp; is a warm rosy pink</span></p>
+                    <a href="#" class="buybox__atc button" onclick="return false"><span class="buybox__atc-text">Add to Cart</span><span class="buybox__atc-price">$34</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lib-tokens">
+          <div class="lib-tokens__title">Key Tokens</div>
+          <table class="lib-tokens__table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Product name font</td><td><code>var(--font-display) 22px 700</code></td></tr>
+            <tr><td>Letter spacing</td><td><code>1.18px</code></td></tr>
+            <tr><td>Shade dot size</td><td><code>28px</code> outer, <code>24px</code> inner</td></tr>
+            <tr><td>ATC shadow</td><td><code>0 0 19px rgba(0,0,0,.24)</code></td></tr>
+            <tr><td>Gallery thumb size</td><td><code>64px</code> mobile, <code>72px</code> desktop</td></tr>
+            <tr><td>Desktop layout gap</td><td><code>48px</code></td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           4. Trust Badge Icons
+           ============================================================ -->
+      <section class="lib-section" id="comp-4">
+        <h2 class="lib-section__name">Trust Badge Icons</h2>
+        <p class="lib-section__desc">Real SVGs from the JRB Shopify theme snippets. Three badges: Shop Pay installments, free shipping, and free returns. Always used below the ATC button.</p>
+
+        <div class="lib-preview">
+          <div class="lib-preview__inner">
+            <div class="buybox__trust-badges">
+              <div class="buybox__trust-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8.66157 2.00354C6.71158 2.00354 4.8783 2.6118 3.56651 3.49431C3.47745 3.55411 3.44658 3.67715 3.50156 3.77209L5.08407 6.53919C5.14258 6.63763 5.26604 6.67281 5.36218 6.61304C6.35791 5.99774 7.49769 5.67777 8.66157 5.68481C11.796 5.68481 14.0997 7.94913 14.0997 10.9413C14.0997 13.4904 12.2561 15.3785 9.91805 15.3785C8.01275 15.3785 6.691 14.2428 6.691 12.6395C6.691 11.7218 7.072 10.9694 8.0642 10.4385C8.16708 10.3822 8.20502 10.2521 8.14329 10.1501L6.64985 7.56236C6.60162 7.47799 6.49874 7.43932 6.40582 7.47446C4.40438 8.23393 3 10.0622 3 12.5165C3 16.2294 5.88753 19 9.91484 19C14.6183 19 18 15.6633 18 10.878C18 5.74808 14.0656 2 8.65482 2L8.66157 2.00354Z" fill="black"/></svg>
+                <span>Pay in 2 interest-free installments of <strong>$17.00</strong> with <span class="shoppay-badge"><span class="shoppay-badge__shop">shop</span><span class="shoppay-badge__pay">Pay</span></span> <a href="#">Learn more</a></span>
+              </div>
+              <div class="buybox__trust-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.16667 9.16667V10H10.8333V4.16667H2.5V3.33333C2.5 2.87333 2.87333 2.5 3.33333 2.5H11.6667C12.1267 2.5 12.5 2.87333 12.5 3.33333V5H16.3892C17.32 5 17.7225 5.48 18.0025 5.9225C18.4975 6.70583 19.2825 7.94917 19.76 8.7375C19.9167 8.9975 20 9.29583 20 9.6V13.3333C20 14.2408 19.3808 15 18.3333 15H17.5C17.5 16.38 16.38 17.5 15 17.5C13.62 17.5 12.5 16.38 12.5 15H9.16667C9.16667 16.38 8.04667 17.5 6.66667 17.5C5.28667 17.5 4.16667 16.38 4.16667 15H3.33333C2.87333 15 2.5 14.6267 2.5 14.1667V9.16667H0.833333V7.5H6.66667V9.16667H4.16667Z" fill="black"/></svg>
+                <span>Free shipping on US orders over $55</span>
+              </div>
+              <div class="buybox__trust-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11.1445 4.83667L16.2314 7.25952L16.2256 7.2439L16.7861 7.52417L16.8125 7.53687H16.8115L16.8154 7.53882H16.8174L16.707 7.76245L16.9385 7.67358L17.04 7.93433L17.0605 7.98804L17.0566 8.04468C17.0077 8.73225 17.0187 9.4525 17.043 10.1873L17.0957 11.6658C17.1135 12.2824 17.1188 12.8976 17.083 13.4929L17.0557 13.8474C17.0453 13.9601 17.0257 14.0749 16.958 14.1804C16.893 14.2815 16.7998 14.3486 16.7178 14.4041L16.7002 14.4158L16.6807 14.4246C15.8877 14.787 15.1039 15.1728 14.3174 15.5613C13.9246 15.7553 13.531 15.95 13.1357 16.1423L11.9443 16.7097C11.9045 16.7281 11.8427 16.7585 11.7637 16.7966C11.6868 16.8337 11.597 16.8763 11.5078 16.9167C11.4194 16.9569 11.3271 16.9965 11.2461 17.0261C11.2057 17.0409 11.1642 17.0551 11.125 17.0652C11.0908 17.0739 11.0383 17.084 10.9834 17.0818V17.0828Z" fill="black" stroke="black" stroke-width="0.5"/><path d="M19.9727 6.73059C20.1223 6.73467 20.244 6.80412 20.333 6.88977C20.4296 6.98282 20.4989 7.10423 20.5498 7.21399C20.5994 7.32082 20.6414 7.44161 20.6758 7.54993L20.7559 7.81165V7.81262L20.8389 8.08118C22.4696 13.642 19.152 19.5402 13.5459 20.9415L13.2734 21.006C9.82411 21.7682 6.36422 20.7439 3.84961 18.3575L3.68066 19.9298Z" fill="black" stroke="black" stroke-width="0.5"/></svg>
+                <span>Free &amp; Easy Returns</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lib-tokens">
+          <div class="lib-tokens__title">Key Tokens</div>
+          <table class="lib-tokens__table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Icon size</td><td><code>20px x 20px</code></td></tr>
+            <tr><td>Font</td><td><code>var(--font-body) 14px 325</code></td></tr>
+            <tr><td>Gap (icon to text)</td><td><code>5px</code></td></tr>
+            <tr><td>Badge spacing</td><td><code>16px</code> between badges</td></tr>
+            <tr><td>Link color</td><td><code>#757575</code> with underline</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           5. Shop Pay Badge
+           ============================================================ -->
+      <section class="lib-section" id="comp-5">
+        <h2 class="lib-section__name">Shop Pay Badge (CSS-styled)</h2>
+        <p class="lib-section__desc">CSS recreation of the Shop Pay logo used in the installment trust badge. Uses system fonts in italic with a gray pill for "Pay".</p>
+
+        <div class="lib-preview">
+          <div class="lib-preview__inner" style="display: flex; align-items: center; gap: 16px;">
+            <span class="buybox__trust-badge" style="margin:0;"><span class="shoppay-badge"><span class="shoppay-badge__shop">shop</span><span class="shoppay-badge__pay">Pay</span></span></span>
+            <span style="font-family: var(--font-body); font-size: 14px; font-weight: 325; color: var(--color-muted);">-- inline with text</span>
+          </div>
+        </div>
+
+        <div class="lib-tokens">
+          <div class="lib-tokens__title">Key Tokens</div>
+          <table class="lib-tokens__table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>"shop" font</td><td><code>-apple-system 13px 700 italic</code></td></tr>
+            <tr><td>"shop" color</td><td><code>#757575</code></td></tr>
+            <tr><td>"Pay" bg</td><td><code>#757575</code></td></tr>
+            <tr><td>"Pay" font</td><td><code>-apple-system 11px 700 italic</code></td></tr>
+            <tr><td>"Pay" padding</td><td><code>1px 4px</code></td></tr>
+            <tr><td>"Pay" border-radius</td><td><code>3px</code></td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           6. Review Cards
+           ============================================================ -->
+      <section class="lib-section" id="comp-6">
+        <h2 class="lib-section__name">Review Cards (cclp-review-cards)</h2>
+        <p class="lib-section__desc">Three-up grid of customer review cards on the warm beige background. Used for social proof before the full Junip reviews section.</p>
+
+        <div class="lib-preview lib-preview--warm">
+          <div class="lib-preview__inner--flush">
+            <div class="cclp-reviews" style="padding: 40px 24px;">
+              <div class="cclp-reviews__inner">
+                <h2 class="cclp-reviews__title">Loved by 6,500+ customers</h2>
+                <div class="cclp-reviews__grid">
+                  <div class="cclp-reviews__card">
+                    <div class="cclp-reviews__stars">
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                    </div>
+                    <p class="cclp-reviews__card-title">"The only lip + cheek product I reach for"</p>
+                    <p class="cclp-reviews__card-body">I've been using Joy for 3 weeks now and it's the only lip + cheek product I reach for. The staying power is incredible.</p>
+                    <div class="cclp-reviews__card-footer"><span class="cclp-reviews__card-name">Amanda R.</span><span class="cclp-reviews__card-badge">Verified Buyer</span></div>
+                  </div>
+                  <div class="cclp-reviews__card">
+                    <div class="cclp-reviews__stars">
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                    </div>
+                    <p class="cclp-reviews__card-title">"The perfect shade for medium-deep skin"</p>
+                    <p class="cclp-reviews__card-body">Cheeky is the perfect shade for medium-deep skin. It gives me that just-pinched glow without looking ashy or chalky.</p>
+                    <div class="cclp-reviews__card-footer"><span class="cclp-reviews__card-name">Priya K.</span><span class="cclp-reviews__card-badge">Verified Buyer</span></div>
+                  </div>
+                  <div class="cclp-reviews__card">
+                    <div class="cclp-reviews__stars">
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                    </div>
+                    <p class="cclp-reviews__card-title">"Love the formula but wish there were more deep shades"</p>
+                    <p class="cclp-reviews__card-body">Love the formula but I wish there were more deep shades. Noir is beautiful but the texture is superb.</p>
+                    <div class="cclp-reviews__card-footer"><span class="cclp-reviews__card-name">Kate D.</span><span class="cclp-reviews__card-badge">Verified Buyer</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lib-tokens">
+          <div class="lib-tokens__title">Key Tokens</div>
+          <table class="lib-tokens__table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Background</td><td><code>var(--color-warm-bg)</code> #f6f2eb</td></tr>
+            <tr><td>Card padding</td><td><code>32px 28px</code></td></tr>
+            <tr><td>Card title font</td><td><code>var(--font-serif) 20px 300</code></td></tr>
+            <tr><td>Card body font</td><td><code>var(--font-body) 14px 400</code></td></tr>
+            <tr><td>Badge font</td><td><code>var(--font-mono) 10px 550 uppercase</code></td></tr>
+            <tr><td>Grid (desktop)</td><td><code>repeat(3, 1fr)</code> gap 20px</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           7. Junip Full Reviews
+           ============================================================ -->
+      <section class="lib-section" id="comp-7">
+        <h2 class="lib-section__name">Junip Full Reviews</h2>
+        <p class="lib-section__desc">Full reviews section with stat cards, search/filter bar, and individual review entries. Mirrors the Junip widget layout used on the JRB site.</p>
+
+        <div class="lib-preview">
+          <div class="lib-preview__inner--flush">
+            <div class="junip-reviews" style="padding: 40px 24px;">
+              <div class="junip-reviews__inner">
+                <div class="junip-reviews__stats">
+                  <div class="junip-reviews__stat">
+                    <span class="junip-reviews__stat-number">4.9</span>
+                    <div class="junip-reviews__stat-stars">
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                    </div>
+                    <div class="junip-reviews__stat-desc">Based on 1,657 Reviews</div>
+                  </div>
+                  <div class="junip-reviews__stat"><h2 class="junip-reviews__stat-number">98%</h2><div class="junip-reviews__stat-desc">would recommend to a friend</div></div>
+                  <div class="junip-reviews__stat"><h2 class="junip-reviews__stat-number">4.8</h2><div class="junip-reviews__stat-desc">average quality rating</div></div>
+                </div>
+                <div class="junip-reviews__filters">
+                  <div class="junip-reviews__search">
+                    <svg class="junip-reviews__search-icon" viewBox="0 0 24 24" fill="none"><path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <input type="text" class="junip-reviews__search-input" placeholder="Search reviews">
+                  </div>
+                  <div class="junip-reviews__pills">
+                    <span class="junip-reviews__pill">Sort by: Latest</span>
+                    <span class="junip-reviews__pill">Age</span>
+                    <span class="junip-reviews__pill">Skin Tone</span>
+                    <span class="junip-reviews__pill">Rating</span>
+                  </div>
+                </div>
+                <div class="junip-reviews__review">
+                  <div class="junip-reviews__review-author">Sarah M.</div>
+                  <div class="junip-reviews__review-verified">Verified buyer</div>
+                  <div class="junip-reviews__review-stars-row">
+                    <div class="junip-reviews__review-stars">
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                      <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                    </div>
+                    <span class="junip-reviews__review-date">3 days ago</span>
+                  </div>
+                  <h3 class="junip-reviews__review-title">My new daily essential</h3>
+                  <p class="junip-reviews__review-body">I apply Joy to my cheeks and lips every morning. The cream-to-powder formula blends so seamlessly.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lib-tokens">
+          <div class="lib-tokens__title">Key Tokens</div>
+          <table class="lib-tokens__table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Stat card bg</td><td><code>#f4f4f4</code> border-radius 4px</td></tr>
+            <tr><td>Stat number font</td><td><code>var(--font-mono) 40px</code></td></tr>
+            <tr><td>Search input</td><td><code>height: 38px</code>, border: 1px solid #000</td></tr>
+            <tr><td>Filter pills</td><td><code>var(--font-mono) 11px 550 uppercase</code></td></tr>
+            <tr><td>Review border</td><td><code>1px solid #e0e0e0</code></td></tr>
+            <tr><td>Empty star color</td><td><code>#d0d0d0</code> (.star-empty)</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           8. Press Section
+           ============================================================ -->
+      <section class="lib-section" id="comp-8">
+        <h2 class="lib-section__name">Press Section (cclp-press)</h2>
+        <p class="lib-section__desc">Auto-advancing press carousel. Mobile: single quote slides with dots. Desktop: logo row with quote below. Uses real SVG logos from the JRB theme. Auto-advances every 5 seconds with progress bar.</p>
+
+        <div class="lib-preview lib-preview--dark">
+          <div class="lib-preview__inner--flush">
+            <section class="cclp-press" id="pressSection">
+              <div class="cclp-press__inner">
+                <div class="cclp-press__slide is-active" data-press-slide="0">
+                  <svg class="cclp-press__slide-logo" xmlns="http://www.w3.org/2000/svg" width="81" height="22" viewBox="0 0 81 22" fill="none"><path d="M23.6243 0.96501C18.9033 0.998763 15.0417 6.24577 15.0417 10.8224C15.0417 15.6385 17.8724 21.5133 23.6243 21.4943C29.3762 21.4752 32.3616 15.1504 32.3616 10.8224C32.3616 6.0417 28.3453 0.931258 23.6243 0.96501ZM23.6243 1.14452C27.5756 1.14452 28.6416 5.5084 28.6416 10.8224C28.6416 17.834 27.3557 21.2932 23.6243 21.2866C19.8929 21.2801 18.679 18.4488 18.679 10.8224C18.679 6.04498 19.673 1.14452 23.6243 1.14452Z" fill="white"/><path d="M33.9205 10.9518C33.8994 5.74437 38.0672 1.13157 41.5952 0.902704C42.8696 0.812418 44.5078 1.39601 45.4641 1.81173C46.1586 2.11361 47.5762 1.67665 47.8279 0.875H47.9652V7.96853H47.8279C47.8279 7.66613 46.5143 1.08105 41.5952 1.08105C37.9619 1.08105 37.6109 7.46979 37.6109 10.9518C37.6109 14.4338 37.7167 21.327 41.9567 21.327C44.0106 21.327 45.531 20.4284 45.9251 18.6105V13.0828H44.2011V12.8473H50.8837V13.0828H49.2355V21.1643H49.1013C49.1013 21.1643 48.8333 19.9982 47.4736 20.0021C45.7357 20.0071 44.0968 21.5169 42.0989 21.4985C36.8153 21.4499 33.9417 16.1593 33.9205 10.9518Z" fill="white"/><path d="M2.08077 1.66383H0V1.42993H7.28906V1.66383H5.46041L10.6686 15.8077C12.2972 10.7936 13.5589 7.08727 15.2568 1.66383H13.448V1.42993H17.2967V1.66383H15.5441L9.21401 21.3972L2.08077 1.66383Z" fill="white"/><path d="M51.9042 16.5659L51.8712 1.64105H49.8907V1.41748H57.1875V1.64105H55.2081L55.2521 18.0054C55.6902 19.8792 56.4693 21.301 59.131 21.3222C61.7927 21.3434 63.6022 19.7477 64.2746 17.5669V1.64105H62.0089L62.0089 1.42407H80.5533L80.5919 8.5886H80.4137C80.0697 3.96273 78.2848 2.21448 75.1632 1.70446C74.089 1.52895 72.9621 1.65905 71.5375 1.64798V10.7918C72.7781 10.8877 74.0995 10.8092 74.99 10.0444C75.7997 9.3489 76.0287 7.74197 76.0882 7.08915H76.245V15.0506H76.0753C76.0263 15.0506 75.9611 13.0527 74.99 12.1048C74.0125 11.1508 72.7677 10.9162 71.5375 11.1435V20.9111C73.2751 20.9111 74.6602 21.0583 75.863 20.7285C79.5194 19.7261 80.8065 16.6414 80.7967 13.5476H81V21.1423H66.4542V20.9111H68.0989V1.64105H64.5454V17.5669C64.1427 19.0907 62.6706 21.6117 58.8982 21.5945C55.3906 21.5785 51.9118 19.9972 51.9042 16.5659Z" fill="white"/></svg>
+                  <p class="cclp-press__slide-quote">"Jones Road's Blushing Stick is the effortless, multi-use product that belongs in every makeup bag."</p>
+                </div>
+                <div class="cclp-press__slide" data-press-slide="1">
+                  <svg class="cclp-press__slide-logo" xmlns="http://www.w3.org/2000/svg" width="73" height="21" viewBox="0 0 73 21" fill="none"><rect width="73" height="21" fill="none"/><text x="0" y="16" fill="white" font-family="var(--font-serif)" font-size="18" font-weight="300">Allure</text></svg>
+                  <p class="cclp-press__slide-quote">"The clean beauty blush that actually delivers on pigment -- and looks good on everyone."</p>
+                </div>
+                <div class="cclp-press__dots">
+                  <button class="cclp-press__dot is-active" data-press-dot="0"></button>
+                  <button class="cclp-press__dot" data-press-dot="1"></button>
+                </div>
+                <div class="cclp-press__logos">
+                  <button class="cclp-press__logo-btn is-active" data-press-logo="0"><svg xmlns="http://www.w3.org/2000/svg" width="81" height="22" viewBox="0 0 81 22" fill="none"><path d="M23.6243 0.96501C18.9033 0.998763 15.0417 6.24577 15.0417 10.8224C15.0417 15.6385 17.8724 21.5133 23.6243 21.4943C29.3762 21.4752 32.3616 15.1504 32.3616 10.8224C32.3616 6.0417 28.3453 0.931258 23.6243 0.96501ZM23.6243 1.14452C27.5756 1.14452 28.6416 5.5084 28.6416 10.8224C28.6416 17.834 27.3557 21.2932 23.6243 21.2866C19.8929 21.2801 18.679 18.4488 18.679 10.8224C18.679 6.04498 19.673 1.14452 23.6243 1.14452Z" fill="white"/><path d="M2.08077 1.66383H0V1.42993H7.28906V1.66383H5.46041L10.6686 15.8077C12.2972 10.7936 13.5589 7.08727 15.2568 1.66383H13.448V1.42993H17.2967V1.66383H15.5441L9.21401 21.3972L2.08077 1.66383Z" fill="white"/><path d="M33.9205 10.9518C33.8994 5.74437 38.0672 1.13157 41.5952 0.902704C42.8696 0.812418 44.5078 1.39601 45.4641 1.81173C46.1586 2.11361 47.5762 1.67665 47.8279 0.875H47.9652V7.96853H47.8279C47.8279 7.66613 46.5143 1.08105 41.5952 1.08105C37.9619 1.08105 37.6109 7.46979 37.6109 10.9518C37.6109 14.4338 37.7167 21.327 41.9567 21.327C44.0106 21.327 45.531 20.4284 45.9251 18.6105V13.0828H44.2011V12.8473H50.8837V13.0828H49.2355V21.1643H49.1013C49.1013 21.1643 48.8333 19.9982 47.4736 20.0021C45.7357 20.0071 44.0968 21.5169 42.0989 21.4985C36.8153 21.4499 33.9417 16.1593 33.9205 10.9518Z" fill="white"/><path d="M51.9042 16.5659L51.8712 1.64105H49.8907V1.41748H57.1875V1.64105H55.2081L55.2521 18.0054C55.6902 19.8792 56.4693 21.301 59.131 21.3222C61.7927 21.3434 63.6022 19.7477 64.2746 17.5669V1.64105H62.0089L62.0089 1.42407H80.5533L80.5919 8.5886H80.4137C80.0697 3.96273 78.2848 2.21448 75.1632 1.70446C74.089 1.52895 72.9621 1.65905 71.5375 1.64798V10.7918C72.7781 10.8877 74.0995 10.8092 74.99 10.0444C75.7997 9.3489 76.0287 7.74197 76.0882 7.08915H76.245V15.0506H76.0753C76.0263 15.0506 75.9611 13.0527 74.99 12.1048C74.0125 11.1508 72.7677 10.9162 71.5375 11.1435V20.9111C73.2751 20.9111 74.6602 21.0583 75.863 20.7285C79.5194 19.7261 80.8065 16.6414 80.7967 13.5476H81V21.1423H66.4542V20.9111H68.0989V1.64105H64.5454V17.5669C64.1427 19.0907 62.6706 21.6117 58.8982 21.5945C55.3906 21.5785 51.9118 19.9972 51.9042 16.5659Z" fill="white"/></svg></button>
+                  <button class="cclp-press__logo-btn" data-press-logo="1"><svg xmlns="http://www.w3.org/2000/svg" width="42" height="22" viewBox="0 0 42 22" fill="none"><path d="M14.7886 21.0759H0V21.3929H14.9776V14.6592H14.7886V21.0759Z" fill="white"/><path d="M14.7886 11.1036H3.79568V0.921924H14.7886V0.604004H0V11.4215H14.7886V11.1036Z" fill="white"/><path d="M27.1766 21.0759H16.1837V0.921924H27.1766V0.604004H16.1837H12.3881V21.3929H27.3656V14.6592H27.1766V21.0759Z" fill="white"/><path d="M41.5646 21.0759H30.5717V0.921924H41.5646V0.604004H30.5717H26.7761V21.3929H41.7536V14.6592H41.5646V21.0759Z" fill="white"/></svg></button>
+                </div>
+                <div class="cclp-press__desktop-quote">
+                  <p class="cclp-press__desktop-quote-text" id="pressQuoteText">"Jones Road's Blushing Stick is the effortless, multi-use product that belongs in every makeup bag."</p>
+                </div>
+                <div class="cclp-press__progress"><div class="cclp-press__progress-fill" id="pressFill"></div></div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="lib-tokens">
+          <div class="lib-tokens__title">Key Tokens</div>
+          <table class="lib-tokens__table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Background</td><td><code>var(--color-black)</code></td></tr>
+            <tr><td>Quote font</td><td><code>var(--font-serif) 20px/24px 300</code></td></tr>
+            <tr><td>Logo opacity (inactive)</td><td><code>0.4</code></td></tr>
+            <tr><td>Logo height</td><td><code>16px</code> (desktop), <code>20px</code> (mobile)</td></tr>
+            <tr><td>Dot size</td><td><code>8px</code>, inactive <code>rgba(255,255,255,.3)</code></td></tr>
+            <tr><td>Progress bar</td><td><code>155px x 2px</code>, bg #333, fill #fff</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           9. FAQ Section
+           ============================================================ -->
+      <section class="lib-section" id="comp-9">
+        <h2 class="lib-section__name">FAQ Section (casting-faq)</h2>
+        <p class="lib-section__desc">Accordion FAQ section using native details/summary elements. The vertical line in the +/- icon fades out on open. Reuse casting-faq.liquid on the Shopify theme -- never create custom FAQ with JS toggles.</p>
+
+        <div class="lib-preview">
+          <div class="lib-preview__inner--flush">
+            <section class="casting-faq">
+              <div class="casting-faq__inner">
+                <h2 class="casting-faq__heading">Frequently Asked Questions</h2>
+                <details class="casting-faq__item" open>
+                  <summary class="casting-faq__question"><span>What is the Blushing Stick?</span><svg class="casting-faq__question-icon" viewBox="0 0 16 16" fill="none"><line class="casting-faq__icon-vline" x1="8" y1="1" x2="8" y2="15" stroke="#CCCCCC" stroke-width="1.5"/><line x1="1" y1="8" x2="15" y2="8" stroke="#CCCCCC" stroke-width="1.5"/></svg></summary>
+                  <p class="casting-faq__answer">A creamy, buildable lip and cheek tint that gives you a natural-looking flush with a skin-loving formula. Apply directly and blend with your fingers for a seamless, effortless look.</p>
+                </details>
+                <details class="casting-faq__item">
+                  <summary class="casting-faq__question"><span>How do I choose my shade?</span><svg class="casting-faq__question-icon" viewBox="0 0 16 16" fill="none"><line class="casting-faq__icon-vline" x1="8" y1="1" x2="8" y2="15" stroke="#CCCCCC" stroke-width="1.5"/><line x1="1" y1="8" x2="15" y2="8" stroke="#CCCCCC" stroke-width="1.5"/></svg></summary>
+                  <p class="casting-faq__answer">For a natural look, choose a shade close to the color of your lips or the flush of your cheeks.</p>
+                </details>
+                <details class="casting-faq__item">
+                  <summary class="casting-faq__question"><span>Is the formula clean?</span><svg class="casting-faq__question-icon" viewBox="0 0 16 16" fill="none"><line class="casting-faq__icon-vline" x1="8" y1="1" x2="8" y2="15" stroke="#CCCCCC" stroke-width="1.5"/><line x1="1" y1="8" x2="15" y2="8" stroke="#CCCCCC" stroke-width="1.5"/></svg></summary>
+                  <p class="casting-faq__answer">Yes. Like all Jones Road products, the Blushing Stick is made with clean ingredients including jojoba oil and vitamin E.</p>
+                </details>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="lib-tokens">
+          <div class="lib-tokens__title">Key Tokens</div>
+          <table class="lib-tokens__table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Heading font</td><td><code>var(--font-serif) 26px/38px 300</code></td></tr>
+            <tr><td>Question font</td><td><code>var(--font-display) 16px/18px 700 uppercase</code></td></tr>
+            <tr><td>Answer font</td><td><code>var(--font-body) 14px/16px 400</code></td></tr>
+            <tr><td>Border color</td><td><code>#cccccc</code></td></tr>
+            <tr><td>Max width</td><td><code>745px</code></td></tr>
+            <tr><td>Icon size</td><td><code>16px x 16px</code></td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           10. Hero with Social Proof
+           ============================================================ -->
+      <section class="lib-section" id="comp-10">
+        <h2 class="lib-section__name">Hero with Social Proof</h2>
+        <p class="lib-section__desc">Split hero with content on the left (eyebrow, Canela headline, body, CTA, star proof bar) and full-bleed image on the right. The proof bar sits below a border with filled stars and review count.</p>
+
+        <div class="lib-preview">
+          <div class="lib-preview__inner--flush">
+            <section class="hero">
+              <div class="hero__content">
+                <p class="hero__eyebrow">Jones Road x Emily DiDonato</p>
+                <h1 class="hero__title">This blush stick is nothing like the ones you've tried before</h1>
+                <p class="hero__subtitle">Introducing Blushing Stick -- a buttery lip and cheek tint that blends itself.</p>
+                <div><a href="#" class="button" onclick="return false">Shop Blushing Stick</a></div>
+                <div class="hero__proof">
+                  <div class="hero__proof-stars">
+                    <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                    <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                    <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                    <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                    <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                  </div>
+                  <span class="hero__proof-text">6,500+ five-star reviews</span>
+                </div>
+              </div>
+              <div class="hero__media">
+                <img src="https://air-prod.imgix.net/cbe3915f-6a86-48fc-8d2c-fcfc55658f0d.jpg?w=900&h=1100&fit=crop&fp-x=0.5&fp-y=0.25&crop=focalpoint&auto=format" alt="Emily DiDonato" loading="lazy">
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="lib-tokens">
+          <div class="lib-tokens__title">Key Tokens</div>
+          <table class="lib-tokens__table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Title font</td><td><code>var(--font-serif) 26px/42px 300</code></td></tr>
+            <tr><td>Subtitle font</td><td><code>var(--font-body) 16px 400</code></td></tr>
+            <tr><td>Proof stars</td><td><code>14px</code>, gap 2px</td></tr>
+            <tr><td>Proof text</td><td><code>var(--font-body) 13px 400</code></td></tr>
+            <tr><td>Desktop max-height</td><td><code>560px</code></td></tr>
+            <tr><td>Content:Media ratio</td><td><code>0.8 : 1.2</code></td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           11. Shade Carousel
+           ============================================================ -->
+      <section class="lib-section" id="comp-11">
+        <h2 class="lib-section__name">Shade Carousel (Merit-style)</h2>
+        <p class="lib-section__desc">Horizontally scrollable shade grid with snap scrolling. Each card has a square image, shade name in Geogrotesque, and description. Arrow buttons for desktop navigation.</p>
+
+        <div class="lib-preview">
+          <div class="lib-preview__inner" style="padding: 24px 32px;">
+            <div class="shade-grid" style="padding: 0;">
+              <div class="shade-grid__header"><h2 class="shade-grid__title">The Shades</h2></div>
+              <div class="shade-grid__carousel">
+                <div class="shade-grid__scroll" id="libShadeScroll">
+                  <div class="shade-grid__card"><div class="shade-grid__card-media"><img src="https://air-prod.imgix.net/cbe3915f-6a86-48fc-8d2c-fcfc55658f0d.jpg?w=400&h=400&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Joy" loading="lazy"></div><p class="shade-grid__card-name">Joy</p><p class="shade-grid__card-desc">Warm Rosy Pink</p></div>
+                  <div class="shade-grid__card"><div class="shade-grid__card-media"><img src="https://air-prod.imgix.net/88625d3b-d67c-4bf3-96ff-2cb680bfa70f.jpg?w=400&h=400&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Pretty" loading="lazy"></div><p class="shade-grid__card-name">Pretty</p><p class="shade-grid__card-desc">Soft Blush Pink</p></div>
+                  <div class="shade-grid__card"><div class="shade-grid__card-media"><img src="https://air-prod.imgix.net/5bbd87fd-88d3-43fd-8138-5d28e10e0f39.jpg?w=400&h=400&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Bare" loading="lazy"></div><p class="shade-grid__card-name">Bare</p><p class="shade-grid__card-desc">Nude Peach</p></div>
+                  <div class="shade-grid__card"><div class="shade-grid__card-media"><img src="https://air-prod.imgix.net/b8a75c20-5153-4354-82ef-e06c244fef74.jpg?w=400&h=400&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Chic" loading="lazy"></div><p class="shade-grid__card-name">Chic</p><p class="shade-grid__card-desc">Cool Mauve</p></div>
+                  <div class="shade-grid__card"><div class="shade-grid__card-media"><img src="https://air-prod.imgix.net/9a989fbe-91af-477a-a906-bc8c41873d45.jpg?w=400&h=400&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Pinch" loading="lazy"></div><p class="shade-grid__card-name">Pinch</p><p class="shade-grid__card-desc">Peachy Coral</p></div>
+                  <div class="shade-grid__card"><div class="shade-grid__card-media"><img src="https://air-prod.imgix.net/a7d4ebbf-0312-4f0c-8170-80f9ad94aab9.jpg?w=400&h=400&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Flush" loading="lazy"></div><p class="shade-grid__card-name">Flush</p><p class="shade-grid__card-desc">True Rosy Flush</p></div>
+                </div>
+                <button class="shade-grid__arrow shade-grid__arrow--prev" id="libShadePrev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg></button>
+                <button class="shade-grid__arrow shade-grid__arrow--next" id="libShadeNext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lib-tokens">
+          <div class="lib-tokens__title">Key Tokens</div>
+          <table class="lib-tokens__table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Card width (mobile)</td><td><code>200px</code></td></tr>
+            <tr><td>Card width (desktop)</td><td><code>calc((100% - 4*12px) / 5)</code></td></tr>
+            <tr><td>Card name font</td><td><code>var(--font-display) 15px 700 uppercase</code></td></tr>
+            <tr><td>Card desc font</td><td><code>var(--font-body) 13px 400</code> color #757575</td></tr>
+            <tr><td>Arrow size</td><td><code>36px</code> circle, border 1px #d0d0d0</td></tr>
+            <tr><td>Image aspect ratio</td><td><code>1:1</code>, object-position center 20%</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           12. Ticker Bar
+           ============================================================ -->
+      <section class="lib-section" id="comp-12">
+        <h2 class="lib-section__name">Ticker Bar</h2>
+        <p class="lib-section__desc">Full-width black bar with centered text items separated by pipe characters. Used between hero and content sections. Geogrotesque uppercase at small sizes.</p>
+
+        <div class="lib-preview lib-preview--dark">
+          <div class="lib-preview__inner--flush">
+            <div class="ticker" aria-hidden="true">
+              <div class="ticker__track">
+                <span class="ticker__item">NEW: BLUSHING STICK</span>
+                <span class="ticker__sep">|</span>
+                <span class="ticker__item">$34</span>
+                <span class="ticker__sep">|</span>
+                <span class="ticker__item">LIP + CHEEK TINT</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lib-tokens">
+          <div class="lib-tokens__title">Key Tokens</div>
+          <table class="lib-tokens__table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Background</td><td><code>var(--color-black)</code></td></tr>
+            <tr><td>Padding</td><td><code>12px 0</code></td></tr>
+            <tr><td>Item font</td><td><code>var(--font-display) 11px/13px 700 uppercase</code></td></tr>
+            <tr><td>Letter spacing</td><td><code>1.5px</code> mobile, <code>1.8px</code> desktop</td></tr>
+            <tr><td>Separator color</td><td><code>rgba(255,255,255,.4)</code></td></tr>
+            <tr><td>Gap</td><td><code>16px</code></td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           13. Sticky CTA
+           ============================================================ -->
+      <section class="lib-section" id="comp-13">
+        <h2 class="lib-section__name">Sticky CTA</h2>
+        <p class="lib-section__desc">Fixed bottom bar that appears after scrolling past the hero. Shows product name and price on desktop, CTA button always visible. Slides up with CSS transition.</p>
+
+        <div class="lib-preview">
+          <div class="lib-preview__inner--flush">
+            <div class="sticky-cta-demo">
+              <span class="sticky-cta__name">Blushing Stick</span>
+              <span class="sticky-cta__price">$34</span>
+              <a href="#" class="button" onclick="return false">Shop Now</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="lib-tokens">
+          <div class="lib-tokens__title">Key Tokens</div>
+          <table class="lib-tokens__table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Position</td><td><code>fixed bottom: 0</code>, z-index 100</td></tr>
+            <tr><td>Background</td><td><code>var(--color-white)</code></td></tr>
+            <tr><td>Border</td><td><code>1px solid var(--color-border)</code></td></tr>
+            <tr><td>Padding</td><td><code>12px 20px</code></td></tr>
+            <tr><td>Name font</td><td><code>var(--font-display) 16px 700 uppercase</code></td></tr>
+            <tr><td>Slide animation</td><td><code>transform .4s var(--ease-primary)</code></td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           14. PDP Accordions
+           ============================================================ -->
+      <section class="lib-section" id="comp-14">
+        <h2 class="lib-section__name">PDP Accordions (Buy Box)</h2>
+        <p class="lib-section__desc">Native details/summary accordions used inside the buy box for Product Description, How to Use, and Ingredients. The +/- icon is built with CSS pseudo-elements -- the vertical line fades on open.</p>
+
+        <div class="lib-preview">
+          <div class="lib-preview__inner" style="max-width: 480px;">
+            <div class="buybox__accordions">
+              <details class="buybox__accordion" open>
+                <summary class="buybox__accordion-trigger">Product Description</summary>
+                <div class="buybox__accordion-body"><p>A creamy, buildable lip and cheek tint that gives you a natural-looking flush with a skin-loving formula.</p></div>
+              </details>
+              <details class="buybox__accordion">
+                <summary class="buybox__accordion-trigger">How to Use</summary>
+                <div class="buybox__accordion-body">
+                  <p><strong>Step 1: Swipe.</strong> Apply directly to cheeks or lips.</p>
+                  <p><strong>Step 2: Blend.</strong> Tap and blend with your fingertips.</p>
+                  <p><strong>Step 3: Build.</strong> Layer for more intensity.</p>
+                </div>
+              </details>
+              <details class="buybox__accordion">
+                <summary class="buybox__accordion-trigger">Ingredients</summary>
+                <div class="buybox__accordion-body"><p>Formulated with jojoba oil, vitamin E, and ceramides. Free from parabens, sulfates, phthalates, and synthetic fragrances.</p></div>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <div class="lib-tokens">
+          <div class="lib-tokens__title">Key Tokens</div>
+          <table class="lib-tokens__table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Trigger font</td><td><code>var(--font-display) 20px 400 uppercase</code></td></tr>
+            <tr><td>Letter spacing</td><td><code>0.5px</code></td></tr>
+            <tr><td>Body font</td><td><code>var(--font-body) 14px 400</code>, line-height 1.7</td></tr>
+            <tr><td>Border color</td><td><code>#d7d7d7</code></td></tr>
+            <tr><td>Icon line width</td><td><code>17px</code> horizontal, <code>17px</code> vertical</td></tr>
+            <tr><td>Icon animation</td><td><code>opacity .25s ease</code> on vertical line</td></tr>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ================================================================
+       JavaScript
+       ================================================================ -->
+  <script>
+    // Mouse detection for hover states
+    document.addEventListener('mousemove', function() {
+      document.body.classList.add('has-mouse');
+    }, { once: true });
+
+    // Mobile sidebar toggle
+    var toggle = document.getElementById('libToggle');
+    var sidebar = document.getElementById('libSidebar');
+    toggle.addEventListener('click', function() {
+      sidebar.classList.toggle('is-open');
+    });
+    // Close sidebar when clicking a nav link on mobile
+    sidebar.querySelectorAll('.lib-sidebar__link').forEach(function(link) {
+      link.addEventListener('click', function() {
+        if (window.innerWidth < 900) {
+          sidebar.classList.remove('is-open');
+        }
+      });
+    });
+
+    // Shade carousel arrows
+    (function() {
+      var scroll = document.getElementById('libShadeScroll');
+      var prev = document.getElementById('libShadePrev');
+      var next = document.getElementById('libShadeNext');
+      if (!scroll || !prev || !next) return;
+      prev.addEventListener('click', function() { scroll.scrollBy({ left: -200, behavior: 'smooth' }); });
+      next.addEventListener('click', function() { scroll.scrollBy({ left: 200, behavior: 'smooth' }); });
+    })();
+
+    // Press carousel auto-advance
+    (function() {
+      var slides = document.querySelectorAll('#pressSection .cclp-press__slide');
+      var dots = document.querySelectorAll('#pressSection .cclp-press__dot');
+      var logoBtns = document.querySelectorAll('#pressSection .cclp-press__logo-btn');
+      var desktopQuote = document.getElementById('pressQuoteText');
+      var progressFill = document.getElementById('pressFill');
+      if (!slides.length) return;
+
+      var quotes = [];
+      slides.forEach(function(s) {
+        var q = s.querySelector('.cclp-press__slide-quote');
+        quotes.push(q ? q.innerHTML : '');
+      });
+
+      var current = 0;
+      var total = slides.length;
+      var INTERVAL = 5000;
+      var TICK = 50;
+      var progressId;
+
+      function show(i) {
+        slides.forEach(function(s) { s.classList.remove('is-active'); });
+        dots.forEach(function(d) { d.classList.remove('is-active'); });
+        logoBtns.forEach(function(b) { b.classList.remove('is-active'); });
+        slides[i].classList.add('is-active');
+        if (dots[i]) dots[i].classList.add('is-active');
+        if (logoBtns[i]) logoBtns[i].classList.add('is-active');
+        if (desktopQuote) desktopQuote.innerHTML = quotes[i];
+        current = i;
+      }
+
+      function startProgress() {
+        var elapsed = 0;
+        if (progressFill) progressFill.style.width = '0%';
+        clearInterval(progressId);
+        progressId = setInterval(function() {
+          elapsed += TICK;
+          if (progressFill) progressFill.style.width = Math.min((elapsed / INTERVAL) * 100, 100) + '%';
+          if (elapsed >= INTERVAL) clearInterval(progressId);
+        }, TICK);
+      }
+
+      function advance() {
+        show((current + 1) % total);
+        startProgress();
+      }
+
+      dots.forEach(function(dot, i) {
+        dot.addEventListener('click', function() {
+          clearInterval(autoId);
+          show(i);
+          startProgress();
+          autoId = setInterval(advance, INTERVAL);
+        });
+      });
+
+      logoBtns.forEach(function(btn, i) {
+        btn.addEventListener('click', function() {
+          clearInterval(autoId);
+          show(i);
+          startProgress();
+          autoId = setInterval(advance, INTERVAL);
+        });
+      });
+
+      startProgress();
+      var autoId = setInterval(advance, INTERVAL);
+    })();
+  </script>
+
+</body>
+</html>
