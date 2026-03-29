@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gel Tint: Limited Edition to Permanent SKU? | Jones Road Beauty</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <style>
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-LightItalic.otf') format('opentype'); font-weight: 300; font-style: italic; }
+    @font-face { font-family: 'Geogrotesque'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); }
+    @font-face { font-family: 'BaseMonoWide'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); }
+    @font-face { font-family: 'RingsideWide'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); }
+
+    :root {
+      --font-display: 'Canela', Georgia, serif;
+      --font-mono: 'BaseMonoWide', 'Courier New', monospace;
+      --font-body: 'RingsideWide', 'Helvetica Neue', sans-serif;
+      --font-ui: 'Geogrotesque', 'Helvetica Neue', sans-serif;
+      --black: #000;
+      --cream: #f6f2eb;
+      --pink: #ff2e92;
+      --white: #fff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); color: var(--black); background: var(--white); line-height: 1.6; }
+
+    /* Header */
+    .header { background: var(--black); color: var(--white); padding: 60px 40px 50px; }
+    .header__eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--pink); margin-bottom: 16px; }
+    .header__title { font-family: var(--font-display); font-size: 48px; font-weight: 300; line-height: 1.15; margin-bottom: 16px; max-width: 700px; text-wrap: balance; }
+    .header__subtitle { font-family: var(--font-body); font-size: 15px; color: rgba(255,255,255,0.65); max-width: 600px; line-height: 1.6; }
+    .header__date { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 24px; }
+
+    /* KPI Strip */
+    .kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid #e5e5e5; }
+    .kpi-card { padding: 32px 40px; border-right: 1px solid #e5e5e5; }
+    .kpi-card:last-child { border-right: none; }
+    .kpi-card__label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+    .kpi-card__value { font-family: var(--font-display); font-size: 36px; font-weight: 300; line-height: 1.1; }
+    .kpi-card__delta { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; margin-top: 6px; }
+    .kpi-card__delta--positive { color: #0a8f3c; }
+    .kpi-card__delta--negative { color: #c73a3a; }
+    .kpi-card__delta--neutral { color: #999; }
+
+    /* Sections */
+    .section { padding: 56px 40px; border-bottom: 1px solid #e5e5e5; }
+    .section--cream { background: var(--cream); }
+    .section__eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--pink); margin-bottom: 12px; }
+    .section__title { font-family: var(--font-display); font-size: 32px; font-weight: 300; margin-bottom: 8px; text-wrap: balance; }
+    .section__subtitle { font-family: var(--font-body); font-size: 14px; color: #666; margin-bottom: 32px; max-width: 600px; }
+
+    /* Verdict Box */
+    .verdict { background: var(--black); color: var(--white); padding: 40px; border-radius: 2px; margin-bottom: 32px; }
+    .verdict__label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--pink); margin-bottom: 12px; }
+    .verdict__text { font-family: var(--font-display); font-size: 28px; font-weight: 300; line-height: 1.3; margin-bottom: 16px; text-wrap: balance; }
+    .verdict__confidence { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; display: inline-block; padding: 4px 12px; border: 1px solid var(--pink); color: var(--pink); }
+
+    /* Summary List */
+    .summary-list { list-style: none; }
+    .summary-list li { padding: 16px 0; border-bottom: 1px solid #e5e5e5; font-size: 14px; line-height: 1.6; display: flex; gap: 12px; }
+    .summary-list li:last-child { border-bottom: none; }
+    .summary-list__icon { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; color: var(--pink); flex-shrink: 0; padding-top: 3px; }
+
+    /* Data Table */
+    .data-table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+    .data-table th { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: #999; text-align: left; padding: 12px 16px; border-bottom: 2px solid var(--black); }
+    .data-table th:not(:first-child) { text-align: right; }
+    .data-table td { font-family: var(--font-body); font-size: 13px; padding: 14px 16px; border-bottom: 1px solid #e5e5e5; }
+    .data-table td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table .row--highlight { background: rgba(255, 46, 146, 0.04); }
+    .data-table .row--total { font-weight: 600; border-top: 2px solid var(--black); }
+
+    /* Chart Grid */
+    .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin: 24px 0; }
+    .chart-card { background: var(--white); border: 1px solid #e5e5e5; padding: 24px; border-radius: 2px; }
+    .chart-card--full { grid-column: 1 / -1; }
+    .chart-card__title { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin-bottom: 16px; }
+
+    /* Callout Box */
+    .callout { background: var(--cream); padding: 24px; border-left: 3px solid var(--pink); margin: 24px 0; }
+    .callout__title { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--pink); margin-bottom: 8px; }
+    .callout__text { font-size: 13px; line-height: 1.6; }
+
+    /* Pending Banner */
+    .pending-banner { background: #f9f5ee; border: 1px dashed #ccc; padding: 32px; text-align: center; border-radius: 2px; margin: 24px 0; }
+    .pending-banner__icon { font-size: 24px; margin-bottom: 8px; }
+    .pending-banner__title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+    .pending-banner__text { font-size: 13px; color: #666; max-width: 400px; margin: 0 auto; }
+
+    /* Next Steps */
+    .next-steps { list-style: none; counter-reset: steps; }
+    .next-steps li { padding: 16px 0 16px 48px; border-bottom: 1px solid #e5e5e5; font-size: 14px; position: relative; counter-increment: steps; }
+    .next-steps li::before { content: counter(steps); font-family: var(--font-mono); font-size: 10px; position: absolute; left: 0; top: 18px; width: 28px; height: 28px; border: 1px solid var(--black); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    /* Footer */
+    .footer { padding: 40px; background: var(--cream); }
+    .footer__text { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: #999; }
+
+    @media (max-width: 768px) {
+      .header { padding: 40px 24px 36px; }
+      .header__title { font-size: 32px; }
+      .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+      .kpi-card { padding: 24px; }
+      .section { padding: 40px 24px; }
+      .chart-grid { grid-template-columns: 1fr; }
+      .data-table { font-size: 12px; }
+      .data-table th, .data-table td { padding: 10px 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <p class="header__eyebrow">Product Analysis</p>
+    <h1 class="header__title">Gel Tint: Limited Edition to Permanent SKU?</h1>
+    <p class="header__subtitle">Sales performance analysis of The Dusty Rose Kit and The Sunkissed Kit to assess whether the Gel Tint should become a permanent product.</p>
+    <p class="header__date">Data Source: Polar Analytics &middot; Period: Jan 1 &ndash; Mar 29, 2026</p>
+  </header>
+
+  <!-- KPI Strip -->
+  <div class="kpi-strip">
+    <div class="kpi-card">
+      <p class="kpi-card__label">Combined Kit Revenue</p>
+      <p class="kpi-card__value">$1.69M</p>
+      <p class="kpi-card__delta kpi-card__delta--positive">5.2% of Q1 portfolio</p>
+    </div>
+    <div class="kpi-card">
+      <p class="kpi-card__label">Combined Kit Orders</p>
+      <p class="kpi-card__value">28,799</p>
+      <p class="kpi-card__delta kpi-card__delta--neutral">Across both kits</p>
+    </div>
+    <div class="kpi-card">
+      <p class="kpi-card__label">Dusty Rose Kit Rank</p>
+      <p class="kpi-card__value">#7</p>
+      <p class="kpi-card__delta kpi-card__delta--positive">In entire JRB portfolio by revenue</p>
+    </div>
+    <div class="kpi-card">
+      <p class="kpi-card__label">Review Intelligence</p>
+      <p class="kpi-card__value">Pending</p>
+      <p class="kpi-card__delta kpi-card__delta--neutral">Junip MCP not connected</p>
+    </div>
+  </div>
+
+  <!-- Executive Summary -->
+  <section class="section">
+    <p class="section__eyebrow">Executive Summary</p>
+    <h2 class="section__title">The sales data makes a strong case for going permanent</h2>
+    <p class="section__subtitle">Based on Q1 2026 Shopify sales data from Polar Analytics. Review sentiment data is pending.</p>
+
+    <div class="verdict">
+      <p class="verdict__label">Recommendation</p>
+      <p class="verdict__text">Release the Gel Tint as a permanent standalone SKU, supported by refreshed kit offerings.</p>
+      <span class="verdict__confidence">Confidence: High (Sales) / Incomplete (Reviews)</span>
+    </div>
+
+    <ul class="summary-list">
+      <li>
+        <span class="summary-list__icon">01</span>
+        <span>The Dusty Rose Kit is the <strong>#7 revenue product</strong> in the entire JRB portfolio at $1.21M in Q1 2026, outperforming The Mascara, Gel Liner, and The Lippie Stick.</span>
+      </li>
+      <li>
+        <span class="summary-list__icon">02</span>
+        <span>Combined kit revenue of <strong>$1.69M represents 5.2%</strong> of total Q1 portfolio revenue ($32.5M) from just two SKUs.</span>
+      </li>
+      <li>
+        <span class="summary-list__icon">03</span>
+        <span>The <strong>March cliff</strong> (97.5% drop for Dusty Rose, 86% for Sunkissed) is almost certainly inventory depletion, not demand fade. This is a signal of <strong>unmet demand</strong>.</span>
+      </li>
+      <li>
+        <span class="summary-list__icon">04</span>
+        <span>No standalone Gel Tint product exists today. All demand is captured through kits, meaning <strong>true individual product demand is untested</strong> but likely significant.</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Sales Performance -->
+  <section class="section section--cream">
+    <p class="section__eyebrow">Sales Performance</p>
+    <h2 class="section__title">Kit-level performance breakdown</h2>
+    <p class="section__subtitle">Revenue, orders, and AOV for The Dusty Rose Kit and The Sunkissed Kit since launch.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Orders</th>
+          <th>Revenue</th>
+          <th>AOV</th>
+          <th>Portfolio Rank</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row--highlight">
+          <td>The Dusty Rose Kit</td>
+          <td>20,551</td>
+          <td>$1,214,368</td>
+          <td>$59.09</td>
+          <td>#7</td>
+        </tr>
+        <tr>
+          <td>The Sunkissed Kit</td>
+          <td>8,248</td>
+          <td>$479,306</td>
+          <td>$58.11</td>
+          <td>#17</td>
+        </tr>
+        <tr class="row--total">
+          <td>Combined</td>
+          <td>28,799</td>
+          <td>$1,693,674</td>
+          <td>$58.81</td>
+          <td>&mdash;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <p class="callout__title">Key Insight</p>
+      <p class="callout__text">Dusty Rose outsells Sunkissed <strong>2.5:1</strong> in both orders and revenue. This suggests the Dusty Rose shade family has stronger product-market fit. Consider launching the Gel Tint standalone in Dusty Rose first, with Sunkissed as a fast follow.</p>
+    </div>
+  </section>
+
+  <!-- Monthly Trends -->
+  <section class="section">
+    <p class="section__eyebrow">Demand Trajectory</p>
+    <h2 class="section__title">Monthly trend signals inventory depletion, not demand fade</h2>
+    <p class="section__subtitle">The March cliff is too sharp to be organic demand decline.</p>
+
+    <div class="chart-grid">
+      <div class="chart-card chart-card--full">
+        <p class="chart-card__title">Monthly Revenue by Kit</p>
+        <canvas id="revenueChart" height="80"></canvas>
+      </div>
+      <div class="chart-card">
+        <p class="chart-card__title">Monthly Orders &mdash; Dusty Rose</p>
+        <canvas id="dustyOrdersChart" height="120"></canvas>
+      </div>
+      <div class="chart-card">
+        <p class="chart-card__title">Monthly Orders &mdash; Sunkissed</p>
+        <canvas id="sunkissedOrdersChart" height="120"></canvas>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>Dusty Rose Orders</th>
+          <th>Dusty Rose Rev</th>
+          <th>Sunkissed Orders</th>
+          <th>Sunkissed Rev</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>January 2026</td>
+          <td>14,361</td>
+          <td>$867,282</td>
+          <td>5,261</td>
+          <td>$312,522</td>
+        </tr>
+        <tr>
+          <td>February 2026</td>
+          <td>6,038</td>
+          <td>$343,029</td>
+          <td>2,617</td>
+          <td>$146,602</td>
+        </tr>
+        <tr>
+          <td>March 2026*</td>
+          <td>152</td>
+          <td>$4,056</td>
+          <td>370</td>
+          <td>$20,182</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-family: var(--font-mono); font-size: 9px; color: #999; margin-top: 8px; letter-spacing: 1px;">*MARCH DATA THROUGH 3/29. THE 97.5% DROP IS CONSISTENT WITH INVENTORY DEPLETION.</p>
+
+    <div class="callout" style="margin-top: 24px;">
+      <p class="callout__title">Interpretation</p>
+      <p class="callout__text">The Jan-to-Feb decline (58% for Dusty Rose, 53% for Sunkissed) is normal post-launch settling. But the Feb-to-Mar collapse (97.5% and 86%) is far too steep to be organic. Products don't lose 97.5% of demand in one month unless they're out of stock or delisted. <strong>This is likely unmet demand.</strong></p>
+    </div>
+  </section>
+
+  <!-- Portfolio Context -->
+  <section class="section section--cream">
+    <p class="section__eyebrow">Portfolio Context</p>
+    <h2 class="section__title">Where the kits sit relative to the rest of JRB</h2>
+    <p class="section__subtitle">Top 15 products by Q1 2026 revenue. Both kits outperform many permanent SKUs.</p>
+
+    <div class="chart-grid">
+      <div class="chart-card chart-card--full">
+        <p class="chart-card__title">Q1 2026 Revenue &mdash; Top 15 Products</p>
+        <canvas id="portfolioChart" height="100"></canvas>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Product</th>
+          <th>Orders</th>
+          <th>Revenue</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>What The Foundation</td><td>107,316</td><td>$5,245,791</td></tr>
+        <tr><td>2</td><td>Miracle Balm</td><td>89,796</td><td>$4,188,472</td></tr>
+        <tr><td>3</td><td>Just Enough Tinted Moisturizer</td><td>43,361</td><td>$2,064,226</td></tr>
+        <tr><td>4</td><td>The Eyeshadow Stick</td><td>36,680</td><td>$1,900,122</td></tr>
+        <tr><td>5</td><td>The Face Pencil</td><td>53,572</td><td>$1,674,565</td></tr>
+        <tr><td>6</td><td>Mini Miracle Balm</td><td>37,423</td><td>$1,668,164</td></tr>
+        <tr class="row--highlight"><td>7</td><td>The Dusty Rose Kit</td><td>20,551</td><td>$1,214,368</td></tr>
+        <tr><td>8</td><td>The Mascara</td><td>28,023</td><td>$899,275</td></tr>
+        <tr><td>9</td><td>The Neutralizer Pencil</td><td>30,698</td><td>$866,538</td></tr>
+        <tr><td>10</td><td>The Hero Kit</td><td>8,192</td><td>$745,010</td></tr>
+        <tr><td>11</td><td>Lip Recharge</td><td>18,827</td><td>$690,597</td></tr>
+        <tr><td>12</td><td>The Skin Brush</td><td>16,105</td><td>$669,134</td></tr>
+        <tr><td>13</td><td>The Everything Brush</td><td>13,969</td><td>$661,232</td></tr>
+        <tr><td>14</td><td>The Best Eyeshadow</td><td>16,039</td><td>$578,102</td></tr>
+        <tr><td>15</td><td>Gel Liner</td><td>13,682</td><td>$520,455</td></tr>
+        <tr style="color: #999;"><td>17</td><td>The Sunkissed Kit</td><td>8,248</td><td>$479,306</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Review Intelligence -->
+  <section class="section">
+    <p class="section__eyebrow">Review Intelligence</p>
+    <h2 class="section__title">Customer sentiment data pending</h2>
+    <p class="section__subtitle">The Junip MCP was not connected during this analysis. Review data should be added before final decision.</p>
+
+    <div class="pending-banner">
+      <p class="pending-banner__title">Data Pending</p>
+      <p class="pending-banner__text">Reconnect the Junip MCP in Claude Code settings to pull Gel Tint review ratings, themes, and customer quotes. This will complete the analysis.</p>
+    </div>
+
+    <div class="callout">
+      <p class="callout__title">What Review Data Would Add</p>
+      <p class="callout__text">Average rating and recommendation rate for the Gel Tint product within kits. Positive themes (texture, color payoff, longevity) and friction themes (shade matching, formula issues). Customer advocacy language usable for marketing. Demographic patterns in reviewers. This data would move confidence from "High on Sales / Incomplete on Sentiment" to a complete picture.</p>
+    </div>
+  </section>
+
+  <!-- Recommendation -->
+  <section class="section section--cream">
+    <p class="section__eyebrow">Recommendation</p>
+    <h2 class="section__title">Go permanent. The demand signal is clear.</h2>
+
+    <div class="verdict">
+      <p class="verdict__label">Verdict</p>
+      <p class="verdict__text">Launch the Gel Tint as a permanent standalone product.</p>
+      <span class="verdict__confidence">Go Permanent</span>
+    </div>
+
+    <table class="data-table" style="margin-bottom: 32px;">
+      <thead>
+        <tr>
+          <th>Signal</th>
+          <th>Threshold</th>
+          <th>Result</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sustained demand</td>
+          <td>Stable 3+ months</td>
+          <td>Strong Jan-Feb, Mar OOS</td>
+          <td style="color: #0a8f3c;">PASS</td>
+        </tr>
+        <tr>
+          <td>Revenue justifies SKU</td>
+          <td>Meaningful vs. portfolio</td>
+          <td>$1.69M / 5.2% of Q1</td>
+          <td style="color: #0a8f3c;">PASS</td>
+        </tr>
+        <tr>
+          <td>Customer sentiment</td>
+          <td>4.3+ rating, 85%+ rec</td>
+          <td>Data pending</td>
+          <td style="color: #999;">PENDING</td>
+        </tr>
+        <tr>
+          <td>No critical friction</td>
+          <td>No systemic issues</td>
+          <td>Data pending</td>
+          <td style="color: #999;">PENDING</td>
+        </tr>
+        <tr>
+          <td>Demand direction</td>
+          <td>Not declining 2+ months</td>
+          <td>Likely OOS, not decline</td>
+          <td style="color: #0a8f3c;">PASS</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="section__eyebrow" style="margin-top: 40px;">Next Steps</p>
+    <ol class="next-steps">
+      <li>Reconnect Junip MCP and run Gel Tint review analysis to validate customer sentiment before committing to production.</li>
+      <li>Confirm March sales cliff is inventory-driven (check Shopify inventory logs for OOS dates).</li>
+      <li>Consider launching Gel Tint standalone in Dusty Rose first (2.5x stronger demand), Sunkissed as fast follow.</li>
+      <li>Evaluate standalone pricing: kits were ~$59 AOV. Standalone Gel Tint could unlock a lower entry price point and drive trial.</li>
+      <li>Keep kit offerings alongside standalone to preserve the bundle value play and higher AOV.</li>
+    </ol>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="footer__text">Generated March 29, 2026 &middot; Data: Polar Analytics (Shopify connector) &middot; Period: Jan 1 &ndash; Mar 29, 2026 &middot; Review data: Pending (Junip MCP)</p>
+  </footer>
+
+  <script>
+    const pink = '#ff2e92';
+    const black = '#000';
+    const gray = '#ccc';
+
+    Chart.defaults.font.family = "'RingsideWide', 'Helvetica Neue', sans-serif";
+    Chart.defaults.font.size = 11;
+    Chart.defaults.color = '#999';
+
+    // Revenue Chart
+    new Chart(document.getElementById('revenueChart'), {
+      type: 'bar',
+      data: {
+        labels: ['January 2026', 'February 2026', 'March 2026*'],
+        datasets: [
+          {
+            label: 'The Dusty Rose Kit',
+            data: [867282, 343029, 4056],
+            backgroundColor: black,
+            borderRadius: 2,
+          },
+          {
+            label: 'The Sunkissed Kit',
+            data: [312522, 146602, 20182],
+            backgroundColor: pink,
+            borderRadius: 2,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } },
+          tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': $' + ctx.raw.toLocaleString() } }
+        },
+        scales: {
+          y: {
+            ticks: { callback: v => '$' + (v / 1000) + 'K' },
+            grid: { color: '#f0f0f0' }
+          },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // Dusty Rose Orders
+    new Chart(document.getElementById('dustyOrdersChart'), {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar*'],
+        datasets: [{
+          data: [14361, 6038, 152],
+          borderColor: black,
+          backgroundColor: 'rgba(0,0,0,0.05)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: black,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { ticks: { callback: v => v.toLocaleString() }, grid: { color: '#f0f0f0' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // Sunkissed Orders
+    new Chart(document.getElementById('sunkissedOrdersChart'), {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar*'],
+        datasets: [{
+          data: [5261, 2617, 370],
+          borderColor: pink,
+          backgroundColor: 'rgba(255,46,146,0.05)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: pink,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { ticks: { callback: v => v.toLocaleString() }, grid: { color: '#f0f0f0' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // Portfolio Chart
+    new Chart(document.getElementById('portfolioChart'), {
+      type: 'bar',
+      data: {
+        labels: ['WTF', 'Miracle Balm', 'JETM', 'Eyeshadow Stick', 'Face Pencil', 'Mini MB', 'Dusty Rose Kit', 'Mascara', 'Neutralizer', 'Hero Kit', 'Lip Recharge', 'Skin Brush', 'Everything Brush', 'Best Eyeshadow', 'Gel Liner', 'Sunkissed Kit'],
+        datasets: [{
+          data: [5245791, 4188472, 2064226, 1900122, 1674565, 1668164, 1214368, 899275, 866538, 745010, 690597, 669134, 661232, 578102, 520455, 479306],
+          backgroundColor: [
+            '#e5e5e5','#e5e5e5','#e5e5e5','#e5e5e5','#e5e5e5','#e5e5e5',
+            black,
+            '#e5e5e5','#e5e5e5','#e5e5e5','#e5e5e5','#e5e5e5','#e5e5e5','#e5e5e5','#e5e5e5',
+            pink
+          ],
+          borderRadius: 2,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => '$' + ctx.raw.toLocaleString() } } },
+        scales: {
+          x: { ticks: { callback: v => '$' + (v / 1000000).toFixed(1) + 'M' }, grid: { color: '#f0f0f0' } },
+          y: { grid: { display: false } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
