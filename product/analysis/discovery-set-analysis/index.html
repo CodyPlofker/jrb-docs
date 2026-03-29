@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discovery Set Analysis — Jones Road Beauty</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-LightItalic.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+
+  :root {
+    --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+    --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+    --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+    --font-serif: Canela, serif;
+    --black: #000;
+    --white: #fff;
+    --cream: #f6f2eb;
+    --pink: #ff2e92;
+    --gray-border: #d0d0d0;
+    --gray-divider: #ebebeb;
+    --gray-text: #757575;
+    --ease: cubic-bezier(.39, .575, .565, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 100%;
+    color: var(--black);
+    letter-spacing: .025em;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    background: var(--white);
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: var(--black);
+    color: var(--white);
+    padding: 56px 32px 48px;
+  }
+  .header__inner { max-width: 1200px; margin: 0 auto; }
+  .header__eyebrow {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--pink);
+    margin-bottom: 16px;
+  }
+  .header__title {
+    font-family: var(--font-serif);
+    font-size: 42px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    line-height: 54px;
+    margin-bottom: 16px;
+  }
+  .header__subtitle {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: .4px;
+    color: var(--gray-border);
+    max-width: 600px;
+  }
+
+  @media (max-width: 700px) {
+    .header { padding: 32px 20px; }
+    .header__title { font-size: 26px; line-height: 37px; }
+  }
+
+  /* ===== KPI STRIP ===== */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1200px;
+    margin: 0 auto;
+    transform: translateY(-28px);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  }
+  .kpi-strip__card {
+    background: var(--white);
+    padding: 24px 20px;
+    text-align: center;
+    border-right: 1px solid var(--gray-divider);
+  }
+  .kpi-strip__card:last-child { border-right: none; }
+  .kpi-strip__value {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--black);
+  }
+  .kpi-strip__label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: var(--gray-text);
+    margin-top: 6px;
+  }
+  .kpi-strip__sub {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--pink);
+    margin-top: 4px;
+    font-weight: 400;
+  }
+
+  @media (max-width: 700px) {
+    .kpi-strip { grid-template-columns: repeat(2, 1fr); margin: 0 20px; transform: translateY(-20px); }
+    .kpi-strip__card:nth-child(2) { border-right: none; }
+  }
+
+  /* ===== CONTAINER ===== */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+  }
+  @media (max-width: 700px) { .container { padding: 0 20px 60px; } }
+
+  /* ===== SECTIONS ===== */
+  .section { margin-top: 56px; }
+  .section__eyebrow {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--pink);
+    margin-bottom: 8px;
+  }
+  .section__title {
+    font-family: var(--font-serif);
+    font-size: 38px;
+    font-weight: 300;
+    letter-spacing: .5px;
+    line-height: 54px;
+    margin-bottom: 8px;
+  }
+  .section__subtitle {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 24px;
+    letter-spacing: .4px;
+    color: var(--gray-text);
+    margin-bottom: 24px;
+    max-width: 650px;
+  }
+  @media (max-width: 700px) {
+    .section__title { font-size: 26px; line-height: 37px; }
+  }
+
+  /* ===== CARD ===== */
+  .card {
+    background: var(--white);
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(16,24,40,.04);
+    border: 1px solid var(--gray-divider);
+    padding: 28px;
+  }
+
+  /* ===== CHART GRID ===== */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .chart-card {
+    background: var(--white);
+    border: 1px solid var(--gray-divider);
+    border-radius: 3px;
+    padding: 24px;
+    box-shadow: 0 1px 2px rgba(16,24,40,.04);
+  }
+  .chart-card__title {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .98px;
+    margin-bottom: 4px;
+  }
+  .chart-card__desc {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--gray-text);
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+  @media (max-width: 700px) { .chart-grid { grid-template-columns: 1fr; } }
+
+  /* ===== CALLOUT ===== */
+  .callout {
+    background: var(--cream);
+    border-left: 3px solid var(--black);
+    padding: 24px 28px;
+    margin-top: 24px;
+    border-radius: 0 3px 3px 0;
+  }
+  .callout__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: var(--gray-text);
+    margin-bottom: 8px;
+  }
+  .callout__text {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--black);
+  }
+
+  /* ===== TABLES ===== */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: 14px;
+  }
+  .data-table th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: var(--gray-text);
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--black);
+  }
+  .data-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--gray-divider);
+    vertical-align: middle;
+  }
+  .data-table tbody tr:last-child td { border-bottom: none; }
+
+  .journey-arrow {
+    color: var(--pink);
+    font-weight: 700;
+    font-size: 18px;
+    text-align: center;
+  }
+  .bar-track {
+    height: 4px;
+    background: var(--cream);
+    border-radius: 2px;
+    overflow: hidden;
+    min-width: 80px;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--black);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+  }
+  .badge--high { background: var(--black); color: var(--white); }
+  .badge--mid { background: var(--cream); color: var(--black); }
+  .badge--low { background: var(--gray-divider); color: var(--gray-text); }
+
+  /* ===== PRODUCT CARDS (Mini & Kit) ===== */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .product-card {
+    background: var(--white);
+    border: 1px solid var(--gray-divider);
+    border-radius: 3px;
+    padding: 20px;
+    transition: box-shadow .4s var(--ease);
+  }
+  .product-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+  .product-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .product-card__name {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .98px;
+  }
+  .product-card__price {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    color: var(--pink);
+  }
+  .metric-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    font-size: 13px;
+    border-bottom: 1px solid var(--gray-divider);
+    line-height: 1.4;
+  }
+  .metric-row:last-child { border-bottom: none; }
+  .metric-label { color: var(--gray-text); }
+  .metric-value { font-weight: 400; }
+  .metric-value--highlight { color: var(--pink); font-weight: 400; }
+
+  /* ===== DISCOVERY SET CARDS ===== */
+  .set-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+  .set-card {
+    background: var(--white);
+    border: 1px solid var(--gray-divider);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: border-color .4s var(--ease);
+  }
+  .set-card:hover { border-color: var(--black); }
+  .set-card--recommended { border: 2px solid var(--black); }
+
+  .set-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--gray-divider);
+  }
+  .set-card__number {
+    width: 32px;
+    height: 32px;
+    border-radius: 3px;
+    background: var(--black);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-right: 16px;
+  }
+  .set-card--recommended .set-card__number { background: var(--pink); }
+  .set-card__title-group { flex: 1; }
+  .set-card__name {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: .5px;
+  }
+  .set-card__tagline {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--gray-text);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+  .set-card__price-block { text-align: right; }
+  .set-card__price {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .set-card__retail {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--gray-text);
+    text-decoration: line-through;
+  }
+  .set-card__discount {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    color: var(--black);
+  }
+
+  .set-card__body {
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .set-product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--cream);
+    border-radius: 3px;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .set-product:last-child { margin-bottom: 0; }
+  .set-product__name {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  .set-product__price {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--gray-text);
+  }
+
+  .set-rationale__label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: var(--gray-text);
+    margin-bottom: 12px;
+  }
+  .set-rationale ul { list-style: none; padding: 0; }
+  .set-rationale li {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 5px 0 5px 14px;
+    position: relative;
+  }
+  .set-rationale li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 5px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--black);
+  }
+  .set-card--recommended .set-rationale li::before { background: var(--pink); }
+
+  .confidence-strip {
+    display: flex;
+    gap: 6px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--gray-divider);
+  }
+  .confidence-pill {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--gray-border);
+    color: var(--black);
+  }
+  .confidence-pill--strong { background: var(--black); color: var(--white); border-color: var(--black); }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: var(--pink);
+    color: var(--white);
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  @media (max-width: 700px) {
+    .set-card__body { grid-template-columns: 1fr; }
+    .set-card__header { flex-wrap: wrap; gap: 12px; }
+  }
+
+  /* ===== COMPARISON TABLE ===== */
+  .comparison-table { overflow-x: auto; }
+  .comparison-table .data-table td { font-size: 13px; }
+  .comparison-table .data-table .val--good { color: var(--black); font-weight: 400; }
+  .comparison-table .data-table .val--caution { color: var(--gray-text); }
+
+  /* ===== SECTION LABEL ===== */
+  .section-label {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    margin-top: 32px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header__inner">
+    <div class="header__eyebrow">Jones Road Beauty</div>
+    <h1 class="header__title">Discovery set analysis</h1>
+    <p class="header__subtitle">Data-driven recommendations for a new customer discovery set, optimized for the $55 free shipping threshold. Sourced from Polar Analytics, March 2026.</p>
+  </div>
+</div>
+
+<div class="kpi-strip">
+  <div class="kpi-strip__card">
+    <div class="kpi-strip__value">$589</div>
+    <div class="kpi-strip__label">Mini MB LTV</div>
+    <div class="kpi-strip__sub">4.9x purchase frequency</div>
+  </div>
+  <div class="kpi-strip__card">
+    <div class="kpi-strip__value">59.5K</div>
+    <div class="kpi-strip__label">#1 First Purchase</div>
+    <div class="kpi-strip__sub">Miracle Balm</div>
+  </div>
+  <div class="kpi-strip__card">
+    <div class="kpi-strip__value">137K</div>
+    <div class="kpi-strip__label">Top Journey</div>
+    <div class="kpi-strip__sub">Miracle Balm &rarr; WTF</div>
+  </div>
+  <div class="kpi-strip__card">
+    <div class="kpi-strip__value">$55</div>
+    <div class="kpi-strip__label">Target Price</div>
+    <div class="kpi-strip__sub">Free shipping threshold</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 01: BEST SELLERS -->
+  <div class="section">
+    <div class="section__eyebrow">01 &mdash; Best Sellers</div>
+    <h2 class="section__title">What sells vs. what converts new customers</h2>
+    <p class="section__subtitle">The gap between overall revenue and first-purchase volume reveals the true gateway products.</p>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <div class="chart-card__title">Top 10 by Gross Sales</div>
+        <p class="chart-card__desc">Last 90 days, all customers</p>
+        <canvas id="bestSellersChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card__title">Top 10 by First Purchase</div>
+        <p class="chart-card__desc">Last 90 days, new customer orders only</p>
+        <canvas id="firstPurchaseChart"></canvas>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout__label">Key Insight</div>
+      <div class="callout__text">Miracle Balm is the #1 first purchase (59.5K orders) despite being #2 overall. It outpaces WTF in new customer acquisition by 10%. The Face Pencil is the #3 gateway but ranks #5 overall &mdash; it punches above its weight as an entry point.</div>
+    </div>
+  </div>
+
+  <!-- 02: PRODUCT JOURNEY -->
+  <div class="section">
+    <div class="section__eyebrow">02 &mdash; Product Journey</div>
+    <h2 class="section__title">From first purchase to second order</h2>
+    <p class="section__subtitle">Cross-sell paths from 1st order to 2nd order. Excludes same-product repurchases.</p>
+
+    <div class="card" style="overflow-x:auto; padding:0;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>1st Purchase</th>
+            <th></th>
+            <th>2nd Purchase</th>
+            <th>Customers</th>
+            <th style="min-width:100px">Volume</th>
+            <th>Cum. LTV</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Miracle Balm</strong></td><td class="journey-arrow">&rarr;</td><td>What The Foundation</td><td><strong>137,354</strong></td><td><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div></td><td><span class="badge badge--mid">$276</span></td></tr>
+          <tr><td><strong>Face Pencil</strong></td><td class="journey-arrow">&rarr;</td><td>Miracle Balm</td><td><strong>45,269</strong></td><td><div class="bar-track"><div class="bar-fill" style="width:33%"></div></div></td><td><span class="badge badge--mid">$277</span></td></tr>
+          <tr><td><strong>Face Pencil</strong></td><td class="journey-arrow">&rarr;</td><td>What The Foundation</td><td><strong>36,185</strong></td><td><div class="bar-track"><div class="bar-fill" style="width:26%"></div></div></td><td><span class="badge badge--mid">$295</span></td></tr>
+          <tr><td><strong>Skin Brush</strong></td><td class="journey-arrow">&rarr;</td><td>What The Foundation</td><td><strong>31,361</strong></td><td><div class="bar-track"><div class="bar-fill" style="width:23%"></div></div></td><td><span class="badge badge--low">$218</span></td></tr>
+          <tr><td><strong>WTF</strong></td><td class="journey-arrow">&rarr;</td><td>JETM</td><td><strong>25,323</strong></td><td><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div></td><td><span class="badge badge--high">$362</span></td></tr>
+          <tr><td><strong>Everything Brush</strong></td><td class="journey-arrow">&rarr;</td><td>Miracle Balm</td><td><strong>25,141</strong></td><td><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div></td><td><span class="badge badge--high">$363</span></td></tr>
+          <tr><td><strong>Face Pencil</strong></td><td class="journey-arrow">&rarr;</td><td>Neutralizer Pencil</td><td><strong>24,181</strong></td><td><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div></td><td><span class="badge badge--high">$412</span></td></tr>
+          <tr><td><strong>WTF</strong></td><td class="journey-arrow">&rarr;</td><td>Neutralizer Pencil</td><td><strong>23,414</strong></td><td><div class="bar-track"><div class="bar-fill" style="width:17%"></div></div></td><td><span class="badge badge--high">$363</span></td></tr>
+          <tr><td><strong>Miracle Balm</strong></td><td class="journey-arrow">&rarr;</td><td>JETM</td><td><strong>23,063</strong></td><td><div class="bar-track"><div class="bar-fill" style="width:17%"></div></div></td><td><span class="badge badge--mid">$290</span></td></tr>
+          <tr><td><strong>Mascara</strong></td><td class="journey-arrow">&rarr;</td><td>Face Pencil</td><td><strong>20,715</strong></td><td><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div></td><td><span class="badge badge--high">$457</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <div class="callout__label">Key Insight</div>
+      <div class="callout__text">Face Pencil is the broadest category expander &mdash; its buyers fan out to MB, WTF, Neutralizer, Skin Brush, and Best Eyeshadow. Neutralizer Pencil is the "stealth gateway" appearing as a top 2nd purchase across MB, WTF, and Face Pencil buyers.</div>
+    </div>
+  </div>
+
+  <!-- 03: LTV -->
+  <div class="section">
+    <div class="section__eyebrow">03 &mdash; Lifetime Value</div>
+    <h2 class="section__title">Which products drive long-term value</h2>
+    <p class="section__subtitle">LTV and repurchase behavior across a 2-year lookback. Bubble size represents customer volume.</p>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <div class="chart-card__title">LTV vs. Purchase Frequency</div>
+        <p class="chart-card__desc">Products with 10K+ customers</p>
+        <canvas id="ltvScatterChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card__title">Repurchase LTV</div>
+        <p class="chart-card__desc">Cumulative LTV when same product is re-bought</p>
+        <canvas id="repurchaseLtvChart"></canvas>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout__label">Key Insight</div>
+      <div class="callout__text">Mini Miracle Balm is in a class of its own: $589 LTV at 4.9x purchase frequency across 205K customers. Eyeshadow Stick repurchasers reach $905 cumulative LTV &mdash; the highest of any product.</div>
+    </div>
+  </div>
+
+  <!-- 04: MINIS & KITS -->
+  <div class="section">
+    <div class="section__eyebrow">04 &mdash; Minis &amp; Kits</div>
+    <h2 class="section__title">Existing format performance</h2>
+    <p class="section__subtitle">How minis and kits perform as acquisition vehicles across a 2-year lookback.</p>
+
+    <div class="section-label">Minis</div>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-card__header"><span class="product-card__name">Mini Miracle Balm</span><span class="product-card__price">~$20</span></div>
+        <div class="metric-row"><span class="metric-label">Total Orders</span><span class="metric-value">221K</span></div>
+        <div class="metric-row"><span class="metric-label">New Customer Orders</span><span class="metric-value metric-value--highlight">100K (45%)</span></div>
+        <div class="metric-row"><span class="metric-label">LTV</span><span class="metric-value metric-value--highlight">$589</span></div>
+        <div class="metric-row"><span class="metric-label">Purchase Frequency</span><span class="metric-value metric-value--highlight">4.92x</span></div>
+        <div class="metric-row"><span class="metric-label">Total Customers</span><span class="metric-value">205K</span></div>
+      </div>
+      <div class="product-card">
+        <div class="product-card__header"><span class="product-card__name">Mini MB Trio</span><span class="product-card__price">~$60</span></div>
+        <div class="metric-row"><span class="metric-label">Total Orders</span><span class="metric-value">41K</span></div>
+        <div class="metric-row"><span class="metric-label">New Customer Orders</span><span class="metric-value">17K (41%)</span></div>
+        <div class="metric-row"><span class="metric-label">LTV</span><span class="metric-value">$139</span></div>
+        <div class="metric-row"><span class="metric-label">Purchase Frequency</span><span class="metric-value">1.18x</span></div>
+        <div class="metric-row"><span class="metric-label">Total Customers</span><span class="metric-value">40K</span></div>
+      </div>
+      <div class="product-card">
+        <div class="product-card__header"><span class="product-card__name">Mini WTF</span><span class="product-card__price">~$22</span></div>
+        <div class="metric-row"><span class="metric-label">Total Orders</span><span class="metric-value">37K</span></div>
+        <div class="metric-row"><span class="metric-label">New Customer Orders</span><span class="metric-value">20K (55%)</span></div>
+        <div class="metric-row"><span class="metric-label">LTV</span><span class="metric-value">$185</span></div>
+        <div class="metric-row"><span class="metric-label">Purchase Frequency</span><span class="metric-value">1.34x</span></div>
+        <div class="metric-row"><span class="metric-label">Total Customers</span><span class="metric-value">35K</span></div>
+      </div>
+      <div class="product-card">
+        <div class="product-card__header"><span class="product-card__name">Mini Eye Cream</span><span class="product-card__price">~$20</span></div>
+        <div class="metric-row"><span class="metric-label">Total Orders</span><span class="metric-value">36K</span></div>
+        <div class="metric-row"><span class="metric-label">New Customer Orders</span><span class="metric-value">20K (55%)</span></div>
+        <div class="metric-row"><span class="metric-label">LTV</span><span class="metric-value">$185</span></div>
+        <div class="metric-row"><span class="metric-label">Purchase Frequency</span><span class="metric-value">1.34x</span></div>
+        <div class="metric-row"><span class="metric-label">Total Customers</span><span class="metric-value">35K</span></div>
+      </div>
+      <div class="product-card">
+        <div class="product-card__header"><span class="product-card__name">Mini Lip Kit</span><span class="product-card__price">~$44</span></div>
+        <div class="metric-row"><span class="metric-label">Total Orders</span><span class="metric-value">18K</span></div>
+        <div class="metric-row"><span class="metric-label">New Customer Orders</span><span class="metric-value">5.6K (31%)</span></div>
+        <div class="metric-row"><span class="metric-label">LTV</span><span class="metric-value">$170</span></div>
+        <div class="metric-row"><span class="metric-label">Purchase Frequency</span><span class="metric-value">1.27x</span></div>
+        <div class="metric-row"><span class="metric-label">Total Customers</span><span class="metric-value">17K</span></div>
+      </div>
+      <div class="product-card">
+        <div class="product-card__header"><span class="product-card__name">Mini Mascara</span><span class="product-card__price">~$16</span></div>
+        <div class="metric-row"><span class="metric-label">Total Orders</span><span class="metric-value">4.3K</span></div>
+        <div class="metric-row"><span class="metric-label">New Customer Orders</span><span class="metric-value">2.7K (63%)</span></div>
+        <div class="metric-row"><span class="metric-label">LTV</span><span class="metric-value">$184</span></div>
+        <div class="metric-row"><span class="metric-label">Purchase Frequency</span><span class="metric-value">1.38x</span></div>
+        <div class="metric-row"><span class="metric-label">Total Customers</span><span class="metric-value">4.2K</span></div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:36px;">Kits (Top 10)</div>
+    <div class="card" style="overflow-x:auto; padding:0;">
+      <table class="data-table">
+        <thead>
+          <tr><th>Kit</th><th>Gross Sales</th><th>New Cust. Orders</th><th>New %</th><th>LTV</th><th>Frequency</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Bobbi Kit 4.0</strong></td><td>$8.8M</td><td>46.2K</td><td>48%</td><td>$194</td><td>1.76x</td></tr>
+          <tr><td><strong>Bobbi Kit 5.0</strong></td><td>$8.6M</td><td>55.1K</td><td>59%</td><td>$147</td><td>1.25x</td></tr>
+          <tr><td><strong>Hero Kit</strong></td><td>$7.0M</td><td>48.3K</td><td style="color:var(--pink);">62%</td><td>$173</td><td>1.33x</td></tr>
+          <tr><td><strong>City Lights Kit</strong></td><td>$3.4M</td><td>21.3K</td><td>51%</td><td>$183</td><td>1.65x</td></tr>
+          <tr><td><strong>Starter Balm Kit</strong></td><td>$2.9M</td><td>24.9K</td><td style="color:var(--pink);">59%</td><td>$137</td><td>1.41x</td></tr>
+          <tr><td><strong>Essential Balm Kit</strong></td><td>$2.7M</td><td>10.9K</td><td>47%</td><td>$180</td><td>1.38x</td></tr>
+          <tr><td><strong>Makeup Travel Kit 2.0</strong></td><td>$3.2M</td><td>14.4K</td><td>46%</td><td>$213</td><td>1.31x</td></tr>
+          <tr><td><strong>Complete Balm Kit</strong></td><td>$1.7M</td><td>4.0K</td><td>41%</td><td style="color:var(--pink);">$259</td><td>1.41x</td></tr>
+          <tr><td><strong>Dusty Rose Kit</strong></td><td>$1.2M</td><td>5.7K</td><td>28%</td><td>$138</td><td>1.16x</td></tr>
+          <tr><td><strong>Sunkissed Kit</strong></td><td>$476K</td><td>2.1K</td><td>26%</td><td>$154</td><td>1.20x</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <div class="callout__label">Key Insight</div>
+      <div class="callout__text">Hero Kit and Bobbi Kit 5.0 have the highest new customer % (62% and 59%) &mdash; kits are proven acquisition vehicles. Starter Balm Kit ($69, 59% new) is the closest existing comp to a discovery set. Complete Balm Kit drives the highest LTV ($259) among kits.</div>
+    </div>
+  </div>
+
+  <!-- 05: MINI JOURNEY -->
+  <div class="section">
+    <div class="section__eyebrow">05 &mdash; Mini Buyer Journey</div>
+    <h2 class="section__title">What happens after a mini purchase</h2>
+    <p class="section__subtitle">When customers start with a mini, what full-size products do they buy next?</p>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <div class="chart-card__title">Mini MB &mdash; Next Purchase</div>
+        <p class="chart-card__desc">Top cross-sells after Mini Miracle Balm (excl. repurchase)</p>
+        <canvas id="miniMbJourneyChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card__title">Mini MB &mdash; LTV by Next Product</div>
+        <p class="chart-card__desc">Cumulative LTV based on 2nd purchase</p>
+        <canvas id="miniMbLtvChart"></canvas>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout__label">Key Insight</div>
+      <div class="callout__text">Mini MB buyers who go on to buy Face Pencil reach $611 cumulative LTV &mdash; the highest cross-sell path. The "mini to full-size" upgrade is the most reliable retention funnel in the catalog.</div>
+    </div>
+  </div>
+
+  <!-- 06: THE 5 DISCOVERY SETS -->
+  <div class="section">
+    <div class="section__eyebrow">06 &mdash; Discovery Set Options</div>
+    <h2 class="section__title">Five data-backed configurations</h2>
+    <p class="section__subtitle">Each option targets the $55 free shipping threshold. Ranked by data confidence.</p>
+
+    <div class="set-grid">
+
+      <!-- SET 1 -->
+      <div class="set-card set-card--recommended">
+        <div class="set-card__header">
+          <div style="display:flex;align-items:center;">
+            <div class="set-card__number">1</div>
+            <div class="set-card__title-group">
+              <div class="set-card__name">The Complexion Discovery<span class="tag">Recommended</span></div>
+              <div class="set-card__tagline">All-mini, all shade-safe, proven journey chain</div>
+            </div>
+          </div>
+          <div class="set-card__price-block">
+            <div class="set-card__price">$55</div>
+            <div class="set-card__retail">$62 retail</div>
+            <div class="set-card__discount">Save 11%</div>
+          </div>
+        </div>
+        <div class="set-card__body">
+          <div>
+            <div class="set-product"><span class="set-product__name">Mini Miracle Balm</span><span class="set-product__price">$20</span></div>
+            <div class="set-product"><span class="set-product__name">Mini WTF</span><span class="set-product__price">$22</span></div>
+            <div class="set-product"><span class="set-product__name">Mini Eye Cream</span><span class="set-product__price">$20</span></div>
+          </div>
+          <div class="set-rationale">
+            <div class="set-rationale__label">Data Rationale</div>
+            <ul>
+              <li>Mini MB is the #1 LTV product in the catalog ($589, 4.9x frequency)</li>
+              <li>Mini WTF &rarr; Mini Eye Cream is a proven 34K customer journey</li>
+              <li>All shade-agnostic &mdash; eliminates the #1 online purchase barrier</li>
+              <li>All minis = lowest commitment, highest "try before full size" intent</li>
+              <li>Conservative 11% discount protects brand value positioning</li>
+            </ul>
+            <div class="confidence-strip">
+              <span class="confidence-pill confidence-pill--strong">High LTV</span>
+              <span class="confidence-pill confidence-pill--strong">Proven Journey</span>
+              <span class="confidence-pill confidence-pill--strong">Low Shade Risk</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SET 2 -->
+      <div class="set-card">
+        <div class="set-card__header">
+          <div style="display:flex;align-items:center;">
+            <div class="set-card__number">2</div>
+            <div class="set-card__title-group">
+              <div class="set-card__name">The Full Face Starter</div>
+              <div class="set-card__tagline">Complexion + define + lips in 3 products</div>
+            </div>
+          </div>
+          <div class="set-card__price-block">
+            <div class="set-card__price">$55</div>
+            <div class="set-card__retail">$72 retail</div>
+            <div class="set-card__discount">Save 24%</div>
+          </div>
+        </div>
+        <div class="set-card__body">
+          <div>
+            <div class="set-product"><span class="set-product__name">Mini Miracle Balm</span><span class="set-product__price">$20</span></div>
+            <div class="set-product"><span class="set-product__name">The Face Pencil</span><span class="set-product__price">$28</span></div>
+            <div class="set-product"><span class="set-product__name">Lip Recharge</span><span class="set-product__price">$24</span></div>
+          </div>
+          <div class="set-rationale">
+            <div class="set-rationale__label">Data Rationale</div>
+            <ul>
+              <li>Face Pencil is the #1 category expander &mdash; buyers fan out to 5+ categories on 2nd order</li>
+              <li>Mini MB &rarr; Face Pencil journey drives $611 cumulative LTV</li>
+              <li>Lip Recharge adds color dimension; 28K units sold in 90 days</li>
+              <li>Teaches a complete routine: glow &rarr; sculpt &rarr; color</li>
+              <li>24% discount = strong perceived value for price-sensitive new customers</li>
+            </ul>
+            <div class="confidence-strip">
+              <span class="confidence-pill confidence-pill--strong">Category Expander</span>
+              <span class="confidence-pill confidence-pill--strong">Complete Routine</span>
+              <span class="confidence-pill">Deeper Discount</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SET 3 -->
+      <div class="set-card">
+        <div class="set-card__header">
+          <div style="display:flex;align-items:center;">
+            <div class="set-card__number">3</div>
+            <div class="set-card__title-group">
+              <div class="set-card__name">The Everyday Essentials</div>
+              <div class="set-card__tagline">"No-makeup makeup" &mdash; complexion, undereye, brows</div>
+            </div>
+          </div>
+          <div class="set-card__price-block">
+            <div class="set-card__price">$55</div>
+            <div class="set-card__retail">$72 retail</div>
+            <div class="set-card__discount">Save 24%</div>
+          </div>
+        </div>
+        <div class="set-card__body">
+          <div>
+            <div class="set-product"><span class="set-product__name">Mini Miracle Balm</span><span class="set-product__price">$20</span></div>
+            <div class="set-product"><span class="set-product__name">Neutralizer Pencil</span><span class="set-product__price">$28</span></div>
+            <div class="set-product"><span class="set-product__name">The Best Pencil</span><span class="set-product__price">$24</span></div>
+          </div>
+          <div class="set-rationale">
+            <div class="set-rationale__label">Data Rationale</div>
+            <ul>
+              <li>Neutralizer is the stealth gateway &mdash; top 2nd purchase for MB, WTF, and FP buyers</li>
+              <li>Face Pencil &rarr; Neutralizer path: 24K customers at $412 LTV</li>
+              <li>Best Pencil &rarr; Face Pencil journey drives $512 LTV</li>
+              <li>The "I have 3 minutes" set &mdash; appeals to low-effort, high-impact routines</li>
+              <li>Strongest appeal to the 45-54 core demo who values efficiency</li>
+            </ul>
+            <div class="confidence-strip">
+              <span class="confidence-pill confidence-pill--strong">Stealth Gateway</span>
+              <span class="confidence-pill confidence-pill--strong">High LTV Paths</span>
+              <span class="confidence-pill">Shade-Dependent</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SET 4 -->
+      <div class="set-card">
+        <div class="set-card__header">
+          <div style="display:flex;align-items:center;">
+            <div class="set-card__number">4</div>
+            <div class="set-card__title-group">
+              <div class="set-card__name">The Color Edit</div>
+              <div class="set-card__tagline">Base + eyes + lips &mdash; shows the full JRB color range</div>
+            </div>
+          </div>
+          <div class="set-card__price-block">
+            <div class="set-card__price">$55</div>
+            <div class="set-card__retail">$70 retail</div>
+            <div class="set-card__discount">Save 21%</div>
+          </div>
+        </div>
+        <div class="set-card__body">
+          <div>
+            <div class="set-product"><span class="set-product__name">Mini Miracle Balm</span><span class="set-product__price">$20</span></div>
+            <div class="set-product"><span class="set-product__name">The Best Eyeshadow</span><span class="set-product__price">$26</span></div>
+            <div class="set-product"><span class="set-product__name">The Lippie Stick</span><span class="set-product__price">$24</span></div>
+          </div>
+          <div class="set-rationale">
+            <div class="set-rationale__label">Data Rationale</div>
+            <ul>
+              <li>Best Eyeshadow repurchasers hit $665 cumulative LTV &mdash; highest for any color product</li>
+              <li>Covers 3 face zones (cheeks, eyes, lips) &mdash; most variety of any option</li>
+              <li>Best for "I want to try JRB color" shoppers arriving from YouTube/IG</li>
+              <li>Counters the "JRB is just complexion" perception</li>
+              <li>Risk: shade selection required for both eyeshadow and lippie</li>
+            </ul>
+            <div class="confidence-strip">
+              <span class="confidence-pill confidence-pill--strong">High Repurchase LTV</span>
+              <span class="confidence-pill">Multi-shade Choice</span>
+              <span class="confidence-pill">Niche Appeal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SET 5 -->
+      <div class="set-card">
+        <div class="set-card__header">
+          <div style="display:flex;align-items:center;">
+            <div class="set-card__number">5</div>
+            <div class="set-card__title-group">
+              <div class="set-card__name">The 5-Minute Face</div>
+              <div class="set-card__tagline">Glow + lashes + lips &mdash; maximum impact, minimum steps</div>
+            </div>
+          </div>
+          <div class="set-card__price-block">
+            <div class="set-card__price">$55</div>
+            <div class="set-card__retail">$72 retail</div>
+            <div class="set-card__discount">Save 24%</div>
+          </div>
+        </div>
+        <div class="set-card__body">
+          <div>
+            <div class="set-product"><span class="set-product__name">Mini Miracle Balm</span><span class="set-product__price">$20</span></div>
+            <div class="set-product"><span class="set-product__name">The Mascara</span><span class="set-product__price">$28</span></div>
+            <div class="set-product"><span class="set-product__name">Lip Recharge</span><span class="set-product__price">$24</span></div>
+          </div>
+          <div class="set-rationale">
+            <div class="set-rationale__label">Data Rationale</div>
+            <ul>
+              <li>Mascara is the #8 first purchase (9.4K new customer orders in 90 days)</li>
+              <li>Mascara &rarr; Face Pencil journey = 21K customers, $457 LTV</li>
+              <li>Most universally understood routine: glow + lashes + tinted lip</li>
+              <li>Lowest shade complexity &mdash; MB shade-agnostic, mascara is black, lip is tinted</li>
+              <li>Best for the makeup minimalist and the younger demo JRB is targeting</li>
+            </ul>
+            <div class="confidence-strip">
+              <span class="confidence-pill confidence-pill--strong">Universal Routine</span>
+              <span class="confidence-pill confidence-pill--strong">Low Shade Risk</span>
+              <span class="confidence-pill">Lower LTV Signal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 07: COMPARISON -->
+  <div class="section">
+    <div class="section__eyebrow">07 &mdash; Comparison</div>
+    <h2 class="section__title">Side-by-side evaluation</h2>
+
+    <div class="comparison-table card" style="overflow-x:auto; padding:0;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Set</th>
+            <th>Retail</th>
+            <th>Discount</th>
+            <th>Products</th>
+            <th>Shade Risk</th>
+            <th>Breadth</th>
+            <th>LTV Signal</th>
+            <th>Best For</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:var(--cream);">
+            <td><strong>1. Complexion Discovery</strong> <span class="tag" style="font-size:9px;">Rec</span></td>
+            <td>$62</td><td>11%</td><td>3 minis</td>
+            <td class="val--good"><strong>None</strong></td>
+            <td>Complexion</td>
+            <td class="val--good"><strong>$589 LTV</strong></td>
+            <td>Risk-averse first-timer</td>
+          </tr>
+          <tr>
+            <td><strong>2. Full Face Starter</strong></td>
+            <td>$72</td><td>24%</td><td>1 mini + 2 full</td>
+            <td class="val--good">Low</td>
+            <td>Complexion + lips</td>
+            <td class="val--good"><strong>$611 LTV</strong></td>
+            <td>Value-driven customer</td>
+          </tr>
+          <tr>
+            <td><strong>3. Everyday Essentials</strong></td>
+            <td>$72</td><td>24%</td><td>1 mini + 2 full</td>
+            <td class="val--caution">Medium</td>
+            <td>Complexion + brows</td>
+            <td class="val--good">$412 LTV</td>
+            <td>No-fuss routine seeker</td>
+          </tr>
+          <tr>
+            <td><strong>4. Color Edit</strong></td>
+            <td>$70</td><td>21%</td><td>1 mini + 2 full</td>
+            <td class="val--caution">High</td>
+            <td>Full color range</td>
+            <td class="val--good">$665 LTV</td>
+            <td>Color enthusiast</td>
+          </tr>
+          <tr>
+            <td><strong>5. 5-Minute Face</strong></td>
+            <td>$72</td><td>24%</td><td>1 mini + 2 full</td>
+            <td class="val--good">Very Low</td>
+            <td>Complexion + lashes</td>
+            <td>$457 LTV</td>
+            <td>Minimalist / younger</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="border-left-color: var(--pink);">
+      <div class="callout__label">Recommendation</div>
+      <div class="callout__text">
+        <strong>Option 1</strong> is the safest bet &mdash; highest LTV anchor product, zero shade risk, proven product journey, and the smallest discount (protecting brand value).<br><br>
+        <strong>Option 2</strong> is the strongest for category expansion and teaching a full JRB routine.<br><br>
+        <strong>Option 5</strong> is the best play for the younger demo JRB is targeting per the brand positioning work.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const BLACK = '#000';
+const PINK = '#ff2e92';
+const CREAM = '#f6f2eb';
+const GRAY = '#d0d0d0';
+
+Chart.defaults.font.family = "RingsideWideWeb, Helvetica, Arial, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#757575';
+
+// 1. Best Sellers
+new Chart(document.getElementById('bestSellersChart'), {
+  type: 'bar',
+  data: {
+    labels: ['WTF', 'Miracle Balm', 'JETM', 'Eyeshadow Stick', 'Face Pencil', 'Mini MB', 'Dusty Rose Kit', 'Neutralizer', 'Mascara', 'Hero Kit'],
+    datasets: [{
+      data: [5.60, 4.64, 2.15, 1.87, 1.85, 1.70, 1.19, 0.98, 0.91, 0.80],
+      backgroundColor: ctx => [0,2,3,6,7,8,9].includes(ctx.dataIndex) ? BLACK : PINK,
+      borderRadius: 2, borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, aspectRatio: 1.4,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `$${ctx.raw}M` } } },
+    scales: { x: { grid: { display: false }, ticks: { callback: v => `$${v}M` } }, y: { grid: { display: false }, ticks: { font: { family: 'GeogrotesqueCondBoldWeb', size: 11, weight: 'bold' } } } }
+  }
+});
+
+// 2. First Purchase
+new Chart(document.getElementById('firstPurchaseChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Miracle Balm', 'WTF', 'Face Pencil', 'JETM', 'Mini MB', 'Neutralizer', 'Skin Brush', 'Eyeshadow Stick', 'Mascara', 'Everything Brush'],
+    datasets: [{
+      data: [59.5, 54.2, 31.7, 20.1, 17.7, 15.6, 12.3, 9.6, 9.4, 8.3],
+      backgroundColor: ctx => [0,2,4].includes(ctx.dataIndex) ? PINK : BLACK,
+      borderRadius: 2, borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, aspectRatio: 1.4,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.raw}K orders` } } },
+    scales: { x: { grid: { display: false }, ticks: { callback: v => `${v}K` } }, y: { grid: { display: false }, ticks: { font: { family: 'GeogrotesqueCondBoldWeb', size: 11, weight: 'bold' } } } }
+  }
+});
+
+// 3. LTV Scatter
+new Chart(document.getElementById('ltvScatterChart'), {
+  type: 'bubble',
+  data: {
+    datasets: [
+      { label: 'Mini Miracle Balm', data: [{ x: 4.92, y: 589, r: 30 }], backgroundColor: PINK },
+      { label: 'Best Eyeshadow', data: [{ x: 2.13, y: 321, r: 22 }], backgroundColor: BLACK },
+      { label: 'Just A Sec', data: [{ x: 1.93, y: 307, r: 20 }], backgroundColor: '#757575' },
+      { label: 'Detail Brush', data: [{ x: 1.76, y: 378, r: 9 }], backgroundColor: GRAY },
+      { label: 'Face Powder Brush', data: [{ x: 1.83, y: 373, r: 9 }], backgroundColor: GRAY },
+      { label: 'Bronzer Brush', data: [{ x: 1.72, y: 357, r: 9 }], backgroundColor: GRAY },
+      { label: 'Multivitamin Serum', data: [{ x: 1.72, y: 313, r: 8 }], backgroundColor: '#757575' },
+    ]
+  },
+  options: {
+    responsive: true, aspectRatio: 1.6,
+    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', padding: 12, font: { size: 10 } } }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.y} LTV, ${ctx.raw.x}x` } } },
+    scales: { x: { title: { display: true, text: 'Purchase Frequency', font: { size: 11 } }, grid: { color: 'rgba(0,0,0,.04)' }, min: 1.4 }, y: { title: { display: true, text: 'LTV ($)', font: { size: 11 } }, grid: { color: 'rgba(0,0,0,.04)' }, ticks: { callback: v => `$${v}` }, min: 250 } }
+  }
+});
+
+// 4. Repurchase LTV
+new Chart(document.getElementById('repurchaseLtvChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Eyeshadow Stick', 'Just A Sec', 'Best Eyeshadow', 'JETM', 'Face Pencil', 'WTF', 'Mini MB', 'Miracle Balm'],
+    datasets: [{
+      data: [905, 723, 665, 595, 528, 421, 390, 355],
+      backgroundColor: ctx => ctx.raw >= 700 ? PINK : (ctx.raw >= 500 ? BLACK : GRAY),
+      borderRadius: 2, borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, aspectRatio: 1.6,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `$${ctx.raw} LTV` } } },
+    scales: { x: { grid: { display: false }, ticks: { callback: v => `$${v}` } }, y: { grid: { display: false }, ticks: { font: { family: 'GeogrotesqueCondBoldWeb', size: 11, weight: 'bold' } } } }
+  }
+});
+
+// 5. Mini MB Journey
+new Chart(document.getElementById('miniMbJourneyChart'), {
+  type: 'bar',
+  data: {
+    labels: ['JETM', 'Face Pencil', 'Gel Liner', 'WTF', 'Eyeshadow Stick', 'Mascara', 'Miracle Balm', 'Mini WTF'],
+    datasets: [{
+      data: [10223, 2887, 2356, 2491, 2264, 1996, 1929, 1483],
+      backgroundColor: BLACK, borderRadius: 2, borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, aspectRatio: 1.6,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.raw.toLocaleString()} customers` } } },
+    scales: { x: { grid: { display: false }, ticks: { callback: v => v >= 1000 ? `${(v/1000).toFixed(1)}K` : v } }, y: { grid: { display: false }, ticks: { font: { family: 'GeogrotesqueCondBoldWeb', size: 10, weight: 'bold' } } } }
+  }
+});
+
+// 6. Mini MB LTV
+new Chart(document.getElementById('miniMbLtvChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Makeup Travel Kit', 'Cool Gloss', 'Rich Eye Cream', 'Just A Sec', 'Best Eyeshadow', 'Best Pencil', 'Classic Lip', 'Face Pencil', 'Gel Liner', 'Mini MB Trio'],
+    datasets: [{
+      data: [1070, 898, 837, 789, 734, 714, 664, 611, 515, 515],
+      backgroundColor: ctx => ctx.raw >= 800 ? PINK : (ctx.raw >= 600 ? BLACK : GRAY),
+      borderRadius: 2, borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, aspectRatio: 1.4,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `$${ctx.raw} LTV` } } },
+    scales: { x: { grid: { display: false }, ticks: { callback: v => `$${v}` } }, y: { grid: { display: false }, ticks: { font: { family: 'GeogrotesqueCondBoldWeb', size: 10, weight: 'bold' } } } }
+  }
+});
+
+// Mouse detection
+document.addEventListener('mousemove', function addMouse() { document.body.classList.add('has-mouse'); document.removeEventListener('mousemove', addMouse); });
+</script>
+
+</body>
+</html>
