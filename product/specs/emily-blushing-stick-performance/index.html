@@ -1,0 +1,2771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jones Road x Emily DiDonato — Blushing Stick</title>
+
+  <style>
+    /* =============================================================================
+       @font-face — JRB Brand Fonts (CDN)
+       ============================================================================= */
+    @font-face {
+      font-family: 'GeogrotesqueCondBoldWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'BaseMonoWideWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'RingsideWideWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Canela';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Canela';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-LightItalic.otf') format('opentype');
+      font-weight: 300;
+      font-style: italic;
+      font-display: swap;
+    }
+
+    /* =============================================================================
+       CSS Custom Properties
+       ============================================================================= */
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --color-muted: #757575;
+
+      --shade-joy: #e8938b;
+      --shade-pretty: #e8a9a0;
+      --shade-bare: #d4a995;
+      --shade-chic: #c48e8e;
+      --shade-pinch: #e8a48a;
+      --shade-flush: #d47a7a;
+      --shade-cheeky: #e06b8a;
+      --shade-miami: #d98a6a;
+      --shade-noir: #6b3a4a;
+
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    /* =============================================================================
+       Reset & Base
+       ============================================================================= */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 100%;
+      color: var(--color-black);
+      letter-spacing: .025em;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      background: var(--color-white);
+      padding-bottom: 64px;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* =============================================================================
+       Button Component
+       ============================================================================= */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      height: 40px;
+      padding: 0 36px;
+      border-radius: 2px;
+      border: 1px solid var(--color-black);
+      background: var(--color-black);
+      color: var(--color-white);
+      cursor: pointer;
+      transition: background .4s var(--ease-primary), color .4s var(--ease-primary);
+    }
+
+    .has-mouse .button:not(:disabled):hover {
+      background: transparent;
+      color: var(--color-black);
+    }
+
+    @media screen and (min-width: 768px) {
+      .button {
+        font-size: 14px;
+        height: 44px;
+      }
+    }
+
+    /* =============================================================================
+       Section 1: Faux Header
+       ============================================================================= */
+    .faux-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .faux-header__logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .faux-header__logo svg {
+      height: 12px;
+      width: auto;
+    }
+
+    @media screen and (min-width: 768px) {
+      .faux-header {
+        padding: 16px 32px;
+      }
+    }
+
+    /* =============================================================================
+       Section 2: Hero
+       ============================================================================= */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .hero__content {
+      padding: 40px 20px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero__collab { display: flex; flex-direction: column; align-items: flex-start; gap: 0; margin-block-end: 32px; }
+    .hero__collab-logo svg { height: 14px; width: auto; }
+    .hero__signature { display: block; max-width: 140px; }
+
+    .hero__title {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 300;
+      line-height: 37px;
+      letter-spacing: .5px;
+      color: var(--color-black);
+      margin-block-end: 12px;
+      text-wrap: balance;
+    }
+
+    .hero__subtitle {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--color-black);
+      margin-block-end: 8px;
+      text-wrap: balance;
+    }
+
+    .hero__proof {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-block-start: 16px;
+      padding-block-start: 16px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .hero__proof-stars {
+      display: flex;
+      gap: 2px;
+    }
+
+    .hero__proof-stars svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .hero__proof-text {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--color-black);
+      letter-spacing: .025em;
+    }
+
+    .hero__media {
+      aspect-ratio: 3/4;
+      max-height: 60vh;
+      overflow: hidden;
+    }
+
+    .hero__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media screen and (min-width: 768px) {
+      .hero {
+        flex-direction: row;
+        min-height: 0;
+        max-height: 560px;
+      }
+
+      .hero__content {
+        flex: 0.8;
+        padding: 56px 56px 56px 64px;
+      }
+
+      .hero__title {
+        font-size: 38px;
+        line-height: 54px;
+      }
+
+      .hero__media {
+        flex: 1.2;
+        aspect-ratio: auto;
+        max-height: 600px;
+      }
+    }
+
+    @media screen and (min-width: 992px) {
+      .hero__content {
+        padding: 80px 64px 80px 80px;
+      }
+
+      .hero__title {
+        font-size: 42px;
+        line-height: 56px;
+      }
+    }
+
+    /* =============================================================================
+       Section 4: 5 Reasons (V1 — 48px Canela numbers left-aligned)
+       ============================================================================= */
+    .reasons {
+      padding: 48px 20px;
+      background: #f8f8f8;
+    }
+
+    .reasons__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .reasons__media {
+      display: none;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+
+    .reasons__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+
+    .reasons__content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .reasons__accent-line {
+      width: 48px;
+      height: 3px;
+      background: var(--color-accent);
+      border-radius: 2px;
+      margin-block-end: 24px;
+    }
+
+    .reasons__eyebrow {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-accent);
+      margin-block-end: 16px;
+    }
+
+    .reasons__title {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 300;
+      line-height: 37px;
+      letter-spacing: .5px;
+      color: var(--color-black);
+      margin-block-end: 24px;
+      text-wrap: balance;
+    }
+
+    .reasons__list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .reasons__item {
+      border-bottom: 1px solid rgba(0,0,0,.1);
+    }
+
+    .reasons__item-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .reasons__item-header::-webkit-details-marker {
+      display: none;
+    }
+
+    .reasons__item-num {
+      font-family: var(--font-serif);
+      font-size: 36px;
+      font-weight: 300;
+      color: var(--color-accent);
+      line-height: 1;
+      min-width: 48px;
+      text-align: center;
+      position: relative;
+      padding-block-end: 0;
+    }
+
+    .reasons__item-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-black);
+      flex: 1;
+    }
+
+    .reasons__item-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      transition: transform .3s var(--ease-primary);
+    }
+
+    .reasons__item[open] .reasons__item-icon {
+      transform: rotate(45deg);
+    }
+
+    .reasons__item-body {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--color-black);
+      padding-block-end: 16px;
+      padding-inline-start: 56px;
+      text-wrap: balance;
+    }
+
+    .reasons__cta {
+      margin-block-start: 32px;
+    }
+
+    @media screen and (min-width: 768px) {
+      .reasons {
+        padding: 72px 32px;
+      }
+
+      .reasons__inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 56px;
+      }
+
+      .reasons__media {
+        display: block;
+        max-height: 480px;
+        align-self: start;
+      }
+
+      .reasons__eyebrow {
+        font-size: 18px;
+      }
+
+      .reasons__title {
+        font-size: 34px;
+        line-height: 48px;
+      }
+
+      .reasons__item-title {
+        font-size: 15px;
+      }
+    }
+
+    @media screen and (min-width: 992px) {
+      .reasons__title {
+        font-size: 38px;
+        line-height: 54px;
+      }
+    }
+
+    /* =============================================================================
+       Section 5: Emily Quote (cclp-cta-split pattern)
+       ============================================================================= */
+    .emily-quote {
+      padding: 48px 20px;
+      background: var(--color-white);
+    }
+
+    .emily-quote__inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .emily-quote__media {
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+
+    .emily-quote__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .emily-quote__content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .emily-quote__rule {
+      width: 40px;
+      height: 2px;
+      background: var(--color-accent);
+      margin: 0 auto 28px;
+    }
+
+    .emily-quote__text {
+      font-family: var(--font-serif);
+      font-weight: 300;
+      font-style: italic;
+      font-size: 22px;
+      line-height: 1.55;
+      color: var(--color-black);
+      margin-block-end: 24px;
+      max-width: 600px;
+      margin-inline: auto;
+      text-wrap: balance;
+    }
+
+    .emily-quote__attribution {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: var(--color-muted);
+    }
+
+    @media screen and (min-width: 768px) {
+      .emily-quote {
+        padding: 72px 96px;
+      }
+
+      .emily-quote__inner {
+        flex-direction: row;
+        gap: 96px;
+        align-items: center;
+      }
+
+      .emily-quote__media {
+        flex: 1;
+        min-width: 0;
+        max-height: 480px;
+        align-self: center;
+      }
+
+      .emily-quote__content {
+        flex: 1;
+        min-width: 0;
+        text-align: center;
+      }
+
+      .emily-quote__text {
+        font-size: 26px;
+      }
+    }
+
+    /* =============================================================================
+       Section 6+7: Emily Shade Grid (replaces shade strip + UGC)
+       ============================================================================= */
+    .shade-grid {
+      padding: 48px 20px;
+      background: #f8f8f8;
+    }
+
+    .shade-grid__inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .shade-grid__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-block-end: 24px;
+      padding-inline: 20px;
+    }
+
+    .shade-grid__eyebrow {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-accent);
+      margin-block-end: 8px;
+    }
+
+    .shade-grid__title {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 300;
+      line-height: 1.3;
+      color: var(--color-black);
+      text-wrap: balance;
+      margin-block-end: 8px;
+    }
+
+    .shade-grid__sub {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--color-black);
+    }
+
+    .shade-grid__nav {
+      display: none;
+    }
+
+    .shade-grid__carousel {
+      position: relative;
+      overflow: visible;
+    }
+
+    .shade-grid__scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      scroll-snap-type: x mandatory;
+      padding-inline: 20px;
+    }
+
+    .shade-grid__scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .shade-grid__card {
+      flex-shrink: 0;
+      width: 200px;
+      scroll-snap-align: start;
+    }
+
+    .shade-grid__card-media {
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      border-radius: 3px;
+      margin-block-end: 12px;
+    }
+
+    .shade-grid__card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+    }
+
+    .shade-grid__card-name {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .98px;
+      color: var(--color-black);
+      text-align: center;
+      margin-block-end: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* Swatch — exact buybox pattern: 28px outer, 24px inner <i> */
+    .shade-grid__swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 100%;
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: transparent;
+    }
+    .shade-grid__swatch i {
+      display: block;
+      width: 24px;
+      height: 24px;
+      border-radius: 100%;
+    }
+
+    .shade-grid__card-desc {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--color-muted);
+      text-align: center;
+    }
+
+    .shade-grid__card-tag {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--color-accent);
+      text-align: center;
+      margin-block-start: 6px;
+    }
+
+    .shade-grid__arrow {
+      position: absolute;
+      top: 35%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
+      transition: background .2s var(--ease-primary);
+    }
+
+    .has-mouse .shade-grid__arrow:hover {
+      background: var(--color-black);
+      border-color: var(--color-black);
+      color: var(--color-white);
+    }
+
+    .shade-grid__arrow--prev { left: -18px; }
+    .shade-grid__arrow--next { right: -18px; }
+
+    .shade-grid__arrow svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .shade-grid__cta {
+      margin-block-start: 32px;
+      text-align: center;
+      padding-inline: 20px;
+    }
+
+    @media screen and (min-width: 768px) {
+      .shade-grid {
+        padding: 72px 48px;
+      }
+
+      .shade-grid__header {
+        padding-inline: 0;
+      }
+
+      .shade-grid__title {
+        font-size: 34px;
+        line-height: 1.3;
+      }
+
+      .shade-grid__nav {
+        display: flex;
+        gap: 8px;
+      }
+
+      .shade-grid__scroll {
+        gap: 12px;
+        padding-inline: 0;
+        overflow-x: auto;
+      }
+
+      .shade-grid__card {
+        flex: 0 0 calc((100% - 4 * 12px) / 5);
+        width: auto;
+      }
+
+      .shade-grid__arrow {
+        display: flex;
+      }
+
+      .shade-grid__arrow--prev { left: 8px; }
+      .shade-grid__arrow--next { right: 8px; }
+
+      .shade-grid__cta {
+        padding-inline: 0;
+      }
+    }
+
+    /* =============================================================================
+       Section 8: Buy Box — JRB PDP Layout
+       ============================================================================= */
+    .buybox {
+      padding: 48px 20px;
+      background: var(--color-white);
+    }
+
+    .buybox__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .buybox__layout {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* --- Gallery (mobile: main image + horizontal thumbs below) --- */
+    .buybox__gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .buybox__gallery-main {
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #fafafa;
+      width: 100%;
+    }
+
+    .buybox__gallery-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity .25s var(--ease-primary);
+    }
+
+    .buybox__gallery-thumbs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      order: 1;
+    }
+
+    .buybox__gallery-thumbs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .buybox__thumb {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      overflow: hidden;
+      border-radius: 2px;
+      border: 1px solid var(--color-border);
+      cursor: pointer;
+      transition: border-color .3s var(--ease-primary);
+      background: #fafafa;
+      padding: 0;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .buybox__thumb.is-active {
+      border-color: var(--color-black);
+    }
+
+    .buybox__thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* --- Product info column --- */
+    .buybox__content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .buybox__product-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.18px;
+      color: var(--color-black);
+      margin-block-end: 8px;
+      line-height: 1.2;
+    }
+
+    /* Stars + review count */
+    .buybox__rating {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-block-end: 20px;
+    }
+
+    .buybox__stars {
+      display: flex;
+      align-items: center;
+      position: relative;
+      height: 16px;
+      color: var(--color-black);
+    }
+    .buybox__stars-outline {
+      display: flex;
+      align-items: center;
+    }
+    .buybox__stars-outline svg,
+    .buybox__stars-filled svg {
+      width: 16px;
+      height: 16px;
+      padding: 1px;
+      flex-shrink: 0;
+      display: block;
+    }
+    .buybox__stars-filled {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      height: 100%;
+      width: 98%; /* 4.9 out of 5 = 98% */
+    }
+
+    .buybox__review-count {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 100%;
+      letter-spacing: .025em;
+      color: var(--color-black);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    /* Shade dots */
+    .buybox__shade-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-block-end: 16px;
+    }
+
+    .buybox__shade-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 100%;
+      border: 1px solid var(--color-border);
+      cursor: pointer;
+      transition: border-color .2s var(--ease-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      background: transparent;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .buybox__shade-dot i {
+      display: block;
+      width: 24px;
+      height: 24px;
+      border-radius: 100%;
+    }
+    .buybox__shade-dot.is-active {
+      border-color: var(--color-black);
+    }
+    .has-mouse .buybox__shade-dot:hover {
+      border-color: var(--color-black);
+    }
+
+    /* Shade name + description */
+    .buybox__shade-info {
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--color-black);
+      margin-block-end: 12px;
+    }
+
+    .buybox__shade-name {
+      font-weight: 600;
+    }
+
+    .buybox__shade-desc {
+      font-weight: 325;
+      color: var(--color-muted);
+    }
+
+    /* ATC button with integrated price */
+    .buybox__atc.button {
+      display: flex;
+      width: 100%;
+      padding: 0;
+      white-space: nowrap;
+      box-shadow: 0 0 19px rgba(0,0,0,.24);
+      margin-block-end: 16px;
+      font-size: 14px;
+    }
+    .buybox__atc-text {
+      flex-grow: 1;
+      min-width: 120px;
+      text-align: center;
+    }
+    .buybox__atc-price {
+      border-left: 1px solid rgba(255,255,255,1);
+      display: flex;
+      align-items: center;
+      align-self: stretch;
+      flex-shrink: 0;
+      padding: 0 16px;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 14px;
+      transition: color .4s var(--ease-primary);
+    }
+    .has-mouse .buybox__atc.button:not(:disabled):hover .buybox__atc-price {
+      color: var(--color-black);
+    }
+
+    /* Trust badges */
+    .buybox__trust-badges {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .buybox__trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 325;
+      color: var(--color-black);
+      letter-spacing: 0;
+    }
+    .buybox__trust-badge + .buybox__trust-badge {
+      margin-top: 16px;
+    }
+
+    .buybox__trust-badge svg {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 20px;
+    }
+
+    .buybox__trust-badge a {
+      text-decoration: underline;
+      color: var(--color-muted);
+    }
+
+    .buybox__trust-badge .shoppay-badge {
+      display: inline-flex;
+      align-items: center;
+      vertical-align: middle;
+      gap: 1px;
+    }
+
+    .buybox__trust-badge .shoppay-badge__shop {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      font-style: italic;
+      color: #757575;
+      letter-spacing: -0.3px;
+    }
+
+    .buybox__trust-badge .shoppay-badge__pay {
+      display: inline-flex;
+      align-items: center;
+      background: #757575;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      font-style: italic;
+      letter-spacing: -0.2px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      line-height: 1.2;
+    }
+
+    /* --- Buy Box Accordions (PDP pattern) --- */
+    .buybox__accordions {
+      margin-block-start: 24px;
+      border-top: 1px solid #d7d7d7;
+    }
+
+    .buybox__accordion {
+      border-bottom: 1px solid #d7d7d7;
+    }
+
+    .buybox__accordion-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 15px 20px 16px 0;
+      cursor: pointer;
+      list-style: none;
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--color-black);
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+      position: relative;
+    }
+
+    .buybox__accordion-trigger::-webkit-details-marker {
+      display: none;
+    }
+
+    .buybox__accordion-trigger::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 49%;
+      height: 1px;
+      width: 17px;
+      background-color: var(--color-black);
+    }
+
+    .buybox__accordion-trigger::before {
+      content: "";
+      position: absolute;
+      right: 8.5px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 17px;
+      width: 1px;
+      background-color: var(--color-black);
+      opacity: 1;
+      transition: opacity .25s ease;
+    }
+
+    .buybox__accordion[open] .buybox__accordion-trigger::before {
+      opacity: 0;
+    }
+
+    .buybox__accordion-body {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--color-black);
+      padding-block-end: 18px;
+      padding-inline-end: 20px;
+    }
+
+    .buybox__accordion-body p + p {
+      margin-block-start: 12px;
+    }
+
+    .buybox__accordion-body ul {
+      list-style: disc;
+      padding-inline-start: 20px;
+      margin-block-start: 8px;
+    }
+
+    .buybox__accordion-body li {
+      margin-block-end: 4px;
+    }
+
+    /* --- Desktop: two-column with vertical thumbs on left --- */
+    @media screen and (min-width: 768px) {
+      .buybox {
+        padding: 72px 32px;
+      }
+
+      .buybox__layout {
+        flex-direction: row;
+        gap: 48px;
+      }
+
+      .buybox__gallery {
+        flex: 0 0 48%;
+        flex-direction: row;
+        gap: 12px;
+      }
+
+      .buybox__gallery-thumbs {
+        flex-direction: column;
+        overflow-x: visible;
+        overflow-y: auto;
+        max-height: 480px;
+        gap: 10px;
+        order: 0;
+      }
+
+      .buybox__gallery-main {
+        flex: 1;
+        order: 1;
+        max-height: 480px;
+      }
+
+      .buybox__thumb {
+        width: 72px;
+        height: 72px;
+      }
+
+      .buybox__content {
+        flex: 1;
+        align-self: flex-start;
+        padding-block-start: 8px;
+        max-width: 480px;
+      }
+    }
+
+    /* =============================================================================
+       Section 9: Reviews (cclp-review-cards pattern)
+       ============================================================================= */
+    .cclp-reviews {
+      padding: 48px 24px;
+      background: #f8f8f8;
+    }
+
+    .cclp-reviews__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .cclp-reviews__accent-line {
+      width: 48px;
+      height: 3px;
+      background: var(--color-accent);
+      border-radius: 2px;
+      margin: 0 auto 24px;
+    }
+
+    .cclp-reviews__title {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 300;
+      line-height: 1.2;
+      letter-spacing: .5px;
+      color: var(--color-black);
+      text-align: center;
+      text-wrap: balance;
+      margin-block-end: 32px;
+    }
+
+    .cclp-reviews__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .cclp-reviews__card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 3px;
+      padding: 32px 28px;
+    }
+
+    .cclp-reviews__stars {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      margin-block-end: 16px;
+    }
+
+    .cclp-reviews__stars svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .cclp-reviews__card-title {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.3;
+      color: var(--color-black);
+      margin-block-end: 12px;
+    }
+
+    .cclp-reviews__card-body {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--color-black);
+    }
+
+    .cclp-reviews__card-footer {
+      border-top: 1px solid #e8e8e8;
+      padding-top: 16px;
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cclp-reviews__card-name {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-black);
+    }
+
+    .cclp-reviews__card-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 550;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.5);
+    }
+
+    @media screen and (min-width: 768px) {
+      .cclp-reviews {
+        padding: 72px 40px;
+      }
+
+      .cclp-reviews__title {
+        font-size: 48px;
+      }
+
+      .cclp-reviews__grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+    }
+
+    /* =============================================================================
+       Section 10: Press Bar (cclp-press pattern)
+       ============================================================================= */
+    .cclp-press {
+      background: var(--color-black);
+      padding: 48px 0 24px;
+    }
+
+    .cclp-press__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* --- Mobile: single quote carousel --- */
+    .cclp-press__slide {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .cclp-press__slide.is-active {
+      display: flex;
+    }
+
+    .cclp-press__slide-logo {
+      height: 20px;
+      width: auto;
+      margin-block-end: 20px;
+      opacity: 1;
+    }
+
+    .cclp-press__slide-quote {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.5;
+      letter-spacing: 0.3px;
+      color: var(--color-white);
+      text-wrap: balance;
+    }
+
+    /* --- Desktop: logo row + quote below --- */
+    .cclp-press__logos {
+      display: none;
+    }
+
+    .cclp-press__desktop-quote {
+      display: none;
+    }
+
+    /* --- Dots (mobile) --- */
+    .cclp-press__dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-block-start: 24px;
+    }
+
+    .cclp-press__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: background .2s var(--ease-primary);
+      border: none;
+      padding: 0;
+    }
+
+    .cclp-press__dot.is-active {
+      background: var(--color-white);
+    }
+
+    /* --- Progress bar --- */
+    .cclp-press__progress {
+      width: 155px;
+      height: 2px;
+      background: #333333;
+      margin: 16px auto 0;
+      border-radius: 1px;
+      overflow: hidden;
+    }
+
+    .cclp-press__progress-fill {
+      height: 100%;
+      background: var(--color-white);
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    @media screen and (min-width: 1024px) {
+      .cclp-press {
+        padding: 64px 0 42px;
+      }
+
+      .cclp-press__inner {
+        padding: 0 40px;
+      }
+
+      /* Hide mobile carousel elements */
+      .cclp-press__slide {
+        display: none !important;
+      }
+
+      .cclp-press__dots {
+        display: none;
+      }
+
+      /* Show desktop layout */
+      .cclp-press__logos {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 48px;
+        margin-block-end: 32px;
+      }
+
+      .cclp-press__logo-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        opacity: 0.4;
+        transition: opacity .3s var(--ease-primary);
+        display: flex;
+        align-items: center;
+      }
+
+      .cclp-press__logo-btn.is-active {
+        opacity: 1;
+      }
+
+      .cclp-press__logo-btn svg {
+        height: 16px;
+        width: auto;
+      }
+
+      .cclp-press__desktop-quote {
+        display: block;
+        text-align: center;
+      }
+
+      .cclp-press__desktop-quote-text {
+        font-family: var(--font-serif);
+        font-size: 24px;
+        font-weight: 300;
+        line-height: 1.5;
+        letter-spacing: 0.3px;
+        color: var(--color-white);
+        max-width: 600px;
+        margin: 0 auto;
+        text-wrap: balance;
+      }
+
+      .cclp-press__progress {
+        margin-top: 32px;
+      }
+    }
+
+    /* =============================================================================
+       Section 11: FAQ (casting-faq exact pattern)
+       ============================================================================= */
+    .casting-faq {
+      padding: 48px 24px;
+      background: #f8f8f8;
+      interpolate-size: allow-keywords;
+    }
+
+    .casting-faq__inner {
+      max-width: 745px;
+      margin: 0 auto;
+    }
+
+    .casting-faq__heading {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 300;
+      line-height: 1.3;
+      color: var(--color-black);
+      text-align: center;
+      margin-block-end: 32px;
+      text-wrap: balance;
+    }
+
+    .casting-faq__item {
+      border-bottom: 1px solid #cccccc;
+    }
+
+    .casting-faq__item:first-of-type {
+      border-top: 1px solid #cccccc;
+    }
+
+    .casting-faq__question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 0;
+      cursor: pointer;
+      list-style: none;
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--color-black);
+      width: 100%;
+    }
+
+    .casting-faq__question::-webkit-details-marker {
+      display: none;
+    }
+
+    .casting-faq__question-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .casting-faq__question-icon .casting-faq__icon-vline {
+      transition: opacity .3s var(--ease-primary);
+    }
+
+    .casting-faq__item[open] .casting-faq__question-icon .casting-faq__icon-vline {
+      opacity: 0;
+    }
+
+    .casting-faq__item ::details-content {
+      opacity: 0;
+      block-size: 0;
+      overflow: hidden;
+      transition: opacity 300ms var(--ease-primary), block-size 300ms var(--ease-primary);
+    }
+
+    .casting-faq__item[open] ::details-content {
+      opacity: 1;
+      block-size: auto;
+    }
+
+    .casting-faq__answer {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 25px;
+      color: var(--color-black);
+      padding-block-end: 20px;
+      max-width: 600px;
+    }
+
+    @media screen and (max-width: 393px) {
+      .casting-faq {
+        padding: 48px 24px;
+      }
+    }
+
+    @media screen and (min-width: 1024px) {
+      .casting-faq {
+        padding: 72px 0;
+      }
+
+      .casting-faq__heading {
+        font-size: 38px;
+        letter-spacing: 0.05em;
+      }
+
+      .casting-faq__question {
+        font-size: 18px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .casting-faq__answer {
+        font-size: 16px;
+        line-height: 20px;
+      }
+    }
+
+    /* =============================================================================
+       Section 12: Sticky CTA
+       ============================================================================= */
+    .sticky-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--color-white);
+      border-top: 1px solid var(--color-border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 100;
+      transform: translateY(100%);
+      transition: transform .4s var(--ease-primary);
+    }
+
+    .sticky-cta.is-visible {
+      transform: translateY(0);
+    }
+
+    .sticky-cta__name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.18px;
+      color: var(--color-black);
+      display: none;
+    }
+
+    .sticky-cta__price {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--color-black);
+      display: none;
+    }
+
+    @media screen and (min-width: 768px) {
+      .sticky-cta__name,
+      .sticky-cta__price {
+        display: block;
+      }
+    }
+
+    /* =============================================================================
+       Reduced Motion
+       ============================================================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       Section 1: Faux Header
+       ========================================================================= -->
+  <header class="faux-header">
+    <a href="#" class="faux-header__logo"><svg width="140" height="14" viewBox="0 0 256 22" fill="none" xmlns="http://www.w3.org/2000/svg"><title>Jones Road</title><g clip-path="url(#jrl-p)"><path d="M0 20.26V14C0.92 14.68 2.04 15.04 3.19 15C5.49 15 6.92 13.82 6.92 11.5V0.71H16.79V13.27C16.79 19.35 12.69 21.96 6.79 21.96C3.43 22 1 21.08 0 20.26Z" fill="black"/><path d="M34.21 0C24.89 0 19.31 4.46 19.31 10.81C19.31 16.94 24.89 22 34.18 22C43.47 22 49.06 17 49.06 10.85C49.06 4.46 43.47 0 34.21 0ZM34.21 15C33.65 15.05 33.09 14.97 32.57 14.78C32.04 14.59 31.57 14.29 31.17 13.9C30.77 13.51 30.46 13.04 30.26 12.52C30.05 12 29.97 11.45 30 10.89C30 8.52 31.6 7 34.18 7C36.76 7 38.4 8.5 38.4 10.87C38.43 11.43 38.35 11.99 38.15 12.51C37.95 13.04 37.63 13.51 37.23 13.9C36.83 14.29 36.35 14.59 35.83 14.78C35.3 14.97 34.74 15.05 34.18 15H34.21Z" fill="black"/><path d="M77.78 0.7V21.26H65.89L60 9.92V21.26H51.62V0.7H63.73L69.44 11.95V0.7H77.78Z" fill="black"/><path d="M102.69 15.18V21.26H81.56V0.7H102.63V6.78H91.43V8.6H102.14V13.18H91.43V15.18H102.69Z" fill="black"/><path d="M105.44 19.09V13.15C108.51 14.96 112.01 15.92 115.58 15.92C117.52 15.92 118.34 15.62 118.34 14.92C118.34 14.22 117.86 13.98 116.34 13.77L113.43 13.36C107.93 12.6 105.2 10.57 105.2 7.02C105.2 3.02 108.99 0.02 117.61 0.02C122.93 0.02 126.05 1.19 127.69 2.02V7.84C125.03 6.62 122.12 6.02 119.19 6.08C116.55 6.08 115.85 6.46 115.85 7.08C115.85 7.55 116.16 7.84 117.98 8.02L121.11 8.37C126.21 8.93 129.11 10.6 129.11 14.37C129.11 19.01 124.11 21.85 116.97 21.85C112.96 21.94 109 20.96 105.49 19.01" fill="black"/><path d="M153.07 10.92C154.95 10.92 155.99 10.13 155.99 8.72C155.99 7.31 154.99 6.67 153.16 6.67H149.88V10.92H153.07ZM155.07 21.26L149.91 13.15V21.26H140V0.71H157.5C162.84 0.71 166.18 3.41 166.18 7.78C166.24 9.27 165.76 10.74 164.82 11.9C163.88 13.06 162.55 13.84 161.08 14.09L166.27 21.26H155.07Z" fill="black"/><path d="M183.05 0C173.73 0 168.14 4.46 168.14 10.81C168.14 16.94 173.73 22 183 22C192.27 22 197.88 17 197.88 10.85C197.89 4.46 192.3 0 183.05 0ZM183.05 15C182.5 15.05 181.94 14.97 181.42 14.79C180.9 14.6 180.43 14.31 180.03 13.92C179.63 13.54 179.32 13.07 179.11 12.56C178.91 12.05 178.81 11.49 178.84 10.94C178.8 8.52 180.43 7 183 7C185.57 7 187.22 8.5 187.22 10.87C187.26 11.43 187.17 11.99 186.97 12.51C186.77 13.04 186.46 13.51 186.06 13.9C185.66 14.29 185.18 14.59 184.65 14.78C184.12 14.97 183.56 15.05 183 15H183.05Z" fill="black"/><path d="M214.06 13.51L211.91 6.17L209.72 13.51H214.06ZM215.43 18.15H208.36L207.45 21.26H197.79L204.79 0.7H219.39L226.31 21.26H216.38L215.43 18.15Z" fill="black"/><path d="M241.11 0.7H228V21.26H240.2C250.79 21.26 255.2 16.21 255.2 10.84C255.23 5.05 250.61 0.7 241.11 0.7ZM240.05 15.21H237.89V6.75H240.41C243.41 6.75 244.6 8.55 244.6 10.81C244.6 13.42 243.08 15.21 240.05 15.21Z" fill="black"/></g><defs><clipPath id="jrl-p"><rect width="255.23" height="21.96" fill="white"/></clipPath></defs></svg></a>
+    <a href="#buybox" class="faux-header__cta button">Shop Now</a>
+  </header>
+
+  <!-- =========================================================================
+       Section 2: Hero
+       ========================================================================= -->
+  <section class="hero">
+    <div class="hero__content">
+      <div class="hero__collab">
+        <span class="hero__collab-logo"><svg width="140" height="14" viewBox="0 0 256 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#jrl-perf-hero)"><path d="M0 20.26V14C0.92 14.68 2.04 15.04 3.19 15C5.49 15 6.92 13.82 6.92 11.5V0.71H16.79V13.27C16.79 19.35 12.69 21.96 6.79 21.96C3.43 22 1 21.08 0 20.26Z" fill="black"/><path d="M34.21 0C24.89 0 19.31 4.46 19.31 10.81C19.31 16.94 24.89 22 34.18 22C43.47 22 49.06 17 49.06 10.85C49.06 4.46 43.47 0 34.21 0ZM34.21 15C33.65 15.05 33.09 14.97 32.57 14.78C32.04 14.59 31.57 14.29 31.17 13.9C30.77 13.51 30.46 13.04 30.26 12.52C30.05 12 29.97 11.45 30 10.89C30 8.52 31.6 7 34.18 7C36.76 7 38.4 8.5 38.4 10.87C38.43 11.43 38.35 11.99 38.15 12.51C37.95 13.04 37.63 13.51 37.23 13.9C36.83 14.29 36.35 14.59 35.83 14.78C35.3 14.97 34.74 15.05 34.18 15H34.21Z" fill="black"/><path d="M77.78 0.7V21.26H65.89L60 9.92V21.26H51.62V0.7H63.73L69.44 11.95V0.7H77.78Z" fill="black"/><path d="M102.69 15.18V21.26H81.56V0.7H102.63V6.78H91.43V8.6H102.14V13.18H91.43V15.18H102.69Z" fill="black"/><path d="M105.44 19.09V13.15C108.51 14.96 112.01 15.92 115.58 15.92C117.52 15.92 118.34 15.62 118.34 14.92C118.34 14.22 117.86 13.98 116.34 13.77L113.43 13.36C107.93 12.6 105.2 10.57 105.2 7.02C105.2 3.02 108.99 0.02 117.61 0.02C122.93 0.02 126.05 1.19 127.69 2.02V7.84C125.03 6.62 122.12 6.02 119.19 6.08C116.55 6.08 115.85 6.46 115.85 7.08C115.85 7.55 116.16 7.84 117.98 8.02L121.11 8.37C126.21 8.93 129.11 10.6 129.11 14.37C129.11 19.01 124.11 21.85 116.97 21.85C112.96 21.94 109 20.96 105.49 19.01" fill="black"/><path d="M153.07 10.92C154.95 10.92 155.99 10.13 155.99 8.72C155.99 7.31 154.99 6.67 153.16 6.67H149.88V10.92H153.07ZM155.07 21.26L149.91 13.15V21.26H140V0.71H157.5C162.84 0.71 166.18 3.41 166.18 7.78C166.24 9.27 165.76 10.74 164.82 11.9C163.88 13.06 162.55 13.84 161.08 14.09L166.27 21.26H155.07Z" fill="black"/><path d="M183.05 0C173.73 0 168.14 4.46 168.14 10.81C168.14 16.94 173.73 22 183 22C192.27 22 197.88 17 197.88 10.85C197.89 4.46 192.3 0 183.05 0ZM183.05 15C182.5 15.05 181.94 14.97 181.42 14.79C180.9 14.6 180.43 14.31 180.03 13.92C179.63 13.54 179.32 13.07 179.11 12.56C178.91 12.05 178.81 11.49 178.84 10.94C178.8 8.52 180.43 7 183 7C185.57 7 187.22 8.5 187.22 10.87C187.26 11.43 187.17 11.99 186.97 12.51C186.77 13.04 186.46 13.51 186.06 13.9C185.66 14.29 185.18 14.59 184.65 14.78C184.12 14.97 183.56 15.05 183 15H183.05Z" fill="black"/><path d="M214.06 13.51L211.91 6.17L209.72 13.51H214.06ZM215.43 18.15H208.36L207.45 21.26H197.79L204.79 0.7H219.39L226.31 21.26H216.38L215.43 18.15Z" fill="black"/><path d="M241.11 0.7H228V21.26H240.2C250.79 21.26 255.2 16.21 255.2 10.84C255.23 5.05 250.61 0.7 241.11 0.7ZM240.05 15.21H237.89V6.75H240.41C243.41 6.75 244.6 8.55 244.6 10.81C244.6 13.42 243.08 15.21 240.05 15.21Z" fill="black"/></g><defs><clipPath id="jrl-perf-hero"><rect width="255.23" height="21.96" fill="white"/></clipPath></defs></svg></span>
+        <img class="hero__signature" src="https://air-prod.imgix.net/25693183-073d-4ede-b88b-2927b8be5fd2.jpg?w=320&bg-remove=true&fm=png" alt="x Emily DiDonato signature">
+      </div>
+      <h1 class="hero__title">This blush stick is nothing like the ones you've tried&nbsp;before</h1>
+      <p class="hero__subtitle">Introducing Blushing Stick &mdash; a buttery lip and cheek tint that blends itself, builds in seconds, and actually loves your&nbsp;skin.</p>
+      <div>
+        <a href="#buybox" class="button">Shop Blushing Stick</a>
+      </div>
+      <div class="hero__proof">
+        <div class="hero__proof-stars">
+          <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+        </div>
+        <span class="hero__proof-text">6,500+ five-star reviews</span>
+      </div>
+    </div>
+    <div class="hero__media">
+      <img src="https://air-prod.imgix.net/cbe3915f-6a86-48fc-8d2c-fcfc55658f0d.jpg?w=900&h=1100&fit=crop&fp-x=0.5&fp-y=0.25&crop=focalpoint&auto=format" alt="Emily DiDonato — Blushing Stick" loading="eager">
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Section 10: Press Bar (cclp-press pattern)
+       ========================================================================= -->
+  <section class="cclp-press">
+    <div class="cclp-press__inner">
+
+      <!-- Mobile: slide carousel (one quote at a time) -->
+      <div class="cclp-press__slide is-active" data-press-slide="0">
+        <svg class="cclp-press__slide-logo" xmlns="http://www.w3.org/2000/svg" width="81" height="22" viewBox="0 0 81 22" fill="none"><path d="M23.6243 0.96501C18.9033 0.998763 15.0417 6.24577 15.0417 10.8224C15.0417 15.6385 17.8724 21.5133 23.6243 21.4943C29.3762 21.4752 32.3616 15.1504 32.3616 10.8224C32.3616 6.0417 28.3453 0.931258 23.6243 0.96501ZM23.6243 1.14452C27.5756 1.14452 28.6416 5.5084 28.6416 10.8224C28.6416 17.834 27.3557 21.2932 23.6243 21.2866C19.8929 21.2801 18.679 18.4488 18.679 10.8224C18.679 6.04498 19.673 1.14452 23.6243 1.14452Z" fill="white"/><path d="M33.9205 10.9518C33.8994 5.74437 38.0672 1.13157 41.5952 0.902704C42.8696 0.812418 44.5078 1.39601 45.4641 1.81173C46.1586 2.11361 47.5762 1.67665 47.8279 0.875H47.9652V7.96853H47.8279C47.8279 7.66613 46.5143 1.08105 41.5952 1.08105C37.9619 1.08105 37.6109 7.46979 37.6109 10.9518C37.6109 14.4338 37.7167 21.327 41.9567 21.327C44.0106 21.327 45.531 20.4284 45.9251 18.6105V13.0828H44.2011V12.8473H50.8837V13.0828H49.2355V21.1643H49.1013C49.1013 21.1643 48.8333 19.9982 47.4736 20.0021C45.7357 20.0071 44.0968 21.5169 42.0989 21.4985C36.8153 21.4499 33.9417 16.1593 33.9205 10.9518Z" fill="white"/><path d="M2.08077 1.66383H0V1.42993H7.28906V1.66383H5.46041L10.6686 15.8077C12.2972 10.7936 13.5589 7.08727 15.2568 1.66383H13.448V1.42993H17.2967V1.66383H15.5441L9.21401 21.3972L2.08077 1.66383Z" fill="white"/><path d="M51.9042 16.5659L51.8712 1.64105H49.8907V1.41748H57.1875V1.64105H55.2081L55.2521 18.0054C55.6902 19.8792 56.4693 21.301 59.131 21.3222C61.7927 21.3434 63.6022 19.7477 64.2746 17.5669V1.64105H62.0089L62.0089 1.42407H80.5533L80.5919 8.5886H80.4137C80.0697 3.96273 78.2848 2.21448 75.1632 1.70446C74.089 1.52895 72.9621 1.65905 71.5375 1.64798V10.7918C72.7781 10.8877 74.0995 10.8092 74.99 10.0444C75.7997 9.3489 76.0287 7.74197 76.0882 7.08915H76.245V15.0506H76.0753C76.0263 15.0506 75.9611 13.0527 74.99 12.1048C74.0125 11.1508 72.7677 10.9162 71.5375 11.1435V20.9111C73.2751 20.9111 74.6602 21.0583 75.863 20.7285C79.5194 19.7261 80.8065 16.6414 80.7967 13.5476H81V21.1423H66.4542V20.9111H68.0989V1.64105H64.5454V17.5669C64.1427 19.0907 62.6706 21.6117 58.8982 21.5945C55.3906 21.5785 51.9118 19.9972 51.9042 16.5659Z" fill="white"/></svg>
+        <p class="cclp-press__slide-quote">"Jones Road's Blushing Stick is the effortless, multi-use product that belongs in every makeup&nbsp;bag."</p>
+      </div>
+      <div class="cclp-press__slide" data-press-slide="1">
+        <svg class="cclp-press__slide-logo" xmlns="http://www.w3.org/2000/svg" width="73" height="21" viewBox="0 0 73 21" fill="none"><path d="M3.98968 20.8412C3.86248 20.781 3.62009 20.6451 3.45104 20.5392C2.97051 20.238 2.83479 20.1802 2.52689 20.1457C2.18732 20.1076 2.06499 20.0287 1.77611 19.6611C1.67032 19.5265 1.47268 19.3279 1.33691 19.2199C0.79458 18.7883 0.67818 18.5502 0.623994 17.7611C0.6044 17.4758 0.568478 17.0475 0.544169 16.8093L0.499969 16.3762L0.626438 16.0407C0.926067 15.2458 1.25353 14.714 1.70469 14.2896C2.08071 13.9358 2.41513 13.7545 2.62844 13.7886C2.76129 13.8098 2.78964 13.797 2.95935 13.6395C3.22148 13.3962 3.31818 13.3569 3.87811 13.2664C4.15122 13.2222 4.51302 13.1446 4.6821 13.0939C4.85119 13.0433 5.11058 12.9898 5.25853 12.975C5.40648 12.9602 5.61399 12.9157 5.71967 12.876C5.85124 12.8266 6.01271 12.8039 6.2319 12.8038C6.61338 12.8038 6.84503 12.7228 7.41923 12.3884L7.7948 12.1697L8.16619 12.1797C8.59234 12.191 8.71039 12.1585 8.78804 12.0081C8.93255 11.7282 9.04169 10.7002 8.97037 10.2906C8.92065 10.0051 8.78302 9.66177 8.68627 9.58187C8.65191 9.5535 8.42863 9.5054 8.19009 9.47499C7.88047 9.43552 7.7014 9.39141 7.56423 9.32082C7.33241 9.20152 7.15931 9.19813 6.77255 9.30531C6.40118 9.40822 6.32811 9.40396 6.12699 9.26768C5.98479 9.17132 5.92035 9.1531 5.72196 9.1531C5.5922 9.1531 5.38644 9.12716 5.26473 9.09545C4.96368 9.01704 4.7601 9.023 4.47734 9.11849C4.19099 9.21519 4.0096 9.37913 4.0096 9.54122C4.0096 9.60621 4.08563 9.78528 4.18808 9.96161L4.36657 10.2688L4.34512 10.6428C4.31929 11.0934 4.17752 11.5742 4.00735 11.7883C3.73441 12.1317 3.47688 12.2131 2.99638 12.1078C2.74913 12.0536 2.6534 12.0491 2.47074 12.0831C2.28016 12.1186 2.22022 12.1144 2.06211 12.0547C1.80227 11.9565 1.46679 11.7215 1.3176 11.5331C1.09043 11.2463 0.934961 10.6053 0.936047 9.9601C0.937618 9.02713 1.25103 8.43193 1.93871 8.05595C2.13382 7.94927 2.33146 7.78879 2.60379 7.51594C2.81689 7.30241 3.06647 7.08062 3.15841 7.02307C3.25035 6.96551 3.42992 6.8416 3.55747 6.74771L3.78936 6.57699L4.38945 6.58641C4.87283 6.59399 5.03437 6.58254 5.2201 6.52749C5.34691 6.4899 5.68622 6.4367 5.97411 6.40927C6.46744 6.36225 6.51082 6.35132 6.72849 6.21909C6.98437 6.06365 7.06862 6.05286 7.38576 6.13492C7.50506 6.16579 7.81894 6.21767 8.08329 6.25022C8.67211 6.3227 8.75596 6.34602 9.03443 6.51471C9.15579 6.58823 9.41937 6.71292 9.62016 6.7918C9.97204 6.93005 9.99987 6.95007 10.3904 7.34599C10.8977 7.86024 11.1497 8.19319 11.3655 8.63431C11.6084 9.13092 11.6921 9.44294 11.752 10.0754C11.781 10.3819 11.8339 10.7155 11.8695 10.8167C11.9226 10.968 11.9266 11.0311 11.8916 11.17C11.8371 11.3864 11.8378 11.5839 11.894 11.9121C11.931 12.1274 11.9277 12.2711 11.8757 12.7102C11.8409 13.0048 11.7932 13.583 11.7697 13.9951C11.7463 14.4073 11.709 14.8136 11.6869 14.8982C11.6141 15.1761 11.6084 15.5165 11.6729 15.7383C11.7599 16.0377 11.7487 16.2045 11.6196 16.5314C11.5519 16.7029 11.5053 16.8932 11.5045 17.0013C11.5025 17.2779 11.81 18.0306 11.9464 18.083C11.9808 18.0962 12.0766 18.107 12.1591 18.107C12.3005 18.107 12.3205 18.0916 12.5017 17.8424C12.7176 17.5456 12.8662 17.4537 13.1304 17.4537C13.4429 17.4537 14.7779 17.6062 15.2232 17.6928C15.708 17.7871 15.747 17.7792 15.8527 17.5655C15.9539 17.3607 15.9915 17.1394 16.1355 15.901C16.3053 14.442 16.3075 14.3745 16.1926 14.219C16.1064 14.1025 16.1041 14.0803 16.1274 13.5951C16.1407 13.3184 16.1706 12.8413 16.1938 12.5348C16.2394 11.9329 16.2188 11.3542 16.13 10.7505C16.0483 10.1945 16.0541 9.84079 16.1512 9.46448C16.2805 8.96284 16.2747 8.91217 16.0455 8.53969C15.8021 8.14415 15.7919 8.01811 15.9628 7.51748C16.0886 7.14911 16.0898 7.08666 15.9788 6.68605L15.9074 6.42865L15.9971 6.23715C16.1128 5.99014 16.0942 5.87392 15.8518 5.32917C15.7484 5.09683 15.6333 4.81161 15.5961 4.69537C15.4809 4.33639 15.3907 4.28592 15.1154 4.42637C14.9083 4.53205 14.7535 4.52285 14.4683 4.38791C14.1885 4.25555 14.129 4.24878 14.0055 4.33528C13.8778 4.42475 13.6477 4.46832 13.5106 4.429C13.4461 4.41049 13.3077 4.32773 13.2032 4.24509C13.0986 4.16245 12.8461 4.00232 12.642 3.88925C12.1975 3.64304 11.9273 3.38348 11.7663 3.04827C11.5338 2.56415 11.6384 1.98445 12.0742 1.34243C12.3751 0.899305 12.6659 0.60374 12.9321 0.470745C13.2346 0.319584 13.4132 0.319564 13.8408 0.470645C14.402 0.66896 14.677 0.712327 15.7879 0.777708C16.1684 0.800099 16.6007 0.843365 16.7486 0.873856C17.102 0.946675 17.1573 0.944491 17.4643 0.845612L17.7243 0.76187L18.0051 0.900653C18.4149 1.10329 18.493 1.20022 18.5597 1.5887C18.6695 2.22886 19.0025 3.33391 19.1935 3.69189C19.3541 3.99281 19.347 4.26722 19.166 4.76071C18.9548 5.33611 18.9572 5.32371 18.9199 6.04857C18.8867 6.69311 18.8781 6.74516 18.7582 7.0285L18.6316 7.32773V8.88409V10.4405L18.8002 10.8596L18.9688 11.2788L18.8283 11.7051C18.751 11.9395 18.6881 12.1978 18.6885 12.279C18.6889 12.3603 18.7435 12.6014 18.8098 12.8148C18.9303 13.2026 18.9304 13.2031 18.8822 13.5812C18.8188 14.0783 18.8233 14.1968 18.9171 14.4947C19.0162 14.8095 19.016 14.9335 18.916 15.4031C18.855 15.6891 18.834 15.9329 18.8303 16.3969C18.8249 17.0761 18.8696 17.3652 19.0244 17.6527C19.1341 17.8565 19.1482 17.8635 19.7544 18.0155C20.1462 18.1138 20.2021 18.1192 20.3692 18.0752C20.4703 18.0486 20.6914 17.9362 20.8605 17.8254C21.4366 17.4481 21.3876 17.4566 22.5898 17.5222C23.2446 17.558 24.0962 17.5837 24.2476 17.5723C24.3671 17.5633 24.5339 16.8785 24.6432 15.9485C24.6871 15.5751 24.7682 15.059 24.8234 14.8017C24.9307 14.3009 24.9288 14.2799 24.7543 14.0628C24.6703 13.9582 24.67 13.9531 24.7158 13.3134C24.7816 12.3936 24.774 11.1674 24.6983 10.4756L24.6348 9.8959L24.7365 9.43803C24.8758 8.81067 24.8722 8.76432 24.6586 8.42196C24.433 8.06031 24.4087 7.88474 24.5329 7.51436C24.6357 7.20751 24.6495 6.86274 24.5729 6.51294C24.5236 6.28801 24.5253 6.26676 24.6024 6.13606C24.7202 5.9364 24.7044 5.7768 24.5255 5.3563C24.4382 5.15131 24.3075 4.82795 24.2351 4.63772C24.0729 4.21206 24.0141 4.11894 23.9071 4.11894C23.8612 4.11894 23.7582 4.16425 23.6783 4.21964L23.533 4.32035L23.2239 4.25807C23.0539 4.22382 22.8209 4.19579 22.7061 4.19579C22.5033 4.19579 22.4941 4.19106 22.3835 4.03026C22.2236 3.79788 22.2005 3.78432 21.8908 3.74143C21.6865 3.71314 21.5698 3.67239 21.4427 3.58493C21.2124 3.42649 21.007 3.18442 20.8849 2.92765C20.7471 2.63788 20.7428 2.12285 20.8745 1.69793C21.0001 1.29263 21.2728 0.781811 21.4779 0.567748C21.6521 0.38595 21.9816 0.200292 22.1313 0.199585C22.1751 0.199379 22.3934 0.267972 22.6164 0.352014C22.8394 0.436056 23.1235 0.515049 23.2477 0.527554C23.372 0.540059 23.5774 0.587749 23.7042 0.633533C23.9089 0.707433 23.9994 0.715527 24.5112 0.705652C25.0525 0.695207 25.1037 0.700596 25.3517 0.79418L25.6159 0.89383L25.958 0.793162L26.3001 0.692493L26.5393 0.808665C26.8363 0.952956 26.8992 1.00348 26.9509 1.13949C26.9735 1.19877 27.0944 1.66216 27.2197 2.16924C27.4114 2.94452 27.4792 3.15543 27.6463 3.49494C27.829 3.86642 27.8431 3.91441 27.8224 4.09528C27.8101 4.2034 27.7284 4.48209 27.6409 4.71458C27.4896 5.11695 27.4795 5.17059 27.432 5.82901C27.3878 6.44077 27.368 6.55844 27.2604 6.84693C27.1138 7.2398 27.0696 7.64793 27.0686 8.61509C27.0676 9.58477 27.1183 10.0983 27.2584 10.5365C27.4431 11.1141 27.4467 11.2891 27.2829 11.7441L27.1456 12.1255L27.2842 12.5311L27.4228 12.9367L27.3963 13.5169C27.3705 14.08 27.3727 14.1058 27.4721 14.3936L27.5746 14.6902L27.4556 15.313C27.2872 16.1946 27.2594 16.3956 27.2591 16.7369C27.2588 17.0158 27.2708 17.0614 27.4177 17.3438C27.6043 17.7025 27.6372 17.7241 28.2053 17.861C28.6787 17.9751 28.8142 17.9709 29.3332 17.8255C29.7564 17.707 30.4217 17.6299 30.6982 17.6673C31.0584 17.716 31.3136 17.8958 31.5009 18.2328C31.679 18.5531 31.7481 18.8918 31.6851 19.1355C31.5773 19.5527 31.2138 20.1313 30.9728 20.2693C30.9215 20.2988 30.7233 20.3176 30.4484 20.3192C30.099 20.3212 29.9256 20.343 29.6205 20.4235L29.2345 20.5253L28.9288 20.4506C28.5009 20.3461 28.1318 20.3197 27.8059 20.3703C27.5965 20.4027 27.3663 20.4021 26.8837 20.3677C25.8543 20.2943 25.5246 20.3022 25.131 20.4098C24.7601 20.5112 24.7523 20.5105 24.2806 20.3359C24.0646 20.2559 24.0306 20.2535 23.7415 20.2981L23.433 20.3456L23.195 20.2254C23.0641 20.1593 22.9113 20.1053 22.8554 20.1053C22.7986 20.1053 22.667 20.1688 22.557 20.2494L22.3602 20.3935L21.9856 20.3827C21.6855 20.374 21.5298 20.3918 21.2026 20.4722C20.8132 20.5678 20.7786 20.5702 20.4622 20.5234C20.2633 20.4939 19.7224 20.473 19.112 20.4711C18.5519 20.4694 17.9121 20.4541 17.6901 20.4372C17.3017 20.4076 17.2742 20.4107 16.9521 20.5218L16.6175 20.6372L16.3372 20.5154C16.07 20.3993 16.0366 20.3941 15.6222 20.4036C15.1928 20.4134 15.184 20.4119 14.9113 20.2772C14.6827 20.1643 14.6085 20.1448 14.4814 20.1643C14.2483 20.2001 13.7888 20.3312 13.6063 20.4141C13.4807 20.4711 13.355 20.4881 13.0527 20.4887C12.8376 20.4892 12.5292 20.508 12.3675 20.5305C11.7167 20.621 11.2072 20.4349 10.7593 19.943C10.4553 19.6092 10.2109 19.4327 9.99888 19.3938C9.84043 19.3647 9.75501 19.3998 9.51844 19.5909C9.4308 19.6617 9.13383 19.8298 8.85851 19.9645C8.58319 20.0992 8.29175 20.2613 8.21086 20.3247C8.12998 20.3881 8.02575 20.46 7.97923 20.4843C7.87537 20.5388 6.9706 20.6034 6.29609 20.6046C5.57984 20.6058 5.23956 20.6543 4.82765 20.8137C4.63295 20.889 4.41679 20.9507 4.3473 20.9507C4.27781 20.9507 4.11688 20.9014 3.98968 20.8412ZM5.26941 18.5157C5.57107 18.3646 5.69348 18.341 6.36556 18.3044C6.92451 18.274 7.01898 18.2597 7.06731 18.1978C7.09802 18.1584 7.23369 17.9706 7.3688 17.7803C7.70942 17.3008 7.78753 17.2298 8.49917 16.7538C9.02105 16.4047 9.13658 16.3104 9.18552 16.1932C9.25583 16.025 9.30299 14.8953 9.24829 14.6897C9.22902 14.6173 9.16763 14.524 9.11184 14.4824C9.01078 14.4069 9.00926 14.4069 8.67161 14.4884C8.48527 14.5334 8.12612 14.6316 7.87352 14.7067C7.48013 14.8235 7.32574 14.8484 6.79752 14.8801C5.72055 14.9448 5.38747 15.0178 4.7757 15.3231C4.5947 15.4135 4.25749 15.568 4.02635 15.6665C3.79521 15.765 3.56619 15.8828 3.5174 15.9283C3.39155 16.0456 3.21734 16.4317 3.16214 16.7155C3.01934 17.4499 3.36386 18.0625 4.02814 18.2555C4.19024 18.3026 4.44692 18.4007 4.59855 18.4734C4.92527 18.6301 5.02813 18.6366 5.26941 18.5157Z" fill="white"/><path d="M42.6537 20.525C42.4446 20.4633 42.116 20.394 41.9235 20.3708C41.6498 20.3379 41.4478 20.279 40.997 20.1005C40.2475 19.8038 40.2532 19.807 40.1157 19.6092C40.0509 19.516 39.9577 19.3909 39.9086 19.3313L39.8193 19.2227L39.6588 19.304C39.5705 19.3487 39.1179 19.6403 38.6529 19.9521L37.8075 20.519L36.762 20.5648L35.7164 20.6106L35.4847 20.5066C35.2865 20.4177 35.2264 20.407 35.0699 20.4333C34.9693 20.4502 34.7399 20.4654 34.5603 20.4671C34.2762 20.4699 34.2049 20.4562 34.0136 20.3623C33.2511 19.9878 32.0836 18.2581 31.5652 16.7351C31.2875 15.9191 31.2884 15.9295 31.2723 13.4187C31.2644 12.1822 31.2388 10.9198 31.2155 10.6134C31.174 10.0675 31.0752 9.47316 30.9896 9.25436C30.9469 9.14521 30.9445 9.14449 30.7062 9.17002C30.4041 9.20237 29.9957 9.13896 29.8061 9.03025C29.3641 8.77694 28.9692 8.35952 28.8578 8.02769C28.7858 7.81344 28.777 7.30773 28.8362 6.78971C28.8832 6.37791 28.9608 6.23883 29.2863 5.98253C29.7358 5.6287 30.1914 5.56322 30.7559 5.77135C31.0978 5.89744 31.322 5.91966 31.3561 5.83085C31.3794 5.77003 31.533 5.71334 31.7758 5.67595C32.5106 5.56276 33.7354 6.33044 34.1074 7.13732C34.1849 7.30538 34.1947 7.38405 34.1913 7.80807C34.1877 8.25853 34.1782 8.31594 34.039 8.73036C33.9022 9.13767 33.8906 9.2054 33.8911 9.59501C33.8918 10.0725 33.9379 10.2293 34.2146 10.6951C34.4357 11.0671 34.4455 11.1688 34.2892 11.4667C34.2195 11.5998 34.1373 11.758 34.1066 11.8185C34.0319 11.9657 33.915 12.4262 33.8844 12.6935C33.8613 12.8954 33.8696 12.9276 34.0082 13.1739L34.1568 13.4379L34.176 14.9786L34.1952 16.5194L34.3466 16.7079C34.7465 17.206 35.171 17.5945 35.4385 17.7072C35.5349 17.7478 35.7706 17.7731 36.1941 17.7884L36.8095 17.8107L37.0924 17.5078C37.5706 16.9958 38.6001 15.6474 38.9359 15.0933C39.1109 14.8045 39.3903 14.1018 39.4888 13.7028L39.5714 13.3682L39.481 13.038C39.3558 12.5808 39.3471 12.4148 39.4202 11.8795C39.4909 11.3615 39.4889 11.3421 39.3011 10.7523C39.2154 10.4831 39.176 10.2967 39.1908 10.2295C39.2034 10.1721 39.3005 10.0277 39.4066 9.90872C39.6367 9.65052 39.6877 9.50933 39.6144 9.33381C39.5358 9.14564 39.4483 9.08761 39.1363 9.01664C38.9795 8.98099 38.6856 8.8828 38.4831 8.79842C38.1336 8.6528 38.0993 8.64597 37.8075 8.66372C37.1843 8.70164 36.7242 8.54478 36.3318 8.16062C35.9426 7.77948 35.8997 7.57252 36.1209 7.14304C36.3568 6.68493 37.2059 5.75869 37.5516 5.58231C37.7476 5.48232 37.8539 5.48232 38.2978 5.58233C38.805 5.69655 39.0728 5.69684 39.3158 5.58343L39.5125 5.49158L39.7744 5.58833C40.0895 5.70474 40.1647 5.71728 40.9853 5.79048C41.7434 5.8581 41.9938 5.93461 42.2325 6.17161C42.4077 6.34561 42.4429 6.44687 42.5073 6.96264C42.5298 7.1423 42.5773 7.43628 42.613 7.61593C42.6928 8.01813 42.704 9.71273 42.6331 10.6825C42.5861 11.3267 42.5272 11.6121 42.3381 12.1121C42.2409 12.3692 42.229 12.45 42.2279 12.8614C42.227 13.2159 42.2459 13.3937 42.3096 13.63C42.3809 13.8946 42.3956 14.0794 42.4147 14.9558C42.4282 15.5759 42.4198 16.2018 42.3933 16.5563C42.3519 17.1077 42.3536 17.1453 42.4245 17.2667C42.522 17.4335 42.74 17.5144 43.2969 17.5904C43.9878 17.6846 44.431 17.868 44.6246 18.1399C44.8133 18.4049 44.8696 19.1962 44.7179 19.4529C44.6823 19.5133 44.4703 19.6831 44.2469 19.8304C44.0235 19.9777 43.6852 20.2208 43.4952 20.3707C43.3051 20.5206 43.1235 20.6418 43.0917 20.6401C43.0598 20.6384 42.8627 20.5866 42.6537 20.525Z" fill="white"/></svg>
+        <p class="cclp-press__slide-quote">"The clean beauty blush that actually delivers on pigment &mdash; and looks good on&nbsp;everyone."</p>
+      </div>
+      <div class="cclp-press__slide" data-press-slide="2">
+        <svg class="cclp-press__slide-logo" xmlns="http://www.w3.org/2000/svg" width="95" height="23" viewBox="0 0 95 23" fill="none"><path d="M22.0265 20.586H18.7936V0.875H14.6819V21.7787H18.8878H22.0265V20.586Z" fill="white"/><path d="M27.7075 0.875L22.8425 21.7787H24.098L26.2009 12.7393H30.344L32.0703 21.7787H36.2134L31.5681 0.875H27.7075ZM26.4834 11.5152L28.4922 2.94654L30.1243 11.5152H26.4834Z" fill="white"/><path d="M48.1089 0.875L44.7819 15.2816L41.8002 0.875H38.4417L37.2177 0.906387V21.7787H38.4417V3.7626L39.195 6.74437L42.5848 21.7787H44.3425H44.5308L48.4856 4.92392V21.7787H52.6287V0.875H48.1089Z" fill="white"/><path d="M58.1216 7.56043C58.1216 7.56043 58.0902 10.2911 58.0902 11.3896C58.0902 12.4882 58.1216 15.0933 58.1216 15.0933C58.1216 18.1692 58.8748 20.5546 60.9464 20.5546C63.0179 20.5546 63.7712 18.1692 63.7712 15.0933C63.7712 15.0933 63.8026 12.4882 63.8026 11.3896C63.8026 10.2911 63.7712 7.56043 63.7712 7.56043C63.7712 4.4845 63.0179 2.09909 60.9464 2.09909C58.8748 2.09909 58.1216 4.4845 58.1216 7.56043ZM67.9457 11.3269C67.9457 21.4649 62.0763 21.7787 60.9464 21.7787C59.8165 21.7787 53.9471 21.4649 53.9471 11.3269C53.9471 1.18887 59.8165 0.875 60.9464 0.875C62.0763 0.875 67.9457 1.18887 67.9457 11.3269Z" fill="white"/><path d="M76.6084 20.3349C79.8099 20.3349 79.5274 14.6225 79.5274 14.6225C79.5274 13.0532 79.5274 1.00055 79.5274 0.875H80.7201C80.7201 1.00055 80.8456 13.0532 80.8456 14.6225C80.8456 14.8108 80.8456 14.9991 80.8456 15.1875C80.8143 16.9451 80.5632 18.9853 79.3391 20.3035C79.2763 20.3977 79.1821 20.4605 79.088 20.5546C77.7069 21.7473 75.5098 21.9043 73.815 21.6532C72.0887 21.4021 70.4879 20.4605 69.8288 18.6714C69.3266 17.3218 69.2952 15.8466 69.2952 14.4342V0.875H73.4069V15.9094V15.9408C73.4069 15.9721 73.3442 20.3349 76.6084 20.3349Z" fill="white"/><path d="M91.423 12.4254C92.0193 12.1743 92.5843 11.9232 92.9923 11.421C94.2792 9.88301 94.2792 8.18811 94.2792 6.68154C94.2792 3.82532 92.9296 1.87932 90.4186 1.09465C90.3872 1.09465 90.3558 1.06326 90.3244 1.06326C90.3244 1.06326 90.3244 1.06326 90.293 1.06326C90.2617 1.06326 90.2303 1.06326 90.1989 1.03188C90.1675 1.03188 90.1361 1.03188 90.1047 1.00049C90.1047 1.00049 90.1047 1.00049 90.0733 1.00049C90.042 1.00049 90.0106 1.00049 89.9792 1.00049C89.9478 1.00049 89.9164 1.00049 89.885 1.00049C89.885 1.00049 89.885 1.00049 89.8536 1.00049C89.8222 1.00049 89.7909 1.00049 89.7595 1.00049C89.7281 1.00049 89.6967 1.00049 89.6653 1.00049C89.6653 1.00049 89.6653 1.00049 89.6339 1.00049C89.6025 1.00049 89.5711 1.00049 89.5398 1.00049C89.5084 1.00049 89.477 1.00049 89.4456 1.00049C89.4142 1.00049 89.3828 1.00049 89.3514 1.00049C89.3201 1.00049 89.3201 1.00049 89.2887 1.00049C89.2573 1.00049 89.2573 1.00049 89.2259 1.00049C89.2259 1.00049 89.1945 1.00049 89.1631 1.00049C89.1631 1.00049 89.1317 1.00049 89.1003 1.00049H89.069H89.0376C89.0376 1.00049 89.0376 1.00049 89.0062 1.00049H86.6208H82.5405V21.9042H86.6835V12.7392H87.7193L90.3872 21.7473V21.7787H94.75L91.423 12.4254ZM87.3113 11.5151C87.2485 11.5151 86.3697 11.5151 86.3697 11.5151C86.3697 10.3224 86.3697 2.13042 86.3697 2.16181C86.7149 2.16181 87.1544 2.19319 87.531 2.25597C89.7281 2.69539 90.5442 4.95525 90.5755 6.86986C90.5755 7.87424 90.5441 8.97279 90.1675 9.9144C90.0733 10.1655 89.885 10.4166 89.6967 10.6363C89.5084 10.856 89.3201 11.0757 89.069 11.2326C88.5354 11.5151 87.8762 11.5151 87.3113 11.5151Z" fill="white"/><path d="M11.7943 3.51151C12.3279 4.32757 12.9242 6.1794 12.9242 8.81591C11.8885 8.81591 10.1936 8.81591 9.31472 8.81591V8.5962C9.31472 7.74875 9.31472 7.59182 9.31472 7.59182C9.31472 4.4845 8.62421 2.13048 7.08624 2.13048C5.14025 2.13048 4.44974 4.4845 4.44974 7.59182V13.7123C4.44974 14.5911 4.44974 15.313 4.44974 15.313C4.44974 18.4831 5.2658 20.7116 7.24318 20.7116C9.22056 20.7116 9.81691 18.4831 9.81691 15.313V15.1561C9.81691 14.4342 9.8483 13.8378 9.81691 12.7393C8.84392 12.7393 7.6826 12.7393 6.7096 12.7393C6.7096 12.4568 6.7096 11.7977 6.7096 11.5466C8.84392 11.5466 11.0096 11.5466 13.1439 11.5466C13.1439 15.1561 13.1439 18.2006 13.1439 21.8101C12.3279 21.8101 11.3863 21.8101 10.5702 21.8101C10.5388 18.3262 10.6016 19.4875 10.5388 18.3262C10.3505 19.613 9.69137 20.9313 8.56143 21.6532C7.33734 22.4065 5.70522 22.3751 4.41835 21.7787C3.13148 21.151 2.1271 20.0211 1.49936 18.7342C0.871622 17.4473 0.557751 16.0035 0.369429 14.5597C0.275268 13.367 0.212495 12.1743 0.275269 10.9502C0.369429 8.03123 0.997169 4.57867 3.28842 2.50712C4.2928 1.50274 5.64244 0.875 7.14902 0.875C8.53005 0.875 9.78553 1.40858 10.7585 2.28741C10.7585 2.28741 10.7585 2.28741 10.7899 2.3188C11.1352 2.66406 11.5118 3.0407 11.7943 3.51151Z" fill="white"/></svg>
+        <p class="cclp-press__slide-quote">"A game-changer for the no-makeup makeup crowd. One swipe and you look instantly&nbsp;alive."</p>
+      </div>
+      <div class="cclp-press__slide" data-press-slide="3">
+        <svg class="cclp-press__slide-logo" xmlns="http://www.w3.org/2000/svg" width="95" height="25" viewBox="0 0 95 25" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.1933 22.7464C17.013 23.4854 16.9882 23.5598 16.8052 23.5598H14.7488V23.7044H19.4063V23.5598H17.2745C17.1366 23.5598 17.1597 23.4596 17.3273 22.7842L18.7599 17.0917H24.431L26.1624 23.5598H23.8586V23.7044H31.6085V23.5598H29.1992L22.7723 0.75H22.7332L17.1933 22.7464ZM21.5017 6.18927L24.387 16.9477H18.8005L21.5017 6.18927ZM83.9433 12.3238H85.7162C87.2869 12.3238 89.6032 13.016 89.6032 15.8285V20.9216C89.6032 23.0056 90.7271 24.318 92.7096 24.318C94.7932 24.318 94.761 22.1648 94.761 20.6116V18.9746H94.6201V20.6116C94.6201 22.3784 94.4154 23.9127 93.399 23.9127C92.4982 23.9127 92.3044 23.341 92.3044 20.9439V15.8285C92.3044 13.4616 90.4298 12.5941 87.5346 12.2507C91.1404 11.8118 92.4982 9.45526 92.4982 6.84945C92.4982 2.99504 90.759 1.37485 86.28 1.37485L79.1797 1.3733V1.51814H81.0441C81.1787 1.51814 81.2423 1.55678 81.2423 1.63494V23.4421C81.2423 23.5207 81.1787 23.5598 81.0441 23.5598H79.1797V23.7044H85.7091V23.5598H84.1408C84.0059 23.5598 83.9433 23.5207 83.9433 23.4421V12.3238ZM83.9433 1.51947H85.8571C88.8049 1.51947 89.6386 3.81396 89.6386 6.84945C89.6386 9.69151 88.8049 12.1792 85.8571 12.1792H83.9433V1.51947ZM36.4275 23.4459C36.4044 23.4978 36.4306 23.5598 36.5395 23.5598L41.6268 23.5612C43.1929 23.5612 45.2145 21.1907 45.2145 13.5523V12.757H45.3561V23.7053H33.2096L42.4117 1.63097C42.4341 1.57975 42.4078 1.51814 42.299 1.51814L36.8979 1.51947C35.4802 1.51947 33.4214 4.16812 33.4214 11.5287V12.3238H33.2801V1.37485H45.6387L36.4275 23.4459ZM6.35496 1.51947C9.30345 1.51947 10.5039 3.81396 10.5039 6.84945C10.5039 9.69151 9.30345 11.9622 6.35496 11.9622H5.0134V1.51947H6.35496ZM0.25 1.3733V1.51814H2.11454C2.24939 1.51814 2.31239 1.55678 2.31239 1.63494V23.4421C2.31239 23.5207 2.24939 23.5598 2.11454 23.5598H0.25V23.7044L7.20265 23.7053C11.6808 23.7053 14.0701 21.7963 14.0701 17.943C14.0701 15.2745 12.658 12.5585 8.20051 12.0176C11.987 11.6553 13.2934 9.22144 13.2934 6.84945C13.2934 3.38054 11.2573 1.37485 6.77891 1.37485L0.25 1.3733ZM6.35496 12.1068C9.67972 12.1068 10.9984 14.4256 10.9984 17.943C10.9984 20.9776 9.82125 23.5612 7.06112 23.5612L5.21125 23.5598C5.0764 23.5598 5.0134 23.5207 5.0134 23.4421V12.105L6.35496 12.1068ZM49.2554 22.7464C49.0741 23.4854 49.0493 23.5598 48.8668 23.5598H46.8105V23.7044H51.4684V23.5598H49.3358C49.1988 23.5598 49.2213 23.4596 49.3898 22.7842L50.8217 17.0917H56.4928L58.2247 23.5598H55.92V23.7044H63.6705V23.5598H61.2603L54.8339 0.75H54.7944L49.2554 22.7464ZM53.5638 6.18927L56.4482 16.9477H50.8617L53.5638 6.18927Z" fill="white"/><path fill-rule="evenodd" clip-rule="evenodd" d="M64.724 22.7464C64.543 23.4854 64.5191 23.5598 64.3363 23.5598H62.2796V23.7044H66.9372V23.5598H64.8049C64.6679 23.5598 64.6906 23.4596 64.8584 22.7842L66.2911 17.0917H71.9619L73.6936 23.5598H71.3891V23.7044H79.1394V23.5598H76.7301L70.3036 0.75H70.2642L64.724 22.7464ZM69.0331 6.18927L71.9179 16.9477H66.3308L69.0331 6.18927ZM59.7403 3.68458C59.7403 3.69341 59.7483 3.69672 59.7634 3.69672H60.0782V3.74817H59.0036V3.69672H59.2842C59.3 3.69672 59.3069 3.69341 59.3069 3.68458V2.57111H58.2806V3.68458C58.2806 3.69341 58.2877 3.69672 58.303 3.69672H58.5837V3.74817H57.5095V3.69672H57.8242C57.8396 3.69672 57.8467 3.69341 57.8467 3.68458V1.4996C57.8467 1.49165 57.8396 1.48789 57.8242 1.48789H57.5095V1.43623H58.5837V1.48789H58.303C58.2877 1.48789 58.2806 1.49165 58.2806 1.4996V2.52011H59.3069V1.4996C59.3069 1.49165 59.3 1.48789 59.2842 1.48789H59.0036V1.43623H60.0782V1.48789H59.7634C59.7483 1.48789 59.7403 1.49165 59.7403 1.4996V3.68458ZM62.7242 2.7356C62.6254 2.7356 62.5592 2.6888 62.5592 2.60997C62.5592 2.53866 62.601 2.54108 62.601 2.48876C62.601 2.43577 62.5678 2.41148 62.5145 2.41148C62.4595 2.41148 62.3613 2.43025 62.2869 2.66164V3.68458C62.2869 3.69341 62.2938 3.69672 62.3093 3.69672H62.5022V3.74817H61.7458V3.69672H61.938C61.9535 3.69672 61.9605 3.69341 61.9605 3.68458V2.42186C61.9605 2.41413 61.9535 2.40971 61.938 2.40971H61.7458V2.35827H62.2774L62.2869 2.3682V2.58392C62.3436 2.40419 62.4662 2.33 62.6103 2.33C62.7857 2.33 62.8996 2.42428 62.8996 2.57023C62.8996 2.6623 62.8302 2.7356 62.7242 2.7356ZM65.5614 3.77621C65.8076 3.77621 66.0056 3.65411 66.1379 3.4671L66.0997 3.43574C65.9761 3.61481 65.8104 3.72565 65.5614 3.72565C65.4703 3.72565 65.397 3.70798 65.3342 3.65102C65.2306 3.55586 65.1983 3.44435 65.1983 3.05355C65.1983 3.02462 65.1985 3.01668 65.1991 2.99018H66.1668L66.1763 2.98113C66.1763 2.71728 65.9985 2.33 65.5614 2.33C65.1579 2.33 64.8548 2.65435 64.8548 3.05355C64.8548 3.45208 65.1579 3.77621 65.5614 3.77621ZM65.7409 2.4563C65.8151 2.54197 65.8393 2.67444 65.8451 2.93873H65.2C65.208 2.67444 65.2406 2.54197 65.3342 2.4563C65.397 2.39911 65.4703 2.38145 65.5614 2.38145C65.6401 2.38145 65.691 2.39911 65.7409 2.4563ZM60.7471 3.71262C60.9201 3.71262 61.0323 3.58655 61.0323 3.46599V2.98488C60.9518 3.03235 60.8351 3.03235 60.732 3.05134C60.6161 3.07298 60.4918 3.13502 60.4918 3.43442C60.4918 3.66294 60.6381 3.71262 60.7471 3.71262ZM60.3408 2.61262C60.3408 2.49715 60.483 2.33 60.7576 2.33C61.16 2.33 61.3591 2.5115 61.3591 2.91908V3.58213C61.3591 3.66007 61.3956 3.69231 61.4487 3.69231C61.5108 3.69231 61.5607 3.63976 61.574 3.60796L61.607 3.64152C61.5868 3.69937 61.4836 3.77621 61.3525 3.77621C61.2036 3.77621 61.0726 3.68811 61.0495 3.56579C61.0021 3.70511 60.8718 3.77621 60.6843 3.77621C60.3734 3.77621 60.1736 3.66537 60.1736 3.43442C60.1736 3.09351 60.5294 3.01425 60.6661 3.00299C60.859 2.98643 61.0323 2.9734 61.0323 2.90363V2.71352C61.0323 2.48081 60.933 2.38145 60.7576 2.38145C60.6698 2.38145 60.6152 2.42252 60.6152 2.51878C60.6152 2.57354 60.6431 2.59032 60.6431 2.64375C60.6431 2.70359 60.5967 2.76055 60.4866 2.76055C60.382 2.76055 60.3408 2.68637 60.3408 2.61262ZM64.127 2.45475C64.0686 2.39911 63.9894 2.38145 63.9048 2.38145C63.7879 2.38145 63.6804 2.46049 63.606 2.5497V3.52141C63.6509 3.63711 63.781 3.72565 63.9048 3.72565C63.9894 3.72565 64.0686 3.70842 64.127 3.65212C64.2235 3.55873 64.2884 3.396 64.2884 3.06194C64.2884 2.72766 64.2235 2.54793 64.127 2.45475ZM64.6205 3.06194C64.6205 3.42294 64.3208 3.77621 63.9048 3.77621C63.7775 3.77621 63.6804 3.69496 63.606 3.61635V4.69317C63.606 4.70067 63.6138 4.70443 63.6289 4.70443H63.8211V4.75587H63.0653V4.70443H63.2573C63.2727 4.70443 63.2798 4.70067 63.2798 4.69317V2.42186C63.2798 2.41413 63.2727 2.40971 63.2573 2.40971H63.0653V2.35827H63.5967L63.606 2.3682V2.49207C63.6804 2.4128 63.7775 2.33 63.9048 2.33C64.3208 2.33 64.6205 2.7005 64.6205 3.06194ZM68.7465 2.36886C68.7824 2.36886 68.8022 2.35385 68.8061 2.33972H68.8607V2.68416H68.8061C68.8061 2.4839 68.6307 2.38145 68.4646 2.38145C68.2926 2.38145 68.2095 2.46049 68.2095 2.58524C68.2095 2.74576 68.3222 2.82745 68.5778 2.90076C68.8456 2.97782 69.0218 3.11162 69.0218 3.32049C69.0218 3.58478 68.8132 3.77621 68.4794 3.77621C68.2812 3.77621 68.1953 3.68171 68.0926 3.68171C68.0697 3.68091 68.0471 3.68726 68.0278 3.69992C68.0085 3.71258 67.9934 3.73095 67.9845 3.75258H67.9293L67.9483 3.29443H68.0035C67.9942 3.53466 68.2139 3.72565 68.4794 3.72565C68.6801 3.72565 68.7938 3.63159 68.7938 3.4565C68.7938 3.28185 68.6594 3.2123 68.4141 3.13568C68.1741 3.0615 68.0072 2.9617 68.0072 2.74576C68.0072 2.48986 68.2494 2.33 68.4646 2.33C68.6048 2.33 68.618 2.36886 68.7465 2.36886ZM67.7495 1.88599C67.7495 1.79281 67.8268 1.71686 67.9221 1.71686C68.0255 1.71686 68.1021 1.7937 68.1021 1.9063C68.1021 2.07256 67.9554 2.26774 67.7541 2.39161L67.7219 2.35451C67.8673 2.2684 67.972 2.1622 68.0339 2.0114C68.0072 2.04165 67.97 2.05556 67.9221 2.05556C67.8268 2.05556 67.7495 1.98005 67.7495 1.88599ZM67.3131 2.7356C67.2147 2.7356 67.148 2.6888 67.148 2.60997C67.148 2.53866 67.1901 2.54108 67.1901 2.48876C67.1901 2.43577 67.1564 2.41148 67.1029 2.41148C67.0481 2.41148 66.9497 2.43025 66.8757 2.66164V3.68458C66.8757 3.69341 66.882 3.69672 66.8975 3.69672H67.0902V3.74817H66.3338V3.69672H66.5269C66.542 3.69672 66.5493 3.69341 66.5493 3.68458V2.42186C66.5493 2.41413 66.542 2.40971 66.5269 2.40971H66.3338V2.35827H66.8658L66.8757 2.3682V2.58392C66.9329 2.40419 67.0548 2.33 67.2 2.33C67.3737 2.33 67.4891 2.42428 67.4891 2.57023C67.4891 2.6623 67.4184 2.7356 67.3131 2.7356Z" fill="white"/></svg>
+        <p class="cclp-press__slide-quote">"Bobbi Brown's Jones Road keeps raising the bar with clean formulas that actually&nbsp;perform."</p>
+      </div>
+      <div class="cclp-press__slide" data-press-slide="4">
+        <svg class="cclp-press__slide-logo" xmlns="http://www.w3.org/2000/svg" width="42" height="22" viewBox="0 0 42 22" fill="none"><path d="M14.7886 21.0759H0V21.3929H14.9776V14.6592H14.7886V21.0759Z" fill="white"/><path d="M14.7886 11.1036H3.79568V0.921924H14.7886V0.604004H0V11.4215H14.7886V11.1036Z" fill="white"/><path d="M27.1766 21.0759H16.1837V0.921924H27.1766V0.604004H16.1837H12.3881V21.3929H27.3656V14.6592H27.1766V21.0759Z" fill="white"/><path d="M41.5646 21.0759H30.5717V0.921924H41.5646V0.604004H30.5717H26.7761V21.3929H41.7536V14.6592H41.5646V21.0759Z" fill="white"/></svg>
+        <p class="cclp-press__slide-quote">"The latest launch from Jones Road proves that clean beauty and high performance are no longer mutually&nbsp;exclusive."</p>
+      </div>
+
+      <!-- Mobile dots -->
+      <div class="cclp-press__dots">
+        <button class="cclp-press__dot is-active" data-press-dot="0" aria-label="Show Vogue quote"></button>
+        <button class="cclp-press__dot" data-press-dot="1" aria-label="Show Allure quote"></button>
+        <button class="cclp-press__dot" data-press-dot="2" aria-label="Show Glamour quote"></button>
+        <button class="cclp-press__dot" data-press-dot="3" aria-label="Show Harper's Bazaar quote"></button>
+        <button class="cclp-press__dot" data-press-dot="4" aria-label="Show Elle quote"></button>
+      </div>
+
+      <!-- Desktop: logo row + quote below -->
+      <div class="cclp-press__logos">
+        <button class="cclp-press__logo-btn is-active" data-press-logo="0" aria-label="Vogue">
+          <svg xmlns="http://www.w3.org/2000/svg" width="81" height="22" viewBox="0 0 81 22" fill="none"><path d="M23.6243 0.96501C18.9033 0.998763 15.0417 6.24577 15.0417 10.8224C15.0417 15.6385 17.8724 21.5133 23.6243 21.4943C29.3762 21.4752 32.3616 15.1504 32.3616 10.8224C32.3616 6.0417 28.3453 0.931258 23.6243 0.96501ZM23.6243 1.14452C27.5756 1.14452 28.6416 5.5084 28.6416 10.8224C28.6416 17.834 27.3557 21.2932 23.6243 21.2866C19.8929 21.2801 18.679 18.4488 18.679 10.8224C18.679 6.04498 19.673 1.14452 23.6243 1.14452Z" fill="white"/><path d="M33.9205 10.9518C33.8994 5.74437 38.0672 1.13157 41.5952 0.902704C42.8696 0.812418 44.5078 1.39601 45.4641 1.81173C46.1586 2.11361 47.5762 1.67665 47.8279 0.875H47.9652V7.96853H47.8279C47.8279 7.66613 46.5143 1.08105 41.5952 1.08105C37.9619 1.08105 37.6109 7.46979 37.6109 10.9518C37.6109 14.4338 37.7167 21.327 41.9567 21.327C44.0106 21.327 45.531 20.4284 45.9251 18.6105V13.0828H44.2011V12.8473H50.8837V13.0828H49.2355V21.1643H49.1013C49.1013 21.1643 48.8333 19.9982 47.4736 20.0021C45.7357 20.0071 44.0968 21.5169 42.0989 21.4985C36.8153 21.4499 33.9417 16.1593 33.9205 10.9518Z" fill="white"/><path d="M2.08077 1.66383H0V1.42993H7.28906V1.66383H5.46041L10.6686 15.8077C12.2972 10.7936 13.5589 7.08727 15.2568 1.66383H13.448V1.42993H17.2967V1.66383H15.5441L9.21401 21.3972L2.08077 1.66383Z" fill="white"/><path d="M51.9042 16.5659L51.8712 1.64105H49.8907V1.41748H57.1875V1.64105H55.2081L55.2521 18.0054C55.6902 19.8792 56.4693 21.301 59.131 21.3222C61.7927 21.3434 63.6022 19.7477 64.2746 17.5669V1.64105H62.0089L62.0089 1.42407H80.5533L80.5919 8.5886H80.4137C80.0697 3.96273 78.2848 2.21448 75.1632 1.70446C74.089 1.52895 72.9621 1.65905 71.5375 1.64798V10.7918C72.7781 10.8877 74.0995 10.8092 74.99 10.0444C75.7997 9.3489 76.0287 7.74197 76.0882 7.08915H76.245V15.0506H76.0753C76.0263 15.0506 75.9611 13.0527 74.99 12.1048C74.0125 11.1508 72.7677 10.9162 71.5375 11.1435V20.9111C73.2751 20.9111 74.6602 21.0583 75.863 20.7285C79.5194 19.7261 80.8065 16.6414 80.7967 13.5476H81V21.1423H66.4542V20.9111H68.0989V1.64105H64.5454V17.5669C64.1427 19.0907 62.6706 21.6117 58.8982 21.5945C55.3906 21.5785 51.9118 19.9972 51.9042 16.5659Z" fill="white"/></svg>
+        </button>
+        <button class="cclp-press__logo-btn" data-press-logo="1" aria-label="Allure">
+          <svg xmlns="http://www.w3.org/2000/svg" width="73" height="21" viewBox="0 0 73 21" fill="none"><path d="M3.98968 20.8412C3.86248 20.781 3.62009 20.6451 3.45104 20.5392C2.97051 20.238 2.83479 20.1802 2.52689 20.1457C2.18732 20.1076 2.06499 20.0287 1.77611 19.6611C1.67032 19.5265 1.47268 19.3279 1.33691 19.2199C0.79458 18.7883 0.67818 18.5502 0.623994 17.7611C0.6044 17.4758 0.568478 17.0475 0.544169 16.8093L0.499969 16.3762L0.626438 16.0407C0.926067 15.2458 1.25353 14.714 1.70469 14.2896C2.08071 13.9358 2.41513 13.7545 2.62844 13.7886C2.76129 13.8098 2.78964 13.797 2.95935 13.6395C3.22148 13.3962 3.31818 13.3569 3.87811 13.2664C4.15122 13.2222 4.51302 13.1446 4.6821 13.0939C4.85119 13.0433 5.11058 12.9898 5.25853 12.975C5.40648 12.9602 5.61399 12.9157 5.71967 12.876C5.85124 12.8266 6.01271 12.8039 6.2319 12.8038C6.61338 12.8038 6.84503 12.7228 7.41923 12.3884L7.7948 12.1697L8.16619 12.1797C8.59234 12.191 8.71039 12.1585 8.78804 12.0081C8.93255 11.7282 9.04169 10.7002 8.97037 10.2906C8.92065 10.0051 8.78302 9.66177 8.68627 9.58187C8.65191 9.5535 8.42863 9.5054 8.19009 9.47499C7.88047 9.43552 7.7014 9.39141 7.56423 9.32082C7.33241 9.20152 7.15931 9.19813 6.77255 9.30531C6.40118 9.40822 6.32811 9.40396 6.12699 9.26768C5.98479 9.17132 5.92035 9.1531 5.72196 9.1531C5.5922 9.1531 5.38644 9.12716 5.26473 9.09545C4.96368 9.01704 4.7601 9.023 4.47734 9.11849C4.19099 9.21519 4.0096 9.37913 4.0096 9.54122C4.0096 9.60621 4.08563 9.78528 4.18808 9.96161L4.36657 10.2688L4.34512 10.6428C4.31929 11.0934 4.17752 11.5742 4.00735 11.7883C3.73441 12.1317 3.47688 12.2131 2.99638 12.1078C2.74913 12.0536 2.6534 12.0491 2.47074 12.0831C2.28016 12.1186 2.22022 12.1144 2.06211 12.0547C1.80227 11.9565 1.46679 11.7215 1.3176 11.5331C1.09043 11.2463 0.934961 10.6053 0.936047 9.9601C0.937618 9.02713 1.25103 8.43193 1.93871 8.05595C2.13382 7.94927 2.33146 7.78879 2.60379 7.51594C2.81689 7.30241 3.06647 7.08062 3.15841 7.02307C3.25035 6.96551 3.42992 6.8416 3.55747 6.74771L3.78936 6.57699L4.38945 6.58641C4.87283 6.59399 5.03437 6.58254 5.2201 6.52749C5.34691 6.4899 5.68622 6.4367 5.97411 6.40927C6.46744 6.36225 6.51082 6.35132 6.72849 6.21909C6.98437 6.06365 7.06862 6.05286 7.38576 6.13492C7.50506 6.16579 7.81894 6.21767 8.08329 6.25022C8.67211 6.3227 8.75596 6.34602 9.03443 6.51471C9.15579 6.58823 9.41937 6.71292 9.62016 6.7918C9.97204 6.93005 9.99987 6.95007 10.3904 7.34599C10.8977 7.86024 11.1497 8.19319 11.3655 8.63431C11.6084 9.13092 11.6921 9.44294 11.752 10.0754C11.781 10.3819 11.8339 10.7155 11.8695 10.8167C11.9226 10.968 11.9266 11.0311 11.8916 11.17C11.8371 11.3864 11.8378 11.5839 11.894 11.9121C11.931 12.1274 11.9277 12.2711 11.8757 12.7102C11.8409 13.0048 11.7932 13.583 11.7697 13.9951C11.7463 14.4073 11.709 14.8136 11.6869 14.8982C11.6141 15.1761 11.6084 15.5165 11.6729 15.7383C11.7599 16.0377 11.7487 16.2045 11.6196 16.5314C11.5519 16.7029 11.5053 16.8932 11.5045 17.0013C11.5025 17.2779 11.81 18.0306 11.9464 18.083C11.9808 18.0962 12.0766 18.107 12.1591 18.107C12.3005 18.107 12.3205 18.0916 12.5017 17.8424C12.7176 17.5456 12.8662 17.4537 13.1304 17.4537C13.4429 17.4537 14.7779 17.6062 15.2232 17.6928C15.708 17.7871 15.747 17.7792 15.8527 17.5655C15.9539 17.3607 15.9915 17.1394 16.1355 15.901C16.3053 14.442 16.3075 14.3745 16.1926 14.219C16.1064 14.1025 16.1041 14.0803 16.1274 13.5951C16.1407 13.3184 16.1706 12.8413 16.1938 12.5348C16.2394 11.9329 16.2188 11.3542 16.13 10.7505C16.0483 10.1945 16.0541 9.84079 16.1512 9.46448C16.2805 8.96284 16.2747 8.91217 16.0455 8.53969C15.8021 8.14415 15.7919 8.01811 15.9628 7.51748C16.0886 7.14911 16.0898 7.08666 15.9788 6.68605L15.9074 6.42865L15.9971 6.23715C16.1128 5.99014 16.0942 5.87392 15.8518 5.32917C15.7484 5.09683 15.6333 4.81161 15.5961 4.69537C15.4809 4.33639 15.3907 4.28592 15.1154 4.42637C14.9083 4.53205 14.7535 4.52285 14.4683 4.38791C14.1885 4.25555 14.129 4.24878 14.0055 4.33528C13.8778 4.42475 13.6477 4.46832 13.5106 4.429C13.4461 4.41049 13.3077 4.32773 13.2032 4.24509C13.0986 4.16245 12.8461 4.00232 12.642 3.88925C12.1975 3.64304 11.9273 3.38348 11.7663 3.04827C11.5338 2.56415 11.6384 1.98445 12.0742 1.34243C12.3751 0.899305 12.6659 0.60374 12.9321 0.470745C13.2346 0.319584 13.4132 0.319564 13.8408 0.470645C14.402 0.66896 14.677 0.712327 15.7879 0.777708C16.1684 0.800099 16.6007 0.843365 16.7486 0.873856C17.102 0.946675 17.1573 0.944491 17.4643 0.845612L17.7243 0.76187L18.0051 0.900653C18.4149 1.10329 18.493 1.20022 18.5597 1.5887C18.6695 2.22886 19.0025 3.33391 19.1935 3.69189C19.3541 3.99281 19.347 4.26722 19.166 4.76071C18.9548 5.33611 18.9572 5.32371 18.9199 6.04857C18.8867 6.69311 18.8781 6.74516 18.7582 7.0285L18.6316 7.32773V8.88409V10.4405L18.8002 10.8596L18.9688 11.2788L18.8283 11.7051C18.751 11.9395 18.6881 12.1978 18.6885 12.279C18.6889 12.3603 18.7435 12.6014 18.8098 12.8148C18.9303 13.2026 18.9304 13.2031 18.8822 13.5812C18.8188 14.0783 18.8233 14.1968 18.9171 14.4947C19.0162 14.8095 19.016 14.9335 18.916 15.4031C18.855 15.6891 18.834 15.9329 18.8303 16.3969C18.8249 17.0761 18.8696 17.3652 19.0244 17.6527C19.1341 17.8565 19.1482 17.8635 19.7544 18.0155C20.1462 18.1138 20.2021 18.1192 20.3692 18.0752C20.4703 18.0486 20.6914 17.9362 20.8605 17.8254C21.4366 17.4481 21.3876 17.4566 22.5898 17.5222C23.2446 17.558 24.0962 17.5837 24.2476 17.5723C24.3671 17.5633 24.5339 16.8785 24.6432 15.9485C24.6871 15.5751 24.7682 15.059 24.8234 14.8017C24.9307 14.3009 24.9288 14.2799 24.7543 14.0628C24.6703 13.9582 24.67 13.9531 24.7158 13.3134C24.7816 12.3936 24.774 11.1674 24.6983 10.4756L24.6348 9.8959L24.7365 9.43803C24.8758 8.81067 24.8722 8.76432 24.6586 8.42196C24.433 8.06031 24.4087 7.88474 24.5329 7.51436C24.6357 7.20751 24.6495 6.86274 24.5729 6.51294C24.5236 6.28801 24.5253 6.26676 24.6024 6.13606C24.7202 5.9364 24.7044 5.7768 24.5255 5.3563C24.4382 5.15131 24.3075 4.82795 24.2351 4.63772C24.0729 4.21206 24.0141 4.11894 23.9071 4.11894C23.8612 4.11894 23.7582 4.16425 23.6783 4.21964L23.533 4.32035L23.2239 4.25807C23.0539 4.22382 22.8209 4.19579 22.7061 4.19579C22.5033 4.19579 22.4941 4.19106 22.3835 4.03026C22.2236 3.79788 22.2005 3.78432 21.8908 3.74143C21.6865 3.71314 21.5698 3.67239 21.4427 3.58493C21.2124 3.42649 21.007 3.18442 20.8849 2.92765C20.7471 2.63788 20.7428 2.12285 20.8745 1.69793C21.0001 1.29263 21.2728 0.781811 21.4779 0.567748C21.6521 0.38595 21.9816 0.200292 22.1313 0.199585C22.1751 0.199379 22.3934 0.267972 22.6164 0.352014C22.8394 0.436056 23.1235 0.515049 23.2477 0.527554C23.372 0.540059 23.5774 0.587749 23.7042 0.633533C23.9089 0.707433 23.9994 0.715527 24.5112 0.705652C25.0525 0.695207 25.1037 0.700596 25.3517 0.79418L25.6159 0.89383L25.958 0.793162L26.3001 0.692493L26.5393 0.808665C26.8363 0.952956 26.8992 1.00348 26.9509 1.13949C26.9735 1.19877 27.0944 1.66216 27.2197 2.16924C27.4114 2.94452 27.4792 3.15543 27.6463 3.49494C27.829 3.86642 27.8431 3.91441 27.8224 4.09528C27.8101 4.2034 27.7284 4.48209 27.6409 4.71458C27.4896 5.11695 27.4795 5.17059 27.432 5.82901C27.3878 6.44077 27.368 6.55844 27.2604 6.84693C27.1138 7.2398 27.0696 7.64793 27.0686 8.61509C27.0676 9.58477 27.1183 10.0983 27.2584 10.5365C27.4431 11.1141 27.4467 11.2891 27.2829 11.7441L27.1456 12.1255L27.2842 12.5311L27.4228 12.9367L27.3963 13.5169C27.3705 14.08 27.3727 14.1058 27.4721 14.3936L27.5746 14.6902L27.4556 15.313C27.2872 16.1946 27.2594 16.3956 27.2591 16.7369C27.2588 17.0158 27.2708 17.0614 27.4177 17.3438C27.6043 17.7025 27.6372 17.7241 28.2053 17.861C28.6787 17.9751 28.8142 17.9709 29.3332 17.8255C29.7564 17.707 30.4217 17.6299 30.6982 17.6673C31.0584 17.716 31.3136 17.8958 31.5009 18.2328C31.679 18.5531 31.7481 18.8918 31.6851 19.1355C31.5773 19.5527 31.2138 20.1313 30.9728 20.2693C30.9215 20.2988 30.7233 20.3176 30.4484 20.3192C30.099 20.3212 29.9256 20.343 29.6205 20.4235L29.2345 20.5253L28.9288 20.4506C28.5009 20.3461 28.1318 20.3197 27.8059 20.3703C27.5965 20.4027 27.3663 20.4021 26.8837 20.3677C25.8543 20.2943 25.5246 20.3022 25.131 20.4098C24.7601 20.5112 24.7523 20.5105 24.2806 20.3359C24.0646 20.2559 24.0306 20.2535 23.7415 20.2981L23.433 20.3456L23.195 20.2254C23.0641 20.1593 22.9113 20.1053 22.8554 20.1053C22.7986 20.1053 22.667 20.1688 22.557 20.2494L22.3602 20.3935L21.9856 20.3827C21.6855 20.374 21.5298 20.3918 21.2026 20.4722C20.8132 20.5678 20.7786 20.5702 20.4622 20.5234C20.2633 20.4939 19.7224 20.473 19.112 20.4711C18.5519 20.4694 17.9121 20.4541 17.6901 20.4372C17.3017 20.4076 17.2742 20.4107 16.9521 20.5218L16.6175 20.6372L16.3372 20.5154C16.07 20.3993 16.0366 20.3941 15.6222 20.4036C15.1928 20.4134 15.184 20.4119 14.9113 20.2772C14.6827 20.1643 14.6085 20.1448 14.4814 20.1643C14.2483 20.2001 13.7888 20.3312 13.6063 20.4141C13.4807 20.4711 13.355 20.4881 13.0527 20.4887C12.8376 20.4892 12.5292 20.508 12.3675 20.5305C11.7167 20.621 11.2072 20.4349 10.7593 19.943C10.4553 19.6092 10.2109 19.4327 9.99888 19.3938C9.84043 19.3647 9.75501 19.3998 9.51844 19.5909C9.4308 19.6617 9.13383 19.8298 8.85851 19.9645C8.58319 20.0992 8.29175 20.2613 8.21086 20.3247C8.12998 20.3881 8.02575 20.46 7.97923 20.4843C7.87537 20.5388 6.9706 20.6034 6.29609 20.6046C5.57984 20.6058 5.23956 20.6543 4.82765 20.8137C4.63295 20.889 4.41679 20.9507 4.3473 20.9507C4.27781 20.9507 4.11688 20.9014 3.98968 20.8412ZM5.26941 18.5157C5.57107 18.3646 5.69348 18.341 6.36556 18.3044C6.92451 18.274 7.01898 18.2597 7.06731 18.1978C7.09802 18.1584 7.23369 17.9706 7.3688 17.7803C7.70942 17.3008 7.78753 17.2298 8.49917 16.7538C9.02105 16.4047 9.13658 16.3104 9.18552 16.1932C9.25583 16.025 9.30299 14.8953 9.24829 14.6897C9.22902 14.6173 9.16763 14.524 9.11184 14.4824C9.01078 14.4069 9.00926 14.4069 8.67161 14.4884C8.48527 14.5334 8.12612 14.6316 7.87352 14.7067C7.48013 14.8235 7.32574 14.8484 6.79752 14.8801C5.72055 14.9448 5.38747 15.0178 4.7757 15.3231C4.5947 15.4135 4.25749 15.568 4.02635 15.6665C3.79521 15.765 3.56619 15.8828 3.5174 15.9283C3.39155 16.0456 3.21734 16.4317 3.16214 16.7155C3.01934 17.4499 3.36386 18.0625 4.02814 18.2555C4.19024 18.3026 4.44692 18.4007 4.59855 18.4734C4.92527 18.6301 5.02813 18.6366 5.26941 18.5157Z" fill="white"/><path d="M42.6537 20.525C42.4446 20.4633 42.116 20.394 41.9235 20.3708C41.6498 20.3379 41.4478 20.279 40.997 20.1005C40.2475 19.8038 40.2532 19.807 40.1157 19.6092C40.0509 19.516 39.9577 19.3909 39.9086 19.3313L39.8193 19.2227L39.6588 19.304C39.5705 19.3487 39.1179 19.6403 38.6529 19.9521L37.8075 20.519L36.762 20.5648L35.7164 20.6106L35.4847 20.5066C35.2865 20.4177 35.2264 20.407 35.0699 20.4333C34.9693 20.4502 34.7399 20.4654 34.5603 20.4671C34.2762 20.4699 34.2049 20.4562 34.0136 20.3623C33.2511 19.9878 32.0836 18.2581 31.5652 16.7351C31.2875 15.9191 31.2884 15.9295 31.2723 13.4187C31.2644 12.1822 31.2388 10.9198 31.2155 10.6134C31.174 10.0675 31.0752 9.47316 30.9896 9.25436C30.9469 9.14521 30.9445 9.14449 30.7062 9.17002C30.4041 9.20237 29.9957 9.13896 29.8061 9.03025C29.3641 8.77694 28.9692 8.35952 28.8578 8.02769C28.7858 7.81344 28.777 7.30773 28.8362 6.78971C28.8832 6.37791 28.9608 6.23883 29.2863 5.98253C29.7358 5.6287 30.1914 5.56322 30.7559 5.77135C31.0978 5.89744 31.322 5.91966 31.3561 5.83085C31.3794 5.77003 31.533 5.71334 31.7758 5.67595C32.5106 5.56276 33.7354 6.33044 34.1074 7.13732C34.1849 7.30538 34.1947 7.38405 34.1913 7.80807C34.1877 8.25853 34.1782 8.31594 34.039 8.73036C33.9022 9.13767 33.8906 9.2054 33.8911 9.59501C33.8918 10.0725 33.9379 10.2293 34.2146 10.6951C34.4357 11.0671 34.4455 11.1688 34.2892 11.4667C34.2195 11.5998 34.1373 11.758 34.1066 11.8185C34.0319 11.9657 33.915 12.4262 33.8844 12.6935C33.8613 12.8954 33.8696 12.9276 34.0082 13.1739L34.1568 13.4379L34.176 14.9786L34.1952 16.5194L34.3466 16.7079C34.7465 17.206 35.171 17.5945 35.4385 17.7072C35.5349 17.7478 35.7706 17.7731 36.1941 17.7884L36.8095 17.8107L37.0924 17.5078C37.5706 16.9958 38.6001 15.6474 38.9359 15.0933C39.1109 14.8045 39.3903 14.1018 39.4888 13.7028L39.5714 13.3682L39.481 13.038C39.3558 12.5808 39.3471 12.4148 39.4202 11.8795C39.4909 11.3615 39.4889 11.3421 39.3011 10.7523C39.2154 10.4831 39.176 10.2967 39.1908 10.2295C39.2034 10.1721 39.3005 10.0277 39.4066 9.90872C39.6367 9.65052 39.6877 9.50933 39.6144 9.33381C39.5358 9.14564 39.4483 9.08761 39.1363 9.01664C38.9795 8.98099 38.6856 8.8828 38.4831 8.79842C38.1336 8.6528 38.0993 8.64597 37.8075 8.66372C37.1843 8.70164 36.7242 8.54478 36.3318 8.16062C35.9426 7.77948 35.8997 7.57252 36.1209 7.14304C36.3568 6.68493 37.2059 5.75869 37.5516 5.58231C37.7476 5.48232 37.8539 5.48232 38.2978 5.58233C38.805 5.69655 39.0728 5.69684 39.3158 5.58343L39.5125 5.49158L39.7744 5.58833C40.0895 5.70474 40.1647 5.71728 40.9853 5.79048C41.7434 5.8581 41.9938 5.93461 42.2325 6.17161C42.4077 6.34561 42.4429 6.44687 42.5073 6.96264C42.5298 7.1423 42.5773 7.43628 42.613 7.61593C42.6928 8.01813 42.704 9.71273 42.6331 10.6825C42.5861 11.3267 42.5272 11.6121 42.3381 12.1121C42.2409 12.3692 42.229 12.45 42.2279 12.8614C42.227 13.2159 42.2459 13.3937 42.3096 13.63C42.3809 13.8946 42.3956 14.0794 42.4147 14.9558C42.4282 15.5759 42.4198 16.2018 42.3933 16.5563C42.3519 17.1077 42.3536 17.1453 42.4245 17.2667C42.522 17.4335 42.74 17.5144 43.2969 17.5904C43.9878 17.6846 44.431 17.868 44.6246 18.1399C44.8133 18.4049 44.8696 19.1962 44.7179 19.4529C44.6823 19.5133 44.4703 19.6831 44.2469 19.8304C44.0235 19.9777 43.6852 20.2208 43.4952 20.3707C43.3051 20.5206 43.1235 20.6418 43.0917 20.6401C43.0598 20.6384 42.8627 20.5866 42.6537 20.525Z" fill="white"/></svg>
+        </button>
+        <button class="cclp-press__logo-btn" data-press-logo="2" aria-label="Glamour">
+          <svg xmlns="http://www.w3.org/2000/svg" width="95" height="23" viewBox="0 0 95 23" fill="none"><path d="M22.0265 20.586H18.7936V0.875H14.6819V21.7787H18.8878H22.0265V20.586Z" fill="white"/><path d="M27.7075 0.875L22.8425 21.7787H24.098L26.2009 12.7393H30.344L32.0703 21.7787H36.2134L31.5681 0.875H27.7075ZM26.4834 11.5152L28.4922 2.94654L30.1243 11.5152H26.4834Z" fill="white"/><path d="M48.1089 0.875L44.7819 15.2816L41.8002 0.875H38.4417L37.2177 0.906387V21.7787H38.4417V3.7626L39.195 6.74437L42.5848 21.7787H44.3425H44.5308L48.4856 4.92392V21.7787H52.6287V0.875H48.1089Z" fill="white"/><path d="M58.1216 7.56043C58.1216 7.56043 58.0902 10.2911 58.0902 11.3896C58.0902 12.4882 58.1216 15.0933 58.1216 15.0933C58.1216 18.1692 58.8748 20.5546 60.9464 20.5546C63.0179 20.5546 63.7712 18.1692 63.7712 15.0933C63.7712 15.0933 63.8026 12.4882 63.8026 11.3896C63.8026 10.2911 63.7712 7.56043 63.7712 7.56043C63.7712 4.4845 63.0179 2.09909 60.9464 2.09909C58.8748 2.09909 58.1216 4.4845 58.1216 7.56043ZM67.9457 11.3269C67.9457 21.4649 62.0763 21.7787 60.9464 21.7787C59.8165 21.7787 53.9471 21.4649 53.9471 11.3269C53.9471 1.18887 59.8165 0.875 60.9464 0.875C62.0763 0.875 67.9457 1.18887 67.9457 11.3269Z" fill="white"/><path d="M76.6084 20.3349C79.8099 20.3349 79.5274 14.6225 79.5274 14.6225C79.5274 13.0532 79.5274 1.00055 79.5274 0.875H80.7201C80.7201 1.00055 80.8456 13.0532 80.8456 14.6225C80.8456 14.8108 80.8456 14.9991 80.8456 15.1875C80.8143 16.9451 80.5632 18.9853 79.3391 20.3035C79.2763 20.3977 79.1821 20.4605 79.088 20.5546C77.7069 21.7473 75.5098 21.9043 73.815 21.6532C72.0887 21.4021 70.4879 20.4605 69.8288 18.6714C69.3266 17.3218 69.2952 15.8466 69.2952 14.4342V0.875H73.4069V15.9094V15.9408C73.4069 15.9721 73.3442 20.3349 76.6084 20.3349Z" fill="white"/><path d="M91.423 12.4254C92.0193 12.1743 92.5843 11.9232 92.9923 11.421C94.2792 9.88301 94.2792 8.18811 94.2792 6.68154C94.2792 3.82532 92.9296 1.87932 90.4186 1.09465C90.3872 1.09465 90.3558 1.06326 90.3244 1.06326C90.3244 1.06326 90.3244 1.06326 90.293 1.06326C90.2617 1.06326 90.2303 1.06326 90.1989 1.03188C90.1675 1.03188 90.1361 1.03188 90.1047 1.00049C90.1047 1.00049 90.1047 1.00049 90.0733 1.00049C90.042 1.00049 90.0106 1.00049 89.9792 1.00049C89.9478 1.00049 89.9164 1.00049 89.885 1.00049C89.885 1.00049 89.885 1.00049 89.8536 1.00049C89.8222 1.00049 89.7909 1.00049 89.7595 1.00049C89.7281 1.00049 89.6967 1.00049 89.6653 1.00049C89.6653 1.00049 89.6653 1.00049 89.6339 1.00049C89.6025 1.00049 89.5711 1.00049 89.5398 1.00049C89.5084 1.00049 89.477 1.00049 89.4456 1.00049C89.4142 1.00049 89.3828 1.00049 89.3514 1.00049C89.3201 1.00049 89.3201 1.00049 89.2887 1.00049C89.2573 1.00049 89.2573 1.00049 89.2259 1.00049C89.2259 1.00049 89.1945 1.00049 89.1631 1.00049C89.1631 1.00049 89.1317 1.00049 89.1003 1.00049H89.069H89.0376C89.0376 1.00049 89.0376 1.00049 89.0062 1.00049H86.6208H82.5405V21.9042H86.6835V12.7392H87.7193L90.3872 21.7473V21.7787H94.75L91.423 12.4254ZM87.3113 11.5151C87.2485 11.5151 86.3697 11.5151 86.3697 11.5151C86.3697 10.3224 86.3697 2.13042 86.3697 2.16181C86.7149 2.16181 87.1544 2.19319 87.531 2.25597C89.7281 2.69539 90.5442 4.95525 90.5755 6.86986C90.5755 7.87424 90.5441 8.97279 90.1675 9.9144C90.0733 10.1655 89.885 10.4166 89.6967 10.6363C89.5084 10.856 89.3201 11.0757 89.069 11.2326C88.5354 11.5151 87.8762 11.5151 87.3113 11.5151Z" fill="white"/><path d="M11.7943 3.51151C12.3279 4.32757 12.9242 6.1794 12.9242 8.81591C11.8885 8.81591 10.1936 8.81591 9.31472 8.81591V8.5962C9.31472 7.74875 9.31472 7.59182 9.31472 7.59182C9.31472 4.4845 8.62421 2.13048 7.08624 2.13048C5.14025 2.13048 4.44974 4.4845 4.44974 7.59182V13.7123C4.44974 14.5911 4.44974 15.313 4.44974 15.313C4.44974 18.4831 5.2658 20.7116 7.24318 20.7116C9.22056 20.7116 9.81691 18.4831 9.81691 15.313V15.1561C9.81691 14.4342 9.8483 13.8378 9.81691 12.7393C8.84392 12.7393 7.6826 12.7393 6.7096 12.7393C6.7096 12.4568 6.7096 11.7977 6.7096 11.5466C8.84392 11.5466 11.0096 11.5466 13.1439 11.5466C13.1439 15.1561 13.1439 18.2006 13.1439 21.8101C12.3279 21.8101 11.3863 21.8101 10.5702 21.8101C10.5388 18.3262 10.6016 19.4875 10.5388 18.3262C10.3505 19.613 9.69137 20.9313 8.56143 21.6532C7.33734 22.4065 5.70522 22.3751 4.41835 21.7787C3.13148 21.151 2.1271 20.0211 1.49936 18.7342C0.871622 17.4473 0.557751 16.0035 0.369429 14.5597C0.275268 13.367 0.212495 12.1743 0.275269 10.9502C0.369429 8.03123 0.997169 4.57867 3.28842 2.50712C4.2928 1.50274 5.64244 0.875 7.14902 0.875C8.53005 0.875 9.78553 1.40858 10.7585 2.28741C10.7585 2.28741 10.7585 2.28741 10.7899 2.3188C11.1352 2.66406 11.5118 3.0407 11.7943 3.51151Z" fill="white"/></svg>
+        </button>
+        <button class="cclp-press__logo-btn" data-press-logo="3" aria-label="Harper\'s Bazaar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="95" height="25" viewBox="0 0 95 25" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.1933 22.7464C17.013 23.4854 16.9882 23.5598 16.8052 23.5598H14.7488V23.7044H19.4063V23.5598H17.2745C17.1366 23.5598 17.1597 23.4596 17.3273 22.7842L18.7599 17.0917H24.431L26.1624 23.5598H23.8586V23.7044H31.6085V23.5598H29.1992L22.7723 0.75H22.7332L17.1933 22.7464ZM21.5017 6.18927L24.387 16.9477H18.8005L21.5017 6.18927ZM83.9433 12.3238H85.7162C87.2869 12.3238 89.6032 13.016 89.6032 15.8285V20.9216C89.6032 23.0056 90.7271 24.318 92.7096 24.318C94.7932 24.318 94.761 22.1648 94.761 20.6116V18.9746H94.6201V20.6116C94.6201 22.3784 94.4154 23.9127 93.399 23.9127C92.4982 23.9127 92.3044 23.341 92.3044 20.9439V15.8285C92.3044 13.4616 90.4298 12.5941 87.5346 12.2507C91.1404 11.8118 92.4982 9.45526 92.4982 6.84945C92.4982 2.99504 90.759 1.37485 86.28 1.37485L79.1797 1.3733V1.51814H81.0441C81.1787 1.51814 81.2423 1.55678 81.2423 1.63494V23.4421C81.2423 23.5207 81.1787 23.5598 81.0441 23.5598H79.1797V23.7044H85.7091V23.5598H84.1408C84.0059 23.5598 83.9433 23.5207 83.9433 23.4421V12.3238ZM83.9433 1.51947H85.8571C88.8049 1.51947 89.6386 3.81396 89.6386 6.84945C89.6386 9.69151 88.8049 12.1792 85.8571 12.1792H83.9433V1.51947ZM36.4275 23.4459C36.4044 23.4978 36.4306 23.5598 36.5395 23.5598L41.6268 23.5612C43.1929 23.5612 45.2145 21.1907 45.2145 13.5523V12.757H45.3561V23.7053H33.2096L42.4117 1.63097C42.4341 1.57975 42.4078 1.51814 42.299 1.51814L36.8979 1.51947C35.4802 1.51947 33.4214 4.16812 33.4214 11.5287V12.3238H33.2801V1.37485H45.6387L36.4275 23.4459ZM6.35496 1.51947C9.30345 1.51947 10.5039 3.81396 10.5039 6.84945C10.5039 9.69151 9.30345 11.9622 6.35496 11.9622H5.0134V1.51947H6.35496ZM0.25 1.3733V1.51814H2.11454C2.24939 1.51814 2.31239 1.55678 2.31239 1.63494V23.4421C2.31239 23.5207 2.24939 23.5598 2.11454 23.5598H0.25V23.7044L7.20265 23.7053C11.6808 23.7053 14.0701 21.7963 14.0701 17.943C14.0701 15.2745 12.658 12.5585 8.20051 12.0176C11.987 11.6553 13.2934 9.22144 13.2934 6.84945C13.2934 3.38054 11.2573 1.37485 6.77891 1.37485L0.25 1.3733ZM6.35496 12.1068C9.67972 12.1068 10.9984 14.4256 10.9984 17.943C10.9984 20.9776 9.82125 23.5612 7.06112 23.5612L5.21125 23.5598C5.0764 23.5598 5.0134 23.5207 5.0134 23.4421V12.105L6.35496 12.1068ZM49.2554 22.7464C49.0741 23.4854 49.0493 23.5598 48.8668 23.5598H46.8105V23.7044H51.4684V23.5598H49.3358C49.1988 23.5598 49.2213 23.4596 49.3898 22.7842L50.8217 17.0917H56.4928L58.2247 23.5598H55.92V23.7044H63.6705V23.5598H61.2603L54.8339 0.75H54.7944L49.2554 22.7464ZM53.5638 6.18927L56.4482 16.9477H50.8617L53.5638 6.18927Z" fill="white"/><path fill-rule="evenodd" clip-rule="evenodd" d="M64.724 22.7464C64.543 23.4854 64.5191 23.5598 64.3363 23.5598H62.2796V23.7044H66.9372V23.5598H64.8049C64.6679 23.5598 64.6906 23.4596 64.8584 22.7842L66.2911 17.0917H71.9619L73.6936 23.5598H71.3891V23.7044H79.1394V23.5598H76.7301L70.3036 0.75H70.2642L64.724 22.7464ZM69.0331 6.18927L71.9179 16.9477H66.3308L69.0331 6.18927ZM59.7403 3.68458C59.7403 3.69341 59.7483 3.69672 59.7634 3.69672H60.0782V3.74817H59.0036V3.69672H59.2842C59.3 3.69672 59.3069 3.69341 59.3069 3.68458V2.57111H58.2806V3.68458C58.2806 3.69341 58.2877 3.69672 58.303 3.69672H58.5837V3.74817H57.5095V3.69672H57.8242C57.8396 3.69672 57.8467 3.69341 57.8467 3.68458V1.4996C57.8467 1.49165 57.8396 1.48789 57.8242 1.48789H57.5095V1.43623H58.5837V1.48789H58.303C58.2877 1.48789 58.2806 1.49165 58.2806 1.4996V2.52011H59.3069V1.4996C59.3069 1.49165 59.3 1.48789 59.2842 1.48789H59.0036V1.43623H60.0782V1.48789H59.7634C59.7483 1.48789 59.7403 1.49165 59.7403 1.4996V3.68458ZM62.7242 2.7356C62.6254 2.7356 62.5592 2.6888 62.5592 2.60997C62.5592 2.53866 62.601 2.54108 62.601 2.48876C62.601 2.43577 62.5678 2.41148 62.5145 2.41148C62.4595 2.41148 62.3613 2.43025 62.2869 2.66164V3.68458C62.2869 3.69341 62.2938 3.69672 62.3093 3.69672H62.5022V3.74817H61.7458V3.69672H61.938C61.9535 3.69672 61.9605 3.69341 61.9605 3.68458V2.42186C61.9605 2.41413 61.9535 2.40971 61.938 2.40971H61.7458V2.35827H62.2774L62.2869 2.3682V2.58392C62.3436 2.40419 62.4662 2.33 62.6103 2.33C62.7857 2.33 62.8996 2.42428 62.8996 2.57023C62.8996 2.6623 62.8302 2.7356 62.7242 2.7356ZM65.5614 3.77621C65.8076 3.77621 66.0056 3.65411 66.1379 3.4671L66.0997 3.43574C65.9761 3.61481 65.8104 3.72565 65.5614 3.72565C65.4703 3.72565 65.397 3.70798 65.3342 3.65102C65.2306 3.55586 65.1983 3.44435 65.1983 3.05355C65.1983 3.02462 65.1985 3.01668 65.1991 2.99018H66.1668L66.1763 2.98113C66.1763 2.71728 65.9985 2.33 65.5614 2.33C65.1579 2.33 64.8548 2.65435 64.8548 3.05355C64.8548 3.45208 65.1579 3.77621 65.5614 3.77621ZM65.7409 2.4563C65.8151 2.54197 65.8393 2.67444 65.8451 2.93873H65.2C65.208 2.67444 65.2406 2.54197 65.3342 2.4563C65.397 2.39911 65.4703 2.38145 65.5614 2.38145C65.6401 2.38145 65.691 2.39911 65.7409 2.4563ZM60.7471 3.71262C60.9201 3.71262 61.0323 3.58655 61.0323 3.46599V2.98488C60.9518 3.03235 60.8351 3.03235 60.732 3.05134C60.6161 3.07298 60.4918 3.13502 60.4918 3.43442C60.4918 3.66294 60.6381 3.71262 60.7471 3.71262ZM60.3408 2.61262C60.3408 2.49715 60.483 2.33 60.7576 2.33C61.16 2.33 61.3591 2.5115 61.3591 2.91908V3.58213C61.3591 3.66007 61.3956 3.69231 61.4487 3.69231C61.5108 3.69231 61.5607 3.63976 61.574 3.60796L61.607 3.64152C61.5868 3.69937 61.4836 3.77621 61.3525 3.77621C61.2036 3.77621 61.0726 3.68811 61.0495 3.56579C61.0021 3.70511 60.8718 3.77621 60.6843 3.77621C60.3734 3.77621 60.1736 3.66537 60.1736 3.43442C60.1736 3.09351 60.5294 3.01425 60.6661 3.00299C60.859 2.98643 61.0323 2.9734 61.0323 2.90363V2.71352C61.0323 2.48081 60.933 2.38145 60.7576 2.38145C60.6698 2.38145 60.6152 2.42252 60.6152 2.51878C60.6152 2.57354 60.6431 2.59032 60.6431 2.64375C60.6431 2.70359 60.5967 2.76055 60.4866 2.76055C60.382 2.76055 60.3408 2.68637 60.3408 2.61262ZM64.127 2.45475C64.0686 2.39911 63.9894 2.38145 63.9048 2.38145C63.7879 2.38145 63.6804 2.46049 63.606 2.5497V3.52141C63.6509 3.63711 63.781 3.72565 63.9048 3.72565C63.9894 3.72565 64.0686 3.70842 64.127 3.65212C64.2235 3.55873 64.2884 3.396 64.2884 3.06194C64.2884 2.72766 64.2235 2.54793 64.127 2.45475ZM64.6205 3.06194C64.6205 3.42294 64.3208 3.77621 63.9048 3.77621C63.7775 3.77621 63.6804 3.69496 63.606 3.61635V4.69317C63.606 4.70067 63.6138 4.70443 63.6289 4.70443H63.8211V4.75587H63.0653V4.70443H63.2573C63.2727 4.70443 63.2798 4.70067 63.2798 4.69317V2.42186C63.2798 2.41413 63.2727 2.40971 63.2573 2.40971H63.0653V2.35827H63.5967L63.606 2.3682V2.49207C63.6804 2.4128 63.7775 2.33 63.9048 2.33C64.3208 2.33 64.6205 2.7005 64.6205 3.06194ZM68.7465 2.36886C68.7824 2.36886 68.8022 2.35385 68.8061 2.33972H68.8607V2.68416H68.8061C68.8061 2.4839 68.6307 2.38145 68.4646 2.38145C68.2926 2.38145 68.2095 2.46049 68.2095 2.58524C68.2095 2.74576 68.3222 2.82745 68.5778 2.90076C68.8456 2.97782 69.0218 3.11162 69.0218 3.32049C69.0218 3.58478 68.8132 3.77621 68.4794 3.77621C68.2812 3.77621 68.1953 3.68171 68.0926 3.68171C68.0697 3.68091 68.0471 3.68726 68.0278 3.69992C68.0085 3.71258 67.9934 3.73095 67.9845 3.75258H67.9293L67.9483 3.29443H68.0035C67.9942 3.53466 68.2139 3.72565 68.4794 3.72565C68.6801 3.72565 68.7938 3.63159 68.7938 3.4565C68.7938 3.28185 68.6594 3.2123 68.4141 3.13568C68.1741 3.0615 68.0072 2.9617 68.0072 2.74576C68.0072 2.48986 68.2494 2.33 68.4646 2.33C68.6048 2.33 68.618 2.36886 68.7465 2.36886ZM67.7495 1.88599C67.7495 1.79281 67.8268 1.71686 67.9221 1.71686C68.0255 1.71686 68.1021 1.7937 68.1021 1.9063C68.1021 2.07256 67.9554 2.26774 67.7541 2.39161L67.7219 2.35451C67.8673 2.2684 67.972 2.1622 68.0339 2.0114C68.0072 2.04165 67.97 2.05556 67.9221 2.05556C67.8268 2.05556 67.7495 1.98005 67.7495 1.88599ZM67.3131 2.7356C67.2147 2.7356 67.148 2.6888 67.148 2.60997C67.148 2.53866 67.1901 2.54108 67.1901 2.48876C67.1901 2.43577 67.1564 2.41148 67.1029 2.41148C67.0481 2.41148 66.9497 2.43025 66.8757 2.66164V3.68458C66.8757 3.69341 66.882 3.69672 66.8975 3.69672H67.0902V3.74817H66.3338V3.69672H66.5269C66.542 3.69672 66.5493 3.69341 66.5493 3.68458V2.42186C66.5493 2.41413 66.542 2.40971 66.5269 2.40971H66.3338V2.35827H66.8658L66.8757 2.3682V2.58392C66.9329 2.40419 67.0548 2.33 67.2 2.33C67.3737 2.33 67.4891 2.42428 67.4891 2.57023C67.4891 2.6623 67.4184 2.7356 67.3131 2.7356Z" fill="white"/></svg>
+        </button>
+        <button class="cclp-press__logo-btn" data-press-logo="4" aria-label="Elle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="42" height="22" viewBox="0 0 42 22" fill="none"><path d="M14.7886 21.0759H0V21.3929H14.9776V14.6592H14.7886V21.0759Z" fill="white"/><path d="M14.7886 11.1036H3.79568V0.921924H14.7886V0.604004H0V11.4215H14.7886V11.1036Z" fill="white"/><path d="M27.1766 21.0759H16.1837V0.921924H27.1766V0.604004H16.1837H12.3881V21.3929H27.3656V14.6592H27.1766V21.0759Z" fill="white"/><path d="M41.5646 21.0759H30.5717V0.921924H41.5646V0.604004H30.5717H26.7761V21.3929H41.7536V14.6592H41.5646V21.0759Z" fill="white"/></svg>
+        </button>
+      </div>
+      <div class="cclp-press__desktop-quote">
+        <p class="cclp-press__desktop-quote-text" id="pressDesktopQuote">"Jones Road's Blushing Stick is the effortless, multi-use product that belongs in every makeup&nbsp;bag."</p>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="cclp-press__progress">
+        <div class="cclp-press__progress-fill" id="pressProgressFill"></div>
+      </div>
+
+    </div>
+  </section>
+  <!-- =========================================================================
+       Section 4: 5 Reasons (V1 — 48px Canela numbers left-aligned)
+       ========================================================================= -->
+  <section class="reasons">
+    <div class="reasons__inner">
+      <div class="reasons__media">
+        <img src="https://air-prod.imgix.net/cbe3915f-6a86-48fc-8d2c-fcfc55658f0d.jpg?w=800&h=800&fit=crop&auto=format&crop=faces" alt="Emily holding Blushing Stick, pointing to cheek" loading="lazy">
+      </div>
+      <div class="reasons__content">
+        <div class="reasons__accent-line"></div>
+        <p class="reasons__eyebrow">Why You'll Love It</p>
+        <h2 class="reasons__title">5 reasons to try Blushing&nbsp;Stick</h2>
+        <div class="reasons__list">
+          <details class="reasons__item">
+            <summary class="reasons__item-header">
+              <span class="reasons__item-num">01</span>
+              <span class="reasons__item-title">It blends itself</span>
+              <svg class="reasons__item-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="9" y1="3" x2="9" y2="15"/><line x1="3" y1="9" x2="15" y2="9"/></svg>
+            </summary>
+            <p class="reasons__item-body">The cream-to-powder formula melts into skin on contact. No brushes, no blending tools. Just tap, swipe, and&nbsp;go.</p>
+          </details>
+          <details class="reasons__item">
+            <summary class="reasons__item-header">
+              <span class="reasons__item-num">02</span>
+              <span class="reasons__item-title">Buildable pigmentation</span>
+              <svg class="reasons__item-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="9" y1="3" x2="9" y2="15"/><line x1="3" y1="9" x2="15" y2="9"/></svg>
+            </summary>
+            <p class="reasons__item-body">Start with a whisper of color or build to a bold flush. One product, infinite intensity&nbsp;levels.</p>
+          </details>
+          <details class="reasons__item">
+            <summary class="reasons__item-header">
+              <span class="reasons__item-num">03</span>
+              <span class="reasons__item-title">Lip + cheek dual use</span>
+              <svg class="reasons__item-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="9" y1="3" x2="9" y2="15"/><line x1="3" y1="9" x2="15" y2="9"/></svg>
+            </summary>
+            <p class="reasons__item-body">One stick for lips and cheeks means fewer products in your bag and a perfectly matched, cohesive look every&nbsp;time.</p>
+          </details>
+          <details class="reasons__item">
+            <summary class="reasons__item-header">
+              <span class="reasons__item-num">04</span>
+              <span class="reasons__item-title">Skin-loving formula</span>
+              <svg class="reasons__item-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="9" y1="3" x2="9" y2="15"/><line x1="3" y1="9" x2="15" y2="9"/></svg>
+            </summary>
+            <p class="reasons__item-body">Infused with jojoba and vitamin E to nourish while you wear it. Clean ingredients, no&nbsp;compromises.</p>
+          </details>
+          <details class="reasons__item">
+            <summary class="reasons__item-header">
+              <span class="reasons__item-num">05</span>
+              <span class="reasons__item-title">9 shades for every skin tone</span>
+              <svg class="reasons__item-icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="9" y1="3" x2="9" y2="15"/><line x1="3" y1="9" x2="15" y2="9"/></svg>
+            </summary>
+            <p class="reasons__item-body">From Joy (light peach) to Noir (deep berry), every shade is designed to look like your skin, just&nbsp;better.</p>
+          </details>
+        </div>
+        <div class="reasons__cta">
+          <a href="#buybox" class="button">Shop Blushing Stick</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Section 5: Emily Quote
+       ========================================================================= -->
+  <section class="emily-quote">
+    <div class="emily-quote__inner">
+      <div class="emily-quote__media">
+        <img src="https://air-prod.imgix.net/88625d3b-d67c-4bf3-96ff-2cb680bfa70f.jpg?w=800&h=800&fit=crop&auto=format&crop=faces" alt="Emily DiDonato smiling, holding Blushing Stick" loading="lazy">
+      </div>
+      <div class="emily-quote__content">
+        <div class="emily-quote__rule"></div>
+        <p class="emily-quote__text">"I wanted to create a shade that looks like you just came back from the best vacation of your life. Joy is that shade &mdash; warm, happy, and&nbsp;effortless."</p>
+        <p class="emily-quote__attribution">&mdash; Emily DiDonato, Chief Blush Officer</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Section 6+7: Emily Shade Grid (9 shades)
+       ========================================================================= -->
+  <section class="shade-grid">
+    <div class="shade-grid__header">
+      <div>
+        <p class="shade-grid__eyebrow">The Shades</p>
+        <h2 class="shade-grid__title">Nine shades of happy</h2>
+        <p class="shade-grid__sub">A cream-to-powder blush that melts into skin for a natural, lit-from-within&nbsp;flush.</p>
+      </div>
+    </div>
+    <div class="shade-grid__carousel">
+      <div class="shade-grid__scroll" id="shadeScroll">
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/cbe3915f-6a86-48fc-8d2c-fcfc55658f0d.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Joy" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name"><span class="shade-grid__swatch"><i style="background:#e8938b"></i></span>Joy</p>
+          <p class="shade-grid__card-desc">Warm Rosy Pink</p>
+          <span class="shade-grid__card-tag">Emily's Signature Shade</span>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/88625d3b-d67c-4bf3-96ff-2cb680bfa70f.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Pretty" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name"><span class="shade-grid__swatch"><i style="background:#e8a9a0"></i></span>Pretty</p>
+          <p class="shade-grid__card-desc">Soft Blush Pink</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/5bbd87fd-88d3-43fd-8138-5d28e10e0f39.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Bare" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name"><span class="shade-grid__swatch"><i style="background:#d4a995"></i></span>Bare</p>
+          <p class="shade-grid__card-desc">Nude Peach</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/b8a75c20-5153-4354-82ef-e06c244fef74.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Chic" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name"><span class="shade-grid__swatch"><i style="background:#c48e8e"></i></span>Chic</p>
+          <p class="shade-grid__card-desc">Cool Mauve</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/9a989fbe-91af-477a-a906-bc8c41873d45.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Pinch" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name"><span class="shade-grid__swatch"><i style="background:#e8a48a"></i></span>Pinch</p>
+          <p class="shade-grid__card-desc">Peachy Coral</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/a7d4ebbf-0312-4f0c-8170-80f9ad94aab9.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Flush" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name"><span class="shade-grid__swatch"><i style="background:#d47a7a"></i></span>Flush</p>
+          <p class="shade-grid__card-desc">True Rosy Flush</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/52d41965-7b09-4b1d-95f0-b9e5c6426d9e.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Cheeky" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name"><span class="shade-grid__swatch"><i style="background:#e06b8a"></i></span>Cheeky</p>
+          <p class="shade-grid__card-desc">Bold Berry Pink</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/b26e8c5b-e838-40fe-9d95-5366cfd3809b.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Miami" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name"><span class="shade-grid__swatch"><i style="background:#d98a6a"></i></span>Miami</p>
+          <p class="shade-grid__card-desc">Warm Bronzy Coral</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/1128cbda-a573-4dec-85c8-38fdec42636f.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Noir" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name"><span class="shade-grid__swatch"><i style="background:#6b3a4a"></i></span>Noir</p>
+          <p class="shade-grid__card-desc">Deep Berry</p>
+        </div>
+      </div>
+      <button class="shade-grid__arrow shade-grid__arrow--prev" id="shadePrev" aria-label="Previous shades">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="shade-grid__arrow shade-grid__arrow--next" id="shadeNext" aria-label="Next shades">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+    <div class="shade-grid__cta">
+      <a href="#buybox" class="button">Shop All Shades</a>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Section 8: Buy Box — JRB PDP Layout
+       ========================================================================= -->
+  <section class="buybox" id="buybox">
+    <div class="buybox__inner">
+      <div class="buybox__layout">
+
+        <!-- Gallery -->
+        <div class="buybox__gallery">
+          <div class="buybox__gallery-thumbs">
+            <button class="buybox__thumb is-active" data-thumb="0">
+              <img src="https://air-prod.imgix.net/887c4efb-5940-4d96-81d0-d2737d48eb11.jpg?w=150&h=150&fit=crop&auto=format" alt="Blushing Stick product group" loading="lazy">
+            </button>
+            <button class="buybox__thumb" data-thumb="1">
+              <img src="https://air-prod.imgix.net/098bcfc8-53ff-48d9-8d8c-7a400b603e04.jpg?w=150&h=150&fit=crop&auto=format" alt="Joy on paper" loading="lazy">
+            </button>
+            <button class="buybox__thumb" data-thumb="2">
+              <img src="https://air-prod.imgix.net/eec626af-03d8-4668-8b7c-69295e2314a2.jpg?w=150&h=150&fit=crop&auto=format" alt="Arm swatches" loading="lazy">
+            </button>
+            <button class="buybox__thumb" data-thumb="3">
+              <img src="https://air-prod.imgix.net/03644ec4-bb0d-49da-ab80-2430b9a05a81.jpg?w=150&h=150&fit=crop&auto=format" alt="Shade smears" loading="lazy">
+            </button>
+            <button class="buybox__thumb" data-thumb="4">
+              <img src="https://air-prod.imgix.net/cbe3915f-6a86-48fc-8d2c-fcfc55658f0d.jpg?w=150&h=150&fit=crop&auto=format&crop=faces" alt="Emily with product" loading="lazy">
+            </button>
+            <button class="buybox__thumb" data-thumb="5">
+              <img src="https://air-prod.imgix.net/88625d3b-d67c-4bf3-96ff-2cb680bfa70f.jpg?w=150&h=150&fit=crop&auto=format&crop=faces" alt="Emily smiling" loading="lazy">
+            </button>
+          </div>
+          <div class="buybox__gallery-main">
+            <img id="galleryMainImg" src="https://air-prod.imgix.net/887c4efb-5940-4d96-81d0-d2737d48eb11.jpg?w=800&h=800&fit=crop&auto=format" alt="Blushing Stick product collection" loading="lazy">
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="buybox__content">
+          <h2 class="buybox__product-name">Blushing Stick</h2>
+
+          <div class="buybox__rating">
+            <div class="buybox__stars" aria-label="4.9 out of 5 stars">
+              <div class="buybox__stars-outline">
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+              </div>
+              <div class="buybox__stars-filled" style="width: 98%;">
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              </div>
+            </div>
+            <span class="buybox__review-count">(1,657 Reviews)</span>
+          </div>
+
+          <div class="buybox__shade-row">
+            <button class="buybox__shade-dot is-active" data-shade="joy" title="Joy" aria-label="Joy"><i style="background: #e8938b;"></i></button>
+            <button class="buybox__shade-dot" data-shade="pretty" title="Pretty" aria-label="Pretty"><i style="background: #e8a9a0;"></i></button>
+            <button class="buybox__shade-dot" data-shade="bare" title="Bare" aria-label="Bare"><i style="background: #d4a995;"></i></button>
+            <button class="buybox__shade-dot" data-shade="chic" title="Chic" aria-label="Chic"><i style="background: #c48e8e;"></i></button>
+            <button class="buybox__shade-dot" data-shade="pinch" title="Pinch" aria-label="Pinch"><i style="background: #e8a48a;"></i></button>
+            <button class="buybox__shade-dot" data-shade="flush" title="Flush" aria-label="Flush"><i style="background: #d47a7a;"></i></button>
+            <button class="buybox__shade-dot" data-shade="cheeky" title="Cheeky" aria-label="Cheeky"><i style="background: #e06b8a;"></i></button>
+            <button class="buybox__shade-dot" data-shade="miami" title="Miami" aria-label="Miami"><i style="background: #d98a6a;"></i></button>
+            <button class="buybox__shade-dot" data-shade="noir" title="Noir" aria-label="Noir"><i style="background: #6b3a4a;"></i></button>
+          </div>
+
+          <p class="buybox__shade-info">
+            <span class="buybox__shade-name" id="buyboxShadeName">Joy</span>
+            <span class="buybox__shade-desc" id="buyboxShadeDesc">&nbsp; is a warm rosy pink</span>
+          </p>
+
+          <a href="#" class="buybox__atc button">
+            <span class="buybox__atc-text">Add to Cart</span>
+            <span class="buybox__atc-price">$34</span>
+          </a>
+
+          <div class="buybox__trust-badges">
+            <div class="buybox__trust-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8.66157 2.00354C6.71158 2.00354 4.8783 2.6118 3.56651 3.49431C3.47745 3.55411 3.44658 3.67715 3.50156 3.77209L5.08407 6.53919C5.14258 6.63763 5.26604 6.67281 5.36218 6.61304C6.35791 5.99774 7.49769 5.67777 8.66157 5.68481C11.796 5.68481 14.0997 7.94913 14.0997 10.9413C14.0997 13.4904 12.2561 15.3785 9.91805 15.3785C8.01275 15.3785 6.691 14.2428 6.691 12.6395C6.691 11.7218 7.072 10.9694 8.0642 10.4385C8.16708 10.3822 8.20502 10.2521 8.14329 10.1501L6.64985 7.56236C6.60162 7.47799 6.49874 7.43932 6.40582 7.47446C4.40438 8.23393 3 10.0622 3 12.5165C3 16.2294 5.88753 19 9.91484 19C14.6183 19 18 15.6633 18 10.878C18 5.74808 14.0656 2 8.65482 2L8.66157 2.00354Z" fill="black"/></svg>
+              <span>Pay in 2 interest-free installments of <strong>$17.00</strong> with <span class="shoppay-badge"><span class="shoppay-badge__shop">shop</span><span class="shoppay-badge__pay">Pay</span></span> <a href="#">Learn more</a></span>
+            </div>
+            <div class="buybox__trust-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.16667 9.16667V10H10.8333V4.16667H2.5V3.33333C2.5 2.87333 2.87333 2.5 3.33333 2.5H11.6667C12.1267 2.5 12.5 2.87333 12.5 3.33333V5H16.3892C17.32 5 17.7225 5.48 18.0025 5.9225C18.4975 6.70583 19.2825 7.94917 19.76 8.7375C19.9167 8.9975 20 9.29583 20 9.6V13.3333C20 14.2408 19.3808 15 18.3333 15H17.5C17.5 16.38 16.38 17.5 15 17.5C13.62 17.5 12.5 16.38 12.5 15H9.16667C9.16667 16.38 8.04667 17.5 6.66667 17.5C5.28667 17.5 4.16667 16.38 4.16667 15H3.33333C2.87333 15 2.5 14.6267 2.5 14.1667V9.16667H0.833333V7.5H6.66667V9.16667H4.16667ZM6.66667 14C7.21833 14 7.66667 14.4483 7.66667 15C7.66667 15.5517 7.21833 16 6.66667 16C6.115 16 5.66667 15.5517 5.66667 15C5.66667 14.4483 6.115 14 6.66667 14ZM15 14C15.5517 14 16 14.4483 16 15C16 15.5517 15.5517 16 15 16C14.4483 16 14 15.5517 14 15C14 14.4483 14.4483 14 15 14ZM12.5 11.6667H4.16667V13.3333H4.80417C5.26167 12.8217 5.92667 12.5 6.66667 12.5C7.40667 12.5 8.07167 12.8217 8.52917 13.3333H13.1375C13.595 12.8217 14.26 12.5 15 12.5C15.74 12.5 16.405 12.8217 16.8625 13.3333H18.3333V9.52083L16.9075 7.08C16.7583 6.82417 16.4842 6.66667 16.1883 6.66667H12.5V11.6667ZM13.3333 7.5V10H17.5L16.3108 7.92C16.1625 7.66 15.8867 7.5 15.5875 7.5H13.3333ZM0 5H6.66667V6.66667H0V5Z" fill="black"/></svg>
+              <span>Free shipping on US orders over $55</span>
+            </div>
+            <div class="buybox__trust-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11.1445 4.83667L16.2314 7.25952L16.2256 7.2439L16.7861 7.52417L16.8125 7.53687H16.8115L16.8154 7.53882H16.8174L16.707 7.76245L16.9385 7.67358L17.04 7.93433L17.0605 7.98804L17.0566 8.04468C17.0077 8.73225 17.0187 9.4525 17.043 10.1873L17.0957 11.6658C17.1135 12.2824 17.1188 12.8976 17.083 13.4929L17.0557 13.8474C17.0453 13.9601 17.0257 14.0749 16.958 14.1804C16.893 14.2815 16.7998 14.3486 16.7178 14.4041L16.7002 14.4158L16.6807 14.4246C15.8877 14.787 15.1039 15.1728 14.3174 15.5613C13.9246 15.7553 13.531 15.95 13.1357 16.1423L11.9443 16.7097C11.9045 16.7281 11.8427 16.7585 11.7637 16.7966C11.6868 16.8337 11.597 16.8763 11.5078 16.9167C11.4194 16.9569 11.3271 16.9965 11.2461 17.0261C11.2057 17.0409 11.1642 17.0551 11.125 17.0652C11.0908 17.0739 11.0383 17.084 10.9834 17.0818V17.0828C10.9364 17.0809 10.8921 17.0686 10.8643 17.0603C10.8317 17.0506 10.7967 17.0384 10.7627 17.0251C10.6942 16.9985 10.6157 16.9633 10.54 16.9285C10.4638 16.8934 10.3868 16.8565 10.3213 16.825C10.254 16.7925 10.2014 16.7676 10.1689 16.7527V16.7517C9.03113 16.2324 7.84747 15.6681 6.69922 15.1003L5.56543 14.533C5.53198 14.516 5.50022 14.5013 5.46875 14.4861C5.43808 14.4713 5.4054 14.4559 5.375 14.4402C5.31509 14.4092 5.24722 14.369 5.18555 14.3123C5.08088 14.2158 5.02391 14.0973 4.99414 13.9548L4.97266 13.8054C4.8865 12.8817 4.92061 11.8963 4.95801 10.9265C4.99566 9.95015 5.03704 8.9898 4.97266 8.08862L4.97168 8.08374C4.95864 7.84134 5.08229 7.64353 5.25977 7.52417L5.27441 7.5144L5.29102 7.50562L10.7461 4.87378L10.7744 4.86011L10.8057 4.85425L10.9844 4.81714L11.0674 4.79956L11.1445 4.83667ZM6.07617 13.5554L10.4609 15.655V10.9792L6.07617 8.87964V13.5554ZM11.5645 10.9792V15.655L15.9492 13.5554V8.87964L11.5645 10.9792ZM9.58398 9.31519C9.77259 9.40533 9.9563 9.49958 10.1338 9.5896C10.4478 9.74885 10.748 9.89158 11.0557 9.99097L15.2285 7.99585L13.7285 7.31714L9.58398 9.31519ZM6.83594 8.00366L8.30078 8.69604L12.4678 6.65015L11.0312 5.97534L11.0088 5.97437L6.83594 8.00366Z" fill="black" stroke="black" stroke-width="0.508504"/><path d="M19.9727 6.73059C20.1223 6.73467 20.244 6.80412 20.333 6.88977C20.4296 6.98282 20.4989 7.10423 20.5498 7.21399C20.5994 7.32082 20.6414 7.44161 20.6758 7.54993L20.7559 7.81165V7.81262L20.8389 8.08118C22.4696 13.642 19.152 19.5402 13.5459 20.9415L13.2734 21.006C9.82411 21.7682 6.36422 20.7439 3.84961 18.3575L3.68066 19.9298L3.67871 19.9523L3.67188 19.9738C3.62891 20.1214 3.54279 20.2413 3.42188 20.3156C3.30258 20.3888 3.16504 20.4075 3.03906 20.382C2.78123 20.3294 2.57962 20.0961 2.58789 19.7814L2.60742 19.4327C2.63609 19.081 2.68888 18.7227 2.74121 18.3741C2.8119 17.9034 2.88148 17.4489 2.89746 17.0167L2.89844 16.9816L2.91016 16.9464L2.9668 16.8136C2.98967 16.7718 3.01652 16.7326 3.04883 16.6974C3.11581 16.6245 3.19512 16.5794 3.27734 16.5538C3.35527 16.5297 3.43294 16.5242 3.49707 16.5236C3.55893 16.523 3.62847 16.5272 3.68359 16.5294H3.68457L4.17383 16.5626C4.68727 16.6085 5.25308 16.6857 5.70508 16.7433L5.85449 16.7589C5.91388 16.7647 5.98162 16.772 6.04883 16.7804C6.1158 16.7888 6.18704 16.7995 6.25195 16.8136C6.28205 16.8201 6.31613 16.8279 6.35059 16.839L6.45215 16.882L6.53613 16.9366C6.71432 17.0749 6.77847 17.2868 6.73145 17.4835C6.68076 17.6955 6.50506 17.8741 6.26367 17.9181L6.22754 17.9249L6.19141 17.921L4.86816 17.7833C6.27136 19.062 8.5027 20.0048 10.3252 20.1085L10.626 20.1212C16.8314 20.2895 21.365 14.6807 19.8379 8.63586L19.7588 8.3429C19.7418 8.28358 19.7029 8.18807 19.6475 8.04602C19.5961 7.91455 19.536 7.75566 19.4961 7.60071C19.4584 7.45427 19.4273 7.27141 19.4668 7.10754C19.4881 7.01917 19.532 6.92597 19.6152 6.85266C19.6987 6.7792 19.8011 6.74317 19.9062 6.73254L19.9727 6.73059Z" fill="black" stroke="black" stroke-width="0.508504"/><path d="M7.42383 1.38672C11.1759 0.00510053 15.324 0.901149 18.1768 3.65625L18.3438 2.0498L18.3457 2.03027L18.3506 2.01172C18.4257 1.72166 18.7105 1.57428 18.9639 1.61328C19.0981 1.634 19.2268 1.70573 19.3164 1.83105C19.4043 1.95421 19.4416 2.11078 19.4365 2.28418L19.4375 2.28516C19.4238 2.73981 19.3537 3.21469 19.2861 3.67285C19.2348 4.02109 19.1854 4.36042 19.1572 4.68848L19.1367 5.01172L19.1357 5.04004L19.1289 5.06641C19.0994 5.18117 19.0297 5.28158 18.9502 5.35352C18.8717 5.42451 18.7561 5.49213 18.6182 5.49707L18.5957 5.49805L18.5742 5.49512C18.1659 5.43899 17.7521 5.40344 17.3311 5.36719C16.9124 5.33114 16.4862 5.29395 16.0635 5.23535H16.0625C16.0151 5.22861 15.9187 5.21683 15.834 5.20215C15.7579 5.18895 15.6396 5.1656 15.5518 5.11621H15.5508C15.3135 4.98177 15.2521 4.7256 15.2998 4.52246C15.3473 4.32058 15.5132 4.12086 15.7773 4.09375L15.8018 4.0918L15.8271 4.09375L17.1338 4.2168C14.1179 1.45528 9.53355 1.0919 6.06934 3.31934L5.71875 3.55566C2.4222 5.89705 1.16996 9.92292 2.30957 13.8047L2.39746 14.0273C2.43807 14.1261 2.48664 14.2482 2.51953 14.3701C2.55086 14.4863 2.57785 14.6355 2.54688 14.7783C2.53033 14.8544 2.49657 14.9344 2.43457 15.0029C2.38784 15.0546 2.33139 15.0931 2.26953 15.1201L2.20508 15.1436C2.05578 15.1881 1.90829 15.1821 1.77637 15.1162C1.65199 15.054 1.57035 14.9524 1.51562 14.8604C1.46061 14.7677 1.4213 14.6651 1.3916 14.5781L1.31543 14.3457C-0.488629 9.28922 2.14616 3.55501 7.0459 1.53418L7.42383 1.38672Z" fill="black" stroke="black" stroke-width="0.508504"/><path d="M7.49414 10.5759L7.53027 10.5818L7.56348 10.5984L9.36035 11.4871L9.39355 11.5027L9.4209 11.5281C9.56097 11.658 9.56869 11.8448 9.55566 11.9558C9.54231 12.0691 9.49444 12.2108 9.39551 12.3074L9.39648 12.3083V12.3093L9.39062 12.3152L9.38965 12.3142C9.27866 12.4184 9.13176 12.4366 9.0459 12.4392C8.94805 12.4422 8.8503 12.4278 8.77832 12.4089V12.408C8.73888 12.3976 8.68465 12.3751 8.64062 12.3562C8.58789 12.3335 8.52165 12.3036 8.44727 12.2693C8.29816 12.2005 8.11126 12.1115 7.92578 12.0212C7.74044 11.931 7.55478 11.839 7.40723 11.7634C7.33357 11.7257 7.26819 11.6917 7.2168 11.6638L7.08984 11.5886C6.84032 11.4079 6.79671 11.1242 6.89551 10.9031C6.97616 10.7228 7.1612 10.5698 7.39258 10.5671L7.49414 10.5759Z" fill="black" stroke="black" stroke-width="0.508504"/></svg>
+              <span>Free &amp; Easy Returns</span>
+            </div>
+          </div>
+
+          <div class="buybox__accordions">
+            <details class="buybox__accordion">
+              <summary class="buybox__accordion-trigger">Product Description</summary>
+              <div class="buybox__accordion-body">
+                <p>A creamy, buildable lip and cheek tint that gives you a natural-looking flush with a skin-loving formula. The cream-to-powder texture melts into skin on contact for a seamless, second-skin&nbsp;finish.</p>
+                <p>Co-created with Emily DiDonato, Blushing Stick comes in 9 universally flattering shades designed to look like your skin, just&nbsp;better.</p>
+              </div>
+            </details>
+            <details class="buybox__accordion">
+              <summary class="buybox__accordion-trigger">Shade Descriptions</summary>
+              <div class="buybox__accordion-body">
+                <ul>
+                  <li><strong>Joy</strong> &mdash; warm rosy pink</li>
+                  <li><strong>Pretty</strong> &mdash; soft blush pink</li>
+                  <li><strong>Bare</strong> &mdash; nude peach</li>
+                  <li><strong>Chic</strong> &mdash; cool mauve</li>
+                  <li><strong>Pinch</strong> &mdash; peachy coral</li>
+                  <li><strong>Flush</strong> &mdash; true rosy flush</li>
+                  <li><strong>Cheeky</strong> &mdash; bold berry pink</li>
+                  <li><strong>Miami</strong> &mdash; warm bronzy coral</li>
+                  <li><strong>Noir</strong> &mdash; deep berry</li>
+                </ul>
+              </div>
+            </details>
+            <details class="buybox__accordion">
+              <summary class="buybox__accordion-trigger">How to Use</summary>
+              <div class="buybox__accordion-body">
+                <p><strong>Step 1: Swipe.</strong> Apply directly to cheeks or lips. Start with one&nbsp;stroke.</p>
+                <p><strong>Step 2: Blend.</strong> Tap and blend with your fingertips. No brushes or tools&nbsp;needed.</p>
+                <p><strong>Step 3: Build.</strong> Layer for more intensity, or leave sheer for a natural&nbsp;flush.</p>
+              </div>
+            </details>
+            <details class="buybox__accordion">
+              <summary class="buybox__accordion-trigger">Ingredients</summary>
+              <div class="buybox__accordion-body">
+                <p>Formulated with jojoba oil, vitamin E, and ceramides. Free from parabens, sulfates, phthalates, and synthetic&nbsp;fragrances.</p>
+                <p>Clean, cruelty-free, and made to nourish your skin while you&nbsp;wear&nbsp;it.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+    (function() {
+      /* Shade data */
+      var shades = {
+        joy:     { name: 'Joy',     desc: 'is a warm rosy pink',    img: 'https://air-prod.imgix.net/cbe3915f-6a86-48fc-8d2c-fcfc55658f0d.jpg?w=800&h=800&fit=crop&auto=format&crop=faces' },
+        pretty:  { name: 'Pretty',  desc: 'is a soft blush pink',   img: 'https://air-prod.imgix.net/88625d3b-d67c-4bf3-96ff-2cb680bfa70f.jpg?w=800&h=800&fit=crop&auto=format&crop=faces' },
+        bare:    { name: 'Bare',    desc: 'is a nude peach',         img: 'https://air-prod.imgix.net/5bbd87fd-88d3-43fd-8138-5d28e10e0f39.jpg?w=800&h=800&fit=crop&auto=format&crop=faces' },
+        chic:    { name: 'Chic',    desc: 'is a cool mauve',         img: 'https://air-prod.imgix.net/b8a75c20-5153-4354-82ef-e06c244fef74.jpg?w=800&h=800&fit=crop&auto=format&crop=faces' },
+        pinch:   { name: 'Pinch',   desc: 'is a peachy coral',       img: 'https://air-prod.imgix.net/9a989fbe-91af-477a-a906-bc8c41873d45.jpg?w=800&h=800&fit=crop&auto=format&crop=faces' },
+        flush:   { name: 'Flush',   desc: 'is a true rosy flush',    img: 'https://air-prod.imgix.net/a7d4ebbf-0312-4f0c-8170-80f9ad94aab9.jpg?w=800&h=800&fit=crop&auto=format&crop=faces' },
+        cheeky:  { name: 'Cheeky',  desc: 'is a bold berry pink',    img: 'https://air-prod.imgix.net/52d41965-7b09-4b1d-95f0-b9e5c6426d9e.jpg?w=800&h=800&fit=crop&auto=format&crop=faces' },
+        miami:   { name: 'Miami',   desc: 'is a warm bronzy coral',  img: 'https://air-prod.imgix.net/b26e8c5b-e838-40fe-9d95-5366cfd3809b.jpg?w=800&h=800&fit=crop&auto=format&crop=faces' },
+        noir:    { name: 'Noir',    desc: 'is a deep berry',          img: 'https://air-prod.imgix.net/1128cbda-a573-4dec-85c8-38fdec42636f.jpg?w=800&h=800&fit=crop&auto=format&crop=faces' }
+      };
+
+      /* Thumbnail product images (not shade-specific) */
+      var thumbImages = [
+        'https://air-prod.imgix.net/887c4efb-5940-4d96-81d0-d2737d48eb11.jpg?w=800&h=800&fit=crop&auto=format',
+        'https://air-prod.imgix.net/098bcfc8-53ff-48d9-8d8c-7a400b603e04.jpg?w=800&h=800&fit=crop&auto=format',
+        'https://air-prod.imgix.net/eec626af-03d8-4668-8b7c-69295e2314a2.jpg?w=800&h=800&fit=crop&auto=format',
+        'https://air-prod.imgix.net/03644ec4-bb0d-49da-ab80-2430b9a05a81.jpg?w=800&h=800&fit=crop&auto=format',
+        'https://air-prod.imgix.net/cbe3915f-6a86-48fc-8d2c-fcfc55658f0d.jpg?w=800&h=800&fit=crop&auto=format&crop=faces',
+        'https://air-prod.imgix.net/88625d3b-d67c-4bf3-96ff-2cb680bfa70f.jpg?w=800&h=800&fit=crop&auto=format&crop=faces'
+      ];
+
+      var mainImg = document.getElementById('galleryMainImg');
+      var shadeName = document.getElementById('buyboxShadeName');
+      var shadeDesc = document.getElementById('buyboxShadeDesc');
+      var dots = document.querySelectorAll('.buybox__shade-dot');
+      var thumbs = document.querySelectorAll('.buybox__thumb');
+
+      /* Shade dot click — swaps main image to Emily photo for that shade */
+      dots.forEach(function(dot) {
+        dot.addEventListener('click', function(e) {
+          var btn = e.target.closest('.buybox__shade-dot');
+          if (!btn) return;
+          var key = btn.getAttribute('data-shade');
+          var shade = shades[key];
+          if (!shade) return;
+
+          /* Update active dot */
+          dots.forEach(function(d) { d.classList.remove('is-active'); });
+          btn.classList.add('is-active');
+
+          /* Clear active thumb (shade view, not product view) */
+          thumbs.forEach(function(t) { t.classList.remove('is-active'); });
+
+          /* Swap main image to Emily photo */
+          mainImg.src = shade.img;
+          mainImg.alt = 'Emily wearing ' + shade.name;
+
+          /* Update shade name + description */
+          shadeName.textContent = shade.name;
+          shadeDesc.innerHTML = '&nbsp; ' + shade.desc;
+        });
+      });
+
+      /* Thumbnail click — swaps main image to product photo */
+      thumbs.forEach(function(thumb) {
+        thumb.addEventListener('click', function() {
+          var idx = parseInt(this.getAttribute('data-thumb'), 10);
+
+          /* Update active thumb */
+          thumbs.forEach(function(t) { t.classList.remove('is-active'); });
+          this.classList.add('is-active');
+
+          /* Swap main image to product photo */
+          mainImg.src = thumbImages[idx];
+          mainImg.alt = this.querySelector('img').alt;
+        });
+      });
+    })();
+    </script>
+  </section>
+
+  <!-- =========================================================================
+       Section 9: Reviews (cclp-review-cards pattern)
+       ========================================================================= -->
+  <section class="cclp-reviews">
+    <div class="cclp-reviews__inner">
+      <div class="cclp-reviews__accent-line"></div>
+      <h2 class="cclp-reviews__title">Loved by 6,500+&nbsp;customers</h2>
+      <div class="cclp-reviews__grid">
+
+        <!-- Card 1: Amanda R. -->
+        <div class="cclp-reviews__card">
+          <div class="cclp-reviews__stars">
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          </div>
+          <p class="cclp-reviews__card-title">&ldquo;The only lip + cheek product I reach&nbsp;for&rdquo;</p>
+          <p class="cclp-reviews__card-body">I've been using Joy for 3 weeks now and it's the only lip + cheek product I reach for. The staying power is incredible and the color is so flattering on my fair&nbsp;skin.</p>
+          <div class="cclp-reviews__card-footer">
+            <span class="cclp-reviews__card-name">Amanda R.</span>
+            <span class="cclp-reviews__card-badge">Verified Buyer</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Priya K. -->
+        <div class="cclp-reviews__card">
+          <div class="cclp-reviews__stars">
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          </div>
+          <p class="cclp-reviews__card-title">&ldquo;The perfect shade for medium-deep&nbsp;skin&rdquo;</p>
+          <p class="cclp-reviews__card-body">Cheeky is the perfect shade for medium-deep skin. It gives me that just-pinched glow without looking ashy or chalky. Clean formula is a huge&nbsp;plus.</p>
+          <div class="cclp-reviews__card-footer">
+            <span class="cclp-reviews__card-name">Priya K.</span>
+            <span class="cclp-reviews__card-badge">Verified Buyer</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Kate D. -->
+        <div class="cclp-reviews__card">
+          <div class="cclp-reviews__stars">
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+          </div>
+          <p class="cclp-reviews__card-title">&ldquo;Love the formula but I wish there were more deep&nbsp;shades&rdquo;</p>
+          <p class="cclp-reviews__card-body">Love the formula but I wish there were more deep shades. Noir is beautiful but I'd love to see an even richer option. Still, 4 stars because the texture is&nbsp;superb.</p>
+          <div class="cclp-reviews__card-footer">
+            <span class="cclp-reviews__card-name">Kate D.</span>
+            <span class="cclp-reviews__card-badge">Verified Buyer</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Section 9b: Full Reviews (junip-reviews pattern)
+       ========================================================================= -->
+  <section class="junip-reviews">
+    <style>
+    .junip-reviews {
+      background: #fff;
+      padding: 48px 24px;
+    }
+    .junip-reviews__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .junip-reviews__stats {
+      display: flex;
+      gap: 30px;
+      border-top: 1px solid #e0e0e0;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 28px 35px 35px;
+    }
+    .junip-reviews__stat {
+      flex: 1;
+      background: #f4f4f4;
+      padding: 36px 20px;
+      text-align: center;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .junip-reviews__stat-number {
+      font-family: var(--font-mono);
+      font-size: 40px;
+      font-weight: normal;
+      line-height: 1;
+      color: var(--color-black);
+      margin: 0;
+    }
+    .junip-reviews__stat-stars {
+      display: flex;
+      gap: 3px;
+    }
+    .junip-reviews__stat-stars svg {
+      width: 16px;
+      height: 16px;
+      color: var(--color-black);
+    }
+    .junip-reviews__stat-desc {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--color-black);
+    }
+
+    /* Search + Filter bar */
+    .junip-reviews__filters {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 24px 0;
+      flex-wrap: wrap;
+    }
+    .junip-reviews__search {
+      position: relative;
+      flex: 0 0 220px;
+    }
+    .junip-reviews__search-input {
+      width: 100%;
+      height: 38px;
+      border: 1px solid #000;
+      border-radius: 2px;
+      padding: 0 12px 0 36px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--color-black);
+      background: #fff;
+      box-sizing: border-box;
+    }
+    .junip-reviews__search-input::placeholder {
+      color: #757575;
+    }
+    .junip-reviews__search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: #757575;
+      pointer-events: none;
+    }
+    .junip-reviews__pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-left: auto;
+    }
+    .junip-reviews__pill {
+      border: 1px solid #000;
+      border-radius: 2px;
+      padding: 8px 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--color-black);
+      background: #fff;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* Review list */
+    .junip-reviews__list {
+      /* container for individual reviews */
+    }
+    .junip-reviews__review {
+      padding: 24px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .junip-reviews__review-author {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-black);
+      margin: 0;
+    }
+    .junip-reviews__review-verified {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 400;
+      color: #757575;
+      margin: 2px 0 12px;
+    }
+    .junip-reviews__review-stars-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .junip-reviews__review-stars {
+      display: flex;
+      gap: 2px;
+    }
+    .junip-reviews__review-stars svg {
+      width: 14px;
+      height: 14px;
+      color: var(--color-black);
+    }
+    .junip-reviews__review-stars svg.star-empty {
+      color: #d0d0d0;
+    }
+    .junip-reviews__review-date {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 400;
+      color: #757575;
+    }
+    .junip-reviews__review-title {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--color-black);
+      margin: 0 0 8px;
+    }
+    .junip-reviews__review-body {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--color-black);
+      margin: 0;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 749px) {
+      .junip-reviews {
+        padding: 48px 20px;
+      }
+      .junip-reviews__stats {
+        flex-direction: column;
+        gap: 16px;
+        padding: 20px 0;
+        border: none;
+      }
+      .junip-reviews__stat {
+        padding: 28px 16px;
+      }
+      .junip-reviews__stat-number {
+        font-size: 24px;
+      }
+      .junip-reviews__stat-desc {
+        font-size: 13px;
+      }
+      .junip-reviews__filters {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .junip-reviews__search {
+        flex: 1 1 100%;
+      }
+      .junip-reviews__pills {
+        margin-left: 0;
+      }
+    }
+
+    /* Desktop */
+    @media (min-width: 750px) {
+      .junip-reviews {
+        padding: 72px 40px;
+      }
+    }
+    </style>
+
+    <div class="junip-reviews__inner">
+
+      <!-- Stat cards row -->
+      <div class="junip-reviews__stats">
+        <div class="junip-reviews__stat">
+          <span class="junip-reviews__stat-number">4.9</span>
+          <div class="junip-reviews__stat-stars">
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          </div>
+          <div class="junip-reviews__stat-desc">Based on 1,657&nbsp;Reviews</div>
+        </div>
+        <div class="junip-reviews__stat">
+          <h2 class="junip-reviews__stat-number">98%</h2>
+          <div class="junip-reviews__stat-desc">would recommend to a&nbsp;friend</div>
+        </div>
+        <div class="junip-reviews__stat">
+          <h2 class="junip-reviews__stat-number">4.8</h2>
+          <div class="junip-reviews__stat-desc">average quality&nbsp;rating</div>
+        </div>
+      </div>
+
+      <!-- Search + Filter pills -->
+      <div class="junip-reviews__filters">
+        <div class="junip-reviews__search">
+          <svg class="junip-reviews__search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <input type="text" class="junip-reviews__search-input" placeholder="Search reviews">
+        </div>
+        <div class="junip-reviews__pills">
+          <span class="junip-reviews__pill">Sort by: Latest</span>
+          <span class="junip-reviews__pill">Age</span>
+          <span class="junip-reviews__pill">Skin Tone</span>
+          <span class="junip-reviews__pill">Skin Concerns</span>
+          <span class="junip-reviews__pill">Skin Type</span>
+          <span class="junip-reviews__pill">Rating</span>
+        </div>
+      </div>
+
+      <!-- Individual reviews list -->
+      <div class="junip-reviews__list">
+
+        <!-- Review 1 -->
+        <div class="junip-reviews__review">
+          <div class="junip-reviews__review-author">Sarah M.</div>
+          <div class="junip-reviews__review-verified">Verified buyer</div>
+          <div class="junip-reviews__review-stars-row">
+            <div class="junip-reviews__review-stars">
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            </div>
+            <span class="junip-reviews__review-date">3 days ago</span>
+          </div>
+          <h3 class="junip-reviews__review-title">My new daily&nbsp;essential</h3>
+          <p class="junip-reviews__review-body">I apply Joy to my cheeks and lips every morning. The cream-to-powder formula blends so seamlessly &mdash; I've completely replaced my old blush and lip tint with this one&nbsp;stick.</p>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="junip-reviews__review">
+          <div class="junip-reviews__review-author">Amanda R.</div>
+          <div class="junip-reviews__review-verified">Verified buyer</div>
+          <div class="junip-reviews__review-stars-row">
+            <div class="junip-reviews__review-stars">
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            </div>
+            <span class="junip-reviews__review-date">2 weeks ago</span>
+          </div>
+          <h3 class="junip-reviews__review-title">The only lip + cheek product I reach&nbsp;for</h3>
+          <p class="junip-reviews__review-body">I've been using Joy for 3 weeks now and it's the only lip + cheek product I reach for. The staying power is incredible and the color is so flattering on my fair&nbsp;skin.</p>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="junip-reviews__review">
+          <div class="junip-reviews__review-author">Priya K.</div>
+          <div class="junip-reviews__review-verified">Verified buyer</div>
+          <div class="junip-reviews__review-stars-row">
+            <div class="junip-reviews__review-stars">
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            </div>
+            <span class="junip-reviews__review-date">1 month ago</span>
+          </div>
+          <h3 class="junip-reviews__review-title">The perfect shade for medium-deep&nbsp;skin</h3>
+          <p class="junip-reviews__review-body">Cheeky is the perfect shade for medium-deep skin. It gives me that just-pinched glow without looking ashy or chalky. Clean formula is a huge&nbsp;plus.</p>
+        </div>
+
+        <!-- Review 4 -->
+        <div class="junip-reviews__review">
+          <div class="junip-reviews__review-author">Jennifer L.</div>
+          <div class="junip-reviews__review-verified">Verified buyer</div>
+          <div class="junip-reviews__review-stars-row">
+            <div class="junip-reviews__review-stars">
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            </div>
+            <span class="junip-reviews__review-date">1 month ago</span>
+          </div>
+          <h3 class="junip-reviews__review-title">Better than any luxury blush I've&nbsp;tried</h3>
+          <p class="junip-reviews__review-body">I've spent hundreds on high-end blushes and this $34 stick outperforms all of them. The texture is unreal &mdash; creamy but sets&nbsp;beautifully.</p>
+        </div>
+
+        <!-- Review 5 (4 stars) -->
+        <div class="junip-reviews__review">
+          <div class="junip-reviews__review-author">Kate D.</div>
+          <div class="junip-reviews__review-verified">Verified buyer</div>
+          <div class="junip-reviews__review-stars-row">
+            <div class="junip-reviews__review-stars">
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg class="star-empty" viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+            </div>
+            <span class="junip-reviews__review-date">1 month ago</span>
+          </div>
+          <h3 class="junip-reviews__review-title">Love the formula but wish there were more deep&nbsp;shades</h3>
+          <p class="junip-reviews__review-body">Love the formula but I wish there were more deep shades. Noir is beautiful but I'd love to see an even richer option. Still, 4 stars because the texture is&nbsp;superb.</p>
+        </div>
+
+        <!-- Review 6 -->
+        <div class="junip-reviews__review">
+          <div class="junip-reviews__review-author">Maria G.</div>
+          <div class="junip-reviews__review-verified">Verified buyer</div>
+          <div class="junip-reviews__review-stars-row">
+            <div class="junip-reviews__review-stars">
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+              <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            </div>
+            <span class="junip-reviews__review-date">2 months ago</span>
+          </div>
+          <h3 class="junip-reviews__review-title">Game changer for my morning&nbsp;routine</h3>
+          <p class="junip-reviews__review-body">I'm a mom of two and have zero time in the morning. One swipe of Bare on my cheeks and lips and I look put together in literally 10&nbsp;seconds.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Section 11: FAQ (casting-faq exact pattern)
+       ========================================================================= -->
+  <section class="casting-faq">
+    <div class="casting-faq__inner">
+      <h2 class="casting-faq__heading">Frequently Asked Questions</h2>
+      <details class="casting-faq__item" open>
+        <summary class="casting-faq__question">
+          <span>What is the Blushing Stick?</span>
+          <svg class="casting-faq__question-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line class="casting-faq__icon-vline" x1="8" y1="1" x2="8" y2="15" stroke="#CCCCCC" stroke-width="1.5"/><line x1="1" y1="8" x2="15" y2="8" stroke="#CCCCCC" stroke-width="1.5"/></svg>
+        </summary>
+        <p class="casting-faq__answer">A creamy, buildable lip and cheek tint that gives you a natural-looking flush with a skin-loving formula. Apply directly and blend with your fingers for a seamless, effortless&nbsp;look.</p>
+      </details>
+      <details class="casting-faq__item">
+        <summary class="casting-faq__question">
+          <span>How do I choose my shade?</span>
+          <svg class="casting-faq__question-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line class="casting-faq__icon-vline" x1="8" y1="1" x2="8" y2="15" stroke="#CCCCCC" stroke-width="1.5"/><line x1="1" y1="8" x2="15" y2="8" stroke="#CCCCCC" stroke-width="1.5"/></svg>
+        </summary>
+        <p class="casting-faq__answer">For a natural look, choose a shade close to the color of your lips or the flush of your cheeks. Joy and Pretty are great for fair skin, Bare and Chic for medium, and Flush, Cheeky, or Noir for deeper&nbsp;tones.</p>
+      </details>
+      <details class="casting-faq__item">
+        <summary class="casting-faq__question">
+          <span>Can I use it on both lips and cheeks?</span>
+          <svg class="casting-faq__question-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line class="casting-faq__icon-vline" x1="8" y1="1" x2="8" y2="15" stroke="#CCCCCC" stroke-width="1.5"/><line x1="1" y1="8" x2="15" y2="8" stroke="#CCCCCC" stroke-width="1.5"/></svg>
+        </summary>
+        <p class="casting-faq__answer">Yes. The Blushing Stick is designed as a dual-use product for both lips and cheeks. The formula is hydrating enough for lips and blendable enough for&nbsp;cheeks.</p>
+      </details>
+      <details class="casting-faq__item">
+        <summary class="casting-faq__question">
+          <span>Is the formula clean?</span>
+          <svg class="casting-faq__question-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line class="casting-faq__icon-vline" x1="8" y1="1" x2="8" y2="15" stroke="#CCCCCC" stroke-width="1.5"/><line x1="1" y1="8" x2="15" y2="8" stroke="#CCCCCC" stroke-width="1.5"/></svg>
+        </summary>
+        <p class="casting-faq__answer">Yes. Like all Jones Road products, the Blushing Stick is made with clean ingredients including jojoba oil and vitamin E. Free from parabens, sulfates, phthalates, and synthetic&nbsp;fragrances.</p>
+      </details>
+      <details class="casting-faq__item">
+        <summary class="casting-faq__question">
+          <span>How long does it last?</span>
+          <svg class="casting-faq__question-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line class="casting-faq__icon-vline" x1="8" y1="1" x2="8" y2="15" stroke="#CCCCCC" stroke-width="1.5"/><line x1="1" y1="8" x2="15" y2="8" stroke="#CCCCCC" stroke-width="1.5"/></svg>
+        </summary>
+        <p class="casting-faq__answer">The cream-to-powder formula sets and lasts through a full day of wear. For extra longevity, set with a light dusting of translucent&nbsp;powder.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Section 12: Sticky CTA
+       ========================================================================= -->
+  <div class="sticky-cta" id="stickyCta">
+    <span class="sticky-cta__name">Blushing Stick</span>
+    <span class="sticky-cta__price">$34</span>
+    <a href="#buybox" class="button">Shop Now</a>
+  </div>
+
+  <!-- =========================================================================
+       JavaScript: Sticky CTA, Gallery Thumbs, Press Carousel
+       ========================================================================= -->
+  <script>
+    // Sticky CTA visibility
+    var stickyCta = document.getElementById('stickyCta');
+    var hero = document.querySelector('.hero');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          stickyCta.classList.remove('is-visible');
+        } else {
+          stickyCta.classList.add('is-visible');
+        }
+      });
+    }, { threshold: 0 });
+    observer.observe(hero);
+
+    // Gallery thumbnail switching
+    var thumbs = document.querySelectorAll('.buybox__thumb');
+    var mainImg = document.getElementById('galleryMainImg');
+    var galleryImages = [
+      'https://air-prod.imgix.net/887c4efb-5940-4d96-81d0-d2737d48eb11.jpg?w=800&fit=crop&auto=format',
+      'https://air-prod.imgix.net/098bcfc8-53ff-48d9-8d8c-7a400b603e04.jpg?w=800&fit=crop&auto=format',
+      'https://air-prod.imgix.net/eec626af-03d8-4668-8b7c-69295e2314a2.jpg?w=800&fit=crop&auto=format',
+      'https://air-prod.imgix.net/72c2226b-8898-4453-9a33-de4a75f03402.jpg?w=800&fit=crop&auto=format'
+    ];
+    thumbs.forEach(function(thumb) {
+      thumb.addEventListener('click', function() {
+        thumbs.forEach(function(t) { t.classList.remove('is-active'); });
+        thumb.classList.add('is-active');
+        mainImg.src = galleryImages[parseInt(thumb.dataset.index)];
+      });
+    });
+
+    // Mouse detection
+    document.addEventListener('mousemove', function() {
+      document.body.classList.add('has-mouse');
+    }, { once: true });
+
+    // Shade carousel arrow navigation
+    (function() {
+      var scroll = document.getElementById('shadeScroll');
+      var prev = document.getElementById('shadePrev');
+      var next = document.getElementById('shadeNext');
+      if (!scroll || !prev || !next) return;
+      var scrollAmount = 232;
+      prev.addEventListener('click', function() {
+        scroll.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      });
+      next.addEventListener('click', function() {
+        scroll.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      });
+    })();
+
+    // cclp-press carousel — auto-advance, dot/logo navigation, progress bar
+    (function() {
+      var slides = document.querySelectorAll('.cclp-press__slide');
+      var dots = document.querySelectorAll('.cclp-press__dot');
+      var logoBtns = document.querySelectorAll('.cclp-press__logo-btn');
+      var desktopQuote = document.getElementById('pressDesktopQuote');
+      var progressFill = document.getElementById('pressProgressFill');
+      var currentSlide = 0;
+      var totalSlides = slides.length;
+      var intervalId;
+      var progressId;
+      var INTERVAL = 5000;
+      var TICK = 50;
+
+      var quotes = [];
+      slides.forEach(function(s) {
+        var q = s.querySelector('.cclp-press__slide-quote');
+        quotes.push(q ? q.innerHTML : '');
+      });
+
+      function showSlide(index) {
+        slides.forEach(function(s) { s.classList.remove('is-active'); });
+        dots.forEach(function(d) { d.classList.remove('is-active'); });
+        logoBtns.forEach(function(b) { b.classList.remove('is-active'); });
+        slides[index].classList.add('is-active');
+        if (dots[index]) dots[index].classList.add('is-active');
+        if (logoBtns[index]) logoBtns[index].classList.add('is-active');
+        if (desktopQuote) desktopQuote.innerHTML = quotes[index];
+        currentSlide = index;
+      }
+
+      function startProgress() {
+        var elapsed = 0;
+        if (progressFill) progressFill.style.width = '0%';
+        clearInterval(progressId);
+        progressId = setInterval(function() {
+          elapsed += TICK;
+          var pct = Math.min((elapsed / INTERVAL) * 100, 100);
+          if (progressFill) progressFill.style.width = pct + '%';
+          if (elapsed >= INTERVAL) {
+            clearInterval(progressId);
+          }
+        }, TICK);
+      }
+
+      function nextSlide() {
+        showSlide((currentSlide + 1) % totalSlides);
+        startProgress();
+      }
+
+      function startAutoAdvance() {
+        startProgress();
+        intervalId = setInterval(nextSlide, INTERVAL);
+      }
+
+      function resetAutoAdvance() {
+        clearInterval(intervalId);
+        clearInterval(progressId);
+        startAutoAdvance();
+      }
+
+      dots.forEach(function(dot) {
+        dot.addEventListener('click', function() {
+          showSlide(parseInt(dot.dataset.pressDot));
+        });
+      });
+
+      logoBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          showSlide(parseInt(btn.dataset.pressLogo));
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
