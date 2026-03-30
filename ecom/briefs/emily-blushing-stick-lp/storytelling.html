@@ -1,0 +1,2030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jones Road x Emily DiDonato — Blushing Stick</title>
+
+  <style>
+    /* =============================================================================
+       @font-face — JRB Brand Fonts (CDN)
+       ============================================================================= */
+    @font-face {
+      font-family: 'GeogrotesqueCondBoldWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'BaseMonoWideWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'RingsideWideWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Canela';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Canela';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-LightItalic.otf') format('opentype');
+      font-weight: 300;
+      font-style: italic;
+      font-display: swap;
+    }
+
+    /* =============================================================================
+       CSS Custom Properties
+       ============================================================================= */
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --color-muted: #757575;
+
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    /* =============================================================================
+       Reset & Base
+       ============================================================================= */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 100%;
+      color: var(--color-black);
+      letter-spacing: .025em;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      background: var(--color-white);
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* =============================================================================
+       Button Component
+       ============================================================================= */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      height: 40px;
+      padding: 0 36px;
+      border-radius: 2px;
+      border: 1px solid var(--color-black);
+      background: var(--color-black);
+      color: var(--color-white);
+      cursor: pointer;
+      transition: background .4s var(--ease-primary), color .4s var(--ease-primary);
+    }
+
+    .has-mouse .button:not(:disabled):hover {
+      background: transparent;
+      color: var(--color-black);
+    }
+
+    .button--outline {
+      background: transparent;
+      color: var(--color-black);
+    }
+
+    .has-mouse .button--outline:not(:disabled):hover {
+      background: var(--color-black);
+      color: var(--color-white);
+    }
+
+    .button--white {
+      background: var(--color-white);
+      border-color: var(--color-white);
+      color: var(--color-black);
+    }
+
+    .has-mouse .button--white:not(:disabled):hover {
+      background: transparent;
+      color: var(--color-white);
+    }
+
+    @media screen and (min-width: 768px) {
+      .button {
+        font-size: 14px;
+        height: 44px;
+      }
+    }
+
+    /* =============================================================================
+       Section 1: Site Header
+       ============================================================================= */
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .site-header__nav-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .site-header__hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .site-header__hamburger span {
+      display: block;
+      width: 18px;
+      height: 1.5px;
+      background: var(--color-black);
+    }
+
+    .site-header__nav-links {
+      display: none;
+    }
+
+    .site-header__logo {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .site-header__logo svg {
+      height: 13px;
+      width: auto;
+    }
+
+    .site-header__nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .site-header__icon {
+      width: 20px;
+      height: 20px;
+      color: var(--color-black);
+    }
+
+    @media screen and (min-width: 768px) {
+      .site-header {
+        padding: 16px 32px;
+      }
+
+      .site-header__hamburger {
+        display: none;
+      }
+
+      .site-header__nav-links {
+        display: flex;
+        gap: 24px;
+      }
+
+      .site-header__nav-link {
+        font-family: var(--font-display);
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .98px;
+        color: var(--color-black);
+      }
+
+      .site-header__logo svg {
+        height: 15px;
+      }
+    }
+
+    /* =============================================================================
+       Section 2: Video Hero
+       ============================================================================= */
+    .video-hero {
+      position: relative;
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background-image: url('https://air-prod.imgix.net/b5b14f30-338d-4e0f-9322-af316105a0e8.jpg?w=1400&h=800&fit=crop&crop=faces&fp-x=0.4&fp-y=0.45&auto=format');
+      background-size: cover;
+      background-position: center 40%;
+      overflow: hidden;
+    }
+
+    .video-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 1;
+    }
+
+    .video-hero__content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 20px;
+    }
+
+    .video-hero__play {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid var(--color-white);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-block-end: 32px;
+      transition: background .4s var(--ease-primary);
+    }
+
+    .has-mouse .video-hero__play:hover {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .video-hero__play-triangle {
+      display: block;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 12px 0 12px 22px;
+      border-color: transparent transparent transparent var(--color-white);
+      margin-inline-start: 4px;
+    }
+
+    .video-hero__eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: rgba(255,255,255,.8);
+      margin-block-end: 12px;
+    }
+
+    .video-hero__title {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 300;
+      line-height: 1.2;
+      letter-spacing: .5px;
+      color: var(--color-white);
+      margin-block-end: 24px;
+      max-width: 500px;
+      text-wrap: balance;
+    }
+
+    /* Future video element swap */
+    .video-hero__video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    @media screen and (min-width: 768px) {
+      .video-hero__content {
+        padding: 80px 48px;
+      }
+
+      .video-hero__title {
+        font-size: 42px;
+        max-width: 700px;
+      }
+    }
+
+    /* =============================================================================
+       Section 3: Why Emily for Jones Road
+       ============================================================================= */
+    .why-emily {
+      padding: 56px 20px;
+      background: var(--color-warm-bg);
+    }
+
+    .why-emily__inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .why-emily__eyebrow {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-black);
+      margin-block-end: 16px;
+    }
+
+    .why-emily__title {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 300;
+      line-height: 1.3;
+      letter-spacing: .5px;
+      color: var(--color-black);
+      margin-block-end: 32px;
+      text-wrap: balance;
+    }
+
+    .why-emily__body {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--color-black);
+      margin-block-end: 20px;
+      text-wrap: balance;
+    }
+
+    .why-emily__pull-quote {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--color-black);
+      border-inline-start: 3px solid var(--color-accent);
+      padding-inline-start: 24px;
+      margin-block: 32px;
+      text-wrap: balance;
+    }
+
+    @media screen and (min-width: 768px) {
+      .why-emily {
+        padding: 88px 32px;
+      }
+
+      .why-emily__title {
+        font-size: 38px;
+      }
+
+      .why-emily__pull-quote {
+        font-size: 26px;
+        padding-inline-start: 32px;
+        margin-block: 40px;
+      }
+    }
+
+    /* =============================================================================
+       Making Of — Behind the Scenes (image grid + text)
+       ============================================================================= */
+    .making-of {
+      padding: 56px 20px;
+      background: var(--color-warm-bg);
+    }
+
+    .making-of__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .making-of__eyebrow {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-black);
+      margin-block-end: 16px;
+    }
+
+    .making-of__title {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 300;
+      line-height: 37px;
+      letter-spacing: .5px;
+      color: var(--color-black);
+      margin-block-end: 32px;
+      text-wrap: balance;
+    }
+
+    .making-of__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-block-end: 40px;
+    }
+
+    .making-of__grid-item {
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      border-radius: 3px;
+    }
+
+    .making-of__grid-placeholder {
+      width: 100%;
+      height: 100%;
+      background: #e8e4dd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: #999;
+    }
+
+    .making-of__text {
+      max-width: 800px;
+    }
+
+    .making-of__body {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--color-black);
+      margin-block-end: 16px;
+      text-wrap: balance;
+    }
+
+    .making-of__pull-quote {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--color-black);
+      border-inline-start: 3px solid var(--color-accent);
+      padding-inline-start: 20px;
+      margin-block: 24px;
+    }
+
+    .making-of__attribution {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--color-black);
+      margin-block-start: 4px;
+      display: block;
+    }
+
+    @media screen and (min-width: 768px) {
+      .making-of {
+        padding: 88px 32px;
+      }
+
+      .making-of__title {
+        font-size: 38px;
+        line-height: 54px;
+      }
+
+      .making-of__grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .making-of__pull-quote {
+        font-size: 24px;
+      }
+    }
+
+    /* =============================================================================
+       Section 4: Product Reveal — Two-Column (V2)
+       ============================================================================= */
+    .reveal {
+      background: var(--color-warm-bg);
+      padding: 56px 20px;
+    }
+
+    .reveal__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      align-items: center;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .reveal__media img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+
+    .reveal__eyebrow {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-black);
+      margin-block-end: 12px;
+    }
+
+    .reveal__title {
+      font-family: var(--font-serif);
+      font-weight: 300;
+      line-height: 1.15;
+      text-wrap: balance;
+      margin-block-end: 16px;
+    }
+
+    .reveal__title-flow {
+      font-family: var(--font-serif);
+      font-weight: 300;
+      font-style: italic;
+    }
+
+    .reveal__title-emphasis {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .reveal__title--lg {
+      font-size: 32px;
+    }
+
+    .reveal__subtitle {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--color-black);
+      margin-block-end: 24px;
+      text-wrap: balance;
+    }
+
+    @media screen and (min-width: 768px) {
+      .reveal {
+        padding: 80px 32px;
+      }
+
+      .reveal__inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+      }
+
+      .reveal__title--lg {
+        font-size: 44px;
+      }
+    }
+
+    /* =============================================================================
+       Section 6+7: Emily Shade Grid (replaces shade strip + UGC)
+       ============================================================================= */
+    .shade-grid {
+      padding: 56px 20px;
+      background: var(--color-white);
+    }
+
+    .shade-grid__inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .shade-grid__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-block-end: 24px;
+      padding-inline: 20px;
+    }
+
+    .shade-grid__title {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 300;
+      line-height: 37px;
+      color: var(--color-black);
+      text-wrap: balance;
+    }
+
+    .shade-grid__nav {
+      display: none;
+    }
+
+    .shade-grid__carousel {
+      position: relative;
+      overflow: visible;
+    }
+
+    .shade-grid__scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      scroll-snap-type: x mandatory;
+      padding-inline: 20px;
+    }
+
+    .shade-grid__scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .shade-grid__card {
+      flex-shrink: 0;
+      width: 200px;
+      scroll-snap-align: start;
+    }
+
+    .shade-grid__card-media {
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      border-radius: 3px;
+      margin-block-end: 12px;
+    }
+
+    .shade-grid__card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+    }
+
+    .shade-grid__card-name {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .98px;
+      color: var(--color-black);
+      text-align: center;
+      margin-block-end: 4px;
+    }
+
+    .shade-grid__card-desc {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--color-muted);
+      text-align: center;
+    }
+
+    .shade-grid__arrow {
+      position: absolute;
+      top: 35%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
+      transition: background .2s var(--ease-primary);
+    }
+
+    .has-mouse .shade-grid__arrow:hover {
+      background: var(--color-black);
+      border-color: var(--color-black);
+      color: var(--color-white);
+    }
+
+    .shade-grid__arrow--prev { left: -18px; }
+    .shade-grid__arrow--next { right: -18px; }
+
+    .shade-grid__arrow svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .shade-grid__cta {
+      margin-block-start: 32px;
+      text-align: center;
+      padding-inline: 20px;
+    }
+
+    @media screen and (min-width: 768px) {
+      .shade-grid {
+        padding: 80px 48px;
+      }
+
+      .shade-grid__header {
+        padding-inline: 0;
+      }
+
+      .shade-grid__title {
+        font-size: 34px;
+        line-height: 48px;
+      }
+
+      .shade-grid__nav {
+        display: flex;
+        gap: 8px;
+      }
+
+      .shade-grid__scroll {
+        gap: 12px;
+        padding-inline: 0;
+        overflow-x: auto;
+      }
+
+      .shade-grid__card {
+        flex: 0 0 calc((100% - 4 * 12px) / 5);
+        width: auto;
+      }
+
+      .shade-grid__arrow {
+        display: flex;
+      }
+
+      .shade-grid__arrow--prev { left: 8px; }
+      .shade-grid__arrow--next { right: 8px; }
+
+      .shade-grid__cta {
+        padding-inline: 0;
+      }
+    }
+
+    /* =============================================================================
+       Section 6: Formula Story — Two-Column Photo + Benefits (V3)
+       ============================================================================= */
+    .formula {
+      padding: 56px 20px;
+      background: var(--color-warm-bg);
+    }
+
+    .formula__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      max-width: 1000px;
+      margin: 0 auto;
+      align-items: center;
+    }
+
+    .formula__photo {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+
+    .formula__eyebrow {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-black);
+      margin-block-end: 12px;
+    }
+
+    .formula__title {
+      font-family: var(--font-serif);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-block-end: 16px;
+      text-wrap: balance;
+    }
+
+    .formula__title--md {
+      font-size: 26px;
+    }
+
+    .formula__desc {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--color-black);
+      margin-block-end: 24px;
+      text-wrap: balance;
+    }
+
+    .formula__benefits {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .formula__benefit {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .formula__benefit-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-black);
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .formula__benefit-title {
+      font-family: var(--font-display);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-black);
+      margin-block-end: 4px;
+    }
+
+    .formula__benefit-desc {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--color-muted);
+      line-height: 1.5;
+      text-wrap: balance;
+    }
+
+    @media screen and (min-width: 768px) {
+      .formula {
+        padding: 80px 32px;
+      }
+
+      .formula__inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+      }
+
+      .formula__title--md {
+        font-size: 32px;
+      }
+    }
+
+    /* =============================================================================
+       Joy Shade — Two-Column Split (redesigned from routine cards)
+       ============================================================================= */
+    .routine {
+      padding: 56px 20px;
+      background: var(--color-warm-bg);
+    }
+
+    .routine__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .routine__layout {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .routine__media {
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      border-radius: 3px;
+    }
+
+    .routine__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .routine__content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .routine__eyebrow {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-black);
+      margin-block-end: 16px;
+    }
+
+    .routine__title {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 300;
+      line-height: 37px;
+      letter-spacing: .5px;
+      color: var(--color-black);
+      margin-block-end: 24px;
+      text-wrap: balance;
+    }
+
+    .routine__body {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--color-black);
+      margin-block-end: 16px;
+      text-wrap: balance;
+    }
+
+    .routine__pull-quote {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--color-black);
+      border-inline-start: 3px solid var(--color-accent);
+      padding-inline-start: 20px;
+      margin-block: 24px;
+      text-wrap: balance;
+    }
+
+    .routine__cta {
+      margin-block-start: 8px;
+      align-self: flex-start;
+    }
+
+    @media screen and (min-width: 768px) {
+      .routine {
+        padding: 80px 32px;
+      }
+
+      .routine__layout {
+        flex-direction: row;
+        gap: 64px;
+      }
+
+      .routine__media {
+        flex: 1;
+        max-height: 640px;
+      }
+
+      .routine__content {
+        flex: 1;
+      }
+
+      .routine__title {
+        font-size: 38px;
+        line-height: 54px;
+      }
+
+      .routine__pull-quote {
+        font-size: 24px;
+      }
+    }
+
+    /* =============================================================================
+       Section 11: Reviews (cclp-review-cards pattern)
+       ============================================================================= */
+    .cclp-reviews {
+      padding: 56px 24px;
+      background: var(--color-warm-bg);
+    }
+
+    .cclp-reviews__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .cclp-reviews__title {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 300;
+      line-height: 1.2;
+      letter-spacing: .5px;
+      color: var(--color-black);
+      text-align: center;
+      text-wrap: balance;
+      margin-block-end: 32px;
+    }
+
+    .cclp-reviews__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .cclp-reviews__card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 3px;
+      padding: 32px 28px;
+    }
+
+    .cclp-reviews__stars {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      margin-block-end: 16px;
+    }
+
+    .cclp-reviews__stars svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .cclp-reviews__card-title {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.3;
+      color: var(--color-black);
+      margin-block-end: 12px;
+    }
+
+    .cclp-reviews__card-body {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--color-black);
+    }
+
+    .cclp-reviews__card-footer {
+      border-top: 1px solid #e8e8e8;
+      padding-top: 16px;
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cclp-reviews__card-name {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-black);
+    }
+
+    .cclp-reviews__card-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 550;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.5);
+    }
+
+    @media screen and (min-width: 768px) {
+      .cclp-reviews {
+        padding: 88px 40px;
+      }
+
+      .cclp-reviews__title {
+        font-size: 48px;
+      }
+
+      .cclp-reviews__grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+    }
+
+    /* =============================================================================
+       Product Teaser — Mini Buy Box (replaces Shop Collection)
+       ============================================================================= */
+    .product-teaser {
+      padding: 56px 20px;
+      background: var(--color-warm-bg);
+    }
+
+    .product-teaser__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .product-teaser__media {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #fafafa;
+    }
+
+    .product-teaser__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-teaser__content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .product-teaser__eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: var(--color-muted);
+      margin-block-end: 12px;
+    }
+
+    .product-teaser__title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-black);
+      margin-block-end: 12px;
+    }
+
+    .product-teaser__stars {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-block-end: 16px;
+    }
+
+    .product-teaser__stars svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .product-teaser__stars-count {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--color-black);
+      margin-inline-start: 8px;
+      text-decoration: underline;
+    }
+
+    .product-teaser__desc {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--color-black);
+      margin-block-end: 16px;
+      max-width: 440px;
+      text-wrap: balance;
+    }
+
+    .product-teaser__price {
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--color-black);
+      margin-block-end: 20px;
+    }
+
+    .product-teaser .button {
+      display: inline-flex;
+      width: auto;
+    }
+
+    .product-teaser__trust {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-block-start: 20px;
+    }
+
+    .product-teaser__trust-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .product-teaser__trust-item + .product-teaser__trust-item {
+      margin-block-start: 16px;
+    }
+
+    .product-teaser__trust-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .product-teaser__trust-label {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 325;
+      letter-spacing: 0;
+      color: var(--color-black);
+    }
+
+    @media screen and (min-width: 768px) {
+      .product-teaser {
+        padding: 80px 32px;
+      }
+
+      .product-teaser__inner {
+        flex-direction: row;
+        gap: 56px;
+      }
+
+      .product-teaser__media {
+        flex: 1;
+        aspect-ratio: auto;
+        max-height: 520px;
+      }
+
+      .product-teaser__content {
+        flex: 1;
+      }
+
+      .product-teaser__title {
+        font-size: 22px;
+      }
+    }
+
+    /* =============================================================================
+       Section 11: FAQ (casting-faq exact pattern)
+       ============================================================================= */
+    .casting-faq {
+      padding: 60px 24px;
+      background: var(--color-white);
+      interpolate-size: allow-keywords;
+    }
+
+    .casting-faq__inner {
+      max-width: 745px;
+      margin: 0 auto;
+    }
+
+    .casting-faq__heading {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 300;
+      line-height: 1.3;
+      color: var(--color-black);
+      text-align: center;
+      margin-block-end: 32px;
+      text-wrap: balance;
+    }
+
+    .casting-faq__item {
+      border-bottom: 1px solid #cccccc;
+    }
+
+    .casting-faq__item:first-of-type {
+      border-top: 1px solid #cccccc;
+    }
+
+    .casting-faq__question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 0;
+      cursor: pointer;
+      list-style: none;
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--color-black);
+      width: 100%;
+    }
+
+    .casting-faq__question::-webkit-details-marker {
+      display: none;
+    }
+
+    .casting-faq__question-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .casting-faq__question-icon .casting-faq__icon-vline {
+      transition: opacity .3s var(--ease-primary);
+    }
+
+    .casting-faq__item[open] .casting-faq__question-icon .casting-faq__icon-vline {
+      opacity: 0;
+    }
+
+    .casting-faq__item ::details-content {
+      opacity: 0;
+      block-size: 0;
+      overflow: hidden;
+      transition: opacity 300ms var(--ease-primary), block-size 300ms var(--ease-primary);
+    }
+
+    .casting-faq__item[open] ::details-content {
+      opacity: 1;
+      block-size: auto;
+    }
+
+    .casting-faq__answer {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 25px;
+      color: var(--color-black);
+      padding-block-end: 20px;
+      max-width: 600px;
+    }
+
+    @media screen and (max-width: 393px) {
+      .casting-faq {
+        padding: 43px 24px 32px;
+      }
+    }
+
+    @media screen and (min-width: 1024px) {
+      .casting-faq {
+        padding: 60px 0;
+      }
+
+      .casting-faq__heading {
+        font-size: 38px;
+        letter-spacing: 0.05em;
+      }
+
+      .casting-faq__question {
+        font-size: 18px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .casting-faq__answer {
+        font-size: 16px;
+        line-height: 20px;
+      }
+    }
+
+    /* =============================================================================
+       Section 12: Community Video (Videowise UGC Embed)
+       ============================================================================= */
+    .community-video {
+      padding: 56px 20px;
+      background: var(--color-black);
+      text-align: center;
+    }
+
+    .community-video__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .community-video__eyebrow {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-white);
+      margin-block-end: 16px;
+    }
+
+    .community-video__title {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 300;
+      line-height: 1.3;
+      letter-spacing: .5px;
+      color: var(--color-white);
+      margin-block-end: 40px;
+      text-wrap: balance;
+    }
+
+    .community-video__placeholder {
+      max-width: 600px;
+      margin: 0 auto 40px;
+      aspect-ratio: 16/9;
+      background: #1a1a1a;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--color-muted);
+    }
+
+    @media screen and (min-width: 768px) {
+      .community-video {
+        padding: 88px 40px;
+      }
+
+      .community-video__title {
+        font-size: 38px;
+      }
+    }
+
+    /* =============================================================================
+       Section 15: Footer
+       ============================================================================= */
+    .site-footer {
+      background: var(--color-black);
+      padding: 48px 20px;
+    }
+
+    .site-footer__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .site-footer__top {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      margin-block-end: 40px;
+    }
+
+    .site-footer__col-title {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .98px;
+      color: var(--color-white);
+      margin-block-end: 16px;
+    }
+
+    .site-footer__link {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255,255,255,.6);
+      line-height: 2;
+    }
+
+    .site-footer__bottom {
+      border-top: 1px solid rgba(255,255,255,.15);
+      padding-block-start: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .site-footer__logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .site-footer__logo svg {
+      height: 13px;
+      width: auto;
+    }
+
+    .site-footer__copy {
+      font-family: var(--font-body);
+      font-size: 12px;
+      color: rgba(255,255,255,.4);
+    }
+
+    @media screen and (min-width: 768px) {
+      .site-footer {
+        padding: 64px 32px;
+      }
+
+      .site-footer__top {
+        flex-direction: row;
+        gap: 48px;
+      }
+
+      .site-footer__bottom {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    /* =============================================================================
+       Reduced Motion
+       ============================================================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       Section 1: Site Header
+       ========================================================================= -->
+  <header class="site-header">
+    <div class="site-header__nav-left">
+      <div class="site-header__hamburger" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav class="site-header__nav-links">
+        <a href="#" class="site-header__nav-link">Shop</a>
+        <a href="#" class="site-header__nav-link">Bestsellers</a>
+        <a href="#" class="site-header__nav-link">New</a>
+        <a href="#" class="site-header__nav-link">Quiz</a>
+      </nav>
+    </div>
+    <a href="#" class="site-header__logo"><svg width="160" height="15" viewBox="0 0 256 22" fill="none" xmlns="http://www.w3.org/2000/svg"><title>Jones Road</title><g clip-path="url(#jrl-s)"><path d="M0 20.26V14C0.92 14.68 2.04 15.04 3.19 15C5.49 15 6.92 13.82 6.92 11.5V0.71H16.79V13.27C16.79 19.35 12.69 21.96 6.79 21.96C3.43 22 1 21.08 0 20.26Z" fill="black"/><path d="M34.21 0C24.89 0 19.31 4.46 19.31 10.81C19.31 16.94 24.89 22 34.18 22C43.47 22 49.06 17 49.06 10.85C49.06 4.46 43.47 0 34.21 0ZM34.21 15C33.65 15.05 33.09 14.97 32.57 14.78C32.04 14.59 31.57 14.29 31.17 13.9C30.77 13.51 30.46 13.04 30.26 12.52C30.05 12 29.97 11.45 30 10.89C30 8.52 31.6 7 34.18 7C36.76 7 38.4 8.5 38.4 10.87C38.43 11.43 38.35 11.99 38.15 12.51C37.95 13.04 37.63 13.51 37.23 13.9C36.83 14.29 36.35 14.59 35.83 14.78C35.3 14.97 34.74 15.05 34.18 15H34.21Z" fill="black"/><path d="M77.78 0.7V21.26H65.89L60 9.92V21.26H51.62V0.7H63.73L69.44 11.95V0.7H77.78Z" fill="black"/><path d="M102.69 15.18V21.26H81.56V0.7H102.63V6.78H91.43V8.6H102.14V13.18H91.43V15.18H102.69Z" fill="black"/><path d="M105.44 19.09V13.15C108.51 14.96 112.01 15.92 115.58 15.92C117.52 15.92 118.34 15.62 118.34 14.92C118.34 14.22 117.86 13.98 116.34 13.77L113.43 13.36C107.93 12.6 105.2 10.57 105.2 7.02C105.2 3.02 108.99 0.02 117.61 0.02C122.93 0.02 126.05 1.19 127.69 2.02V7.84C125.03 6.62 122.12 6.02 119.19 6.08C116.55 6.08 115.85 6.46 115.85 7.08C115.85 7.55 116.16 7.84 117.98 8.02L121.11 8.37C126.21 8.93 129.11 10.6 129.11 14.37C129.11 19.01 124.11 21.85 116.97 21.85C112.96 21.94 109 20.96 105.49 19.01" fill="black"/><path d="M153.07 10.92C154.95 10.92 155.99 10.13 155.99 8.72C155.99 7.31 154.99 6.67 153.16 6.67H149.88V10.92H153.07ZM155.07 21.26L149.91 13.15V21.26H140V0.71H157.5C162.84 0.71 166.18 3.41 166.18 7.78C166.24 9.27 165.76 10.74 164.82 11.9C163.88 13.06 162.55 13.84 161.08 14.09L166.27 21.26H155.07Z" fill="black"/><path d="M183.05 0C173.73 0 168.14 4.46 168.14 10.81C168.14 16.94 173.73 22 183 22C192.27 22 197.88 17 197.88 10.85C197.89 4.46 192.3 0 183.05 0ZM183.05 15C182.5 15.05 181.94 14.97 181.42 14.79C180.9 14.6 180.43 14.31 180.03 13.92C179.63 13.54 179.32 13.07 179.11 12.56C178.91 12.05 178.81 11.49 178.84 10.94C178.8 8.52 180.43 7 183 7C185.57 7 187.22 8.5 187.22 10.87C187.26 11.43 187.17 11.99 186.97 12.51C186.77 13.04 186.46 13.51 186.06 13.9C185.66 14.29 185.18 14.59 184.65 14.78C184.12 14.97 183.56 15.05 183 15H183.05Z" fill="black"/><path d="M214.06 13.51L211.91 6.17L209.72 13.51H214.06ZM215.43 18.15H208.36L207.45 21.26H197.79L204.79 0.7H219.39L226.31 21.26H216.38L215.43 18.15Z" fill="black"/><path d="M241.11 0.7H228V21.26H240.2C250.79 21.26 255.2 16.21 255.2 10.84C255.23 5.05 250.61 0.7 241.11 0.7ZM240.05 15.21H237.89V6.75H240.41C243.41 6.75 244.6 8.55 244.6 10.81C244.6 13.42 243.08 15.21 240.05 15.21Z" fill="black"/></g><defs><clipPath id="jrl-s"><rect width="255.23" height="21.96" fill="white"/></clipPath></defs></svg></a>
+    <div class="site-header__nav-right">
+      <svg class="site-header__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <svg class="site-header__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       Section 2: Video Hero
+       ========================================================================= -->
+  <section class="video-hero">
+    <!-- Future: replace background-image with <video class="video-hero__video" ...> -->
+    <div class="video-hero__content">
+      <button class="video-hero__play" aria-label="Play video">
+        <span class="video-hero__play-triangle"></span>
+      </button>
+      <p class="video-hero__eyebrow">Jones Road x Emily&nbsp;DiDonato</p>
+      <h1 class="video-hero__title">Wear your happy</h1>
+      <a href="#shop" class="button button--white">Discover Blushing&nbsp;Stick</a>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Section 3: Why Emily for Jones Road
+       ========================================================================= -->
+  <section class="why-emily">
+    <div class="why-emily__inner">
+      <p class="why-emily__eyebrow">Why Emily</p>
+      <h2 class="why-emily__title">The supermodel who lives in&nbsp;blush</h2>
+      <p class="why-emily__body">Emily DiDonato has sat in hundreds of makeup chairs across her career. Ask her the one product she can't live without, and the answer is always the same: blush. It's not about the color or the formula &mdash; it's about what blush does. It brings you to&nbsp;life.</p>
+      <p class="why-emily__body">That's exactly why we partnered with her. Emily doesn't just wear Jones Road &mdash; she lives it. She believes makeup should enhance what you already have, not cover it up. She wanted to create something that didn't exist&nbsp;yet.</p>
+      <blockquote class="why-emily__pull-quote">"I wanted a shade that looks like you just came back from the best vacation of your life. Warm, happy,&nbsp;effortless."</blockquote>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Making Of — Behind the Scenes
+       ========================================================================= -->
+  <section class="making-of">
+    <div class="making-of__inner">
+      <p class="making-of__eyebrow">Behind the Scenes</p>
+      <h2 class="making-of__title">How we made the Blushing&nbsp;Stick</h2>
+      <div class="making-of__grid">
+        <div class="making-of__grid-item">
+          <div class="making-of__grid-placeholder">Emily + Bobbi reviewing shades</div>
+        </div>
+        <div class="making-of__grid-item">
+          <div class="making-of__grid-placeholder">Mood board and shade development</div>
+        </div>
+        <div class="making-of__grid-item">
+          <div class="making-of__grid-placeholder">Testing on skin</div>
+        </div>
+      </div>
+      <div class="making-of__text">
+        <p class="making-of__body">We spent months getting the formula right. It had to melt into skin without brushes, build without getting cakey, and work on every skin tone from fair to&nbsp;deep.</p>
+        <p class="making-of__body">Joy was the first shade we created &mdash; Emily's signature shade. It's named after what she wanted every person to feel when they put it&nbsp;on.</p>
+        <p class="making-of__pull-quote">"We must have gone through 50 versions of Joy before we both looked at each other and said, 'that's&nbsp;it.'" <span class="making-of__attribution">&mdash; Emily DiDonato</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Section 4: Product Reveal — Two-Column (V2)
+       ========================================================================= -->
+  <section class="reveal">
+    <div class="reveal__inner">
+      <div class="reveal__media">
+        <img src="https://air-prod.imgix.net/2a44c6e8-686f-4062-b410-58bb1227e5d2.jpg?w=600&h=800&fit=crop&auto=format" alt="Blushing Stick collection">
+      </div>
+      <div class="reveal__content">
+        <p class="reveal__eyebrow">The Collection</p>
+        <h2 class="reveal__title reveal__title--lg"><span class="reveal__title-flow">The</span> <span class="reveal__title-emphasis">Blushing Stick</span></h2>
+        <p class="reveal__subtitle">A cream-to-powder blush that melts into skin for a natural, lit-from-within flush. Nine shades, from warm peach to deep berry. Buildable, blendable, and designed to move with&nbsp;you.</p>
+        <a href="#shop" class="button">Shop the Collection</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Section 6+7: Emily Shade Grid (9 shades)
+       ========================================================================= -->
+  <section class="shade-grid">
+    <div class="shade-grid__header">
+      <h2 class="shade-grid__title">The Shades</h2>
+    </div>
+    <div class="shade-grid__carousel">
+      <div class="shade-grid__scroll" id="shadeScroll">
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/cbe3915f-6a86-48fc-8d2c-fcfc55658f0d.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Joy" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name">Joy</p>
+          <p class="shade-grid__card-desc">Warm Rosy Pink</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/88625d3b-d67c-4bf3-96ff-2cb680bfa70f.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Pretty" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name">Pretty</p>
+          <p class="shade-grid__card-desc">Soft Blush Pink</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/5bbd87fd-88d3-43fd-8138-5d28e10e0f39.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Bare" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name">Bare</p>
+          <p class="shade-grid__card-desc">Nude Peach</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/b8a75c20-5153-4354-82ef-e06c244fef74.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Chic" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name">Chic</p>
+          <p class="shade-grid__card-desc">Cool Mauve</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/9a989fbe-91af-477a-a906-bc8c41873d45.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Pinch" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name">Pinch</p>
+          <p class="shade-grid__card-desc">Peachy Coral</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/a7d4ebbf-0312-4f0c-8170-80f9ad94aab9.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Flush" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name">Flush</p>
+          <p class="shade-grid__card-desc">True Rosy Flush</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/52d41965-7b09-4b1d-95f0-b9e5c6426d9e.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Cheeky" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name">Cheeky</p>
+          <p class="shade-grid__card-desc">Bold Berry Pink</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/b26e8c5b-e838-40fe-9d95-5366cfd3809b.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Miami" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name">Miami</p>
+          <p class="shade-grid__card-desc">Warm Bronzy Coral</p>
+        </div>
+        <div class="shade-grid__card">
+          <div class="shade-grid__card-media">
+            <img src="https://air-prod.imgix.net/1128cbda-a573-4dec-85c8-38fdec42636f.jpg?w=400&h=530&fit=crop&auto=format&crop=faces&fp-y=0.3" alt="Emily wearing Noir" loading="lazy">
+          </div>
+          <p class="shade-grid__card-name">Noir</p>
+          <p class="shade-grid__card-desc">Deep Berry</p>
+        </div>
+      </div>
+      <button class="shade-grid__arrow shade-grid__arrow--prev" id="shadePrev" aria-label="Previous shades">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="shade-grid__arrow shade-grid__arrow--next" id="shadeNext" aria-label="Next shades">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+    <div class="shade-grid__cta">
+      <a href="#buybox" class="button">Shop All Shades</a>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Section 6: Formula Story — Two-Column Photo + Benefits
+       ========================================================================= -->
+  <section class="formula">
+    <div class="formula__inner">
+      <img class="formula__photo" src="https://air-prod.imgix.net/098bcfc8-53ff-48d9-8d8c-7a400b603e04.jpg?w=600&h=600&fit=crop&auto=format" alt="Blushing Stick product close-up" loading="lazy">
+      <div>
+        <p class="formula__eyebrow">The Formula</p>
+        <h2 class="formula__title formula__title--md">Why it works</h2>
+        <p class="formula__desc">A ceramide-rich cream-to-powder formula that delivers buildable color with a natural, skin-like&nbsp;finish.</p>
+        <ul class="formula__benefits">
+          <li class="formula__benefit">
+            <div class="formula__benefit-dot"></div>
+            <div>
+              <p class="formula__benefit-title">Ceramide-Rich</p>
+              <p class="formula__benefit-desc">Locks in moisture while delivering buildable color that lasts all&nbsp;day.</p>
+            </div>
+          </li>
+          <li class="formula__benefit">
+            <div class="formula__benefit-dot"></div>
+            <div>
+              <p class="formula__benefit-title">Buildable Coverage</p>
+              <p class="formula__benefit-desc">Sheer to full intensity without caking or&nbsp;streaking.</p>
+            </div>
+          </li>
+          <li class="formula__benefit">
+            <div class="formula__benefit-dot"></div>
+            <div>
+              <p class="formula__benefit-title">Seamless Blend</p>
+              <p class="formula__benefit-desc">Cream-to-powder formula melts into skin with fingers or a&nbsp;brush.</p>
+            </div>
+          </li>
+          <li class="formula__benefit">
+            <div class="formula__benefit-dot"></div>
+            <div>
+              <p class="formula__benefit-title">Dual-Use</p>
+              <p class="formula__benefit-desc">Works on cheeks and lips for a monochromatic, effortless&nbsp;look.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Joy Shade — Two-Column Split
+       ========================================================================= -->
+  <section class="routine">
+    <div class="routine__inner">
+      <div class="routine__layout">
+        <div class="routine__media">
+          <img src="https://air-prod.imgix.net/cbe3915f-6a86-48fc-8d2c-fcfc55658f0d.jpg?w=700&h=900&fit=crop&auto=format&crop=faces" alt="Emily wearing Joy shade" loading="lazy">
+        </div>
+        <div class="routine__content">
+          <p class="routine__eyebrow">Emily's Shade</p>
+          <h2 class="routine__title">Why she named it&nbsp;Joy</h2>
+
+          <p class="routine__body">Every shade in the collection has a story, but Joy is the one Emily built from scratch. It started with a feeling &mdash; the warm, lit-from-within flush you get after the best vacation of your&nbsp;life.</p>
+
+          <blockquote class="routine__pull-quote">"I wanted a shade that looks like you just came back from the best vacation of your life."</blockquote>
+
+          <p class="routine__body">Getting there took over 50 iterations. Too pink, too orange, too sheer. Emily and Bobbi tested every version until one day they both looked at each other and just&nbsp;knew.</p>
+
+          <p class="routine__body">The result is Joy &mdash; warm, happy, effortless. It looks like happiness on skin. That's why they named it&nbsp;Joy.</p>
+
+          <a href="#shop" class="button routine__cta">Shop Joy &mdash; $34</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Section 11: Reviews (cclp-review-cards pattern)
+       ========================================================================= -->
+  <section class="cclp-reviews">
+    <div class="cclp-reviews__inner">
+      <h2 class="cclp-reviews__title">Loved by 6,500+&nbsp;customers</h2>
+      <div class="cclp-reviews__grid">
+
+        <!-- Review 1 -->
+        <div class="cclp-reviews__card">
+          <div class="cclp-reviews__stars">
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+          </div>
+          <p class="cclp-reviews__card-title">&ldquo;Incredible color payoff in one&nbsp;swipe&rdquo;</p>
+          <p class="cclp-reviews__card-body">The color payoff is incredible &mdash; just one swipe and I had the most natural-looking flush. This is the cream blush I&rsquo;ve been searching&nbsp;for.</p>
+          <div class="cclp-reviews__card-footer">
+            <span class="cclp-reviews__card-name">Sarah M.</span>
+            <span class="cclp-reviews__card-badge">Verified Buyer</span>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="cclp-reviews__card">
+          <div class="cclp-reviews__stars">
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+          </div>
+          <p class="cclp-reviews__card-title">&ldquo;Doesn&rsquo;t settle into fine&nbsp;lines&rdquo;</p>
+          <p class="cclp-reviews__card-body">Finally a cream blush that doesn&rsquo;t settle into my fine lines. The ceramide formula keeps my skin hydrated all day&nbsp;long.</p>
+          <div class="cclp-reviews__card-footer">
+            <span class="cclp-reviews__card-name">Linda K.</span>
+            <span class="cclp-reviews__card-badge">Verified Buyer</span>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="cclp-reviews__card">
+          <div class="cclp-reviews__stars">
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0L8.56 4.83H13.66L9.55 7.82L11.11 12.65L7 9.66L2.89 12.65L4.45 7.82L0.34 4.83H5.44L7 0Z" fill="black"/></svg>
+          </div>
+          <p class="cclp-reviews__card-title">&ldquo;My new everyday&nbsp;essential&rdquo;</p>
+          <p class="cclp-reviews__card-body">I reach for this every single morning. The formula is so smooth and the shade Joy is absolutely perfect for a natural everyday&nbsp;look.</p>
+          <div class="cclp-reviews__card-footer">
+            <span class="cclp-reviews__card-name">Jessica R.</span>
+            <span class="cclp-reviews__card-badge">Verified Buyer</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       FAQ (casting-faq pattern)
+       ========================================================================= -->
+  <section class="casting-faq">
+    <div class="casting-faq__inner">
+      <h2 class="casting-faq__heading">Frequently asked&nbsp;questions</h2>
+
+      <details class="casting-faq__item">
+        <summary class="casting-faq__question">
+          What is the Blushing Stick?
+          <svg class="casting-faq__question-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="8" y1="0" x2="8" y2="16" stroke="black" stroke-width="1.5" class="casting-faq__icon-vline"/><line x1="0" y1="8" x2="16" y2="8" stroke="black" stroke-width="1.5"/></svg>
+        </summary>
+        <p class="casting-faq__answer">A ceramide-rich, cream-to-powder blush in stick form. Apply directly from the stick and blend with fingers for a natural, lit-from-within flush that lasts all day.</p>
+      </details>
+
+      <details class="casting-faq__item">
+        <summary class="casting-faq__question">
+          How many shades are there?
+          <svg class="casting-faq__question-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="8" y1="0" x2="8" y2="16" stroke="black" stroke-width="1.5" class="casting-faq__icon-vline"/><line x1="0" y1="8" x2="16" y2="8" stroke="black" stroke-width="1.5"/></svg>
+        </summary>
+        <p class="casting-faq__answer">Nine shades ranging from warm peach to deep berry, designed to work on every skin tone from fair to deep.</p>
+      </details>
+
+      <details class="casting-faq__item">
+        <summary class="casting-faq__question">
+          Can I use it on my lips too?
+          <svg class="casting-faq__question-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="8" y1="0" x2="8" y2="16" stroke="black" stroke-width="1.5" class="casting-faq__icon-vline"/><line x1="0" y1="8" x2="16" y2="8" stroke="black" stroke-width="1.5"/></svg>
+        </summary>
+        <p class="casting-faq__answer">Yes. The Blushing Stick is designed for both cheeks and lips, giving you a monochromatic, effortless look with one product.</p>
+      </details>
+
+      <details class="casting-faq__item">
+        <summary class="casting-faq__question">
+          Which shade is Joy?
+          <svg class="casting-faq__question-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="8" y1="0" x2="8" y2="16" stroke="black" stroke-width="1.5" class="casting-faq__icon-vline"/><line x1="0" y1="8" x2="16" y2="8" stroke="black" stroke-width="1.5"/></svg>
+        </summary>
+        <p class="casting-faq__answer">Joy is a warm rosy pink &mdash; the signature shade Emily co-created with Bobbi Brown. It's designed to look like a natural, healthy flush on all skin tones.</p>
+      </details>
+
+      <details class="casting-faq__item">
+        <summary class="casting-faq__question">
+          Is it clean? What's in the formula?
+          <svg class="casting-faq__question-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="8" y1="0" x2="8" y2="16" stroke="black" stroke-width="1.5" class="casting-faq__icon-vline"/><line x1="0" y1="8" x2="16" y2="8" stroke="black" stroke-width="1.5"/></svg>
+        </summary>
+        <p class="casting-faq__answer">Absolutely. Every Jones Road product is clean, cruelty-free, and free of parabens, sulfates, and phthalates. The Blushing Stick is ceramide-rich for added moisture and skin benefits.</p>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Product Teaser — Mini Buy Box
+       ========================================================================= -->
+  <section class="product-teaser" id="shop">
+    <div class="product-teaser__inner">
+      <div class="product-teaser__media">
+        <img src="https://air-prod.imgix.net/887c4efb-5940-4d96-81d0-d2737d48eb11.jpg?w=800&h=800&fit=crop&auto=format" alt="Blushing Stick collection" loading="lazy">
+      </div>
+      <div class="product-teaser__content">
+        <p class="product-teaser__eyebrow">Jones Road x Emily DiDonato</p>
+        <h2 class="product-teaser__title">Blushing Stick</h2>
+        <div class="product-teaser__stars">
+          <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+          <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+          <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+          <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+          <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>
+          <span class="product-teaser__stars-count">(1,657 Reviews)</span>
+        </div>
+        <p class="product-teaser__desc">A cream-to-powder lip and cheek tint that gives you a natural-looking flush. 9 shades, co-created with Emily&nbsp;DiDonato.</p>
+        <p class="product-teaser__price">$34</p>
+        <a href="https://jonesroadbeauty.com" class="button">Shop Blushing Stick</a>
+        <div class="product-teaser__trust">
+          <div class="product-teaser__trust-item">
+            <svg class="product-teaser__trust-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.16667 9.16667V10H10.8333V4.16667H2.5V3.33333C2.5 2.87333 2.87333 2.5 3.33333 2.5H11.6667C12.1267 2.5 12.5 2.87333 12.5 3.33333V5H16.3892C17.32 5 17.7225 5.48 18.0025 5.9225C18.4975 6.70583 19.2825 7.94917 19.76 8.7375C19.9167 8.9975 20 9.29583 20 9.6V13.3333C20 14.2408 19.3808 15 18.3333 15H17.5C17.5 16.38 16.38 17.5 15 17.5C13.62 17.5 12.5 16.38 12.5 15H9.16667C9.16667 16.38 8.04667 17.5 6.66667 17.5C5.28667 17.5 4.16667 16.38 4.16667 15H3.33333C2.87333 15 2.5 14.6267 2.5 14.1667V9.16667H0.833333V7.5H6.66667V9.16667H4.16667ZM6.66667 14C7.21833 14 7.66667 14.4483 7.66667 15C7.66667 15.5517 7.21833 16 6.66667 16C6.115 16 5.66667 15.5517 5.66667 15C5.66667 14.4483 6.115 14 6.66667 14ZM15 14C15.5517 14 16 14.4483 16 15C16 15.5517 15.5517 16 15 16C14.4483 16 14 15.5517 14 15C14 14.4483 14.4483 14 15 14ZM12.5 11.6667H4.16667V13.3333H4.80417C5.26167 12.8217 5.92667 12.5 6.66667 12.5C7.40667 12.5 8.07167 12.8217 8.52917 13.3333H13.1375C13.595 12.8217 14.26 12.5 15 12.5C15.74 12.5 16.405 12.8217 16.8625 13.3333H18.3333V9.52083L16.9075 7.08C16.7583 6.82417 16.4842 6.66667 16.1883 6.66667H12.5V11.6667ZM13.3333 7.5V10H17.5L16.3108 7.92C16.1625 7.66 15.8867 7.5 15.5875 7.5H13.3333ZM0 5H6.66667V6.66667H0V5Z" fill="black"/></svg>
+            <span class="product-teaser__trust-label">Free shipping on US orders over $55</span>
+          </div>
+          <div class="product-teaser__trust-item">
+            <svg class="product-teaser__trust-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11.1445 4.83667L16.2314 7.25952L16.2256 7.2439L16.7861 7.52417L16.8125 7.53687H16.8115L16.8154 7.53882H16.8174L16.707 7.76245L16.9385 7.67358L17.04 7.93433L17.0605 7.98804L17.0566 8.04468C17.0077 8.73225 17.0187 9.4525 17.043 10.1873L17.0957 11.6658C17.1135 12.2824 17.1188 12.8976 17.083 13.4929L17.0557 13.8474C17.0453 13.9601 17.0257 14.0749 16.958 14.1804C16.893 14.2815 16.7998 14.3486 16.7178 14.4041L16.7002 14.4158L16.6807 14.4246C15.8877 14.787 15.1039 15.1728 14.3174 15.5613C13.9246 15.7553 13.531 15.95 13.1357 16.1423L11.9443 16.7097C11.9045 16.7281 11.8427 16.7585 11.7637 16.7966C11.6868 16.8337 11.597 16.8763 11.5078 16.9167C11.4194 16.9569 11.3271 16.9965 11.2461 17.0261C11.2057 17.0409 11.1642 17.0551 11.125 17.0652C11.0908 17.0739 11.0383 17.084 10.9834 17.0818V17.0828C10.9364 17.0809 10.8921 17.0686 10.8643 17.0603C10.8317 17.0506 10.7967 17.0384 10.7627 17.0251C10.6942 16.9985 10.6157 16.9633 10.54 16.9285C10.4638 16.8934 10.3868 16.8565 10.3213 16.825C10.254 16.7925 10.2014 16.7676 10.1689 16.7527V16.7517C9.03113 16.2324 7.84747 15.6681 6.69922 15.1003L5.56543 14.533C5.53198 14.516 5.50022 14.5013 5.46875 14.4861C5.43808 14.4713 5.4054 14.4559 5.375 14.4402C5.31509 14.4092 5.24722 14.369 5.18555 14.3123C5.08088 14.2158 5.02391 14.0973 4.99414 13.9548L4.97266 13.8054C4.8865 12.8817 4.92061 11.8963 4.95801 10.9265C4.99566 9.95015 5.03704 8.9898 4.97266 8.08862L4.97168 8.08374C4.95864 7.84134 5.08229 7.64353 5.25977 7.52417L5.27441 7.5144L5.29102 7.50562L10.7461 4.87378L10.7744 4.86011L10.8057 4.85425L10.9844 4.81714L11.0674 4.79956L11.1445 4.83667ZM6.07617 13.5554L10.4609 15.655V10.9792L6.07617 8.87964V13.5554ZM11.5645 10.9792V15.655L15.9492 13.5554V8.87964L11.5645 10.9792ZM9.58398 9.31519C9.77259 9.40533 9.9563 9.49958 10.1338 9.5896C10.4478 9.74885 10.748 9.89158 11.0557 9.99097L15.2285 7.99585L13.7285 7.31714L9.58398 9.31519ZM6.83594 8.00366L8.30078 8.69604L12.4678 6.65015L11.0312 5.97534L11.0088 5.97437L6.83594 8.00366Z" fill="black" stroke="black" stroke-width="0.508504"/><path d="M19.9727 6.73059C20.1223 6.73467 20.244 6.80412 20.333 6.88977C20.4296 6.98282 20.4989 7.10423 20.5498 7.21399C20.5994 7.32082 20.6414 7.44161 20.6758 7.54993L20.7559 7.81165V7.81262L20.8389 8.08118C22.4696 13.642 19.152 19.5402 13.5459 20.9415L13.2734 21.006C9.82411 21.7682 6.36422 20.7439 3.84961 18.3575L3.68066 19.9298L3.67871 19.9523L3.67188 19.9738C3.62891 20.1214 3.54279 20.2413 3.42188 20.3156C3.30258 20.3888 3.16504 20.4075 3.03906 20.382C2.78123 20.3294 2.57962 20.0961 2.58789 19.7814L2.60742 19.4327C2.63609 19.081 2.68888 18.7227 2.74121 18.3741C2.8119 17.9034 2.88148 17.4489 2.89746 17.0167L2.89844 16.9816L2.91016 16.9464L2.9668 16.8136C2.98967 16.7718 3.01652 16.7326 3.04883 16.6974C3.11581 16.6245 3.19512 16.5794 3.27734 16.5538C3.35527 16.5297 3.43294 16.5242 3.49707 16.5236C3.55893 16.523 3.62847 16.5272 3.68359 16.5294H3.68457L4.17383 16.5626C4.68727 16.6085 5.25308 16.6857 5.70508 16.7433L5.85449 16.7589C5.91388 16.7647 5.98162 16.772 6.04883 16.7804C6.1158 16.7888 6.18704 16.7995 6.25195 16.8136C6.28205 16.8201 6.31613 16.8279 6.35059 16.839L6.45215 16.882L6.53613 16.9366C6.71432 17.0749 6.77847 17.2868 6.73145 17.4835C6.68076 17.6955 6.50506 17.8741 6.26367 17.9181L6.22754 17.9249L6.19141 17.921L4.86816 17.7833C6.27136 19.062 8.5027 20.0048 10.3252 20.1085L10.626 20.1212C16.8314 20.2895 21.365 14.6807 19.8379 8.63586L19.7588 8.3429C19.7418 8.28358 19.7029 8.18807 19.6475 8.04602C19.5961 7.91455 19.536 7.75566 19.4961 7.60071C19.4584 7.45427 19.4273 7.27141 19.4668 7.10754C19.4881 7.01917 19.532 6.92597 19.6152 6.85266C19.6987 6.7792 19.8011 6.74317 19.9062 6.73254L19.9727 6.73059Z" fill="black" stroke="black" stroke-width="0.508504"/><path d="M7.42383 1.38672C11.1759 0.00510053 15.324 0.901149 18.1768 3.65625L18.3438 2.0498L18.3457 2.03027L18.3506 2.01172C18.4257 1.72166 18.7105 1.57428 18.9639 1.61328C19.0981 1.634 19.2268 1.70573 19.3164 1.83105C19.4043 1.95421 19.4416 2.11078 19.4365 2.28418L19.4375 2.28516C19.4238 2.73981 19.3537 3.21469 19.2861 3.67285C19.2348 4.02109 19.1854 4.36042 19.1572 4.68848L19.1367 5.01172L19.1357 5.04004L19.1289 5.06641C19.0994 5.18117 19.0297 5.28158 18.9502 5.35352C18.8717 5.42451 18.7561 5.49213 18.6182 5.49707L18.5957 5.49805L18.5742 5.49512C18.1659 5.43899 17.7521 5.40344 17.3311 5.36719C16.9124 5.33114 16.4862 5.29395 16.0635 5.23535H16.0625C16.0151 5.22861 15.9187 5.21683 15.834 5.20215C15.7579 5.18895 15.6396 5.1656 15.5518 5.11621H15.5508C15.3135 4.98177 15.2521 4.7256 15.2998 4.52246C15.3473 4.32058 15.5132 4.12086 15.7773 4.09375L15.8018 4.0918L15.8271 4.09375L17.1338 4.2168C14.1179 1.45528 9.53355 1.0919 6.06934 3.31934L5.71875 3.55566C2.4222 5.89705 1.16996 9.92292 2.30957 13.8047L2.39746 14.0273C2.43807 14.1261 2.48664 14.2482 2.51953 14.3701C2.55086 14.4863 2.57785 14.6355 2.54688 14.7783C2.53033 14.8544 2.49657 14.9344 2.43457 15.0029C2.38784 15.0546 2.33139 15.0931 2.26953 15.1201L2.20508 15.1436C2.05578 15.1881 1.90829 15.1821 1.77637 15.1162C1.65199 15.054 1.57035 14.9524 1.51562 14.8604C1.46061 14.7677 1.4213 14.6651 1.3916 14.5781L1.31543 14.3457C-0.488629 9.28922 2.14616 3.55501 7.0459 1.53418L7.42383 1.38672Z" fill="black" stroke="black" stroke-width="0.508504"/><path d="M7.49414 10.5759L7.53027 10.5818L7.56348 10.5984L9.36035 11.4871L9.39355 11.5027L9.4209 11.5281C9.56097 11.658 9.56869 11.8448 9.55566 11.9558C9.54231 12.0691 9.49444 12.2108 9.39551 12.3074L9.39648 12.3083V12.3093L9.39062 12.3152L9.38965 12.3142C9.27866 12.4184 9.13176 12.4366 9.0459 12.4392C8.94805 12.4422 8.8503 12.4278 8.77832 12.4089V12.408C8.73888 12.3976 8.68465 12.3751 8.64062 12.3562C8.58789 12.3335 8.52165 12.3036 8.44727 12.2693C8.29816 12.2005 8.11126 12.1115 7.92578 12.0212C7.74044 11.931 7.55478 11.839 7.40723 11.7634C7.33357 11.7257 7.26819 11.6917 7.2168 11.6638L7.08984 11.5886C6.84032 11.4079 6.79671 11.1242 6.89551 10.9031C6.97616 10.7228 7.1612 10.5698 7.39258 10.5671L7.49414 10.5759Z" fill="black" stroke="black" stroke-width="0.508504"/></svg>
+            <span class="product-teaser__trust-label">Free &amp; Easy Returns</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Section 12: Community Video (Videowise UGC Embed)
+       ========================================================================= -->
+  <section class="community-video">
+    <div class="community-video__inner">
+      <p class="community-video__eyebrow">The Community</p>
+      <h2 class="community-video__title">See how everyone wears&nbsp;it</h2>
+      <div class="community-video__placeholder">Videowise UGC embed goes&nbsp;here</div>
+      <a href="#shop" class="button button--white">Shop Blushing&nbsp;Stick</a>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Section 15: Footer
+       ========================================================================= -->
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__top">
+        <div>
+          <h4 class="site-footer__col-title">Shop</h4>
+          <a href="#" class="site-footer__link">Bestsellers</a>
+          <a href="#" class="site-footer__link">New Arrivals</a>
+          <a href="#" class="site-footer__link">Skin</a>
+          <a href="#" class="site-footer__link">Makeup</a>
+        </div>
+        <div>
+          <h4 class="site-footer__col-title">Help</h4>
+          <a href="#" class="site-footer__link">Contact Us</a>
+          <a href="#" class="site-footer__link">Shipping + Returns</a>
+          <a href="#" class="site-footer__link">FAQ</a>
+        </div>
+        <div>
+          <h4 class="site-footer__col-title">About</h4>
+          <a href="#" class="site-footer__link">Our Story</a>
+          <a href="#" class="site-footer__link">Stores</a>
+          <a href="#" class="site-footer__link">Careers</a>
+        </div>
+        <div>
+          <h4 class="site-footer__col-title">Follow Us</h4>
+          <a href="#" class="site-footer__link">Instagram</a>
+          <a href="#" class="site-footer__link">TikTok</a>
+          <a href="#" class="site-footer__link">YouTube</a>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <span class="site-footer__logo"><svg width="140" height="14" viewBox="0 0 256 22" fill="none" xmlns="http://www.w3.org/2000/svg"><title>Jones Road</title><g clip-path="url(#jrl-f)"><path d="M0 20.26V14C0.92 14.68 2.04 15.04 3.19 15C5.49 15 6.92 13.82 6.92 11.5V0.71H16.79V13.27C16.79 19.35 12.69 21.96 6.79 21.96C3.43 22 1 21.08 0 20.26Z" fill="white"/><path d="M34.21 0C24.89 0 19.31 4.46 19.31 10.81C19.31 16.94 24.89 22 34.18 22C43.47 22 49.06 17 49.06 10.85C49.06 4.46 43.47 0 34.21 0ZM34.21 15C33.65 15.05 33.09 14.97 32.57 14.78C32.04 14.59 31.57 14.29 31.17 13.9C30.77 13.51 30.46 13.04 30.26 12.52C30.05 12 29.97 11.45 30 10.89C30 8.52 31.6 7 34.18 7C36.76 7 38.4 8.5 38.4 10.87C38.43 11.43 38.35 11.99 38.15 12.51C37.95 13.04 37.63 13.51 37.23 13.9C36.83 14.29 36.35 14.59 35.83 14.78C35.3 14.97 34.74 15.05 34.18 15H34.21Z" fill="white"/><path d="M77.78 0.7V21.26H65.89L60 9.92V21.26H51.62V0.7H63.73L69.44 11.95V0.7H77.78Z" fill="white"/><path d="M102.69 15.18V21.26H81.56V0.7H102.63V6.78H91.43V8.6H102.14V13.18H91.43V15.18H102.69Z" fill="white"/><path d="M105.44 19.09V13.15C108.51 14.96 112.01 15.92 115.58 15.92C117.52 15.92 118.34 15.62 118.34 14.92C118.34 14.22 117.86 13.98 116.34 13.77L113.43 13.36C107.93 12.6 105.2 10.57 105.2 7.02C105.2 3.02 108.99 0.02 117.61 0.02C122.93 0.02 126.05 1.19 127.69 2.02V7.84C125.03 6.62 122.12 6.02 119.19 6.08C116.55 6.08 115.85 6.46 115.85 7.08C115.85 7.55 116.16 7.84 117.98 8.02L121.11 8.37C126.21 8.93 129.11 10.6 129.11 14.37C129.11 19.01 124.11 21.85 116.97 21.85C112.96 21.94 109 20.96 105.49 19.01" fill="white"/><path d="M153.07 10.92C154.95 10.92 155.99 10.13 155.99 8.72C155.99 7.31 154.99 6.67 153.16 6.67H149.88V10.92H153.07ZM155.07 21.26L149.91 13.15V21.26H140V0.71H157.5C162.84 0.71 166.18 3.41 166.18 7.78C166.24 9.27 165.76 10.74 164.82 11.9C163.88 13.06 162.55 13.84 161.08 14.09L166.27 21.26H155.07Z" fill="white"/><path d="M183.05 0C173.73 0 168.14 4.46 168.14 10.81C168.14 16.94 173.73 22 183 22C192.27 22 197.88 17 197.88 10.85C197.89 4.46 192.3 0 183.05 0ZM183.05 15C182.5 15.05 181.94 14.97 181.42 14.79C180.9 14.6 180.43 14.31 180.03 13.92C179.63 13.54 179.32 13.07 179.11 12.56C178.91 12.05 178.81 11.49 178.84 10.94C178.8 8.52 180.43 7 183 7C185.57 7 187.22 8.5 187.22 10.87C187.26 11.43 187.17 11.99 186.97 12.51C186.77 13.04 186.46 13.51 186.06 13.9C185.66 14.29 185.18 14.59 184.65 14.78C184.12 14.97 183.56 15.05 183 15H183.05Z" fill="white"/><path d="M214.06 13.51L211.91 6.17L209.72 13.51H214.06ZM215.43 18.15H208.36L207.45 21.26H197.79L204.79 0.7H219.39L226.31 21.26H216.38L215.43 18.15Z" fill="white"/><path d="M241.11 0.7H228V21.26H240.2C250.79 21.26 255.2 16.21 255.2 10.84C255.23 5.05 250.61 0.7 241.11 0.7ZM240.05 15.21H237.89V6.75H240.41C243.41 6.75 244.6 8.55 244.6 10.81C244.6 13.42 243.08 15.21 240.05 15.21Z" fill="white"/></g><defs><clipPath id="jrl-f"><rect width="255.23" height="21.96" fill="white"/></clipPath></defs></svg></span>
+        <span class="site-footer__copy">&copy; 2026 Jones Road Beauty. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+
+  <script>
+    // Mouse detection for hover gating
+    document.addEventListener('mousemove', function() {
+      document.body.classList.add('has-mouse');
+    }, { once: true });
+
+    // Shade carousel arrow navigation
+    (function() {
+      var scroll = document.getElementById('shadeScroll');
+      var prev = document.getElementById('shadePrev');
+      var next = document.getElementById('shadeNext');
+      if (!scroll || !prev || !next) return;
+      var scrollAmount = 232;
+      prev.addEventListener('click', function() {
+        scroll.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      });
+      next.addEventListener('click', function() {
+        scroll.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      });
+    })();
+  </script>
+
+</body>
+</html>
