@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDP Section Winners &mdash; Jones Road Beauty</title>
+  <style>
+    /* === FONTS (CDN) === */
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-LightItalic.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+
+    /* === CUSTOM PROPERTIES === */
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    /* === RESET === */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 20px; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 1; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* === BUTTON (global) === */
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    /* === REDUCED MOTION === */
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    /* =====================================================
+       PAGE LAYOUT — Hero + TOC + Content
+       ===================================================== */
+
+    .page-layout { display: flex; min-height: 100vh; }
+
+    /* === STICKY TOC (desktop) === */
+    .toc { position: fixed; top: 0; left: 0; width: 220px; height: 100vh; background: var(--color-black); color: var(--color-white); padding: 32px 20px; overflow-y: auto; z-index: 100; display: flex; flex-direction: column; }
+    .toc__brand { font-family: var(--font-display); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-white); opacity: .4; margin-block-end: 32px; }
+    .toc__list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+    .toc__item { display: block; }
+    .toc__link { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; font-family: var(--font-body); font-size: 12px; line-height: 1.4; color: var(--color-white); opacity: .5; transition: opacity .4s var(--ease-primary); border: none; background: none; cursor: pointer; text-align: left; }
+    .toc__link:hover, .toc__link.is-active { opacity: 1; }
+    .toc__num { font-family: var(--font-serif); font-size: 14px; font-weight: 300; flex-shrink: 0; width: 20px; }
+    .toc__name { flex: 1; }
+    .toc__dots { display: flex; gap: 3px; margin-block-start: 4px; }
+    .toc__dot { width: 6px; height: 6px; border-radius: 50%; }
+    .toc__dot--yes { background: #22c55e; }
+    .toc__dot--maybe { background: #d0d0d0; }
+
+    .main-content { margin-left: 220px; flex: 1; }
+
+    @media (max-width: 768px) {
+      .toc { display: none; }
+      .main-content { margin-left: 0; }
+    }
+
+    /* === HERO === */
+    .hero { background: var(--color-black); color: var(--color-white); padding: 100px 40px 80px; text-align: center; }
+    .hero__title { font-family: var(--font-serif); font-size: 56px; font-weight: 300; line-height: 1.15; margin-block-end: 20px; }
+    .hero__subtitle { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-white); opacity: .7; max-width: 600px; margin: 0 auto 16px; }
+    .hero__date { font-family: var(--font-display); font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--color-white); opacity: .35; }
+    .hero__stats { display: flex; justify-content: center; gap: 48px; margin-block-start: 48px; }
+    .hero__stat-num { font-family: var(--font-serif); font-size: 48px; font-weight: 300; }
+    .hero__stat-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; opacity: .5; margin-block-start: 4px; }
+    @media (max-width: 768px) {
+      .hero { padding: 64px 20px 56px; }
+      .hero__title { font-size: 36px; }
+      .hero__stats { gap: 24px; }
+      .hero__stat-num { font-size: 32px; }
+    }
+
+    /* === SECTION DIVIDER === */
+    .divider { padding: 64px 40px; text-align: center; border-bottom: 1px solid var(--color-border); background: var(--color-white); }
+    .divider__num { font-family: var(--font-serif); font-size: 48px; font-weight: 300; color: var(--color-black); opacity: .15; margin-block-end: 8px; }
+    .divider__type { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 8px; }
+    .divider__variation { font-family: var(--font-body); font-size: 14px; color: var(--color-black); opacity: .6; margin-block-end: 16px; }
+    .divider__badges { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
+    .badge { font-family: var(--font-mono); font-size: 10px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; padding: 4px 12px; border-radius: 100px; }
+    .badge--yes { background: #22c55e; color: var(--color-white); }
+    .badge--maybe { background: #d0d0d0; color: var(--color-black); }
+    @media (max-width: 768px) {
+      .divider { padding: 48px 20px; }
+      .divider__num { font-size: 36px; }
+    }
+
+
+    /* =====================================================
+       SECTION 1 — Bobbi Classic 2-Column
+       ===================================================== */
+    .bobbi-classic { padding: 64px 20px; background: var(--color-warm-bg); }
+    .bobbi-classic__inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .bobbi-classic__img-wrap { aspect-ratio: 1 / 1; overflow: hidden; border-radius: 3px; background: #eee; }
+    .bobbi-classic__img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .bobbi-classic__content { display: flex; flex-direction: column; gap: 20px; }
+    .bobbi-classic__name { font-family: var(--font-display); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--color-black); }
+    .bobbi-classic__role { font-family: var(--font-body); font-size: 14px; color: var(--color-black); line-height: 1.5; }
+    .bobbi-classic__quote { font-family: var(--font-serif); font-size: 28px; font-weight: 300; font-style: italic; line-height: 1.35; color: var(--color-black); }
+    .bobbi-classic__credentials { font-family: var(--font-body); font-size: 14px; line-height: 1.6; color: var(--color-black); }
+    .bobbi-classic__cta { margin-block-start: 8px; }
+    @media (max-width: 768px) {
+      .bobbi-classic { padding: 48px 16px; }
+      .bobbi-classic__inner { grid-template-columns: 1fr; gap: 32px; }
+      .bobbi-classic__quote { font-size: 22px; }
+    }
+
+
+    /* =====================================================
+       SECTION 2 — Bobbi Full-Bleed Portrait
+       ===================================================== */
+    .bobbi-bleed { position: relative; min-height: 560px; overflow: hidden; display: flex; align-items: center; }
+    .bobbi-bleed__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .bobbi-bleed__overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.72) 0%, rgba(0,0,0,.35) 50%, rgba(0,0,0,0) 100%); }
+    .bobbi-bleed__content { position: relative; z-index: 2; max-width: 560px; padding: 64px 40px; color: var(--color-white); display: flex; flex-direction: column; gap: 20px; }
+    .bobbi-bleed__name { font-family: var(--font-display); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+    .bobbi-bleed__role { font-family: var(--font-body); font-size: 14px; line-height: 1.5; opacity: .8; }
+    .bobbi-bleed__quote { font-family: var(--font-serif); font-size: 36px; font-weight: 300; font-style: italic; line-height: 1.3; }
+    .bobbi-bleed__cta { margin-block-start: 8px; }
+    .bobbi-bleed .button { border-color: var(--color-white); background: var(--color-white); color: var(--color-black); }
+    .has-mouse .bobbi-bleed .button:not(:disabled):hover { background: transparent; color: var(--color-white); }
+    @media (max-width: 768px) {
+      .bobbi-bleed { min-height: 480px; }
+      .bobbi-bleed__content { padding: 48px 20px; }
+      .bobbi-bleed__quote { font-size: 26px; }
+      .bobbi-bleed__overlay { background: linear-gradient(0deg, rgba(0,0,0,.75) 0%, rgba(0,0,0,.3) 60%, rgba(0,0,0,0) 100%); }
+    }
+
+
+    /* =====================================================
+       SECTION 3 — Shade Confidence Arm Swatch Carousel
+       ===================================================== */
+    .swatch-carousel { padding: 64px 20px; background: var(--color-warm-bg); }
+    .swatch-carousel__inner { max-width: 1100px; margin: 0 auto; }
+    .swatch-carousel__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .swatch-carousel__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
+    .swatch-carousel__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 600px; margin: 0 auto 32px; }
+    .swatch-carousel__filters { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-block-end: 40px; }
+    .swatch-carousel__pill { font-family: var(--font-mono); font-size: 11px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; padding: 8px 20px; border: 1px solid var(--color-black); border-radius: 2px; background: transparent; color: var(--color-black); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .swatch-carousel__pill.is-active { background: var(--color-black); color: var(--color-white); }
+    .has-mouse .swatch-carousel__pill:hover { background: var(--color-black); color: var(--color-white); }
+    .swatch-carousel__track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-block-end: 16px; scrollbar-width: none; }
+    .swatch-carousel__track::-webkit-scrollbar { display: none; }
+    .swatch-carousel__card { flex: 0 0 280px; scroll-snap-align: start; }
+    .swatch-carousel__img-wrap { aspect-ratio: 4 / 5; overflow: hidden; border-radius: 3px; margin-block-end: 12px; background: var(--color-warm-bg); }
+    .swatch-carousel__img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .swatch-carousel__shade-tag { font-family: var(--font-display); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-block-end: 4px; }
+    .swatch-carousel__skin-tone { font-family: var(--font-body); font-size: 13px; color: var(--color-black); opacity: .7; }
+    .swatch-carousel__nav { display: flex; justify-content: center; gap: 12px; margin-block-start: 24px; }
+    .swatch-carousel__arrow { width: 44px; height: 44px; border: 1px solid var(--color-black); border-radius: 2px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .4s var(--ease-primary); }
+    .has-mouse .swatch-carousel__arrow:hover { background: var(--color-black); }
+    .has-mouse .swatch-carousel__arrow:hover svg { stroke: var(--color-white); }
+    .swatch-carousel__arrow svg { width: 16px; height: 16px; stroke: var(--color-black); stroke-width: 2; fill: none; transition: stroke .4s var(--ease-primary); }
+    @media (max-width: 768px) {
+      .swatch-carousel { padding: 48px 16px; }
+      .swatch-carousel__heading { font-size: 26px; line-height: 1.3; }
+      .swatch-carousel__card { flex: 0 0 240px; }
+    }
+
+
+    /* =====================================================
+       SECTION 4 — How To 2x2 Step Grid
+       ===================================================== */
+    .howto-grid { padding: 64px 20px; background: var(--color-white); }
+    .howto-grid__inner { max-width: 1100px; margin: 0 auto; }
+    .howto-grid__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .howto-grid__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
+    .howto-grid__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 520px; margin: 0 auto 48px; }
+    .howto-grid__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .howto-grid__card { border: 1px solid var(--color-border); border-radius: 3px; overflow: hidden; }
+    .howto-grid__card-img { aspect-ratio: 4 / 3; overflow: hidden; background: var(--color-warm-bg); }
+    .howto-grid__card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .howto-grid__card-body { padding: 24px; }
+    .howto-grid__step-num { font-family: var(--font-serif); font-size: 36px; font-weight: 300; color: var(--color-black); opacity: .2; margin-block-end: 8px; }
+    .howto-grid__step-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--color-black); margin-block-end: 8px; }
+    .howto-grid__step-desc { font-family: var(--font-body); font-size: 14px; line-height: 1.6; color: var(--color-black); }
+    @media (max-width: 768px) {
+      .howto-grid { padding: 48px 16px; }
+      .howto-grid__heading { font-size: 26px; line-height: 1.3; }
+      .howto-grid__cards { grid-template-columns: 1fr; gap: 16px; }
+      .howto-grid__step-num { font-size: 28px; }
+    }
+
+
+    /* =====================================================
+       SECTION 5 — Ingredients What's In + What's Not
+       ===================================================== */
+    .ingredients { padding: 64px 20px; background: var(--color-warm-bg); }
+    .ingredients__inner { max-width: 1100px; margin: 0 auto; }
+    .ingredients__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .ingredients__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
+    .ingredients__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 560px; margin: 0 auto 48px; }
+    .ingredients__columns { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .ingredients__col { border-radius: 3px; padding: 40px 32px; }
+    .ingredients__col--in { background: var(--color-white); }
+    .ingredients__col--not { background: var(--color-black); color: var(--color-white); }
+    .ingredients__col-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-block-end: 28px; }
+    .ingredients__item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-top: 1px solid var(--color-border); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+    .ingredients__col--not .ingredients__item { border-top-color: rgba(255,255,255,.12); }
+    .ingredients__icon { flex-shrink: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; margin-block-start: 1px; }
+    .ingredients__icon--plus svg { stroke: var(--color-black); }
+    .ingredients__icon--x svg { stroke: var(--color-accent); }
+    .ingredients__item-name { font-weight: 400; }
+    .ingredients__item-desc { font-size: 13px; opacity: .6; margin-block-start: 2px; }
+    @media (max-width: 768px) {
+      .ingredients { padding: 48px 16px; }
+      .ingredients__heading { font-size: 26px; line-height: 1.3; }
+      .ingredients__columns { grid-template-columns: 1fr; }
+      .ingredients__col { padding: 32px 24px; }
+    }
+
+
+    /* =====================================================
+       SECTION 6 — Quiz Builder Dual Path
+       ===================================================== */
+    .quiz-dual { padding: 64px 20px; background: var(--color-white); }
+    .quiz-dual__inner { max-width: 900px; margin: 0 auto; }
+    .quiz-dual__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .quiz-dual__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 48px; }
+    .quiz-dual__cards { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: center; }
+    .quiz-dual__card { border: 1px solid var(--color-border); border-radius: 3px; padding: 48px 32px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .quiz-dual__or { font-family: var(--font-serif); font-size: 20px; font-weight: 300; font-style: italic; color: var(--color-black); opacity: .4; padding: 0 24px; }
+    .quiz-dual__card-icon { width: 48px; height: 48px; border-radius: 50%; background: var(--color-warm-bg); display: flex; align-items: center; justify-content: center; }
+    .quiz-dual__card-icon svg { width: 22px; height: 22px; stroke: var(--color-black); fill: none; stroke-width: 1.5; }
+    .quiz-dual__card-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--color-black); }
+    .quiz-dual__card-desc { font-family: var(--font-body); font-size: 14px; line-height: 1.6; color: var(--color-black); }
+    .quiz-dual__card-meta { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; color: var(--color-black); opacity: .5; }
+    @media (max-width: 768px) {
+      .quiz-dual { padding: 48px 16px; }
+      .quiz-dual__heading { font-size: 26px; line-height: 1.3; margin-block-end: 32px; }
+      .quiz-dual__cards { grid-template-columns: 1fr; gap: 0; }
+      .quiz-dual__or { padding: 16px 0; }
+      .quiz-dual__card { padding: 32px 24px; }
+    }
+
+
+    /* =====================================================
+       SECTION 7 — Social Proof Review Filtering
+       ===================================================== */
+    .review-filter { padding: 64px 20px; background: var(--color-warm-bg); }
+    .review-filter__inner { max-width: 1100px; margin: 0 auto; }
+    .review-filter__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .review-filter__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 40px; max-width: 700px; margin-left: auto; margin-right: auto; }
+    .review-filter__tabs { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-block-end: 40px; }
+    .review-filter__tab { font-family: var(--font-mono); font-size: 11px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; padding: 8px 20px; border: 1px solid var(--color-black); border-radius: 2px; background: transparent; color: var(--color-black); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .review-filter__tab.is-active { background: var(--color-black); color: var(--color-white); }
+    .has-mouse .review-filter__tab:hover { background: var(--color-black); color: var(--color-white); }
+    .review-filter__cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .review-filter__card { background: var(--color-white); border-radius: 3px; padding: 32px 24px; display: flex; flex-direction: column; gap: 16px; }
+    .review-filter__card-tag { font-family: var(--font-mono); font-size: 10px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; color: var(--color-black); opacity: .5; }
+    .review-filter__stars { display: flex; gap: 2px; }
+    .review-filter__stars svg { width: 14px; height: 14px; fill: var(--color-black); }
+    .review-filter__card-quote { font-family: var(--font-body); font-size: 15px; line-height: 1.6; color: var(--color-black); flex: 1; }
+    .review-filter__card-author { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; color: var(--color-black); opacity: .5; }
+    @media (max-width: 768px) {
+      .review-filter { padding: 48px 16px; }
+      .review-filter__heading { font-size: 26px; line-height: 1.3; }
+      .review-filter__cards { grid-template-columns: 1fr; }
+    }
+
+
+    /* =====================================================
+       SECTION 8 — Cross-Sell Annotated Before/After
+       ===================================================== */
+    .cross-sell { padding: 64px 20px; background: var(--color-white); }
+    .cross-sell__inner { max-width: 1100px; margin: 0 auto; }
+    .cross-sell__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .cross-sell__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 48px; }
+    .cross-sell__layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .cross-sell__img-wrap { position: relative; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 3px; background: var(--color-warm-bg); }
+    .cross-sell__img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .cross-sell__label { position: absolute; background: var(--color-white); padding: 6px 12px; border-radius: 2px; font-family: var(--font-mono); font-size: 10px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; color: var(--color-black); box-shadow: 0 2px 8px rgba(0,0,0,.12); white-space: nowrap; }
+    .cross-sell__label::before { content: ''; position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); top: 50%; left: -10px; transform: translateY(-50%); }
+    .cross-sell__label--1 { top: 18%; right: 8%; }
+    .cross-sell__label--2 { top: 38%; left: 6%; }
+    .cross-sell__label--3 { top: 58%; right: 10%; }
+    .cross-sell__label--4 { top: 76%; left: 8%; }
+    .cross-sell__products { display: flex; flex-direction: column; gap: 16px; }
+    .cross-sell__product { display: flex; gap: 16px; align-items: center; padding: 16px; border: 1px solid var(--color-border); border-radius: 3px; }
+    .cross-sell__product-img { width: 64px; height: 64px; border-radius: 3px; background: var(--color-warm-bg); flex-shrink: 0; overflow: hidden; }
+    .cross-sell__product-img img { width: 100%; height: 100%; object-fit: cover; }
+    .cross-sell__product-info { flex: 1; }
+    .cross-sell__product-name { font-family: var(--font-display); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-block-end: 4px; }
+    .cross-sell__product-area { font-family: var(--font-body); font-size: 13px; color: var(--color-black); opacity: .6; }
+    .cross-sell__product-price { font-family: var(--font-mono); font-size: 13px; font-weight: 550; flex-shrink: 0; }
+    @media (max-width: 768px) {
+      .cross-sell { padding: 48px 16px; }
+      .cross-sell__heading { font-size: 26px; line-height: 1.3; }
+      .cross-sell__layout { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+
+    /* =====================================================
+       SECTION 9 — Before/After Split Slider
+       ===================================================== */
+    .split-slider { padding: 64px 20px; background: var(--color-warm-bg); }
+    .split-slider__inner { max-width: 800px; margin: 0 auto; }
+    .split-slider__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .split-slider__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 48px; }
+    .split-slider__container { position: relative; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 3px; cursor: col-resize; user-select: none; -webkit-user-select: none; }
+    .split-slider__before, .split-slider__after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    .split-slider__before img, .split-slider__after img { width: 100%; height: 100%; object-fit: cover; }
+    .split-slider__before { clip-path: inset(0 50% 0 0); z-index: 2; }
+    .split-slider__divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: var(--color-white); z-index: 3; transform: translateX(-50%); pointer-events: none; }
+    .split-slider__handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 4; width: 48px; height: 48px; border-radius: 50%; background: var(--color-white); box-shadow: 0 2px 12px rgba(0,0,0,.2); display: flex; align-items: center; justify-content: center; pointer-events: none; }
+    .split-slider__handle svg { width: 20px; height: 20px; stroke: var(--color-black); fill: none; stroke-width: 2; }
+    .split-slider__label-before, .split-slider__label-after { position: absolute; bottom: 20px; z-index: 5; font-family: var(--font-mono); font-size: 10px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; padding: 6px 12px; border-radius: 2px; pointer-events: none; }
+    .split-slider__label-before { left: 20px; background: var(--color-white); color: var(--color-black); }
+    .split-slider__label-after { right: 20px; background: var(--color-black); color: var(--color-white); }
+    @media (max-width: 768px) {
+      .split-slider { padding: 48px 16px; }
+      .split-slider__heading { font-size: 26px; line-height: 1.3; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+
+  <!-- === TOC SIDEBAR === -->
+  <nav class="toc" id="toc">
+    <p class="toc__brand">Jones Road Beauty</p>
+    <ul class="toc__list">
+      <li class="toc__item">
+        <a href="#section-1" class="toc__link" data-section="section-1">
+          <span class="toc__num">01</span>
+          <span class="toc__name">Bobbi &mdash; Classic 2-Col
+            <span class="toc__dots"><span class="toc__dot toc__dot--yes" title="MB"></span><span class="toc__dot toc__dot--yes" title="WTF"></span><span class="toc__dot toc__dot--yes" title="FS"></span></span>
+          </span>
+        </a>
+      </li>
+      <li class="toc__item">
+        <a href="#section-2" class="toc__link" data-section="section-2">
+          <span class="toc__num">02</span>
+          <span class="toc__name">Bobbi &mdash; Full-Bleed
+            <span class="toc__dots"><span class="toc__dot toc__dot--yes" title="WTF"></span></span>
+          </span>
+        </a>
+      </li>
+      <li class="toc__item">
+        <a href="#section-3" class="toc__link" data-section="section-3">
+          <span class="toc__num">03</span>
+          <span class="toc__name">Shade Confidence
+            <span class="toc__dots"><span class="toc__dot toc__dot--yes" title="WTF"></span><span class="toc__dot toc__dot--yes" title="FS"></span></span>
+          </span>
+        </a>
+      </li>
+      <li class="toc__item">
+        <a href="#section-4" class="toc__link" data-section="section-4">
+          <span class="toc__num">04</span>
+          <span class="toc__name">How To Apply
+            <span class="toc__dots"><span class="toc__dot toc__dot--yes" title="BS"></span><span class="toc__dot toc__dot--yes" title="FS"></span></span>
+          </span>
+        </a>
+      </li>
+      <li class="toc__item">
+        <a href="#section-5" class="toc__link" data-section="section-5">
+          <span class="toc__num">05</span>
+          <span class="toc__name">Ingredients
+            <span class="toc__dots"><span class="toc__dot toc__dot--yes" title="WTF"></span></span>
+          </span>
+        </a>
+      </li>
+      <li class="toc__item">
+        <a href="#section-6" class="toc__link" data-section="section-6">
+          <span class="toc__num">06</span>
+          <span class="toc__name">Quiz Builder
+            <span class="toc__dots"><span class="toc__dot toc__dot--yes" title="WTF"></span></span>
+          </span>
+        </a>
+      </li>
+      <li class="toc__item">
+        <a href="#section-7" class="toc__link" data-section="section-7">
+          <span class="toc__num">07</span>
+          <span class="toc__name">Social Proof
+            <span class="toc__dots"><span class="toc__dot toc__dot--yes" title="FS"></span></span>
+          </span>
+        </a>
+      </li>
+      <li class="toc__item">
+        <a href="#section-8" class="toc__link" data-section="section-8">
+          <span class="toc__num">08</span>
+          <span class="toc__name">Cross-Sell
+            <span class="toc__dots"><span class="toc__dot toc__dot--yes" title="BS"></span></span>
+          </span>
+        </a>
+      </li>
+      <li class="toc__item">
+        <a href="#section-9" class="toc__link" data-section="section-9">
+          <span class="toc__num">09</span>
+          <span class="toc__name">Before/After
+            <span class="toc__dots"><span class="toc__dot toc__dot--yes" title="FS"></span></span>
+          </span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- === MAIN CONTENT === -->
+  <div class="main-content">
+
+    <!-- === HERO === -->
+    <header class="hero">
+      <h1 class="hero__title">PDP Section Winners</h1>
+      <p class="hero__subtitle">9 winning section patterns selected from 400 mockups across 4&nbsp;products</p>
+      <p class="hero__date">March 2026</p>
+      <div class="hero__stats">
+        <div>
+          <p class="hero__stat-num">400</p>
+          <p class="hero__stat-label">Mockups Reviewed</p>
+        </div>
+        <div>
+          <p class="hero__stat-num">4</p>
+          <p class="hero__stat-label">Products</p>
+        </div>
+        <div>
+          <p class="hero__stat-num">9</p>
+          <p class="hero__stat-label">Winners</p>
+        </div>
+      </div>
+    </header>
+
+
+    <!-- ===================================================================
+         SECTION 1 — Bobbi Classic 2-Column
+         =================================================================== -->
+    <div class="divider" id="section-1">
+      <p class="divider__num">01</p>
+      <p class="divider__type">Bobbi &mdash; Classic 2-Column</p>
+      <p class="divider__variation">v01: Classic 2-Column Layout</p>
+      <div class="divider__badges">
+        <span class="badge badge--yes">YES: MB</span>
+        <span class="badge badge--yes">YES: WTF</span>
+        <span class="badge badge--yes">YES: FS</span>
+        <span class="badge badge--maybe">MAYBE: BS</span>
+      </div>
+    </div>
+
+    <section class="bobbi-classic">
+      <div class="bobbi-classic__inner">
+        <div class="bobbi-classic__img-wrap">
+          <img src="https://air-prod.imgix.net/87f1416c-fef8-441a-b6eb-7733dd536b2f.jpg?w=800&h=800&fit=crop&auto=format" alt="Bobbi Brown, Founder of Jones Road Beauty" loading="lazy">
+        </div>
+        <div class="bobbi-classic__content">
+          <p class="bobbi-classic__name">Bobbi Brown</p>
+          <p class="bobbi-classic__role">Founder, Jones Road Beauty</p>
+          <blockquote class="bobbi-classic__quote">"I wanted to create something clean that actually works. Not 10 steps. Not complicated. Just real products for real&nbsp;skin."</blockquote>
+          <p class="bobbi-classic__credentials">Founded Bobbi Brown Cosmetics in 1991 and built it into a billion-dollar brand. NYT bestselling author. Launched Jones Road in 2020 to prove that less really is&nbsp;more.</p>
+          <div class="bobbi-classic__cta">
+            <a href="#" class="button">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 2 — Bobbi Full-Bleed Portrait
+         =================================================================== -->
+    <div class="divider" id="section-2">
+      <p class="divider__num">02</p>
+      <p class="divider__type">Bobbi &mdash; Full-Bleed Portrait</p>
+      <p class="divider__variation">v02: Full-Bleed Image with Gradient&nbsp;Overlay</p>
+      <div class="divider__badges">
+        <span class="badge badge--yes">YES: WTF</span>
+        <span class="badge badge--maybe">MAYBE: MB</span>
+        <span class="badge badge--maybe">MAYBE: FS</span>
+      </div>
+    </div>
+
+    <section class="bobbi-bleed">
+      <img class="bobbi-bleed__img" src="https://air-prod.imgix.net/87f1416c-fef8-441a-b6eb-7733dd536b2f.jpg?w=1400&h=700&fit=crop&auto=format" alt="Bobbi Brown portrait" loading="lazy">
+      <div class="bobbi-bleed__overlay"></div>
+      <div class="bobbi-bleed__content">
+        <p class="bobbi-bleed__name">Bobbi Brown</p>
+        <p class="bobbi-bleed__role">Founder, Jones Road Beauty</p>
+        <blockquote class="bobbi-bleed__quote">"I've spent 40 years in beauty. This is the product I wish I'd made&nbsp;first."</blockquote>
+        <div class="bobbi-bleed__cta">
+          <a href="#" class="button">Learn More</a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 3 — Shade Confidence Arm Swatch Carousel
+         =================================================================== -->
+    <div class="divider" id="section-3">
+      <p class="divider__num">03</p>
+      <p class="divider__type">Shade Confidence &mdash; Arm Swatch Carousel</p>
+      <p class="divider__variation">v02: Horizontal Scrollable Swatch Cards with Filter&nbsp;Pills</p>
+      <div class="divider__badges">
+        <span class="badge badge--yes">YES: WTF</span>
+        <span class="badge badge--yes">YES: FS</span>
+        <span class="badge badge--maybe">MAYBE: MB</span>
+      </div>
+    </div>
+
+    <section class="swatch-carousel">
+      <div class="swatch-carousel__inner">
+        <p class="swatch-carousel__eyebrow">Real Swatches, Real Skin</p>
+        <h2 class="swatch-carousel__heading">Swatched on real skin, not a&nbsp;screen</h2>
+        <p class="swatch-carousel__subhead">76% of customers said seeing swatches on real skin was the one thing missing from their purchase&nbsp;decision.</p>
+
+        <div class="swatch-carousel__filters">
+          <button class="swatch-carousel__pill is-active">All Shades</button>
+          <button class="swatch-carousel__pill">Fair</button>
+          <button class="swatch-carousel__pill">Light</button>
+          <button class="swatch-carousel__pill">Medium</button>
+          <button class="swatch-carousel__pill">Tan</button>
+          <button class="swatch-carousel__pill">Deep</button>
+        </div>
+
+        <div class="swatch-carousel__track">
+          <div class="swatch-carousel__card">
+            <div class="swatch-carousel__img-wrap">
+              <img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=560&h=700&fit=crop&auto=format" alt="Fair shade swatch on arm" loading="lazy">
+            </div>
+            <p class="swatch-carousel__shade-tag">Fair</p>
+            <p class="swatch-carousel__skin-tone">Light skin, cool undertone</p>
+          </div>
+          <div class="swatch-carousel__card">
+            <div class="swatch-carousel__img-wrap">
+              <img src="https://air-prod.imgix.net/c1323d9f-71be-4590-9bd7-be213be7032d.jpg?w=560&h=700&fit=crop&auto=format" alt="Light shade swatch on arm" loading="lazy">
+            </div>
+            <p class="swatch-carousel__shade-tag">Light</p>
+            <p class="swatch-carousel__skin-tone">Light skin, warm undertone</p>
+          </div>
+          <div class="swatch-carousel__card">
+            <div class="swatch-carousel__img-wrap">
+              <img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=560&h=700&fit=crop&auto=format" alt="Medium shade swatch on arm" loading="lazy">
+            </div>
+            <p class="swatch-carousel__shade-tag">Medium</p>
+            <p class="swatch-carousel__skin-tone">Medium skin, neutral undertone</p>
+          </div>
+          <div class="swatch-carousel__card">
+            <div class="swatch-carousel__img-wrap">
+              <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=560&h=700&fit=crop&auto=format" alt="Tan shade swatch on arm" loading="lazy">
+            </div>
+            <p class="swatch-carousel__shade-tag">Tan</p>
+            <p class="swatch-carousel__skin-tone">Tan skin, warm undertone</p>
+          </div>
+          <div class="swatch-carousel__card">
+            <div class="swatch-carousel__img-wrap">
+              <img src="https://air-prod.imgix.net/476d8004-173d-4a6b-b040-8ee0f7a79da0.jpg?w=560&h=700&fit=crop&auto=format" alt="Deep shade swatch on arm" loading="lazy">
+            </div>
+            <p class="swatch-carousel__shade-tag">Deep</p>
+            <p class="swatch-carousel__skin-tone">Deep skin, warm undertone</p>
+          </div>
+        </div>
+
+        <div class="swatch-carousel__nav">
+          <button class="swatch-carousel__arrow" aria-label="Scroll left">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+          <button class="swatch-carousel__arrow" aria-label="Scroll right">
+            <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"></polyline></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 4 — How To 2x2 Step Grid
+         =================================================================== -->
+    <div class="divider" id="section-4">
+      <p class="divider__num">04</p>
+      <p class="divider__type">How To &mdash; 2x2 Step Grid</p>
+      <p class="divider__variation">v01: Four-Step Grid with Photo + Step&nbsp;Number</p>
+      <div class="divider__badges">
+        <span class="badge badge--yes">YES: BS</span>
+        <span class="badge badge--yes">YES: FS</span>
+        <span class="badge badge--maybe">MAYBE: MB</span>
+      </div>
+    </div>
+
+    <section class="howto-grid">
+      <div class="howto-grid__inner">
+        <p class="howto-grid__eyebrow">How to Apply</p>
+        <h2 class="howto-grid__heading">Apply, blend, done</h2>
+        <p class="howto-grid__subhead">No tools. No brushes. Just your fingers and 30 seconds. That's how easy this&nbsp;is.</p>
+
+        <div class="howto-grid__cards">
+          <div class="howto-grid__card">
+            <div class="howto-grid__card-img">
+              <img src="https://air-prod.imgix.net/28a564bb-86f2-469a-89c7-fd9f6e7774f5.jpg?w=600&h=450&fit=crop&auto=format" alt="Step 1: Swipe" loading="lazy">
+            </div>
+            <div class="howto-grid__card-body">
+              <p class="howto-grid__step-num">01</p>
+              <p class="howto-grid__step-title">Swipe</p>
+              <p class="howto-grid__step-desc">Run two fingers across the surface to pick up just the right amount of&nbsp;product.</p>
+            </div>
+          </div>
+          <div class="howto-grid__card">
+            <div class="howto-grid__card-img">
+              <img src="https://air-prod.imgix.net/b5b14f30-338d-4e0f-9322-af316105a0e8.jpg?w=600&h=450&fit=crop&auto=format" alt="Step 2: Blend" loading="lazy">
+            </div>
+            <div class="howto-grid__card-body">
+              <p class="howto-grid__step-num">02</p>
+              <p class="howto-grid__step-title">Blend</p>
+              <p class="howto-grid__step-desc">Tap and press into skin using fingertips. Work from the center of the face&nbsp;outward.</p>
+            </div>
+          </div>
+          <div class="howto-grid__card">
+            <div class="howto-grid__card-img">
+              <img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=600&h=450&fit=crop&auto=format" alt="Step 3: Build (Optional)" loading="lazy">
+            </div>
+            <div class="howto-grid__card-body">
+              <p class="howto-grid__step-num">03</p>
+              <p class="howto-grid__step-title">Build (Optional)</p>
+              <p class="howto-grid__step-desc">Want more coverage? Layer a second pass on areas that need it. It won't cake or&nbsp;crease.</p>
+            </div>
+          </div>
+          <div class="howto-grid__card">
+            <div class="howto-grid__card-img">
+              <img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=600&h=450&fit=crop&auto=format" alt="Step 4: Done" loading="lazy">
+            </div>
+            <div class="howto-grid__card-body">
+              <p class="howto-grid__step-num">04</p>
+              <p class="howto-grid__step-title">Done</p>
+              <p class="howto-grid__step-desc">That's it. Skin that looks like skin, only better. Ready in under a&nbsp;minute.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 5 — Ingredients What's In + What's Not
+         =================================================================== -->
+    <div class="divider" id="section-5">
+      <p class="divider__num">05</p>
+      <p class="divider__type">Ingredients &mdash; What's In + What's Not</p>
+      <p class="divider__variation">v01: Two-Column Clean Formula Breakdown</p>
+      <div class="divider__badges">
+        <span class="badge badge--yes">YES: WTF</span>
+        <span class="badge badge--maybe">MAYBE: MB</span>
+        <span class="badge badge--maybe">MAYBE: BS</span>
+      </div>
+    </div>
+
+    <section class="ingredients">
+      <div class="ingredients__inner">
+        <p class="ingredients__eyebrow">Clean Formula</p>
+        <h2 class="ingredients__heading">What goes on your skin&nbsp;matters</h2>
+        <p class="ingredients__subhead">54% of customers said ingredient transparency was a deciding factor in their&nbsp;purchase.</p>
+
+        <div class="ingredients__columns">
+          <!-- What's In -->
+          <div class="ingredients__col ingredients__col--in">
+            <p class="ingredients__col-title">What's In</p>
+            <div class="ingredients__item">
+              <span class="ingredients__icon ingredients__icon--plus">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="2"><line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/></svg>
+              </span>
+              <span>
+                <span class="ingredients__item-name">Hyaluronic Acid</span>
+                <p class="ingredients__item-desc">Draws moisture into skin for all-day&nbsp;hydration</p>
+              </span>
+            </div>
+            <div class="ingredients__item">
+              <span class="ingredients__icon ingredients__icon--plus">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="2"><line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/></svg>
+              </span>
+              <span>
+                <span class="ingredients__item-name">Squalane</span>
+                <p class="ingredients__item-desc">Lightweight oil that mimics skin's natural&nbsp;moisture</p>
+              </span>
+            </div>
+            <div class="ingredients__item">
+              <span class="ingredients__icon ingredients__icon--plus">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="2"><line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/></svg>
+              </span>
+              <span>
+                <span class="ingredients__item-name">Vitamin E</span>
+                <p class="ingredients__item-desc">Antioxidant protection against environmental&nbsp;stress</p>
+              </span>
+            </div>
+            <div class="ingredients__item">
+              <span class="ingredients__icon ingredients__icon--plus">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="2"><line x1="10" y1="4" x2="10" y2="16"/><line x1="4" y1="10" x2="16" y2="10"/></svg>
+              </span>
+              <span>
+                <span class="ingredients__item-name">Jojoba Oil</span>
+                <p class="ingredients__item-desc">Balances oil production without clogging&nbsp;pores</p>
+              </span>
+            </div>
+          </div>
+
+          <!-- What's Not -->
+          <div class="ingredients__col ingredients__col--not">
+            <p class="ingredients__col-title">What's Not</p>
+            <div class="ingredients__item">
+              <span class="ingredients__icon ingredients__icon--x">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="2"><line x1="5" y1="5" x2="15" y2="15"/><line x1="15" y1="5" x2="5" y2="15"/></svg>
+              </span>
+              <span class="ingredients__item-name">No Parabens</span>
+            </div>
+            <div class="ingredients__item">
+              <span class="ingredients__icon ingredients__icon--x">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="2"><line x1="5" y1="5" x2="15" y2="15"/><line x1="15" y1="5" x2="5" y2="15"/></svg>
+              </span>
+              <span class="ingredients__item-name">No Sulfates</span>
+            </div>
+            <div class="ingredients__item">
+              <span class="ingredients__icon ingredients__icon--x">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="2"><line x1="5" y1="5" x2="15" y2="15"/><line x1="15" y1="5" x2="5" y2="15"/></svg>
+              </span>
+              <span class="ingredients__item-name">No Phthalates</span>
+            </div>
+            <div class="ingredients__item">
+              <span class="ingredients__icon ingredients__icon--x">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="2"><line x1="5" y1="5" x2="15" y2="15"/><line x1="15" y1="5" x2="5" y2="15"/></svg>
+              </span>
+              <span class="ingredients__item-name">No Synthetic Fragrance</span>
+            </div>
+            <div class="ingredients__item">
+              <span class="ingredients__icon ingredients__icon--x">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="2"><line x1="5" y1="5" x2="15" y2="15"/><line x1="15" y1="5" x2="5" y2="15"/></svg>
+              </span>
+              <span class="ingredients__item-name">No Talc</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 6 — Quiz Builder Dual Path
+         =================================================================== -->
+    <div class="divider" id="section-6">
+      <p class="divider__num">06</p>
+      <p class="divider__type">Quiz Builder &mdash; Quiz + Selfie Dual Path</p>
+      <p class="divider__variation">v01: Two Side-by-Side Matching&nbsp;Options</p>
+      <div class="divider__badges">
+        <span class="badge badge--yes">YES: WTF</span>
+        <span class="badge badge--maybe">MAYBE: FS</span>
+      </div>
+    </div>
+
+    <section class="quiz-dual">
+      <div class="quiz-dual__inner">
+        <p class="quiz-dual__eyebrow">Find Your Shade</p>
+        <h2 class="quiz-dual__heading">Two ways to find your perfect&nbsp;match</h2>
+
+        <div class="quiz-dual__cards">
+          <!-- Quiz Card -->
+          <div class="quiz-dual__card">
+            <div class="quiz-dual__card-icon">
+              <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            </div>
+            <p class="quiz-dual__card-title">Take the Shade Quiz</p>
+            <p class="quiz-dual__card-desc">Answer 3 quick questions about your skin tone, undertone, and coverage preference. We'll match you to your perfect&nbsp;shade.</p>
+            <p class="quiz-dual__card-meta">3 questions &middot; 60 seconds</p>
+            <a href="#" class="button">Start the Quiz</a>
+          </div>
+
+          <!-- Or -->
+          <span class="quiz-dual__or">or</span>
+
+          <!-- Selfie Card -->
+          <div class="quiz-dual__card">
+            <div class="quiz-dual__card-icon">
+              <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </div>
+            <p class="quiz-dual__card-title">Send a Selfie</p>
+            <p class="quiz-dual__card-desc">Upload a photo in natural light. One of our shade experts will personally match you and reply within 24&nbsp;hours.</p>
+            <p class="quiz-dual__card-meta">Expert match &middot; 24 hours</p>
+            <a href="#" class="button">Upload Photo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 7 — Social Proof Review Filtering
+         =================================================================== -->
+    <div class="divider" id="section-7">
+      <p class="divider__num">07</p>
+      <p class="divider__type">Social Proof &mdash; Review Filtering UI</p>
+      <p class="divider__variation">v03: Concern-Based Filter Tabs with Review&nbsp;Cards</p>
+      <div class="divider__badges">
+        <span class="badge badge--yes">YES: FS</span>
+        <span class="badge badge--maybe">MAYBE: WTF</span>
+        <span class="badge badge--maybe">MAYBE: BS</span>
+      </div>
+    </div>
+
+    <section class="review-filter">
+      <div class="review-filter__inner">
+        <p class="review-filter__eyebrow">Reviews by Concern</p>
+        <h2 class="review-filter__heading">Find reviews from people who care about what you care&nbsp;about</h2>
+
+        <div class="review-filter__tabs">
+          <button class="review-filter__tab is-active">Lightweight Feel</button>
+          <button class="review-filter__tab">Natural Finish</button>
+          <button class="review-filter__tab">All-Day Wear</button>
+          <button class="review-filter__tab">Easy Application</button>
+        </div>
+
+        <div class="review-filter__cards">
+          <div class="review-filter__card">
+            <p class="review-filter__card-tag">Lightweight Feel</p>
+            <div class="review-filter__stars">
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+            </div>
+            <p class="review-filter__card-quote">"I forget I'm wearing it. It feels like nothing on my skin but somehow still makes me look polished. This is what I've been searching&nbsp;for."</p>
+            <p class="review-filter__card-author">Sarah M. &middot; Verified Buyer</p>
+          </div>
+          <div class="review-filter__card">
+            <p class="review-filter__card-tag">Lightweight Feel</p>
+            <div class="review-filter__stars">
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+            </div>
+            <p class="review-filter__card-quote">"As someone with sensitive skin who hates heavy foundation, this is a game-changer. Breathable, dewy, and my skin looks like my skin &mdash; just&nbsp;better."</p>
+            <p class="review-filter__card-author">Diana K. &middot; Verified Buyer</p>
+          </div>
+          <div class="review-filter__card">
+            <p class="review-filter__card-tag">Lightweight Feel</p>
+            <div class="review-filter__stars">
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+              <svg viewBox="0 0 16 16"><path d="M8 0l2.5 5 5.5.8-4 3.9.9 5.3L8 12.4 3.1 15l.9-5.3-4-3.9L5.5 5z"/></svg>
+            </div>
+            <p class="review-filter__card-quote">"I'm 62 and this doesn't settle into lines like every other product I've tried. It actually makes my skin look better, not like I'm wearing a&nbsp;mask."</p>
+            <p class="review-filter__card-author">Margaret L. &middot; Verified Buyer</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 8 — Cross-Sell Annotated Before/After
+         =================================================================== -->
+    <div class="divider" id="section-8">
+      <p class="divider__num">08</p>
+      <p class="divider__type">Cross-Sell &mdash; Annotated Before/After</p>
+      <p class="divider__variation">v01: Face Map with Product Labels + Product&nbsp;Cards</p>
+      <div class="divider__badges">
+        <span class="badge badge--yes">YES: BS</span>
+        <span class="badge badge--maybe">MAYBE: MB</span>
+      </div>
+    </div>
+
+    <section class="cross-sell">
+      <div class="cross-sell__inner">
+        <p class="cross-sell__eyebrow">Shop the Look</p>
+        <h2 class="cross-sell__heading">Every product on Emily's&nbsp;face</h2>
+
+        <div class="cross-sell__layout">
+          <div class="cross-sell__img-wrap">
+            <img src="https://air-prod.imgix.net/b5b14f30-338d-4e0f-9322-af316105a0e8.jpg?w=600&h=800&fit=crop&auto=format" alt="Emily wearing full Jones Road look" loading="lazy">
+            <span class="cross-sell__label cross-sell__label--1">What The Foundation</span>
+            <span class="cross-sell__label cross-sell__label--2">Blushing Stick</span>
+            <span class="cross-sell__label cross-sell__label--3">Miracle Balm</span>
+            <span class="cross-sell__label cross-sell__label--4">Face Pencil</span>
+          </div>
+
+          <div class="cross-sell__products">
+            <div class="cross-sell__product">
+              <div class="cross-sell__product-img">
+                <img src="https://air-prod.imgix.net/87f1416c-fef8-441a-b6eb-7733dd536b2f.jpg?w=128&h=128&fit=crop&auto=format" alt="What The Foundation" loading="lazy">
+              </div>
+              <div class="cross-sell__product-info">
+                <p class="cross-sell__product-name">What The Foundation</p>
+                <p class="cross-sell__product-area">Full face &middot; Light-medium coverage</p>
+              </div>
+              <p class="cross-sell__product-price">$49</p>
+            </div>
+            <div class="cross-sell__product">
+              <div class="cross-sell__product-img">
+                <img src="https://air-prod.imgix.net/28a564bb-86f2-469a-89c7-fd9f6e7774f5.jpg?w=128&h=128&fit=crop&auto=format" alt="Blushing Stick" loading="lazy">
+              </div>
+              <div class="cross-sell__product-info">
+                <p class="cross-sell__product-name">Blushing Stick</p>
+                <p class="cross-sell__product-area">Cheeks &middot; Natural flush</p>
+              </div>
+              <p class="cross-sell__product-price">$28</p>
+            </div>
+            <div class="cross-sell__product">
+              <div class="cross-sell__product-img">
+                <img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=128&h=128&fit=crop&auto=format" alt="Miracle Balm" loading="lazy">
+              </div>
+              <div class="cross-sell__product-info">
+                <p class="cross-sell__product-name">Miracle Balm</p>
+                <p class="cross-sell__product-area">Eyes, lips, cheeks &middot; All-over glow</p>
+              </div>
+              <p class="cross-sell__product-price">$38</p>
+            </div>
+            <div class="cross-sell__product">
+              <div class="cross-sell__product-img">
+                <img src="https://air-prod.imgix.net/c1323d9f-71be-4590-9bd7-be213be7032d.jpg?w=128&h=128&fit=crop&auto=format" alt="Face Pencil" loading="lazy">
+              </div>
+              <div class="cross-sell__product-info">
+                <p class="cross-sell__product-name">Face Pencil</p>
+                <p class="cross-sell__product-area">Under eyes &middot; Targeted coverage</p>
+              </div>
+              <p class="cross-sell__product-price">$25</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 9 — Before/After Split Slider
+         =================================================================== -->
+    <div class="divider" id="section-9">
+      <p class="divider__num">09</p>
+      <p class="divider__type">Before/After &mdash; Split Slider</p>
+      <p class="divider__variation">v01: Draggable Slider with Before/After&nbsp;Labels</p>
+      <div class="divider__badges">
+        <span class="badge badge--yes">YES: FS</span>
+        <span class="badge badge--maybe">MAYBE: BS</span>
+        <span class="badge badge--maybe">MAYBE: MB</span>
+      </div>
+    </div>
+
+    <section class="split-slider">
+      <div class="split-slider__inner">
+        <p class="split-slider__eyebrow">Drag to Reveal</p>
+        <h2 class="split-slider__heading">Before and after, side by&nbsp;side</h2>
+
+        <div class="split-slider__container" id="slider-container">
+          <div class="split-slider__before" id="slider-before">
+            <img src="https://air-prod.imgix.net/f429435e-e95e-4c24-9691-d67623a86695.jpg?w=700&h=930&fit=crop&auto=format" alt="Before" loading="lazy">
+          </div>
+          <div class="split-slider__after">
+            <img src="https://air-prod.imgix.net/3dd6c299-6630-440e-8f51-8c78fdbeae18.jpg?w=700&h=930&fit=crop&auto=format" alt="After" loading="lazy">
+          </div>
+          <div class="split-slider__divider" id="slider-divider"></div>
+          <div class="split-slider__handle" id="slider-handle">
+            <svg viewBox="0 0 24 24"><polyline points="8 4 4 12 8 20"/><polyline points="16 4 20 12 16 20"/></svg>
+          </div>
+          <span class="split-slider__label-before">Before</span>
+          <span class="split-slider__label-after">After</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- === FOOTER === -->
+    <footer style="padding: 64px 40px; text-align: center; border-top: 1px solid #d0d0d0;">
+      <p style="font-family: var(--font-serif); font-size: 24px; font-weight: 300; color: var(--color-black); margin-block-end: 12px;">9 patterns. 4 products. Build&nbsp;ready.</p>
+      <p style="font-family: var(--font-body); font-size: 14px; color: var(--color-black); opacity: .5;">Jones Road Beauty &middot; PDP Section Architecture &middot; March&nbsp;2026</p>
+    </footer>
+
+  </div><!-- /.main-content -->
+
+
+  <!-- === JAVASCRIPT === -->
+  <script>
+    /* has-mouse detection */
+    document.addEventListener('mouseover', function onMouse() {
+      document.body.classList.add('has-mouse');
+      document.removeEventListener('mouseover', onMouse);
+    });
+
+    /* TOC active state on scroll */
+    (function() {
+      var links = document.querySelectorAll('.toc__link');
+      var sections = [];
+      links.forEach(function(link) {
+        var id = link.getAttribute('href').replace('#', '');
+        var el = document.getElementById(id);
+        if (el) sections.push({ id: id, el: el, link: link });
+      });
+
+      function updateActive() {
+        var scrollY = window.scrollY + 120;
+        var active = null;
+        for (var i = sections.length - 1; i >= 0; i--) {
+          if (sections[i].el.offsetTop <= scrollY) {
+            active = sections[i];
+            break;
+          }
+        }
+        links.forEach(function(l) { l.classList.remove('is-active'); });
+        if (active) active.link.classList.add('is-active');
+      }
+
+      window.addEventListener('scroll', updateActive, { passive: true });
+      updateActive();
+    })();
+
+    /* Swatch carousel arrows */
+    (function() {
+      var track = document.querySelector('.swatch-carousel__track');
+      var arrows = document.querySelectorAll('.swatch-carousel__arrow');
+      if (!track || arrows.length < 2) return;
+      arrows[0].addEventListener('click', function() {
+        track.scrollBy({ left: -300, behavior: 'smooth' });
+      });
+      arrows[1].addEventListener('click', function() {
+        track.scrollBy({ left: 300, behavior: 'smooth' });
+      });
+    })();
+
+    /* Filter pill toggle (visual only) */
+    document.querySelectorAll('.swatch-carousel__pill, .review-filter__tab').forEach(function(pill) {
+      pill.addEventListener('click', function() {
+        this.parentElement.querySelectorAll('.is-active').forEach(function(a) { a.classList.remove('is-active'); });
+        this.classList.add('is-active');
+      });
+    });
+
+    /* Before/After slider */
+    (function() {
+      var container = document.getElementById('slider-container');
+      var before = document.getElementById('slider-before');
+      var divider = document.getElementById('slider-divider');
+      var handle = document.getElementById('slider-handle');
+      if (!container || !before || !divider || !handle) return;
+
+      var isDragging = false;
+
+      function updateSlider(x) {
+        var rect = container.getBoundingClientRect();
+        var pct = Math.max(0, Math.min(1, (x - rect.left) / rect.width));
+        var pctStr = (pct * 100) + '%';
+        before.style.clipPath = 'inset(0 ' + ((1 - pct) * 100) + '% 0 0)';
+        divider.style.left = pctStr;
+        handle.style.left = pctStr;
+      }
+
+      container.addEventListener('mousedown', function(e) {
+        isDragging = true;
+        updateSlider(e.clientX);
+        e.preventDefault();
+      });
+      document.addEventListener('mousemove', function(e) {
+        if (isDragging) updateSlider(e.clientX);
+      });
+      document.addEventListener('mouseup', function() {
+        isDragging = false;
+      });
+
+      container.addEventListener('touchstart', function(e) {
+        isDragging = true;
+        updateSlider(e.touches[0].clientX);
+      }, { passive: true });
+      container.addEventListener('touchmove', function(e) {
+        if (isDragging) updateSlider(e.touches[0].clientX);
+      }, { passive: true });
+      container.addEventListener('touchend', function() {
+        isDragging = false;
+      });
+    })();
+  </script>
+
+</body>
+</html>
