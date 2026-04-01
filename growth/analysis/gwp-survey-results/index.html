@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GWP Survey Results — Jones Road Beauty</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: #1a1a1a;
+    background: #f5f3ef;
+    line-height: 1.6;
+  }
+
+  .page {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: #000;
+    color: #fff;
+    padding: 48px 56px 40px;
+  }
+
+  .header-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.25;
+    margin-bottom: 32px;
+  }
+
+  .header-meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .header-meta dt {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 4px;
+  }
+
+  .header-meta dd {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* ── CONTENT ── */
+  .content { padding: 48px 56px 64px; }
+
+  h2 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #999;
+    margin-top: 48px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  h2:first-child { margin-top: 0; }
+
+  p { margin-bottom: 14px; font-size: 15px; color: #333; }
+
+  /* ── METRIC CARDS ── */
+  .metric-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .metric-card {
+    border: 1px solid #eee;
+    border-left: 4px solid #ddd;
+    border-radius: 0 3px 3px 0;
+    padding: 16px;
+  }
+
+  .metric-card--green { border-left-color: #16a34a; }
+  .metric-card--red { border-left-color: #dc2626; }
+  .metric-card--amber { border-left-color: #d97706; }
+
+  .metric-card .mc-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #999;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .metric-card .mc-value {
+    font-size: 28px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .metric-card .mc-note {
+    font-size: 11px;
+    color: #888;
+  }
+
+  .metric-card--green .mc-value { color: #16a34a; }
+  .metric-card--red .mc-value { color: #dc2626; }
+  .metric-card--amber .mc-value { color: #d97706; }
+
+  /* ── EVAL BOX ── */
+  .eval-box {
+    background: #f0fdf4;
+    border-left: 4px solid #16a34a;
+    padding: 16px 20px;
+    border-radius: 0 3px 3px 0;
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .eval-box strong { color: #166534; }
+
+  .eval-box--amber {
+    background: #fffbeb;
+    border-left-color: #d97706;
+  }
+  .eval-box--amber strong { color: #92400e; }
+
+  .eval-box--red {
+    background: #fef2f2;
+    border-left-color: #dc2626;
+  }
+  .eval-box--red strong { color: #991b1b; }
+
+  /* ── BAR CHART ── */
+  .bar-chart { margin: 16px 0 24px; }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 12px;
+  }
+
+  .bar-label {
+    width: 200px;
+    flex-shrink: 0;
+    font-size: 13px;
+    color: #333;
+    text-align: right;
+  }
+
+  .bar-track {
+    flex: 1;
+    background: #f5f3ef;
+    border-radius: 3px;
+    height: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: #000;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    min-width: 36px;
+  }
+
+  .bar-fill span {
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  .bar-fill--accent { background: #16a34a; }
+
+  /* ── PIE / DONUT ── */
+  .donut-row {
+    display: flex;
+    gap: 32px;
+    margin: 20px 0;
+    align-items: flex-start;
+  }
+
+  .donut-block {
+    flex: 1;
+    text-align: center;
+  }
+
+  .donut-block h3 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #666;
+    margin-bottom: 16px;
+  }
+
+  .score-ring {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .score-ring-value {
+    font-size: 28px;
+    font-weight: 700;
+    z-index: 1;
+  }
+
+  .score-ring-label {
+    font-size: 11px;
+    color: #888;
+    margin-top: 2px;
+  }
+
+  .dist-bars { margin-top: 12px; }
+
+  .dist-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
+
+  .dist-label {
+    width: 14px;
+    text-align: center;
+    color: #888;
+    font-weight: 600;
+  }
+
+  .dist-track {
+    flex: 1;
+    background: #f5f3ef;
+    border-radius: 2px;
+    height: 16px;
+    overflow: hidden;
+  }
+
+  .dist-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  .dist-pct {
+    width: 36px;
+    text-align: right;
+    font-size: 11px;
+    color: #666;
+    font-weight: 500;
+  }
+
+  /* ── CONCEPT CARDS ── */
+  .concept-card {
+    margin: 16px 0;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .concept-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: #fafafa;
+    border-bottom: 1px solid #eee;
+  }
+
+  .concept-num {
+    width: 28px;
+    height: 28px;
+    background: #000;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .concept-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .concept-body {
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #444;
+    line-height: 1.7;
+  }
+
+  .concept-body p { font-size: 14px; color: #444; margin-bottom: 10px; }
+  .concept-body p:last-child { margin-bottom: 0; }
+
+  .concept-tag {
+    display: inline-block;
+    background: #f5f3ef;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 2px;
+    color: #888;
+    margin-right: 6px;
+  }
+
+  .concept-tag--green { background: #f0fdf4; color: #166534; }
+  .concept-tag--red { background: #fef2f2; color: #991b1b; }
+
+  /* ── QUOTES ── */
+  .quote-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .quote-card {
+    background: #fafafa;
+    border-radius: 3px;
+    padding: 16px 20px;
+    font-size: 13px;
+    color: #444;
+    line-height: 1.65;
+    border-left: 3px solid #e5e5e5;
+    font-style: italic;
+  }
+
+  .quote-card .quote-source {
+    font-style: normal;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #aaa;
+    margin-top: 10px;
+    font-weight: 600;
+  }
+
+  /* ── ACTION GRID ── */
+  .action-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .action-card {
+    border: 1px solid #eee;
+    border-radius: 3px;
+    padding: 20px;
+  }
+
+  .action-card h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #1a1a1a;
+  }
+
+  .action-card p {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 0;
+    line-height: 1.6;
+  }
+
+  .action-card .action-priority {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+  }
+
+  .action-priority--high { background: #000; color: #fff; }
+  .action-priority--med { background: #f5f3ef; color: #666; }
+
+  /* ── GWP TYPE BREAKDOWN ── */
+  .type-row {
+    display: flex;
+    margin: 16px 0;
+    border-radius: 3px;
+    overflow: hidden;
+    height: 40px;
+  }
+
+  .type-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    padding: 24px 56px;
+    border-top: 1px solid #eee;
+    font-size: 11px;
+    color: #bbb;
+    text-align: center;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .header { padding: 32px 24px 28px; }
+    .header h1 { font-size: 24px; }
+    .header-meta { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .content { padding: 32px 24px 48px; }
+    .metric-cards { grid-template-columns: 1fr; }
+    .bar-label { width: 120px; font-size: 11px; }
+    .quote-grid { grid-template-columns: 1fr; }
+    .action-grid { grid-template-columns: 1fr; }
+    .donut-row { flex-direction: column; gap: 24px; }
+    .footer { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <div class="header">
+    <div class="header-label">Customer Research</div>
+    <h1>What GWPs Do Our Customers Actually Want?</h1>
+    <dl class="header-meta">
+      <div>
+        <dt>Responses</dt>
+        <dd>118 completed</dd>
+      </div>
+      <div>
+        <dt>Source</dt>
+        <dd>Typeform Survey</dd>
+      </div>
+      <div>
+        <dt>Date</dt>
+        <dd>March 31, 2026</dd>
+      </div>
+      <div>
+        <dt>Teams</dt>
+        <dd>Growth / Ecom</dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="content">
+
+    <!-- ── TOP-LINE METRICS ── -->
+    <h2>Top-Line Metrics</h2>
+    <div class="metric-cards">
+      <div class="metric-card metric-card--green">
+        <div class="mc-label">Want Beauty Products</div>
+        <div class="mc-value">57.6%</div>
+        <div class="mc-note">68 of 118 respondents</div>
+      </div>
+      <div class="metric-card metric-card--green">
+        <div class="mc-label">Tiered GWP Score</div>
+        <div class="mc-value">3.76</div>
+        <div class="mc-note">out of 5 &mdash; 64% love it</div>
+      </div>
+      <div class="metric-card metric-card--red">
+        <div class="mc-label">Collab GWP Score</div>
+        <div class="mc-value">2.53</div>
+        <div class="mc-note">out of 5 &mdash; 47% not interested</div>
+      </div>
+    </div>
+
+    <!-- ── KEY FINDING ── -->
+    <div class="eval-box">
+      <strong>The signal is clear:</strong> Customers overwhelmingly want beauty product GWPs over merch or collabs. Their #1 ask is new or unreleased products (101 votes) &mdash; they want to feel like insiders who get to try things first. Pair this with strong appetite for tiered spend thresholds and you have a high-leverage GWP playbook.
+    </div>
+
+    <!-- ── GWP TYPE PREFERENCE ── -->
+    <h2>What type of GWP excites you?</h2>
+    <div class="type-row">
+      <div class="type-seg" style="width: 57.6%; background: #000;">Beauty Products 57.6%</div>
+      <div class="type-seg" style="width: 36.4%; background: #555;">Either 36.4%</div>
+      <div class="type-seg" style="width: 6%; background: #aaa; color: #fff; font-size: 10px;">6%</div>
+    </div>
+    <p style="font-size: 12px; color: #888; margin-top: -4px;">Merch: 5.1% &middot; Other brands: 0.8%</p>
+
+    <!-- ── PRODUCT PREFERENCES ── -->
+    <h2>Product GWP Preferences</h2>
+    <p>Multi-select question &mdash; respondents could choose all that apply.</p>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">New / unreleased products</div>
+        <div class="bar-track">
+          <div class="bar-fill bar-fill--accent" style="width: 100%;">
+            <span>101</span>
+          </div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Minis of bestsellers</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: 90.1%;">
+            <span>91</span>
+          </div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Tools / accessories</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: 86.1%;">
+            <span>87</span>
+          </div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Makeup</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: 58.4%;">
+            <span>59</span>
+          </div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Skincare</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: 51.5%;">
+            <span>52</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MERCH PREFERENCES ── -->
+    <h2>Merch Preferences</h2>
+    <p>For the minority who want merch, here's what they'd choose. Only shown to respondents who selected "Merch" or "Either" (49 people).</p>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">Tote bag</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: 100%;">
+            <span>35</span>
+          </div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Makeup bag / pouch</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: 100%;">
+            <span>35</span>
+          </div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Apparel</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: 91.4%;">
+            <span>32</span>
+          </div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Water bottle / tumbler</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: 62.9%;">
+            <span>22</span>
+          </div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Hat or cap</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: 45.7%;">
+            <span>16</span>
+          </div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Accessories</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: 31.4%;">
+            <span>11</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TIERED vs COLLAB ── -->
+    <h2>Tiered GWPs vs. Brand Collabs</h2>
+
+    <div class="donut-row">
+      <div class="donut-block">
+        <h3>Tiered GWPs</h3>
+        <div class="score-ring" style="background: conic-gradient(#16a34a 0% 75.2%, #f0f0f0 75.2%);">
+          <span class="score-ring-value" style="color: #16a34a;">3.76</span>
+        </div>
+        <div class="score-ring-label">"Love it &mdash; motivates me to spend more"</div>
+        <div class="dist-bars">
+          <div class="dist-row">
+            <span class="dist-label">5</span>
+            <div class="dist-track"><div class="dist-fill" style="width: 30.5%; background: #16a34a;"></div></div>
+            <span class="dist-pct">30.5%</span>
+          </div>
+          <div class="dist-row">
+            <span class="dist-label">4</span>
+            <div class="dist-track"><div class="dist-fill" style="width: 33.9%; background: #4ade80;"></div></div>
+            <span class="dist-pct">33.9%</span>
+          </div>
+          <div class="dist-row">
+            <span class="dist-label">3</span>
+            <div class="dist-track"><div class="dist-fill" style="width: 22.0%; background: #d4d4d4;"></div></div>
+            <span class="dist-pct">22.0%</span>
+          </div>
+          <div class="dist-row">
+            <span class="dist-label">2</span>
+            <div class="dist-track"><div class="dist-fill" style="width: 8.5%; background: #fca5a5;"></div></div>
+            <span class="dist-pct">8.5%</span>
+          </div>
+          <div class="dist-row">
+            <span class="dist-label">1</span>
+            <div class="dist-track"><div class="dist-fill" style="width: 5.1%; background: #dc2626;"></div></div>
+            <span class="dist-pct">5.1%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="donut-block">
+        <h3>Collab GWPs (Other Brands)</h3>
+        <div class="score-ring" style="background: conic-gradient(#dc2626 0% 50.6%, #f0f0f0 50.6%);">
+          <span class="score-ring-value" style="color: #dc2626;">2.53</span>
+        </div>
+        <div class="score-ring-label">"Not interested" trending</div>
+        <div class="dist-bars">
+          <div class="dist-row">
+            <span class="dist-label">5</span>
+            <div class="dist-track"><div class="dist-fill" style="width: 10.2%; background: #16a34a;"></div></div>
+            <span class="dist-pct">10.2%</span>
+          </div>
+          <div class="dist-row">
+            <span class="dist-label">4</span>
+            <div class="dist-track"><div class="dist-fill" style="width: 12.7%; background: #4ade80;"></div></div>
+            <span class="dist-pct">12.7%</span>
+          </div>
+          <div class="dist-row">
+            <span class="dist-label">3</span>
+            <div class="dist-track"><div class="dist-fill" style="width: 30.5%; background: #d4d4d4;"></div></div>
+            <span class="dist-pct">30.5%</span>
+          </div>
+          <div class="dist-row">
+            <span class="dist-label">2</span>
+            <div class="dist-track"><div class="dist-fill" style="width: 12.7%; background: #fca5a5;"></div></div>
+            <span class="dist-pct">12.7%</span>
+          </div>
+          <div class="dist-row">
+            <span class="dist-label">1</span>
+            <div class="dist-track"><div class="dist-fill" style="width: 33.9%; background: #dc2626;"></div></div>
+            <span class="dist-pct">33.9%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eval-box--amber eval-box">
+      <strong>Collab caution:</strong> Nearly half of respondents (46.6%) scored brand collabs a 1 or 2. The Cadence collab had fans, but the general sentiment is "keep it JRB." If collabs happen, they need to feel intentional and brand-aligned &mdash; not generic.
+    </div>
+
+    <!-- ── OPEN-ENDED THEMES ── -->
+    <h2>What We Heard &mdash; Key Themes</h2>
+
+    <div class="concept-card">
+      <div class="concept-header">
+        <div class="concept-num">1</div>
+        <div class="concept-title">"Let us try new products first"</div>
+      </div>
+      <div class="concept-body">
+        <p><span class="concept-tag concept-tag--green">101 votes</span> <span class="concept-tag">Top Pick</span></p>
+        <p>New or unreleased products was the #1 product GWP choice by a wide margin. Customers want the insider feeling of being first to try. This creates a natural launch amplifier &mdash; GWP as product seeding.</p>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-header">
+        <div class="concept-num">2</div>
+        <div class="concept-title">Tools and brushes are under-leveraged</div>
+      </div>
+      <div class="concept-body">
+        <p><span class="concept-tag concept-tag--green">87 votes</span> <span class="concept-tag">High Demand</span></p>
+        <p>Tools/accessories came in 3rd in the structured question, but dominated open-ended responses. "Mini brushes!" "Travel brush set!" "The Everything Brush with MB purchase!" appeared repeatedly. Customers see JRB tools as aspirational but under-sampled.</p>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-header">
+        <div class="concept-num">3</div>
+        <div class="concept-title">Tiered GWPs drive higher spend</div>
+      </div>
+      <div class="concept-body">
+        <p><span class="concept-tag concept-tag--green">64.4% score 4-5</span> <span class="concept-tag">Revenue lever</span></p>
+        <p>Customers explicitly say tiered thresholds motivate them to add to cart. One respondent: "I actually added more to my cart than I was going to initially get because I wanted the 2nd GWP." The Clinique and Estee Lauder tiered model was cited multiple times as aspirational.</p>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-header">
+        <div class="concept-num">4</div>
+        <div class="concept-title">Skip gifts from other brands</div>
+      </div>
+      <div class="concept-body">
+        <p><span class="concept-tag concept-tag--red">Avg 2.53/5</span> <span class="concept-tag">Avoid</span></p>
+        <p>The data is clear: customers want JRB products, not gifts from partner brands. "I stay loyal to JRB" and "No, only own brand" were common refrains. The Cadence collab had defenders, but was the exception. If a collab happens, it needs to feel like an extension of JRB, not a cross-promo.</p>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-header">
+        <div class="concept-num">5</div>
+        <div class="concept-title">Holiday kits are the unlock</div>
+      </div>
+      <div class="concept-body">
+        <p><span class="concept-tag">107 holiday responses</span> <span class="concept-tag concept-tag--green">High engagement</span></p>
+        <p>The holiday question generated the most open-ended responses. Customers want themed, curated kits: "spa set for Mother's Day," "sparkle for July 4th," "new fall colors for Labor Day." The word "kits" appeared in nearly a third of responses. They also want kits designed for gifting, not just self-purchase.</p>
+      </div>
+    </div>
+
+    <!-- ── VERBATIM HIGHLIGHTS ── -->
+    <h2>In Their Words</h2>
+
+    <div class="quote-grid">
+      <div class="quote-card">
+        "I actually added more to my cart than I was going to initially get because I wanted to try the 2nd GWP."
+        <div class="quote-source">On tiered GWPs</div>
+      </div>
+      <div class="quote-card">
+        "I placed an order although I didn't need anything just to get the under eye patches as a gift! I like these kind of gifts with purchase."
+        <div class="quote-source">On GWP driving purchases</div>
+      </div>
+      <div class="quote-card">
+        "I love getting a few options of gifts/samples that I can choose from. This allows me to try new products in small doses."
+        <div class="quote-source">On choice in GWPs</div>
+      </div>
+      <div class="quote-card">
+        "I love how Ulta does GWP. Many times it is a mini or travel kit of the full size you purchase. I will absolutely use it."
+        <div class="quote-source">On minis strategy</div>
+      </div>
+      <div class="quote-card">
+        "I thought the magnetic travel containers matching the body care line with the Jones Road logo was fantastic. I missed out and would love another chance."
+        <div class="quote-source">On the Cadence collab</div>
+      </div>
+      <div class="quote-card">
+        "Just make sure the gift is relevant to the spend. Like I'm not going to spend $150 to get a trial size perfume, ya know?"
+        <div class="quote-source">On GWP value alignment</div>
+      </div>
+      <div class="quote-card">
+        "A curated kit for Mother's Day, sparkles for July 4th, 'look awake' kit for Labor Day."
+        <div class="quote-source">On holiday kits</div>
+      </div>
+      <div class="quote-card">
+        "I like the idea that you reward your top spenders with a free item of choice. I am well into the thousands with JRB and wish that could be part of my profile."
+        <div class="quote-source">On loyalty rewards</div>
+      </div>
+      <div class="quote-card">
+        "Clinique used to give the most amazing GWPs with their makeup bags. It let me try new things and I had bags for travel."
+        <div class="quote-source">On the Clinique model</div>
+      </div>
+      <div class="quote-card">
+        "Whatever you do, make sure there's enough. The eye patches were great but then you couldn't use a discount code. Great lessons to be learned."
+        <div class="quote-source">On execution details</div>
+      </div>
+    </div>
+
+    <!-- ── RECURRING ASKS ── -->
+    <h2>Bonus: Recurring Asks Worth Noting</h2>
+    <div class="eval-box--amber eval-box">
+      <strong>Loyalty / rewards program</strong> came up unprompted in multiple responses. Customers want to feel recognized for repeat purchases. Not in scope for GWP planning, but a clear signal for the retention team.
+    </div>
+    <div style="margin-top: 12px;" class="eval-box--amber eval-box">
+      <strong>Fragrance samples</strong> were requested frequently &mdash; customers want to try the perfume before committing to full-size. Mini rollerballs or scent strips would be high-value, low-cost GWPs.
+    </div>
+    <div style="margin-top: 12px;" class="eval-box--amber eval-box">
+      <strong>Choose-your-own options</strong> came up repeatedly. Customers want shade choice or product choice rather than a one-size GWP. "I have received gifts with purchase where I could choose the color, which I really appreciate because a gift is only good if I will actually use it."
+    </div>
+
+    <!-- ── RECOMMENDED ACTIONS ── -->
+    <h2>Recommended Actions</h2>
+
+    <div class="action-grid">
+      <div class="action-card">
+        <div class="action-priority action-priority--high">Now</div>
+        <h4>Lead with new product GWPs</h4>
+        <p>Use upcoming launches as GWP moments. Seed new products as minis with purchase to create trial and buzz. Customers want to feel like insiders.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-priority action-priority--high">Now</div>
+        <h4>Implement tiered thresholds</h4>
+        <p>Spend $75 get X, spend $125 get Y. 64% of customers say this motivates higher spend. The data backs this up clearly.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-priority action-priority--med">Next</div>
+        <h4>Build holiday kit calendar</h4>
+        <p>Map themed kits to key holidays: Mother's Day (pampering/gifting), July 4th (summer glow), Labor Day (fall transition). Curate, don't just discount.</p>
+      </div>
+    </div>
+    <div class="action-grid" style="margin-top: 0;">
+      <div class="action-card">
+        <div class="action-priority action-priority--med">Next</div>
+        <h4>Tools as GWP test</h4>
+        <p>Mini Everything Brush or travel brush set with $100+ purchase. High perceived value, high demand signal from this survey.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-priority action-priority--med">Next</div>
+        <h4>Add shade/product choice</h4>
+        <p>When possible, let customers pick their GWP shade or product. Increases perceived value and reduces waste.</p>
+      </div>
+      <div class="action-card">
+        <div class="action-priority action-priority--med">Explore</div>
+        <h4>Fragrance minis</h4>
+        <p>Perfume rollerballs or sample sprays as low-cost, high-interest GWPs. Reduces the barrier to try a $90+ fragrance.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Jones Road Beauty &middot; GWP Survey Analysis &middot; April 2026 &middot; 118 responses via Typeform
+  </div>
+
+</div>
+</body>
+</html>
