@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shade AI V3 Proposal — CAB Feedback Calibration</title>
+  <style>
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; }
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #000;
+      background: #fff;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .header {
+      background: #000;
+      color: #fff;
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+
+    .header-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 16px;
+    }
+
+    .header h1 {
+      font-family: 'Canela', Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(28px, 5vw, 42px);
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .header-meta {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Stat bar */
+    .stat-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: #000;
+      margin: 0 auto;
+      max-width: 800px;
+    }
+
+    .stat-card {
+      background: #f8f8f8;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Canela', Georgia, serif;
+      font-weight: 300;
+      font-size: 36px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-number.red { color: #c00; }
+    .stat-number.green { color: #1a7a1a; }
+
+    .stat-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #666;
+    }
+
+    /* Sections */
+    section {
+      padding: 48px 0;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    section:last-of-type { border-bottom: none; }
+
+    .section-label {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-family: 'Canela', Georgia, serif;
+      font-weight: 300;
+      font-size: 28px;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin: 28px 0 12px;
+    }
+
+    p, li {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #000;
+    }
+
+    ul { padding-left: 20px; margin: 12px 0; }
+    li { margin-bottom: 6px; }
+
+    /* Problem cards */
+    .problem-card {
+      background: #f8f8f8;
+      border-left: 3px solid #c00;
+      padding: 20px 24px;
+      margin: 16px 0;
+    }
+
+    .problem-card h4 {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #c00;
+      margin-bottom: 8px;
+    }
+
+    .problem-card p {
+      font-size: 14px;
+      color: #333;
+    }
+
+    /* Evidence quotes */
+    .evidence {
+      background: #fafafa;
+      border-left: 3px solid #ccc;
+      padding: 12px 20px;
+      margin: 12px 0;
+      font-size: 13px;
+      color: #555;
+      font-style: italic;
+    }
+
+    .evidence strong { color: #000; font-style: normal; }
+
+    /* Fix cards */
+    .fix-card {
+      background: #f8f8f8;
+      border-left: 3px solid #1a7a1a;
+      padding: 20px 24px;
+      margin: 16px 0;
+    }
+
+    .fix-card h4 {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #1a7a1a;
+      margin-bottom: 8px;
+    }
+
+    /* Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+
+    .data-table th {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-align: left;
+      padding: 10px 12px;
+      background: #000;
+      color: #fff;
+    }
+
+    .data-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .data-table tr:nth-child(even) td { background: #fafafa; }
+
+    .arrow { color: #1a7a1a; font-weight: bold; }
+
+    /* File list */
+    .file-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .file-list li {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 12px;
+      padding: 10px 16px;
+      background: #f8f8f8;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .file-list .desc {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* Footer */
+    .footer {
+      background: #f8f8f8;
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    .footer p {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: #999;
+    }
+
+    @media (max-width: 600px) {
+      .stat-bar { grid-template-columns: 1fr; }
+      .header { padding: 36px 20px 32px; }
+      section { padding: 36px 0; }
+      .data-table { font-size: 11px; }
+      .data-table th, .data-table td { padding: 8px 6px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">Product Proposal</div>
+  <h1>Shade AI V3<br>CAB Feedback Calibration</h1>
+  <div class="header-meta">April 1, 2026 &mdash; Based on 89 CAB Tester Responses</div>
+</div>
+
+<div class="stat-bar">
+  <div class="stat-card">
+    <div class="stat-number">89</div>
+    <div class="stat-label">CAB Testers</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number red">~60%</div>
+    <div class="stat-label">Said "Too Light"</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number red">~17%</div>
+    <div class="stat-label">Cool &rarr; Neutral Misclass</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- CONTEXT -->
+  <section>
+    <div class="section-label">Context</div>
+    <h2>V2 Skews Too Light Across the Board</h2>
+    <p>89 CAB members tested V2 on April 1, 2026. The #1 issue: WTF shade, Face Pencil, and skin tone classification all lean lighter than what testers actually use. Secondary issue: undertone detection biases toward Cool when people are actually Neutral.</p>
+    <p style="margin-top: 12px;">The AI's shade recommendations are driven by two things: (1) Claude Vision's skin tone/undertone classification from the selfie, and (2) the shade-data mapping table that converts that classification into product recommendations. Both need adjustment.</p>
+  </section>
+
+  <!-- ROOT CAUSES -->
+  <section>
+    <div class="section-label">Root Cause Analysis</div>
+    <h2>Three Compounding Problems</h2>
+
+    <div class="problem-card">
+      <h4>Problem 1: System Prompt Says "Lean Lighter"</h4>
+      <p>The BORDERLINE CASES section of the Claude Vision prompt explicitly instructs: "When between two shades, lean LIGHTER." This was based on V1 "too dark" complaints, but CAB feedback shows the pendulum swung too far. The FACE PENCIL section also says "ALWAYS favor the lighter option" — double-dipping on the bias.</p>
+    </div>
+
+    <div class="problem-card">
+      <h4>Problem 2: Face Pencil Ranges Already Shifted 1 Lighter in V2</h4>
+      <p>The shade-data mapping already shifted ALL Face Pencil ranges 1 shade lighter vs V1. Combined with the "lean lighter" prompt guidance, this compounds the error.</p>
+    </div>
+
+    <div class="evidence">
+      <strong>Krista Baran:</strong> actual FP 2, 3 &mdash; recommended 06-07 (4 shades off)<br>
+      <strong>Natasha:</strong> actual FP 15 &mdash; recommended 08-11 (7 shades off, skin tone misclassified)<br>
+      <strong>Gail Hall:</strong> actual FP 08 &mdash; recommended 08-11 (ok) but detected as Medium when she's Light-Medium
+    </div>
+
+    <div class="problem-card">
+      <h4>Problem 3: Cool &rarr; Neutral Undertone Bias</h4>
+      <p>~15 testers said undertone was detected as Cool when they're actually Neutral. The prompt doesn't have strong enough guidance on distinguishing Cool from Neutral. Cool requires distinctly pink skin &mdash; absence of obvious warmth should default to Neutral, not Cool.</p>
+    </div>
+  </section>
+
+  <!-- WHAT'S WORKING -->
+  <section>
+    <div class="section-label">What's Working</div>
+    <h2>Keep These in V3</h2>
+    <ul>
+      <li><strong>Miracle Balm recommendations are solid</strong> &mdash; Flushed, Dusty Rose, and Pinched Cheeks appear as both recommended AND actually used by most testers</li>
+      <li><strong>Undertone-aware tint differentiation</strong> &mdash; the V2 concept of varying MB tint by undertone is validated</li>
+      <li><strong>Golden Hour as universal highlighter</strong> &mdash; no complaints on highlighter recs</li>
+      <li><strong>WTF shade mappings are correct</strong> &mdash; the problem is the AI classifies too light, which picks the wrong WTF from the map. Fix the classification and WTF accuracy follows</li>
+    </ul>
+  </section>
+
+  <!-- PROPOSED CHANGES -->
+  <section>
+    <div class="section-label">Proposed V3 Changes</div>
+    <h2>Three Targeted Fixes</h2>
+
+    <div class="fix-card">
+      <h4>Change 1: System Prompt &mdash; Flip "Lean Lighter" to "Lean Darker"</h4>
+      <p>Remove "lean LIGHTER" from borderline cases. Replace with: "The most common misclassification is reading someone as lighter than they are. When in doubt, go ONE STEP DARKER." Strengthen Beige default: "Unless the skin is clearly pink-fair with no warmth, default to Beige."</p>
+    </div>
+
+    <h3>Prompt Changes Detail</h3>
+    <ul>
+      <li><strong>Borderline Cases:</strong> "Lean LIGHTER" &rarr; "Lean toward the MORE COMMON shade / one step DARKER"</li>
+      <li><strong>Fair vs Light:</strong> Add "If there is any golden or olive cast, go Light. Fair is reserved for clearly pink-cool skin."</li>
+      <li><strong>Face Pencil:</strong> "LEAN LIGHTER" &rarr; "Match to the detected range. Do NOT bias lighter."</li>
+      <li><strong>Lighting:</strong> Add "Front-facing phone cameras with flash or indoor lighting frequently wash out warmth. Compensate by shifting 1 step warmer/darker."</li>
+    </ul>
+
+    <div class="fix-card">
+      <h4>Change 2: Add "Neutral is Default" Undertone Guidance</h4>
+      <p>New section in the system prompt: "Cool means distinctly PINK. Warm means distinctly GOLDEN/YELLOW. If the skin looks neither obviously pink nor obviously golden, it is NEUTRAL, not Cool. Neutral is the most common undertone &mdash; default to it unless you see clear pink or golden cues."</p>
+    </div>
+
+    <div class="fix-card">
+      <h4>Change 3: Widen Face Pencil Ranges Back Darker</h4>
+      <p>V2 shifted all FP ranges 1 shade lighter. CAB shows that was too aggressive. Widen ranges back up based on tester actuals.</p>
+    </div>
+
+    <h3>Face Pencil Range Changes</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Skin Tone</th>
+          <th>V2 Current (Face)</th>
+          <th></th>
+          <th>V3 Proposed (Face)</th>
+          <th>CAB Evidence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Fair</td>
+          <td>04</td>
+          <td class="arrow">&rarr;</td>
+          <td><strong>04-05</strong></td>
+          <td>Katy actual 08, Kristin actual 08</td>
+        </tr>
+        <tr>
+          <td>Light (Cool)</td>
+          <td>06-07</td>
+          <td class="arrow">&rarr;</td>
+          <td><strong>06-08</strong></td>
+          <td>Anoushka actual 08, Jami actual 11</td>
+        </tr>
+        <tr>
+          <td>Light (Warm)</td>
+          <td>07-08</td>
+          <td class="arrow">&rarr;</td>
+          <td><strong>07-09</strong></td>
+          <td>Cheyenne actual 10</td>
+        </tr>
+        <tr>
+          <td>Light (Neutral)</td>
+          <td>06-07</td>
+          <td class="arrow">&rarr;</td>
+          <td><strong>07-08</strong></td>
+          <td>Molly actual 10, Wendy actual 7</td>
+        </tr>
+        <tr>
+          <td>Light-Med (Cool)</td>
+          <td>07-09</td>
+          <td class="arrow">&rarr;</td>
+          <td><strong>08-10</strong></td>
+          <td>Back to V1 range</td>
+        </tr>
+        <tr>
+          <td>Light-Med (Warm)</td>
+          <td>08-10</td>
+          <td class="arrow">&rarr;</td>
+          <td><strong>09-11</strong></td>
+          <td>Gina actual 15, Rosemary actual 11</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- WTF NOTE -->
+  <section>
+    <div class="section-label">No Change Needed</div>
+    <h2>WTF Shade Mappings Stay the Same</h2>
+    <p>The WTF shade mapping in the data layer is actually correct (Fair, Light, Beige, Medium, etc.). The problem is that Claude Vision classifies the skin tone too light, which then picks the wrong WTF shade from the correct map. Fixing the system prompt (Change 1) should fix WTF accuracy downstream without touching the data mappings.</p>
+  </section>
+
+  <!-- FILES -->
+  <section>
+    <div class="section-label">Implementation</div>
+    <h2>Files to Modify</h2>
+    <ul class="file-list">
+      <li>
+        <span>src/app/api/match/route.ts</span>
+        <span class="desc">System prompt text (~15 lines)</span>
+      </li>
+      <li>
+        <span>src/lib/shade-data.ts</span>
+        <span class="desc">Face Pencil ranges + getComplexionShades()</span>
+      </li>
+    </ul>
+
+    <h3>Verification Plan</h3>
+    <ul>
+      <li>Deploy updated V3 to the V2 Vercel project</li>
+      <li>Test with selfies across lighting conditions</li>
+      <li>Confirm Face Pencil recs fall closer to CAB actual ranges</li>
+      <li>Monitor new feedback entries in Redis</li>
+      <li>Consider a second CAB round to validate improvements</li>
+    </ul>
+  </section>
+
+</div>
+
+<div class="footer">
+  <p>Shade AI V3 Proposal &mdash; April 2026 &mdash; Jones Road Beauty</p>
+</div>
+
+</body>
+</html>
