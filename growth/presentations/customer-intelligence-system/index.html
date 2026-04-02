@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Intelligence — How We Know Our Customers</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #141420;
+    --surface-2: #1c1c2e;
+    --border: #2a2a3e;
+    --text: #ededf4;
+    --text-muted: #8585a0;
+    --accent: #6366f1;
+    --green: #34d399;
+    --blue: #60a5fa;
+    --yellow: #fbbf24;
+    --pink: #f472b6;
+    --orange: #fb923c;
+    --cyan: #22d3ee;
+    --purple: #a78bfa;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--accent);
+    transition: width 0.4s ease;
+    z-index: 100;
+  }
+
+  .slide-counter {
+    position: fixed;
+    bottom: 28px;
+    right: 36px;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+    z-index: 100;
+  }
+
+  .nav-hint {
+    position: fixed;
+    bottom: 28px;
+    left: 36px;
+    font-size: 12px;
+    color: var(--text-muted);
+    z-index: 100;
+    opacity: 0.5;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .content {
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 5px 16px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: 58px;
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 20px;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 700px;
+  }
+
+  /* ── Slide 1: Title ── */
+  .title-center { text-align: center; }
+  .title-center h1 {
+    font-size: 64px;
+    background: linear-gradient(135deg, #e8e8f0 0%, #6366f1 60%, #22d3ee 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .title-center .subtitle { margin: 16px auto 0; }
+
+  .big-stats {
+    display: flex;
+    gap: 56px;
+    justify-content: center;
+    margin-top: 52px;
+  }
+  .big-stat-num {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .big-stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* ── Slide 2: Problem ── */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 36px;
+  }
+  .problem-card {
+    padding: 28px;
+    border-radius: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .problem-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #ef4444;
+  }
+  .problem-card p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── Slide 2: Architecture Diagram (vertical) ── */
+  .arch-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin-top: 28px;
+    width: 100%;
+  }
+  .arch-source-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .arch-chip {
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .arch-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .arch-chip h4 {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .arch-chip .arch-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .arch-down-arrows {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    padding: 14px 0;
+    color: var(--text-muted);
+    font-size: 20px;
+  }
+  .arch-hub {
+    padding: 24px 40px;
+    border-radius: 14px;
+    background: rgba(99,102,241,0.08);
+    border: 2px solid var(--accent);
+    text-align: center;
+    width: 100%;
+    max-width: 520px;
+  }
+  .arch-hub h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .arch-hub p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .arch-out-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .arch-out-chip {
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .arch-out-chip h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue);
+  }
+  .arch-out-chip .arch-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .arch-sim {
+    margin-top: 16px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    background: rgba(251,191,36,0.06);
+    border: 1px solid rgba(251,191,36,0.2);
+    text-align: center;
+  }
+  .arch-sim h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--yellow);
+  }
+  .arch-sim .arch-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* ── Slide 4: Sources ── */
+  .source-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .source-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 24px;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .source-color {
+    width: 6px;
+    height: 48px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .source-info { flex: 1; }
+  .source-info h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .source-info p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .source-badge {
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  /* ── Slide 5: What we know ── */
+  .insight-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .insight-card {
+    padding: 24px;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .insight-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .insight-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── Slide 6: How teams use it ── */
+  .use-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 32px;
+  }
+  .use-card {
+    padding: 28px;
+    border-radius: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .use-card h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .use-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .use-card .example {
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: rgba(99,102,241,0.06);
+    border-left: 3px solid var(--accent);
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* ── Slide 7: Simulate Research ── */
+  .sim-intro {
+    margin-top: 36px;
+    padding: 32px;
+    border-radius: 16px;
+    background: rgba(251,191,36,0.05);
+    border: 1px solid rgba(251,191,36,0.2);
+  }
+  .sim-steps {
+    display: flex;
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .sim-step {
+    flex: 1;
+    text-align: center;
+    padding: 20px 16px;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .sim-step .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(251,191,36,0.15);
+    color: var(--yellow);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .sim-step h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .sim-step p {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ── Slide 8: Confidence ── */
+  .confidence-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 32px;
+  }
+  .conf-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 28px;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .conf-label {
+    font-size: 16px;
+    font-weight: 700;
+    width: 120px;
+    flex-shrink: 0;
+  }
+  .conf-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    flex: 1;
+    line-height: 1.5;
+  }
+  .conf-action {
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  /* ── Slide 9: Example ── */
+  .example-container {
+    margin-top: 32px;
+  }
+  .example-question {
+    padding: 24px 28px;
+    border-radius: 12px;
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.2);
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .example-evidence {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .evidence-item {
+    padding: 16px 20px;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .evidence-item .src {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .example-answer {
+    padding: 24px 28px;
+    border-radius: 12px;
+    background: rgba(34,211,153,0.06);
+    border: 1px solid rgba(34,211,153,0.2);
+  }
+  .example-answer h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .example-answer p {
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── Slide 10: Closing ── */
+  .closing-points {
+    display: flex;
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .closing-card {
+    flex: 1;
+    padding: 28px;
+    border-radius: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .closing-card .icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+  }
+  .closing-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .closing-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="slide-counter" id="counter"></div>
+<div class="nav-hint">Arrow keys to navigate</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SLIDE 1: Title -->
+<!-- ════════════════════════════════════════════ -->
+<div class="slide active">
+  <div class="content title-center">
+    <div class="tag" style="background:rgba(99,102,241,0.15); color:var(--accent);">Team Walkthrough</div>
+    <h1>Customer Intelligence</h1>
+    <p class="subtitle">How we built a system that actually knows our customers — and gets smarter every time we use it</p>
+    <div class="big-stats">
+      <div>
+        <div class="big-stat-num">685K+</div>
+        <div class="big-stat-label">Data Points</div>
+      </div>
+      <div>
+        <div class="big-stat-num">5</div>
+        <div class="big-stat-label">Data Sources</div>
+      </div>
+      <div>
+        <div class="big-stat-num">7</div>
+        <div class="big-stat-label">Customer Personas</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SLIDE 2: The Solution (simple) -->
+<!-- ════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="content">
+    <div class="tag" style="background:rgba(99,102,241,0.15); color:var(--accent);">How It All Connects</div>
+    <h2>The full picture</h2>
+    <p class="subtitle">Data flows in from 5 sources, gets merged into one hub, and powers everything we build.</p>
+    <div class="arch-vertical">
+      <!-- TOP: Sources -->
+      <div class="arch-source-row">
+        <div class="arch-chip">
+          <div class="arch-dot" style="background:var(--cyan);"></div>
+          <div><h4 style="color:var(--cyan);">ListenLabs</h4><div class="arch-sub">Prospect interviews</div></div>
+        </div>
+        <div class="arch-chip">
+          <div class="arch-dot" style="background:var(--green);"></div>
+          <div><h4 style="color:var(--green);">Typeform</h4><div class="arch-sub">Customer surveys</div></div>
+        </div>
+        <div class="arch-chip">
+          <div class="arch-dot" style="background:var(--purple);"></div>
+          <div><h4 style="color:var(--purple);">OuterSignal</h4><div class="arch-sub">Purchase behavior</div></div>
+        </div>
+        <div class="arch-chip">
+          <div class="arch-dot" style="background:var(--orange);"></div>
+          <div><h4 style="color:var(--orange);">Richpanel</h4><div class="arch-sub">Support tickets</div></div>
+        </div>
+        <div class="arch-chip">
+          <div class="arch-dot" style="background:var(--pink);"></div>
+          <div><h4 style="color:var(--pink);">Junip</h4><div class="arch-sub">Product reviews</div></div>
+        </div>
+      </div>
+      <!-- DOWN ARROWS -->
+      <div class="arch-down-arrows">
+        <span>&darr;</span><span>&darr;</span><span>&darr;</span><span>&darr;</span><span>&darr;</span>
+      </div>
+      <!-- MIDDLE: Hub -->
+      <div class="arch-hub">
+        <h3>Customer Intelligence Hub</h3>
+        <p>685K+ data points &middot; 7 personas &middot; Single source of truth</p>
+      </div>
+      <!-- DOWN ARROWS -->
+      <div class="arch-down-arrows">
+        <span>&darr;</span><span>&darr;</span><span>&darr;</span><span>&darr;</span><span>&darr;</span>
+      </div>
+      <!-- BOTTOM: Outputs -->
+      <div class="arch-out-row">
+        <div class="arch-out-chip">
+          <h4>Ad Copy &amp; Hooks</h4>
+          <div class="arch-sub">Real customer language</div>
+        </div>
+        <div class="arch-out-chip">
+          <h4>Landing Pages</h4>
+          <div class="arch-sub">Persona-matched messaging</div>
+        </div>
+        <div class="arch-out-chip">
+          <h4>CRO &amp; A/B Tests</h4>
+          <div class="arch-sub">Data-driven hypotheses</div>
+        </div>
+        <div class="arch-out-chip">
+          <h4>Creative Briefs</h4>
+          <div class="arch-sub">Persona-specific briefs</div>
+        </div>
+        <div class="arch-out-chip">
+          <h4>Email &amp; SMS</h4>
+          <div class="arch-sub">Calibrated by awareness</div>
+        </div>
+      </div>
+      <!-- Simulate Research -->
+      <div class="arch-sim">
+        <h4>Simulate Research</h4>
+        <div class="arch-sub">Reads the hub to predict customer responses — a "research pre-flight" for fast decisions</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SLIDE 4: Where the Data Comes From -->
+<!-- ════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="content">
+    <div class="tag" style="background:rgba(99,102,241,0.15); color:var(--accent);">Data Sources</div>
+    <h2>Where the data comes from</h2>
+    <p class="subtitle">Each source gives us a different lens on who our customers are.</p>
+    <div class="source-list">
+      <div class="source-row">
+        <div class="source-color" style="background:var(--cyan);"></div>
+        <div class="source-info">
+          <h3 style="color:var(--cyan);">ListenLabs</h3>
+          <p>AI-moderated interviews with <strong>prospects</strong> — why they're interested, what holds them back, what language they use</p>
+        </div>
+        <div class="source-badge" style="background:rgba(34,211,238,0.12); color:var(--cyan);">446 interviews</div>
+      </div>
+      <div class="source-row">
+        <div class="source-color" style="background:var(--green);"></div>
+        <div class="source-info">
+          <h3 style="color:var(--green);">Typeform Surveys</h3>
+          <p>Post-purchase surveys — percentages, rankings, and open-ended quotes from <strong>real customers</strong></p>
+        </div>
+        <div class="source-badge" style="background:rgba(52,211,153,0.12); color:var(--green);">7,545 responses</div>
+      </div>
+      <div class="source-row">
+        <div class="source-color" style="background:var(--purple);"></div>
+        <div class="source-info">
+          <h3 style="color:var(--purple);">OuterSignal</h3>
+          <p>Real purchase behavior across <strong>436K customers</strong> — who buys what, AOV, repeat rates, demographics by persona</p>
+        </div>
+        <div class="source-badge" style="background:rgba(167,139,250,0.12); color:var(--purple);">436K customers</div>
+      </div>
+      <div class="source-row">
+        <div class="source-color" style="background:var(--orange);"></div>
+        <div class="source-info">
+          <h3 style="color:var(--orange);">Richpanel</h3>
+          <p>Customer support tickets — what customers complain about, ask before buying, and love about our products</p>
+        </div>
+        <div class="source-badge" style="background:rgba(251,146,60,0.12); color:var(--orange);">29K tickets</div>
+      </div>
+      <div class="source-row">
+        <div class="source-color" style="background:var(--pink);"></div>
+        <div class="source-info">
+          <h3 style="color:var(--pink);">Junip Reviews</h3>
+          <p>Product reviews at scale — emotional triggers, satisfaction drivers, friction points per product</p>
+        </div>
+        <div class="source-badge" style="background:rgba(244,114,182,0.12); color:var(--pink);">240K+ reviews</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SLIDE 5: What We Know -->
+<!-- ════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="content">
+    <div class="tag" style="background:rgba(99,102,241,0.15); color:var(--accent);">The Intelligence</div>
+    <h2>What we know about our customers</h2>
+    <p class="subtitle">All of this is maintained, source-tagged, and continuously updated.</p>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <h3>7 Customer Personas</h3>
+        <p>Revenue-weighted archetypes with demographics, product affinities, and buying behavior. The top 2 personas drive 54% of revenue.</p>
+      </div>
+      <div class="insight-card">
+        <h3>Friction Points</h3>
+        <p>Every known barrier to purchase — shade anxiety, price concern, "will this work for me?" — ranked by impact on revenue.</p>
+      </div>
+      <div class="insight-card">
+        <h3>Emotional Language</h3>
+        <p>Real verbatim quotes indexed by emotion — desire, frustration, delight, trust. The exact words our customers use.</p>
+      </div>
+      <div class="insight-card">
+        <h3>Purchase Triggers</h3>
+        <p>What actually drives someone to buy — tagged as prospect vs. customer, so we know what converts vs. what retains.</p>
+      </div>
+      <div class="insight-card">
+        <h3>Messaging Angles</h3>
+        <p>Proven messaging that works (validated by data) and angles to test next. Updated after every study.</p>
+      </div>
+      <div class="insight-card">
+        <h3>Prospect vs. Customer Tensions</h3>
+        <p>Where what prospects say and what customers do actually disagree. These contradictions are our biggest opportunities.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SLIDE 6: How Teams Use It -->
+<!-- ════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="content">
+    <div class="tag" style="background:rgba(96,165,250,0.12); color:var(--blue);">For the Team</div>
+    <h2>How this helps every team</h2>
+    <p class="subtitle">The same customer truths power decisions across every channel.</p>
+    <div class="use-grid">
+      <div class="use-card">
+        <h3>Growth / Paid Media</h3>
+        <p>Ad copy, video hooks, and creative briefs built on real customer language — not guesses about what might resonate.</p>
+        <div class="example">"Write me hooks for Miracle Balm targeting the Executive persona" — pulls real emotional triggers and friction points</div>
+      </div>
+      <div class="use-card">
+        <h3>Ecom / CRO</h3>
+        <p>A/B test hypotheses generated from actual friction points. Prioritized by revenue impact, not opinion.</p>
+        <div class="example">"What should we test on the PDP next?" — surfaces shade anxiety data from 3 sources as the top opportunity</div>
+      </div>
+      <div class="use-card">
+        <h3>Creative / Brand</h3>
+        <p>Landing pages and copy that speak the customer's actual language. Messaging angles validated by data, not vibes.</p>
+        <div class="example">"Build a landing page for the Sleepless Nights Kit" — uses persona data to choose messaging, social proof, and objection handling</div>
+      </div>
+      <div class="use-card">
+        <h3>Product / Strategy</h3>
+        <p>Understand what customers want before building it. Cross-reference purchase behavior with survey data and support tickets.</p>
+        <div class="example">"What do customers think about a mini kit for holiday?" — simulate the answer using existing data instead of waiting weeks for a survey</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SLIDE 7: Simulate Research -->
+<!-- ════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="content">
+    <div class="tag" style="background:rgba(251,191,36,0.12); color:var(--yellow);">New Capability</div>
+    <h2 style="color:var(--yellow);">Simulate Research</h2>
+    <div class="sim-intro">
+      <p style="font-size:18px; line-height:1.6;">Instead of running a survey for every question (which takes weeks and costs money), we can now <strong style="color:var(--yellow);">simulate customer responses</strong> using everything we already know.</p>
+      <p style="font-size:15px; color:var(--text-muted); margin-top:12px; line-height:1.6;">It's not a replacement for real research — it's a speed tool for getting a directional answer in minutes instead of weeks.</p>
+    </div>
+    <div class="sim-steps">
+      <div class="sim-step">
+        <div class="num">1</div>
+        <h4>Ask a Question</h4>
+        <p>Any strategic question about customers</p>
+      </div>
+      <div class="sim-step">
+        <div class="num">2</div>
+        <h4>Pull the Evidence</h4>
+        <p>System finds relevant data across all 5 sources</p>
+      </div>
+      <div class="sim-step">
+        <div class="num">3</div>
+        <h4>Model by Persona</h4>
+        <p>Each persona "responds" based on their real data</p>
+      </div>
+      <div class="sim-step">
+        <div class="num">4</div>
+        <h4>Get a Confidence Level</h4>
+        <p>Honest about what we know vs. what we're guessing</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SLIDE 8: Confidence Levels -->
+<!-- ════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="content">
+    <div class="tag" style="background:rgba(251,191,36,0.12); color:var(--yellow);">Simulate Research</div>
+    <h2>We're honest about what we know</h2>
+    <p class="subtitle">Every simulated answer comes with a confidence level so you know how much to trust it.</p>
+    <div class="confidence-stack">
+      <div class="conf-row">
+        <div class="conf-label" style="color:#22c55e;">KNOW</div>
+        <div class="conf-desc">Multiple sources agree, including real purchase behavior. High confidence.</div>
+        <div class="conf-action" style="background:rgba(34,197,94,0.12); color:#22c55e;">Act on it</div>
+      </div>
+      <div class="conf-row">
+        <div class="conf-label" style="color:var(--blue);">THINK</div>
+        <div class="conf-desc">Good evidence from 1-2 sources, but not fully confirmed across all data.</div>
+        <div class="conf-action" style="background:rgba(96,165,250,0.12); color:var(--blue);">Directionally useful</div>
+      </div>
+      <div class="conf-row">
+        <div class="conf-label" style="color:var(--yellow);">GUESS</div>
+        <div class="conf-desc">Extrapolated from related data — we have adjacent evidence but nothing direct.</div>
+        <div class="conf-action" style="background:rgba(251,191,36,0.12); color:var(--yellow);">Use with caution</div>
+      </div>
+      <div class="conf-row">
+        <div class="conf-label" style="color:#ef4444;">DON'T KNOW</div>
+        <div class="conf-desc">No relevant data exists. We need to run real research to answer this.</div>
+        <div class="conf-action" style="background:rgba(239,68,68,0.12); color:#ef4444;">Run a real survey</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SLIDE 9: Live Example -->
+<!-- ════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="content">
+    <div class="tag" style="background:rgba(251,191,36,0.12); color:var(--yellow);">Example</div>
+    <h2>How it works in practice</h2>
+    <div class="example-container">
+      <div class="example-question">
+        <span style="color:var(--yellow);">"Would customers prefer a mini kit or full-size bundle for holiday gifting?"</span>
+      </div>
+      <div class="example-evidence">
+        <div class="evidence-item">
+          <span class="src" style="color:var(--green);">Typeform surveys</span>
+          98.1% want Mini Miracle Balms available year-round
+        </div>
+        <div class="evidence-item">
+          <span class="src" style="color:var(--cyan);">ListenLabs interviews</span>
+          85% of prospects cite "trying for the first time" as key motivation
+        </div>
+        <div class="evidence-item">
+          <span class="src" style="color:var(--purple);">OuterSignal purchases</span>
+          Holiday AOV spikes 23% — customers are willing to spend more during gifting season
+        </div>
+        <div class="evidence-item">
+          <span class="src" style="color:var(--orange);">Richpanel tickets</span>
+          "Gift set" and "gift for mom" queries spike every Nov-Dec
+        </div>
+      </div>
+      <div class="example-answer">
+        <h4>Answer: THINK (high directional confidence)</h4>
+        <p>~65-75% would prefer a curated mini kit over a full-size bundle for gifting. Our top 2 personas (54% of revenue) both index on curation and giftability over raw value. <strong>Recommendation:</strong> Move forward with mini kit concept, validate with a small test.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SLIDE 10: Key Takeaways -->
+<!-- ════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="content title-center">
+    <div class="tag" style="background:rgba(99,102,241,0.15); color:var(--accent);">Key Takeaways</div>
+    <h2>What this means for us</h2>
+    <div class="closing-points">
+      <div class="closing-card">
+        <div class="icon" style="font-size:28px; color:var(--accent);">&#9670;</div>
+        <h3>Every study compounds</h3>
+        <p>Nothing is a one-off anymore. Every survey, every interview, every analysis makes the system smarter for next time.</p>
+      </div>
+      <div class="closing-card">
+        <div class="icon" style="font-size:28px; color:var(--green);">&#9670;</div>
+        <h3>Same truth, every team</h3>
+        <p>Growth, ecom, creative, product — everyone works from the same customer understanding. No more silos.</p>
+      </div>
+      <div class="closing-card">
+        <div class="icon" style="font-size:28px; color:var(--yellow);">&#9670;</div>
+        <h3>Faster decisions</h3>
+        <p>Simulate Research gives us a directional answer in minutes. Real research is reserved for the biggest bets.</p>
+      </div>
+    </div>
+    <div style="margin-top:48px; padding:24px 32px; border-radius:14px; background:var(--surface); border:1px solid var(--border); display:inline-block;">
+      <p style="font-size:20px; font-weight:500; line-height:1.6;">We don't guess what customers want anymore.<br><span style="color:var(--text-muted);">We know — and we know how confident we are.</span></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const progress = document.getElementById('progress');
+  const counter = document.getElementById('counter');
+  let current = 0;
+
+  function goTo(n) {
+    if (n < 0 || n >= slides.length) return;
+    slides[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    progress.style.width = ((current + 1) / slides.length * 100) + '%';
+    counter.textContent = (current + 1) + ' / ' + slides.length;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      goTo(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      goTo(current - 1);
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.clientX > window.innerWidth / 2) goTo(current + 1);
+    else goTo(current - 1);
+  });
+
+  goTo(0);
+</script>
+</body>
+</html>
