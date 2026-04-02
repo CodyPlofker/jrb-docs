@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JRB Desktop Navigation Redesign — Research Brief & Mockups</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --black: #000; --white: #fff; --gray-50: #fafafa; --gray-100: #f5f5f5;
+    --gray-200: #e5e5e5; --gray-300: #d4d4d4; --gray-500: #737373;
+    --gray-700: #404040; --gray-900: #171717;
+    --green: #16a34a; --green-bg: #f0fdf4; --green-border: #bbf7d0;
+    --red: #dc2626; --red-bg: #fef2f2; --red-border: #fecaca;
+    --amber: #d97706; --amber-bg: #fffbeb; --amber-border: #fde68a;
+    --blue: #2563eb; --blue-bg: #eff6ff; --blue-border: #bfdbfe;
+    --pink: #ff2e92;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--gray-50); color: var(--gray-900); line-height: 1.6; }
+
+  /* === HEADER === */
+  .brief-header { background: var(--black); color: var(--white); padding: 80px 60px 60px; }
+  .brief-header h1 { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 400; margin-bottom: 16px; letter-spacing: -0.5px; }
+  .brief-header .subtitle { font-size: 18px; color: var(--gray-300); font-weight: 300; margin-bottom: 32px; }
+  .brief-meta { display: flex; gap: 40px; font-size: 13px; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* === SECTIONS === */
+  .section { max-width: 1200px; margin: 0 auto; padding: 60px 40px; }
+  .section-dark { background: var(--gray-900); color: var(--white); max-width: 100%; }
+  .section-dark .section-inner { max-width: 1200px; margin: 0 auto; padding: 60px 40px; }
+  h2 { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 400; margin-bottom: 32px; }
+  h3 { font-size: 18px; font-weight: 600; margin-bottom: 16px; margin-top: 32px; }
+  p { margin-bottom: 16px; color: var(--gray-700); }
+
+  /* === KEY INSIGHT BOX === */
+  .key-insight { background: var(--black); color: var(--white); border-radius: 12px; padding: 40px; margin-bottom: 48px; position: relative; overflow: hidden; }
+  .key-insight::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--pink); }
+  .key-insight .label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--pink); margin-bottom: 12px; }
+  .key-insight p { color: var(--gray-200); font-size: 18px; line-height: 1.7; }
+  .key-insight strong { color: var(--white); }
+
+  /* === METRIC CARDS === */
+  .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 48px; }
+  .metric-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 12px; padding: 24px; }
+  .metric-card .value { font-size: 36px; font-weight: 700; margin-bottom: 4px; }
+  .metric-card .label { font-size: 13px; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; }
+  .metric-card .detail { font-size: 12px; color: var(--gray-500); margin-top: 8px; }
+  .metric-card.positive .value { color: var(--green); }
+  .metric-card.negative .value { color: var(--red); }
+  .metric-card.neutral .value { color: var(--gray-900); }
+
+  /* === TABLES === */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: 14px; }
+  th { text-align: left; padding: 12px 16px; background: var(--gray-100); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-500); border-bottom: 2px solid var(--gray-200); }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--gray-200); vertical-align: top; }
+  tr:hover td { background: var(--gray-50); }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .tag-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .tag-red { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+  .tag-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+  .tag-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+
+  /* === TEST RESULTS === */
+  .test-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+  .test-card h4 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .test-card .test-meta { font-size: 13px; color: var(--gray-500); margin-bottom: 12px; }
+  .test-card .test-result { font-size: 14px; }
+  .test-card .learning { background: var(--amber-bg); border: 1px solid var(--amber-border); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 13px; }
+  .test-card .learning strong { color: var(--amber); }
+
+  /* === HYPOTHESIS CARDS === */
+  .hypothesis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 48px; }
+  .hypothesis-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 12px; padding: 28px; }
+  .hypothesis-card .ice-score { display: flex; gap: 16px; margin-top: 16px; font-size: 12px; }
+  .hypothesis-card .ice-item { display: flex; flex-direction: column; align-items: center; }
+  .hypothesis-card .ice-value { font-size: 24px; font-weight: 700; }
+  .hypothesis-card .ice-label { color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; font-size: 10px; }
+  .hypothesis-card .priority { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 12px; }
+  .priority-1 { background: var(--green-bg); color: var(--green); }
+  .priority-2 { background: var(--blue-bg); color: var(--blue); }
+  .priority-3 { background: var(--amber-bg); color: var(--amber); }
+
+  /* === MOCKUP SECTION === */
+  .mockup-tabs { display: flex; gap: 0; margin-bottom: 0; border-bottom: 2px solid var(--gray-200); }
+  .mockup-tab { padding: 16px 32px; font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; color: var(--gray-500); transition: all 0.2s; background: none; border-top: none; border-left: none; border-right: none; }
+  .mockup-tab:hover { color: var(--gray-900); }
+  .mockup-tab.active { color: var(--gray-900); border-bottom-color: var(--black); }
+  .mockup-panel { display: none; }
+  .mockup-panel.active { display: block; }
+  .mockup-container { background: var(--white); border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; margin-top: 24px; margin-bottom: 24px; }
+  .mockup-label { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--gray-200); }
+  .mockup-label h4 { font-size: 16px; }
+  .mockup-label .desc { font-size: 13px; color: var(--gray-500); }
+
+  /* === NAV MOCKUPS === */
+  .nav-mockup { position: relative; }
+
+  /* Variation A - The Simplifier */
+  .nav-a { font-family: 'Inter', sans-serif; }
+  .nav-a .promo-bar { background: #000; color: #fff; text-align: center; padding: 8px 16px; font-size: 12px; letter-spacing: 1px; }
+  .nav-a .main-nav { display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 64px; border-bottom: 1px solid #e5e5e5; background: #fff; }
+  .nav-a .nav-left { display: flex; align-items: center; gap: 28px; }
+  .nav-a .logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 500; letter-spacing: 6px; text-transform: uppercase; }
+  .nav-a .nav-links { display: flex; gap: 24px; list-style: none; }
+  .nav-a .nav-links a { text-decoration: none; color: #000; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; transition: opacity 0.2s; }
+  .nav-a .nav-links a:hover { opacity: 0.6; }
+  .nav-a .nav-right { display: flex; align-items: center; gap: 20px; }
+  .nav-a .nav-right a { text-decoration: none; color: #000; font-size: 13px; }
+  .nav-a .shade-btn { background: #000; color: #fff !important; padding: 8px 16px; border-radius: 4px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; }
+  .nav-a .nav-right .icon { font-size: 18px; }
+
+  /* Mega menu for Variation A */
+  .nav-a .mega-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 32px 40px; z-index: 100; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+  .nav-a .nav-item:hover .mega-menu { display: flex; gap: 48px; }
+  .nav-a .mega-col h5 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #737373; margin-bottom: 16px; }
+  .nav-a .mega-col a { display: block; text-decoration: none; color: #000; font-size: 14px; padding: 6px 0; transition: opacity 0.2s; }
+  .nav-a .mega-col a:hover { opacity: 0.6; }
+  .nav-a .mega-editorial { width: 280px; background: #f5f5f5; border-radius: 8px; padding: 24px; }
+  .nav-a .mega-editorial .editorial-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .nav-a .mega-editorial .editorial-desc { font-size: 12px; color: #737373; }
+
+  /* Variation B - The Quiz-First */
+  .nav-b { font-family: 'Inter', sans-serif; }
+  .nav-b .promo-bar { background: #000; color: #fff; text-align: center; padding: 8px 16px; font-size: 12px; letter-spacing: 1px; }
+  .nav-b .main-nav { display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 68px; background: #fff; border-bottom: 1px solid #e5e5e5; }
+  .nav-b .nav-left { display: flex; align-items: center; gap: 36px; }
+  .nav-b .logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 500; letter-spacing: 6px; text-transform: uppercase; }
+  .nav-b .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-b .nav-links a { text-decoration: none; color: #000; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; }
+  .nav-b .nav-links a:hover { opacity: 0.6; }
+  .nav-b .nav-center { position: absolute; left: 50%; transform: translateX(-50%); }
+  .nav-b .nav-right { display: flex; align-items: center; gap: 20px; }
+  .nav-b .nav-right a { text-decoration: none; color: #000; font-size: 13px; }
+  .nav-b .quiz-btn { background: #000; color: #fff !important; padding: 10px 20px; border-radius: 100px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+  .nav-b .quiz-btn .sparkle { font-size: 14px; }
+
+  /* Variation C - The Radical */
+  .nav-c { font-family: 'Inter', sans-serif; }
+  .nav-c .promo-bar { background: #000; color: #fff; text-align: center; padding: 8px 16px; font-size: 12px; letter-spacing: 1px; }
+  .nav-c .main-nav { display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 72px; background: transparent; position: relative; }
+  .nav-c .nav-left { display: flex; align-items: center; }
+  .nav-c .logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 500; letter-spacing: 6px; text-transform: uppercase; color: #fff; }
+  .nav-c .nav-center { display: flex; align-items: center; gap: 40px; position: absolute; left: 50%; transform: translateX(-50%); }
+  .nav-c .nav-center a { text-decoration: none; color: #fff; font-size: 14px; font-weight: 500; letter-spacing: 0.5px; }
+  .nav-c .nav-center a:hover { opacity: 0.7; }
+  .nav-c .quiz-btn { background: #fff; color: #000 !important; padding: 10px 24px; border-radius: 100px; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; text-decoration: none; }
+  .nav-c .nav-right { display: flex; align-items: center; gap: 20px; }
+  .nav-c .nav-right a { text-decoration: none; color: #fff; font-size: 14px; }
+  .nav-c .hero-bg { background: linear-gradient(135deg, #c9a96e 0%, #a0785a 50%, #8b6346 100%); height: 500px; margin-top: -72px; padding-top: 72px; display: flex; align-items: center; justify-content: center; }
+  .nav-c .hero-content { text-align: center; color: #fff; }
+  .nav-c .hero-content h2 { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 400; margin-bottom: 16px; color: #fff; }
+  .nav-c .hero-content p { color: rgba(255,255,255,0.8); font-size: 16px; margin-bottom: 24px; }
+  .nav-c .hero-content .cta { background: #fff; color: #000; padding: 14px 32px; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* Variation D - The Hybrid */
+  .nav-d { font-family: 'Inter', sans-serif; }
+  .nav-d .promo-bar { background: #000; color: #fff; text-align: center; padding: 8px 16px; font-size: 12px; letter-spacing: 1px; }
+  .nav-d .main-nav { display: flex; align-items: center; justify-content: center; padding: 0 40px; height: 68px; background: #fff; border-bottom: 1px solid #e5e5e5; position: relative; }
+  .nav-d .logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 500; letter-spacing: 6px; text-transform: uppercase; position: absolute; left: 40px; }
+  .nav-d .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+  .nav-d .nav-links a { text-decoration: none; color: #000; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; }
+  .nav-d .nav-links a:hover { opacity: 0.6; }
+  .nav-d .divider { width: 1px; height: 20px; background: #d4d4d4; margin: 0 4px; }
+  .nav-d .quiz-link { color: #000 !important; font-weight: 600 !important; display: flex; align-items: center; gap: 4px; }
+  .nav-d .nav-right { display: flex; align-items: center; gap: 20px; position: absolute; right: 40px; }
+  .nav-d .nav-right a { text-decoration: none; color: #000; font-size: 13px; }
+
+  /* === COMPARISON STRIP === */
+  .comparison-strip { background: var(--white); border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; margin-bottom: 48px; }
+  .comparison-strip .strip-header { padding: 20px 24px; border-bottom: 1px solid var(--gray-200); font-weight: 600; }
+  .strip-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .strip-item { padding: 20px 24px; border-right: 1px solid var(--gray-200); }
+  .strip-item:last-child { border-right: none; }
+  .strip-item .strip-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-500); margin-bottom: 4px; }
+  .strip-item .strip-value { font-size: 24px; font-weight: 700; }
+
+  /* === QUOTES === */
+  blockquote { border-left: 3px solid var(--pink); padding: 16px 24px; margin: 24px 0; background: var(--gray-100); border-radius: 0 8px 8px 0; font-style: italic; color: var(--gray-700); }
+  blockquote cite { display: block; font-style: normal; font-size: 12px; color: var(--gray-500); margin-top: 8px; }
+
+  /* === FOOTER === */
+  .brief-footer { background: var(--gray-100); padding: 40px; text-align: center; color: var(--gray-500); font-size: 13px; }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    .metric-grid { grid-template-columns: repeat(2, 1fr); }
+    .hypothesis-grid { grid-template-columns: 1fr; }
+    .brief-header { padding: 40px 24px; }
+    .brief-header h1 { font-size: 32px; }
+    .section { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="brief-header">
+  <h1>Desktop Navigation Redesign</h1>
+  <p class="subtitle">First-principles research brief — competitive audit, A/B test analysis, customer intelligence, and 4 interactive mockup variations</p>
+  <div class="brief-meta">
+    <span>Jones Road Beauty</span>
+    <span>April 1, 2026</span>
+    <span>10 Brands Audited</span>
+    <span>9 A/B Tests Analyzed</span>
+    <span>685K+ Customer Data Points</span>
+  </div>
+</div>
+
+<!-- ===== KEY INSIGHT ===== -->
+<div class="section">
+  <div class="key-insight">
+    <div class="label">The Single Most Important Finding</div>
+    <p><strong>JRB is the only brand in our competitive set with a 3-row desktop header</strong> (promo bar + utility row + category bar). Every single competitor — from Merit to Glossier to On Running — uses promo bar + 1 nav row at most. JRB's desktop header consumes ~160px of vertical space before any content appears. The average competitor uses ~100px. Combined with the sticky behavior on scroll, this creates the claustrophobic feeling. Desktop users are only 7.5% of sessions but drive <strong>20.1% of purchases</strong> — making this the highest-leverage per-visitor surface to optimize.</p>
+  </div>
+
+  <!-- METRICS -->
+  <div class="metric-grid">
+    <div class="metric-card neutral">
+      <div class="value">7.5%</div>
+      <div class="label">Desktop Sessions</div>
+      <div class="detail">March 2026 via Heatmap</div>
+    </div>
+    <div class="metric-card positive">
+      <div class="value">20.1%</div>
+      <div class="label">Desktop Purchases</div>
+      <div class="detail">2.7x higher CVR than mobile</div>
+    </div>
+    <div class="metric-card neutral">
+      <div class="value">~160px</div>
+      <div class="label">JRB Header Height</div>
+      <div class="detail">Promo + Utility + Categories</div>
+    </div>
+    <div class="metric-card positive">
+      <div class="value">~100px</div>
+      <div class="label">Competitor Avg Height</div>
+      <div class="detail">Promo + Single Nav Row</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COMPETITIVE AUDIT ===== -->
+<div class="section">
+  <h2>Competitive Navigation Audit</h2>
+  <p>Live audit of 10 competitor desktop navs via Chrome MCP on April 1, 2026. 6 beauty brands + 4 best-in-class non-beauty references.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Brand</th>
+        <th>Total Rows</th>
+        <th>Nav Items</th>
+        <th>Quiz/Finder</th>
+        <th>Search</th>
+        <th>Notable Pattern</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background:#fef2f2;">
+        <td><strong>JRB (current)</strong></td>
+        <td><span class="tag tag-red">3 rows</span></td>
+        <td>8</td>
+        <td>Row 1 (secondary)</td>
+        <td>Icon only</td>
+        <td>Only brand with dedicated category bar. Most vertical space consumed.</td>
+      </tr>
+      <tr>
+        <td>Merit</td>
+        <td><span class="tag tag-green">2 rows</span></td>
+        <td>5</td>
+        <td><span class="tag tag-green">Primary nav</span></td>
+        <td>Icon</td>
+        <td>"Find My Shade" is a primary nav item. Clean mega menu with editorial images.</td>
+      </tr>
+      <tr>
+        <td>Glossier</td>
+        <td><span class="tag tag-green">1 row</span></td>
+        <td>8</td>
+        <td>No</td>
+        <td>Icon</td>
+        <td>No promo bar at all. Logo left, all categories in single row. Ultra-clean.</td>
+      </tr>
+      <tr>
+        <td>Saie</td>
+        <td><span class="tag tag-green">2 rows</span></td>
+        <td>7</td>
+        <td><span class="tag tag-green">Primary nav</span></td>
+        <td>Icon</td>
+        <td>"SHADE FINDER" and "LEARN" both primary nav items. Transparent overlay.</td>
+      </tr>
+      <tr>
+        <td>Kosas</td>
+        <td><span class="tag tag-green">2 rows</span></td>
+        <td>7</td>
+        <td><span class="tag tag-green">Primary + sparkle icon</span></td>
+        <td>Icon</td>
+        <td>"Shade Finder Quiz ✨" elevated to primary with visual differentiation.</td>
+      </tr>
+      <tr>
+        <td>Drunk Elephant</td>
+        <td><span class="tag tag-amber">3 rows</span></td>
+        <td>7</td>
+        <td>No</td>
+        <td>Icon</td>
+        <td>SHOP / LEARN two-column split. Content and commerce co-equal in nav.</td>
+      </tr>
+      <tr>
+        <td>Rare Beauty</td>
+        <td><span class="tag tag-green">2 rows</span></td>
+        <td>2</td>
+        <td>No</td>
+        <td><span class="tag tag-blue">Visible bar</span></td>
+        <td>Radical minimalism — only SHOP + RARE IMPACT. Visible search input field.</td>
+      </tr>
+      <tr>
+        <td>AG1</td>
+        <td><span class="tag tag-green">1 row</span></td>
+        <td>3</td>
+        <td>N/A</td>
+        <td>Icon</td>
+        <td>"Shop All" as a CTA button (not text link). Green pill stands out. Ultra-minimal.</td>
+      </tr>
+      <tr>
+        <td>Mejuri</td>
+        <td><span class="tag tag-green">2 rows</span></td>
+        <td>6</td>
+        <td>N/A</td>
+        <td><span class="tag tag-blue">Visible bar</span></td>
+        <td>Visible search bar + store locator in nav. Transparent overlay.</td>
+      </tr>
+      <tr>
+        <td>On Running</td>
+        <td><span class="tag tag-green">1 row</span></td>
+        <td>3</td>
+        <td>N/A</td>
+        <td>Icon</td>
+        <td>Only 3 items: Shop, Activities, Explore. Transparent. ~70px total.</td>
+      </tr>
+      <tr>
+        <td>Aesop</td>
+        <td><span class="tag tag-amber">3 rows</span></td>
+        <td>10</td>
+        <td>N/A</td>
+        <td><span class="tag tag-blue">Visible bar</span></td>
+        <td>"Library" + "Experience" in primary nav (editorial content elevated). Visible search.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Universal Patterns (8+ brands)</h3>
+  <ul style="margin-bottom:24px; padding-left:20px; color:var(--gray-700);">
+    <li><strong>Single nav row</strong> — 8 of 10 brands fit all navigation into one row (promo bar excluded)</li>
+    <li><strong>Logo left or center</strong> — never right-aligned</li>
+    <li><strong>5-7 primary items max</strong> — brands with more items (Glossier 8, Aesop 10) use tight spacing</li>
+    <li><strong>Utilities right-aligned</strong> — Search, Account, Bag always grouped on the right</li>
+    <li><strong>No second category row</strong> — JRB is the outlier here</li>
+  </ul>
+
+  <h3>Emerging Patterns Worth Adopting</h3>
+  <ul style="margin-bottom:24px; padding-left:20px; color:var(--gray-700);">
+    <li><strong>Quiz/Shade Finder as primary nav item</strong> — Merit, Saie, Kosas all elevate this. Kosas uses a ✨ icon for visual pop.</li>
+    <li><strong>CTA button in nav</strong> — AG1's "Shop All" as a pill button. Creates visual hierarchy without a second row.</li>
+    <li><strong>Visible search bar</strong> — Rare Beauty, Mejuri, Aesop show the full search input. Most use icon-only.</li>
+    <li><strong>Transparent nav overlay</strong> — Saie, On Running, Mejuri overlay on the hero. More content visible above the fold.</li>
+    <li><strong>"Learn" section elevated</strong> — Saie, Drunk Elephant, Aesop all give editorial/education content primary nav real estate.</li>
+  </ul>
+</div>
+
+<!-- ===== A/B TEST HISTORY ===== -->
+<div class="section-dark">
+  <div class="section-inner">
+    <h2 style="color:#fff;">Navigation A/B Test History</h2>
+    <p style="color:var(--gray-300);">9 navigation tests analyzed from Intelligems. Key findings that should inform the redesign:</p>
+
+    <div class="test-card" style="margin-top:24px;">
+      <h4>JRB07 — Navigation A/B Test (5 variations)</h4>
+      <div class="test-meta">Jan 22 – Feb 12, 2026 · Desktop filtered · ~233K visitors</div>
+      <div class="test-result">
+        <table style="margin:0;">
+          <thead><tr><th>Variation</th><th>Conv. Rate</th><th>RPV</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td>Control</td><td>6.31%</td><td>$5.97</td><td><span class="tag tag-green">Winner (p2bb 39%)</span></td></tr>
+            <tr><td>New Nav Condensed</td><td>6.30%</td><td>$6.01</td><td><span class="tag tag-amber">Close 2nd (+0.7% RPV)</span></td></tr>
+            <tr><td>V1 - Simplified</td><td>6.27%</td><td>$6.04</td><td><span class="tag tag-amber">Neutral</span></td></tr>
+            <tr><td>New Nav w/ Quiz Button</td><td>6.12%</td><td>$5.90</td><td><span class="tag tag-red">-3.2% CR, -1.2% RPV</span></td></tr>
+            <tr><td>Old Nav + New Dropdown</td><td>6.05%</td><td>$5.77</td><td><span class="tag tag-red">Worst: -4.3% CR, -3.3% RPV</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="learning"><strong>Key learning:</strong> The "Quiz Button" variant hurt conversion — but this doesn't mean quiz in nav is bad. It means the specific execution (adding MORE to an already-crowded nav) backfired. The path is simplification FIRST, then quiz integration.</div>
+    </div>
+
+    <div class="test-card">
+      <h4>Bestsellers Link Test</h4>
+      <div class="test-meta">Feb 21-27, 2025 · 1.2M visitors</div>
+      <div class="test-result">
+        <p>Adding "Bestsellers" to nav <strong>hurt performance</strong>: -2.1% CR, -1.4% RPV. ATC rate dropped -1.9% (p2bb 0%).</p>
+      </div>
+      <div class="learning"><strong>Key learning:</strong> Adding items to nav dilutes click intent. More options ≠ better navigation. Every item you add competes with existing items for attention.</div>
+    </div>
+
+    <div class="test-card">
+      <h4>Nav Font + Badges (Bco Test)</h4>
+      <div class="test-meta">Jul 23 – Aug 16, 2024 · 1.6M visitors · 4 variations</div>
+      <div class="test-result">
+        <p>"Ringside + Badges" showed +1.3% RPV and +2.1% collection page views (best variant, p2bb 54% — not conclusive but directional). Geogrotesque font change alone was neutral.</p>
+      </div>
+      <div class="learning"><strong>Key learning:</strong> Visual badges ("NEW", "LIMITED EDITION") on nav items increased collection engagement. Typography alone doesn't move the needle, but badges create urgency cues.</div>
+    </div>
+
+    <div class="test-card">
+      <h4>Mobile Nav CTA + EE Nav Redesign (Failed)</h4>
+      <div class="test-meta">Multiple tests, 2024-2025</div>
+      <div class="test-result">
+        <p>Mobile CTA in nav was flat (no lift). EE's full navigation redesign was pulled after 1 day — too risky.</p>
+      </div>
+      <div class="learning"><strong>Key learning:</strong> Full redesigns are too risky to A/B test — the variance is too high. Incremental changes to specific elements (item order, CTA placement, typography cues) are the path.</div>
+    </div>
+
+    <h3 style="color:#fff; margin-top:40px;">Test History Synthesis — What We Know Works</h3>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:16px;">
+      <div style="background:var(--green-bg); border:1px solid var(--green-border); border-radius:8px; padding:16px;">
+        <strong style="color:var(--green);">Proven Positive</strong>
+        <ul style="margin-top:8px; padding-left:16px; font-size:13px; color:var(--gray-700);">
+          <li>Rich mega menu with product imagery (JRB02 winner)</li>
+          <li>Search in mega menu (+3% RPV — JRB05 winner)</li>
+          <li>Visual badges on nav items (directional lift)</li>
+          <li>Condensed/simplified nav (close to control)</li>
+        </ul>
+      </div>
+      <div style="background:var(--red-bg); border:1px solid var(--red-border); border-radius:8px; padding:16px;">
+        <strong style="color:var(--red);">Proven Negative</strong>
+        <ul style="margin-top:8px; padding-left:16px; font-size:13px; color:var(--gray-700);">
+          <li>Adding more items to an already-crowded nav (Bestsellers -2.1% CR)</li>
+          <li>Adding quiz button without simplifying first (-3.2% CR)</li>
+          <li>Full redesign swaps (EE redesign — pulled immediately)</li>
+          <li>Old nav structure with new dropdown (-4.3% CR)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CUSTOMER INTELLIGENCE ===== -->
+<div class="section">
+  <h2>Customer Intelligence — Navigation Context</h2>
+
+  <blockquote>
+    "My family tried to buy me JRB gift cards for the holidays and none of them could find them."
+    <cite>— JRB Customer, Website Feedback Survey</cite>
+  </blockquote>
+
+  <blockquote>
+    "I don't feel super confident about whether I'm picking the skin tone that matches me the best."
+    <cite>— JRB Customer, Miracle Balm Quiz Survey</cite>
+  </blockquote>
+
+  <h3>Key Data Points for Nav Design</h3>
+  <table>
+    <thead><tr><th>Insight</th><th>Data</th><th>Implication for Nav</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Shade matching is #1 friction</td>
+        <td>24% of all CX tickets (7,048/quarter). 26.4% of non-purchasers say color matching online is too hard.</td>
+        <td><strong>Quiz/shade finder must be prominent and easy to find — but the execution matters more than the placement.</strong></td>
+      </tr>
+      <tr>
+        <td>Quiz is valued but NOT a homepage draw</td>
+        <td>0.0% of website feedback chose "Look for the quiz" as homepage first action. Quiz ranked 6th of 8.</td>
+        <td><strong>Quiz should be accessible, not the hero. It's a tool users seek when ready, not a landing hook.</strong></td>
+      </tr>
+      <tr>
+        <td>Product education = highest friction</td>
+        <td>38% of prospects + 52% of Illuminating Drops non-users don't understand products. 53.6% of non-users say "didn't understand the product."</td>
+        <td><strong>Nav should facilitate learning/discovery, not just shopping. Consider Drunk Elephant's SHOP/LEARN split.</strong></td>
+      </tr>
+      <tr>
+        <td>Featured products scanned first</td>
+        <td>63% scan featured products on first visit. 29% notice product categories/navigation.</td>
+        <td><strong>The hero content below the nav matters more than the nav itself. Give it maximum viewport space.</strong></td>
+      </tr>
+      <tr>
+        <td>Core buyer is 60+ with $855K property</td>
+        <td>28.6% of customers, 32.2% of revenue. "Your skin but better" positioning.</td>
+        <td><strong>Nav must be legible, well-spaced, and not feel like a fashion brand targeting 20-somethings. Elegant simplicity > trendy minimalism.</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== HYPOTHESES ===== -->
+<div class="section">
+  <h2>Strategic Hypotheses (ICE Scored)</h2>
+
+  <div class="hypothesis-grid">
+    <div class="hypothesis-card">
+      <span class="priority priority-1">Priority 1</span>
+      <h3 style="margin-top:8px;">Collapse to single nav row</h3>
+      <p style="font-size:14px;">Eliminate the dedicated utility row (Returns, Find Your Shade, justBOBBI). Move "Find Your Shade" into the primary nav. Move Returns/justBOBBI to footer or mega menu secondary links. This alone reduces header from ~160px to ~100px.</p>
+      <div class="ice-score">
+        <div class="ice-item"><div class="ice-value">9</div><div class="ice-label">Impact</div></div>
+        <div class="ice-item"><div class="ice-value">8</div><div class="ice-label">Confidence</div></div>
+        <div class="ice-item"><div class="ice-value">6</div><div class="ice-label">Ease</div></div>
+        <div class="ice-item"><div class="ice-value" style="color:var(--green);">7.7</div><div class="ice-label">Score</div></div>
+      </div>
+    </div>
+
+    <div class="hypothesis-card">
+      <span class="priority priority-1">Priority 1</span>
+      <h3 style="margin-top:8px;">Reduce category items from 8 to 5-6</h3>
+      <p style="font-size:14px;">Current: Shop All, Face, Kits, Lips, Eyes, Skin, Body, More (8 items). Proposed: Shop, Face, Lips, Eyes, Kits, More (6 items). Consolidate Skin+Body under "More" or a mega menu sub-section. Fewer items = faster scanning = higher-quality clicks.</p>
+      <div class="ice-score">
+        <div class="ice-item"><div class="ice-value">8</div><div class="ice-label">Impact</div></div>
+        <div class="ice-item"><div class="ice-value">7</div><div class="ice-label">Confidence</div></div>
+        <div class="ice-item"><div class="ice-value">7</div><div class="ice-label">Ease</div></div>
+        <div class="ice-item"><div class="ice-value" style="color:var(--green);">7.3</div><div class="ice-label">Score</div></div>
+      </div>
+    </div>
+
+    <div class="hypothesis-card">
+      <span class="priority priority-2">Priority 2</span>
+      <h3 style="margin-top:8px;">Elevate shade finder as a CTA button</h3>
+      <p style="font-size:14px;">Instead of text link, make "Find Your Shade" a visually differentiated button (pill or solid bg) in the nav row — like AG1's "Shop All" button or Kosas' sparkle icon. Creates visual hierarchy without adding a second row.</p>
+      <div class="ice-score">
+        <div class="ice-item"><div class="ice-value">7</div><div class="ice-label">Impact</div></div>
+        <div class="ice-item"><div class="ice-value">6</div><div class="ice-label">Confidence</div></div>
+        <div class="ice-item"><div class="ice-value">8</div><div class="ice-label">Ease</div></div>
+        <div class="ice-item"><div class="ice-value" style="color:var(--blue);">7.0</div><div class="ice-label">Score</div></div>
+      </div>
+    </div>
+
+    <div class="hypothesis-card">
+      <span class="priority priority-3">Priority 3</span>
+      <h3 style="margin-top:8px;">Simplify mega menu content</h3>
+      <p style="font-size:14px;">Current mega menu shows 5 products with images + 5 text links + 2 editorial CTAs. That's a lot. Test showing just top 3 products + 1 editorial CTA. Faster scanning, less overwhelming, more editorial-driven.</p>
+      <div class="ice-score">
+        <div class="ice-item"><div class="ice-value">5</div><div class="ice-label">Impact</div></div>
+        <div class="ice-item"><div class="ice-value">5</div><div class="ice-label">Confidence</div></div>
+        <div class="ice-item"><div class="ice-value">7</div><div class="ice-label">Ease</div></div>
+        <div class="ice-item"><div class="ice-value" style="color:var(--amber);">5.7</div><div class="ice-label">Score</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MOCKUPS ===== -->
+<div class="section">
+  <h2>Interactive Mockup Variations</h2>
+  <p>4 variations on a spectrum from conservative to radical. All share the same principle: <strong>collapse to a single nav row</strong>. They differ in how they handle category structure, quiz placement, and visual weight.</p>
+
+  <div class="mockup-tabs">
+    <button class="mockup-tab active" onclick="showMockup('a')">A — The Simplifier</button>
+    <button class="mockup-tab" onclick="showMockup('b')">B — Quiz-First</button>
+    <button class="mockup-tab" onclick="showMockup('c')">C — The Radical</button>
+    <button class="mockup-tab" onclick="showMockup('d')">D — The Hybrid</button>
+  </div>
+
+  <!-- VARIATION A -->
+  <div id="mockup-a" class="mockup-panel active">
+    <div class="mockup-container">
+      <div class="mockup-label">
+        <div>
+          <h4>Variation A — The Simplifier</h4>
+          <div class="desc">Conservative. Same categories, just collapsed into one row. Logo left, shade finder as pill button.</div>
+        </div>
+        <span class="tag tag-green">Lowest Risk</span>
+      </div>
+      <div class="nav-mockup nav-a">
+        <div class="promo-bar">FREE SHIPPING ON US ORDERS OVER $55</div>
+        <div class="main-nav" style="position:relative;">
+          <div class="nav-left">
+            <div class="logo">Jones Road</div>
+            <ul class="nav-links">
+              <li class="nav-item" style="position:relative;">
+                <a href="#">Shop All</a>
+                <div class="mega-menu">
+                  <div class="mega-col">
+                    <h5>Categories</h5>
+                    <a href="#">Face</a>
+                    <a href="#">Lips</a>
+                    <a href="#">Eyes</a>
+                    <a href="#">Skin</a>
+                    <a href="#">Body</a>
+                    <a href="#">Kits & Sets</a>
+                  </div>
+                  <div class="mega-col">
+                    <h5>Bestsellers</h5>
+                    <a href="#">Miracle Balm</a>
+                    <a href="#">What The Foundation</a>
+                    <a href="#">The Eyeshadow Stick</a>
+                    <a href="#">Just Enough Tinted Moisturizer</a>
+                    <a href="#">The Face Pencil</a>
+                  </div>
+                  <div class="mega-editorial">
+                    <div class="editorial-title">Your Perfect Shade Match</div>
+                    <div class="editorial-desc">Take our quiz to find your ideal shades across all products.</div>
+                  </div>
+                </div>
+              </li>
+              <li class="nav-item"><a href="#">Face</a></li>
+              <li class="nav-item"><a href="#">Lips</a></li>
+              <li class="nav-item"><a href="#">Eyes</a></li>
+              <li class="nav-item"><a href="#">Kits</a></li>
+              <li class="nav-item"><a href="#">More</a></li>
+            </ul>
+          </div>
+          <div class="nav-right">
+            <a href="#" class="shade-btn">Find Your Shade</a>
+            <a href="#" class="icon">🔍</a>
+            <a href="#" class="icon">👤</a>
+            <a href="#">Bag (0)</a>
+          </div>
+        </div>
+      </div>
+      <!-- Placeholder content below nav -->
+      <div style="height:400px; background:linear-gradient(135deg, #f5e6d3 0%, #e8d5c4 100%); display:flex; align-items:center; justify-content:center; color:#8b6346;">
+        <div style="text-align:center;">
+          <div style="font-family:'Playfair Display',serif; font-size:42px; margin-bottom:12px;">Hero Content Gets More Space</div>
+          <div style="font-size:16px; opacity:0.7;">~60px saved vs current nav = more content visible above the fold</div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--green-bg); border:1px solid var(--green-border); border-radius:8px; padding:16px; margin-bottom:24px; font-size:14px;">
+      <strong>What changed:</strong> Utility row eliminated. "Find Your Shade" moved to a pill button in the primary nav. "Returns & Exchanges" and "justBOBBI" move to footer. 6 categories instead of 8 (Skin + Body consolidated under "More"). Total height: ~95px (was ~160px).
+    </div>
+  </div>
+
+  <!-- VARIATION B -->
+  <div id="mockup-b" class="mockup-panel">
+    <div class="mockup-container">
+      <div class="mockup-label">
+        <div>
+          <h4>Variation B — Quiz-First</h4>
+          <div class="desc">Moderate. Fewer items, quiz as the hero CTA button, centered logo.</div>
+        </div>
+        <span class="tag tag-blue">Medium Risk</span>
+      </div>
+      <div class="nav-mockup nav-b">
+        <div class="promo-bar">FREE SHIPPING ON US ORDERS OVER $55</div>
+        <div class="main-nav" style="position:relative;">
+          <div class="nav-left">
+            <div class="logo">Jones Road</div>
+            <ul class="nav-links">
+              <li><a href="#">Shop</a></li>
+              <li><a href="#">Face</a></li>
+              <li><a href="#">Lips</a></li>
+              <li><a href="#">Eyes</a></li>
+              <li><a href="#">Kits</a></li>
+            </ul>
+          </div>
+          <div class="nav-right">
+            <a href="#" class="quiz-btn"><span class="sparkle">✦</span> Find Your Shade</a>
+            <a href="#">🔍</a>
+            <a href="#">👤</a>
+            <a href="#">Bag (0)</a>
+          </div>
+        </div>
+      </div>
+      <div style="height:400px; background:linear-gradient(135deg, #d4b896 0%, #c9a87c 100%); display:flex; align-items:center; justify-content:center; color:#fff;">
+        <div style="text-align:center;">
+          <div style="font-family:'Playfair Display',serif; font-size:42px; margin-bottom:12px;">The Quiz Button Stands Out</div>
+          <div style="font-size:16px; opacity:0.8;">Pill shape + sparkle icon creates visual hierarchy without a second row</div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--blue-bg); border:1px solid var(--blue-border); border-radius:8px; padding:16px; margin-bottom:24px; font-size:14px;">
+      <strong>What changed:</strong> Only 5 category links (down from 8). "Find Your Shade" is a rounded pill CTA button with sparkle icon (inspired by Kosas). Logo left. Skin, Body, Shop All consolidated under "Shop" mega menu. Total height: ~95px.
+    </div>
+  </div>
+
+  <!-- VARIATION C -->
+  <div id="mockup-c" class="mockup-panel">
+    <div class="mockup-container">
+      <div class="mockup-label">
+        <div>
+          <h4>Variation C — The Radical</h4>
+          <div class="desc">Bold. Inspired by On Running + Rare Beauty. Only 3 nav items, transparent overlay, maximum content space.</div>
+        </div>
+        <span class="tag tag-amber">Higher Risk</span>
+      </div>
+      <div class="nav-mockup nav-c">
+        <div class="promo-bar">FREE SHIPPING ON US ORDERS OVER $55</div>
+        <div class="hero-bg">
+          <div class="main-nav" style="position:absolute; top:32px; left:0; right:0; z-index:10;">
+            <div class="nav-left">
+              <div class="logo">Jones Road</div>
+            </div>
+            <div class="nav-center">
+              <a href="#">Shop</a>
+              <a href="#">Learn</a>
+              <a href="#" class="quiz-btn" style="color:#000;">Find Your Shade</a>
+            </div>
+            <div class="nav-right">
+              <a href="#">🔍</a>
+              <a href="#">👤</a>
+              <a href="#">Bag</a>
+            </div>
+          </div>
+          <div class="hero-content">
+            <h2 style="font-size:52px;">Say Hello To The<br>New Lip Recharge</h2>
+            <p style="font-size:18px;">Meet a powerful new treatment designed to hydrate, tint, and recharge your lips.</p>
+            <a href="#" class="cta">Shop Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--amber-bg); border:1px solid var(--amber-border); border-radius:8px; padding:16px; margin-bottom:24px; font-size:14px;">
+      <strong>What changed:</strong> Only 3 nav items: Shop (expands to full mega menu with all categories), Learn (brand story, Bobbi, how-tos), and "Find Your Shade" as white pill button. Transparent overlay on hero — nav doesn't consume ANY dedicated vertical space. "Shop" mega menu contains all product categories, bestsellers, new arrivals, and kits. Total header height: 0px (transparent overlay).
+    </div>
+  </div>
+
+  <!-- VARIATION D -->
+  <div id="mockup-d" class="mockup-panel">
+    <div class="mockup-container">
+      <div class="mockup-label">
+        <div>
+          <h4>Variation D — The Hybrid</h4>
+          <div class="desc">Balanced. Centered categories like current nav, but single row with logo left. Quiz integrated as a visually distinct link.</div>
+        </div>
+        <span class="tag tag-green">Low-Medium Risk</span>
+      </div>
+      <div class="nav-mockup nav-d">
+        <div class="promo-bar">FREE SHIPPING ON US ORDERS OVER $55</div>
+        <div class="main-nav">
+          <div class="logo">Jones Road</div>
+          <ul class="nav-links">
+            <li><a href="#">Shop All</a></li>
+            <li><a href="#">Face</a></li>
+            <li><a href="#">Lips</a></li>
+            <li><a href="#">Eyes</a></li>
+            <li><a href="#">Kits</a></li>
+            <li><a href="#">Skin & Body</a></li>
+            <li><div class="divider"></div></li>
+            <li><a href="#" class="quiz-link">Find Your Shade <span style="font-size:10px;">→</span></a></li>
+          </ul>
+          <div class="nav-right">
+            <a href="#">🔍</a>
+            <a href="#">👤</a>
+            <a href="#">Bag (0)</a>
+          </div>
+        </div>
+      </div>
+      <div style="height:400px; background:linear-gradient(135deg, #e8ddd0 0%, #d4c5b5 100%); display:flex; align-items:center; justify-content:center; color:#5a4a3a;">
+        <div style="text-align:center;">
+          <div style="font-family:'Playfair Display',serif; font-size:42px; margin-bottom:12px;">Familiar But Cleaner</div>
+          <div style="font-size:16px; opacity:0.7;">Same centered category pattern, but one row instead of two. Divider separates shop from quiz.</div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--green-bg); border:1px solid var(--green-border); border-radius:8px; padding:16px; margin-bottom:24px; font-size:14px;">
+      <strong>What changed:</strong> Logo moves left (no longer centered). Categories centered in nav with a vertical divider separating "Find Your Shade" as a visually distinct link with arrow. "Skin & Body" consolidated to one item. Total height: ~95px. This is the closest to the current nav feel — just compressed into one row.
+    </div>
+  </div>
+</div>
+
+<!-- ===== RECOMMENDED TEST PLAN ===== -->
+<div class="section-dark">
+  <div class="section-inner">
+    <h2 style="color:#fff;">Recommended Test Plan</h2>
+    <p style="color:var(--gray-300);">Based on JRB's test history showing that incremental > wholesale, and the "Bestsellers" test proving that adding items to a crowded nav hurts:</p>
+
+    <h3 style="color:#fff;">Phase 1: Simplify First (Week 1-3)</h3>
+    <p style="color:var(--gray-300);">Test <strong>Variation A (The Simplifier)</strong> or <strong>Variation D (The Hybrid)</strong> against control. These are the lowest-risk changes — same categories, just collapsed into one row. If this wins, it proves the thesis that less vertical space = better performance.</p>
+
+    <h3 style="color:#fff;">Phase 2: Quiz Integration (Week 4-6)</h3>
+    <p style="color:var(--gray-300);">With the simplified nav as the new baseline, test <strong>Variation B (Quiz-First)</strong> — adding the quiz pill button. This isolates the quiz button variable from the simplification variable. If JRB07's quiz button failed because of clutter, it should win in a cleaner nav.</p>
+
+    <h3 style="color:#fff;">Phase 3: Bold Exploration (Week 7+)</h3>
+    <p style="color:var(--gray-300);">If Phases 1-2 show that simpler + quiz works, test <strong>Variation C (The Radical)</strong> as a high-risk, high-reward exploration. The transparent overlay + 3-item nav is a significant departure but could unlock major above-the-fold content gains.</p>
+
+    <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:20px; margin-top:24px;">
+      <strong style="color:var(--pink);">Critical Guardrail:</strong>
+      <p style="color:var(--gray-300); margin:8px 0 0;">Do NOT test multiple variables at once. The JRB07 test mixed navigation structure changes with quiz button addition and couldn't isolate which variable caused the regression. Test one thing at a time: first simplify, then add quiz, then go radical.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== APPENDIX ===== -->
+<div class="section">
+  <h2>Appendix: Data Sources</h2>
+  <table>
+    <thead><tr><th>Source</th><th>Data Points</th><th>Date</th></tr></thead>
+    <tbody>
+      <tr><td>Heatmap.com API (Site ID 2821)</td><td>Device breakdown, top pages by revenue, click data</td><td>March 2026</td></tr>
+      <tr><td>Intelligems A/B Tests (9 experiments)</td><td>JRB07, Bestsellers, Nav Font+Badges, Mobile CTA, EE Redesign, Header Nav vs Reviews</td><td>Jun 2024 – Mar 2026</td></tr>
+      <tr><td>Customer Intelligence File</td><td>685K+ data points: 11 ListenLabs studies, 13 Typeform surveys, Junip reviews, OuterSignal, Richpanel</td><td>Cumulative through Mar 2026</td></tr>
+      <tr><td>Chrome MCP Competitive Audit</td><td>10 brands: Merit, Glossier, Saie, Kosas, Drunk Elephant, Rare Beauty, AG1, Mejuri, On Running, Aesop</td><td>April 1, 2026</td></tr>
+      <tr><td>JRB Theme Source Code</td><td>header.liquid (1,195 lines), header-navigation-new-css.liquid, mega menu snippets</td><td>Current production</td></tr>
+      <tr><td>CRO Methodology & Test History</td><td>Navigation testing playbook, UX best practices, ICE scoring framework</td><td>Ongoing</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div class="brief-footer">
+  <p>JRB Desktop Navigation Redesign Brief — Generated overnight by Claude Code</p>
+  <p style="margin-top:4px;">April 1, 2026 · Research only — no Shopify changes made</p>
+</div>
+
+<script>
+function showMockup(id) {
+  document.querySelectorAll('.mockup-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.mockup-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('mockup-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
