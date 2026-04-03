@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Incremental Attribution Test Analysis — Jones Road Beauty</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+  @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-family: 'RingsideWideWeb', Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* Utility bar */
+  .utility-bar {
+    background: #000;
+    padding: 10px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .jrb-logo {
+    font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #fff;
+    text-transform: uppercase;
+  }
+
+  .status-pill {
+    display: inline-block;
+    background: #fff;
+    color: #000;
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 2px;
+  }
+
+  /* Hero section */
+  .hero {
+    background: #fff;
+    padding: 64px 48px;
+    border-bottom: 1px solid #ebebeb;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hero h1 {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 42px;
+    line-height: 1.15;
+    color: #000;
+    margin-bottom: 16px;
+    text-wrap: balance;
+  }
+
+  .hero p {
+    font-family: 'RingsideWideWeb', Arial, sans-serif;
+    font-size: 15px;
+    color: #000;
+    margin-top: 8px;
+  }
+
+  /* Section layout */
+  .section-wrap {
+    padding: 64px 48px;
+  }
+
+  .section-wrap.bg-gray { background: #f8f8f8; }
+  .section-wrap.bg-white { background: #fff; }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Section eyebrow */
+  .eyebrow {
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #000;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .eyebrow::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #d0d0d0;
+  }
+
+  /* Section headline */
+  .section-headline {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 1.2;
+    color: #000;
+    margin-bottom: 32px;
+    text-wrap: balance;
+  }
+
+  /* Cards */
+  .card {
+    background: #fff;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(16,24,40,.04);
+    padding: 28px;
+  }
+
+  /* Scorecard grid */
+  .scorecard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .scorecard-header {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ebebeb;
+    margin-bottom: 20px;
+  }
+
+  .scorecard-label {
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #000;
+    margin-bottom: 4px;
+  }
+
+  .scorecard-sublabel {
+    font-family: 'RingsideWideWeb', Arial, sans-serif;
+    font-size: 11px;
+    color: #000;
+    opacity: 0.5;
+  }
+
+  .metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 9px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .metric-row:last-child { border-bottom: none; }
+
+  .metric-name {
+    font-family: 'RingsideWideWeb', Arial, sans-serif;
+    font-size: 13px;
+    color: #000;
+    opacity: 0.7;
+  }
+
+  .metric-value {
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 15px;
+    color: #000;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .metric-value.win { color: #059669; }
+  .metric-value.lose { color: #b91c1c; }
+
+  .win-tag {
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    background: #000;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* Efficiency stats */
+  .efficiency-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .eff-stat {
+    background: #fff;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+    padding: 28px 24px;
+    text-align: center;
+  }
+
+  .eff-stat .big-number {
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 40px;
+    line-height: 1;
+    color: #000;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .eff-stat .eff-label {
+    font-family: 'RingsideWideWeb', Arial, sans-serif;
+    font-size: 13px;
+    color: #000;
+    opacity: 0.7;
+  }
+
+  /* Status bar */
+  .status-bar {
+    background: #f6f2eb;
+    border: 1px solid #d0d0d0;
+    border-radius: 3px;
+    padding: 12px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .status-bar-label {
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #000;
+  }
+
+  .status-bar-text {
+    font-family: 'RingsideWideWeb', Arial, sans-serif;
+    font-size: 13px;
+    color: #000;
+  }
+
+  /* Lift explainer */
+  .lift-explainer {
+    background: #f8f8f8;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-family: 'RingsideWideWeb', Arial, sans-serif;
+    font-size: 13px;
+    color: #000;
+    line-height: 1.65;
+  }
+
+  /* Lift table */
+  .lift-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .lift-table th {
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #000;
+    opacity: 0.6;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid #d0d0d0;
+    background: #f8f8f8;
+  }
+
+  .lift-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #ebebeb;
+    vertical-align: middle;
+    font-family: 'RingsideWideWeb', Arial, sans-serif;
+  }
+
+  .lift-table tr:last-child td { border-bottom: none; }
+
+  .cost-cell {
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 15px;
+    color: #000;
+    display: block;
+  }
+
+  .cost-good { color: #059669; }
+  .cost-bad { color: #b91c1c; }
+  .cost-neutral { color: #000; }
+
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .progress-bar {
+    height: 4px;
+    border-radius: 2px;
+    background: #f0f0f0;
+    flex: 1;
+    max-width: 80px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  .progress-label {
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 11px;
+    white-space: nowrap;
+    min-width: 38px;
+    color: #000;
+  }
+
+  .progress-note {
+    font-size: 11px;
+    color: #000;
+    opacity: 0.55;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .progress-note.strong { color: #059669; opacity: 1; font-weight: 600; }
+
+  .na { color: #d0d0d0; font-size: 13px; }
+
+  /* Funnel chart section */
+  .funnel-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    align-items: start;
+  }
+
+  .funnel-stage { text-align: center; }
+
+  .funnel-stage-name {
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #000;
+    opacity: 0.6;
+    margin-bottom: 12px;
+  }
+
+  .funnel-bars {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: flex-end;
+    height: 80px;
+    margin-bottom: 10px;
+  }
+
+  .funnel-bar-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .funnel-bar {
+    width: 100%;
+    border-radius: 2px 2px 0 0;
+    min-height: 4px;
+  }
+
+  .funnel-bar-label {
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: #000;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .funnel-cost {
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 12px;
+    display: block;
+    color: #000;
+  }
+
+  .funnel-cost.good { color: #059669; }
+
+  .funnel-note {
+    font-family: 'RingsideWideWeb', Arial, sans-serif;
+    font-size: 10px;
+    color: #000;
+    opacity: 0.5;
+    margin-top: 4px;
+  }
+
+  .funnel-note.strong { color: #059669; opacity: 1; font-weight: 600; font-size: 10px; }
+
+  /* Chart cards */
+  .chart-card {
+    background: #fff;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(16,24,40,.04);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .chart-card-title {
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #000;
+    margin-bottom: 4px;
+  }
+
+  .chart-card-desc {
+    font-family: 'RingsideWideWeb', Arial, sans-serif;
+    font-size: 13px;
+    color: #000;
+    opacity: 0.6;
+    margin-bottom: 20px;
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 16px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'RingsideWideWeb', Arial, sans-serif;
+    font-size: 12px;
+    color: #000;
+    opacity: 0.7;
+  }
+
+  .legend-swatch {
+    width: 20px;
+    height: 3px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* Analysis cards */
+  .analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  .analysis-card {
+    background: #fff;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+    padding: 24px;
+  }
+
+  .analysis-card-title {
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #000;
+    margin-bottom: 10px;
+  }
+
+  .analysis-card p {
+    font-family: 'RingsideWideWeb', Arial, sans-serif;
+    font-size: 13px;
+    color: #000;
+    line-height: 1.7;
+  }
+
+  .bottom-line-box {
+    background: #f8f8f8;
+    border: 1px solid #d0d0d0;
+    border-radius: 3px;
+    padding: 28px;
+  }
+
+  .bottom-line-box .analysis-card-title {
+    margin-bottom: 12px;
+  }
+
+  .bottom-line-box p {
+    font-family: 'RingsideWideWeb', Arial, sans-serif;
+    font-size: 14px;
+    color: #000;
+    line-height: 1.75;
+  }
+
+  /* Data notes */
+  .notes-box {
+    background: #f6f2eb;
+    border: 1px solid #d0d0d0;
+    border-radius: 3px;
+    padding: 28px;
+  }
+
+  .notes-list {
+    list-style: none;
+    display: grid;
+    gap: 16px;
+  }
+
+  .notes-list li {
+    font-family: 'RingsideWideWeb', Arial, sans-serif;
+    font-size: 13px;
+    color: #000;
+    line-height: 1.65;
+    padding-left: 16px;
+    border-left: 2px solid #d0d0d0;
+  }
+
+  .notes-list li strong {
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* Footer */
+  .page-footer {
+    background: #f8f8f8;
+    border-top: 1px solid #ebebeb;
+    padding: 24px 48px;
+    text-align: center;
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 11px;
+    color: #000;
+    opacity: 0.5;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .utility-bar { padding: 10px 20px; }
+    .hero { padding: 48px 20px; }
+    .hero h1 { font-size: 28px; }
+    .section-wrap { padding: 48px 20px; }
+    .scorecard-grid, .analysis-grid { grid-template-columns: 1fr; }
+    .efficiency-stats { grid-template-columns: 1fr 1fr; }
+    .funnel-grid { grid-template-columns: repeat(3, 1fr); }
+    .page-footer { padding: 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- UTILITY BAR -->
+<div class="utility-bar">
+  <span class="jrb-logo">Jones Road Beauty</span>
+  <span class="status-pill">Test Live &middot; Ends Apr 7</span>
+</div>
+
+<!-- HERO -->
+<div style="background:#fff;border-bottom:1px solid #ebebeb;">
+  <div class="hero">
+    <div style="font-family:'GeogrotesqueCondBoldWeb',Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#000;opacity:0.5;margin-bottom:20px;">Growth Analysis</div>
+    <h1>Incremental attribution test analysis</h1>
+    <p>BAU Strategy vs. Incremental Attribution &middot; Mar 16&ndash;Apr 2, 2026</p>
+    <p style="margin-top:6px;opacity:0.5;font-size:13px;">Prospecting ASC Campaigns &middot; 18 days of data &middot; No winner declared until test ends</p>
+  </div>
+</div>
+
+<!-- SECTION 1: SCORECARDS -->
+<div class="section-wrap bg-white">
+  <div class="container">
+    <div class="eyebrow">Campaign Performance Scorecards</div>
+    <div class="scorecard-grid">
+
+      <!-- BAU Control -->
+      <div class="card">
+        <div class="scorecard-header">
+          <div class="scorecard-label">BAU Control</div>
+          <div class="scorecard-sublabel">Prospecting | ASC | CO | IAControl | Purchase</div>
+        </div>
+        <div class="metric-row"><span class="metric-name">Spend</span><span class="metric-value">$80,956</span></div>
+        <div class="metric-row"><span class="metric-name">Impressions</span><span class="metric-value">1,980,741</span></div>
+        <div class="metric-row"><span class="metric-name">Reach</span><span class="metric-value">1,788,986</span></div>
+        <div class="metric-row"><span class="metric-name">Frequency</span><span class="metric-value">1.11&times;</span></div>
+        <div class="metric-row"><span class="metric-name">CPM</span><span class="metric-value lose">$40.87</span></div>
+        <div class="metric-row"><span class="metric-name">CPMR</span><span class="metric-value lose">$45.25</span></div>
+        <div class="metric-row"><span class="metric-name">CTR</span><span class="metric-value">1.54%</span></div>
+        <div class="metric-row"><span class="metric-name">Meta Purchases</span><span class="metric-value">632</span></div>
+        <div class="metric-row"><span class="metric-name">Revenue</span><span class="metric-value">$53,381</span></div>
+        <div class="metric-row"><span class="metric-name">Meta ROAS</span><span class="metric-value">0.66&times;</span></div>
+        <div class="metric-row"><span class="metric-name">CPA</span><span class="metric-value lose">$128.10</span></div>
+      </div>
+
+      <!-- IA Test -->
+      <div class="card" style="border-color:#000;">
+        <div class="scorecard-header" style="border-bottom-color:#d0d0d0;">
+          <div class="scorecard-label">IA Test &mdash; Media Efficiency Leader</div>
+          <div class="scorecard-sublabel">Prospecting | ASC | CO | IATest | Purchase</div>
+        </div>
+        <div class="metric-row"><span class="metric-name">Spend</span><span class="metric-value">$80,922</span></div>
+        <div class="metric-row"><span class="metric-name">Impressions</span><span class="metric-value win">2,600,765 <span class="win-tag">+31%</span></span></div>
+        <div class="metric-row"><span class="metric-name">Reach</span><span class="metric-value win">2,358,343 <span class="win-tag">+32%</span></span></div>
+        <div class="metric-row"><span class="metric-name">Frequency</span><span class="metric-value">1.10&times;</span></div>
+        <div class="metric-row"><span class="metric-name">CPM</span><span class="metric-value win">$31.11 <span class="win-tag">-24%</span></span></div>
+        <div class="metric-row"><span class="metric-name">CPMR</span><span class="metric-value win">$34.31 <span class="win-tag">-24%</span></span></div>
+        <div class="metric-row"><span class="metric-name">CTR</span><span class="metric-value lose">1.32%</span></div>
+        <div class="metric-row"><span class="metric-name">Meta Purchases</span><span class="metric-value win">795 <span class="win-tag">+26%</span></span></div>
+        <div class="metric-row"><span class="metric-name">Revenue</span><span class="metric-value win">$71,464 <span class="win-tag">+34%</span></span></div>
+        <div class="metric-row"><span class="metric-name">Meta ROAS</span><span class="metric-value win">0.88&times;</span></div>
+        <div class="metric-row"><span class="metric-name">CPA</span><span class="metric-value win">$101.79 <span class="win-tag">-21%</span></span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: MEDIA EFFICIENCY -->
+<div class="section-wrap bg-gray">
+  <div class="container">
+    <div class="eyebrow">Media Efficiency</div>
+    <div class="section-headline">Reaching 31% more people for the same spend</div>
+
+    <div class="efficiency-stats">
+      <div class="eff-stat">
+        <span class="big-number">+31%</span>
+        <span class="eff-label">More impressions &mdash; same spend</span>
+      </div>
+      <div class="eff-stat">
+        <span class="big-number">+32%</span>
+        <span class="eff-label">More reach &mdash; same spend</span>
+      </div>
+      <div class="eff-stat">
+        <span class="big-number">-24%</span>
+        <span class="eff-label">Lower CPM ($31.11 vs $40.87)</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="chart-card-title" style="margin-bottom:4px;">CPM vs CPMR Comparison</div>
+      <div class="chart-card-desc">Cost per 1,000 impressions and cost per 1,000 reached &mdash; lower is better</div>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#000;height:12px;width:12px;border-radius:2px;"></div> IA Test</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#757575;height:12px;width:12px;border-radius:2px;"></div> BAU Control</div>
+      </div>
+      <div style="max-width:600px;">
+        <canvas id="cpmChart" height="130"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: CONVERSION LIFT -->
+<div class="section-wrap bg-white">
+  <div class="container">
+    <div class="eyebrow">Conversion Lift Test</div>
+    <div class="section-headline">The gold standard measure of true incrementality</div>
+
+    <div class="status-bar">
+      <span class="status-bar-label">Status</span>
+      <span class="status-bar-text">No winner declared &mdash; test concludes April 7, 2026. All winning scores below 80% are directional only.</span>
+    </div>
+
+    <div class="lift-explainer">
+      <strong>How to read this table:</strong> The Conversion Lift test is Meta&rsquo;s statistically rigorous method for measuring true incrementality &mdash; it isolates the causal effect of advertising by withholding ads from a holdout group. <strong>Cost per incremental conversion</strong> = how much you spend to drive one additional conversion that wouldn&rsquo;t have happened without the ad. Lower cost = better efficiency. The <strong>Winning Score</strong> is the probability that one cell outperforms another &mdash; scores above 80% are generally considered statistically meaningful. The test concludes April 7; no final winner should be declared until then.
+    </div>
+
+    <div class="card" style="overflow-x:auto;">
+      <table class="lift-table">
+        <thead>
+          <tr>
+            <th style="min-width:140px;">Objective</th>
+            <th style="min-width:180px;">Cell 1: All BAU<br><span style="font-family:'RingsideWideWeb',Arial,sans-serif;font-size:10px;opacity:0.7;font-weight:400;text-transform:none;letter-spacing:0;">Baseline holdout</span></th>
+            <th style="min-width:200px;">Cell 2: BAU Control<br><span style="font-family:'RingsideWideWeb',Arial,sans-serif;font-size:10px;opacity:0.7;font-weight:400;text-transform:none;letter-spacing:0;">vs Cell 1 winning score</span></th>
+            <th style="min-width:220px;">Cell 3: IA Test<br><span style="font-family:'RingsideWideWeb',Arial,sans-serif;font-size:10px;opacity:0.7;font-weight:400;text-transform:none;letter-spacing:0;">vs Cell 1 &amp; Cell 2 scores</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="font-family:'GeogrotesqueCondBoldWeb',Arial,sans-serif;font-size:12px;letter-spacing:0.5px;text-transform:uppercase;">Purchase</strong><br><span style="font-size:11px;opacity:0.5;">Primary objective</span></td>
+            <td><span class="cost-cell cost-bad">-$795</span><span style="font-size:11px;opacity:0.5;">Negative incremental</span></td>
+            <td>
+              <span class="cost-cell cost-good">$138</span>
+              <div class="progress-wrap">
+                <div class="progress-bar"><div class="progress-fill" style="width:76.2%;background:#059669;"></div></div>
+                <span class="progress-label">76.2%</span>
+              </div>
+              <span class="progress-note">vs Cell 1</span>
+            </td>
+            <td>
+              <span class="cost-cell cost-good">$130</span>
+              <div class="progress-wrap">
+                <div class="progress-bar"><div class="progress-fill" style="width:77.4%;background:#000;"></div></div>
+                <span class="progress-label">77.4%</span>
+              </div>
+              <span class="progress-note">vs Cell 1</span>
+              <div class="progress-wrap" style="margin-top:6px;">
+                <div class="progress-bar"><div class="progress-fill" style="width:62.5%;background:#757575;"></div></div>
+                <span class="progress-label" style="opacity:0.5;">62.5%</span>
+              </div>
+              <span class="progress-note">vs Cell 2 &mdash; inconclusive</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong style="font-family:'GeogrotesqueCondBoldWeb',Arial,sans-serif;font-size:12px;letter-spacing:0.5px;text-transform:uppercase;">Purchase NC</strong><br><span style="font-size:11px;opacity:0.5;">New customers</span></td>
+            <td>
+              <span class="cost-cell cost-good">$117</span>
+              <div class="progress-wrap">
+                <div class="progress-bar"><div class="progress-fill" style="width:94.9%;background:#059669;"></div></div>
+                <span class="progress-label">94.9%</span>
+              </div>
+              <span class="progress-note">vs Cell 3</span>
+              <div class="progress-wrap" style="margin-top:6px;">
+                <div class="progress-bar"><div class="progress-fill" style="width:97.3%;background:#059669;"></div></div>
+                <span class="progress-label">97.3%</span>
+              </div>
+              <span class="progress-note">vs Cell 2</span>
+            </td>
+            <td><span class="cost-cell cost-neutral">$150</span></td>
+            <td>
+              <span class="cost-cell cost-neutral">$135</span>
+              <div class="progress-wrap">
+                <div class="progress-bar"><div class="progress-fill" style="width:74.2%;background:#000;"></div></div>
+                <span class="progress-label">74.2%</span>
+              </div>
+              <span class="progress-note">vs Cell 2</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong style="font-family:'GeogrotesqueCondBoldWeb',Arial,sans-serif;font-size:12px;letter-spacing:0.5px;text-transform:uppercase;">Purchase RC</strong><br><span style="font-size:11px;opacity:0.5;">Returning customers</span></td>
+            <td><span class="cost-cell cost-bad">-$210</span><span style="font-size:11px;opacity:0.5;">Negative incremental</span></td>
+            <td><span class="na">&mdash;</span></td>
+            <td><span class="na">&mdash;</span></td>
+          </tr>
+          <tr>
+            <td><strong style="font-family:'GeogrotesqueCondBoldWeb',Arial,sans-serif;font-size:12px;letter-spacing:0.5px;text-transform:uppercase;">InitiateCheckout</strong></td>
+            <td><span class="cost-cell cost-neutral">$139</span></td>
+            <td>
+              <span class="cost-cell cost-neutral">$115</span>
+              <div class="progress-wrap">
+                <div class="progress-bar"><div class="progress-fill" style="width:56.9%;background:#757575;"></div></div>
+                <span class="progress-label" style="opacity:0.5;">56.9%</span>
+              </div>
+              <span class="progress-note">vs Cell 1</span>
+            </td>
+            <td>
+              <span class="cost-cell cost-good">$95.54</span>
+              <div class="progress-wrap">
+                <div class="progress-bar"><div class="progress-fill" style="width:64.9%;background:#000;"></div></div>
+                <span class="progress-label">64.9%</span>
+              </div>
+              <span class="progress-note">vs Cell 1</span>
+              <div class="progress-wrap" style="margin-top:6px;">
+                <div class="progress-bar"><div class="progress-fill" style="width:87.7%;background:#059669;"></div></div>
+                <span class="progress-label">87.7%</span>
+              </div>
+              <span class="progress-note strong">vs Cell 2 &mdash; strong signal</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong style="font-family:'GeogrotesqueCondBoldWeb',Arial,sans-serif;font-size:12px;letter-spacing:0.5px;text-transform:uppercase;">AddToCart</strong></td>
+            <td>
+              <span class="cost-cell cost-good">$8.77</span>
+              <div class="progress-wrap">
+                <div class="progress-bar"><div class="progress-fill" style="width:100%;background:#059669;"></div></div>
+                <span class="progress-label">100%</span>
+              </div>
+              <span class="progress-note strong">vs both cells</span>
+            </td>
+            <td><span class="cost-cell cost-neutral">$16.04</span></td>
+            <td>
+              <span class="cost-cell cost-neutral">$15.32</span>
+              <div class="progress-wrap">
+                <div class="progress-bar"><div class="progress-fill" style="width:66.5%;background:#000;"></div></div>
+                <span class="progress-label" style="opacity:0.5;">66.5%</span>
+              </div>
+              <span class="progress-note">vs Cell 2</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong style="font-family:'GeogrotesqueCondBoldWeb',Arial,sans-serif;font-size:12px;letter-spacing:0.5px;text-transform:uppercase;">QuizCompletion</strong></td>
+            <td><span class="cost-cell cost-good">$60.39</span></td>
+            <td><span class="cost-cell cost-neutral">$107</span></td>
+            <td><span class="cost-cell cost-neutral">$106</span></td>
+          </tr>
+          <tr>
+            <td><strong style="font-family:'GeogrotesqueCondBoldWeb',Arial,sans-serif;font-size:12px;letter-spacing:0.5px;text-transform:uppercase;">AddPaymentInfo</strong></td>
+            <td><span class="cost-cell cost-bad">-$307</span><span style="font-size:11px;opacity:0.5;">Negative incremental</span></td>
+            <td>
+              <span class="cost-cell cost-neutral">$364</span>
+              <div class="progress-wrap">
+                <div class="progress-bar"><div class="progress-fill" style="width:75.8%;background:#757575;"></div></div>
+                <span class="progress-label" style="opacity:0.6;">75.8%</span>
+              </div>
+              <span class="progress-note">vs Cell 1</span>
+            </td>
+            <td>
+              <span class="cost-cell cost-neutral">$350</span>
+              <div class="progress-wrap">
+                <div class="progress-bar"><div class="progress-fill" style="width:76%;background:#000;"></div></div>
+                <span class="progress-label">76.0%</span>
+              </div>
+              <span class="progress-note">vs Cell 1</span>
+              <div class="progress-wrap" style="margin-top:6px;">
+                <div class="progress-bar"><div class="progress-fill" style="width:53.2%;background:#757575;"></div></div>
+                <span class="progress-label" style="opacity:0.5;">53.2%</span>
+              </div>
+              <span class="progress-note">vs Cell 2 &mdash; no edge</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong style="font-family:'GeogrotesqueCondBoldWeb',Arial,sans-serif;font-size:12px;letter-spacing:0.5px;text-transform:uppercase;">ViewContent</strong></td>
+            <td>
+              <span class="cost-cell cost-good">$2.79</span>
+              <div class="progress-wrap">
+                <div class="progress-bar"><div class="progress-fill" style="width:100%;background:#059669;"></div></div>
+                <span class="progress-label">100%</span>
+              </div>
+              <span class="progress-note strong">vs both cells</span>
+            </td>
+            <td><span class="cost-cell cost-neutral">$8.63</span></td>
+            <td>
+              <span class="cost-cell cost-neutral">$7.75</span>
+              <div class="progress-wrap">
+                <div class="progress-bar"><div class="progress-fill" style="width:81.7%;background:#059669;"></div></div>
+                <span class="progress-label">81.7%</span>
+              </div>
+              <span class="progress-note strong">vs Cell 2 &mdash; IA slightly better</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: WATERFALL FUNNEL -->
+<div class="section-wrap bg-gray">
+  <div class="container">
+    <div class="eyebrow">Full Funnel Analysis</div>
+    <div class="section-headline">How each strategy moves people through the funnel</div>
+    <p style="font-family:'RingsideWideWeb',Arial,sans-serif;font-size:14px;color:#000;margin-bottom:40px;max-width:640px;">Volume data from Meta Ads Manager + Polar Analytics. All five stages shown. Width reflects volume on a log scale.</p>
+
+    <!-- Dual waterfall funnels side by side -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:32px;">
+
+      <!-- IA TEST FUNNEL -->
+      <div class="wf-funnel">
+        <div class="wf-campaign-label" style="background:#000;color:#fff;">IA TEST — INCREMENTAL ATTRIBUTION</div>
+        <div class="wf-stages">
+
+          <div class="wf-stage">
+            <div class="wf-trapezoid" style="--w-top:100%;--w-bot:70.8%;background:#000;">
+              <div class="wf-stage-inner">
+                <div class="wf-stage-name">IMPRESSIONS</div>
+                <div class="wf-stage-vol">2,600,765</div>
+                <div class="wf-stage-cost">CPM $31.11</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-connector">
+            <div class="wf-connector-line"></div>
+            <div class="wf-connector-stat">
+              <span class="wf-rate">1.32% CTR</span>
+              <span class="wf-label">Impressions to Clicks</span>
+            </div>
+            <div class="wf-connector-line"></div>
+          </div>
+
+          <div class="wf-stage">
+            <div class="wf-trapezoid" style="--w-top:70.8%;--w-bot:58.5%;background:#1a1a1a;">
+              <div class="wf-stage-inner">
+                <div class="wf-stage-name">CLICKS</div>
+                <div class="wf-stage-vol">34,330</div>
+                <div class="wf-stage-cost">CPC $2.36</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-connector">
+            <div class="wf-connector-line"></div>
+            <div class="wf-connector-stat">
+              <span class="wf-rate">16.53% ATC Rate</span>
+              <span class="wf-label">Clicks to Add to Cart</span>
+            </div>
+            <div class="wf-connector-line"></div>
+          </div>
+
+          <div class="wf-stage">
+            <div class="wf-trapezoid" style="--w-top:58.5%;--w-bot:45.6%;background:#333;">
+              <div class="wf-stage-inner">
+                <div class="wf-stage-name">ADD TO CART</div>
+                <div class="wf-stage-vol">5,674</div>
+                <div class="wf-stage-cost">CPA-ATC $14.27</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-connector">
+            <div class="wf-connector-line"></div>
+            <div class="wf-connector-stat">
+              <span class="wf-rate">14.79% Checkout Rate</span>
+              <span class="wf-label">ATC to Initiate Checkout</span>
+            </div>
+            <div class="wf-connector-line"></div>
+          </div>
+
+          <div class="wf-stage">
+            <div class="wf-trapezoid" style="--w-top:45.6%;--w-bot:45.2%;background:#444;">
+              <div class="wf-stage-inner">
+                <div class="wf-stage-name">CHECKOUT</div>
+                <div class="wf-stage-vol">839</div>
+                <div class="wf-stage-cost">CPA-Checkout $96.46</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-connector">
+            <div class="wf-connector-line"></div>
+            <div class="wf-connector-stat">
+              <span class="wf-rate" style="color:#b91c1c;">94.6% Purchase Rate</span>
+              <span class="wf-label">Checkout to Purchase</span>
+            </div>
+            <div class="wf-connector-line"></div>
+          </div>
+
+          <div class="wf-stage">
+            <div class="wf-trapezoid" style="--w-top:45.2%;--w-bot:30%;background:#555;">
+              <div class="wf-stage-inner">
+                <div class="wf-stage-name">PURCHASES</div>
+                <div class="wf-stage-vol">794</div>
+                <div class="wf-stage-cost">CPA $101.94</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- BAU CONTROL FUNNEL -->
+      <div class="wf-funnel">
+        <div class="wf-campaign-label" style="background:#757575;color:#fff;">BAU CONTROL — STANDARD BIDDING</div>
+        <div class="wf-stages">
+
+          <div class="wf-stage">
+            <div class="wf-trapezoid" style="--w-top:98.3%;--w-bot:69.9%;background:#757575;">
+              <div class="wf-stage-inner">
+                <div class="wf-stage-name">IMPRESSIONS</div>
+                <div class="wf-stage-vol">1,980,741</div>
+                <div class="wf-stage-cost">CPM $40.87</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-connector">
+            <div class="wf-connector-line"></div>
+            <div class="wf-connector-stat">
+              <span class="wf-rate">1.54% CTR</span>
+              <span class="wf-label">Impressions to Clicks</span>
+            </div>
+            <div class="wf-connector-line"></div>
+          </div>
+
+          <div class="wf-stage">
+            <div class="wf-trapezoid" style="--w-top:69.9%;--w-bot:57.1%;background:#909090;">
+              <div class="wf-stage-inner">
+                <div class="wf-stage-name">CLICKS</div>
+                <div class="wf-stage-vol">30,503</div>
+                <div class="wf-stage-cost">CPC $2.65</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-connector">
+            <div class="wf-connector-line"></div>
+            <div class="wf-connector-stat">
+              <span class="wf-rate">14.95% ATC Rate</span>
+              <span class="wf-label">Clicks to Add to Cart</span>
+            </div>
+            <div class="wf-connector-line"></div>
+          </div>
+
+          <div class="wf-stage">
+            <div class="wf-trapezoid" style="--w-top:57.1%;--w-bot:43.7%;background:#aaa;">
+              <div class="wf-stage-inner">
+                <div class="wf-stage-name">ADD TO CART</div>
+                <div class="wf-stage-vol">4,561</div>
+                <div class="wf-stage-cost">CPA-ATC $17.75</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-connector">
+            <div class="wf-connector-line"></div>
+            <div class="wf-connector-stat">
+              <span class="wf-rate">13.90% Checkout Rate</span>
+              <span class="wf-label">ATC to Initiate Checkout</span>
+            </div>
+            <div class="wf-connector-line"></div>
+          </div>
+
+          <div class="wf-stage">
+            <div class="wf-trapezoid" style="--w-top:43.7%;--w-bot:43.7%;background:#bbb;">
+              <div class="wf-stage-inner">
+                <div class="wf-stage-name">CHECKOUT</div>
+                <div class="wf-stage-vol">634</div>
+                <div class="wf-stage-cost">CPA-Checkout $127.75</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-connector">
+            <div class="wf-connector-line"></div>
+            <div class="wf-connector-stat">
+              <span class="wf-rate" style="color:#059669;">99.7% Purchase Rate</span>
+              <span class="wf-label">Checkout to Purchase</span>
+            </div>
+            <div class="wf-connector-line"></div>
+          </div>
+
+          <div class="wf-stage">
+            <div class="wf-trapezoid" style="--w-top:43.7%;--w-bot:30%;background:#c8c8c8;">
+              <div class="wf-stage-inner">
+                <div class="wf-stage-name">PURCHASES</div>
+                <div class="wf-stage-vol">632</div>
+                <div class="wf-stage-cost">CPA $128.10</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Key insight callout -->
+    <div style="background:#f6f2eb;border:1px solid #d0d0d0;border-radius:3px;padding:20px 24px;margin-bottom:40px;">
+      <div style="font-family:'GeogrotesqueCondBoldWeb',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#000;margin-bottom:8px;">Key Insight</div>
+      <p style="font-family:'RingsideWideWeb',Arial,sans-serif;font-size:14px;color:#000;line-height:1.7;">IA Test converts clicks to ATC at 16.5% vs BAU's 15.0% — but BAU converts checkouts to purchases at 99.7% vs IA's 94.6%. The drop-off is happening at the very bottom of the IA funnel.</p>
+    </div>
+
+    <!-- Head-to-head step comparison table -->
+    <div class="card">
+      <div class="eyebrow" style="margin-bottom:20px;">Step-by-step comparison</div>
+      <table class="wf-table">
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>IA TEST</th>
+            <th>BAU CONTROL</th>
+            <th>Delta</th>
+            <th>Winner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="wf-table-stage">Impressions</td>
+            <td>2,600,765</td>
+            <td>1,980,741</td>
+            <td class="wf-delta-pos">+31.3%</td>
+            <td><span class="wf-winner">IA TEST</span></td>
+          </tr>
+          <tr>
+            <td class="wf-table-stage">CPM</td>
+            <td>$31.11</td>
+            <td>$40.87</td>
+            <td class="wf-delta-pos">-23.9%</td>
+            <td><span class="wf-winner">IA TEST</span></td>
+          </tr>
+          <tr>
+            <td class="wf-table-stage">CTR (Impr. to Click)</td>
+            <td>1.32%</td>
+            <td>1.54%</td>
+            <td class="wf-delta-neg">-14.3%</td>
+            <td><span class="wf-winner" style="background:#757575;">BAU</span></td>
+          </tr>
+          <tr>
+            <td class="wf-table-stage">Clicks</td>
+            <td>34,330</td>
+            <td>30,503</td>
+            <td class="wf-delta-pos">+12.5%</td>
+            <td><span class="wf-winner">IA TEST</span></td>
+          </tr>
+          <tr>
+            <td class="wf-table-stage">CPC</td>
+            <td>$2.36</td>
+            <td>$2.65</td>
+            <td class="wf-delta-pos">-10.9%</td>
+            <td><span class="wf-winner">IA TEST</span></td>
+          </tr>
+          <tr>
+            <td class="wf-table-stage">Add to Cart</td>
+            <td>5,674</td>
+            <td>4,561</td>
+            <td class="wf-delta-pos">+24.4%</td>
+            <td><span class="wf-winner">IA TEST</span></td>
+          </tr>
+          <tr>
+            <td class="wf-table-stage">Click-to-ATC Rate</td>
+            <td>16.53%</td>
+            <td>14.95%</td>
+            <td class="wf-delta-pos">+10.6%</td>
+            <td><span class="wf-winner">IA TEST</span></td>
+          </tr>
+          <tr>
+            <td class="wf-table-stage">CPA-ATC</td>
+            <td>$14.27</td>
+            <td>$17.75</td>
+            <td class="wf-delta-pos">-19.6%</td>
+            <td><span class="wf-winner">IA TEST</span></td>
+          </tr>
+          <tr>
+            <td class="wf-table-stage">Initiate Checkout</td>
+            <td>839</td>
+            <td>634</td>
+            <td class="wf-delta-pos">+32.3%</td>
+            <td><span class="wf-winner">IA TEST</span></td>
+          </tr>
+          <tr>
+            <td class="wf-table-stage">ATC-to-Checkout Rate</td>
+            <td>14.79%</td>
+            <td>13.90%</td>
+            <td class="wf-delta-pos">+6.4%</td>
+            <td><span class="wf-winner">IA TEST</span></td>
+          </tr>
+          <tr>
+            <td class="wf-table-stage">CPA-Checkout</td>
+            <td>$96.46</td>
+            <td>$127.75</td>
+            <td class="wf-delta-pos">-24.5%</td>
+            <td><span class="wf-winner">IA TEST</span></td>
+          </tr>
+          <tr>
+            <td class="wf-table-stage">Purchases</td>
+            <td>794</td>
+            <td>632</td>
+            <td class="wf-delta-pos">+25.6%</td>
+            <td><span class="wf-winner">IA TEST</span></td>
+          </tr>
+          <tr>
+            <td class="wf-table-stage">Checkout-to-Purchase Rate</td>
+            <td>94.6%</td>
+            <td>99.7%</td>
+            <td class="wf-delta-neg">-5.1 pts</td>
+            <td><span class="wf-winner" style="background:#757575;">BAU</span></td>
+          </tr>
+          <tr>
+            <td class="wf-table-stage">CPA</td>
+            <td>$101.94</td>
+            <td>$128.10</td>
+            <td class="wf-delta-pos">-20.4%</td>
+            <td><span class="wf-winner">IA TEST</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-family:'RingsideWideWeb',Arial,sans-serif;font-size:12px;color:#000;opacity:0.6;margin-top:16px;">Note: ATC and Checkout data from Polar Analytics. Purchases from Meta-attributed reporting. These are platform-reported figures, not incrementality-adjusted.</p>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .wf-funnel { display:flex; flex-direction:column; }
+  .wf-campaign-label {
+    font-family:'GeogrotesqueCondBoldWeb',Arial Black,sans-serif;
+    font-size:11px;
+    letter-spacing:1px;
+    text-align:center;
+    padding:8px 12px;
+    border-radius:2px;
+    margin-bottom:20px;
+  }
+  .wf-stages { display:flex; flex-direction:column; align-items:center; }
+  .wf-stage { width:100%; }
+  .wf-trapezoid {
+    width:100%;
+    clip-path: polygon(
+      calc(50% - var(--w-top) / 2) 0%,
+      calc(50% + var(--w-top) / 2) 0%,
+      calc(50% + var(--w-bot) / 2) 100%,
+      calc(50% - var(--w-bot) / 2) 100%
+    );
+    padding:20px 16px;
+    min-height:90px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .wf-stage-inner { text-align:center; }
+  .wf-stage-name {
+    font-family:'GeogrotesqueCondBoldWeb',Arial Black,sans-serif;
+    font-size:10px;
+    letter-spacing:1.5px;
+    color:#fff;
+    opacity:0.75;
+    margin-bottom:4px;
+  }
+  .wf-stage-vol {
+    font-family:'BaseMonoWideWeb',Courier,monospace;
+    font-size:18px;
+    color:#fff;
+    line-height:1;
+    margin-bottom:4px;
+  }
+  .wf-stage-cost {
+    font-family:'RingsideWideWeb',Arial,sans-serif;
+    font-size:11px;
+    color:#fff;
+    opacity:0.8;
+  }
+  .wf-connector {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:80%;
+    padding:8px 0;
+  }
+  .wf-connector-line { flex:1; height:1px; background:#d0d0d0; }
+  .wf-connector-stat { text-align:center; flex-shrink:0; }
+  .wf-rate {
+    display:block;
+    font-family:'BaseMonoWideWeb',Courier,monospace;
+    font-size:12px;
+    font-weight:700;
+    color:#000;
+    white-space:nowrap;
+  }
+  .wf-label {
+    display:block;
+    font-family:'RingsideWideWeb',Arial,sans-serif;
+    font-size:10px;
+    color:#757575;
+    white-space:nowrap;
+  }
+  .wf-table {
+    width:100%;
+    border-collapse:collapse;
+    font-family:'RingsideWideWeb',Arial,sans-serif;
+    font-size:13px;
+  }
+  .wf-table th {
+    font-family:'GeogrotesqueCondBoldWeb',Arial Black,sans-serif;
+    font-size:10px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    text-align:left;
+    padding:10px 12px;
+    border-bottom:2px solid #000;
+    color:#000;
+  }
+  .wf-table td {
+    padding:10px 12px;
+    border-bottom:1px solid #ebebeb;
+    font-family:'BaseMonoWideWeb',Courier,monospace;
+    font-size:12px;
+  }
+  .wf-table-stage {
+    font-family:'RingsideWideWeb',Arial,sans-serif !important;
+    font-size:13px !important;
+    color:#000;
+  }
+  .wf-delta-pos { color:#059669; font-weight:700; }
+  .wf-delta-neg { color:#000; opacity:0.5; }
+  .wf-winner {
+    display:inline-block;
+    background:#000;
+    color:#fff;
+    font-family:'GeogrotesqueCondBoldWeb',Arial Black,sans-serif;
+    font-size:9px;
+    letter-spacing:1px;
+    padding:3px 7px;
+    border-radius:2px;
+  }
+  @media (max-width:768px) {
+    .wf-table { font-size:11px; }
+    .wf-table td, .wf-table th { padding:8px 8px; }
+  }
+</style>
+
+<!-- SECTION 4B: PLATFORM & PLACEMENT BREAKDOWN -->
+<div class="section-wrap bg-white">
+  <div class="container">
+    <div class="eyebrow">Delivery Breakdown</div>
+    <div class="section-headline">Did the spend allocation change?</div>
+    <p style="font-family:'RingsideWideWeb',Arial,sans-serif;font-size:14px;color:#757575;margin-bottom:48px;max-width:600px;">Comparing where each strategy allocated spend across platforms and placements. Nearly identical mix — confirming the CPM difference is from the bidding strategy itself, not placement arbitrage.</p>
+
+    <!-- Platform Pies -->
+    <div class="eyebrow" style="margin-bottom:20px;">By Platform</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-bottom:56px;align-items:start;">
+      <div style="text-align:center;">
+        <div style="font-family:'GeogrotesqueCondBoldWeb',Arial Black,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;">IA TEST — INCREMENTAL ATTRIBUTION</div>
+        <canvas id="platformPieTest" width="280" height="280" style="max-width:280px;"></canvas>
+        <div id="platformLegendTest" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;"></div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-family:'GeogrotesqueCondBoldWeb',Arial Black,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;">BAU CONTROL — STANDARD BIDDING</div>
+        <canvas id="platformPieControl" width="280" height="280" style="max-width:280px;"></canvas>
+        <div id="platformLegendControl" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;"></div>
+      </div>
+    </div>
+
+    <!-- Placement Pies -->
+    <div class="eyebrow" style="margin-bottom:20px;">By Placement</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-bottom:24px;align-items:start;">
+      <div style="text-align:center;">
+        <div style="font-family:'GeogrotesqueCondBoldWeb',Arial Black,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;">IA TEST — INCREMENTAL ATTRIBUTION</div>
+        <canvas id="placementPieTest" width="280" height="280" style="max-width:280px;"></canvas>
+        <div id="placementLegendTest" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;"></div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-family:'GeogrotesqueCondBoldWeb',Arial Black,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;">BAU CONTROL — STANDARD BIDDING</div>
+        <canvas id="placementPieControl" width="280" height="280" style="max-width:280px;"></canvas>
+        <div id="placementLegendControl" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;"></div>
+      </div>
+    </div>
+
+    <div style="background:#f6f2eb;border:1px solid #d0d0d0;border-radius:3px;padding:16px 20px;max-width:700px;margin:0 auto;">
+      <div style="font-family:'GeogrotesqueCondBoldWeb',Arial Black,sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">KEY FINDING</div>
+      <p style="font-family:'RingsideWideWeb',Arial,sans-serif;font-size:13px;color:#000;margin:0;">Spend allocation is nearly identical across both platforms and placements. IA Test is not winning on cheaper CPMs by shifting budget to cheaper inventory — the efficiency gain is happening within the same placements at lower cost.</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function() {
+  var platformColors = ['#000000','#555555','#999999','#cccccc'];
+  var placementColors = ['#000000','#2a2a2a','#555555','#808080','#aaaaaa','#d4d4d4'];
+
+  function makeLegend(containerId, labels, colors, values, total) {
+    var el = document.getElementById(containerId);
+    if (!el) return;
+    labels.forEach(function(lbl, i) {
+      var pct = (values[i]/total*100).toFixed(1);
+      var item = document.createElement('div');
+      item.style.cssText = 'display:flex;align-items:center;gap:6px;font-family:RingsideWideWeb,Arial,sans-serif;font-size:11px;color:#000;';
+      item.innerHTML = '<div style="width:10px;height:10px;border-radius:2px;background:'+colors[i]+';flex-shrink:0;"></div><span>'+lbl+' <strong>'+pct+'%</strong></span>';
+      el.appendChild(item);
+    });
+  }
+
+  function makePie(canvasId, labels, values, colors) {
+    var ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{ data: values, backgroundColor: colors, borderColor: '#fff', borderWidth: 2 }]
+      },
+      options: {
+        responsive: false,
+        cutout: '52%',
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) {
+                var total = ctx.dataset.data.reduce(function(a,b){return a+b;},0);
+                var pct = (ctx.parsed/total*100).toFixed(1);
+                return ctx.label + ': $' + ctx.parsed.toLocaleString('en-US',{maximumFractionDigits:0}) + ' (' + pct + '%)';
+              }
+            },
+            backgroundColor: '#fff', titleColor: '#000', bodyColor: '#000',
+            borderColor: '#d0d0d0', borderWidth: 1,
+            titleFont: { family: 'GeogrotesqueCondBoldWeb, Arial Black, sans-serif' },
+            bodyFont: { family: 'RingsideWideWeb, Arial, sans-serif' }
+          }
+        }
+      }
+    });
+  }
+
+  // Platform data
+  var platLabels  = ['Instagram','Facebook','Threads','Audience Network'];
+  var platTest    = [44612, 36137, 127, 46];
+  var platControl = [43944, 36778, 139, 95];
+  var platTestTotal    = platTest.reduce(function(a,b){return a+b;},0);
+  var platControlTotal = platControl.reduce(function(a,b){return a+b;},0);
+
+  makePie('platformPieTest',    platLabels, platTest,    platformColors);
+  makePie('platformPieControl', platLabels, platControl, platformColors);
+  makeLegend('platformLegendTest',    platLabels, platformColors, platTest,    platTestTotal);
+  makeLegend('platformLegendControl', platLabels, platformColors, platControl, platControlTotal);
+
+  // Placement data
+  var placeLabels  = ['IG Feed','FB Feed','FB Reels','IG Reels','IG Stories','Other'];
+  var placeTest    = [25036, 23664, 11665, 9950, 9548, 1059];
+  var placeControl = [24576, 24005, 11858, 9666, 9672, 1178];
+  var placeTestTotal    = placeTest.reduce(function(a,b){return a+b;},0);
+  var placeControlTotal = placeControl.reduce(function(a,b){return a+b;},0);
+
+  makePie('placementPieTest',    placeLabels, placeTest,    placementColors);
+  makePie('placementPieControl', placeLabels, placeControl, placementColors);
+  makeLegend('placementLegendTest',    placeLabels, placementColors, placeTest,    placeTestTotal);
+  makeLegend('placementLegendControl', placeLabels, placementColors, placeControl, placeControlTotal);
+})();
+</script>
+
+<!-- SECTION 5: DAILY CHARTS -->
+<div class="section-wrap bg-white">
+  <div class="container">
+    <div class="eyebrow">Daily Performance</div>
+    <div class="section-headline">Campaign delivery over 18 days</div>
+
+    <div class="chart-card">
+      <div class="chart-card-title">Daily Impressions</div>
+      <div class="chart-card-desc">IA Test consistently delivers more impressions per day despite identical spend</div>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#000;"></div> IA Test</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#d0d0d0;"></div> BAU Control</div>
+      </div>
+      <canvas id="impressionsChart" height="80"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-title">Daily CPM ($)</div>
+      <div class="chart-card-desc">IA Test CPM climbs from ~$22 to $36 over the period; BAU Control consistently runs $10 higher</div>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#000;"></div> IA Test</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#d0d0d0;"></div> BAU Control</div>
+      </div>
+      <canvas id="cpmTimeChart" height="80"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-title">Daily Purchases (Meta-attributed)</div>
+      <div class="chart-card-desc">IA Test attributed purchases run higher day-over-day &mdash; note these are not incrementality-adjusted</div>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#000;"></div> IA Test</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#d0d0d0;"></div> BAU Control</div>
+      </div>
+      <canvas id="purchasesChart" height="80"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 6: ANALYSIS -->
+<div class="section-wrap bg-gray">
+  <div class="container">
+    <div class="eyebrow">Strategic Interpretation</div>
+    <div class="section-headline">What the data is telling us</div>
+
+    <div class="analysis-grid">
+
+      <div class="analysis-card">
+        <div class="analysis-card-title">Media Buying: IA Accesses Cheaper Inventory</div>
+        <p>The IA Test strategy produces a ~24% lower CPM ($31.11 vs $40.87). For the same $81K spend, it delivered 620K more impressions and 570K more reach. This suggests the incremental attribution bidding model is targeting different &mdash; likely broader or less auction-competitive &mdash; inventory pools that BAU&rsquo;s standard bidding avoids.</p>
+      </div>
+
+      <div class="analysis-card">
+        <div class="analysis-card-title">The CPM Tradeoff: Reach vs. Click Intent</div>
+        <p>Lower CPM correlates with lower CTR (1.32% vs 1.54%). The IA strategy is optimizing for reach efficiency and incremental exposure rather than high-intent clicks. This is expected &mdash; cheaper placements tend to generate less active engagement. The question is whether broader reach still drives real purchase lift, which is what the Conversion Lift test is designed to answer.</p>
+      </div>
+
+      <div class="analysis-card">
+        <div class="analysis-card-title">Conversion Lift: Both Beat Baseline, Test vs. Control Inconclusive</div>
+        <p>Both Cell 2 (BAU Control, $138) and Cell 3 (IA Test, $130) significantly outperform Cell 1 (All BAU, -$795 &mdash; negative incremental). However, the IA Test&rsquo;s advantage over BAU Control is only a 62.5% winning score &mdash; well below the 80%+ threshold for meaningful confidence. The test ends April 7; final read should wait until then.</p>
+      </div>
+
+      <div class="analysis-card">
+        <div class="analysis-card-title">New Customer Nuance: Cell 1 Leads Here</div>
+        <p>Cell 1 (All BAU campaigns combined) shows the lowest new customer CPA at $117, beating both the IA Test ($135) and BAU Control ($150) at 94.9&ndash;97.3% confidence. This may reflect a composition effect &mdash; Cell 1 includes all prospecting activity, not just the two test cells. Interpret with caution, but it suggests IA Test hasn&rsquo;t definitively improved new customer acquisition yet.</p>
+      </div>
+
+      <div class="analysis-card">
+        <div class="analysis-card-title">InitiateCheckout: IA Test&rsquo;s Strongest Signal</div>
+        <p>The clearest win for the IA strategy: $95.54 vs $115 cost per incremental checkout, with an 87.7% winning score against BAU Control. This is above the informal significance threshold and suggests the IA strategy is driving more genuine mid-funnel engagement &mdash; people who intent to buy, not just browse.</p>
+      </div>
+
+      <div class="analysis-card">
+        <div class="analysis-card-title">Upper Funnel: BAU Wins AddToCart and ViewContent</div>
+        <p>Cell 1 (All BAU) dominates AddToCart ($8.77, 100% winning score) and ViewContent ($2.79, 100% winning score) vs both test cells. This is consistent with BAU&rsquo;s higher CTR &mdash; it&rsquo;s driving more active on-site engagement. The IA strategy sacrifices some of this upper-funnel efficiency in exchange for broader, cheaper reach. Whether the tradeoff is net-positive requires the full test readout.</p>
+      </div>
+
+    </div>
+
+    <div class="bottom-line-box">
+      <div class="analysis-card-title">Bottom Line &mdash; April 3 Read (Test Ongoing)</div>
+      <p>The IA Test strategy is clearly more <strong>media-efficient</strong>: it buys ~24% cheaper CPM, reaches 32% more unique users, and drives 26% more Meta-attributed purchases at a 21% lower CPA. The Conversion Lift data shows both test cells significantly outperform the baseline &ldquo;All BAU&rdquo; scenario. However, the direct IA vs. BAU Control comparison on incremental purchases is not yet conclusive (62.5% winning score). The strongest positive signal is the InitiateCheckout metric at 87.7%. The final read should happen after April 7 when the test officially ends &mdash; at which point a full confidence interval can be established. If the pattern holds, expect to recommend shifting budget toward the IA strategy.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 7: DATA NOTES -->
+<div class="section-wrap bg-white">
+  <div class="container">
+    <div class="eyebrow">Data Notes &amp; Methodology</div>
+    <div class="notes-box">
+      <ul class="notes-list">
+        <li>
+          <strong>Attribution vs. Incrementality</strong>
+          Meta-reported ROAS, purchases, and revenue figures (0.88&times; / 795 purchases for IA Test) are based on Meta&rsquo;s standard attribution model, not the Conversion Lift holdout study. These numbers overstate true incrementality and should not be used to judge the test outcome. The Conversion Lift results are the statistically rigorous measure.
+        </li>
+        <li>
+          <strong>Placement &amp; Age Breakdown Unavailable</strong>
+          Placement-level data (Facebook Feed, Instagram Feed, Reels, Audience Network, Stories) and age/demographic breakdowns were not available via the API used for this analysis. A more granular audit may reveal whether the CPM difference is driven by placement mix shifts &mdash; e.g., IA Test serving more Audience Network or Reels vs. BAU.
+        </li>
+        <li>
+          <strong>Conversion Lift Cells</strong>
+          Cell 1 is the holdout for all BAU campaigns combined &mdash; not just the two test campaigns. This makes direct Cell 1 comparisons directionally useful but not a clean head-to-head. The most meaningful comparison for this test is Cell 2 vs. Cell 3 (BAU Control vs. IA Test).
+        </li>
+        <li>
+          <strong>Test Window</strong>
+          Data covers March 16 &ndash; April 2 (18 of 22 days). The remaining ~4 days (April 3&ndash;7) may shift the conversion lift confidence intervals, particularly for lower-volume objectives like Purchase. Winning scores below 80% should be treated as directional only until test end.
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="page-footer">
+  Analysis generated April 3, 2026 &nbsp;&middot;&nbsp; Data: Meta Ads Manager API + Conversion Lift Tool &nbsp;&middot;&nbsp; Test concludes April 7, 2026
+</div>
+
+<script>
+// has-mouse detection
+document.addEventListener('mousemove', function handler() {
+  document.body.classList.add('has-mouse');
+  document.removeEventListener('mousemove', handler);
+}, { passive: true });
+
+const dates = ['3/17','3/18','3/19','3/20','3/21','3/22','3/23','3/24','3/25','3/26','3/27','3/28','3/29','3/30','3/31','4/1','4/2'];
+
+const testImpressions = [222119,169729,162945,162499,140868,165270,146491,127469,144845,138971,137814,139204,168353,167476,136628,142114,127970];
+const bauImpressions  = [142392,128914,128038,124476,115554,140130,120274,101762,112720,103064,101951,108011,127054,131047,101805,102794,90755];
+
+const testCPM = [21.71,27.19,29.55,30.19,32.93,31.50,32.65,34.32,33.25,33.53,34.55,33.91,30.77,28.28,33.71,32.73,36.20];
+const bauCPM  = [32.28,36.72,38.49,39.78,39.70,37.95,39.61,43.32,42.99,44.85,46.26,43.02,41.19,36.36,45.41,45.19,50.40];
+
+const testPurchases = [46,49,42,45,61,51,41,41,53,45,40,52,56,56,36,50,31];
+const bauPurchases  = [38,45,36,34,54,41,38,38,35,21,33,51,33,26,32,34,43];
+
+const chartDefaults = {
+  responsive: true,
+  interaction: { mode: 'index', intersect: false },
+  plugins: {
+    legend: { display: false },
+    tooltip: {
+      backgroundColor: '#fff',
+      titleColor: '#000',
+      bodyColor: '#000',
+      borderColor: '#d0d0d0',
+      borderWidth: 1,
+      padding: 12,
+    }
+  },
+  scales: {
+    x: {
+      grid: { color: '#f0f0f0' },
+      ticks: { color: '#000', font: { size: 11 }, opacity: 0.6 }
+    },
+    y: {
+      grid: { color: '#f0f0f0' },
+      ticks: { color: '#000', font: { size: 11 } }
+    }
+  }
+};
+
+function makeDataset(label, data, color) {
+  return {
+    label,
+    data,
+    borderColor: color,
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    pointRadius: 3,
+    pointHoverRadius: 5,
+    tension: 0.3,
+    fill: false
+  };
+}
+
+// Impressions Chart
+new Chart(document.getElementById('impressionsChart'), {
+  type: 'line',
+  data: {
+    labels: dates,
+    datasets: [
+      makeDataset('IA Test', testImpressions, '#000000'),
+      makeDataset('BAU Control', bauImpressions, '#d0d0d0')
+    ]
+  },
+  options: {
+    ...chartDefaults,
+    plugins: {
+      ...chartDefaults.plugins,
+      tooltip: {
+        ...chartDefaults.plugins.tooltip,
+        callbacks: {
+          label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}`
+        }
+      }
+    },
+    scales: {
+      ...chartDefaults.scales,
+      y: { ...chartDefaults.scales.y, ticks: { ...chartDefaults.scales.y.ticks, callback: v => (v/1000).toFixed(0)+'K' } }
+    }
+  }
+});
+
+// CPM Time Chart
+new Chart(document.getElementById('cpmTimeChart'), {
+  type: 'line',
+  data: {
+    labels: dates,
+    datasets: [
+      makeDataset('IA Test', testCPM, '#000000'),
+      makeDataset('BAU Control', bauCPM, '#d0d0d0')
+    ]
+  },
+  options: {
+    ...chartDefaults,
+    plugins: {
+      ...chartDefaults.plugins,
+      tooltip: {
+        ...chartDefaults.plugins.tooltip,
+        callbacks: {
+          label: ctx => ` ${ctx.dataset.label}: $${ctx.parsed.y.toFixed(2)}`
+        }
+      }
+    },
+    scales: {
+      ...chartDefaults.scales,
+      y: { ...chartDefaults.scales.y, ticks: { ...chartDefaults.scales.y.ticks, callback: v => '$'+v } }
+    }
+  }
+});
+
+// Purchases Chart
+new Chart(document.getElementById('purchasesChart'), {
+  type: 'line',
+  data: {
+    labels: dates,
+    datasets: [
+      makeDataset('IA Test', testPurchases, '#000000'),
+      makeDataset('BAU Control', bauPurchases, '#d0d0d0')
+    ]
+  },
+  options: {
+    ...chartDefaults,
+    plugins: {
+      ...chartDefaults.plugins,
+      tooltip: {
+        ...chartDefaults.plugins.tooltip,
+        callbacks: {
+          label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} purchases`
+        }
+      }
+    }
+  }
+});
+
+// CPM by Platform Chart
+new Chart(document.getElementById('cpmPlatformChart'), {
+  type: 'bar',
+  data: {
+    labels: ['IG CPM', 'FB CPM'],
+    datasets: [
+      {
+        label: 'IA Test',
+        data: [31.00, 31.53],
+        backgroundColor: '#000000',
+        borderColor: '#000000',
+        borderWidth: 0,
+        borderRadius: 2,
+      },
+      {
+        label: 'BAU Control',
+        data: [42.99, 38.89],
+        backgroundColor: '#d0d0d0',
+        borderColor: '#d0d0d0',
+        borderWidth: 0,
+        borderRadius: 2,
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        labels: { color: '#000', font: { size: 12 }, boxWidth: 12 }
+      },
+      tooltip: {
+        backgroundColor: '#fff',
+        titleColor: '#000',
+        bodyColor: '#000',
+        borderColor: '#d0d0d0',
+        borderWidth: 1,
+        callbacks: {
+          label: ctx => ` ${ctx.dataset.label}: $${ctx.parsed.x.toFixed(2)}`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: '#f0f0f0' },
+        ticks: { color: '#000', font: { size: 11 }, callback: v => '$'+v },
+        max: 55
+      },
+      y: {
+        grid: { color: '#f0f0f0' },
+        ticks: { color: '#000', font: { size: 12 } }
+      }
+    }
+  }
+});
+
+// CPM Horizontal Bar Chart
+new Chart(document.getElementById('cpmChart'), {
+  type: 'bar',
+  data: {
+    labels: ['CPM', 'CPMR (Cost per 1K Reached)'],
+    datasets: [
+      {
+        label: 'IA Test',
+        data: [31.11, 34.31],
+        backgroundColor: '#000000',
+        borderColor: '#000000',
+        borderWidth: 0,
+        borderRadius: 2,
+      },
+      {
+        label: 'BAU Control',
+        data: [40.87, 45.25],
+        backgroundColor: '#d0d0d0',
+        borderColor: '#d0d0d0',
+        borderWidth: 0,
+        borderRadius: 2,
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        labels: { color: '#000', font: { size: 12 }, boxWidth: 12 }
+      },
+      tooltip: {
+        backgroundColor: '#fff',
+        titleColor: '#000',
+        bodyColor: '#000',
+        borderColor: '#d0d0d0',
+        borderWidth: 1,
+        callbacks: {
+          label: ctx => ` ${ctx.dataset.label}: $${ctx.parsed.x.toFixed(2)}`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: '#f0f0f0' },
+        ticks: { color: '#000', font: { size: 11 }, callback: v => '$'+v },
+        max: 55
+      },
+      y: {
+        grid: { color: '#f0f0f0' },
+        ticks: { color: '#000', font: { size: 12 } }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
