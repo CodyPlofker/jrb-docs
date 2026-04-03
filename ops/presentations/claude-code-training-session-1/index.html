@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code — JRB Training Session 1</title>
+<style>
+  @import url('https://jrb-fonts-cdn.vercel.app/fonts/canela.css');
+  @import url('https://jrb-fonts-cdn.vercel.app/fonts/geogrotesque.css');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #000;
+    --white: #fff;
+    --gray: #f8f8f8;
+    --mid-gray: #e0e0e0;
+    --text-muted: #666;
+    --pink: #ff2e92;
+    --slide-w: 1280px;
+    --slide-h: 720px;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: #111;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    font-family: 'Geogrotesque', sans-serif;
+  }
+
+  .deck {
+    width: var(--slide-w);
+    height: var(--slide-h);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: var(--slide-w);
+    height: var(--slide-h);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ── Layout helpers ── */
+  .slide-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 72px 80px;
+  }
+
+  .slide-inner.top { justify-content: flex-start; padding-top: 64px; }
+  .slide-inner.center { align-items: center; text-align: center; }
+
+  /* ── Typography ── */
+  h1 {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 80px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--black);
+  }
+
+  h2 {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 54px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--black);
+  }
+
+  h3 {
+    font-family: 'Geogrotesque', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+  }
+
+  p, li {
+    font-family: 'Geogrotesque', sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--black);
+  }
+
+  .lead {
+    font-size: 24px;
+    line-height: 1.5;
+    max-width: 700px;
+  }
+
+  .muted { color: var(--text-muted); }
+  .pink { color: var(--pink); }
+
+  /* ── Slide counter ── */
+  .slide-num {
+    position: absolute;
+    bottom: 32px;
+    right: 40px;
+    font-family: 'Geogrotesque', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  /* ── Divider ── */
+  .rule {
+    width: 48px;
+    height: 2px;
+    background: var(--black);
+    margin: 24px 0;
+  }
+
+  .rule.pink { background: var(--pink); }
+
+  /* ── Tag/pill ── */
+  .tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 1px solid var(--black);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .tag.pink { border-color: var(--pink); color: var(--pink); }
+
+  /* ── Code pill ── */
+  .cmd {
+    display: inline-block;
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Geogrotesque', monospace;
+    font-size: 15px;
+    padding: 6px 16px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+    margin: 4px 4px 4px 0;
+  }
+
+  /* ── Grid ── */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--gray);
+    padding: 32px;
+  }
+
+  .card h3 { margin-bottom: 12px; }
+  .card p { font-size: 16px; color: #444; }
+
+  /* ── Big number ── */
+  .big-num {
+    font-family: 'Canela', serif;
+    font-size: 120px;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  /* ── Workflow steps ── */
+  .steps {
+    display: flex;
+    gap: 0;
+    margin-top: 40px;
+  }
+
+  .step {
+    flex: 1;
+    padding: 28px 24px;
+    border-left: 2px solid var(--mid-gray);
+    position: relative;
+  }
+
+  .step:first-child { border-left: 2px solid var(--black); }
+
+  .step-num {
+    font-family: 'Canela', serif;
+    font-size: 40px;
+    font-weight: 300;
+    color: var(--mid-gray);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .step:first-child .step-num { color: var(--black); }
+
+  .step h3 { margin-bottom: 8px; }
+  .step p { font-size: 14px; color: #555; }
+
+  /* ── Comparison table ── */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+    background: var(--mid-gray);
+    border: 2px solid var(--mid-gray);
+    margin-top: 40px;
+  }
+
+  .compare-cell {
+    background: var(--white);
+    padding: 28px 24px;
+  }
+
+  .compare-cell.header {
+    background: var(--black);
+    padding: 16px 24px;
+  }
+
+  .compare-cell.header h3 { color: var(--white); }
+
+  .compare-cell.highlight { background: var(--gray); }
+
+  .compare-cell ul { list-style: none; padding: 0; }
+  .compare-cell li { font-size: 15px; color: #444; padding: 4px 0; border-bottom: 1px solid var(--mid-gray); }
+  .compare-cell li:last-child { border-bottom: none; }
+  .compare-cell li::before { content: "→ "; color: var(--black); font-weight: 600; }
+
+  /* ── Skill spotlight ── */
+  .skill-header {
+    background: var(--black);
+    color: var(--white);
+    padding: 20px 80px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .skill-header h3 { color: var(--white); }
+  .skill-header .cmd { background: var(--white); color: var(--black); }
+
+  /* ── Pro tip ── */
+  .pro-tip {
+    border-left: 4px solid var(--pink);
+    padding: 20px 24px;
+    background: var(--gray);
+    margin-top: 16px;
+  }
+
+  .pro-tip h3 { color: var(--pink); margin-bottom: 8px; }
+  .pro-tip p { font-size: 16px; }
+
+  /* ── Quote ── */
+  .quote {
+    font-family: 'Canela', serif;
+    font-size: 36px;
+    font-weight: 300;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    max-width: 900px;
+  }
+
+  /* ── Arrow ── */
+  .arrow {
+    font-size: 24px;
+    color: var(--text-muted);
+    margin: 0 8px;
+  }
+
+  /* ── Backgrounds ── */
+  .bg-black { background: var(--black); }
+  .bg-white { background: var(--white); }
+  .bg-gray { background: var(--gray); }
+  .bg-pink { background: var(--pink); }
+
+  .bg-black h1, .bg-black h2, .bg-black h3,
+  .bg-black p, .bg-black li, .bg-black .lead { color: var(--white); }
+  .bg-black .rule { background: var(--white); }
+  .bg-black .tag { border-color: rgba(255,255,255,0.4); color: rgba(255,255,255,0.6); }
+  .bg-black .slide-num { color: rgba(255,255,255,0.3); }
+  .bg-black .muted { color: rgba(255,255,255,0.5); }
+
+  /* Nav hint */
+  .nav-hint {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Geogrotesque', sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    z-index: 100;
+  }
+
+  /* Progress bar */
+  .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--black);
+    transition: width 0.35s ease;
+  }
+
+  .bg-black .progress { background: var(--white); }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ── SLIDE 1: Title ── -->
+  <div class="slide bg-black active">
+    <div class="slide-inner center" style="justify-content:center;">
+      <div class="tag" style="border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.5);">Session 01 — Intro</div>
+      <h1 style="font-size:96px; margin-bottom:16px;">Claude Code</h1>
+      <p class="lead" style="color:rgba(255,255,255,0.6); text-align:center; margin:0 auto;">What it is, why it matters,<br>and how we use it at JRB.</p>
+    </div>
+    <div class="slide-num">1 / 19</div>
+    <div class="progress" id="progress"></div>
+  </div>
+
+  <!-- ── SLIDE 2: Framing ── -->
+  <div class="slide bg-white">
+    <div class="slide-inner">
+      <div class="tag">The big idea</div>
+      <h2>AI went from<br><em>answering questions</em><br>to <em>doing work.</em></h2>
+      <div class="rule"></div>
+      <p class="lead muted">Cowork and Claude.ai are great at helping you think.<br>Claude Code actually executes — it reads files, writes code,<br>searches the web, and ships things.</p>
+    </div>
+    <div class="slide-num">2 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 3: Tool comparison ── -->
+  <div class="slide bg-white">
+    <div class="slide-inner top">
+      <div class="tag">Know your tools</div>
+      <h2>Three tools. Three jobs.</h2>
+      <div class="compare">
+        <div class="compare-cell header"><h3>Claude.ai</h3></div>
+        <div class="compare-cell header"><h3>Cowork</h3></div>
+        <div class="compare-cell header"><h3>Claude Code</h3></div>
+
+        <div class="compare-cell">
+          <ul>
+            <li>Personal chat interface</li>
+            <li>Research, writing, Q&amp;A</li>
+            <li>Projects + memory</li>
+            <li>No external actions</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>Shared team AI workspace</li>
+            <li>Docs, briefs, brainstorms</li>
+            <li>Great for collaboration</li>
+            <li>No file access</li>
+          </ul>
+        </div>
+        <div class="compare-cell highlight">
+          <ul>
+            <li>Runs in your terminal</li>
+            <li>Reads &amp; writes files</li>
+            <li>Connects to Slack, Figma, Linear…</li>
+            <li>Executes multi-step tasks</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">3 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 4: What is Claude Code ── -->
+  <div class="slide bg-gray">
+    <div class="slide-inner top">
+      <div class="tag">What it actually is</div>
+      <h2>An AI that works<br>alongside you — not<br>just for coders.</h2>
+      <div class="grid-2" style="margin-top:28px; gap:40px;">
+        <div>
+          <p style="color:#555; font-size:17px; line-height:1.8; margin-bottom:24px;">
+            Claude Code runs in your terminal — a text window on your computer. You talk to it in plain English. It reads your files, searches the web, connects to your tools, and executes tasks from start to finish.<br><br>
+            You don't need to know how to code to use it. You just need to know what you want.
+          </p>
+          <div class="pro-tip">
+            <h3 style="color:var(--pink);">The key difference</h3>
+            <p style="font-size:15px;">Other AI tools give you answers. Claude Code takes actions — it does the work, not just describes it.</p>
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:14px;">Non-code things it does every day</h3>
+          <p style="font-size:15px; line-height:2.1; color:#444;">
+            → Reads a competitor's site and writes a brief<br>
+            → Summarizes a meeting transcript from Granola<br>
+            → Pulls your Meta ad data and spots trends<br>
+            → Searches Slack for a decision made months ago<br>
+            → Drafts a strategy doc from your notes<br>
+            → Runs a full workflow with one command
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">4 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 5: How it works ── -->
+  <div class="slide bg-white">
+    <div class="slide-inner top">
+      <div class="tag">Under the hood</div>
+      <h2>How it all fits together.</h2>
+      <div class="grid-3" style="margin-top:36px;">
+        <div class="card">
+          <h3 style="margin-bottom:12px;">Terminal / CLI</h3>
+          <p style="font-size:15px; line-height:1.7; color:#444;">
+            The terminal is just a text interface to your computer — like a command line chat window. Claude Code lives here. You type, it responds, and it can run commands on your machine directly.<br><br>
+            <span style="color:#999; font-size:13px;">Think of it like texting your computer.</span>
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:12px;">APIs</h3>
+          <p style="font-size:15px; line-height:1.7; color:#444;">
+            An API is how software talks to other software. When Claude pulls your Meta ad data or reads a Slack message, it's using an API — a secure, direct connection between Claude and that platform.<br><br>
+            <span style="color:#999; font-size:13px;">No copy-paste. No screenshots. Direct access.</span>
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:12px;">MCPs</h3>
+          <p style="font-size:15px; line-height:1.7; color:#444;">
+            MCP (Model Context Protocol) is the standard that lets Claude connect to external tools — Slack, Figma, Linear, Google Calendar, and more. Each MCP is a plugin that gives Claude new capabilities.<br><br>
+            <span style="color:#999; font-size:13px;">You connect it once. Claude uses it forever.</span>
+          </p>
+        </div>
+      </div>
+      <div style="margin-top:28px; background:var(--gray); padding:20px 28px; display:flex; align-items:center; gap:16px;">
+        <p style="font-size:15px; color:#555; margin:0;">
+          <strong style="color:#000;">Put together:</strong> You open the terminal, type a request in plain English, and Claude uses APIs + MCPs to pull data from your tools, work with your files, and complete the task — all in one session.
+        </p>
+      </div>
+    </div>
+    <div class="slide-num">5 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 6: What it can do ── -->
+  <div class="slide bg-white">
+    <div class="slide-inner top">
+      <div class="tag">Capabilities</div>
+      <h2>What it can actually do</h2>
+      <div class="grid-3" style="margin-top:32px;">
+        <div class="card">
+          <h3>Research</h3>
+          <p>Competitive analysis, customer interviews, review mining, market research — synthesized in seconds.</p>
+        </div>
+        <div class="card">
+          <h3>Build</h3>
+          <p>Write code, design landing pages, build Shopify sections, ship to staging — end to end.</p>
+        </div>
+        <div class="card">
+          <h3>Connect</h3>
+          <p>Pull from Slack, Linear, Figma, Google Analytics, Meta Ads — all in one conversation.</p>
+        </div>
+        <div class="card" style="margin-top:0;">
+          <h3>Automate</h3>
+          <p>Recurring tasks, scheduled reports, alerts — set it and it runs without you.</p>
+        </div>
+        <div class="card" style="margin-top:0;">
+          <h3>Audit</h3>
+          <p>QA your own work. Catch issues before they go live. Run standards checks automatically.</p>
+        </div>
+        <div class="card" style="margin-top:0;">
+          <h3>Remember</h3>
+          <p>Persistent memory across sessions. It knows your brand, your history, your preferences.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">6 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 6: Local Files ── -->
+  <div class="slide bg-white">
+    <div class="slide-inner top">
+      <div class="tag">How Claude sees your world</div>
+      <h2>Your computer is<br>Claude's workspace.</h2>
+      <div class="grid-2" style="margin-top:32px; gap:40px;">
+        <div>
+          <p style="color:#555; font-size:17px; line-height:1.8;">
+            Unlike Cowork or Claude.ai — which only see what you paste in — Claude Code can read and write files directly on your machine.<br><br>
+            That means it works with your actual stuff, not copies of it.
+          </p>
+          <div class="rule" style="margin-top:24px;"></div>
+          <p style="font-size:15px; color:#888;">No copy-paste. No exports. No context lost.</p>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <h3 style="margin-bottom:12px;">What it can access</h3>
+            <p style="font-size:15px; line-height:1.9; color:#444;">
+              → Code files &amp; entire repos<br>
+              → CSVs, spreadsheets, data exports<br>
+              → Design briefs &amp; Notion exports<br>
+              → Config files &amp; environment settings<br>
+              → Anything on your file system
+            </p>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:12px;">What it can do with them</h3>
+            <p style="font-size:15px; line-height:1.9; color:#444;">
+              → Read, edit, create, delete files<br>
+              → Run scripts &amp; terminal commands<br>
+              → Search across thousands of files instantly
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">7 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 8: GitHub ── -->
+  <div class="slide bg-gray">
+    <div class="slide-inner top">
+      <div class="tag">Version control</div>
+      <div class="grid-2" style="margin-top:20px; gap:48px; align-items:start;">
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <img src="meek-mill-tweet.png" alt="Meek Mill tweet: I need a GitHub too! Is it like that or nah?" style="width:100%; border-radius:8px; box-shadow:0 4px 24px rgba(0,0,0,0.12);">
+          <p style="font-size:13px; color:#999; text-align:center; letter-spacing:0.04em;">Even Meek Mill wants one.</p>
+          <p style="font-size:17px; color:#555; line-height:1.7;">GitHub is like <strong style="color:#000;">Google Drive for code</strong> — but with a full history of every change, by anyone, at any time. Nothing gets lost. Everything is reversible.</p>
+        </div>
+        <div>
+          <h3 style="margin-bottom:18px;">Five concepts to know</h3>
+          <div style="display:flex; flex-direction:column;">
+            <div style="padding:13px 0; border-bottom:1px solid var(--mid-gray);">
+              <p style="font-size:15px; color:#222;"><strong>Branch</strong> — a safe copy to work in without touching the live site</p>
+            </div>
+            <div style="padding:13px 0; border-bottom:1px solid var(--mid-gray);">
+              <p style="font-size:15px; color:#222;"><strong>Commit</strong> — a saved snapshot of changes, with a note on what changed</p>
+            </div>
+            <div style="padding:13px 0; border-bottom:1px solid var(--mid-gray);">
+              <p style="font-size:15px; color:#222;"><strong>Pull Request</strong> — a request to bring your branch's changes into the main codebase</p>
+            </div>
+            <div style="padding:13px 0; border-bottom:1px solid var(--mid-gray);">
+              <p style="font-size:15px; color:#222;"><strong>Merge</strong> — approving the PR and combining changes into main</p>
+            </div>
+            <div style="padding:13px 0;">
+              <p style="font-size:15px; color:#222;"><strong>Deploy</strong> — pushing the merged code live to the actual website</p>
+            </div>
+          </div>
+          <div class="pro-tip" style="margin-top:20px;">
+            <h3 style="color:var(--pink);">Why this matters</h3>
+            <p style="font-size:15px;">Claude can ship fast — GitHub is the safety net. Every change is tracked, reviewed, and reversible before it ever touches production.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">8 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 8: MCPs ── -->
+  <div class="slide bg-black">
+    <div class="slide-inner">
+      <div class="tag">Integrations</div>
+      <h2>MCPs: Claude's<br>superpowers.</h2>
+      <div class="rule" style="background:#fff;"></div>
+      <p class="lead" style="color:rgba(255,255,255,0.7); margin-bottom:32px;">MCP = Model Context Protocol. Think of them as plugins that let Claude directly access other tools — no copy-pasting required.</p>
+      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+        <span class="cmd">Slack</span>
+        <span class="cmd">Linear</span>
+        <span class="cmd">Figma</span>
+        <span class="cmd">Vercel</span>
+        <span class="cmd">Meta Ads</span>
+        <span class="cmd">Google Analytics</span>
+        <span class="cmd">Heatmap.com</span>
+        <span class="cmd">Intelligems</span>
+        <span class="cmd">Gmail</span>
+        <span class="cmd">Google Calendar</span>
+        <span class="cmd">NetSuite</span>
+        <span class="cmd">Ramp</span>
+        <span class="cmd">Granola</span>
+      </div>
+    </div>
+    <div class="slide-num">9 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 9: Skills intro ── -->
+  <div class="slide bg-white">
+    <div class="slide-inner">
+      <div class="tag">Custom workflows</div>
+      <h2>Skills: workflows<br>we've built ourselves.</h2>
+      <div class="rule"></div>
+      <p class="lead muted" style="margin-bottom:32px;">A skill is a slash command that runs a repeatable, multi-step workflow. Instead of prompting from scratch every time, you type <span class="cmd" style="font-size:13px;">/skill-name</span> and Claude knows exactly what to do.</p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <span class="cmd">/competitive-page-audit</span>
+        <span class="cmd">/feature-builder</span>
+        <span class="cmd">/jrb-design-system</span>
+        <span class="cmd">/html-to-shopify</span>
+        <span class="cmd">/ee-audit</span>
+        <span class="cmd">/listenlabs</span>
+        <span class="cmd">/jrb-cro</span>
+        <span class="cmd">/simulate-research</span>
+        <span class="cmd">/quick-analysis</span>
+      </div>
+    </div>
+    <div class="slide-num">10 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 10: Skill 1 — Competitive Page Audit ── -->
+  <div class="slide bg-white">
+    <div class="skill-header">
+      <div>
+        <h3 style="color:rgba(255,255,255,0.5); margin-bottom:4px;">Skill 01 — Research</h3>
+      </div>
+      <span class="cmd">/competitive-page-audit</span>
+    </div>
+    <div class="slide-inner top" style="padding-top:40px;">
+      <h2>Know what's working<br>before you build.</h2>
+      <div class="rule"></div>
+      <div class="grid-2">
+        <div>
+          <p style="color:#555; font-size:16px; line-height:1.8;">
+            Give Claude a competitor URL and it reads the entire page — copy, structure, positioning, social proof, CTAs — then outputs a structured audit of what they're doing well and where JRB has an edge.<br><br>
+            Used before every new landing page, PDP iteration, or campaign.
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:16px;">What it does</h3>
+          <p style="font-size:15px; line-height:1.8; color:#444;">
+            → Reads the live competitor page<br>
+            → Analyzes messaging + structure<br>
+            → Maps positioning vs JRB<br>
+            → Identifies gaps &amp; opportunities<br>
+            → Pipes into copywriter &amp; CRO skills
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">11 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 11: Skill 2 — Feature Builder ── -->
+  <div class="slide bg-white">
+    <div class="skill-header">
+      <div>
+        <h3 style="color:rgba(255,255,255,0.5); margin-bottom:4px;">Skill 02 — Ideation</h3>
+      </div>
+      <span class="cmd">/feature-builder</span>
+    </div>
+    <div class="slide-inner top" style="padding-top:40px;">
+      <h2>From insight to<br>spec in one session.</h2>
+      <div class="rule"></div>
+      <div class="grid-2">
+        <div>
+          <p style="color:#555; font-size:16px; line-height:1.8;">
+            Takes a CRO insight or customer pain point and turns it into a fully specced section — with copy, layout direction, and success metrics defined before a single line of code is written.
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:16px;">What it does</h3>
+          <p style="font-size:15px; line-height:1.8; color:#444;">
+            → Reads customer intelligence<br>
+            → Defines the friction it's solving<br>
+            → Proposes layout + copy direction<br>
+            → Sets ICE score + hypothesis<br>
+            → Outputs a build-ready brief
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">12 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 12: Skill 3 — Design System + HTML to Shopify ── -->
+  <div class="slide bg-white">
+    <div class="skill-header">
+      <div>
+        <h3 style="color:rgba(255,255,255,0.5); margin-bottom:4px;">Skill 03 — Build</h3>
+      </div>
+      <span class="cmd">/jrb-design-system</span>
+      <span style="color:rgba(255,255,255,0.4); font-size:20px;">→</span>
+      <span class="cmd">/html-to-shopify</span>
+    </div>
+    <div class="slide-inner top" style="padding-top:40px;">
+      <h2>Design to live site,<br>no dev handoff.</h2>
+      <div class="rule"></div>
+      <div class="grid-2">
+        <div>
+          <p style="color:#555; font-size:16px; line-height:1.8;">
+            Claude loads the full JRB design system — fonts, colors, components, rules — then converts an HTML prototype into production-ready Shopify Liquid, using the exact same tokens the rest of the theme uses.
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:16px;">The pipeline</h3>
+          <p style="font-size:15px; line-height:1.8; color:#444;">
+            → Spec → HTML prototype<br>
+            → Design system loaded into context<br>
+            → Converted to Liquid + SCSS<br>
+            → Pushed to staging theme<br>
+            → Ready for QA
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">13 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 13: Skill 4 — EE Audit ── -->
+  <div class="slide bg-white">
+    <div class="skill-header">
+      <div>
+        <h3 style="color:rgba(255,255,255,0.5); margin-bottom:4px;">Skill 04 — Quality</h3>
+      </div>
+      <span class="cmd">/ee-audit</span>
+    </div>
+    <div class="slide-inner top" style="padding-top:40px;">
+      <h2>Ship only what's<br>ready to ship.</h2>
+      <div class="rule"></div>
+      <div class="grid-2">
+        <div>
+          <p style="color:#555; font-size:16px; line-height:1.8;">
+            Before any code goes to the EcomExperts repo, Claude audits it against JRB's standards — catching critical issues, accessibility problems, and broken patterns before they ever touch production.
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:16px;">What it catches</h3>
+          <p style="font-size:15px; line-height:1.8; color:#444;">
+            → Critical: blocks the PR<br>
+            → High: must fix before merge<br>
+            → Warning: flag for review<br>
+            → Updates section registry<br>
+            → Then hands off to <span style="font-family:monospace;">/jrb-theme-push</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">16 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 14: How to talk to Claude ── -->
+  <div class="slide bg-black">
+    <div class="slide-inner top">
+      <div class="tag">How I actually use it</div>
+      <h2>Dictate a problem.<br>Approve a plan.<br>Watch it work.</h2>
+      <div class="grid-2" style="margin-top:32px; gap:40px;">
+        <div>
+          <div style="background:rgba(255,255,255,0.07); border-left:4px solid rgba(255,255,255,0.2); padding:24px; margin-bottom:16px;">
+            <h3 style="color:rgba(255,255,255,0.5); margin-bottom:14px;">The prompt I use (via Wispr Flow)</h3>
+            <p style="color:rgba(255,255,255,0.85); font-size:16px; line-height:1.9; font-style:italic;">
+              "Hey — here's a problem I'm dealing with. Here are some thoughts I have about how to fix it. What do you think? Is this possible? What are we actually able to do here? Can you build me a plan?"
+            </p>
+          </div>
+          <p style="color:rgba(255,255,255,0.5); font-size:14px; line-height:1.7;">
+            Wispr Flow lets you dictate anywhere on your screen — no typing required. Just talk to Claude the way you'd talk to a smart colleague.
+          </p>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <h3 style="color:rgba(255,255,255,0.5); margin-bottom:4px;">The four-step loop</h3>
+          <div style="background:rgba(255,255,255,0.07); padding:18px 20px; display:flex; align-items:center; gap:16px;">
+            <span style="font-family:'Canela',serif; font-size:32px; font-weight:300; color:rgba(255,255,255,0.2); min-width:32px;">1</span>
+            <p style="color:#fff; font-size:15px; line-height:1.5;"><strong>Describe the problem</strong> — give context, share your thinking, ask what's possible</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.07); padding:18px 20px; display:flex; align-items:center; gap:16px;">
+            <span style="font-family:'Canela',serif; font-size:32px; font-weight:300; color:rgba(255,255,255,0.2); min-width:32px;">2</span>
+            <p style="color:#fff; font-size:15px; line-height:1.5;"><strong>Claude builds a plan</strong> — step by step, before writing a single line</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.07); padding:18px 20px; display:flex; align-items:center; gap:16px;">
+            <span style="font-family:'Canela',serif; font-size:32px; font-weight:300; color:rgba(255,255,255,0.2); min-width:32px;">3</span>
+            <p style="color:#fff; font-size:15px; line-height:1.5;"><strong>You approve, redirect, or push back</strong> — you stay in control of the direction</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.07); padding:18px 20px; display:flex; align-items:center; gap:16px; border-left:3px solid var(--pink);">
+            <span style="font-family:'Canela',serif; font-size:32px; font-weight:300; color:var(--pink); min-width:32px;">4</span>
+            <p style="color:#fff; font-size:15px; line-height:1.5;"><strong>Claude executes</strong> — reads files, runs tools, ships the work</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">14 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 15: Figure out ability ── -->
+  <div class="slide bg-white">
+    <div class="slide-inner top">
+      <div class="tag">Two more power moves</div>
+      <h2>Getting unstuck.<br>And going meta.</h2>
+      <div class="grid-2" style="margin-top:32px; gap:40px;">
+        <div>
+          <h3 style="margin-bottom:16px;">When you don't know what to do</h3>
+          <p style="color:#555; font-size:16px; line-height:1.8; margin-bottom:20px;">
+            If you hit something confusing in the terminal — or anywhere — just take a screenshot and drop it in. Say:
+          </p>
+          <div style="background:var(--gray); border-left:4px solid var(--black); padding:18px 20px; margin-bottom:16px;">
+            <p style="font-size:16px; font-style:italic; color:#000;">"Hey, what does this mean? Walk me through it step by step."</p>
+          </div>
+          <div style="background:var(--gray); border-left:4px solid var(--black); padding:18px 20px; margin-bottom:20px;">
+            <p style="font-size:16px; font-style:italic; color:#000;">"Do as much as you can — open the browser if you need to."</p>
+          </div>
+          <p style="color:#888; font-size:14px; line-height:1.7;">Claude can open a browser, navigate pages, click things, and complete tasks visually — not just in code. If it can't do it automatically, it'll walk you through each step manually.</p>
+        </div>
+        <div>
+          <h3 style="margin-bottom:16px;">The meta skill</h3>
+          <p style="color:#555; font-size:16px; line-height:1.8; margin-bottom:20px;">
+            If you want to <em>do</em> something with Claude, ask Claude how.<br>
+            If you want Claude to <em>always</em> do something, ask it to build you a skill for it.
+          </p>
+          <div class="pro-tip" style="margin-bottom:16px;">
+            <h3 style="color:var(--pink);">There's a skill that builds skills</h3>
+            <p style="font-size:15px;">Run <span class="cmd" style="font-size:12px; padding:3px 10px;">/skill-creator</span> and describe the workflow you want. Claude will write the skill file itself — so next time, it's one command.</p>
+          </div>
+          <div style="background:var(--gray); padding:20px 24px;">
+            <h3 style="margin-bottom:10px;">The rule of thumb</h3>
+            <p style="font-size:15px; color:#444; line-height:1.7;">
+              → Want to do something? Ask Claude if it's possible.<br>
+              → Do it often? Ask Claude to build a skill for it.<br>
+              → Getting stuck? Screenshot it. Claude can see what you see.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">15 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 16: Pro Tips ── -->
+  <div class="slide bg-gray">
+    <div class="slide-inner top">
+      <div class="tag pink">Pro tips</div>
+      <h2>Session memory:<br>the unlock most people miss.</h2>
+      <div style="display:flex; flex-direction:column; gap:16px; margin-top:28px;">
+        <div class="pro-tip">
+          <h3>/handover</h3>
+          <p>Run this at the end of any important session. Claude writes a full summary of what was done, what was decided, and what's next — formatted so the next session can pick up exactly where you left off.</p>
+        </div>
+        <div class="pro-tip">
+          <h3>/resume</h3>
+          <p>Run this at the start of a new session. Claude loads the handover doc and has full context instantly. No re-explaining, no lost work.</p>
+        </div>
+        <div class="pro-tip">
+          <h3>/context</h3>
+          <p>Run this mid-session to see how much context you've used and what Claude currently knows about your project. Good to check on long sessions.</p>
+        </div>
+        <div class="pro-tip">
+          <h3>Context compacting</h3>
+          <p>Long sessions auto-compress. Claude keeps what matters and discards the noise — so your context window never runs out mid-project.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">17 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 15: Hands-on ── -->
+  <div class="slide bg-black">
+    <div class="slide-inner">
+      <div class="tag">Hands-on — Session 01</div>
+      <h2>Your turn.</h2>
+      <div class="rule" style="background:#fff;"></div>
+      <p class="lead" style="color:rgba(255,255,255,0.7); margin-bottom:40px;">Open Claude Code. We're going to do one thing together.</p>
+      <div style="background:rgba(255,255,255,0.07); border-left: 4px solid var(--pink); padding:28px 32px;">
+        <h3 style="color:var(--pink); margin-bottom:12px;">Exercise: Run a live competitive page audit</h3>
+        <p style="color:rgba(255,255,255,0.8); font-size:17px; line-height:1.7;">
+          Pick a competitor landing page — one you've looked at before and have opinions on.<br><br>
+          Run <span style="background:rgba(255,255,255,0.15); padding:2px 8px; border-radius:3px; font-family:monospace;">/competitive-page-audit</span> and give it the URL. Watch Claude read the live page and synthesize what they're doing, what's working, and where JRB has an edge.<br><br>
+          This is something Cowork <em>cannot</em> do.
+        </p>
+      </div>
+    </div>
+    <div class="slide-num">18 / 19</div>
+  </div>
+
+  <!-- ── SLIDE 16: What's next ── -->
+  <div class="slide bg-white">
+    <div class="slide-inner center">
+      <div class="tag">Coming up</div>
+      <h2>This was Session 1<br>of many.</h2>
+      <div class="rule" style="margin:24px auto;"></div>
+      <p class="lead muted" style="margin:0 auto;">Next sessions: live skill demos, building your own workflows,<br>and connecting Claude to the tools you already use every day.</p>
+      <div style="margin-top:48px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <span class="cmd">Session 2: Live Demos</span>
+        <span class="cmd">Session 3: Your Own Skills</span>
+        <span class="cmd">Session 4: MCPs + Automation</span>
+      </div>
+    </div>
+    <div class="slide-num">19 / 19</div>
+  </div>
+
+</div><!-- .deck -->
+
+<div class="nav-hint">← → to navigate · ESC for overview</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const progress = document.getElementById('progress');
+  let current = 0;
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(slides.length - 1, n));
+    slides[current].classList.add('active');
+    // Update progress bar on active slide
+    const pct = ((current) / (slides.length - 1)) * 100;
+    const activeProgress = slides[current].querySelector('.progress') || progress;
+    document.querySelectorAll('.progress').forEach(p => p.style.width = pct + '%');
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') goTo(current + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(current - 1);
+  });
+
+  // Click right half to advance, left half to go back
+  document.querySelector('.deck').addEventListener('click', e => {
+    const mid = window.innerWidth / 2;
+    if (e.clientX > mid) goTo(current + 1);
+    else goTo(current - 1);
+  });
+
+  goTo(0);
+</script>
+</body>
+</html>
