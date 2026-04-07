@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Foundation Stick Shade Confidence — V07: Hero Shade + Thumbnail Rail</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    .shade-hero { padding: 64px 20px; background: #f8f8f8; }
+    .shade-hero__inner { max-width: 1100px; margin: 0 auto; }
+    .shade-hero__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .shade-hero__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; text-wrap: balance; }
+    .shade-hero__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 600px; margin: 0 auto 48px; text-wrap: balance; }
+
+    .shade-hero__feature { display: flex; flex-direction: column; align-items: center; gap: 24px; margin-block-end: 48px; }
+    .shade-hero__big { width: 200px; height: 200px; border-radius: 100%; background: #c9a776; box-shadow: 0 8px 30px rgba(0,0,0,.08); }
+    .shade-hero__feature-info { text-align: center; }
+    .shade-hero__feature-name { font-family: var(--font-serif); font-size: 32px; font-weight: 300; color: var(--color-black); margin-block-end: 8px; }
+    .shade-hero__feature-meta { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: var(--color-black); margin-block-end: 8px; }
+    .shade-hero__feature-desc { font-family: var(--font-body); font-size: 15px; line-height: 1.6; color: var(--color-black); max-width: 460px; margin: 0 auto; text-wrap: balance; }
+
+    .shade-hero__rail-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--color-black); text-align: center; margin-block-end: 16px; }
+    .shade-hero__rail { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; max-width: 720px; margin: 0 auto; }
+    .shade-hero__dot { width: 32px; height: 32px; border-radius: 100%; cursor: pointer; border: 2px solid transparent; transition: transform .3s var(--ease-primary), border-color .3s var(--ease-primary); }
+    .has-mouse .shade-hero__dot:hover { transform: scale(1.12); }
+    .shade-hero__dot.is-active { border-color: var(--color-black); transform: scale(1.12); }
+
+    .shade-hero__cta { text-align: center; margin-block-start: 40px; }
+
+    @media (max-width: 640px) {
+      .shade-hero { padding: 48px 16px; }
+      .shade-hero__heading { font-size: 26px; line-height: 1.3; }
+      .shade-hero__big { width: 160px; height: 160px; }
+      .shade-hero__feature-name { font-size: 26px; }
+      .shade-hero__dot { width: 28px; height: 28px; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">Foundation Stick &mdash; Shade Confidence &mdash; V07: Hero Shade + Thumbnail Rail</div>
+
+  <section class="shade-hero">
+    <div class="shade-hero__inner">
+      <p class="shade-hero__eyebrow">30 Shades</p>
+      <h2 class="shade-hero__heading">One stick. The right shade for&nbsp;every&nbsp;you.</h2>
+      <p class="shade-hero__subhead">Built across fair, medium, tan, and deep with warm, cool, and neutral undertones in&nbsp;every&nbsp;family.</p>
+
+      <div class="shade-hero__feature">
+        <div class="shade-hero__big"></div>
+        <div class="shade-hero__feature-info">
+          <h3 class="shade-hero__feature-name">Medium Tan</h3>
+          <p class="shade-hero__feature-meta">Warm-Golden Undertone</p>
+          <p class="shade-hero__feature-desc">Best for medium-tan skin with warm golden undertones. The most-loved shade in early&nbsp;testing.</p>
+        </div>
+      </div>
+
+      <p class="shade-hero__rail-label">Tap any shade to preview</p>
+      <div class="shade-hero__rail">
+        <span class="shade-hero__dot" style="background:#f5e0cc;" title="Porcelain"></span>
+        <span class="shade-hero__dot" style="background:#f0dcc4;" title="Fair"></span>
+        <span class="shade-hero__dot" style="background:#eed5b8;" title="Fair Light"></span>
+        <span class="shade-hero__dot" style="background:#ecd0ae;" title="Light Beige"></span>
+        <span class="shade-hero__dot" style="background:#eacaa4;" title="Light Neutral"></span>
+        <span class="shade-hero__dot" style="background:#e8cba6;" title="Ivory"></span>
+        <span class="shade-hero__dot" style="background:#e3c39c;" title="Light Warm"></span>
+        <span class="shade-hero__dot" style="background:#dfbd95;" title="Light Sand"></span>
+        <span class="shade-hero__dot" style="background:#dab68b;" title="Beige"></span>
+        <span class="shade-hero__dot" style="background:#d4b68a;" title="Medium"></span>
+        <span class="shade-hero__dot" style="background:#d0ae80;" title="Medium Beige"></span>
+        <span class="shade-hero__dot" style="background:#cdac7e;" title="Medium Neutral"></span>
+        <span class="shade-hero__dot" style="background:#cba978;" title="Sand"></span>
+        <span class="shade-hero__dot is-active" style="background:#c9a776;" title="Medium Tan"></span>
+        <span class="shade-hero__dot" style="background:#c5a371;" title="Medium Warm"></span>
+        <span class="shade-hero__dot" style="background:#c19c69;" title="Honey"></span>
+        <span class="shade-hero__dot" style="background:#b9925e;" title="Tan"></span>
+        <span class="shade-hero__dot" style="background:#b08854;" title="Tan Warm"></span>
+        <span class="shade-hero__dot" style="background:#aa824f;" title="Tan Golden"></span>
+        <span class="shade-hero__dot" style="background:#a87e4a;" title="Caramel"></span>
+        <span class="shade-hero__dot" style="background:#9f7541;" title="Almond"></span>
+        <span class="shade-hero__dot" style="background:#966c39;" title="Amber"></span>
+        <span class="shade-hero__dot" style="background:#8d6930;" title="Deep"></span>
+        <span class="shade-hero__dot" style="background:#84602b;" title="Chestnut"></span>
+        <span class="shade-hero__dot" style="background:#7a5825;" title="Deep Warm"></span>
+        <span class="shade-hero__dot" style="background:#6f4f1f;" title="Mocha"></span>
+        <span class="shade-hero__dot" style="background:#65461a;" title="Cocoa"></span>
+        <span class="shade-hero__dot" style="background:#5b3d12;" title="Cocoa Deep"></span>
+        <span class="shade-hero__dot" style="background:#543900;" title="Espresso"></span>
+        <span class="shade-hero__dot" style="background:#3d2900;" title="Ebony"></span>
+      </div>
+
+      <div class="shade-hero__cta"><a href="#" class="button">Shop Foundation Stick</a></div>
+    </div>
+  </section>
+</body>
+</html>

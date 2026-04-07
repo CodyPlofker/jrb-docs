@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foundation Stick — Research & Insights Brief</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, Georgia, serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: #000; background: #fff; -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 64px 32px 96px; }
+
+    .eyebrow { font-family: var(--font-display); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #ff2e92; margin-bottom: 16px; }
+    h1 { font-family: var(--font-serif); font-size: 56px; font-weight: 300; line-height: 1.1; margin-bottom: 20px; text-wrap: balance; }
+    .subtitle { font-family: var(--font-body); font-size: 18px; line-height: 1.6; color: #000; max-width: 640px; margin-bottom: 16px; }
+    .meta { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; color: #888; padding-bottom: 48px; border-bottom: 1px solid #ddd; margin-bottom: 56px; }
+
+    h2 { font-family: var(--font-serif); font-size: 36px; font-weight: 300; line-height: 1.2; margin: 64px 0 8px; text-wrap: balance; }
+    .h2-eyebrow { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: #888; margin-top: 64px; margin-bottom: -56px; }
+    h3 { font-family: var(--font-display); font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; margin: 36px 0 12px; }
+    p { margin-bottom: 18px; font-size: 16px; }
+    ul, ol { margin: 0 0 24px 22px; }
+    li { margin-bottom: 10px; line-height: 1.6; }
+    strong { font-weight: 600; }
+    em { font-style: italic; }
+
+    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 32px 0; padding: 32px 0; border-top: 1px solid #000; border-bottom: 1px solid #000; }
+    .stat-num { font-family: var(--font-serif); font-size: 64px; font-weight: 300; line-height: 1; margin-bottom: 8px; }
+    .stat-label { font-size: 14px; line-height: 1.5; }
+    .stat-source { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: .3px; color: #888; margin-top: 8px; }
+
+    .pull { font-family: var(--font-serif); font-size: 28px; font-weight: 300; font-style: italic; line-height: 1.4; padding: 32px 0 32px 32px; border-left: 3px solid #000; margin: 36px 0; text-wrap: balance; }
+    .pull-attr { display: block; font-family: var(--font-mono); font-size: 11px; font-style: normal; text-transform: uppercase; letter-spacing: .4px; color: #888; margin-top: 16px; }
+
+    table { width: 100%; border-collapse: collapse; margin: 24px 0 32px; font-size: 14px; }
+    th { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; text-align: left; padding: 12px 14px; border-bottom: 1px solid #000; background: #f8f8f8; }
+    td { padding: 14px; border-bottom: 1px solid #ddd; vertical-align: top; }
+    td:first-child { font-weight: 600; }
+    .jrb-row td { background: #fff8fc; font-weight: 600; }
+
+    .callout { background: #f8f8f8; padding: 28px 32px; margin: 32px 0; border-left: 3px solid #ff2e92; }
+    .callout h3 { margin-top: 0; }
+    .callout p:last-child { margin-bottom: 0; }
+
+    .gallery-cta { display: inline-block; font-family: var(--font-mono); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; padding: 14px 32px; background: #000; color: #fff; text-decoration: none; margin-top: 12px; }
+    .gallery-cta:hover { background: #ff2e92; }
+
+    .footer { margin-top: 80px; padding-top: 32px; border-top: 1px solid #ddd; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; color: #888; }
+
+    @media (max-width: 720px) {
+      .wrap { padding: 48px 20px 64px; }
+      h1 { font-size: 38px; }
+      h2 { font-size: 28px; }
+      .stat-row { grid-template-columns: 1fr; gap: 24px; padding: 24px 0; }
+      .stat-num { font-size: 48px; }
+      .pull { font-size: 22px; padding-left: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <p class="eyebrow">PDP Build Brief</p>
+    <h1>Your Skin Foundation Stick — research, insights & section strategy</h1>
+    <p class="subtitle">The customer evidence, competitive read, and product positioning behind the new PDP section variations. Built so anyone reviewing the gallery understands <em>why</em> each section exists, not just what it looks like.</p>
+    <p class="meta">Launch: May 12, 2026 &nbsp;·&nbsp; Announcement: May 9 &nbsp;·&nbsp; Tier A &nbsp;·&nbsp; Prepared April 2026</p>
+
+    <h2>The product, in one paragraph</h2>
+    <p><strong>Your Skin Foundation Stick</strong> is a $38, 30-shade, satin-finish foundation stick that delivers buildable medium-to-full coverage while still letting freckles, texture, and features show through. It launches alongside <strong>The Face Blending Brush</strong> ($44). The formula is built around <strong>Ceramide NP, Squalane, Shea Butter, and Sodium Hyaluronate</strong> — skin-care-grade actives instead of the powder-heavy fillers and waxes that define most stick foundations.</p>
+
+    <h2>The wedge: 66% don't like or love foundation sticks. Yet.</h2>
+    <p>The single most important number in our research is this: <strong>two-thirds of foundation buyers don't currently like or love the foundation stick category</strong>. They've tried sticks and found them heavy, cakey, drying, and obvious. That's not a wall — that's an unclaimed market. Our entire creative angle is built on it: <em>"Foundation stick for foundation stick haters."</em></p>
+
+    <div class="stat-row">
+      <div>
+        <div class="stat-num">76<span style="font-size:36px">%</span></div>
+        <div class="stat-label">Find "weightless and comfortable all day" very or extremely appealing</div>
+        <div class="stat-source">Your Skin Survey, n=181</div>
+      </div>
+      <div>
+        <div class="stat-num">90<span style="font-size:36px">%</span></div>
+        <div class="stat-label">Care about how foundation looks/feels right now, not long-term</div>
+        <div class="stat-source">Your Skin Survey, n=181</div>
+      </div>
+      <div>
+        <div class="stat-num">66<span style="font-size:36px">%</span></div>
+        <div class="stat-label">Don't like or love foundation sticks — yet. We built it for them.</div>
+        <div class="stat-source">Your Skin Survey, n=181</div>
+      </div>
+    </div>
+
+    <p>The 90% stat is the unlock for ingredient messaging. Customers don't want a 12-week clinical-trial chart. They want the foundation to feel good <em>right now</em>. So our ingredient story leads with <strong>immediate sensorial benefits</strong> (weightless, hydrating, never cakey), then validates with the actives (ceramide, squalane, HA) — not the other way around.</p>
+
+    <h2>Voice of the customer (Junip WTF as proxy)</h2>
+    <p>Foundation Stick isn't live yet, so there's no native review data. We used <strong>What The Foundation</strong> as the closest proxy — same brand, same complexion category, similar AOV. The signal is consistent across 2,847 reviews:</p>
+
+    <ul>
+      <li><strong>Shade matching is the #1 friction</strong> — 419 reviews mention shade selection issues. The PDP <em>must</em> make shade discovery easy, not an afterthought. This is why the Shade Confidence section is the first slot in the gallery.</li>
+      <li><strong>"Looks like skin"</strong> is the most repeated phrase of love — customers reach for JRB complexion specifically because it doesn't read as makeup. Every section copy block reinforces this: <em>"still looks like your actual skin"</em>, <em>"freckles, texture, and features show through"</em>.</li>
+      <li><strong>Coverage anxiety</strong> — customers fear "not enough coverage" almost as much as "too much." The buildable medium-to-full positioning answers both.</li>
+      <li><strong>4.51 average star rating</strong> on WTF — high enough that the review section can lean confident, not defensive.</li>
+    </ul>
+
+    <h2 class="h2-eyebrow">From the founder</h2>
+    <h2>Bobbi's official PMC quote — the strategic anchor</h2>
+    <div class="pull">
+      "The goal was coverage that feels like nothing. You should look like you — just more even, more comfortable, more like your best skin."
+      <span class="pull-attr">Bobbi Brown — Founder, Jones Road Beauty</span>
+    </div>
+    <p>This quote does three things at once: (1) defends against "too heavy" objections, (2) reframes coverage as a comfort benefit not a concealment one, and (3) keeps the customer's identity at the center ("you should look like you"). It's used verbatim in the Bobbi Quote section variations — and partial pulls of it appear in the Survey Stats and Before/After sections.</p>
+
+    <h2>Competitive set — where we win, where we have to fight</h2>
+    <p>Six brands occupy the premium foundation stick space we're entering:</p>
+
+    <table>
+      <thead>
+        <tr><th>Brand</th><th>Price</th><th>Shades</th><th>Finish</th><th>Position vs. JRB</th></tr>
+      </thead>
+      <tbody>
+        <tr class="jrb-row"><td>Your Skin (JRB)</td><td>$38</td><td>30</td><td>Satin, buildable</td><td>—</td></tr>
+        <tr><td>Merit</td><td>$38</td><td>30</td><td>Matte</td><td><strong>The threat.</strong> Same price, same shade count. We have to out-narrative them on finish + founder credibility.</td></tr>
+        <tr><td>ILIA</td><td>$48</td><td>42</td><td>Skin tint / sheer</td><td>$10 more, sheerer coverage. We win on coverage flexibility.</td></tr>
+        <tr><td>Hourglass</td><td>$49</td><td>32</td><td>Vanish stick</td><td>$11 more, similar shade count. We win on price + Bobbi.</td></tr>
+        <tr><td>Dior Forever</td><td>$52</td><td>18</td><td>Matte</td><td>Half the shade range. We win on inclusivity at a lower price.</td></tr>
+        <tr><td>Bobbi Brown (Estée)</td><td>$57</td><td>43</td><td>Skin foundation stick</td><td>Most awkward comp. Our founder's other brand. Bobbi has authored the message: this one is the modern, skin-first version.</td></tr>
+        <tr><td>Westman Atelier</td><td>$68</td><td>20</td><td>Vital skincare stick</td><td>Almost 2x our price, fewer shades. We win on every axis except prestige.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <h3>Where we win on the PDP</h3>
+      <p><strong>Price parity with Merit</strong> + <strong>satin (not matte) finish</strong> + <strong>Bobbi credibility</strong> + <strong>widest shade range under $40</strong>. Merit is the only direct comp at the same price. Every other brand is paying more for less, or losing on inclusivity. The PDP needs to tell that story without naming names — through finish, founder, and shade content.</p>
+    </div>
+
+    <h2>What this all means for the PDP</h2>
+    <p>The research points to <strong>six sections</strong> the PDP has to deliver, in this order of importance:</p>
+
+    <ol>
+      <li><strong>Shade Confidence</strong> — the #1 friction in proxy review data. Has to feel easy and visual, not a 30-row chart.</li>
+      <li><strong>Before/After</strong> — the proof that "satin buildable" actually delivers coverage. This is where the 66% skeptics are converted or lost.</li>
+      <li><strong>How To Apply</strong> — sticks fail when customers don't know how to blend. A 30-second visual de-risks the purchase and sells the Face Blending Brush co-launch.</li>
+      <li><strong>Bobbi Quote</strong> — the credibility multiplier. Bobbi is our biggest brand asset; her quote is the ceiling on objection handling.</li>
+      <li><strong>Ingredients</strong> — answers the 90% "I want it to feel good now" stat with sensorial-first language, not clinical claims.</li>
+      <li><strong>Survey Stats</strong> — closes with social proof. The 76/90/66 numbers reframe the category and make the customer feel seen.</li>
+    </ol>
+    <p>For each of these six sections, the gallery linked below contains <strong>5 design variations</strong> (plus the original v01) — 36 layouts in total. The point of this round is divergent design exploration, not production polish. We pick winners, then build for real.</p>
+
+    <h2>Cuts we already made</h2>
+    <p>An earlier version of the gallery included three additional sections that were removed before review:</p>
+    <ul>
+      <li><strong>Objection Buster</strong> (3-col problem/solution on black) — important content, but the objections are more powerfully embedded inside the Bobbi Quote and Survey Stats sections than handled standalone.</li>
+      <li><strong>Cross-sell</strong> (Face Blending Brush + Miracle Balm + Setting Spray + Face Pencil) — moved out of the PDP body into the cart drawer / recommended-products module instead.</li>
+      <li><strong>Texture Close-Up</strong> (macro skin shot on black) — duplicative of the Before/After story, and the photography wasn't strong enough to justify a standalone section.</li>
+    </ul>
+
+    <h2>Open questions for Whitney + Rebecca</h2>
+    <ol>
+      <li><strong>Shade Confidence layout</strong> — five different approaches in the gallery. Do we want a filter-based grid, a horizontal scroll, family-grouped columns, or a hero-and-rail? Each has different implications for shade discovery vs. shade exploration.</li>
+      <li><strong>Bobbi quote treatment</strong> — black full-bleed, portrait left, portrait right, or signature variant? The full-bleed is the most editorial but the most production-heavy.</li>
+      <li><strong>Ingredients angle</strong> — do we lead with "what's in" (cards / hero callout) or "what's not" (the comparison version)? The comparison is sharper but reads more defensive.</li>
+      <li><strong>4-stat vs. 3-stat survey block</strong> — the 4-stat version adds "30 shades" alongside the survey numbers. Stronger or noisier?</li>
+      <li><strong>Cross-sell placement</strong> — confirming this lives in the cart drawer, not on the PDP body. If you'd rather it be on the PDP, we'll add it back to the gallery.</li>
+    </ol>
+
+    <h2>What you're reviewing</h2>
+    <p>The variation gallery is a 2-level tabbed page. Top tabs select a section type. Second-level tabs cycle through the 5 variations within each section. Click anything to swap the iframe — no navigation, no scrolling between files.</p>
+    <p><a class="gallery-cta" href="../foundation-stick-pdp-variations/">Open the variation gallery →</a></p>
+
+    <p class="footer">Foundation Stick — PDP Research & Insights Brief · Prepared by Cody · Sources: Your Skin Survey (n=181), Junip WTF (n=2,847), JRB Channel Brief, Competitive teardown, PMC creative direction · April 2026</p>
+  </div>
+</body>
+</html>

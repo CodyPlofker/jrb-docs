@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FS Objection Buster — V01: Problem/Solution Grid</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === SECTION === */
+    .objections { padding: 80px 20px; background: var(--color-black); }
+    .objections__inner { max-width: 1100px; margin: 0 auto; }
+    .objections__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-white); text-align: center; margin-block-end: 16px; }
+    .objections__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-white); text-align: center; margin-block-end: 56px; text-wrap: balance; }
+
+    .objections__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-block-end: 56px; }
+
+    .objections__card { padding: 40px 32px; border: 1px solid rgba(255,255,255,.12); }
+    .objections__card-problem { font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: .5px; color: rgba(255,255,255,.4); margin-block-end: 20px; }
+    .objections__card-answer { font-family: var(--font-serif); font-size: 52px; font-weight: 300; line-height: 1; color: var(--color-white); margin-block-end: 20px; }
+    .objections__card-proof { font-family: var(--font-body); font-size: 15px; line-height: 1.6; color: rgba(255,255,255,.7); }
+
+    .objections__cta { text-align: center; }
+    .objections__cta .button { border-color: var(--color-white); background: var(--color-white); color: var(--color-black); }
+    .has-mouse .objections__cta .button:hover { background: transparent; color: var(--color-white); }
+
+    @media (max-width: 768px) {
+      .objections { padding: 56px 16px; }
+      .objections__heading { font-size: 28px; margin-block-end: 40px; }
+      .objections__grid { grid-template-columns: 1fr; gap: 0; }
+      .objections__card { padding: 32px 24px; border-left: none; border-right: none; border-bottom: none; border-top: 1px solid rgba(255,255,255,.12); }
+      .objections__card:first-child { border-top: 1px solid rgba(255,255,255,.12); }
+      .objections__card-answer { font-size: 40px; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">Foundation Stick &mdash; Objection Buster &mdash; V01: Problem/Solution Grid</div>
+
+  <section class="objections">
+    <div class="objections__inner">
+      <p class="objections__eyebrow">For Foundation Stick Skeptics</p>
+      <h2 class="objections__heading">We heard every reason you don't like foundation sticks. Then we fixed&nbsp;them.</h2>
+
+      <div class="objections__grid">
+        <div class="objections__card">
+          <p class="objections__card-problem">Heavy?</p>
+          <p class="objections__card-answer">Weightless.</p>
+          <p class="objections__card-proof">The lightest foundation stick formula we could make. Ceramides and squalane instead of powder-heavy fillers. You'll forget you have it&nbsp;on.</p>
+        </div>
+        <div class="objections__card">
+          <p class="objections__card-problem">Cakey?</p>
+          <p class="objections__card-answer">Never.</p>
+          <p class="objections__card-proof">A satin finish that settles beautifully and stays comfortable all day. No buildup. No patchy touch-ups. No&nbsp;problem.</p>
+        </div>
+        <div class="objections__card">
+          <p class="objections__card-problem">Like other sticks?</p>
+          <p class="objections__card-answer">Nothing like&nbsp;them.</p>
+          <p class="objections__card-proof">Hydrating, creamy, and buildable from medium to full. Your freckles, texture, and features still show through. It still looks like your actual&nbsp;skin.</p>
+        </div>
+      </div>
+
+      <div class="objections__cta">
+        <a href="#" class="button">Shop Your Shade</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

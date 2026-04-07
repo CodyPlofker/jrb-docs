@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Foundation Stick How-To — V08: Carousel Steps</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === SECTION === */
+    .carousel-steps { padding: 64px 20px; background: var(--color-white); }
+    .carousel-steps__inner { max-width: 1100px; margin: 0 auto; }
+    .carousel-steps__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .carousel-steps__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
+    .carousel-steps__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 520px; margin: 0 auto 40px; }
+
+    /* Carousel */
+    .carousel-steps__track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-block-end: 16px; scrollbar-width: none; }
+    .carousel-steps__track::-webkit-scrollbar { display: none; }
+
+    .carousel-steps__card { flex: 0 0 320px; scroll-snap-align: start; background: var(--color-warm-bg); border-radius: 3px; overflow: hidden; }
+    .carousel-steps__card-img { aspect-ratio: 4 / 3; overflow: hidden; position: relative; }
+    .carousel-steps__card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .carousel-steps__card-badge { position: absolute; top: 12px; left: 12px; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; background: var(--color-black); color: var(--color-white); padding: 6px 12px; border-radius: 2px; }
+    .carousel-steps__card-body { padding: 20px; }
+    .carousel-steps__card-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-block-end: 4px; }
+    .carousel-steps__card-time { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .3px; color: var(--color-black); opacity: .5; margin-block-end: 8px; }
+    .carousel-steps__card-desc { font-family: var(--font-body); font-size: 14px; line-height: 1.6; color: var(--color-black); }
+
+    /* Nav */
+    .carousel-steps__nav { display: flex; justify-content: center; gap: 12px; margin-block-start: 24px; }
+    .carousel-steps__arrow { width: 44px; height: 44px; border: 1px solid var(--color-black); border-radius: 2px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .4s var(--ease-primary); }
+    .has-mouse .carousel-steps__arrow:hover { background: var(--color-black); }
+    .has-mouse .carousel-steps__arrow:hover svg { stroke: var(--color-white); }
+    .carousel-steps__arrow svg { width: 20px; height: 20px; stroke: var(--color-black); fill: none; stroke-width: 2; }
+
+    .carousel-steps__cta { text-align: center; margin-block-start: 24px; }
+
+    @media (max-width: 768px) {
+      .carousel-steps { padding: 48px 16px; }
+      .carousel-steps__heading { font-size: 26px; line-height: 1.3; }
+      .carousel-steps__card { flex: 0 0 280px; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">Foundation Stick &mdash; How-To &mdash; V08: Carousel Steps</div>
+
+  <section class="carousel-steps">
+    <div class="carousel-steps__inner">
+      <p class="carousel-steps__eyebrow">Swipe Through</p>
+      <h2 class="carousel-steps__heading">Your 30-second routine, step&nbsp;by&nbsp;step</h2>
+      <p class="carousel-steps__subhead">Swipe through each application stage. The entire process takes less time than reading&nbsp;this&nbsp;sentence.</p>
+
+      <div class="carousel-steps__track">
+        <div class="carousel-steps__card">
+          <div class="carousel-steps__card-img">
+            <img src="https://air-prod.imgix.net/f429435e-e95e-4c24-9691-d67623a86695.jpg?w=640&h=480&fit=crop&auto=format" alt="Step 1: Draw" loading="lazy">
+            <span class="carousel-steps__card-badge">Step 1 of 4</span>
+          </div>
+          <div class="carousel-steps__card-body">
+            <p class="carousel-steps__card-title">Draw</p>
+            <p class="carousel-steps__card-time">10 Seconds</p>
+            <p class="carousel-steps__card-desc">Draw 3 short lines on each cheek, forehead, nose, and chin directly from the stick. Light pressure, quick&nbsp;strokes.</p>
+          </div>
+        </div>
+
+        <div class="carousel-steps__card">
+          <div class="carousel-steps__card-img">
+            <img src="https://air-prod.imgix.net/3dd6c299-6630-440e-8f51-8c78fdbeae18.jpg?w=640&h=480&fit=crop&auto=format" alt="Step 2: Blend" loading="lazy">
+            <span class="carousel-steps__card-badge">Step 2 of 4</span>
+          </div>
+          <div class="carousel-steps__card-body">
+            <p class="carousel-steps__card-title">Blend</p>
+            <p class="carousel-steps__card-time">10 Seconds</p>
+            <p class="carousel-steps__card-desc">Use fingertips to blend outward. Your body heat melts the formula into your skin for a seamless, second-skin&nbsp;finish.</p>
+          </div>
+        </div>
+
+        <div class="carousel-steps__card">
+          <div class="carousel-steps__card-img">
+            <img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=640&h=480&fit=crop&auto=format" alt="Step 3: Build" loading="lazy">
+            <span class="carousel-steps__card-badge">Step 3 of 4</span>
+          </div>
+          <div class="carousel-steps__card-body">
+            <p class="carousel-steps__card-title">Build</p>
+            <p class="carousel-steps__card-time">10 Seconds</p>
+            <p class="carousel-steps__card-desc">Add a second pass only where you want more coverage. The formula layers beautifully without caking or&nbsp;heaviness.</p>
+          </div>
+        </div>
+
+        <div class="carousel-steps__card">
+          <div class="carousel-steps__card-img">
+            <img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=640&h=480&fit=crop&auto=format" alt="Step 4: Go" loading="lazy">
+            <span class="carousel-steps__card-badge">Step 4 of 4</span>
+          </div>
+          <div class="carousel-steps__card-body">
+            <p class="carousel-steps__card-title">Go</p>
+            <p class="carousel-steps__card-time">0 Seconds</p>
+            <p class="carousel-steps__card-desc">No setting spray or powder needed. Cap it, toss it in your bag, and go. Lasts&nbsp;12+&nbsp;hours.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-steps__nav">
+        <button class="carousel-steps__arrow" aria-label="Previous step">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="carousel-steps__arrow" aria-label="Next step">
+          <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"></polyline></svg>
+        </button>
+      </div>
+
+      <div class="carousel-steps__cta">
+        <a href="#" class="button">Shop Foundation Stick</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Your Skin Before/After — V07: Split Slider</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    .section { padding: 64px 20px; background: #f8f8f8; }
+    .section__inner { max-width: 700px; margin: 0 auto; text-align: center; }
+    .section__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; }
+    .section__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); margin-block-end: 12px; }
+    .section__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); max-width: 500px; margin: 0 auto 40px; }
+
+    .slider-wrap { position: relative; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 3px; margin-block-end: 16px; }
+    .slider-wrap__before, .slider-wrap__after { position: absolute; inset: 0; }
+    .slider-wrap__before img, .slider-wrap__after img { width: 100%; height: 100%; object-fit: cover; }
+    .slider-wrap__before { clip-path: inset(0 50% 0 0); }
+    .slider-wrap__line { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: var(--color-white); z-index: 2; }
+    .slider-wrap__handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border-radius: 100%; background: var(--color-white); border: 2px solid var(--color-black); z-index: 3; display: flex; align-items: center; justify-content: center; cursor: grab; }
+    .slider-wrap__handle::before { content: '\2194'; font-size: 18px; color: var(--color-black); }
+    .slider-labels { display: flex; justify-content: space-between; margin-block-end: 40px; }
+    .slider-labels span { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+
+    @media (max-width: 768px) {
+      .section { padding: 48px 16px; }
+      .section__heading { font-size: 26px; line-height: 1.3; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">Your Skin Foundation Stick &mdash; Before/After &mdash; V07: Split Slider</div>
+  <section class="section">
+    <div class="section__inner">
+      <p class="section__eyebrow">Drag to Reveal</p>
+      <h2 class="section__heading">Before and after, side by&nbsp;side</h2>
+      <p class="section__subhead">Drag the handle to see the transformation. Same skin, same lighting &mdash; just Your Skin&nbsp;applied.</p>
+
+      <div class="slider-wrap">
+        <div class="slider-wrap__after">
+          <img src="https://air-prod.imgix.net/3dd6c299-6630-440e-8f51-8c78fdbeae18.jpg?w=700&h=930&fit=crop&auto=format" alt="After — with Your Skin" loading="lazy">
+        </div>
+        <div class="slider-wrap__before">
+          <img src="https://air-prod.imgix.net/f429435e-e95e-4c24-9691-d67623a86695.jpg?w=700&h=930&fit=crop&auto=format" alt="Before — bare skin" loading="lazy">
+        </div>
+        <div class="slider-wrap__line"></div>
+        <div class="slider-wrap__handle"></div>
+      </div>
+      <div class="slider-labels">
+        <span>Before</span>
+        <span>After</span>
+      </div>
+
+      <a href="#" class="button">Shop Your Skin</a>
+    </div>
+  </section>
+</body>
+</html>

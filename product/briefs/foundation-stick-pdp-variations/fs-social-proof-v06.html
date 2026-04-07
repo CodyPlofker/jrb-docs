@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Foundation Stick Social Proof — V06: Survey Stats</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === SECTION === */
+    .survey-stats { padding: 80px 20px; background: var(--color-black); }
+    .survey-stats__inner { max-width: 1100px; margin: 0 auto; }
+    .survey-stats__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-white); margin-block-end: 16px; text-align: center; }
+    .survey-stats__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-white); text-align: center; margin-block-end: 12px; }
+    .survey-stats__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-white); text-align: center; max-width: 560px; margin: 0 auto 48px; opacity: .8; }
+
+    /* Stats grid */
+    .survey-stats__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-block-end: 48px; }
+    .survey-stats__stat { text-align: center; }
+    .survey-stats__stat-num { font-family: var(--font-serif); font-size: 72px; font-weight: 300; color: var(--color-white); line-height: 1; margin-block-end: 8px; }
+    .survey-stats__stat-unit { font-family: var(--font-serif); font-size: 72px; font-weight: 300; color: var(--color-white); }
+    .survey-stats__stat-label { font-family: var(--font-body); font-size: 16px; line-height: 1.5; color: var(--color-white); max-width: 240px; margin: 0 auto; }
+    .survey-stats__stat-source { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .3px; color: var(--color-white); opacity: .4; margin-block-start: 8px; }
+
+    /* Divider quote */
+    .survey-stats__divider { border-top: 1px solid rgba(255,255,255,.2); padding-block-start: 40px; text-align: center; }
+    .survey-stats__quote { font-family: var(--font-serif); font-size: 24px; font-weight: 300; font-style: italic; line-height: 1.4; color: var(--color-white); max-width: 600px; margin: 0 auto 16px; }
+    .survey-stats__attr { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; color: var(--color-white); opacity: .5; margin-block-end: 32px; }
+
+    .survey-stats__cta { text-align: center; }
+    .survey-stats__cta .button { border-color: var(--color-white); background: var(--color-white); color: var(--color-black); }
+    .has-mouse .survey-stats__cta .button:hover { background: transparent; color: var(--color-white); }
+
+    @media (max-width: 768px) {
+      .survey-stats { padding: 48px 16px; }
+      .survey-stats__heading { font-size: 26px; line-height: 1.3; }
+      .survey-stats__grid { grid-template-columns: 1fr; gap: 32px; }
+      .survey-stats__stat-num, .survey-stats__stat-unit { font-size: 56px; }
+      .survey-stats__quote { font-size: 20px; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">Foundation Stick &mdash; Social Proof &mdash; V06: Survey Stats</div>
+
+  <section class="survey-stats">
+    <div class="survey-stats__inner">
+      <p class="survey-stats__eyebrow">What Women Want</p>
+      <h2 class="survey-stats__heading">We asked. You answered. We&nbsp;built&nbsp;it.</h2>
+      <p class="survey-stats__subhead">We surveyed hundreds of foundation shoppers to understand what was missing. Foundation Stick is the&nbsp;answer.</p>
+
+      <div class="survey-stats__grid">
+        <div class="survey-stats__stat">
+          <p class="survey-stats__stat-num">76<span class="survey-stats__stat-unit">%</span></p>
+          <p class="survey-stats__stat-label">find "weightless and comfortable all day" very or extremely&nbsp;appealing</p>
+          <p class="survey-stats__stat-source">Your Skin Survey, n=181</p>
+        </div>
+        <div class="survey-stats__stat">
+          <p class="survey-stats__stat-num">90<span class="survey-stats__stat-unit">%</span></p>
+          <p class="survey-stats__stat-label">care about how their foundation looks and feels right now, not&nbsp;long-term</p>
+          <p class="survey-stats__stat-source">Your Skin Survey, n=181</p>
+        </div>
+        <div class="survey-stats__stat">
+          <p class="survey-stats__stat-num">66<span class="survey-stats__stat-unit">%</span></p>
+          <p class="survey-stats__stat-label">don't like or love foundation sticks — yet. We built this one&nbsp;for&nbsp;them.</p>
+          <p class="survey-stats__stat-source">Your Skin Survey, n=181</p>
+        </div>
+      </div>
+
+      <div class="survey-stats__divider">
+        <p class="survey-stats__quote">"The goal was coverage that feels like nothing. You should look like you &mdash; just more even, more comfortable, more like your best&nbsp;skin."</p>
+        <p class="survey-stats__attr">Bobbi Brown &mdash; Founder, Jones Road Beauty</p>
+        <div class="survey-stats__cta">
+          <a href="#" class="button">Shop Foundation Stick</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

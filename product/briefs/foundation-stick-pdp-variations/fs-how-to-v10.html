@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Foundation Stick How-To — V10: Coverage Control</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === SECTION === */
+    .coverage-control { padding: 64px 20px; background: var(--color-white); }
+    .coverage-control__inner { max-width: 1100px; margin: 0 auto; }
+    .coverage-control__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .coverage-control__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
+    .coverage-control__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 600px; margin: 0 auto 48px; }
+
+    /* 3-column coverage levels */
+    .coverage-control__levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .coverage-control__level { background: var(--color-warm-bg); border-radius: 3px; overflow: hidden; text-align: center; }
+    .coverage-control__level-img { aspect-ratio: 3 / 4; overflow: hidden; }
+    .coverage-control__level-img img { width: 100%; height: 100%; object-fit: cover; }
+    .coverage-control__level-body { padding: 24px; }
+    .coverage-control__level-name { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-block-end: 4px; }
+    .coverage-control__level-passes { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .4px; color: var(--color-black); margin-block-end: 12px; }
+    .coverage-control__level-desc { font-family: var(--font-body); font-size: 14px; line-height: 1.6; color: var(--color-black); margin-block-end: 12px; }
+    .coverage-control__level-best { font-family: var(--font-serif); font-size: 15px; font-weight: 300; font-style: italic; line-height: 1.4; color: var(--color-black); }
+
+    /* Coverage meter */
+    .coverage-control__meter { display: flex; align-items: center; justify-content: center; gap: 4px; margin-block-end: 12px; }
+    .coverage-control__meter-bar { width: 32px; height: 6px; border-radius: 3px; background: var(--color-border); }
+    .coverage-control__meter-bar.is-filled { background: var(--color-black); }
+
+    .coverage-control__cta { text-align: center; margin-block-start: 32px; }
+
+    @media (max-width: 768px) {
+      .coverage-control { padding: 48px 16px; }
+      .coverage-control__heading { font-size: 26px; line-height: 1.3; }
+      .coverage-control__levels { grid-template-columns: 1fr; gap: 20px; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">Foundation Stick &mdash; How-To &mdash; V10: Coverage Control</div>
+
+  <section class="coverage-control">
+    <div class="coverage-control__inner">
+      <p class="coverage-control__eyebrow">You Control the Coverage</p>
+      <h2 class="coverage-control__heading">One stick, three levels of&nbsp;coverage</h2>
+      <p class="coverage-control__subhead">Foundation Stick is fully buildable. One pass for barely-there. Two for balanced. Three for full coverage that still looks like skin, not&nbsp;makeup.</p>
+
+      <div class="coverage-control__levels">
+        <div class="coverage-control__level">
+          <div class="coverage-control__level-img">
+            <img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=500&h=660&fit=crop&auto=format" alt="Sheer coverage" loading="lazy">
+          </div>
+          <div class="coverage-control__level-body">
+            <p class="coverage-control__level-name">Sheer</p>
+            <p class="coverage-control__level-passes">One Light Pass</p>
+            <div class="coverage-control__meter">
+              <span class="coverage-control__meter-bar is-filled"></span>
+              <span class="coverage-control__meter-bar"></span>
+              <span class="coverage-control__meter-bar"></span>
+            </div>
+            <p class="coverage-control__level-desc">Evens skin tone and reduces redness while letting your natural skin show through. Your skin on a great&nbsp;day.</p>
+            <p class="coverage-control__level-best">Best for: weekends, WFH days, and the "no-makeup&nbsp;makeup"&nbsp;look</p>
+          </div>
+        </div>
+
+        <div class="coverage-control__level">
+          <div class="coverage-control__level-img">
+            <img src="https://air-prod.imgix.net/3dd6c299-6630-440e-8f51-8c78fdbeae18.jpg?w=500&h=660&fit=crop&auto=format" alt="Medium coverage" loading="lazy">
+          </div>
+          <div class="coverage-control__level-body">
+            <p class="coverage-control__level-name">Medium</p>
+            <p class="coverage-control__level-passes">Two Passes</p>
+            <div class="coverage-control__meter">
+              <span class="coverage-control__meter-bar is-filled"></span>
+              <span class="coverage-control__meter-bar is-filled"></span>
+              <span class="coverage-control__meter-bar"></span>
+            </div>
+            <p class="coverage-control__level-desc">Covers dark spots, redness, and uneven texture while maintaining a completely natural finish. Looks like skin,&nbsp;not&nbsp;makeup.</p>
+            <p class="coverage-control__level-best">Best for: everyday wear, meetings, and&nbsp;dinners&nbsp;out</p>
+          </div>
+        </div>
+
+        <div class="coverage-control__level">
+          <div class="coverage-control__level-img">
+            <img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=500&h=660&fit=crop&auto=format" alt="Full coverage" loading="lazy">
+          </div>
+          <div class="coverage-control__level-body">
+            <p class="coverage-control__level-name">Full</p>
+            <p class="coverage-control__level-passes">Three Passes</p>
+            <div class="coverage-control__meter">
+              <span class="coverage-control__meter-bar is-filled"></span>
+              <span class="coverage-control__meter-bar is-filled"></span>
+              <span class="coverage-control__meter-bar is-filled"></span>
+            </div>
+            <p class="coverage-control__level-desc">Maximum coverage that still feels weightless. Conceals everything without looking cakey, heavy, or mask-like. Still&nbsp;breathable.</p>
+            <p class="coverage-control__level-best">Best for: events, photos, and days when you want flawless&nbsp;skin</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="coverage-control__cta">
+        <a href="#" class="button">Shop Foundation Stick</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

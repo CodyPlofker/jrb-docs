@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FS Cross-Sell — V01: Model + Product Cards</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === SECTION === */
+    .cross-sell { padding: 64px 20px; background: #f8f8f8; }
+    .cross-sell__inner { max-width: 1100px; margin: 0 auto; }
+    .cross-sell__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-block-end: 16px; text-align: center; }
+    .cross-sell__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; text-align: center; margin-block-end: 48px; }
+
+    .cross-sell__layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+    .cross-sell__model { aspect-ratio: 3 / 4; overflow: hidden; border-radius: 3px; }
+    .cross-sell__model img { width: 100%; height: 100%; object-fit: cover; }
+
+    .cross-sell__products { display: flex; flex-direction: column; gap: 16px; }
+    .cross-sell__product { background: var(--color-white); padding: 20px; border-radius: 3px; display: flex; gap: 16px; align-items: center; }
+    .cross-sell__product-img { width: 72px; height: 72px; border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+    .cross-sell__product-img img { width: 100%; height: 100%; object-fit: cover; }
+    .cross-sell__product-info { flex: 1; }
+    .cross-sell__product-name { font-family: var(--font-display); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; margin-block-end: 4px; }
+    .cross-sell__product-desc { font-family: var(--font-body); font-size: 13px; line-height: 1.4; margin-block-end: 4px; }
+    .cross-sell__product-price { font-family: var(--font-mono); font-size: 12px; letter-spacing: .3px; }
+    .cross-sell__product-cta { flex-shrink: 0; }
+    .cross-sell__add { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; padding: 8px 16px; border: 1px solid var(--color-black); background: transparent; cursor: pointer; border-radius: 2px; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .cross-sell__add:hover { background: var(--color-black); color: var(--color-white); }
+
+    @media (max-width: 768px) {
+      .cross-sell { padding: 48px 16px; }
+      .cross-sell__heading { font-size: 26px; line-height: 1.3; }
+      .cross-sell__layout { grid-template-columns: 1fr; gap: 24px; }
+      .cross-sell__model { aspect-ratio: 1; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">Foundation Stick &mdash; Cross-Sell &mdash; V01: Model + Product Cards</div>
+
+  <section class="cross-sell">
+    <div class="cross-sell__inner">
+      <p class="cross-sell__eyebrow">Get the Look</p>
+      <h2 class="cross-sell__heading">Everything she's wearing</h2>
+
+      <div class="cross-sell__layout">
+        <div class="cross-sell__model">
+          <img src="https://air-prod.imgix.net/f429435e-e95e-4c24-9691-d67623a86695.jpg?w=600&h=800&fit=crop&auto=format" alt="Natural look with Your Skin" loading="lazy">
+        </div>
+
+        <div class="cross-sell__products">
+          <div class="cross-sell__product">
+            <div class="cross-sell__product-img">
+              <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=144&h=144&fit=crop&auto=format" alt="The Face Blending Brush" loading="lazy">
+            </div>
+            <div class="cross-sell__product-info">
+              <p class="cross-sell__product-name">The Face Blending Brush</p>
+              <p class="cross-sell__product-desc">Made for this stick. Blends faster than&nbsp;fingers.</p>
+              <p class="cross-sell__product-price">$44</p>
+            </div>
+            <div class="cross-sell__product-cta">
+              <button class="cross-sell__add">Add</button>
+            </div>
+          </div>
+
+          <div class="cross-sell__product">
+            <div class="cross-sell__product-img">
+              <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=144&h=144&fit=crop&auto=format" alt="Miracle Balm" loading="lazy">
+            </div>
+            <div class="cross-sell__product-info">
+              <p class="cross-sell__product-name">Miracle Balm</p>
+              <p class="cross-sell__product-desc">Cheeks, lips, and eyes in one&nbsp;swipe</p>
+              <p class="cross-sell__product-price">$38</p>
+            </div>
+            <div class="cross-sell__product-cta">
+              <button class="cross-sell__add">Add</button>
+            </div>
+          </div>
+
+          <div class="cross-sell__product">
+            <div class="cross-sell__product-img">
+              <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=144&h=144&fit=crop&auto=format" alt="Just A Sec Setting Spray" loading="lazy">
+            </div>
+            <div class="cross-sell__product-info">
+              <p class="cross-sell__product-name">Just A Sec Setting Spray</p>
+              <p class="cross-sell__product-desc">Lock everything in place all&nbsp;day</p>
+              <p class="cross-sell__product-price">$28</p>
+            </div>
+            <div class="cross-sell__product-cta">
+              <button class="cross-sell__add">Add</button>
+            </div>
+          </div>
+
+          <div class="cross-sell__product">
+            <div class="cross-sell__product-img">
+              <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=144&h=144&fit=crop&auto=format" alt="Face Pencil" loading="lazy">
+            </div>
+            <div class="cross-sell__product-info">
+              <p class="cross-sell__product-name">Face Pencil</p>
+              <p class="cross-sell__product-desc">Targeted concealing and&nbsp;brightening</p>
+              <p class="cross-sell__product-price">$25</p>
+            </div>
+            <div class="cross-sell__product-cta">
+              <button class="cross-sell__add">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
