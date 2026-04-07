@@ -162,6 +162,57 @@
       background: rgba(255,255,255,.05);
     }
 
+    .lib-sidebar__link.is-hidden {
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .lib-search {
+      padding: 12px 20px 4px;
+      position: relative;
+    }
+
+    .lib-search__input {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 13px;
+      padding: 8px 30px 8px 12px;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 2px;
+      background: rgba(255,255,255,.08);
+      color: var(--color-white);
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .lib-search__input::placeholder { color: rgba(255,255,255,.35); }
+    .lib-search__input:focus { border-color: rgba(255,255,255,.5); }
+
+    .lib-search__clear {
+      position: absolute;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      line-height: 1;
+      color: rgba(255,255,255,.4);
+      display: none;
+      padding: 0;
+    }
+
+    .lib-search__clear.is-visible { display: block; }
+
+    .lib-no-results {
+      padding: 48px 48px 24px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--color-muted);
+      display: none;
+    }
+
     .lib-sidebar__num {
       font-family: var(--font-mono);
       font-size: 10px;
@@ -778,7 +829,11 @@
         <div class="lib-sidebar__title">Component Library</div>
         <div class="lib-sidebar__subtitle">Jones Road Beauty</div>
       </div>
-      <nav class="lib-sidebar__nav">
+      <div class="lib-search">
+        <input class="lib-search__input" id="libSearch" type="search" placeholder="Search components…" autocomplete="off">
+        <button class="lib-search__clear" id="libSearchClear" aria-label="Clear search">&#215;</button>
+      </div>
+      <nav class="lib-sidebar__nav" id="libSidebarNav">
         <a href="#comp-1" class="lib-sidebar__link"><span class="lib-sidebar__num">01</span> Star Rating</a>
         <a href="#comp-2" class="lib-sidebar__link"><span class="lib-sidebar__num">02</span> Section Eyebrow</a>
         <a href="#comp-3" class="lib-sidebar__link"><span class="lib-sidebar__num">03</span> Buy Box</a>
@@ -805,6 +860,8 @@
         <h1 class="lib-header__title">JRB Component Library</h1>
         <p class="lib-header__meta">Last updated: March 2026 &middot; 14 components &middot; Source: Emily DiDonato x Blushing Stick LP</p>
       </header>
+
+      <p class="lib-no-results" id="libNoResults">No components match your search.</p>
 
       <!-- ============================================================
            1. Star Rating (Junip Pattern)
@@ -1572,6 +1629,53 @@
 
       startProgress();
       var autoId = setInterval(advance, INTERVAL);
+    })();
+  </script>
+
+  <script>
+    (function() {
+      var input = document.getElementById('libSearch');
+      var clearBtn = document.getElementById('libSearchClear');
+      var noResults = document.getElementById('libNoResults');
+      var navLinks = document.querySelectorAll('#libSidebarNav .lib-sidebar__link');
+      var sections = Array.from(document.querySelectorAll('.lib-section')).map(function(el) {
+        return {
+          el: el,
+          id: el.id,
+          text: [
+            el.querySelector('.lib-section__name') ? el.querySelector('.lib-section__name').textContent : '',
+            el.querySelector('.lib-section__desc') ? el.querySelector('.lib-section__desc').textContent : ''
+          ].join(' ').toLowerCase()
+        };
+      });
+
+      function filter(q) {
+        var query = q.trim().toLowerCase();
+        var matchCount = 0;
+
+        sections.forEach(function(s) {
+          var match = !query || s.text.indexOf(query) !== -1;
+          s.el.style.display = match ? '' : 'none';
+          if (match) matchCount++;
+        });
+
+        navLinks.forEach(function(link) {
+          var href = link.getAttribute('href').replace('#', '');
+          var section = sections.find(function(s) { return s.id === href; });
+          var match = !query || (section && section.text.indexOf(query) !== -1);
+          link.classList.toggle('is-hidden', !match);
+        });
+
+        noResults.style.display = (query && matchCount === 0) ? 'block' : 'none';
+        clearBtn.classList.toggle('is-visible', !!query);
+      }
+
+      input.addEventListener('input', function() { filter(this.value); });
+      clearBtn.addEventListener('click', function() {
+        input.value = '';
+        filter('');
+        input.focus();
+      });
     })();
   </script>
 

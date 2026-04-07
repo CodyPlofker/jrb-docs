@@ -117,6 +117,29 @@
     .lib-sidebar__link:hover {
       color: var(--color-white); background: rgba(255,255,255,.05);
     }
+    .lib-sidebar__link.is-hidden { opacity: 0.25; pointer-events: none; }
+    .lib-sidebar__group-title.is-hidden { display: none; }
+    .lib-search {
+      padding: 12px 20px 4px; position: relative;
+    }
+    .lib-search__input {
+      width: 100%; font-family: var(--font-body); font-size: 13px;
+      padding: 8px 30px 8px 12px; border: 1px solid rgba(255,255,255,.2);
+      border-radius: 2px; background: rgba(255,255,255,.08);
+      color: var(--color-white); outline: none; transition: border-color .2s;
+    }
+    .lib-search__input::placeholder { color: rgba(255,255,255,.35); }
+    .lib-search__input:focus { border-color: rgba(255,255,255,.5); }
+    .lib-search__clear {
+      position: absolute; right: 28px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; font-size: 15px;
+      line-height: 1; color: rgba(255,255,255,.4); display: none; padding: 0;
+    }
+    .lib-search__clear.is-visible { display: block; }
+    .lib-no-results {
+      padding: 48px 48px 24px; font-family: var(--font-body);
+      font-size: 14px; color: var(--color-muted); display: none;
+    }
     .lib-sidebar__num {
       font-family: var(--font-mono); font-size: 9px; font-weight: 550;
       color: rgba(255,255,255,.3); min-width: 18px;
@@ -797,7 +820,11 @@
         <div class="lib-sidebar__title">CCLP Section Library</div>
         <div class="lib-sidebar__subtitle">Jones Road Beauty</div>
       </div>
-      <div class="lib-sidebar__nav">
+      <div class="lib-search">
+        <input class="lib-search__input" id="libSearch" type="search" placeholder="Search sections…" autocomplete="off">
+        <button class="lib-search__clear" id="libSearchClear" aria-label="Clear search">&#215;</button>
+      </div>
+      <div class="lib-sidebar__nav" id="libSidebarNav">
 
         <div class="lib-sidebar__group-title">1. Navigation</div>
         <a href="#header" class="lib-sidebar__link"><span class="lib-sidebar__num">01</span> Header</a>
@@ -876,6 +903,8 @@
         <h1 class="lib-header__title">CCLP Section Library</h1>
         <p class="lib-header__meta">45 Sections -- Jones Road Beauty Custom Landing Pages -- March 2026</p>
       </div>
+
+      <p class="lib-no-results" id="libNoResults">No sections match your search.</p>
 
       <!-- ============================================================
            1. NAVIGATION
@@ -1296,6 +1325,84 @@
 
     </main>
   </div>
+
+  <script>
+    (function() {
+      var input = document.getElementById('libSearch');
+      var clearBtn = document.getElementById('libSearchClear');
+      var noResults = document.getElementById('libNoResults');
+      var nav = document.getElementById('libSidebarNav');
+      var sections = Array.from(document.querySelectorAll('.lib-section')).map(function(el) {
+        return {
+          el: el,
+          id: el.id,
+          text: [
+            el.querySelector('.lib-section__name') ? el.querySelector('.lib-section__name').textContent : '',
+            el.querySelector('.lib-section__desc') ? el.querySelector('.lib-section__desc').textContent : '',
+            el.querySelector('.lib-section__tag') ? el.querySelector('.lib-section__tag').textContent : ''
+          ].join(' ').toLowerCase()
+        };
+      });
+
+      function filter(q) {
+        var query = q.trim().toLowerCase();
+        var matchCount = 0;
+
+        sections.forEach(function(s) {
+          var match = !query || s.text.indexOf(query) !== -1;
+          s.el.style.display = match ? '' : 'none';
+          if (match) matchCount++;
+        });
+
+        var navLinks = nav.querySelectorAll('.lib-sidebar__link');
+        navLinks.forEach(function(link) {
+          var href = link.getAttribute('href').replace('#', '');
+          var section = sections.find(function(s) { return s.id === href; });
+          var match = !query || (section && section.text.indexOf(query) !== -1);
+          link.classList.toggle('is-hidden', !match);
+        });
+
+        // Hide group titles when all their links are hidden
+        var groupTitles = nav.querySelectorAll('.lib-sidebar__group-title');
+        groupTitles.forEach(function(title) {
+          var next = title.nextElementSibling;
+          var allHidden = true;
+          while (next && !next.classList.contains('lib-sidebar__group-title')) {
+            if (next.classList.contains('lib-sidebar__link') && !next.classList.contains('is-hidden')) {
+              allHidden = false;
+              break;
+            }
+            next = next.nextElementSibling;
+          }
+          title.classList.toggle('is-hidden', allHidden && !!query);
+        });
+
+        // Hide cat headers in main content when all sections in that group are hidden
+        document.querySelectorAll('.lib-cat-header').forEach(function(header) {
+          var next = header.nextElementSibling;
+          var allHidden = true;
+          while (next && !next.classList.contains('lib-cat-header')) {
+            if (next.classList.contains('lib-section') && next.style.display !== 'none') {
+              allHidden = false;
+              break;
+            }
+            next = next.nextElementSibling;
+          }
+          header.style.display = (allHidden && !!query) ? 'none' : '';
+        });
+
+        noResults.style.display = (query && matchCount === 0) ? 'block' : 'none';
+        clearBtn.classList.toggle('is-visible', !!query);
+      }
+
+      input.addEventListener('input', function() { filter(this.value); });
+      clearBtn.addEventListener('click', function() {
+        input.value = '';
+        filter('');
+        input.focus();
+      });
+    })();
+  </script>
 
 </body>
 </html>
