@@ -36,11 +36,22 @@
     .the-shades__header { margin-block-end: 32px; }
     .the-shades__heading { font-family: var(--font-serif); font-size: 48px; font-weight: 300; line-height: 1; }
 
+    /* Controls row */
+    .the-shades__controls { display: flex; align-items: center; justify-content: space-between; margin-block-end: 28px; flex-wrap: wrap; gap: 12px; }
+
     /* Filter tabs */
-    .the-shades__filters { display: flex; gap: 8px; margin-block-end: 28px; flex-wrap: wrap; }
+    .the-shades__filters { display: flex; gap: 8px; flex-wrap: wrap; }
     .the-shades__filter { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; padding: 7px 18px; border: 1px solid var(--color-black); border-radius: 2px; background: transparent; color: var(--color-black); cursor: pointer; transition: background .25s, color .25s; }
     .the-shades__filter.is-active { background: var(--color-black); color: var(--color-white); }
     .has-mouse .the-shades__filter:hover { background: var(--color-black); color: var(--color-white); }
+
+    /* Before/After toggle */
+    .the-shades__ba { position: relative; display: inline-flex; border: 1px solid var(--color-black); border-radius: 2px; overflow: hidden; }
+    .the-shades__ba-indicator { position: absolute; top: 0; left: 0; width: 50%; height: 100%; background: var(--color-black); transition: transform .22s ease; pointer-events: none; }
+    .the-shades__ba.is-after .the-shades__ba-indicator { transform: translateX(100%); }
+    .the-shades__ba-btn { position: relative; z-index: 1; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; padding: 7px 20px; background: transparent; border: 0; color: var(--color-white); cursor: pointer; transition: color .22s ease; }
+    .the-shades__ba.is-after .the-shades__ba-btn#btnBefore { color: var(--color-black); }
+    .the-shades__ba:not(.is-after) .the-shades__ba-btn#btnAfter { color: var(--color-black); }
 
     /* Carousel wrapper */
     .the-shades__carousel { position: relative; }
@@ -63,7 +74,7 @@
     .the-shades__labels { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; overflow: hidden; }
     .the-shades__card-label { text-align: center; }
     .the-shades__card-name { font-family: var(--font-display); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; margin-block-end: 4px; }
-    .the-shades__card-desc { font-family: var(--font-body); font-size: 13px; color: #666; }
+    .the-shades__card-desc { font-family: var(--font-body); font-size: 13px; color: var(--color-black); }
 
     @media (max-width: 900px) {
       .the-shades__track { grid-template-columns: repeat(3, 1fr); }
@@ -86,12 +97,19 @@
         <h2 class="the-shades__heading">The Shades</h2>
       </div>
 
-      <div class="the-shades__filters">
-        <button class="the-shades__filter is-active" data-filter="all">All Shades</button>
-        <button class="the-shades__filter" data-filter="fair">Fair</button>
-        <button class="the-shades__filter" data-filter="light">Light</button>
-        <button class="the-shades__filter" data-filter="medium">Medium</button>
-        <button class="the-shades__filter" data-filter="deep">Deep</button>
+      <div class="the-shades__controls">
+        <div class="the-shades__filters">
+          <button class="the-shades__filter is-active" data-filter="all">All Shades</button>
+          <button class="the-shades__filter" data-filter="fair">Fair</button>
+          <button class="the-shades__filter" data-filter="light">Light</button>
+          <button class="the-shades__filter" data-filter="medium">Medium</button>
+          <button class="the-shades__filter" data-filter="deep">Deep</button>
+        </div>
+        <div class="the-shades__ba is-after" id="baToggle">
+          <span class="the-shades__ba-indicator"></span>
+          <button class="the-shades__ba-btn" id="btnBefore">Before</button>
+          <button class="the-shades__ba-btn" id="btnAfter">After</button>
+        </div>
       </div>
 
       <div class="the-shades__carousel">
@@ -169,6 +187,24 @@
     document.getElementById('nextBtn').addEventListener('click', () => { offset = Math.min(filteredIndexes().length - VISIBLE, offset + 1); applyOffset(); });
 
     applyOffset();
+
+    // Before / After toggle
+    const baToggle = document.getElementById('baToggle');
+    const allImgEls = document.querySelectorAll('.the-shades__card-img img');
+    allImgEls.forEach(img => {
+      img.dataset.after = img.src;
+      img.dataset.before = img.src + '&sat=-75&bri=5&con=-10';
+    });
+
+    document.getElementById('btnBefore').addEventListener('click', () => {
+      baToggle.classList.remove('is-after');
+      allImgEls.forEach(img => img.src = img.dataset.before);
+    });
+
+    document.getElementById('btnAfter').addEventListener('click', () => {
+      baToggle.classList.add('is-after');
+      allImgEls.forEach(img => img.src = img.dataset.after);
+    });
   </script>
 </body>
 </html>
