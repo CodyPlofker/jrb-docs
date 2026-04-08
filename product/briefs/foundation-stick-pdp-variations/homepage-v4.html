@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Homepage — V4 Test</title>
+
+  <style>
+    /* =============================================================================
+       Font Face Declarations
+       ============================================================================= */
+    @font-face { font-family: 'Canela'; src: url('fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('fonts/Canela-LightItalic.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+
+    /* =============================================================================
+       Reset & Base
+       ============================================================================= */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; scroll-behavior: smooth; }
+    body {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 100%;
+      color: #000;
+      background: #fff;
+      letter-spacing: .025em;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* =============================================================================
+       Test Label
+       ============================================================================= */
+    .test-label {
+      background: #000;
+      color: #fff;
+      text-align: center;
+      padding: 6px 16px;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    /* =============================================================================
+       Buttons
+       ============================================================================= */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 13px;
+      font-weight: 550;
+      height: 40px;
+      line-height: 40px;
+      padding: 0 36px;
+      border-radius: 2px;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+      border: 1px solid #000;
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+      transition: background .4s cubic-bezier(.39,.575,.565,1), color .4s cubic-bezier(.39,.575,.565,1), border-color .4s cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .button:not(:disabled):hover { background: #fff; border-color: #d0d0d0; color: #000; }
+    .button--outline { background: transparent; color: #000; }
+    .has-mouse .button--outline:not(:disabled):hover { background: #000; border-color: #000; color: #fff; }
+    .button--white { background: #fff; color: #000; border-color: #fff; }
+    .has-mouse .button--white:not(:disabled):hover { background: #000; border-color: #000; color: #fff; }
+    .button--white-outline { background: transparent; color: #fff; border-color: #fff; }
+    .has-mouse .button--white-outline:not(:disabled):hover { background: #fff; color: #000; }
+    @media (min-width: 769px) { .button { font-size: 14px; height: 44px; line-height: 44px; } }
+
+    /* =============================================================================
+       Typography
+       ============================================================================= */
+    .eyebrow {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 22px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+    }
+    .eyebrow--white { color: #fff; }
+    .headline {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 26px;
+      line-height: 37px;
+      letter-spacing: 0.5px;
+      color: #000;
+      text-transform: none;
+    }
+    .headline--white { color: #fff; }
+    @media (min-width: 769px) { .headline { font-size: 38px; line-height: 54px; } }
+
+    /* Inline Canela headlines that live inside hero splits and other sections */
+    .section-headline {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 26px;
+      line-height: 37px;
+      letter-spacing: 0.5px;
+      color: #000;
+      text-transform: none;
+    }
+    .section-headline.headline--white { color: #fff; }
+    @media (min-width: 769px) {
+      .section-headline { font-size: 38px; line-height: 54px; }
+    }
+
+    /* =============================================================================
+       Announcement Bar
+       ============================================================================= */
+    .announcement-bar {
+      background: #000;
+      color: #fff;
+      text-align: center;
+      padding: 10px 16px;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 12px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+    .announcement-bar a { color: #fff; text-decoration: underline; }
+
+    /* =============================================================================
+       Nav Bar
+       ============================================================================= */
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid #ededed;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+    }
+    .nav-bar__logo {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #000;
+    }
+    .nav-bar__links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-bar__links li a {
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 12px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      transition: opacity .3s;
+    }
+    .has-mouse .nav-bar__links li a:hover { opacity: .6; }
+    .nav-bar__icons {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .nav-bar__icons svg { width: 20px; height: 20px; }
+    @media (max-width: 768px) {
+      .nav-bar__links { display: none; }
+      .nav-bar { padding: 14px 20px; }
+    }
+
+    /* =============================================================================
+       Stars (Junip SVG)
+       ============================================================================= */
+    .stars { display: inline-flex; gap: 2px; align-items: center; }
+    .stars svg { width: 14px; height: 14px; }
+    .stars--small svg { width: 12px; height: 12px; }
+
+    /* =============================================================================
+       Trust Bar
+       ============================================================================= */
+    .trust-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 16px 20px;
+      border-bottom: 1px solid #ededed;
+      border-top: 1px solid #ededed;
+    }
+    .trust-bar__item {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: #000;
+      letter-spacing: .02em;
+      white-space: nowrap;
+    }
+    .trust-bar__dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #000;
+      flex-shrink: 0;
+    }
+    @media (max-width: 768px) {
+      .trust-bar { gap: 8px; padding: 12px 16px; }
+      .trust-bar__item { font-size: 10px; }
+    }
+
+    /* =============================================================================
+       Product Card
+       ============================================================================= */
+    .product-card {
+      text-decoration: none;
+      color: #000;
+      display: block;
+      border: none;
+      border-radius: 3px;
+      padding: 0 0 16px;
+      transition: box-shadow .4s cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .product-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+    .product-card__media {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #f6f2eb;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .product-card__media img { width: 100%; height: 100%; object-fit: cover; }
+    .product-card__flag {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-weight: 550;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #000;
+      letter-spacing: .4px;
+    }
+    .product-card__name {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 22px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 6px;
+    }
+    .product-card__price {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      color: #000;
+      margin-bottom: 6px;
+    }
+    .product-card__rating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #000;
+      margin-bottom: 8px;
+    }
+    .product-card__review {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 14px;
+      color: #000;
+      line-height: 1.5;
+      padding-top: 8px;
+      border-top: 1px solid #ededed;
+    }
+
+    /* Product cards on warm backgrounds get white image containers */
+    .warm-bg .product-card__media { background: #fff; }
+
+    @media (min-width: 769px) {
+      .product-card__flag { top: 15px; right: 15px; font-size: 12px; }
+    }
+
+    /* =============================================================================
+       Press Bar
+       ============================================================================= */
+    .press-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 48px;
+      padding: 40px 24px;
+      border-top: 1px solid #ededed;
+      border-bottom: 1px solid #ededed;
+    }
+    .press-bar__logo {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 18px;
+      font-style: italic;
+      color: #999;
+      letter-spacing: .5px;
+    }
+    @media (max-width: 768px) {
+      .press-bar { gap: 24px; flex-wrap: wrap; padding: 28px 20px; }
+      .press-bar__logo { font-size: 14px; }
+    }
+
+    /* =============================================================================
+       Collection Cards — Redesigned for V4
+       ============================================================================= */
+    .collection-card-v4 {
+      display: block;
+      position: relative;
+      overflow: hidden;
+      border-radius: 3px;
+      text-decoration: none;
+      background: #f6f2eb;
+      transition: box-shadow .4s cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .collection-card-v4:hover { box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+    .collection-card-v4__media {
+      aspect-ratio: 4/5;
+      overflow: hidden;
+    }
+    .collection-card-v4__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .6s cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .collection-card-v4:hover .collection-card-v4__media img { transform: scale(1.04); }
+    .collection-card-v4__content {
+      padding: 20px;
+      text-align: center;
+    }
+    .collection-card-v4__content p {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      margin-bottom: 4px;
+    }
+    .collection-card-v4__content span {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: #000;
+    }
+
+    /* =============================================================================
+       Chooser Buttons (Shop by Concern)
+       ============================================================================= */
+    .chooser-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 12px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      padding: 0 24px;
+      height: 40px;
+      border-radius: 2px;
+      border: 1px solid #000;
+      background: transparent;
+      color: #000;
+      cursor: pointer;
+      transition: background .4s cubic-bezier(.39,.575,.565,1), color .4s cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .chooser-btn:hover { background: #000; color: #fff; }
+    .chooser-btn.active { background: #000; color: #fff; }
+    @media (min-width: 769px) { .chooser-btn { font-size: 13px; height: 44px; padding: 0 28px; } }
+
+    /* =============================================================================
+       Review Card
+       ============================================================================= */
+    .review-card {
+      border: 1px solid #ededed;
+      border-radius: 3px;
+      padding: 32px;
+      transition: box-shadow .4s cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .review-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+    /* =============================================================================
+       Routine Step
+       ============================================================================= */
+    .routine-step {
+      text-align: center;
+      position: relative;
+    }
+    .routine-step__number {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 38px;
+      line-height: 1;
+      letter-spacing: 0.5px;
+      color: #d0d0d0;
+      margin-bottom: 16px;
+    }
+    .routine-step__media {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #fff;
+      margin-bottom: 16px;
+    }
+    .routine-step__media img { width: 100%; height: 100%; object-fit: cover; }
+    .routine-step__name {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #000;
+      margin-bottom: 4px;
+    }
+    .routine-step__price {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      color: #000;
+      margin-bottom: 8px;
+    }
+    .routine-step__desc {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #000;
+    }
+    /* Arrow connectors between steps (desktop only) */
+    .routine-step::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -20px;
+      width: 16px;
+      height: 1px;
+      background: #d0d0d0;
+    }
+    .routine-step:last-child::after { display: none; }
+    @media (max-width: 768px) {
+      .routine-step::after { display: none; }
+      .routine-step__number { font-size: 28px; }
+    }
+
+    /* =============================================================================
+       Footer
+       ============================================================================= */
+    .footer {
+      background: #000;
+      color: #fff;
+      padding: 64px 24px 32px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto 48px;
+    }
+    .footer__col-title {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .footer__col ul { list-style: none; }
+    .footer__col ul li { margin-bottom: 10px; }
+    .footer__col ul li a {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: rgba(255,255,255,.7);
+      transition: color .3s;
+    }
+    .has-mouse .footer__col ul li a:hover { color: #fff; }
+    .footer__bottom {
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,.15);
+      padding-top: 24px;
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+    @media (max-width: 768px) {
+      .footer__grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+    }
+
+    /* =============================================================================
+       Grids
+       ============================================================================= */
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+    /* =============================================================================
+       Responsive
+       ============================================================================= */
+    @media (max-width: 768px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .grid-5 { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .grid-3 { grid-template-columns: 1fr; gap: 16px; }
+      .hero-split { grid-template-columns: 1fr !important; }
+      .hero-split__media { min-height: 300px; }
+      .hero-split__text { padding: 40px 20px !important; }
+      .section-padded { padding: 48px 20px !important; }
+      .stat-number { font-size: 28px !important; }
+      .review-card { padding: 24px !important; }
+      .desktop-only { display: none !important; }
+      .cta-row { flex-direction: column !important; }
+      .cta-row .button { width: 100%; text-align: center; }
+      .chooser-btn { font-size: 11px !important; padding: 0 16px !important; height: 36px !important; }
+      .concern-grid { gap: 8px !important; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+
+  <!-- Test Label -->
+  <div class="test-label">Homepage Test — V4 (Full Redesign: Bestsellers + New Arrivals + Concern + Routine)</div>
+
+  <!-- ========================================================================
+       1. ANNOUNCEMENT BAR
+       ======================================================================== -->
+  <div class="announcement-bar">
+    Free shipping on orders $55+ &nbsp;&bull;&nbsp; Free returns &nbsp;&bull;&nbsp; <a href="#">Lip Recharge is here &rarr;</a>
+  </div>
+
+  <!-- ========================================================================
+       2. NAV BAR
+       ======================================================================== -->
+  <nav class="nav-bar">
+    <div style="display:flex;align-items:center;gap:20px;">
+      <div class="nav-bar__logo">Jones Road</div>
+    </div>
+    <ul class="nav-bar__links">
+      <li><a href="#">Shop All</a></li>
+      <li><a href="#">Bestsellers</a></li>
+      <li><a href="#">Face</a></li>
+      <li><a href="#">Eyes</a></li>
+      <li><a href="#">Lips</a></li>
+      <li><a href="#">Skincare</a></li>
+      <li><a href="#">The Quiz</a></li>
+    </ul>
+    <div class="nav-bar__icons">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </div>
+  </nav>
+
+  <!-- ========================================================================
+       3. HERO — Brand-level
+       ======================================================================== -->
+  <section style="display:grid;grid-template-columns:1fr 1fr;min-height:560px;overflow:hidden;" class="hero-split">
+    <div style="overflow:hidden;" class="hero-split__media">
+      <img src="https://air-prod.imgix.net/d6c10c14-a49b-4ba0-a0ae-8a7108da18e9.jpg?w=700&h=700&fit=crop&auto=format" alt="Model with natural radiant skin wearing Jones Road Beauty" loading="eager" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+    <div style="padding:80px 60px;display:flex;flex-direction:column;justify-content:center;background:#f6f2eb;" class="hero-split__text">
+      <p class="eyebrow" style="margin-bottom:16px;">Jones Road Beauty</p>
+      <h1 class="headline" style="margin-bottom:20px;">Look like you,<br>only better</h1>
+      <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#000;margin-bottom:8px;">Clean, high-performance makeup created by Bobbi Brown. No filters. No fuss. Just your best skin.</p>
+      <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;color:#000;margin-bottom:32px;">76,000+ five-star reviews</p>
+      <div class="cta-row" style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="#" class="button">Shop All</a>
+        <a href="#" class="button button--outline">Take the Quiz</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       4. TRUST BAR
+       ======================================================================== -->
+  <div class="trust-bar">
+    <span class="trust-bar__item">76,000+ Reviews</span>
+    <span class="trust-bar__dot"></span>
+    <span class="trust-bar__item">Free Shipping $55+</span>
+    <span class="trust-bar__dot"></span>
+    <span class="trust-bar__item">Free Returns</span>
+    <span class="trust-bar__dot"></span>
+    <span class="trust-bar__item">Clean Formula</span>
+    <span class="trust-bar__dot"></span>
+    <span class="trust-bar__item">Founded by Bobbi Brown</span>
+  </div>
+
+  <!-- ========================================================================
+       5. BESTSELLERS — Redesigned with flags, ratings, review quotes, hover
+       ======================================================================== -->
+  <section class="section-padded" style="padding:72px 32px;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <p class="eyebrow" style="margin-bottom:12px;">Bestsellers</p>
+      <h2 class="headline">The ones everyone loves</h2>
+    </div>
+    <div class="grid-4">
+      <!-- Lip Recharge -->
+      <a href="#" class="product-card">
+        <div class="product-card__media">
+          <span class="product-card__flag">Bestseller</span>
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/OTR_Lip_Recharge_PDP_-_1.png?v=1773763814&width=400" alt="Lip Recharge" loading="lazy">
+        </div>
+        <p class="product-card__name">Lip Recharge</p>
+        <p class="product-card__price">$24</p>
+        <div class="product-card__rating">
+          <span class="stars stars--small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+          2,180 reviews
+        </div>
+        <p class="product-card__review">"My lips have never felt this hydrated. I keep one in every bag." &mdash; Nina S.</p>
+      </a>
+      <!-- Miracle Balm -->
+      <a href="#" class="product-card">
+        <div class="product-card__media">
+          <span class="product-card__flag">Bestseller</span>
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718&width=400" alt="Miracle Balm" loading="lazy">
+        </div>
+        <p class="product-card__name">Miracle Balm</p>
+        <p class="product-card__price">$38</p>
+        <div class="product-card__rating">
+          <span class="stars stars--small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+          8,420 reviews
+        </div>
+        <p class="product-card__review">"One product replaced my entire base routine. Dewy, natural, and done in seconds." &mdash; Lauren M.</p>
+      </a>
+      <!-- What The Foundation -->
+      <a href="#" class="product-card">
+        <div class="product-card__media">
+          <span class="product-card__flag">Bestseller</span>
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504&width=400" alt="What The Foundation" loading="lazy">
+        </div>
+        <p class="product-card__name">What The Foundation</p>
+        <p class="product-card__price">$49</p>
+        <div class="product-card__rating">
+          <span class="stars stars--small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+          12,800 reviews
+        </div>
+        <p class="product-card__review">"The only foundation that actually looks like skin. I'm on my fourth jar." &mdash; Rachel T.</p>
+      </a>
+      <!-- The Mascara -->
+      <a href="#" class="product-card">
+        <div class="product-card__media">
+          <span class="product-card__flag">Bestseller</span>
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/JonesRoad_Mascara_main.jpg?v=1739188781&width=400" alt="The Mascara" loading="lazy">
+        </div>
+        <p class="product-card__name">The Mascara</p>
+        <p class="product-card__price">$24</p>
+        <div class="product-card__rating">
+          <span class="stars stars--small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+          4,560 reviews
+        </div>
+        <p class="product-card__review">"Separates and lifts without clumping. Best clean mascara I've tried." &mdash; Claire B.</p>
+      </a>
+    </div>
+    <div style="text-align:center;margin-top:40px;">
+      <a href="#" class="button">Shop All Bestsellers</a>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       6. PRESS LOGO BAR
+       ======================================================================== -->
+  <div class="press-bar">
+    <span class="press-bar__logo">Vogue</span>
+    <span class="press-bar__logo">Allure</span>
+    <span class="press-bar__logo">WSJ</span>
+    <span class="press-bar__logo">Harper's Bazaar</span>
+    <span class="press-bar__logo desktop-only">InStyle</span>
+    <span class="press-bar__logo desktop-only">Glamour</span>
+  </div>
+
+  <!-- ========================================================================
+       7. NEW ARRIVALS — Moved up from V3 position
+       ======================================================================== -->
+  <section class="section-padded" style="padding:72px 32px;background:#f6f2eb;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <p class="eyebrow" style="margin-bottom:12px;">Just Dropped</p>
+      <h2 class="headline">New arrivals</h2>
+    </div>
+    <div class="grid-4">
+      <!-- Lip Recharge -->
+      <a href="#" class="product-card">
+        <div class="product-card__media" style="background:#fff;">
+          <span class="product-card__flag">New</span>
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/OTR_Lip_Recharge_PDP_-_1.png?v=1773763814&width=400" alt="Lip Recharge" loading="lazy">
+        </div>
+        <p class="product-card__name">Lip Recharge</p>
+        <p class="product-card__price">$24</p>
+        <div class="product-card__rating">
+          <span class="stars stars--small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+          2,180 reviews
+        </div>
+      </a>
+      <!-- Eyeshadow Stick -->
+      <a href="#" class="product-card">
+        <div class="product-card__media" style="background:#fff;">
+          <span class="product-card__flag">New</span>
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/Eyeshadow_Stick_Sand_PDP_Launch_1_36afcc84-a7a0-4b1b-b86d-ebd49044a970.jpg?v=1770129741&width=400" alt="The Eyeshadow Stick" loading="lazy">
+        </div>
+        <p class="product-card__name">The Eyeshadow Stick</p>
+        <p class="product-card__price">$24</p>
+        <div class="product-card__rating">
+          <span class="stars stars--small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+          1,640 reviews
+        </div>
+      </a>
+      <!-- Best Pencil -->
+      <a href="#" class="product-card">
+        <div class="product-card__media" style="background:#fff;">
+          <span class="product-card__flag">New Shade</span>
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/bestpencil_black_1.jpg?v=1739188771&width=400" alt="The Best Pencil" loading="lazy">
+        </div>
+        <p class="product-card__name">The Best Pencil</p>
+        <p class="product-card__price">$19</p>
+        <div class="product-card__rating">
+          <span class="stars stars--small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+          3,100 reviews
+        </div>
+      </a>
+      <!-- The Mascara -->
+      <a href="#" class="product-card">
+        <div class="product-card__media" style="background:#fff;">
+          <span class="product-card__flag">New</span>
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/JonesRoad_Mascara_main.jpg?v=1739188781&width=400" alt="The Mascara" loading="lazy">
+        </div>
+        <p class="product-card__name">The Mascara</p>
+        <p class="product-card__price">$24</p>
+        <div class="product-card__rating">
+          <span class="stars stars--small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+          4,560 reviews
+        </div>
+      </a>
+    </div>
+    <div style="text-align:center;margin-top:40px;">
+      <a href="#" class="button">Shop All New Arrivals</a>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       8. BOBBI BROWN SECTION (Same as V3)
+       ======================================================================== -->
+  <section style="background:#f6f2eb;display:grid;grid-template-columns:1fr 1fr;min-height:560px;overflow:hidden;" class="hero-split">
+    <div style="overflow:hidden;display:flex;align-items:center;justify-content:center;padding:48px;" class="hero-split__media hero-split__media--padded">
+      <img src="https://air-prod.imgix.net/8295afcb-2098-4243-8e1d-682c7cdcbc85.jpg?w=600&h=600&fit=crop&auto=format" alt="Bobbi Brown, Founder of Jones Road Beauty" loading="lazy" style="width:100%;max-width:480px;aspect-ratio:1;object-fit:cover;border-radius:3px;">
+    </div>
+    <div style="padding:72px 56px;display:flex;flex-direction:column;justify-content:center;" class="hero-split__text">
+      <p class="eyebrow" style="margin-bottom:16px;">From the Founder</p>
+      <h2 class="headline" style="margin-bottom:24px;">I started Jones Road because I wanted to make the products I couldn't find</h2>
+      <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#000;margin-bottom:16px;">After more than 30 years formulating makeup that changed the beauty industry -- including founding Bobbi Brown Cosmetics -- Bobbi went back to the lab with one goal: create clean, high-performance formulas that actually work.</p>
+      <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#000;margin-bottom:24px;">No 12-step routines. No complicated instructions. Just easy, effortless beauty that makes you look like yourself, only better. That's the Jones Road philosophy.</p>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;color:#000;">Bobbi Brown</p>
+        <span style="width:24px;height:1px;background:#000;display:block;"></span>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;color:#000;">Founder, Jones Road Beauty</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       9. SHOP BY COLLECTION — Redesigned with better cards
+       ======================================================================== -->
+  <section class="section-padded" style="padding:72px 32px;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <p class="eyebrow" style="margin-bottom:12px;">Shop by Collection</p>
+      <h2 class="headline">Find your category</h2>
+    </div>
+    <div class="grid-5">
+      <a href="#" class="collection-card-v4">
+        <div class="collection-card-v4__media">
+          <img src="https://air-prod.imgix.net/5f06c805-feaa-4da0-8ae7-5102cc231e90.jpg?w=400&h=500&fit=crop&auto=format" alt="Face" loading="lazy">
+        </div>
+        <div class="collection-card-v4__content">
+          <p>Face</p>
+          <span>12 products</span>
+        </div>
+      </a>
+      <a href="#" class="collection-card-v4">
+        <div class="collection-card-v4__media">
+          <img src="https://air-prod.imgix.net/a85ba73d-607c-4bc4-b319-695153503fc5.jpg?w=400&h=500&fit=crop&auto=format" alt="Eyes" loading="lazy">
+        </div>
+        <div class="collection-card-v4__content">
+          <p>Eyes</p>
+          <span>8 products</span>
+        </div>
+      </a>
+      <a href="#" class="collection-card-v4">
+        <div class="collection-card-v4__media">
+          <img src="https://air-prod.imgix.net/1d2e338a-1b95-4706-acef-587859cdce93.jpg?w=400&h=500&fit=crop&auto=format" alt="Lips" loading="lazy">
+        </div>
+        <div class="collection-card-v4__content">
+          <p>Lips</p>
+          <span>6 products</span>
+        </div>
+      </a>
+      <a href="#" class="collection-card-v4">
+        <div class="collection-card-v4__media">
+          <img src="https://air-prod.imgix.net/d6c10c14-a49b-4ba0-a0ae-8a7108da18e9.jpg?w=400&h=500&fit=crop&auto=format" alt="Skincare" loading="lazy">
+        </div>
+        <div class="collection-card-v4__content">
+          <p>Skincare</p>
+          <span>5 products</span>
+        </div>
+      </a>
+      <a href="#" class="collection-card-v4">
+        <div class="collection-card-v4__media">
+          <img src="https://air-prod.imgix.net/5f06c805-feaa-4da0-8ae7-5102cc231e90.jpg?w=400&h=500&fit=crop&auto=format" alt="Body" loading="lazy">
+        </div>
+        <div class="collection-card-v4__content">
+          <p>Body</p>
+          <span>3 products</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       10. SHOP BY CONCERN — NEW Interactive section
+       ======================================================================== -->
+  <section class="section-padded" style="padding:72px 32px;background:#f6f2eb;" id="shop-by-concern">
+    <div style="text-align:center;margin-bottom:48px;">
+      <p class="eyebrow" style="margin-bottom:12px;">Personalized For You</p>
+      <h2 class="headline">What are you looking for?</h2>
+    </div>
+    <div class="concern-grid" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:800px;margin:0 auto 48px;">
+      <button class="chooser-btn active" data-concern="glow" onclick="showConcern(this)">Natural glow</button>
+      <button class="chooser-btn" data-concern="simplify" onclick="showConcern(this)">Simplify my routine</button>
+      <button class="chooser-btn" data-concern="even" onclick="showConcern(this)">Even skin tone</button>
+      <button class="chooser-btn" data-concern="hydration" onclick="showConcern(this)">Healthy hydration</button>
+      <button class="chooser-btn" data-concern="define" onclick="showConcern(this)">Define my features</button>
+      <button class="chooser-btn" data-concern="clean" onclick="showConcern(this)">Go clean</button>
+    </div>
+
+    <!-- Concern panels -->
+    <div id="concern-panels">
+      <!-- Natural glow -->
+      <div class="concern-panel" data-panel="glow" style="display:grid;">
+        <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;width:100%;" class="grid-3">
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718&width=400" alt="Miracle Balm" loading="lazy">
+            </div>
+            <p class="product-card__name">Miracle Balm</p>
+            <p class="product-card__price">$38</p>
+            <div class="product-card__rating">
+              <span class="stars stars--small">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+              </span>
+              8,420 reviews
+            </div>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504&width=400" alt="What The Foundation" loading="lazy">
+            </div>
+            <p class="product-card__name">What The Foundation</p>
+            <p class="product-card__price">$49</p>
+            <div class="product-card__rating">
+              <span class="stars stars--small">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+              </span>
+              12,800 reviews
+            </div>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/OTR_Lip_Recharge_PDP_-_1.png?v=1773763814&width=400" alt="Lip Recharge" loading="lazy">
+            </div>
+            <p class="product-card__name">Lip Recharge</p>
+            <p class="product-card__price">$24</p>
+            <div class="product-card__rating">
+              <span class="stars stars--small">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+              </span>
+              2,180 reviews
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Simplify routine -->
+      <div class="concern-panel" data-panel="simplify" style="display:none;">
+        <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;width:100%;" class="grid-3">
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718&width=400" alt="Miracle Balm" loading="lazy">
+            </div>
+            <p class="product-card__name">Miracle Balm</p>
+            <p class="product-card__price">$38</p>
+            <div class="product-card__rating">
+              <span class="stars stars--small">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+              </span>
+              8,420 reviews
+            </div>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/OTR_Lip_Recharge_PDP_-_1.png?v=1773763814&width=400" alt="Lip Recharge" loading="lazy">
+            </div>
+            <p class="product-card__name">Lip Recharge</p>
+            <p class="product-card__price">$24</p>
+            <div class="product-card__rating">
+              <span class="stars stars--small">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+              </span>
+              2,180 reviews
+            </div>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504&width=400" alt="What The Foundation" loading="lazy">
+            </div>
+            <p class="product-card__name">What The Foundation</p>
+            <p class="product-card__price">$49</p>
+            <div class="product-card__rating">
+              <span class="stars stars--small">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+              </span>
+              12,800 reviews
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Even skin tone -->
+      <div class="concern-panel" data-panel="even" style="display:none;">
+        <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;width:100%;" class="grid-3">
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504&width=400" alt="What The Foundation" loading="lazy">
+            </div>
+            <p class="product-card__name">What The Foundation</p>
+            <p class="product-card__price">$49</p>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718&width=400" alt="Miracle Balm" loading="lazy">
+            </div>
+            <p class="product-card__name">Miracle Balm</p>
+            <p class="product-card__price">$38</p>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/bestpencil_black_1.jpg?v=1739188771&width=400" alt="The Best Pencil" loading="lazy">
+            </div>
+            <p class="product-card__name">The Best Pencil</p>
+            <p class="product-card__price">$19</p>
+          </a>
+        </div>
+      </div>
+
+      <!-- Healthy hydration -->
+      <div class="concern-panel" data-panel="hydration" style="display:none;">
+        <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;width:100%;" class="grid-3">
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/OTR_Lip_Recharge_PDP_-_1.png?v=1773763814&width=400" alt="Lip Recharge" loading="lazy">
+            </div>
+            <p class="product-card__name">Lip Recharge</p>
+            <p class="product-card__price">$24</p>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718&width=400" alt="Miracle Balm" loading="lazy">
+            </div>
+            <p class="product-card__name">Miracle Balm</p>
+            <p class="product-card__price">$38</p>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504&width=400" alt="What The Foundation" loading="lazy">
+            </div>
+            <p class="product-card__name">What The Foundation</p>
+            <p class="product-card__price">$49</p>
+          </a>
+        </div>
+      </div>
+
+      <!-- Define features -->
+      <div class="concern-panel" data-panel="define" style="display:none;">
+        <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;width:100%;" class="grid-3">
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/Eyeshadow_Stick_Sand_PDP_Launch_1_36afcc84-a7a0-4b1b-b86d-ebd49044a970.jpg?v=1770129741&width=400" alt="The Eyeshadow Stick" loading="lazy">
+            </div>
+            <p class="product-card__name">The Eyeshadow Stick</p>
+            <p class="product-card__price">$24</p>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/bestpencil_black_1.jpg?v=1739188771&width=400" alt="The Best Pencil" loading="lazy">
+            </div>
+            <p class="product-card__name">The Best Pencil</p>
+            <p class="product-card__price">$19</p>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/JonesRoad_Mascara_main.jpg?v=1739188781&width=400" alt="The Mascara" loading="lazy">
+            </div>
+            <p class="product-card__name">The Mascara</p>
+            <p class="product-card__price">$24</p>
+          </a>
+        </div>
+      </div>
+
+      <!-- Go clean -->
+      <div class="concern-panel" data-panel="clean" style="display:none;">
+        <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;width:100%;" class="grid-3">
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504&width=400" alt="What The Foundation" loading="lazy">
+            </div>
+            <p class="product-card__name">What The Foundation</p>
+            <p class="product-card__price">$49</p>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718&width=400" alt="Miracle Balm" loading="lazy">
+            </div>
+            <p class="product-card__name">Miracle Balm</p>
+            <p class="product-card__price">$38</p>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card__media" style="background:#fff;">
+              <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/OTR_Lip_Recharge_PDP_-_1.png?v=1773763814&width=400" alt="Lip Recharge" loading="lazy">
+            </div>
+            <p class="product-card__name">Lip Recharge</p>
+            <p class="product-card__price">$24</p>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px;">
+      <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;color:#000;line-height:1.5;">Not sure? <a href="#" style="color:#000;text-decoration:underline;">Take the quiz</a> for a personalized recommendation.</p>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       11. "THE HYPE IS REAL" PROMO
+       ======================================================================== -->
+  <section style="background:#f8f8f8;overflow:hidden;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:440px;" class="hero-split">
+      <div style="padding:72px 56px;display:flex;flex-direction:column;justify-content:center;" class="hero-split__text">
+        <p class="eyebrow" style="margin-bottom:16px;">The Hype Is Real</p>
+        <h2 class="headline" style="margin-bottom:16px;">Lip Recharge: the lip treatment that broke the internet</h2>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#000;margin-bottom:8px;">Hydrating, plumping, and conditioning your lips with every wear. Our newest launch already has 2,000+ five-star reviews.</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;color:#000;margin-bottom:28px;">Starting at $24.</p>
+        <div>
+          <a href="#" class="button">Shop Now</a>
+        </div>
+      </div>
+      <div style="overflow:hidden;display:flex;align-items:center;justify-content:center;padding:48px;" class="hero-split__media hero-split__media--padded">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/OTR_Lip_Recharge_PDP_-_1.png?v=1773763814&width=400" alt="Lip Recharge" loading="lazy" style="max-width:380px;width:100%;border-radius:3px;">
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       12. SOCIAL PROOF + VALUE PROPS
+       ======================================================================== -->
+  <section class="section-padded" style="padding:72px 32px;">
+    <div style="text-align:center;margin-bottom:56px;">
+      <p class="eyebrow" style="margin-bottom:12px;">Why Jones Road</p>
+      <h2 class="headline">Real results, real people</h2>
+    </div>
+    <!-- Stats bar -->
+    <div class="grid-4" style="max-width:900px;margin:0 auto 56px;text-align:center;">
+      <div>
+        <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1.1;letter-spacing:0.5px;color:#000;margin-bottom:8px;">76K+</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;color:#000;line-height:1.4;">Five-star reviews</p>
+      </div>
+      <div>
+        <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1.1;letter-spacing:0.5px;color:#000;margin-bottom:8px;">2M+</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;color:#000;line-height:1.4;">Products sold</p>
+      </div>
+      <div>
+        <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1.1;letter-spacing:0.5px;color:#000;margin-bottom:8px;">94%</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;color:#000;line-height:1.4;">Shade match satisfaction</p>
+      </div>
+      <div>
+        <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1.1;letter-spacing:0.5px;color:#000;margin-bottom:8px;">4.8</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;color:#000;line-height:1.4;">Average rating</p>
+      </div>
+    </div>
+    <!-- Review quotes -->
+    <div class="grid-3" style="max-width:960px;margin:0 auto 56px;">
+      <div class="review-card">
+        <div style="margin-bottom:12px;">
+          <span class="stars">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+        </div>
+        <p style="font-family:'Canela',serif;font-weight:300;font-style:italic;font-size:16px;line-height:1.5;color:#000;margin-bottom:16px;">"I'm 52 and this is the first foundation that doesn't settle into my fine lines. My skin looks like my skin, just better."</p>
+        <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:4px;">Susan K.</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:12px;color:#000;">Verified Buyer &mdash; What The Foundation</p>
+      </div>
+      <div class="review-card">
+        <div style="margin-bottom:12px;">
+          <span class="stars">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+        </div>
+        <p style="font-family:'Canela',serif;font-weight:300;font-style:italic;font-size:16px;line-height:1.5;color:#000;margin-bottom:16px;">"Miracle Balm is magic. I use it on my cheeks, lips, and eyelids. One product, done in 30 seconds, out the door."</p>
+        <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:4px;">Priya K.</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:12px;color:#000;">Verified Buyer &mdash; Miracle Balm</p>
+      </div>
+      <div class="review-card">
+        <div style="margin-bottom:12px;">
+          <span class="stars">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+        </div>
+        <p style="font-family:'Canela',serif;font-weight:300;font-style:italic;font-size:16px;line-height:1.5;color:#000;margin-bottom:16px;">"As a nurse, I need makeup that survives a 12-hour shift. This stuff does not budge. And it's clean ingredients."</p>
+        <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:4px;">Amanda R.</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:12px;color:#000;">Verified Buyer &mdash; The Best Pencil</p>
+      </div>
+    </div>
+    <!-- Value props -->
+    <div class="grid-3" style="max-width:960px;margin:0 auto;border-top:1px solid #ededed;padding-top:48px;">
+      <div style="text-align:center;">
+        <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:12px;">Simplify Your Routine</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#000;">Multi-use formulas that replace 3-4 products. Get ready faster without sacrificing results.</p>
+      </div>
+      <div style="text-align:center;">
+        <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:12px;">Feel Confident in Your Shade</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#000;">94% shade match satisfaction. Free returns if it's not quite right.</p>
+      </div>
+      <div style="text-align:center;">
+        <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:12px;">Clean Beauty, No Compromises</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#000;">No parabens, no sulfates, no synthetic fragrance. High-performance formulas your skin will thank you for.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       13. ROUTINE BUILDER — "Your 5-Minute Morning"
+       ======================================================================== -->
+  <section class="section-padded" style="padding:72px 32px;background:#f6f2eb;">
+    <div style="text-align:center;margin-bottom:56px;">
+      <p class="eyebrow" style="margin-bottom:12px;">The 5-Minute Routine</p>
+      <h2 class="headline">Your everyday morning lineup</h2>
+      <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#000;margin-top:16px;max-width:520px;margin-left:auto;margin-right:auto;">Four products. Five minutes. A finished face that looks like you, only better. Bobbi designed this routine for real life.</p>
+    </div>
+    <div class="grid-4" style="max-width:1000px;margin:0 auto;">
+      <!-- Step 1 -->
+      <div class="routine-step">
+        <p class="routine-step__number">01</p>
+        <div class="routine-step__media">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504&width=400" alt="What The Foundation" loading="lazy">
+        </div>
+        <p class="routine-step__name">What The Foundation</p>
+        <p class="routine-step__price">$44</p>
+        <p class="routine-step__desc">Apply with fingers for a skin-like tinted moisturizer finish. Evens tone without masking.</p>
+      </div>
+      <!-- Step 2 -->
+      <div class="routine-step">
+        <p class="routine-step__number">02</p>
+        <div class="routine-step__media">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718&width=400" alt="Miracle Balm" loading="lazy">
+        </div>
+        <p class="routine-step__name">Miracle Balm</p>
+        <p class="routine-step__price">$38</p>
+        <p class="routine-step__desc">Dab on cheeks, lips, and lids for an instant, multi-use wash of color.</p>
+      </div>
+      <!-- Step 3 -->
+      <div class="routine-step">
+        <p class="routine-step__number">03</p>
+        <div class="routine-step__media">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/bestpencil_black_1.jpg?v=1739188771&width=400" alt="The Best Pencil" loading="lazy">
+        </div>
+        <p class="routine-step__name">The Best Pencil</p>
+        <p class="routine-step__price">$19</p>
+        <p class="routine-step__desc">Line upper lashes for instant eye definition. Smooth, stays put, zero smudging.</p>
+      </div>
+      <!-- Step 4 -->
+      <div class="routine-step">
+        <p class="routine-step__number">04</p>
+        <div class="routine-step__media">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/JonesRoad_Mascara_main.jpg?v=1739188781&width=400" alt="The Mascara" loading="lazy">
+        </div>
+        <p class="routine-step__name">The Mascara</p>
+        <p class="routine-step__price">$26</p>
+        <p class="routine-step__desc">Two coats for separated, lifted lashes. Clean formula, no flaking.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:48px;">
+      <a href="#" class="button">Shop the Routine — $127</a>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       14. FOOTER
+       ======================================================================== -->
+  <footer class="footer">
+    <div class="footer__grid">
+      <div class="footer__col">
+        <p class="footer__col-title">Shop</p>
+        <ul>
+          <li><a href="#">Bestsellers</a></li>
+          <li><a href="#">New Arrivals</a></li>
+          <li><a href="#">Face</a></li>
+          <li><a href="#">Eyes</a></li>
+          <li><a href="#">Lips</a></li>
+          <li><a href="#">Skincare</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <p class="footer__col-title">About</p>
+        <ul>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Bobbi Brown</a></li>
+          <li><a href="#">Clean Ingredients</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <p class="footer__col-title">Help</p>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Shipping & Returns</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Shade Finder</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <p class="footer__col-title">Connect</p>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">Email Sign Up</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      &copy; 2026 Jones Road Beauty. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       JavaScript — Shop by Concern interactive chooser
+       ======================================================================== -->
+  <script>
+    function showConcern(btn) {
+      // Toggle active button
+      document.querySelectorAll('.chooser-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+
+      // Show matching panel
+      var concern = btn.getAttribute('data-concern');
+      document.querySelectorAll('.concern-panel').forEach(function(p) { p.style.display = 'none'; });
+      var target = document.querySelector('.concern-panel[data-panel="' + concern + '"]');
+      if (target) target.style.display = 'grid';
+    }
+  </script>
+
+</body>
+</html>

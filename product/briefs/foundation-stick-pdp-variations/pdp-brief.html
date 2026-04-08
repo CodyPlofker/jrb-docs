@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miracle Balm PDP Redesign — Strategic Brief</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: #1a1a1a;
+      background: #fafaf8;
+      line-height: 1.6;
+    }
+
+    /* Layout */
+    .brief { max-width: 860px; margin: 0 auto; padding: 0 32px 80px; }
+
+    /* Cover */
+    .cover {
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 80px 0 60px;
+      border-bottom: 3px solid #000;
+      margin-bottom: 64px;
+    }
+    .cover__tag {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #888;
+      margin-bottom: 24px;
+    }
+    .cover__title {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      max-width: 650px;
+    }
+    .cover__subtitle {
+      font-size: 18px;
+      font-weight: 300;
+      color: #555;
+      margin-bottom: 32px;
+      max-width: 550px;
+      line-height: 1.5;
+    }
+    .cover__meta {
+      display: flex;
+      gap: 32px;
+      font-size: 12px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Section headings */
+    .section-num {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #888;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      margin-top: 32px;
+    }
+    p { margin-bottom: 16px; font-size: 15px; color: #333; }
+    .section { margin-bottom: 64px; }
+
+    /* Stats grid */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 32px 0;
+    }
+    .stat {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+    }
+    .stat__number {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat__label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #888;
+    }
+    .stat--accent { border-color: #000; background: #000; color: #fff; }
+    .stat--accent .stat__label { color: rgba(255,255,255,.6); }
+    .stat--accent .stat__number { color: #fff; }
+
+    @media (max-width: 768px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .cover__title { font-size: 36px; }
+      .bar-row { grid-template-columns: 140px 1fr 44px; gap: 8px; }
+      .bar-label { font-size: 11px; }
+    }
+
+    /* Insight cards */
+    .insight {
+      background: #fff;
+      border-left: 3px solid #000;
+      padding: 20px 24px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .insight__title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .insight__body {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 0;
+    }
+    .insight--red { border-color: #c0392b; }
+    .insight--green { border-color: #27ae60; }
+    .insight--blue { border-color: #2980b9; }
+
+    /* Quote */
+    .quote {
+      border-left: 3px solid #ddd;
+      padding: 16px 24px;
+      margin: 20px 0;
+      font-style: italic;
+      color: #555;
+      font-size: 15px;
+    }
+    .quote__source {
+      font-style: normal;
+      font-size: 12px;
+      color: #999;
+      margin-top: 8px;
+      display: block;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+    th {
+      text-align: left;
+      padding: 10px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #888;
+      border-bottom: 2px solid #000;
+    }
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+      color: #333;
+    }
+    tr:last-child td { border-bottom: none; }
+
+    /* Section architecture */
+    .arch-card {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 24px;
+      margin: 16px 0;
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      gap: 16px;
+      align-items: start;
+    }
+    .arch-card__num {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #ccc;
+      text-align: center;
+      padding-top: 2px;
+    }
+    .arch-card__content {}
+    .arch-card__title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .arch-card__desc {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 0;
+      line-height: 1.5;
+    }
+    .arch-card__evidence {
+      font-size: 11px;
+      color: #888;
+      margin-top: 6px;
+    }
+    .arch-card__link {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #000;
+      text-decoration: none;
+      white-space: nowrap;
+      padding-top: 4px;
+    }
+    .arch-card__link:hover { text-decoration: underline; }
+    .arch-card--priority { border-color: #000; border-width: 2px; }
+
+    /* Source badges */
+    .sources {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+    .source-badge {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: #f0f0f0;
+      color: #666;
+    }
+    .source-badge--typeform { background: #e8f4fd; color: #2980b9; }
+    .source-badge--listenlabs { background: #fdf2e8; color: #c0392b; }
+    .source-badge--reviews { background: #e8fde8; color: #27ae60; }
+    .source-badge--competitive { background: #f0e8fd; color: #8e44ad; }
+    .source-badge--advisory { background: #fde8f0; color: #c0392b; }
+    .source-badge--heatmap { background: #fff3e0; color: #e67e22; }
+
+    /* Divider */
+    .divider { border: none; border-top: 1px solid #eee; margin: 48px 0; }
+
+    /* CTA link */
+    .cta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #000;
+      text-decoration: none;
+      padding: 12px 24px;
+      border: 2px solid #000;
+      border-radius: 4px;
+      transition: all .2s;
+    }
+    .cta-link:hover { background: #000; color: #fff; }
+
+    /* Bar chart */
+    .bar-chart { margin: 24px 0; }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 180px 1fr 50px;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .bar-label { font-size: 13px; color: #333; text-align: right; }
+    .bar-track { height: 24px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
+    .bar-fill { height: 100%; background: #000; border-radius: 4px; }
+    .bar-value { font-size: 13px; font-weight: 600; }
+
+    /* TOC */
+    .toc {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 24px 32px;
+      margin: 32px 0;
+    }
+    .toc__title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #888;
+      margin-bottom: 16px;
+    }
+    .toc__item {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid #f5f5f5;
+    }
+    .toc__item:last-child { border-bottom: none; }
+    .toc__item a {
+      font-size: 14px;
+      color: #333;
+      text-decoration: none;
+    }
+    .toc__item a:hover { color: #000; text-decoration: underline; }
+    .toc__item span { font-size: 12px; color: #ccc; }
+  </style>
+</head>
+<body>
+
+<div class="brief">
+
+  <!-- COVER -->
+  <div class="cover">
+    <p class="cover__tag">Strategic Brief</p>
+    <h1 class="cover__title">Miracle Balm PDP Redesign</h1>
+    <p class="cover__subtitle">Research-backed section architecture for JRB's highest-traffic product page. Six data sources (incl. N=51 ListenLabs PDP Confidence study), 18 themes, 16 recommended sections.</p>
+    <div class="cover__meta">
+      <span>Jones Road Beauty</span>
+      <span>March 2026</span>
+      <span>Prepared by Cody Plofker</span>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <p class="toc__title">In This Brief</p>
+    <div class="toc__item"><a href="#problem">The Problem</a><span>01</span></div>
+    <div class="toc__item"><a href="#research">Research Foundation</a><span>02</span></div>
+    <div class="toc__item"><a href="#confidence">PDP Purchase Confidence (ListenLabs N=51)</a><span>03</span></div>
+    <div class="toc__item"><a href="#insights">Key Insights</a><span>04</span></div>
+    <div class="toc__item"><a href="#competitive">Competitive Gaps</a><span>05</span></div>
+    <div class="toc__item"><a href="#architecture">Recommended Section Architecture</a><span>06</span></div>
+    <div class="toc__item"><a href="#requirements">Content Requirements</a><span>07</span></div>
+    <div class="toc__item"><a href="#success">Success Metrics</a><span>08</span></div>
+  </div>
+
+  <!-- 01: THE PROBLEM -->
+  <div class="section" id="problem">
+    <p class="section-num">01</p>
+    <h2>The Problem</h2>
+
+    <p>Miracle Balm is JRB's highest-traffic PDP and the entry point for most new customers. But the current page is losing conversions — not because customers can't <em>find</em> products, but because they can't confidently <em>choose</em>.</p>
+
+    <p>Six independent research streams converge on the same conclusion: the PDP fails to educate, fails to build shade confidence, and fails to communicate the product's extraordinary value. The newest data — a ListenLabs PDP Confidence study (N=51) — quantifies exactly what builds and kills purchase confidence.</p>
+
+    <div class="stats">
+      <div class="stat stat--accent">
+        <div class="stat__number">7/23</div>
+        <div class="stat__label">Thought it was lip balm</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">3.58</div>
+        <div class="stat__label">Shade confidence (out of 5)</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">$21.59</div>
+        <div class="stat__label">Per oz — invisible on PDP</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">76K+</div>
+        <div class="stat__label">Reviews — barely leveraged</div>
+      </div>
+    </div>
+
+    <div class="insight insight--red">
+      <p class="insight__title">The Acquisition Gap</p>
+      <p class="insight__body">Existing customer research captures people who already bought. Prospect data reveals problems invisible to existing customers: product comprehension failure, price-as-risk (not price-as-expensive), and shade quiz distrust.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 02: RESEARCH FOUNDATION -->
+  <div class="section" id="research">
+    <p class="section-num">02</p>
+    <h2>Research Foundation</h2>
+
+    <p>This brief is built on six independent data sources — the largest research investment JRB has made in its PDP experience. The newest addition, the ListenLabs PDP Purchase Confidence study (N=51), provides the quantitative backbone for what builds and destroys confidence on the product page.</p>
+
+    <table>
+      <tr>
+        <th>Source</th>
+        <th>Type</th>
+        <th>Sample</th>
+        <th>Key Focus</th>
+      </tr>
+      <tr>
+        <td><strong>Typeform Survey</strong></td>
+        <td>Quantitative</td>
+        <td>78 responses</td>
+        <td>PDP priorities, shade confidence, value drivers, homepage gaps</td>
+      </tr>
+      <tr>
+        <td><strong>ListenLabs Prospect Study</strong></td>
+        <td>Qualitative (non-customers)</td>
+        <td>23 screen recordings</td>
+        <td>Purchase barriers, first impressions, product comprehension</td>
+      </tr>
+      <tr style="background:#fdf8f0;">
+        <td><strong>ListenLabs PDP Confidence</strong></td>
+        <td>Quantitative survey</td>
+        <td>51 respondents</td>
+        <td>Trust builders, confidence reducers, shade selection, pricing justification</td>
+      </tr>
+      <tr>
+        <td><strong>Facebook Advisory Board</strong></td>
+        <td>Qualitative (loyal customers)</td>
+        <td>75 comments</td>
+        <td>Website UX, shade confidence, model representation</td>
+      </tr>
+      <tr>
+        <td><strong>Junip Review Deep Dive</strong></td>
+        <td>Quantitative keyword analysis</td>
+        <td>10,000+ matches</td>
+        <td>Shade friction, value perception, education gaps, Bobbi mentions</td>
+      </tr>
+      <tr>
+        <td><strong>Competitive PDP Audit</strong></td>
+        <td>Benchmarking</td>
+        <td>4 brands</td>
+        <td>MERIT, ILIA, Tower 28, Rare Beauty — feature gaps</td>
+      </tr>
+    </table>
+
+    <div class="sources">
+      <span class="source-badge source-badge--typeform">Typeform (78)</span>
+      <span class="source-badge source-badge--listenlabs">ListenLabs (23)</span>
+      <span class="source-badge source-badge--listenlabs">ListenLabs PDP (51)</span>
+      <span class="source-badge source-badge--advisory">Advisory Board (75)</span>
+      <span class="source-badge source-badge--reviews">Junip (10K+)</span>
+      <span class="source-badge source-badge--competitive">Competitive (4 brands)</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 03: PDP PURCHASE CONFIDENCE (LISTENLABS N=51) -->
+  <div class="section" id="confidence">
+    <p class="section-num">03</p>
+    <h2>PDP Purchase Confidence</h2>
+    <p style="font-size:13px;color:#888;margin-bottom:24px;">Source: ListenLabs PDP Confidence Study, March 2026 (N=51)</p>
+
+    <h3>What Builds Purchase Confidence</h3>
+    <p>Reviews and UGC dominate. Ingredient transparency is third — higher than expected. Founder/expert video is last at just 4%, a critical finding for how we position Bobbi on the PDP.</p>
+    <div class="bar-chart">
+      <div class="bar-row"><span class="bar-label">Reviews (qty + quality)</span><div class="bar-track"><div class="bar-fill" style="width:82%;background:#27ae60"></div></div><span class="bar-value">82%</span></div>
+      <div class="bar-row"><span class="bar-label">UGC / social proof</span><div class="bar-track"><div class="bar-fill" style="width:76%;background:#27ae60"></div></div><span class="bar-value">76%</span></div>
+      <div class="bar-row"><span class="bar-label">Ingredient transparency</span><div class="bar-track"><div class="bar-fill" style="width:73%;background:#27ae60"></div></div><span class="bar-value">73%</span></div>
+      <div class="bar-row"><span class="bar-label">Return / shipping clarity</span><div class="bar-track"><div class="bar-fill" style="width:55%;background:#2980b9"></div></div><span class="bar-value">55%</span></div>
+      <div class="bar-row"><span class="bar-label">How-to tutorials</span><div class="bar-track"><div class="bar-fill" style="width:43%;background:#2980b9"></div></div><span class="bar-value">43%</span></div>
+      <div class="bar-row"><span class="bar-label">Price / value explanation</span><div class="bar-track"><div class="bar-fill" style="width:24%;background:#888"></div></div><span class="bar-value">24%</span></div>
+      <div class="bar-row"><span class="bar-label">Before / after photos</span><div class="bar-track"><div class="bar-fill" style="width:6%;background:#ccc"></div></div><span class="bar-value">6%</span></div>
+      <div class="bar-row"><span class="bar-label">Founder video (Bobbi)</span><div class="bar-track"><div class="bar-fill" style="width:4%;background:#c0392b"></div></div><span class="bar-value">4%</span></div>
+    </div>
+
+    <div class="insight insight--red">
+      <p class="insight__title">The Bobbi Paradox</p>
+      <p class="insight__body">Bobbi's founder video scores only 4% as a PDP confidence builder — yet 55% of existing customers rate her importance 5/5 (Typeform). Resolution: <strong>Bobbi builds BRAND trust</strong> (why I buy from JRB), <strong>not PRODUCT trust</strong> (why I buy THIS product). Her PDP role should be brand credibility and authority, not product demo.</p>
+    </div>
+
+    <h3>What Kills Purchase Confidence</h3>
+    <p>Missing ingredient details is the top confidence killer at 43% — directly actionable. Shade uncertainty (35%) + lack of on-skin swatches (31%) together represent a 66% compound barrier around shade.</p>
+    <div class="bar-chart">
+      <div class="bar-row"><span class="bar-label">Missing ingredients detail</span><div class="bar-track"><div class="bar-fill" style="width:43%;background:#c0392b"></div></div><span class="bar-value">43%</span></div>
+      <div class="bar-row"><span class="bar-label">Sparse / mixed reviews</span><div class="bar-track"><div class="bar-fill" style="width:37%;background:#c0392b"></div></div><span class="bar-value">37%</span></div>
+      <div class="bar-row"><span class="bar-label">Shade uncertainty</span><div class="bar-track"><div class="bar-fill" style="width:35%;background:#e67e22"></div></div><span class="bar-value">35%</span></div>
+      <div class="bar-row"><span class="bar-label">Unclear returns / shipping</span><div class="bar-track"><div class="bar-fill" style="width:33%;background:#e67e22"></div></div><span class="bar-value">33%</span></div>
+      <div class="bar-row"><span class="bar-label">Lack of on-skin swatches</span><div class="bar-track"><div class="bar-fill" style="width:31%;background:#e67e22"></div></div><span class="bar-value">31%</span></div>
+      <div class="bar-row"><span class="bar-label">Price without proof</span><div class="bar-track"><div class="bar-fill" style="width:25%;background:#888"></div></div><span class="bar-value">25%</span></div>
+      <div class="bar-row"><span class="bar-label">Ambiguous coverage</span><div class="bar-track"><div class="bar-fill" style="width:25%;background:#888"></div></div><span class="bar-value">25%</span></div>
+      <div class="bar-row"><span class="bar-label">Photo quality / lighting</span><div class="bar-track"><div class="bar-fill" style="width:22%;background:#888"></div></div><span class="bar-value">22%</span></div>
+      <div class="bar-row"><span class="bar-label">Overwhelming layout</span><div class="bar-track"><div class="bar-fill" style="width:20%;background:#ccc"></div></div><span class="bar-value">20%</span></div>
+    </div>
+
+    <h3>PDP First Glance — Where Eyes Go First</h3>
+    <p>Photos dominate first attention (39%), followed by description text (25%). Ingredients draw 12% of first-glance attention — higher than shade selector (10%) and price (6%). This validates a gallery-first layout with ingredient visibility.</p>
+    <div class="stats" style="grid-template-columns: repeat(5,1fr);">
+      <div class="stat stat--accent">
+        <div class="stat__number">39%</div>
+        <div class="stat__label">Photos / Gallery</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">25%</div>
+        <div class="stat__label">Description</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">12%</div>
+        <div class="stat__label">Ingredients</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">10%</div>
+        <div class="stat__label">Shade Selector</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">6%</div>
+        <div class="stat__label">Price / Offer</div>
+      </div>
+    </div>
+
+    <h3>Shade Selection — What Would Actually Help</h3>
+    <p>82% want to see shades on similar skin tone — the clear winner. Shade quiz/brand match (53%) is a distant second. Virtual try-on and undertone guidance tie at 22%.</p>
+    <div class="bar-chart">
+      <div class="bar-row"><span class="bar-label">Shades on similar skin</span><div class="bar-track"><div class="bar-fill" style="width:82%;background:#000"></div></div><span class="bar-value">82%</span></div>
+      <div class="bar-row"><span class="bar-label">Shade quiz / brand match</span><div class="bar-track"><div class="bar-fill" style="width:53%;background:#000"></div></div><span class="bar-value">53%</span></div>
+      <div class="bar-row"><span class="bar-label">Virtual try-on</span><div class="bar-track"><div class="bar-fill" style="width:22%;background:#888"></div></div><span class="bar-value">22%</span></div>
+      <div class="bar-row"><span class="bar-label">Undertone guidance</span><div class="bar-track"><div class="bar-fill" style="width:22%;background:#888"></div></div><span class="bar-value">22%</span></div>
+    </div>
+
+    <h3>What Justifies Premium Pricing</h3>
+    <div class="stats" style="grid-template-columns: repeat(3,1fr);">
+      <div class="stat stat--accent">
+        <div class="stat__number">45%</div>
+        <div class="stat__label">Real-world results</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">27%</div>
+        <div class="stat__label">Clean, superior ingredients</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">24%</div>
+        <div class="stat__label">Risk reduction (samples/returns)</div>
+      </div>
+    </div>
+    <p style="margin-top:16px;">Across both studies, the message is consistent: <strong>show me it works on someone like me</strong> (results + UGC), <strong>tell me what's in it</strong> (ingredients), and <strong>take away my risk</strong> (returns + mini).</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 04: KEY INSIGHTS -->
+  <div class="section" id="insights">
+    <p class="section-num">04</p>
+    <h2>Key Insights</h2>
+
+    <h3>1. Product Comprehension Failure</h3>
+    <p>7 out of 23 prospects thought Miracle Balm was a lip balm. The multi-use positioning creates skepticism rather than excitement among people who haven't tried it. We need to lead with ONE clear use case (cream blush) and reveal versatility second.</p>
+    <div class="quote">"It says balm, which makes me think it's immediately all about the lips. When I look, there's videos... at least two of them are using it on their cheeks."<span class="quote__source">— ListenLabs Participant 0033, age 44</span></div>
+    <div class="sources">
+      <span class="source-badge source-badge--listenlabs">7/23 Prospects</span>
+      <span class="source-badge source-badge--reviews">1,301 "how to use" mentions</span>
+    </div>
+
+    <h3>2. Shade Confidence Is the #1 Barrier</h3>
+    <p>Confirmed by ALL six data sources. Average shade confidence is just 3.58 out of 5. The ListenLabs PDP study (N=51) adds quantitative weight: 35% cite shade uncertainty and 31% cite lack of on-skin swatches as confidence killers. 82% want to see shades on similar skin — the single clearest demand signal across all research.</p>
+
+    <h4 style="font-size:13px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-top:20px;margin-bottom:12px;">Typeform (N=78) — What Would Help</h4>
+    <div class="bar-chart">
+      <div class="bar-row"><span class="bar-label">Swatches on skin tones</span><div class="bar-track"><div class="bar-fill" style="width:76.3%"></div></div><span class="bar-value">76.3%</span></div>
+      <div class="bar-row"><span class="bar-label">Undertone guidance</span><div class="bar-track"><div class="bar-fill" style="width:64.1%"></div></div><span class="bar-value">64.1%</span></div>
+      <div class="bar-row"><span class="bar-label">Filter photos by skin tone</span><div class="bar-track"><div class="bar-fill" style="width:44.9%"></div></div><span class="bar-value">44.9%</span></div>
+      <div class="bar-row"><span class="bar-label">Selfie match (easier to find)</span><div class="bar-track"><div class="bar-fill" style="width:37.2%"></div></div><span class="bar-value">37.2%</span></div>
+      <div class="bar-row"><span class="bar-label">Virtual try-on</span><div class="bar-track"><div class="bar-fill" style="width:34.6%"></div></div><span class="bar-value">34.6%</span></div>
+      <div class="bar-row"><span class="bar-label">More accurate quiz</span><div class="bar-track"><div class="bar-fill" style="width:14.1%"></div></div><span class="bar-value">14.1%</span></div>
+    </div>
+    <p style="font-size:12px;color:#888;margin-bottom:24px;">Source: Typeform survey — "What would MOST help you feel confident choosing a shade?"</p>
+
+    <h4 style="font-size:13px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">ListenLabs PDP (N=51) — Shade Selection Aids</h4>
+    <div class="bar-chart">
+      <div class="bar-row"><span class="bar-label">Shades on similar skin</span><div class="bar-track"><div class="bar-fill" style="width:82%;background:#e67e22"></div></div><span class="bar-value">82%</span></div>
+      <div class="bar-row"><span class="bar-label">Shade quiz / brand match</span><div class="bar-track"><div class="bar-fill" style="width:53%;background:#e67e22"></div></div><span class="bar-value">53%</span></div>
+      <div class="bar-row"><span class="bar-label">Virtual try-on</span><div class="bar-track"><div class="bar-fill" style="width:22%;background:#e67e22"></div></div><span class="bar-value">22%</span></div>
+      <div class="bar-row"><span class="bar-label">Undertone guidance</span><div class="bar-track"><div class="bar-fill" style="width:22%;background:#e67e22"></div></div><span class="bar-value">22%</span></div>
+    </div>
+    <p style="font-size:12px;color:#888;">Source: ListenLabs PDP Confidence Study — "What would help you choose the right shade?"</p>
+
+    <div class="insight insight--green">
+      <p class="insight__title">Cross-Study Convergence</p>
+      <p class="insight__body">Both studies agree: <strong>"see shades on similar skin" is the #1 ask</strong> (76% Typeform, 82% ListenLabs). The quiz is a distant second in both studies. Virtual try-on consistently ranks low (22-35%). Invest in skin-tone photography, not AR technology.</p>
+    </div>
+
+    <h3>3. Price = Risk, Not "Expensive"</h3>
+    <p>Prospects spend $50+ on proven products but won't spend $38 on an untried one. The mini is essential for acquisition — 9/23 prospects explicitly asked for a sample. Meanwhile, JRB's $21.59/oz value (vs $49–$165/oz competitors) is completely invisible on the PDP.</p>
+    <div class="quote">"I would not pay $38 on a brand new product that I've never tested before. I did go to Ulta last week and bought my foundation... it's like $50 — but it's tested."<span class="quote__source">— ListenLabs Participant 0033, age 44</span></div>
+
+    <h3>4. Bobbi: Brand Trust, Not Product Trust</h3>
+    <p>55.1% of customers rate Bobbi's importance as 5 out of 5 (maximum). Reviews mentioning Bobbi average 4.34-4.78 stars. Yet the ListenLabs PDP Confidence study reveals a crucial nuance: <strong>founder/expert video scored only 4% as a PDP confidence builder</strong>. This is not a contradiction — it's a clarification.</p>
+
+    <div class="stats" style="grid-template-columns: repeat(4,1fr);">
+      <div class="stat">
+        <div class="stat__number">55%</div>
+        <div class="stat__label">Rate Bobbi importance 5/5</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">3,334</div>
+        <div class="stat__label">Bobbi mentions in reviews</div>
+      </div>
+      <div class="stat">
+        <div class="stat__number">+0.4★</div>
+        <div class="stat__label">Rating lift when Bobbi mentioned</div>
+      </div>
+      <div class="stat stat--accent">
+        <div class="stat__number">4%</div>
+        <div class="stat__label">Founder video as PDP trust builder</div>
+      </div>
+    </div>
+
+    <div class="insight insight--blue">
+      <p class="insight__title">The Resolution</p>
+      <p class="insight__body">Bobbi builds <strong>BRAND trust</strong> (why I buy from JRB) — not <strong>PRODUCT trust</strong> (why I buy THIS product). Her PDP section should position her as the credibility authority behind the brand and formula, not as a product demo host. Think "30+ years of formulating" and founder credentials, not "watch Bobbi apply Miracle Balm."</p>
+    </div>
+
+    <h3>5. "Products Model Is Wearing" — The Surprise #2 Gap</h3>
+    <p>53.9% of Typeform respondents say "a list of products the model is wearing" is missing from PDPs — the second-most requested addition after shade swatches. This is both a shade confidence tool and a cross-sell opportunity.</p>
+
+    <h3>6. Reviews Are Critical But Mismanaged</h3>
+    <p>76K+ reviews is JRB's biggest competitive moat (MERIT has 6.9K, Rare Beauty 4.9K). The ListenLabs PDP study confirms reviews are the #1 confidence builder (82%) and sparse/mixed reviews are the #2 confidence killer (37%). Moving reviews below the fold hurt conversions. Review count and ratings should be prominent near the ATC.</p>
+    <div class="sources">
+      <span class="source-badge source-badge--listenlabs">82% = #1 confidence builder</span>
+      <span class="source-badge source-badge--listenlabs">37% = confidence killer when sparse</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 05: COMPETITIVE GAPS -->
+  <div class="section" id="competitive">
+    <p class="section-num">05</p>
+    <h2>Competitive Gaps</h2>
+
+    <p>Every competitor does more on-page education and trust-building than JRB, despite JRB having objectively better assets.</p>
+
+    <h3>What Every Competitor Has (That JRB Doesn't)</h3>
+    <table>
+      <tr><th>Feature</th><th>MERIT</th><th>ILIA</th><th>Rare Beauty</th><th>JRB</th></tr>
+      <tr><td>"Find My Shade" in nav</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td></tr>
+      <tr><td>Shade-on-skin carousel</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td></tr>
+      <tr><td>Clean badges near ATC</td><td>✓</td><td>✓</td><td>✓</td><td>Buried</td></tr>
+      <tr><td>Clinical/efficacy claims</td><td>—</td><td>✓</td><td>—</td><td>✗</td></tr>
+      <tr><td>Bundle cross-sell on PDP</td><td>✓</td><td>✓</td><td>—</td><td>✗</td></tr>
+      <tr><td>Shade match guarantee</td><td>✓ (30-day)</td><td>—</td><td>—</td><td>✗</td></tr>
+    </table>
+
+    <div class="insight insight--green">
+      <p class="insight__title">What JRB Has That Competitors Don't</p>
+      <p class="insight__body"><strong>76K+ reviews</strong> (more than MERIT + ILIA + Rare Beauty combined) · <strong>Bobbi Brown</strong> as founder (no competitor has this asset) · <strong>$21.59/oz</strong> (2–8x more product) · <strong>4 uses per product</strong> (no competitor claims this) · <strong>"Send a Selfie"</strong> personal shade matching</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 06: RECOMMENDED SECTION ARCHITECTURE -->
+  <div class="section" id="architecture">
+    <p class="section-num">06</p>
+    <h2>Recommended Section Architecture</h2>
+
+    <p>16 sections, ordered by the customer's decision journey: Trust → Comprehension → Value → Confidence → Proof. Each section has 3–4 design variations to review.</p>
+
+    <p><a href="pdp-variations.html" class="cta-link">View all section variations →</a></p>
+
+    <div class="arch-card arch-card--priority">
+      <div class="arch-card__num">1</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Trust Bar</p>
+        <p class="arch-card__desc">76K+ reviews · Free shipping · Free returns · Clean formula · 30-day guarantee. Return/shipping clarity is a confidence builder for 55% (ListenLabs) and unclear returns kills confidence for 33%.</p>
+        <p class="arch-card__evidence">📊 55% trust builder · 33% confidence killer · 10/23 searched returns · ICE 8.3</p>
+      </div>
+      <a href="pdp-variations.html#s1" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card arch-card--priority">
+      <div class="arch-card__num">2</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Try the Mini</p>
+        <p class="arch-card__desc">Risk-reduction CTA near full-size ATC. "$22 to try it first" framing. Positions mini as trial mechanism, not just smaller size.</p>
+        <p class="arch-card__evidence">📊 12/23 prospects: price = risk · 9/23 asked for samples · ICE 8.3</p>
+      </div>
+      <a href="pdp-variations.html#s2" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card arch-card--priority">
+      <div class="arch-card__num">3</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Versatility — "4 Products in 1"</p>
+        <p class="arch-card__desc">Lead with cream blush (understood category), reveal multi-use as bonus. Show what Miracle Balm replaces: blush, bronzer, highlighter, all-over tint. Includes All Over Tint as 4th use.</p>
+        <p class="arch-card__evidence">📊 41.6% value = "replaces products" · 7/23 thought it was lip balm · ICE 7.7</p>
+      </div>
+      <a href="pdp-variations.html#s3" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">4</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Bobbi Brown Credibility</p>
+        <p class="arch-card__desc">Founder authority — NOT Bobbi wearing the product. 30+ years of formulating, credentials, "why I created this." ListenLabs confirms: founder video = 4% as product trust builder, but 55% rate Bobbi 5/5 importance. She builds brand trust, not product trust.</p>
+        <p class="arch-card__evidence">📊 55% rate 5/5 · 4% as product trust (LL) · Brand credibility, not demo · ICE 8.7</p>
+      </div>
+      <a href="pdp-variations.html#s4" class="arch-card__link">3 variations →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">5</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Value Comparison</p>
+        <p class="arch-card__desc">Make the $21.59/oz advantage visible. Cost per day, price per oz vs competitors, "lasts 9-12 months." ListenLabs: price without proof kills confidence for 25%, but real-world results (45%) and clean ingredients (27%) justify premium.</p>
+        <p class="arch-card__evidence">📊 25% price-without-proof kills confidence · 45% justify via results · ICE 8.0</p>
+      </div>
+      <a href="pdp-variations.html#s5" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">6</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Shade Match — Quiz + Selfie</p>
+        <p class="arch-card__desc">Two-path shade finding: quiz (60 seconds) OR selfie (expert match). ListenLabs confirms 82% want to see shades on similar skin, 53% want shade quiz/brand match. Virtual try-on only 22% — low priority.</p>
+        <p class="arch-card__evidence">📊 82% shades on skin (LL) · 35% shade uncertainty kills confidence · ICE 8.0</p>
+      </div>
+      <a href="pdp-variations.html#s6" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">7</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Ingredients</p>
+        <p class="arch-card__desc">"What's in it" AND "What's NOT in it" — both matter. 2,700+ excluded ingredients. ListenLabs confirms: ingredient transparency is #3 confidence builder (73%) and missing ingredient detail is the #1 confidence killer (43%).</p>
+        <p class="arch-card__evidence">📊 73% confidence builder · 43% #1 confidence killer · 12% PDP first glance · ICE 7.0</p>
+      </div>
+      <a href="pdp-variations.html#s7" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">8</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Social Proof — Stats</p>
+        <p class="arch-card__desc">76K+ reviews, 80% recommend, 62% gave 5 stars, 4.3 avg. ListenLabs: reviews = #1 trust builder (82%), UGC/social proof = #2 (76%). Sparse reviews = #2 confidence killer (37%). Big numbers, prominent placement.</p>
+        <p class="arch-card__evidence">📊 82% #1 trust builder · 76% UGC · 37% killer when sparse (LL)</p>
+      </div>
+      <a href="pdp-variations.html#s8" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">9</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">UGC + Before/After Gallery</p>
+        <p class="arch-card__desc">Real customer photos with before/after pairs. Shade name on every photo. Named customers with star ratings. Not inside the review widget — a dedicated section.</p>
+        <p class="arch-card__evidence">📊 40.3% B&A = value driver · 31.6% say B&A missing from PDP</p>
+      </div>
+      <a href="pdp-variations.html#s9" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">10</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Comparison Table — Us vs Them</p>
+        <p class="arch-card__desc">Miracle Balm vs MERIT, ILIA, Tower 28. Size, price/oz, uses, longevity, reviews, clean formula. MB wins every row. More visual than current plain table.</p>
+        <p class="arch-card__evidence">📊 $21.59/oz vs $49-$165/oz · 1.76oz vs 0.17-0.24oz</p>
+      </div>
+      <a href="pdp-variations.html#s10" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">11</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Product Quick-Spec</p>
+        <p class="arch-card__desc">At-a-glance product details: Good For, Feels Like, Looks Like, Smells Like, FYI. Rhode-inspired format. Scannable for researchers.</p>
+        <p class="arch-card__evidence">📊 19.2% are "Researchers" who read everything before buying</p>
+      </div>
+      <a href="pdp-variations.html#s11" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">12</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Shade Confidence Guarantee</p>
+        <p class="arch-card__desc">Full policy: free exchanges (any shade), free returns (30 days), free return shipping, expert shade help. ListenLabs: unclear returns kills confidence for 33%, return clarity builds it for 55%. Risk reduction justifies premium for 24%.</p>
+        <p class="arch-card__evidence">📊 55% trust builder · 33% confidence killer · 24% justify premium price (LL) · ICE 7.0</p>
+      </div>
+      <a href="pdp-variations.html#s12" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">13</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Clinical Results</p>
+        <p class="arch-card__desc">Aspirational section — JRB has zero efficacy claims currently. Shows what the format would look like if a consumer perception study were commissioned ($15-30K). ILIA and Bonjour both have these.</p>
+        <p class="arch-card__evidence">📊 Competitive gap — ILIA has "100% said moisture was boosted" · ICE 5.7</p>
+      </div>
+      <a href="pdp-variations.html#s13" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">14</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">"Products Used" on Model Photos</p>
+        <p class="arch-card__desc">Shoppable look: show exactly what shade/products the model is wearing. Cross-sell + shade confidence in one section.</p>
+        <p class="arch-card__evidence">📊 53.9% say this is MISSING (#2 PDP gap) · Advisory Board top request</p>
+      </div>
+      <a href="pdp-variations.html#s14" class="arch-card__link">4 variations →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">15</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Routine Builder</p>
+        <p class="arch-card__desc">"Where does Miracle Balm fit in your routine?" Step-by-step context with cross-sell to WTF, Best Pencil, Mascara.</p>
+        <p class="arch-card__evidence">📊 30.3% want "where this fits in a routine"</p>
+      </div>
+      <a href="pdp-variations.html#s15" class="arch-card__link">2 variations →</a>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-card__num">16</div>
+      <div class="arch-card__content">
+        <p class="arch-card__title">Undertone Guide</p>
+        <p class="arch-card__desc">Visual warm/cool/neutral comparison with shade recommendations per undertone. Korean beauty cited as gold standard. Wrist test for self-identification.</p>
+        <p class="arch-card__evidence">📊 64.1% want undertone guidance with visuals (#2 shade help request)</p>
+      </div>
+      <a href="pdp-variations.html#s16" class="arch-card__link">2 variations →</a>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 07: CONTENT REQUIREMENTS -->
+  <div class="section" id="requirements">
+    <p class="section-num">07</p>
+    <h2>Content Requirements</h2>
+
+    <h3>Photography Needed</h3>
+    <table>
+      <tr><th>Asset</th><th>For Section</th><th>Notes</th></tr>
+      <tr><td>Shade-on-skin photos (3+ skin tones per shade)</td><td>Shade Match, UGC Gallery</td><td>Highest priority — confirmed by all 5 sources</td></tr>
+      <tr><td>Before/after customer photos</td><td>UGC + B/A Gallery</td><td>Pull from Junip photo reviews</td></tr>
+      <tr><td>Bobbi BTS / formulating photos</td><td>Bobbi Credibility</td><td>NOT Bobbi wearing product — creating it</td></tr>
+      <tr><td>Age-diverse model photos (50+/60+)</td><td>All sections with model imagery</td><td>Claire's comment: 18 reactions (highest in Advisory Board)</td></tr>
+      <tr><td>"Products Used" tagged model photos</td><td>Products Used section</td><td>Full look breakdown per model</td></tr>
+    </table>
+
+    <h3>Video Needed</h3>
+    <table>
+      <tr><th>Asset</th><th>For Section</th><th>Notes</th></tr>
+      <tr><td>ONE Bobbi tutorial per product</td><td>Bobbi Credibility</td><td>Not a carousel — one focused video. User-initiated play</td></tr>
+      <tr><td>30-second application demo</td><td>How to Use (future)</td><td>Shows blush + bronzer + highlighter + tint uses</td></tr>
+    </table>
+
+    <h3>Policy Decision Needed</h3>
+    <div class="insight insight--blue">
+      <p class="insight__title">Shade Confidence Guarantee</p>
+      <p class="insight__body">MERIT has a 30-Day Shade Match Promise. We recommend an equivalent: "Not your shade? We'll help you find the right one — free exchanges, free returns, no questions asked." This requires a policy decision from CS/Ops team before the section can go live.</p>
+    </div>
+
+    <h3>Study to Commission</h3>
+    <div class="insight">
+      <p class="insight__title">Consumer Perception Study — $15-30K</p>
+      <p class="insight__body">ILIA shows "100% said moisture was boosted" on PDP. JRB has zero efficacy claims. A consumer perception study would provide credibility data for PDP, ads, and PR. Section 13 shows what the format would look like.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 08: SUCCESS METRICS -->
+  <div class="section" id="success">
+    <p class="section-num">08</p>
+    <h2>Success Metrics</h2>
+
+    <table>
+      <tr><th>Metric</th><th>Current</th><th>Target</th><th>How We'll Measure</th></tr>
+      <tr><td>Miracle Balm conversion rate</td><td>Baseline TBD</td><td>+15-25%</td><td>Intelligems A/B test</td></tr>
+      <tr><td>Shade confidence (survey)</td><td>3.58/5</td><td>4.2+/5</td><td>Post-purchase Typeform</td></tr>
+      <tr><td>Mini attach rate (new customers)</td><td>Baseline TBD</td><td>+20%</td><td>Shopify analytics</td></tr>
+      <tr><td>Cross-sell rate from PDP</td><td>Baseline TBD</td><td>+10%</td><td>"Products Used" section clicks</td></tr>
+      <tr><td>Time to ATC</td><td>Baseline TBD</td><td>-15%</td><td>ListenLabs follow-up study</td></tr>
+      <tr><td>"Wrong shade" return rate</td><td>Baseline TBD</td><td>-20%</td><td>CS ticket analysis</td></tr>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <div style="text-align:center;padding:40px 0;">
+    <p style="font-size:12px;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">View the designs</p>
+    <a href="pdp-variations.html" class="cta-link">Open PDP Section Variations →</a>
+  </div>
+
+</div>
+
+</body>
+</html>

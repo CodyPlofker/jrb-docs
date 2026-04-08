@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WTF Shade Confidence — V01: 3-Column Skin Tone Grid</title>
+  <style>
+    /* === FONTS (CDN) === */
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    /* === CUSTOM PROPERTIES === */
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    /* === RESET === */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* === BUTTON === */
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    /* === REDUCED MOTION === */
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    /* === VARIATION LABEL === */
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === SECTION === */
+    .shade-confidence { padding: 64px 20px; background: var(--color-warm-bg); }
+    .shade-confidence__inner { max-width: 1100px; margin: 0 auto; }
+    .shade-confidence__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .shade-confidence__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
+    .shade-confidence__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 600px; margin: 0 auto 40px; }
+
+    /* Shade Selector Row */
+    .shade-confidence__selector { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-block-end: 40px; }
+    .shade-confidence__dot { width: 32px; height: 32px; border-radius: 100%; border: 2px solid transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; background: transparent; appearance: none; -webkit-appearance: none; transition: border-color .4s var(--ease-primary); }
+    .shade-confidence__dot i { display: block; width: 26px; height: 26px; border-radius: 100%; }
+    .shade-confidence__dot.is-active { border-color: var(--color-black); }
+    .has-mouse .shade-confidence__dot:hover { border-color: var(--color-black); }
+    .shade-confidence__shade-name { font-family: var(--font-display); font-size: 15px; font-weight: 700; text-transform: uppercase; text-align: center; margin-block-end: 4px; }
+    .shade-confidence__shade-desc { font-family: var(--font-body); font-size: 14px; color: var(--color-black); text-align: center; margin-block-end: 32px; opacity: .7; }
+
+    /* 3-Column Grid */
+    .shade-confidence__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .shade-confidence__column-label { font-family: var(--font-display); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; text-align: center; margin-block-end: 16px; }
+    .shade-confidence__img-wrap { aspect-ratio: 3 / 4; overflow: hidden; border-radius: 3px; background: var(--color-warm-bg); margin-block-end: 12px; }
+    .shade-confidence__img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .shade-confidence__column-quote { font-family: var(--font-serif); font-size: 16px; font-weight: 300; font-style: italic; line-height: 1.5; color: var(--color-black); text-align: center; padding: 0 8px; }
+    .shade-confidence__column-attr { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .3px; color: var(--color-black); opacity: .5; text-align: center; margin-block-start: 8px; }
+
+    /* CTA */
+    .shade-confidence__cta { text-align: center; margin-block-start: 40px; }
+    .shade-confidence__cta-text { font-family: var(--font-body); font-size: 14px; color: var(--color-black); margin-block-end: 16px; line-height: 1.5; }
+
+    @media (max-width: 768px) {
+      .shade-confidence { padding: 48px 16px; }
+      .shade-confidence__heading { font-size: 26px; line-height: 1.3; }
+      .shade-confidence__grid { grid-template-columns: 1fr; gap: 32px; }
+      .shade-confidence__img-wrap { aspect-ratio: 1 / 1; }
+      .shade-confidence__dot { width: 28px; height: 28px; }
+      .shade-confidence__dot i { width: 22px; height: 22px; }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .shade-confidence__heading { font-size: 32px; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">What The Foundation &mdash; Shade Confidence &mdash; V01: 3-Column Skin Tone&nbsp;Grid</div>
+
+  <section class="shade-confidence">
+    <div class="shade-confidence__inner">
+      <p class="shade-confidence__eyebrow">Find Your Shade</p>
+      <h2 class="shade-confidence__heading">See it on skin like&nbsp;yours</h2>
+      <p class="shade-confidence__subhead">Every shade shown on three real skin tones. Because 76% of you told us swatches on real skin are the one thing missing from our&nbsp;pages.</p>
+
+      <div class="shade-confidence__selector">
+        <button class="shade-confidence__dot is-active" aria-label="Fair"><i style="background: #f0dcc4;"></i></button>
+        <button class="shade-confidence__dot" aria-label="Fair Light"><i style="background: #e8d2b3;"></i></button>
+        <button class="shade-confidence__dot" aria-label="Light"><i style="background: #dfc49e;"></i></button>
+        <button class="shade-confidence__dot" aria-label="Light Medium"><i style="background: #d4b68a;"></i></button>
+        <button class="shade-confidence__dot" aria-label="Medium"><i style="background: #c9a776;"></i></button>
+        <button class="shade-confidence__dot" aria-label="Medium Tan"><i style="background: #be9862;"></i></button>
+        <button class="shade-confidence__dot" aria-label="Tan"><i style="background: #b38a50;"></i></button>
+        <button class="shade-confidence__dot" aria-label="Medium Deep"><i style="background: #a07940;"></i></button>
+        <button class="shade-confidence__dot" aria-label="Deep"><i style="background: #8d6930;"></i></button>
+        <button class="shade-confidence__dot" aria-label="Rich"><i style="background: #7a5920;"></i></button>
+        <button class="shade-confidence__dot" aria-label="Deep Rich"><i style="background: #674910;"></i></button>
+        <button class="shade-confidence__dot" aria-label="Deepest"><i style="background: #543900;"></i></button>
+      </div>
+      <p class="shade-confidence__shade-name">Fair</p>
+      <p class="shade-confidence__shade-desc">Light with cool to neutral undertones</p>
+
+      <div class="shade-confidence__grid">
+        <div class="shade-confidence__column">
+          <p class="shade-confidence__column-label">Fair Skin</p>
+          <div class="shade-confidence__img-wrap">
+            <img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=600&h=800&fit=crop&auto=format" alt="What The Foundation on fair skin" loading="lazy">
+          </div>
+          <p class="shade-confidence__column-quote">"I've been through 4 foundations this year. This one finally&nbsp;matched."</p>
+          <p class="shade-confidence__column-attr">Rachel, 44 &mdash; Fair / Cool</p>
+        </div>
+        <div class="shade-confidence__column">
+          <p class="shade-confidence__column-label">Medium Skin</p>
+          <div class="shade-confidence__img-wrap">
+            <img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=600&h=800&fit=crop&auto=format" alt="What The Foundation on medium skin" loading="lazy">
+          </div>
+          <p class="shade-confidence__column-quote">"Feels like skincare, covers like foundation. My skin has never looked&nbsp;better."</p>
+          <p class="shade-confidence__column-attr">Maria, 51 &mdash; Medium / Warm</p>
+        </div>
+        <div class="shade-confidence__column">
+          <p class="shade-confidence__column-label">Deep Skin</p>
+          <div class="shade-confidence__img-wrap">
+            <img src="https://air-prod.imgix.net/476d8004-173d-4a6b-b040-8ee0f7a79da0.jpg?w=600&h=800&fit=crop&auto=format" alt="What The Foundation on deep skin" loading="lazy">
+          </div>
+          <p class="shade-confidence__column-quote">"The shade quiz got me 90% there. The SA on chat got me the&nbsp;rest."</p>
+          <p class="shade-confidence__column-attr">Nia, 38 &mdash; Deep / Neutral</p>
+        </div>
+      </div>
+
+      <div class="shade-confidence__cta">
+        <p class="shade-confidence__cta-text">Still not sure? Our shade specialists match you within&nbsp;24&nbsp;hours.</p>
+        <a href="#" class="button">Shop What The Foundation</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

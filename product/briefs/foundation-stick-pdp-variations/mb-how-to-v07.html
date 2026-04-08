@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Miracle Balm How To — V07: Split Image + Numbered List</title>
+  <style>
+    /* === FONTS (CDN) === */
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    /* === CUSTOM PROPERTIES === */
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    /* === RESET === */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* === BUTTON === */
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    /* === REDUCED MOTION === */
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    /* === VARIATION LABEL === */
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === HOW TO SECTION === */
+    .how-to { padding: 64px 20px; background: var(--color-warm-bg); }
+    .how-to__inner { max-width: 1100px; margin: 0 auto; }
+
+    /* Split layout */
+    .how-to__split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+
+    /* Image side */
+    .how-to__img-wrap { aspect-ratio: 1 / 1; overflow: hidden; border-radius: 3px; }
+    .how-to__img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Text side */
+    .how-to__text { padding: 16px 0; }
+    .how-to__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; }
+    .how-to__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); margin-block-end: 12px; }
+    .how-to__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); margin-block-end: 40px; }
+
+    /* Steps list */
+    .how-to__steps { display: flex; flex-direction: column; gap: 28px; }
+    .how-to__step { display: flex; gap: 16px; align-items: flex-start; }
+    .how-to__step-num { font-family: var(--font-serif); font-size: 32px; font-weight: 300; line-height: 1; color: var(--color-black); flex-shrink: 0; width: 32px; }
+    .how-to__step-content { flex: 1; padding-block-start: 4px; }
+    .how-to__step-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--color-black); margin-block-end: 6px; }
+    .how-to__step-desc { font-family: var(--font-body); font-size: 16px; line-height: 1.5; color: var(--color-black); }
+
+    /* CTA */
+    .how-to__cta { margin-block-start: 40px; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .how-to { padding: 48px 16px; }
+      .how-to__split { grid-template-columns: 1fr; gap: 32px; }
+      .how-to__heading { font-size: 26px; line-height: 1.3; }
+      .how-to__subhead { margin-block-end: 32px; }
+      .how-to__cta { text-align: center; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">Miracle Balm &mdash; How To &mdash; V07: Split Image + Numbered List</div>
+
+  <section class="how-to">
+    <div class="how-to__inner">
+      <div class="how-to__split">
+        <div class="how-to__img-wrap">
+          <img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=800&h=800&fit=crop&auto=format" alt="Applying Miracle Balm" loading="lazy">
+        </div>
+
+        <div class="how-to__text">
+          <p class="how-to__eyebrow">How To Apply</p>
+          <h2 class="how-to__heading">Four steps to your best&nbsp;skin</h2>
+          <p class="how-to__subhead">Miracle Balm is not a foundation. It is a skin-first tint that melts into your&nbsp;complexion.</p>
+
+          <div class="how-to__steps">
+            <div class="how-to__step">
+              <span class="how-to__step-num">1</span>
+              <div class="how-to__step-content">
+                <p class="how-to__step-title">Warm It Up</p>
+                <p class="how-to__step-desc">Scoop a small amount and rub between your fingertips for 5 seconds. This melts the balm so it blends&nbsp;seamlessly.</p>
+              </div>
+            </div>
+
+            <div class="how-to__step">
+              <span class="how-to__step-num">2</span>
+              <div class="how-to__step-content">
+                <p class="how-to__step-title">Press and Blend</p>
+                <p class="how-to__step-desc">Press onto cheeks, forehead, and chin. Use patting motions, never rub. Your body heat does the&nbsp;work.</p>
+              </div>
+            </div>
+
+            <div class="how-to__step">
+              <span class="how-to__step-num">3</span>
+              <div class="how-to__step-content">
+                <p class="how-to__step-title">Build Your Coverage</p>
+                <p class="how-to__step-desc">Start sheer and add more where you want it. One layer for a natural glow, two for soft&nbsp;color.</p>
+              </div>
+            </div>
+
+            <div class="how-to__step">
+              <span class="how-to__step-num">4</span>
+              <div class="how-to__step-content">
+                <p class="how-to__step-title">Multi-Use Magic</p>
+                <p class="how-to__step-desc">Use as blush on cheeks, highlighter on cheekbones, and tint on lips. One product, three&nbsp;looks.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="how-to__cta">
+            <a href="#" class="button">Shop Miracle Balm</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

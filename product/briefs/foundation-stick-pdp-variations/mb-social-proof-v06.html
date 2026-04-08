@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Miracle Balm Social Proof — V06: Stats Dashboard</title>
+  <style>
+    /* === FONTS (CDN) === */
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    /* === CUSTOM PROPERTIES === */
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    /* === RESET === */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* === BUTTON === */
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    /* === REDUCED MOTION === */
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    /* === VARIATION LABEL === */
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === STATS DASHBOARD === */
+    .stats-dashboard { padding: 64px 20px; background: var(--color-warm-bg); }
+    .stats-dashboard__inner { max-width: 1100px; margin: 0 auto; }
+    .stats-dashboard__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .stats-dashboard__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 48px; }
+
+    /* Stat Cards Grid */
+    .stat-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-block-end: 40px; }
+    .stat-card { background: var(--color-white); border-radius: 3px; box-shadow: 0 1px 2px rgba(16,24,40,.04); padding: 40px 24px; text-align: center; transition: box-shadow .4s var(--ease-primary); }
+    .has-mouse .stat-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+    .stat-card__number { font-family: var(--font-serif); font-size: 48px; font-weight: 300; line-height: 1; color: var(--color-black); margin-block-end: 12px; }
+    .stat-card__label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; color: var(--color-black); line-height: 1.4; }
+
+    /* CTA */
+    .stats-dashboard__cta { text-align: center; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .stats-dashboard { padding: 48px 16px; }
+      .stats-dashboard__heading { font-size: 26px; line-height: 1.3; }
+      .stat-cards { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .stat-card { padding: 28px 16px; }
+      .stat-card__number { font-size: 36px; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">Miracle Balm &mdash; Social Proof &mdash; V06: Stats&nbsp;Dashboard</div>
+
+  <section class="stats-dashboard">
+    <div class="stats-dashboard__inner">
+      <p class="stats-dashboard__eyebrow">By the Numbers</p>
+      <h2 class="stats-dashboard__heading">The numbers speak for&nbsp;themselves</h2>
+
+      <div class="stat-cards">
+        <div class="stat-card">
+          <p class="stat-card__number">76,688</p>
+          <p class="stat-card__label">Total Reviews</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-card__number">62%</p>
+          <p class="stat-card__label">Five-Star</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-card__number">80%</p>
+          <p class="stat-card__label">Recommend</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-card__number">273</p>
+          <p class="stat-card__label">&ldquo;Holy Grail&rdquo;</p>
+        </div>
+      </div>
+
+      <div class="stats-dashboard__cta">
+        <a href="#" class="button">Shop Miracle Balm</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

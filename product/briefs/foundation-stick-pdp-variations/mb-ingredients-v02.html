@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Miracle Balm Ingredients — V02: Ingredient Spotlight Cards</title>
+  <style>
+    /* === FONTS (CDN) === */
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    /* === CUSTOM PROPERTIES === */
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    /* === RESET === */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* === BUTTON === */
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    /* === REDUCED MOTION === */
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    /* === VARIATION LABEL === */
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === V02: INGREDIENT SPOTLIGHT CARDS === */
+    .ingredients { padding: 64px 20px; background: var(--color-white); }
+    .ingredients__inner { max-width: 1100px; margin: 0 auto; }
+    .ingredients__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .ingredients__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
+    .ingredients__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 560px; margin: 0 auto 48px; }
+
+    .ingredients__cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+    .ingredients__card { background: var(--color-warm-bg); padding: 32px 24px; text-align: center; border-radius: 3px; }
+    .ingredients__card-icon { width: 48px; height: 48px; margin: 0 auto 20px; border-radius: 100%; background: var(--color-black); display: flex; align-items: center; justify-content: center; }
+    .ingredients__card-icon svg { width: 24px; height: 24px; }
+    .ingredients__card-name { font-family: var(--font-display); font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; margin-block-end: 8px; }
+    .ingredients__card-benefit { font-family: var(--font-body); font-size: 14px; line-height: 1.5; color: var(--color-black); margin-block-end: 12px; }
+    .ingredients__card-source { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .3px; color: var(--color-black); opacity: .5; }
+
+    .ingredients__footer { text-align: center; margin-block-start: 48px; }
+    .ingredients__clean-badge { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: var(--color-black); margin-block-end: 20px; }
+    .ingredients__clean-badge span { display: inline-block; border: 1px solid var(--color-black); padding: 6px 16px; border-radius: 2px; }
+
+    @media (max-width: 768px) {
+      .ingredients { padding: 48px 16px; }
+      .ingredients__heading { font-size: 26px; line-height: 1.3; }
+      .ingredients__cards { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .ingredients__card { padding: 24px 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .ingredients__cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">Miracle Balm &mdash; Ingredient Transparency &mdash; V02: Ingredient Spotlight&nbsp;Cards</div>
+
+  <section class="ingredients">
+    <div class="ingredients__inner">
+      <p class="ingredients__eyebrow">What's Inside</p>
+      <h2 class="ingredients__heading">Four skincare ingredients in&nbsp;every&nbsp;swipe</h2>
+      <p class="ingredients__subhead">Miracle Balm is skincare and makeup in one. Every ingredient earns its place with a clear purpose for your&nbsp;skin.</p>
+
+      <div class="ingredients__cards">
+        <div class="ingredients__card">
+          <div class="ingredients__card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </div>
+          <p class="ingredients__card-name">Vitamin E</p>
+          <p class="ingredients__card-benefit">Antioxidant protection that shields skin from environmental&nbsp;stressors</p>
+          <p class="ingredients__card-source">Antioxidant</p>
+        </div>
+
+        <div class="ingredients__card">
+          <div class="ingredients__card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>
+          </div>
+          <p class="ingredients__card-name">Jojoba Oil</p>
+          <p class="ingredients__card-benefit">Mimics skin's natural oils for effortless absorption without&nbsp;residue</p>
+          <p class="ingredients__card-source">Plant-Derived</p>
+        </div>
+
+        <div class="ingredients__card">
+          <div class="ingredients__card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </div>
+          <p class="ingredients__card-name">Shea Butter</p>
+          <p class="ingredients__card-benefit">Deep moisture barrier that locks in hydration all&nbsp;day</p>
+          <p class="ingredients__card-source">West African Shea</p>
+        </div>
+
+        <div class="ingredients__card">
+          <div class="ingredients__card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <p class="ingredients__card-name">Beeswax</p>
+          <p class="ingredients__card-benefit">Locks in hydration with a natural, breathable&nbsp;seal</p>
+          <p class="ingredients__card-source">Natural Emollient</p>
+        </div>
+      </div>
+
+      <div class="ingredients__footer">
+        <p class="ingredients__clean-badge"><span>Clean at Sephora Certified</span></p>
+        <a href="#" class="button">Shop Miracle Balm</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

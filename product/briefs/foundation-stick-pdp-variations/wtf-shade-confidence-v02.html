@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WTF Shade Confidence — V02: Arm Swatch Carousel</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === SECTION === */
+    .swatch-carousel { padding: 64px 20px; background: var(--color-warm-bg); }
+    .swatch-carousel__inner { max-width: 1100px; margin: 0 auto; }
+    .swatch-carousel__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .swatch-carousel__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
+    .swatch-carousel__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 600px; margin: 0 auto 32px; }
+
+    /* Filter Pills */
+    .swatch-carousel__filters { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-block-end: 40px; }
+    .swatch-carousel__pill { font-family: var(--font-mono); font-size: 11px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; padding: 8px 20px; border: 1px solid var(--color-black); border-radius: 2px; background: transparent; color: var(--color-black); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .swatch-carousel__pill.is-active { background: var(--color-black); color: var(--color-white); }
+    .has-mouse .swatch-carousel__pill:hover { background: var(--color-black); color: var(--color-white); }
+
+    /* Carousel Track */
+    .swatch-carousel__track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-block-end: 16px; scrollbar-width: none; }
+    .swatch-carousel__track::-webkit-scrollbar { display: none; }
+
+    .swatch-carousel__card { flex: 0 0 280px; scroll-snap-align: start; }
+    .swatch-carousel__img-wrap { aspect-ratio: 4 / 5; overflow: hidden; border-radius: 3px; margin-block-end: 12px; background: var(--color-warm-bg); }
+    .swatch-carousel__img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .swatch-carousel__shade-tag { font-family: var(--font-display); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-block-end: 4px; }
+    .swatch-carousel__skin-tone { font-family: var(--font-body); font-size: 13px; color: var(--color-black); opacity: .7; }
+
+    /* Nav Arrows */
+    .swatch-carousel__nav { display: flex; justify-content: center; gap: 12px; margin-block-start: 24px; }
+    .swatch-carousel__arrow { width: 44px; height: 44px; border: 1px solid var(--color-black); border-radius: 2px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .4s var(--ease-primary); }
+    .has-mouse .swatch-carousel__arrow:hover { background: var(--color-black); }
+    .has-mouse .swatch-carousel__arrow:hover svg { stroke: var(--color-white); }
+    .swatch-carousel__arrow svg { width: 16px; height: 16px; stroke: var(--color-black); stroke-width: 2; fill: none; transition: stroke .4s var(--ease-primary); }
+
+    /* CTA */
+    .swatch-carousel__cta { text-align: center; margin-block-start: 40px; }
+
+    @media (max-width: 768px) {
+      .swatch-carousel { padding: 48px 16px; }
+      .swatch-carousel__heading { font-size: 26px; line-height: 1.3; }
+      .swatch-carousel__card { flex: 0 0 240px; }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .swatch-carousel__heading { font-size: 32px; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">What The Foundation &mdash; Shade Confidence &mdash; V02: Arm Swatch&nbsp;Carousel</div>
+
+  <section class="swatch-carousel">
+    <div class="swatch-carousel__inner">
+      <p class="swatch-carousel__eyebrow">Real Swatches, Real Skin</p>
+      <h2 class="swatch-carousel__heading">Swipe through every shade on&nbsp;skin</h2>
+      <p class="swatch-carousel__subhead">Filter by your skin tone, then swipe to compare. 76% of customers said seeing swatches on real skin was the one thing&nbsp;missing.</p>
+
+      <div class="swatch-carousel__filters">
+        <button class="swatch-carousel__pill is-active">All Shades</button>
+        <button class="swatch-carousel__pill">Fair</button>
+        <button class="swatch-carousel__pill">Light</button>
+        <button class="swatch-carousel__pill">Medium</button>
+        <button class="swatch-carousel__pill">Tan</button>
+        <button class="swatch-carousel__pill">Deep</button>
+      </div>
+
+      <div class="swatch-carousel__track">
+        <div class="swatch-carousel__card">
+          <div class="swatch-carousel__img-wrap">
+            <img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=560&h=700&fit=crop&auto=format" alt="Fair shade swatch on arm" loading="lazy">
+          </div>
+          <p class="swatch-carousel__shade-tag">Fair</p>
+          <p class="swatch-carousel__skin-tone">Light skin, cool undertone</p>
+        </div>
+        <div class="swatch-carousel__card">
+          <div class="swatch-carousel__img-wrap">
+            <img src="https://air-prod.imgix.net/c1323d9f-71be-4590-9bd7-be213be7032d.jpg?w=560&h=700&fit=crop&auto=format" alt="Fair Light shade swatch on arm" loading="lazy">
+          </div>
+          <p class="swatch-carousel__shade-tag">Fair Light</p>
+          <p class="swatch-carousel__skin-tone">Light skin, warm undertone</p>
+        </div>
+        <div class="swatch-carousel__card">
+          <div class="swatch-carousel__img-wrap">
+            <img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=560&h=700&fit=crop&auto=format" alt="Medium shade swatch on arm" loading="lazy">
+          </div>
+          <p class="swatch-carousel__shade-tag">Medium</p>
+          <p class="swatch-carousel__skin-tone">Medium skin, neutral undertone</p>
+        </div>
+        <div class="swatch-carousel__card">
+          <div class="swatch-carousel__img-wrap">
+            <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=560&h=700&fit=crop&auto=format" alt="Medium Tan shade swatch on arm" loading="lazy">
+          </div>
+          <p class="swatch-carousel__shade-tag">Medium Tan</p>
+          <p class="swatch-carousel__skin-tone">Medium skin, warm undertone</p>
+        </div>
+        <div class="swatch-carousel__card">
+          <div class="swatch-carousel__img-wrap">
+            <img src="https://air-prod.imgix.net/476d8004-173d-4a6b-b040-8ee0f7a79da0.jpg?w=560&h=700&fit=crop&auto=format" alt="Deep shade swatch on arm" loading="lazy">
+          </div>
+          <p class="swatch-carousel__shade-tag">Deep</p>
+          <p class="swatch-carousel__skin-tone">Deep skin, neutral undertone</p>
+        </div>
+        <div class="swatch-carousel__card">
+          <div class="swatch-carousel__img-wrap">
+            <img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=560&h=700&fit=crop&auto=format" alt="Rich shade swatch on arm" loading="lazy">
+          </div>
+          <p class="swatch-carousel__shade-tag">Rich</p>
+          <p class="swatch-carousel__skin-tone">Deep skin, warm undertone</p>
+        </div>
+      </div>
+
+      <div class="swatch-carousel__nav">
+        <button class="swatch-carousel__arrow" aria-label="Previous swatch">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="swatch-carousel__arrow" aria-label="Next swatch">
+          <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"></polyline></svg>
+        </button>
+      </div>
+
+      <div class="swatch-carousel__cta">
+        <a href="#" class="button">Shop What The Foundation</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

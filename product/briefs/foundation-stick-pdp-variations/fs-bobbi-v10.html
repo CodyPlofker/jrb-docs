@@ -35,25 +35,31 @@
 
     .bobbi-portraitleft { padding: 80px 40px; background: #f8f8f8; }
     .bobbi-portraitleft__inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.1fr; gap: 72px; align-items: center; }
-    .bobbi-portraitleft__img { aspect-ratio: 4 / 5; overflow: hidden; border-radius: 3px; }
-    .bobbi-portraitleft__img img { width: 100%; height: 100%; object-fit: cover; }
-    .bobbi-portraitleft__eyebrow { font-family: var(--font-display); font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--color-black); margin-block-end: 28px; }
-    .bobbi-portraitleft__quote { font-family: var(--font-serif); font-size: 44px; font-weight: 300; line-height: 1.2; color: var(--color-black); margin-block-end: 28px; text-wrap: balance; }
+    .bobbi-portraitleft__inner[data-layout="right"] { direction: rtl; }
+    .bobbi-portraitleft__inner[data-layout="right"] > * { direction: ltr; }
+    .bobbi-portraitleft__img { aspect-ratio: 1 / 1; overflow: hidden; border-radius: 3px; }
+    .bobbi-portraitleft__img img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .bobbi-portraitleft__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--color-black); margin-block-end: 28px; }
+    .bobbi-portraitleft__quote { font-family: var(--font-serif); font-size: 30px; font-weight: 300; line-height: 1.25; color: var(--color-black); margin-block-end: 28px; text-wrap: balance; }
     .bobbi-portraitleft__attr { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: var(--color-black); margin-block-end: 32px; }
     .bobbi-portraitleft__body { font-family: var(--font-body); font-size: 16px; line-height: 1.65; color: var(--color-black); max-width: 520px; margin-block-end: 36px; }
+    .bobbi-portraitleft__toggle { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 8px; cursor: pointer; border: 1px solid #d0d0d0; display: inline-block; margin: 0 auto 4px; }
 
     @media (max-width: 768px) {
       .bobbi-portraitleft { padding: 48px 20px; }
-      .bobbi-portraitleft__inner { grid-template-columns: 1fr; gap: 32px; }
-      .bobbi-portraitleft__quote { font-size: 28px; }
+      .bobbi-portraitleft__inner { grid-template-columns: 1fr; direction: ltr !important; gap: 32px; }
+      .bobbi-portraitleft__quote { font-size: 24px; }
       .bobbi-portraitleft__eyebrow { font-size: 16px; margin-block-end: 18px; }
     }
   </style>
 </head>
 <body class="has-mouse">
-  <div class="v-label">Foundation Stick &mdash; Bobbi Quote &mdash; V10: Portrait Left + Quote Right</div>
+  <div class="v-label" style="display:flex;align-items:center;justify-content:center;gap:12px;">
+    Foundation Stick &mdash; Bobbi Quote &mdash; V10: Portrait ±&nbsp;
+    <button class="bobbi-portraitleft__toggle" id="layoutToggle" onclick="var el=document.getElementById('bobbiInner');var cur=el.getAttribute('data-layout')||'left';el.setAttribute('data-layout',cur==='left'?'right':'left');this.textContent=cur==='left'?'Image: Right (click to flip)':'Image: Left (click to flip)';">Image: Left (click to flip)</button>
+  </div>
   <section class="bobbi-portraitleft">
-    <div class="bobbi-portraitleft__inner">
+    <div class="bobbi-portraitleft__inner" id="bobbiInner" data-layout="left">
       <div class="bobbi-portraitleft__img">
         <img src="https://air-prod.imgix.net/87f1416c-fef8-441a-b6eb-7733dd536b2f.jpg?w=800&h=1000&fit=crop&auto=format" alt="Bobbi Brown, founder of Jones Road Beauty" loading="lazy">
       </div>
@@ -62,7 +68,6 @@
         <p class="bobbi-portraitleft__quote">&ldquo;The goal was coverage that feels like nothing. You should look like you &mdash; just more even, more comfortable, more like your best&nbsp;skin.&rdquo;</p>
         <p class="bobbi-portraitleft__attr">Bobbi Brown &mdash; Founder, Jones Road Beauty</p>
         <p class="bobbi-portraitleft__body">Your features aren&rsquo;t hidden, just smoother, more confident, more you. That&rsquo;s why we made it in 30 true-to-you shades &mdash; our widest complexion range&nbsp;yet.</p>
-        <a href="#" class="button">Shop Foundation Stick</a>
       </div>
     </div>
   </section>

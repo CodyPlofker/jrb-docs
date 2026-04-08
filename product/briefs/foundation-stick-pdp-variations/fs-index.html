@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foundation Stick PDP — Variation Gallery</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, Helvetica, Arial, sans-serif; background: #0b0b0b; color: #fff; }
+    header { position: sticky; top: 0; z-index: 100; background: #000; border-bottom: 1px solid #222; }
+    .tabs-l1 { display: flex; gap: 4px; padding: 12px 20px 0; flex-wrap: wrap; }
+    .tabs-l1 button { font-family: inherit; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; padding: 10px 16px; background: transparent; color: #888; border: 0; border-bottom: 2px solid transparent; cursor: pointer; transition: all .15s; }
+    .tabs-l1 button:hover { color: #fff; }
+    .tabs-l1 button.active { color: #fff; border-bottom-color: #ff2e92; }
+    .tabs-l2 { display: flex; gap: 4px; padding: 10px 20px; flex-wrap: wrap; background: #0b0b0b; border-top: 1px solid #222; min-height: 48px; }
+    .tabs-l2 button { font-family: inherit; font-size: 10px; text-transform: uppercase; letter-spacing: .4px; padding: 6px 12px; background: transparent; color: #aaa; border: 1px solid #2a2a2a; border-radius: 2px; cursor: pointer; transition: all .15s; white-space: nowrap; }
+    .tabs-l2 button:hover { color: #fff; border-color: #555; }
+    .tabs-l2 button.active { background: #fff; color: #000; border-color: #fff; }
+    .frame-wrap { background: #fff; }
+    iframe { width: 100%; height: calc(100vh - 108px); border: 0; display: block; background: #fff; }
+    .meta { margin-left: auto; font-size: 10px; color: #666; padding: 12px 20px 0; text-transform: uppercase; letter-spacing: .4px; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="tabs-l1" id="tabs1"></nav>
+    <nav class="tabs-l2" id="tabs2"></nav>
+  </header>
+  <div class="frame-wrap">
+    <iframe id="frame" src=""></iframe>
+  </div>
+  <script>
+    const groups = [
+      { name: '1. Shade Confidence', variants: [
+        ['v02 — arm swatch carousel', 'fs-shade-confidence-v02.html'],
+      ]},
+      { name: '2. Before/After', variants: [
+        ['v11 — 3-across', 'fs-before-after-v11.html'],
+        ['v12 — 2-across', 'fs-before-after-v12.html'],
+      ]},
+      { name: '3. How To Apply', variants: [
+        ['v02 — 4-step progression', 'fs-how-to-v02.html'],
+        ['v03 — 3-step progression', 'fs-how-to-v03.html'],
+        ['v04 — img L + steps R', 'fs-how-to-v04.html'],
+        ['v06 — hero cards', 'fs-how-to-v06.html'],
+        ['v08', 'fs-how-to-v08.html'],
+        ['v10', 'fs-how-to-v10.html'],
+      ]},
+      { name: '4. Bobbi Quote', variants: [
+        ['v10 — portrait ± flip', 'fs-bobbi-v10.html'],
+      ]},
+      { name: '5. Ingredients', variants: [
+        ['v02 — hero img + list', 'fs-ingredients-v02.html'],
+        ['v03 — 4 photo cards', 'fs-ingredients-v03.html'],
+        ['v04 — pill rows', 'fs-ingredients-v04.html'],
+        ['v05 — in vs. out', 'fs-ingredients-v05.html'],
+      ]},
+      { name: '6. Survey Stats', variants: [
+        ['v07 — img + 3 stats', 'fs-social-proof-v07.html'],
+        ['v08 — 2x2 (4 stats)', 'fs-social-proof-v08.html'],
+        ['v09 — stats + quote', 'fs-social-proof-v09.html'],
+        ['v11 — stats + product', 'fs-social-proof-v11.html'],
+      ]},
+    ];
+
+    const tabs1 = document.getElementById('tabs1');
+    const tabs2 = document.getElementById('tabs2');
+    const frame = document.getElementById('frame');
+    let activeGroup = 0, activeVariant = 0;
+
+    function renderL1() {
+      tabs1.innerHTML = '';
+      groups.forEach((g, i) => {
+        const b = document.createElement('button');
+        b.textContent = g.name;
+        if (i === activeGroup) b.classList.add('active');
+        b.onclick = () => { activeGroup = i; activeVariant = 0; render(); };
+        tabs1.appendChild(b);
+      });
+    }
+    function renderL2() {
+      tabs2.innerHTML = '';
+      groups[activeGroup].variants.forEach(([label, file], i) => {
+        const b = document.createElement('button');
+        b.textContent = label;
+        if (i === activeVariant) b.classList.add('active');
+        b.onclick = () => { activeVariant = i; render(); };
+        tabs2.appendChild(b);
+      });
+    }
+    function render() {
+      renderL1();
+      renderL2();
+      frame.src = groups[activeGroup].variants[activeVariant][1];
+    }
+    render();
+  </script>
+</body>
+</html>

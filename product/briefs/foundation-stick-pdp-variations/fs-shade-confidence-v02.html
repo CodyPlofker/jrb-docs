@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JRB Foundation Stick Shade Confidence — V02: Arm Swatch Carousel</title>
+  <title>JRB Foundation Stick Shade Confidence — V02: The Shades</title>
   <style>
     @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
     @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
@@ -17,8 +17,6 @@
       --font-serif: Canela, serif;
       --color-black: #000;
       --color-white: #fff;
-      --color-warm-bg: #f6f2eb;
-      --color-accent: #ff2e92;
       --color-border: #d0d0d0;
       --ease-primary: cubic-bezier(.39, .575, .565, 1);
     }
@@ -26,174 +24,151 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
     img { display: block; max-width: 100%; }
-    a { text-decoration: none; color: inherit; }
 
-    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
-    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
-    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
-
-    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; }
 
     /* === SECTION === */
-    .swatch-carousel { padding: 64px 20px; background: #f8f8f8; }
-    .swatch-carousel__inner { max-width: 1100px; margin: 0 auto; }
-    .swatch-carousel__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
-    .swatch-carousel__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
-    .swatch-carousel__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 600px; margin: 0 auto 32px; }
+    .the-shades { padding: 64px 20px; background: var(--color-white); }
+    .the-shades__inner { max-width: 1400px; margin: 0 auto; }
 
-    /* Filter Tabs */
-    .swatch-carousel__filters { display: flex; justify-content: center; gap: 8px; margin-block-end: 32px; flex-wrap: wrap; }
-    .swatch-carousel__filter { font-family: var(--font-mono); font-size: 12px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; padding: 8px 20px; border: 1px solid var(--color-black); border-radius: 2px; background: transparent; color: var(--color-black); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
-    .swatch-carousel__filter.is-active { background: var(--color-black); color: var(--color-white); }
-    .has-mouse .swatch-carousel__filter:hover { background: var(--color-black); color: var(--color-white); }
+    .the-shades__header { margin-block-end: 32px; }
+    .the-shades__heading { font-family: var(--font-serif); font-size: 48px; font-weight: 300; line-height: 1; }
 
-    /* Carousel Track */
-    .swatch-carousel__track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-block-end: 16px; scrollbar-width: none; }
-    .swatch-carousel__track::-webkit-scrollbar { display: none; }
+    /* Filter tabs */
+    .the-shades__filters { display: flex; gap: 8px; margin-block-end: 28px; flex-wrap: wrap; }
+    .the-shades__filter { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; padding: 7px 18px; border: 1px solid var(--color-black); border-radius: 2px; background: transparent; color: var(--color-black); cursor: pointer; transition: background .25s, color .25s; }
+    .the-shades__filter.is-active { background: var(--color-black); color: var(--color-white); }
+    .has-mouse .the-shades__filter:hover { background: var(--color-black); color: var(--color-white); }
 
-    .swatch-carousel__card { flex: 0 0 280px; scroll-snap-align: start; background: var(--color-white); border-radius: 3px; overflow: hidden; }
-    .swatch-carousel__card-img { aspect-ratio: 4 / 3; overflow: hidden; }
-    .swatch-carousel__card-img img { width: 100%; height: 100%; object-fit: cover; }
-    .swatch-carousel__card-body { padding: 20px; }
-    .swatch-carousel__card-shade { display: flex; align-items: center; gap: 10px; margin-block-end: 8px; }
-    .swatch-carousel__card-dot { width: 20px; height: 20px; border-radius: 100%; flex-shrink: 0; }
-    .swatch-carousel__card-name { font-family: var(--font-display); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
-    .swatch-carousel__card-undertone { font-family: var(--font-body); font-size: 13px; color: var(--color-black); opacity: .7; }
-    .swatch-carousel__card-desc { font-family: var(--font-body); font-size: 14px; line-height: 1.5; color: var(--color-black); margin-block-start: 8px; }
+    /* Carousel wrapper */
+    .the-shades__carousel { position: relative; }
 
-    /* Nav Arrows */
-    .swatch-carousel__nav { display: flex; justify-content: center; gap: 12px; margin-block-start: 24px; }
-    .swatch-carousel__arrow { width: 44px; height: 44px; border: 1px solid var(--color-black); border-radius: 2px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .4s var(--ease-primary); }
-    .has-mouse .swatch-carousel__arrow:hover { background: var(--color-black); }
-    .has-mouse .swatch-carousel__arrow:hover svg { stroke: var(--color-white); }
-    .swatch-carousel__arrow svg { width: 20px; height: 20px; stroke: var(--color-black); fill: none; stroke-width: 2; }
+    /* Image row — arrows center on this */
+    .the-shades__images { position: relative; margin-block-end: 14px; }
+    .the-shades__arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 40px; height: 40px; border: 1px solid var(--color-black); background: var(--color-white); border-radius: 2px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+    .the-shades__arrow--prev { left: -20px; }
+    .the-shades__arrow--next { right: -20px; }
+    .has-mouse .the-shades__arrow:hover { background: var(--color-black); }
+    .has-mouse .the-shades__arrow:hover svg { stroke: var(--color-white); }
+    .the-shades__arrow svg { width: 16px; height: 16px; stroke: var(--color-black); fill: none; stroke-width: 1.5; }
 
-    .swatch-carousel__cta { text-align: center; margin-block-start: 32px; }
+    /* Track — images only */
+    .the-shades__track { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; overflow: hidden; }
+    .the-shades__card-img { aspect-ratio: 1 / 1; overflow: hidden; border-radius: 3px; }
+    .the-shades__card-img img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
 
-    @media (max-width: 768px) {
-      .swatch-carousel { padding: 48px 16px; }
-      .swatch-carousel__heading { font-size: 26px; line-height: 1.3; }
-      .swatch-carousel__card { flex: 0 0 260px; }
+    /* Labels row — separate grid below images */
+    .the-shades__labels { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; overflow: hidden; }
+    .the-shades__card-label { text-align: center; }
+    .the-shades__card-name { font-family: var(--font-display); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; margin-block-end: 4px; }
+    .the-shades__card-desc { font-family: var(--font-body); font-size: 13px; color: #666; }
+
+    @media (max-width: 900px) {
+      .the-shades__track { grid-template-columns: repeat(3, 1fr); }
+      .the-shades__arrow { display: none; }
+    }
+    @media (max-width: 600px) {
+      .the-shades { padding: 48px 16px; }
+      .the-shades__heading { font-size: 34px; }
+      .the-shades__track { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body class="has-mouse">
-  <div class="v-label">Foundation Stick &mdash; Shade Confidence &mdash; V02: Arm Swatch Carousel</div>
+  <div class="v-label">Foundation Stick &mdash; Shade Confidence &mdash; V02: The Shades</div>
 
-  <section class="swatch-carousel">
-    <div class="swatch-carousel__inner">
-      <p class="swatch-carousel__eyebrow">Real Swatches</p>
-      <h2 class="swatch-carousel__heading">Swatched on real skin, not&nbsp;a&nbsp;screen</h2>
-      <p class="swatch-carousel__subhead">Filter by your skin tone range to see Foundation Stick swatches on arms that actually look&nbsp;like&nbsp;yours.</p>
+  <section class="the-shades">
+    <div class="the-shades__inner">
 
-      <div class="swatch-carousel__filters">
-        <button class="swatch-carousel__filter is-active">All Shades</button>
-        <button class="swatch-carousel__filter">Fair</button>
-        <button class="swatch-carousel__filter">Medium</button>
-        <button class="swatch-carousel__filter">Deep</button>
+      <div class="the-shades__header">
+        <h2 class="the-shades__heading">The Shades</h2>
       </div>
 
-      <div class="swatch-carousel__track">
-        <div class="swatch-carousel__card">
-          <div class="swatch-carousel__card-img">
-            <img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=560&h=420&fit=crop&auto=format" alt="Porcelain swatch on fair arm" loading="lazy">
-          </div>
-          <div class="swatch-carousel__card-body">
-            <div class="swatch-carousel__card-shade">
-              <span class="swatch-carousel__card-dot" style="background:#f5e0cc;"></span>
-              <span class="swatch-carousel__card-name">Porcelain</span>
-            </div>
-            <p class="swatch-carousel__card-undertone">Cool-neutral undertone</p>
-            <p class="swatch-carousel__card-desc">Best for very fair skin with pink or neutral&nbsp;undertones.</p>
+      <div class="the-shades__filters">
+        <button class="the-shades__filter is-active" data-filter="all">All Shades</button>
+        <button class="the-shades__filter" data-filter="fair">Fair</button>
+        <button class="the-shades__filter" data-filter="light">Light</button>
+        <button class="the-shades__filter" data-filter="medium">Medium</button>
+        <button class="the-shades__filter" data-filter="deep">Deep</button>
+      </div>
+
+      <div class="the-shades__carousel">
+        <div class="the-shades__images">
+          <button class="the-shades__arrow the-shades__arrow--prev" id="prevBtn" aria-label="Previous">
+            <svg viewBox="0 0 16 16"><path d="M10 3L5 8l5 5"/></svg>
+          </button>
+          <button class="the-shades__arrow the-shades__arrow--next" id="nextBtn" aria-label="Next">
+            <svg viewBox="0 0 16 16"><path d="M6 3l5 5-5 5"/></svg>
+          </button>
+          <div class="the-shades__track" id="shadeTrack">
+            <div class="the-shades__card-img" data-shade="fair"><img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=500&h=500&fit=crop&crop=faces&auto=format" alt="Porcelain" loading="lazy"></div>
+            <div class="the-shades__card-img" data-shade="fair"><img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=500&h=500&fit=crop&crop=faces&auto=format&sat=-5" alt="Fair" loading="lazy"></div>
+            <div class="the-shades__card-img" data-shade="light"><img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=500&h=500&fit=crop&crop=faces&auto=format" alt="Light" loading="lazy"></div>
+            <div class="the-shades__card-img" data-shade="medium"><img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=500&h=500&fit=crop&crop=faces&auto=format&sat=5" alt="Medium" loading="lazy"></div>
+            <div class="the-shades__card-img" data-shade="medium"><img src="https://air-prod.imgix.net/476d8004-173d-4a6b-b040-8ee0f7a79da0.jpg?w=500&h=500&fit=crop&crop=faces&auto=format" alt="Medium Tan" loading="lazy"></div>
+            <div class="the-shades__card-img" data-shade="deep"><img src="https://air-prod.imgix.net/476d8004-173d-4a6b-b040-8ee0f7a79da0.jpg?w=500&h=500&fit=crop&crop=faces&auto=format&sat=10" alt="Deep" loading="lazy"></div>
+            <div class="the-shades__card-img" data-shade="deep"><img src="https://air-prod.imgix.net/476d8004-173d-4a6b-b040-8ee0f7a79da0.jpg?w=500&h=500&fit=crop&crop=faces&auto=format&sat=15" alt="Espresso" loading="lazy"></div>
           </div>
         </div>
 
-        <div class="swatch-carousel__card">
-          <div class="swatch-carousel__card-img">
-            <img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=560&h=420&fit=crop&auto=format" alt="Fair swatch on fair arm" loading="lazy">
-          </div>
-          <div class="swatch-carousel__card-body">
-            <div class="swatch-carousel__card-shade">
-              <span class="swatch-carousel__card-dot" style="background:#f0dcc4;"></span>
-              <span class="swatch-carousel__card-name">Fair</span>
-            </div>
-            <p class="swatch-carousel__card-undertone">Warm undertone</p>
-            <p class="swatch-carousel__card-desc">Best for fair skin with golden or peachy&nbsp;undertones.</p>
-          </div>
-        </div>
-
-        <div class="swatch-carousel__card">
-          <div class="swatch-carousel__card-img">
-            <img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=560&h=420&fit=crop&auto=format" alt="Medium swatch on medium arm" loading="lazy">
-          </div>
-          <div class="swatch-carousel__card-body">
-            <div class="swatch-carousel__card-shade">
-              <span class="swatch-carousel__card-dot" style="background:#d4b68a;"></span>
-              <span class="swatch-carousel__card-name">Medium</span>
-            </div>
-            <p class="swatch-carousel__card-undertone">Neutral undertone</p>
-            <p class="swatch-carousel__card-desc">Best for medium skin with balanced warm and cool&nbsp;undertones.</p>
-          </div>
-        </div>
-
-        <div class="swatch-carousel__card">
-          <div class="swatch-carousel__card-img">
-            <img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=560&h=420&fit=crop&auto=format" alt="Medium Tan swatch on medium arm" loading="lazy">
-          </div>
-          <div class="swatch-carousel__card-body">
-            <div class="swatch-carousel__card-shade">
-              <span class="swatch-carousel__card-dot" style="background:#c9a776;"></span>
-              <span class="swatch-carousel__card-name">Medium Tan</span>
-            </div>
-            <p class="swatch-carousel__card-undertone">Warm-golden undertone</p>
-            <p class="swatch-carousel__card-desc">Best for medium-tan skin with warm golden&nbsp;undertones.</p>
-          </div>
-        </div>
-
-        <div class="swatch-carousel__card">
-          <div class="swatch-carousel__card-img">
-            <img src="https://air-prod.imgix.net/476d8004-173d-4a6b-b040-8ee0f7a79da0.jpg?w=560&h=420&fit=crop&auto=format" alt="Deep swatch on deep arm" loading="lazy">
-          </div>
-          <div class="swatch-carousel__card-body">
-            <div class="swatch-carousel__card-shade">
-              <span class="swatch-carousel__card-dot" style="background:#8d6930;"></span>
-              <span class="swatch-carousel__card-name">Deep</span>
-            </div>
-            <p class="swatch-carousel__card-undertone">Warm undertone</p>
-            <p class="swatch-carousel__card-desc">Best for deep skin with rich warm&nbsp;undertones.</p>
-          </div>
-        </div>
-
-        <div class="swatch-carousel__card">
-          <div class="swatch-carousel__card-img">
-            <img src="https://air-prod.imgix.net/476d8004-173d-4a6b-b040-8ee0f7a79da0.jpg?w=560&h=420&fit=crop&auto=format" alt="Espresso swatch on deep arm" loading="lazy">
-          </div>
-          <div class="swatch-carousel__card-body">
-            <div class="swatch-carousel__card-shade">
-              <span class="swatch-carousel__card-dot" style="background:#543900;"></span>
-              <span class="swatch-carousel__card-name">Espresso</span>
-            </div>
-            <p class="swatch-carousel__card-undertone">Neutral-warm undertone</p>
-            <p class="swatch-carousel__card-desc">Best for the deepest skin tones with rich warm&nbsp;undertones.</p>
-          </div>
+        <div class="the-shades__labels" id="shadeLabels">
+          <div class="the-shades__card-label" data-shade="fair"><p class="the-shades__card-name">Porcelain</p><p class="the-shades__card-desc">Cool-neutral undertone</p></div>
+          <div class="the-shades__card-label" data-shade="fair"><p class="the-shades__card-name">Fair</p><p class="the-shades__card-desc">Warm undertone</p></div>
+          <div class="the-shades__card-label" data-shade="light"><p class="the-shades__card-name">Light</p><p class="the-shades__card-desc">Warm-neutral undertone</p></div>
+          <div class="the-shades__card-label" data-shade="medium"><p class="the-shades__card-name">Medium</p><p class="the-shades__card-desc">Neutral undertone</p></div>
+          <div class="the-shades__card-label" data-shade="medium"><p class="the-shades__card-name">Medium Tan</p><p class="the-shades__card-desc">Warm-golden undertone</p></div>
+          <div class="the-shades__card-label" data-shade="deep"><p class="the-shades__card-name">Deep</p><p class="the-shades__card-desc">Warm undertone</p></div>
+          <div class="the-shades__card-label" data-shade="deep"><p class="the-shades__card-name">Espresso</p><p class="the-shades__card-desc">Neutral-warm undertone</p></div>
         </div>
       </div>
 
-      <div class="swatch-carousel__nav">
-        <button class="swatch-carousel__arrow" aria-label="Previous">
-          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        </button>
-        <button class="swatch-carousel__arrow" aria-label="Next">
-          <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"></polyline></svg>
-        </button>
-      </div>
-
-      <div class="swatch-carousel__cta">
-        <a href="#" class="button">Shop Foundation Stick</a>
-      </div>
     </div>
   </section>
+
+  <script>
+    const filters = document.querySelectorAll('.the-shades__filter');
+    const imgCards = Array.from(document.querySelectorAll('.the-shades__card-img'));
+    const lblCards = Array.from(document.querySelectorAll('.the-shades__card-label'));
+    const VISIBLE = 5;
+    let offset = 0;
+    let activeFilter = 'all';
+
+    function filteredIndexes() {
+      return imgCards.reduce((acc, c, i) => {
+        if (activeFilter === 'all' || c.dataset.shade === activeFilter) acc.push(i);
+        return acc;
+      }, []);
+    }
+
+    function applyOffset() {
+      const fi = filteredIndexes();
+      offset = Math.max(0, Math.min(offset, fi.length - VISIBLE));
+      const inView = new Set(fi.slice(offset, offset + VISIBLE));
+      imgCards.forEach((card, i) => {
+        const show = inView.has(i);
+        card.style.display = show ? '' : 'none';
+        lblCards[i].style.display = show ? '' : 'none';
+      });
+      document.getElementById('prevBtn').style.opacity = offset <= 0 ? '0.3' : '1';
+      document.getElementById('nextBtn').style.opacity = offset >= fi.length - VISIBLE ? '0.3' : '1';
+    }
+
+    filters.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filters.forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        activeFilter = btn.dataset.filter;
+        offset = 0;
+        applyOffset();
+      });
+    });
+
+    document.getElementById('prevBtn').addEventListener('click', () => { offset = Math.max(0, offset - 1); applyOffset(); });
+    document.getElementById('nextBtn').addEventListener('click', () => { offset = Math.min(filteredIndexes().length - VISIBLE, offset + 1); applyOffset(); });
+
+    applyOffset();
+  </script>
 </body>
 </html>

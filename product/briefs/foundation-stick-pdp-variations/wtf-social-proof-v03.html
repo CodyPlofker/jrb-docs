@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WTF Social Proof — V03: Before/After Review Cards</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === SECTION === */
+    .ba-reviews { padding: 64px 20px; background: var(--color-warm-bg); }
+    .ba-reviews__inner { max-width: 1100px; margin: 0 auto; }
+    .ba-reviews__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .ba-reviews__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
+    .ba-reviews__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 600px; margin: 0 auto 48px; }
+
+    /* Cards */
+    .ba-reviews__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .ba-reviews__card { background: var(--color-white); border-radius: 3px; overflow: hidden; }
+
+    /* Before/After Photo */
+    .ba-reviews__photos { display: grid; grid-template-columns: 1fr 1fr; }
+    .ba-reviews__photo { aspect-ratio: 1 / 1; overflow: hidden; position: relative; }
+    .ba-reviews__photo img { width: 100%; height: 100%; object-fit: cover; }
+    .ba-reviews__photo-label { position: absolute; bottom: 8px; left: 8px; font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: .4px; background: var(--color-white); color: var(--color-black); padding: 4px 8px; border-radius: 2px; }
+
+    /* Review Content */
+    .ba-reviews__card-body { padding: 20px; }
+    .ba-reviews__stars { font-size: 13px; letter-spacing: 2px; color: var(--color-black); margin-block-end: 12px; }
+    .ba-reviews__card-text { font-family: var(--font-body); font-size: 14px; line-height: 1.6; color: var(--color-black); margin-block-end: 16px; }
+    .ba-reviews__card-footer { display: flex; align-items: center; justify-content: space-between; }
+    .ba-reviews__card-author { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .3px; color: var(--color-black); }
+    .ba-reviews__card-shade { display: flex; align-items: center; gap: 6px; }
+    .ba-reviews__card-shade-dot { width: 12px; height: 12px; border-radius: 100%; }
+    .ba-reviews__card-shade-name { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .3px; color: var(--color-black); opacity: .7; }
+
+    .ba-reviews__cta { text-align: center; margin-block-start: 40px; }
+
+    @media (max-width: 768px) {
+      .ba-reviews { padding: 48px 16px; }
+      .ba-reviews__heading { font-size: 26px; line-height: 1.3; }
+      .ba-reviews__grid { grid-template-columns: 1fr; gap: 16px; }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .ba-reviews__heading { font-size: 32px; }
+      .ba-reviews__grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">What The Foundation &mdash; Social Proof &mdash; V03: Before/After Review&nbsp;Cards</div>
+
+  <section class="ba-reviews">
+    <div class="ba-reviews__inner">
+      <p class="ba-reviews__eyebrow">Real Results</p>
+      <h2 class="ba-reviews__heading">Before and after, in their own&nbsp;words</h2>
+      <p class="ba-reviews__subhead">Customer photos paired with their reviews. No filters, no retouching, just What The Foundation doing its&nbsp;job.</p>
+
+      <div class="ba-reviews__grid">
+        <div class="ba-reviews__card">
+          <div class="ba-reviews__photos">
+            <div class="ba-reviews__photo">
+              <img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=400&h=400&fit=crop&auto=format" alt="Before applying WTF" loading="lazy">
+              <span class="ba-reviews__photo-label">Before</span>
+            </div>
+            <div class="ba-reviews__photo">
+              <img src="https://air-prod.imgix.net/c1323d9f-71be-4590-9bd7-be213be7032d.jpg?w=400&h=400&fit=crop&auto=format" alt="After applying WTF" loading="lazy">
+              <span class="ba-reviews__photo-label">After</span>
+            </div>
+          </div>
+          <div class="ba-reviews__card-body">
+            <p class="ba-reviews__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
+            <p class="ba-reviews__card-text">I've been through 4 foundations this year. This one finally matched. My skin looks like my skin, just evened out and&nbsp;glowing.</p>
+            <div class="ba-reviews__card-footer">
+              <span class="ba-reviews__card-author">Rachel, 44</span>
+              <div class="ba-reviews__card-shade">
+                <span class="ba-reviews__card-shade-dot" style="background: #f0dcc4;"></span>
+                <span class="ba-reviews__card-shade-name">Fair</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ba-reviews__card">
+          <div class="ba-reviews__photos">
+            <div class="ba-reviews__photo">
+              <img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=400&h=400&fit=crop&auto=format" alt="Before applying WTF" loading="lazy">
+              <span class="ba-reviews__photo-label">Before</span>
+            </div>
+            <div class="ba-reviews__photo">
+              <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=400&h=400&fit=crop&auto=format" alt="After applying WTF" loading="lazy">
+              <span class="ba-reviews__photo-label">After</span>
+            </div>
+          </div>
+          <div class="ba-reviews__card-body">
+            <p class="ba-reviews__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
+            <p class="ba-reviews__card-text">Feels like skincare, covers like foundation. Stickiness fades after 2 minutes &mdash; give it time to set. After that, it's&nbsp;perfection.</p>
+            <div class="ba-reviews__card-footer">
+              <span class="ba-reviews__card-author">Maria, 51</span>
+              <div class="ba-reviews__card-shade">
+                <span class="ba-reviews__card-shade-dot" style="background: #c9a776;"></span>
+                <span class="ba-reviews__card-shade-name">Medium</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ba-reviews__card">
+          <div class="ba-reviews__photos">
+            <div class="ba-reviews__photo">
+              <img src="https://air-prod.imgix.net/476d8004-173d-4a6b-b040-8ee0f7a79da0.jpg?w=400&h=400&fit=crop&auto=format" alt="Before applying WTF" loading="lazy">
+              <span class="ba-reviews__photo-label">Before</span>
+            </div>
+            <div class="ba-reviews__photo">
+              <img src="https://air-prod.imgix.net/476d8004-173d-4a6b-b040-8ee0f7a79da0.jpg?w=400&h=400&fit=crop&auto=format&sat=-10&con=10" alt="After applying WTF" loading="lazy">
+              <span class="ba-reviews__photo-label">After</span>
+            </div>
+          </div>
+          <div class="ba-reviews__card-body">
+            <p class="ba-reviews__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
+            <p class="ba-reviews__card-text">The shade quiz got me 90% there. The SA on chat got me the rest. I've never been more confident in a foundation&nbsp;purchase.</p>
+            <div class="ba-reviews__card-footer">
+              <span class="ba-reviews__card-author">Nia, 38</span>
+              <div class="ba-reviews__card-shade">
+                <span class="ba-reviews__card-shade-dot" style="background: #8d6930;"></span>
+                <span class="ba-reviews__card-shade-name">Deep</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ba-reviews__cta">
+        <a href="#" class="button">Shop What The Foundation</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

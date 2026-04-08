@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Blushing Stick Shade Confidence — V02: Arm Swatch Carousel</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === SECTION === */
+    .arm-swatch { padding: 64px 20px; background: var(--color-warm-bg); }
+    .arm-swatch__inner { max-width: 1100px; margin: 0 auto; }
+    .arm-swatch__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .arm-swatch__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
+    .arm-swatch__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 600px; margin: 0 auto 32px; }
+
+    /* Filter tabs */
+    .arm-swatch__filters { display: flex; justify-content: center; gap: 8px; margin-block-end: 32px; flex-wrap: wrap; }
+    .arm-swatch__filter { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .4px; padding: 8px 20px; border: 1px solid var(--color-black); border-radius: 2px; background: transparent; color: var(--color-black); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .arm-swatch__filter.is-active { background: var(--color-black); color: var(--color-white); }
+    .has-mouse .arm-swatch__filter:hover { background: var(--color-black); color: var(--color-white); }
+
+    /* Carousel track */
+    .arm-swatch__track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-block-end: 16px; scrollbar-width: none; }
+    .arm-swatch__track::-webkit-scrollbar { display: none; }
+    .arm-swatch__card { flex: 0 0 280px; scroll-snap-align: start; }
+    .arm-swatch__card-img { aspect-ratio: 3 / 4; overflow: hidden; border-radius: 3px; margin-block-end: 12px; }
+    .arm-swatch__card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .arm-swatch__card-shade { font-family: var(--font-display); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-block-end: 4px; display: flex; align-items: center; gap: 8px; }
+    .arm-swatch__card-dot { width: 14px; height: 14px; border-radius: 100%; display: inline-block; flex-shrink: 0; }
+    .arm-swatch__card-tone { font-family: var(--font-body); font-size: 13px; color: var(--color-black); opacity: .7; }
+
+    /* CTA */
+    .arm-swatch__cta { text-align: center; margin-block-start: 40px; }
+
+    @media (max-width: 768px) {
+      .arm-swatch { padding: 48px 16px; }
+      .arm-swatch__heading { font-size: 26px; line-height: 1.3; }
+      .arm-swatch__card { flex: 0 0 240px; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">Blushing Stick &mdash; Shade Confidence &mdash; V02: Arm Swatch&nbsp;Carousel</div>
+
+  <section class="arm-swatch">
+    <div class="arm-swatch__inner">
+      <p class="arm-swatch__eyebrow">Real Swatches</p>
+      <h2 class="arm-swatch__heading">Swatched on real skin, not&nbsp;paper</h2>
+      <p class="arm-swatch__subhead">Filter by your skin tone to see exactly how each Blushing Stick shade looks. Sheer, buildable, and impossible to&nbsp;overdo.</p>
+
+      <div class="arm-swatch__filters">
+        <button class="arm-swatch__filter is-active">All Tones</button>
+        <button class="arm-swatch__filter">Fair</button>
+        <button class="arm-swatch__filter">Medium</button>
+        <button class="arm-swatch__filter">Deep</button>
+      </div>
+
+      <div class="arm-swatch__track">
+        <div class="arm-swatch__card">
+          <div class="arm-swatch__card-img"><img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=600&h=800&fit=crop&auto=format" alt="Rosy on fair skin" loading="lazy"></div>
+          <p class="arm-swatch__card-shade"><span class="arm-swatch__card-dot" style="background:#d4917e;"></span> Rosy</p>
+          <p class="arm-swatch__card-tone">Fair / Cool Undertone</p>
+        </div>
+        <div class="arm-swatch__card">
+          <div class="arm-swatch__card-img"><img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=600&h=800&fit=crop&auto=format" alt="Berry on medium skin" loading="lazy"></div>
+          <p class="arm-swatch__card-shade"><span class="arm-swatch__card-dot" style="background:#b56b6b;"></span> Berry</p>
+          <p class="arm-swatch__card-tone">Medium / Warm Undertone</p>
+        </div>
+        <div class="arm-swatch__card">
+          <div class="arm-swatch__card-img"><img src="https://air-prod.imgix.net/476d8004-173d-4a6b-b040-8ee0f7a79da0.jpg?w=600&h=800&fit=crop&auto=format" alt="Peach on deep skin" loading="lazy"></div>
+          <p class="arm-swatch__card-shade"><span class="arm-swatch__card-dot" style="background:#e8c9a0;"></span> Peach</p>
+          <p class="arm-swatch__card-tone">Deep / Neutral Undertone</p>
+        </div>
+        <div class="arm-swatch__card">
+          <div class="arm-swatch__card-img"><img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=600&h=800&fit=crop&auto=format" alt="Coral on fair skin" loading="lazy"></div>
+          <p class="arm-swatch__card-shade"><span class="arm-swatch__card-dot" style="background:#c9847a;"></span> Coral</p>
+          <p class="arm-swatch__card-tone">Fair / Warm Undertone</p>
+        </div>
+        <div class="arm-swatch__card">
+          <div class="arm-swatch__card-img"><img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=600&h=800&fit=crop&auto=format" alt="Mauve on medium skin" loading="lazy"></div>
+          <p class="arm-swatch__card-shade"><span class="arm-swatch__card-dot" style="background:#c49564;"></span> Mauve</p>
+          <p class="arm-swatch__card-tone">Medium / Neutral Undertone</p>
+        </div>
+        <div class="arm-swatch__card">
+          <div class="arm-swatch__card-img"><img src="https://air-prod.imgix.net/476d8004-173d-4a6b-b040-8ee0f7a79da0.jpg?w=600&h=800&fit=crop&auto=format" alt="Nude on deep skin" loading="lazy"></div>
+          <p class="arm-swatch__card-shade"><span class="arm-swatch__card-dot" style="background:#dbb8a0;"></span> Nude</p>
+          <p class="arm-swatch__card-tone">Deep / Warm Undertone</p>
+        </div>
+      </div>
+
+      <div class="arm-swatch__cta">
+        <a href="#" class="button">Shop Blushing Stick</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

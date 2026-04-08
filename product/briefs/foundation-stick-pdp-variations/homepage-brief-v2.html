@@ -1,0 +1,2740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Homepage Redesign v3 — Research, Strategy & Test Plan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, sans-serif; color: #1a1a1a; background: #fafaf8; line-height: 1.6; }
+
+    /* ===== COVER ===== */
+    .cover {
+      background: #0a0a0a;
+      color: #fff;
+      padding: 80px 40px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255,255,255,.03) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .cover__inner { max-width: 1000px; margin: 0 auto; position: relative; z-index: 1; }
+    .cover__tag {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,.4);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .cover__tag::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: rgba(255,255,255,.3);
+    }
+    .cover__title {
+      font-family: 'Playfair Display', serif;
+      font-size: 56px;
+      font-weight: 400;
+      line-height: 1.08;
+      margin-bottom: 20px;
+      max-width: 700px;
+      letter-spacing: -0.5px;
+    }
+    .cover__subtitle {
+      font-size: 17px;
+      font-weight: 300;
+      color: rgba(255,255,255,.55);
+      margin-bottom: 40px;
+      max-width: 600px;
+      line-height: 1.65;
+    }
+    .cover__meta {
+      display: flex;
+      gap: 32px;
+      font-size: 11px;
+      color: rgba(255,255,255,.35);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    @media (max-width: 768px) {
+      .cover { padding: 48px 24px 40px; }
+      .cover__title { font-size: 36px; }
+      .cover__subtitle { font-size: 15px; }
+      .cover__meta { flex-wrap: wrap; gap: 16px; }
+    }
+
+    /* ===== STICKY TAB NAV ===== */
+    .tab-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #0a0a0a;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      display: flex;
+      justify-content: center;
+      gap: 0;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,.4);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 16px 32px;
+      cursor: pointer;
+      transition: all .25s;
+      border-bottom: 2px solid transparent;
+      position: relative;
+    }
+    .tab-btn:hover { color: rgba(255,255,255,.7); }
+    .tab-btn.active {
+      color: #fff;
+      border-bottom-color: #fff;
+    }
+    .tab-btn .tab-num {
+      font-size: 10px;
+      color: rgba(255,255,255,.2);
+      margin-right: 6px;
+    }
+    .tab-btn.active .tab-num { color: rgba(255,255,255,.5); }
+    @media (max-width: 768px) {
+      .tab-btn { padding: 14px 16px; font-size: 11px; letter-spacing: 1px; }
+    }
+
+    /* ===== TAB PANELS ===== */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ===== CONTENT CONTAINER ===== */
+    .content { max-width: 920px; margin: 0 auto; padding: 0 32px 80px; }
+    @media (max-width: 768px) { .content { padding: 0 20px 60px; } }
+
+    /* ===== IN-TAB TOC ===== */
+    .toc {
+      background: #fff;
+      border: 1px solid #e8e8e5;
+      border-radius: 8px;
+      padding: 28px 32px;
+      margin: 40px 0;
+    }
+    .toc__title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #999;
+      margin-bottom: 16px;
+    }
+    .toc__list { list-style: none; }
+    .toc__item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #f5f5f3;
+    }
+    .toc__item:last-child { border-bottom: none; }
+    .toc__item a {
+      font-size: 14px;
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color .15s;
+    }
+    .toc__item a:hover { color: #000; }
+    .toc__item span {
+      font-size: 11px;
+      color: #ccc;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ===== SECTION HEADINGS ===== */
+    .section { margin-bottom: 64px; }
+    .section-num {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #aaa;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 34px;
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: -0.3px;
+    }
+    h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      margin-top: 36px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #1a1a1a;
+    }
+    h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 12px;
+      margin-top: 28px;
+    }
+    p { margin-bottom: 16px; font-size: 15px; color: #444; line-height: 1.7; }
+    .lead { font-size: 17px; color: #333; line-height: 1.7; max-width: 680px; }
+
+    .divider { border: none; border-top: 1px solid #eee; margin: 56px 0; }
+    .divider--dark { border-top-color: #ddd; }
+
+    /* ===== STATS ROW ===== */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 28px 0; }
+    .stats--3 { grid-template-columns: repeat(3, 1fr); }
+    .stats--5 { grid-template-columns: repeat(5, 1fr); }
+    .stat {
+      background: #fff;
+      border: 1px solid #e8e8e5;
+      border-radius: 8px;
+      padding: 22px 16px;
+      text-align: center;
+      transition: transform .15s;
+    }
+    .stat:hover { transform: translateY(-2px); }
+    .stat__number {
+      font-family: 'Playfair Display', serif;
+      font-size: 34px;
+      font-weight: 600;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: #0a0a0a;
+    }
+    .stat__label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #999;
+      line-height: 1.35;
+    }
+    .stat--dark {
+      background: #0a0a0a;
+      border-color: #0a0a0a;
+    }
+    .stat--dark .stat__number { color: #fff; }
+    .stat--dark .stat__label { color: rgba(255,255,255,.45); }
+    .stat--accent { border-color: #c0392b; }
+    .stat--accent .stat__number { color: #c0392b; }
+    .stat--green { border-color: #27ae60; }
+    .stat--green .stat__number { color: #27ae60; }
+    @media (max-width: 768px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stats--5 { grid-template-columns: 1fr 1fr; }
+      .stat__number { font-size: 28px; }
+    }
+
+    /* ===== BAR CHARTS ===== */
+    .bar-chart { margin: 24px 0; }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 200px 1fr 52px;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .bar-label { font-size: 13px; color: #444; text-align: right; line-height: 1.3; }
+    .bar-track {
+      height: 26px;
+      background: #f0efed;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width .6s cubic-bezier(.25,.8,.25,1);
+      background: #1a1a1a;
+    }
+    .bar-fill--red { background: #c0392b; }
+    .bar-fill--green { background: #27ae60; }
+    .bar-fill--blue { background: #2980b9; }
+    .bar-fill--orange { background: #e67e22; }
+    .bar-fill--gold { background: #d4a017; }
+    .bar-fill--hot { background: #e74c3c; }
+    .bar-fill--warm { background: #f39c12; }
+    .bar-fill--cool { background: #3498db; }
+    .bar-fill--dead { background: #95a5a6; }
+    .bar-value { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+    @media (max-width: 768px) {
+      .bar-row { grid-template-columns: 140px 1fr 44px; }
+      .bar-label { font-size: 12px; }
+    }
+
+    /* ===== TABLES ===== */
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+    th {
+      text-align: left;
+      padding: 12px 14px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: #999;
+      border-bottom: 2px solid #1a1a1a;
+    }
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #f0efed;
+      color: #444;
+      line-height: 1.5;
+    }
+    tr:last-child td { border-bottom: none; }
+    td strong { color: #1a1a1a; }
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    .table-wrap table { min-width: 600px; }
+
+    /* ===== HEAT BADGES ===== */
+    .heat { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 12px; }
+    .heat-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .heat-dot--hot { background: #e74c3c; }
+    .heat-dot--moderate { background: #f1c40f; }
+    .heat-dot--cold { background: #3498db; }
+    .heat-dot--dead { background: #2c3e50; }
+    .heat--hot { color: #c0392b; }
+    .heat--moderate { color: #d4a017; }
+    .heat--cold { color: #2471a3; }
+    .heat--dead { color: #555; }
+
+    /* ===== INSIGHT CALLOUTS ===== */
+    .insight {
+      background: #fff;
+      border-left: 3px solid #1a1a1a;
+      padding: 22px 24px;
+      margin: 24px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .insight__title { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #1a1a1a; text-transform: uppercase; letter-spacing: .3px; }
+    .insight__body { font-size: 14px; color: #555; margin-bottom: 0; line-height: 1.65; }
+    .insight--red { border-color: #c0392b; }
+    .insight--green { border-color: #27ae60; }
+    .insight--blue { border-color: #2980b9; }
+    .insight--orange { border-color: #e67e22; }
+
+    /* ===== QUOTE BLOCKS ===== */
+    .quote {
+      border-left: 3px solid #ddd;
+      padding: 18px 24px;
+      margin: 20px 0;
+      font-style: italic;
+      color: #555;
+      font-size: 14px;
+      line-height: 1.7;
+      background: rgba(255,255,255,.5);
+      border-radius: 0 6px 6px 0;
+    }
+    .quote__source {
+      font-style: normal;
+      font-size: 11px;
+      color: #aaa;
+      margin-top: 10px;
+      display: block;
+      font-weight: 500;
+    }
+
+    /* ===== CALLOUT BOX ===== */
+    .callout {
+      background: #0a0a0a;
+      color: #fff;
+      border-radius: 10px;
+      padding: 36px;
+      margin: 36px 0;
+    }
+    .callout h3 { color: #fff; margin-top: 0; }
+    .callout h4 { color: #fff; margin-top: 0; }
+    .callout p { color: rgba(255,255,255,.6); }
+    .callout strong { color: #fff; }
+    .callout ul { margin: 12px 0 12px 20px; }
+    .callout li { color: rgba(255,255,255,.6); font-size: 14px; margin-bottom: 6px; line-height: 1.6; }
+    .callout li strong { color: #fff; }
+
+    /* ===== SOURCE BADGES ===== */
+    .sources { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 8px; }
+    .source-badge {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: #f0efed;
+      color: #888;
+    }
+    .source-badge--typeform { background: #e3eef7; color: #2471a3; }
+    .source-badge--listenlabs { background: #fbeee3; color: #c0392b; }
+    .source-badge--advisory { background: #e8e3f7; color: #6c3483; }
+    .source-badge--competitive { background: #e3f7e8; color: #1e8449; }
+    .source-badge--heatmap { background: #fde3e3; color: #c0392b; }
+    .source-badge--intelligems { background: #e3f0e3; color: #1a7a3a; }
+    .source-badge--all { background: #1a1a1a; color: #fff; }
+    .source-badge--new {
+      background: #c0392b;
+      color: #fff;
+      animation: pulse 2s ease-in-out 3;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .7; }
+    }
+
+    /* ===== TENSION CARDS ===== */
+    .tension {
+      background: #fff;
+      border: 1px solid #e8e8e5;
+      border-radius: 10px;
+      padding: 28px;
+      margin: 20px 0;
+      position: relative;
+    }
+    .tension__num {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: #f0efed;
+      line-height: 1;
+    }
+    .tension__title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #1a1a1a;
+      padding-right: 60px;
+    }
+    .tension__body {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 12px;
+      line-height: 1.65;
+    }
+    .tension__resolution {
+      font-size: 13px;
+      background: #f8f7f5;
+      padding: 14px 18px;
+      border-radius: 6px;
+      color: #333;
+      line-height: 1.6;
+    }
+    .tension__resolution strong { color: #1a1a1a; }
+
+    /* ===== KEEP/REPLACE/REDESIGN CARDS ===== */
+    .krd-card {
+      background: #fff;
+      border: 1px solid #e8e8e5;
+      border-radius: 10px;
+      padding: 24px;
+      margin: 14px 0;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+    .krd-card__action {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 6px 14px;
+      border-radius: 4px;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+    .krd-card__action--keep { background: #e8f5e9; color: #2e7d32; }
+    .krd-card__action--replace { background: #fbe9e7; color: #c62828; }
+    .krd-card__action--redesign { background: #fff3e0; color: #e65100; }
+    .krd-card__action--add { background: #e3eef7; color: #1565c0; }
+    .krd-card__title { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
+    .krd-card__body { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 8px; }
+    .krd-card__evidence { font-size: 12px; color: #999; line-height: 1.5; }
+    .krd-card__evidence strong { color: #666; }
+
+    /* ===== ARCHITECTURE CARDS ===== */
+    .arch-card {
+      background: #fff;
+      border: 1px solid #e8e8e5;
+      border-radius: 10px;
+      padding: 28px;
+      margin: 16px 0;
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      gap: 20px;
+      align-items: start;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .arch-card:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,.04); }
+    .arch-card__num {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: #ddd;
+      text-align: center;
+      padding-top: 2px;
+    }
+    .arch-card__title { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #1a1a1a; }
+    .arch-card__desc { font-size: 13px; color: #666; margin-bottom: 8px; line-height: 1.6; }
+    .arch-card__evidence { font-size: 11px; color: #aaa; line-height: 1.5; }
+    .arch-card__tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .arch-card__tag {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .tag--both { background: #e3f7e8; color: #1e8449; }
+    .tag--returning { background: #e3eef7; color: #2471a3; }
+    .tag--prospects { background: #fbeee3; color: #c0392b; }
+    .arch-card__tier {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      padding-top: 6px;
+    }
+    .tier--1 { color: #c0392b; }
+    .tier--2 { color: #e67e22; }
+    .tier--3 { color: #999; }
+    .arch-card--t1 { border-color: #c0392b; border-width: 1px; border-left-width: 3px; }
+    .arch-card--t2 { border-left: 3px solid #e67e22; }
+    .arch-card--t3 { border-left: 3px solid #ddd; }
+    @media (max-width: 768px) {
+      .arch-card { grid-template-columns: 36px 1fr; }
+      .arch-card__tier { grid-column: 1 / -1; }
+    }
+
+    /* ===== AUDIENCE BALANCE VIZ ===== */
+    .balance-bar {
+      display: flex;
+      height: 48px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+    .balance-bar__seg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: .3px;
+    }
+    .balance-bar__seg--both { background: #27ae60; }
+    .balance-bar__seg--returning { background: #2980b9; }
+    .balance-bar__seg--prospects { background: #e67e22; }
+    .balance-legend {
+      display: flex;
+      gap: 24px;
+      margin: 8px 0 24px;
+    }
+    .balance-legend__item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #666;
+    }
+    .balance-legend__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .balance-legend__dot--both { background: #27ae60; }
+    .balance-legend__dot--returning { background: #2980b9; }
+    .balance-legend__dot--prospects { background: #e67e22; }
+
+    /* ===== VARIATION CARDS (Test Plan) ===== */
+    .var-card {
+      background: #fff;
+      border: 1px solid #e8e8e5;
+      border-radius: 12px;
+      padding: 32px;
+      margin: 24px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .var-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+    .var-card--control::before { background: #95a5a6; }
+    .var-card--v1::before { background: #3498db; }
+    .var-card--v2::before { background: #2ecc71; }
+    .var-card--v3::before { background: #e67e22; }
+    .var-card--v4::before { background: #c0392b; }
+    .var-card__header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .var-card__badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 5px 14px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .var-card--control .var-card__badge { background: #ecf0f1; color: #7f8c8d; }
+    .var-card--v1 .var-card__badge { background: #ebf5fb; color: #2980b9; }
+    .var-card--v2 .var-card__badge { background: #eafaf1; color: #27ae60; }
+    .var-card--v3 .var-card__badge { background: #fef5e7; color: #e67e22; }
+    .var-card--v4 .var-card__badge { background: #fdedec; color: #c0392b; }
+    .var-card__title { font-size: 18px; font-weight: 700; color: #1a1a1a; }
+    .var-card__desc { font-size: 14px; color: #555; line-height: 1.65; margin-bottom: 16px; }
+    .var-card__changes {
+      list-style: none;
+      margin: 0 0 16px;
+    }
+    .var-card__changes li {
+      font-size: 13px;
+      color: #555;
+      padding: 6px 0 6px 24px;
+      position: relative;
+      line-height: 1.5;
+      border-bottom: 1px solid #f8f7f5;
+    }
+    .var-card__changes li:last-child { border-bottom: none; }
+    .var-card__changes li::before {
+      content: '+';
+      position: absolute;
+      left: 4px;
+      color: #27ae60;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .var-card__changes li.remove::before { content: '\2212'; color: #c0392b; }
+    .var-card__learn {
+      background: #f8f7f5;
+      border-radius: 6px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.6;
+    }
+    .var-card__learn strong { color: #1a1a1a; }
+
+    /* ===== OUTCOME TABLE ===== */
+    .outcome-grid { margin: 24px 0; }
+    .outcome-row {
+      display: grid;
+      grid-template-columns: 160px 1fr 1fr;
+      gap: 1px;
+      margin-bottom: 1px;
+    }
+    .outcome-cell {
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      background: #fff;
+    }
+    .outcome-cell--header {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: #999;
+      background: #fafaf8;
+      padding: 10px 16px;
+    }
+    .outcome-cell--scenario { font-weight: 700; color: #1a1a1a; }
+    .outcome-cell--signal { color: #555; }
+    .outcome-cell--action { color: #333; }
+    @media (max-width: 768px) {
+      .outcome-row { grid-template-columns: 1fr; }
+    }
+
+    /* ===== UTILITY ===== */
+    ul.bullet { margin: 12px 0 20px 20px; }
+    ul.bullet li { font-size: 14px; color: #555; margin-bottom: 8px; line-height: 1.6; }
+    ul.bullet li strong { color: #1a1a1a; }
+    .new-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      background: #c0392b;
+      color: #fff;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .mt0 { margin-top: 0; }
+  </style>
+</head>
+<body>
+
+<!-- ===== COVER ===== -->
+<header class="cover">
+  <div class="cover__inner">
+    <div class="cover__tag">Jones Road Beauty &mdash; Growth</div>
+    <h1 class="cover__title">Homepage Redesign Brief</h1>
+    <p class="cover__subtitle">
+      Comprehensive research synthesis, strategic framework, and progressive test plan.
+      Now updated with heatmap behavioral data (205K mobile sessions), ListenLabs PDP confidence study (N=51),
+      and a keep/replace/redesign framework grounded in actual engagement data.
+    </p>
+    <div class="cover__meta">
+      <span>Version 3.0</span>
+      <span>March 24, 2026</span>
+      <span>6 Data Sources</span>
+      <span>401 Data Points</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===== STICKY NAV ===== -->
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="research"><span class="tab-num">01</span> Research</button>
+  <button class="tab-btn" data-tab="strategy"><span class="tab-num">02</span> Strategy</button>
+  <button class="tab-btn" data-tab="testplan"><span class="tab-num">03</span> Test Plan</button>
+</nav>
+
+<!-- ======================================================================
+     TAB 1: RESEARCH
+     ====================================================================== -->
+<div class="tab-panel active" id="tab-research">
+  <div class="content">
+
+    <!-- TOC -->
+    <div class="toc">
+      <div class="toc__title">In This Section</div>
+      <ul class="toc__list">
+        <li class="toc__item"><a href="#r-heatmap">Heatmap Engagement (205K Sessions)</a><span class="new-badge" style="margin-left:0">NEW</span></li>
+        <li class="toc__item"><a href="#r-typeform">Typeform Survey (N=91)</a><span>Quantitative</span></li>
+        <li class="toc__item"><a href="#r-ll-pdp">ListenLabs PDP Confidence (N=51)</a><span class="new-badge" style="margin-left:0">NEW</span></li>
+        <li class="toc__item"><a href="#r-ll-prospects">ListenLabs Prospect Study (N=23)</a><span>Qualitative</span></li>
+        <li class="toc__item"><a href="#r-ll-old">ListenLabs Old Homepage (N=24)</a><span class="new-badge" style="margin-left:0">NEW</span></li>
+        <li class="toc__item"><a href="#r-intelligems">Intelligems Press Bar Tests</a><span class="new-badge" style="margin-left:0">NEW</span></li>
+        <li class="toc__item"><a href="#r-advisory">Advisory Board + Open-Ended</a><span>Qualitative</span></li>
+        <li class="toc__item"><a href="#r-segmentation">Segmentation Analysis</a><span>Cross-Source</span></li>
+        <li class="toc__item"><a href="#r-tensions">7 Key Tensions</a><span>Synthesis</span></li>
+        <li class="toc__item"><a href="#r-competitive">Competitive Context</a><span>Benchmarking</span></li>
+      </ul>
+    </div>
+
+    <!-- ========== 1. HEATMAP ========== -->
+    <div class="section" id="r-heatmap">
+      <div class="section-num">Section 01</div>
+      <h2>Heatmap Engagement Data <span class="new-badge">NEW</span></h2>
+      <div class="sources">
+        <span class="source-badge source-badge--heatmap">Heatmap.com</span>
+        <span class="source-badge">March 3-15, 2026</span>
+        <span class="source-badge">205.4K Mobile Sessions</span>
+      </div>
+      <p class="lead">
+        For the first time, we have behavioral engagement data at the section level. The heatmap reveals a dramatic engagement cliff:
+        <strong>products dominate everything</strong>, and half the page is effectively dead.
+      </p>
+
+      <div class="stats stats--3">
+        <div class="stat">
+          <div class="stat__number">205K</div>
+          <div class="stat__label">Mobile Sessions</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">93K</div>
+          <div class="stat__label">Desktop Sessions</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">9.2K</div>
+          <div class="stat__label">Tablet Sessions</div>
+        </div>
+      </div>
+
+      <h3>Section-by-Section Engagement</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Section</th>
+              <th>Position</th>
+              <th>Heat Level</th>
+              <th>Key Observation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Announcement Bar</strong></td>
+              <td>Top</td>
+              <td><span class="heat heat--hot"><span class="heat-dot heat-dot--hot"></span> Hot</span></td>
+              <td>Hottest above-fold element. "Lip Recharge Is Here" drives immediate clicks.</td>
+            </tr>
+            <tr>
+              <td><strong>Hamburger Menu</strong></td>
+              <td>Top left</td>
+              <td><span class="heat heat--hot"><span class="heat-dot heat-dot--hot"></span> Hot</span></td>
+              <td>Blazing red. Confirms 37.4% nav-first behavior from Typeform.</td>
+            </tr>
+            <tr>
+              <td><strong>Hero Image</strong></td>
+              <td>Above fold</td>
+              <td><span class="heat heat--moderate"><span class="heat-dot heat-dot--moderate"></span> Moderate</span></td>
+              <td>Scattered clicks on hero image itself, not just CTA.</td>
+            </tr>
+            <tr>
+              <td><strong>Hero "Shop Now" CTA</strong></td>
+              <td>Below hero</td>
+              <td><span class="heat heat--moderate"><span class="heat-dot heat-dot--moderate"></span> Moderate</span></td>
+              <td>Orange engagement. Not as hot as products below.</td>
+            </tr>
+            <tr>
+              <td><strong>Featured Products</strong></td>
+              <td>Below hero</td>
+              <td><span class="heat heat--hot"><span class="heat-dot heat-dot--hot"></span> Hottest</span></td>
+              <td>Product cards + "Shop Now" buttons are blazing red. <strong>The #1 engagement zone on the entire page.</strong></td>
+            </tr>
+            <tr>
+              <td><strong>"See All" Link</strong></td>
+              <td>In Featured</td>
+              <td><span class="heat heat--moderate"><span class="heat-dot heat-dot--moderate"></span> Moderate</span></td>
+              <td>People want more products beyond what's shown.</td>
+            </tr>
+            <tr>
+              <td><strong>Press Logo Bar</strong></td>
+              <td>After products</td>
+              <td><span class="heat heat--dead"><span class="heat-dot heat-dot--dead"></span> Dead</span></td>
+              <td>Near-zero clicks. But may serve as passive trust signal (no A/B data).</td>
+            </tr>
+            <tr>
+              <td><strong>Shop by Collection Tabs</strong></td>
+              <td>Mid-page</td>
+              <td><span class="heat heat--moderate"><span class="heat-dot heat-dot--moderate"></span> Moderate</span></td>
+              <td>Category tabs get clicks; collection cards below them are cold.</td>
+            </tr>
+            <tr>
+              <td><strong>Collection Cards</strong></td>
+              <td>Mid-page</td>
+              <td><span class="heat heat--cold"><span class="heat-dot heat-dot--cold"></span> Cold</span></td>
+              <td>Underperforming given prime real estate.</td>
+            </tr>
+            <tr>
+              <td><strong>"Hype Is Real" Promo</strong></td>
+              <td>Mid-page</td>
+              <td><span class="heat heat--hot"><span class="heat-dot heat-dot--hot"></span> Hot CTA</span></td>
+              <td>Product-focused promo with clear CTA works. Blazing red "Shop Now."</td>
+            </tr>
+            <tr>
+              <td><strong>Bobbi Brown Section</strong></td>
+              <td>Mid-page</td>
+              <td><span class="heat heat--cold"><span class="heat-dot heat-dot--cold"></span> Cold</span></td>
+              <td>Scattered engagement. Not concentrated action.</td>
+            </tr>
+            <tr>
+              <td><strong>"Better Beauty" Editorial</strong></td>
+              <td>Lower page</td>
+              <td><span class="heat heat--dead"><span class="heat-dot heat-dot--dead"></span> Dead</span></td>
+              <td>Almost zero engagement. Scattered yellow dots only.</td>
+            </tr>
+            <tr>
+              <td><strong>"Clean Slate" Editorial</strong></td>
+              <td>Lower page</td>
+              <td><span class="heat heat--dead"><span class="heat-dot heat-dot--dead"></span> Dead</span></td>
+              <td>Almost zero engagement. Confirmed dead zone.</td>
+            </tr>
+            <tr>
+              <td><strong>"Get the Look" Carousel</strong></td>
+              <td>Lower page</td>
+              <td><span class="heat heat--cold"><span class="heat-dot heat-dot--cold"></span> Cold</span></td>
+              <td>Carousel arrows get some clicks; cards themselves are cold.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="insight insight--red">
+        <div class="insight__title">Critical Insight: The Engagement Cliff</div>
+        <div class="insight__body">
+          Heat drops <strong>dramatically</strong> after the Featured Products grid. The top 30% of the page captures the vast majority of engagement.
+          Everything below Shop by Collection is effectively invisible to most visitors. The editorial blocks ("Better Beauty," "Clean Slate") and "Get the Look" carousel
+          are confirmed dead zones &mdash; zero meaningful engagement from 205K sessions.
+        </div>
+      </div>
+
+      <h3>Engagement Hierarchy</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">Featured Products</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--hot" style="width: 100%"></div></div>
+          <div class="bar-value" style="color:#e74c3c">Hottest</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Announcement Bar</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--hot" style="width: 90%"></div></div>
+          <div class="bar-value" style="color:#e74c3c">Hot</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Hamburger Nav</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--hot" style="width: 88%"></div></div>
+          <div class="bar-value" style="color:#e74c3c">Hot</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">"Hype Is Real" Promo</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--hot" style="width: 75%"></div></div>
+          <div class="bar-value" style="color:#e74c3c">Hot CTA</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Hero Section</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--warm" style="width: 55%"></div></div>
+          <div class="bar-value" style="color:#f39c12">Mod.</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Collection Tabs</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--warm" style="width: 45%"></div></div>
+          <div class="bar-value" style="color:#f39c12">Mod.</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Collection Cards</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--cool" style="width: 25%"></div></div>
+          <div class="bar-value" style="color:#3498db">Cold</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Bobbi Section</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--cool" style="width: 20%"></div></div>
+          <div class="bar-value" style="color:#3498db">Cold</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">"Get the Look"</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--cool" style="width: 15%"></div></div>
+          <div class="bar-value" style="color:#3498db">Cold</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Press Bar</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--dead" style="width: 5%"></div></div>
+          <div class="bar-value" style="color:#95a5a6">Dead</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">"Better Beauty"</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--dead" style="width: 3%"></div></div>
+          <div class="bar-value" style="color:#95a5a6">Dead</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">"Clean Slate"</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--dead" style="width: 3%"></div></div>
+          <div class="bar-value" style="color:#95a5a6">Dead</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <h3 class="mt0">5 Heatmap Takeaways</h3>
+        <ul>
+          <li><strong>Products ARE the homepage.</strong> The Featured Products grid is by far the most engaged section. Everything else is secondary.</li>
+          <li><strong>Promo bars work.</strong> The announcement bar is the hottest single element above the fold &mdash; clear product CTA + urgency.</li>
+          <li><strong>Editorial content is dead.</strong> "Better Beauty" and "Clean Slate" get zero engagement from 205K sessions. Replace with confidence-building content.</li>
+          <li><strong>"Get the Look" fails.</strong> Carousel format underperforms on mobile. Low engagement despite prime placement.</li>
+          <li><strong>Press bar has zero clicks</strong> &mdash; but may serve as a passive trust signal. We have no A/B data to prove or disprove its value. Keep until tested.</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== 2. TYPEFORM ========== -->
+    <div class="section" id="r-typeform">
+      <div class="section-num">Section 02</div>
+      <h2>Typeform Survey</h2>
+      <div class="sources">
+        <span class="source-badge source-badge--typeform">Typeform</span>
+        <span class="source-badge">March 2026</span>
+        <span class="source-badge">N = 91 Loyal Customers</span>
+      </div>
+      <p class="lead">
+        91 completed responses from JRB Customer Advisory Board members. Sample skews older (93.4% are 45+, zero under-35) and more loyal than the general customer base.
+      </p>
+
+      <div class="stats">
+        <div class="stat stat--dark">
+          <div class="stat__number">91</div>
+          <div class="stat__label">Responses</div>
+        </div>
+        <div class="stat stat--accent">
+          <div class="stat__number">54%</div>
+          <div class="stat__label">#1 Priority:<br>New Arrivals</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">84.6%</div>
+          <div class="stat__label">See Room for<br>Improvement</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">4.20</div>
+          <div class="stat__label">Bobbi Importance<br>(out of 5)</div>
+        </div>
+      </div>
+
+      <h3>What Do You Do FIRST on the Homepage?</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">Go to nav menu</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 37.4%"></div></div>
+          <div class="bar-value">37.4%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Look for bestsellers/new</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 31.9%"></div></div>
+          <div class="bar-value">31.9%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Scroll to browse</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 26.4%"></div></div>
+          <div class="bar-value">26.4%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Look for sales</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--orange" style="width: 2.2%"></div></div>
+          <div class="bar-value">2.2%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Use search</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--orange" style="width: 2.2%"></div></div>
+          <div class="bar-value">2.2%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Look for quiz</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--dead" style="width: 0%"></div></div>
+          <div class="bar-value">0%</div>
+        </div>
+      </div>
+
+      <h3>What Matters MOST? (Ranked Priority)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Avg Rank</th>
+              <th>#1 Picks</th>
+              <th>Top-3 Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>New arrivals / new products</strong></td>
+              <td><strong>1.68</strong></td>
+              <td>49 (53.8%)</td>
+              <td><strong>94.5%</strong></td>
+            </tr>
+            <tr>
+              <td>Current promotions or sales</td>
+              <td>2.51</td>
+              <td>17 (18.7%)</td>
+              <td>81.3%</td>
+            </tr>
+            <tr>
+              <td>Clear product categories</td>
+              <td>4.05</td>
+              <td>15 (16.5%)</td>
+              <td>39.6%</td>
+            </tr>
+            <tr>
+              <td>Bestsellers</td>
+              <td>4.10</td>
+              <td>3 (3.3%)</td>
+              <td>34.1%</td>
+            </tr>
+            <tr>
+              <td>Bobbi content (videos, tips, picks)</td>
+              <td>4.10</td>
+              <td>5 (5.5%)</td>
+              <td>33.0%</td>
+            </tr>
+            <tr>
+              <td>Quiz or shade finder</td>
+              <td>5.80</td>
+              <td>1 (1.1%)</td>
+              <td>6.6%</td>
+            </tr>
+            <tr>
+              <td>Customer reviews / social proof</td>
+              <td>6.32</td>
+              <td>1 (1.1%)</td>
+              <td>9.9%</td>
+            </tr>
+            <tr>
+              <td>Editorial / brand story</td>
+              <td>7.44</td>
+              <td>0 (0.0%)</td>
+              <td>1.1%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="insight">
+        <div class="insight__title">Key Finding</div>
+        <div class="insight__body">
+          Editorial/brand story ranks dead last (avg 7.44/8). Zero people put it #1. This aligns perfectly with the heatmap: "Better Beauty" and "Clean Slate" editorial blocks get zero engagement. The data is unanimous &mdash; editorial content does not belong on the homepage.
+        </div>
+      </div>
+
+      <h3>What's MISSING From the Homepage?</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">New Arrivals section</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--red" style="width: 49.5%"></div></div>
+          <div class="bar-value">49.5%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">More Bobbi content</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--red" style="width: 45.1%"></div></div>
+          <div class="bar-value">45.1%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Shop by skin type/concern</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--orange" style="width: 39.6%"></div></div>
+          <div class="bar-value">39.6%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Product demo videos</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 27.5%"></div></div>
+          <div class="bar-value">27.5%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Shade quiz easier to find</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 17.6%"></div></div>
+          <div class="bar-value">17.6%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">"Where to start" guide</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 16.5%"></div></div>
+          <div class="bar-value">16.5%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Nothing &mdash; it's great</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--green" style="width: 15.4%"></div></div>
+          <div class="bar-value">15.4%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Bestsellers highlighted</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 13.2%"></div></div>
+          <div class="bar-value">13.2%</div>
+        </div>
+      </div>
+
+      <h3>Bobbi Brown Importance (1-5 Scale)</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">5 (Very important)</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 51.6%"></div></div>
+          <div class="bar-value">51.6%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">4</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 25.3%"></div></div>
+          <div class="bar-value">25.3%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">3</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 16.5%"></div></div>
+          <div class="bar-value">16.5%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">2</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--orange" style="width: 4.4%"></div></div>
+          <div class="bar-value">4.4%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">1 (Not important)</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--orange" style="width: 2.2%"></div></div>
+          <div class="bar-value">2.2%</div>
+        </div>
+      </div>
+      <p>Mean: <strong>4.20 / 5</strong>. 76.9% rate Bobbi at 4 or 5. She is the brand's strongest asset for existing customers &mdash; but ListenLabs prospect data shows this effect requires awareness of who Bobbi Brown is.</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== 3. LISTENLABS PDP CONFIDENCE ========== -->
+    <div class="section" id="r-ll-pdp">
+      <div class="section-num">Section 03</div>
+      <h2>ListenLabs: PDP Purchase Confidence <span class="new-badge">NEW</span></h2>
+      <div class="sources">
+        <span class="source-badge source-badge--listenlabs">ListenLabs</span>
+        <span class="source-badge">March 2026</span>
+        <span class="source-badge">N = 51</span>
+      </div>
+      <p class="lead">
+        What builds and destroys purchase confidence on the product page. While PDP-focused, these findings directly inform what trust signals belong on the homepage to pre-qualify visitors before they reach product pages.
+      </p>
+
+      <div class="stats">
+        <div class="stat stat--dark">
+          <div class="stat__number">51</div>
+          <div class="stat__label">Participants</div>
+        </div>
+        <div class="stat stat--accent">
+          <div class="stat__number">82%</div>
+          <div class="stat__label">Reviews = #1<br>Trust Builder</div>
+        </div>
+        <div class="stat stat--green">
+          <div class="stat__number">76%</div>
+          <div class="stat__label">UGC / Social<br>Proof Cited</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">43%</div>
+          <div class="stat__label">#1 Confidence<br>Killer: Ingredients</div>
+        </div>
+      </div>
+
+      <h3>Trust Builders &mdash; What Builds Confidence</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">Reviews (quantity + quality)</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--green" style="width: 82%"></div></div>
+          <div class="bar-value">82%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">UGC / social proof</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--green" style="width: 76%"></div></div>
+          <div class="bar-value">76%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Ingredient transparency</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--green" style="width: 73%"></div></div>
+          <div class="bar-value">73%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Return / shipping clarity</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--green" style="width: 55%"></div></div>
+          <div class="bar-value">55%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Application how-tos</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 43%"></div></div>
+          <div class="bar-value">43%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Price/value explanation</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 24%"></div></div>
+          <div class="bar-value">24%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Before/after photos</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--orange" style="width: 6%"></div></div>
+          <div class="bar-value">6%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Founder video (Bobbi)</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--orange" style="width: 4%"></div></div>
+          <div class="bar-value">4%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Dermatologist proof</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--orange" style="width: 4%"></div></div>
+          <div class="bar-value">4%</div>
+        </div>
+      </div>
+
+      <div class="insight insight--green">
+        <div class="insight__title">Homepage Implication</div>
+        <div class="insight__body">
+          The top 3 trust builders (reviews 82%, UGC 76%, ingredients 73%) are <strong>not currently visible on the homepage</strong>. A trust bar showing "76,000+ Reviews" and a social proof section would directly address the #1 and #2 confidence drivers before visitors even reach a PDP.
+        </div>
+      </div>
+
+      <h3>Confidence Reducers &mdash; What Kills Purchase Intent</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">Missing ingredients detail</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--red" style="width: 43%"></div></div>
+          <div class="bar-value">43%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Sparse/mixed reviews</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--red" style="width: 37%"></div></div>
+          <div class="bar-value">37%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Shade uncertainty</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--red" style="width: 35%"></div></div>
+          <div class="bar-value">35%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Unclear returns/shipping</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--red" style="width: 33%"></div></div>
+          <div class="bar-value">33%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Lack of on-skin swatches</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--red" style="width: 31%"></div></div>
+          <div class="bar-value">31%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Price feels high w/o proof</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 25%"></div></div>
+          <div class="bar-value">25%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Ambiguous coverage/finish</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 25%"></div></div>
+          <div class="bar-value">25%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Photo quality issues</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 22%"></div></div>
+          <div class="bar-value">22%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Overwhelming layout</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 20%"></div></div>
+          <div class="bar-value">20%</div>
+        </div>
+      </div>
+
+      <h3>Homepage First Impressions (from same N=51 study)</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">Hero/message clarity</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--green" style="width: 35%"></div></div>
+          <div class="bar-value">35%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Clear navigation</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--green" style="width: 31%"></div></div>
+          <div class="bar-value">31%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Clean visual design</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--green" style="width: 31%"></div></div>
+          <div class="bar-value">31%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Confusing navigation</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--red" style="width: 22%"></div></div>
+          <div class="bar-value">22%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">New/Bestsellers focus</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 18%"></div></div>
+          <div class="bar-value">18%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Promos / free shipping</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 12%"></div></div>
+          <div class="bar-value">12%</div>
+        </div>
+      </div>
+
+      <div class="insight insight--red">
+        <div class="insight__title">22% Find Navigation Confusing</div>
+        <div class="insight__body">
+          Despite 31% praising clear navigation, 22% found it confusing &mdash; a significant friction point. The nav experience is polarizing, not universally good.
+        </div>
+      </div>
+
+      <h3>Homepage Quotes (N=51 Study)</h3>
+      <div class="quote">
+        "I guess it's a good hub, just a little cluttered."
+        <span class="quote__source">ListenLabs PDP Confidence Study, 2026</span>
+      </div>
+      <div class="quote">
+        "I'm not sure that I'm on the homepage. I don't know if I'm on the right page here or not."
+        <span class="quote__source">ListenLabs PDP Confidence Study, 2026</span>
+      </div>
+
+      <h3>Shade Selection &mdash; The Biggest Friction</h3>
+      <div class="stats">
+        <div class="stat stat--accent">
+          <div class="stat__number">35%</div>
+          <div class="stat__label">Struggled With<br>Shade Confidence</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">82%</div>
+          <div class="stat__label">Want Shades on<br>Similar Skin</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">53%</div>
+          <div class="stat__label">Want Shade Quiz<br>or Brand Match</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">31%</div>
+          <div class="stat__label">Cite Lack of<br>On-Skin Swatches</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== 4. LISTENLABS PROSPECT STUDY ========== -->
+    <div class="section" id="r-ll-prospects">
+      <div class="section-num">Section 04</div>
+      <h2>ListenLabs: Prospect Study</h2>
+      <div class="sources">
+        <span class="source-badge source-badge--listenlabs">ListenLabs</span>
+        <span class="source-badge">March 2026</span>
+        <span class="source-badge">N = 23 Non-Customers</span>
+      </div>
+      <p class="lead">
+        23 screen recordings of non-customers browsing JRB for the first time (ages 35-64). 10/23 (43%) could not load the website due to technical issues, limiting usable data to ~13 participants.
+      </p>
+
+      <h3>Top Themes (All Findings, Not Just Homepage)</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">Diverse skin-tone swatches</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--red" style="width: 82.6%"></div></div>
+          <div class="bar-value">19/23</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Low shade confidence</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--red" style="width: 73.9%"></div></div>
+          <div class="bar-value">17/23</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Reviews for trust</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--red" style="width: 69.6%"></div></div>
+          <div class="bar-value">16/23</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Price concern ($38+)</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--orange" style="width: 52.2%"></div></div>
+          <div class="bar-value">12/23</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Return policy visibility</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 43.5%"></div></div>
+          <div class="bar-value">10/23</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Virtual try-on wanted</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 43.5%"></div></div>
+          <div class="bar-value">10/23</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Clean ingredients matter</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 39.1%"></div></div>
+          <div class="bar-value">9/23</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Brand story unclear</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 21.7%"></div></div>
+          <div class="bar-value">5/23</div>
+        </div>
+      </div>
+
+      <h3>Homepage-Specific Prospect Quotes</h3>
+      <div class="quote">
+        "The page seems oriented towards people who are much younger than me, like maybe Gen Z."
+        <span class="quote__source">Participant 0005, age 46</span>
+      </div>
+      <div class="quote">
+        "I don't really see what differentiates Jones Road from many of the other premium beauty products in that same category. There are just so many to choose from."
+        <span class="quote__source">Participant 0005, age 46</span>
+      </div>
+      <div class="quote">
+        "I guess I still don't know who you are. I know your name. I know what products you sell. But who are you, Jones Road?"
+        <span class="quote__source">Participant 0121, age 49</span>
+      </div>
+      <div class="quote">
+        "I would definitely have 'clean, strategic, high-grade formulations.' I would have that. And maybe I missed it, so make it where I can't miss it."
+        <span class="quote__source">Participant 0121, age 49</span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== 5. LISTENLABS OLD HOMEPAGE ========== -->
+    <div class="section" id="r-ll-old">
+      <div class="section-num">Section 05</div>
+      <h2>ListenLabs: Old Homepage Study <span class="new-badge">NEW</span></h2>
+      <div class="sources">
+        <span class="source-badge source-badge--listenlabs">ListenLabs</span>
+        <span class="source-badge">June 2025</span>
+        <span class="source-badge">N = 24</span>
+      </div>
+
+      <div class="insight insight--orange">
+        <div class="insight__title">Caveat: ~9 Months Old</div>
+        <div class="insight__body">
+          This study was conducted June 2025. The site has evolved since then. Treat these findings as directional background context, not current-state assessment. Target: elder millennials (25-54) interested in clean beauty.
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat__number">88%</div>
+          <div class="stat__label">Purpose<br>Clear/Very Clear</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">88%</div>
+          <div class="stat__label">Design<br>Good/Excellent</div>
+        </div>
+        <div class="stat stat--accent">
+          <div class="stat__number">71%</div>
+          <div class="stat__label">Price/Value<br>Is #1 Barrier</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">46%</div>
+          <div class="stat__label">Want Age-Inclusive<br>Imagery</div>
+        </div>
+      </div>
+
+      <h3>First Scan Attention (What Gets Noticed First)</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">Featured products</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--green" style="width: 63%"></div></div>
+          <div class="bar-value">63%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Categories / navigation</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 29%"></div></div>
+          <div class="bar-value">29%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Hero section / banner</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 17%"></div></div>
+          <div class="bar-value">17%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Clean beauty messaging</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 17%"></div></div>
+          <div class="bar-value">17%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Tutorial / how-to</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--dead" style="width: 4%"></div></div>
+          <div class="bar-value">4%</div>
+        </div>
+      </div>
+
+      <div class="insight insight--green">
+        <div class="insight__title">Cross-Validation: Products Win Again</div>
+        <div class="insight__body">
+          63% noticed featured products first &mdash; aligning perfectly with both the 2026 heatmap data (Featured Products = hottest) and Typeform (31.9% look for bestsellers/new first). Across <strong>all three data sources</strong>, product content dominates homepage attention.
+        </div>
+      </div>
+
+      <h3>Top Barriers (N=24)</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">Price/value concerns</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--red" style="width: 71%"></div></div>
+          <div class="bar-value">71%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Ingredient transparency</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--red" style="width: 54%"></div></div>
+          <div class="bar-value">54%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Shade/undertone uncertainty</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--orange" style="width: 46%"></div></div>
+          <div class="bar-value">46%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Age-inclusive imagery</div>
+          <div class="bar-track"><div class="bar-fill bar-fill--orange" style="width: 46%"></div></div>
+          <div class="bar-value">46%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Product education needed</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 38%"></div></div>
+          <div class="bar-value">38%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Pop-ups disruptive</div>
+          <div class="bar-track"><div class="bar-fill" style="width: 21%"></div></div>
+          <div class="bar-value">21%</div>
+        </div>
+      </div>
+
+      <div class="quote">
+        "I feel like with makeup, especially when you're buying it online, it's really helpful to have a before and after picture..."
+        <span class="quote__source">ListenLabs Old Homepage Study, June 2025</span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== 6. INTELLIGEMS ========== -->
+    <div class="section" id="r-intelligems">
+      <div class="section-num">Section 06</div>
+      <h2>Intelligems: Press Bar Tests <span class="new-badge">NEW</span></h2>
+      <div class="sources">
+        <span class="source-badge source-badge--intelligems">Intelligems</span>
+        <span class="source-badge">Oct&ndash;Nov 2025</span>
+      </div>
+      <p class="lead">
+        Two A/B tests were run on the press logo bar &mdash; one sitewide (JRB11) and one PDP-specific (JRB19). Both produced zero usable data.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Test</th>
+              <th>Scope</th>
+              <th>Dates</th>
+              <th>Variations</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>JRB11</strong></td>
+              <td>Sitewide press bar</td>
+              <td>Oct 6 &ndash; Nov 18, 2025</td>
+              <td>Control + 4 variants (dark/light bg, logo sizes)</td>
+              <td style="color:#c0392b; font-weight:600;">0 visitors &mdash; no data</td>
+            </tr>
+            <tr>
+              <td><strong>JRB19</strong></td>
+              <td>PDP press bar</td>
+              <td>Oct 6 &ndash; Nov 18, 2025</td>
+              <td>Same variants, PDP-specific</td>
+              <td style="color:#c0392b; font-weight:600;">0 visitors &mdash; no data</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="insight insight--orange">
+        <div class="insight__title">Conclusion: No Evidence to Remove the Press Bar</div>
+        <div class="insight__body">
+          The heatmap confirms near-zero clicks on the press bar. But <strong>zero clicks does not mean zero value</strong>. Press bars work as passive trust signals &mdash;
+          visitors see "Vogue," "WSJ," "Allure" logos and it builds unconscious credibility. Without a proper A/B test (control = no press bar), we cannot prove or disprove its conversion impact. <strong>Keep as passive trust signal until tested.</strong>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== 7. ADVISORY + OPEN-ENDED ========== -->
+    <div class="section" id="r-advisory">
+      <div class="section-num">Section 07</div>
+      <h2>Advisory Board + Open-Ended Responses</h2>
+      <div class="sources">
+        <span class="source-badge source-badge--advisory">FB Advisory Board</span>
+        <span class="source-badge source-badge--typeform">Typeform Open-Ended</span>
+        <span class="source-badge">75 comments + 91 responses</span>
+      </div>
+
+      <h3>Advisory Board Key Themes (Nov 2025)</h3>
+      <ul class="bullet">
+        <li><strong>Age representation is the #1 engagement topic.</strong> Claire's comment ("As a 62 year old, there's no one who looks like me. If it were my first time visiting, I'd quickly move on.") received 18 reactions &mdash; the most in the entire thread.</li>
+        <li><strong>Model diversity matters across ages, not skewing old.</strong> Multiple moms report 18-34 year olds falling in love with JRB after trying, but perceiving it as "mom's makeup" before trying.</li>
+        <li><strong>Bobbi is the generational bridge.</strong> "Bobbi herself is the only thing that bridges the gap between the generations." &mdash; Tonya</li>
+        <li><strong>Pop-ups feel intrusive</strong> (7+ mentions): Skin type popup is annoying and repetitive for repeat visitors.</li>
+      </ul>
+
+      <h3>Customer Open-Ended Quotes</h3>
+      <div class="quote">
+        "I dislike the homepage in principle, it doesn't give me useful information. What I would like? First new products, then maybe trending products, kits and promotions. I would love a website that remembers who I am when I sign in."
+        <span class="quote__source">55-64, mixed shopper</span>
+      </div>
+      <div class="quote">
+        "Mix in some photos of older models, right now the website seems like the line is geared toward 20 to 30 year olds, which isn't the feeling I had when I first started using the brand 3 years ago."
+        <span class="quote__source">55-64, mixed shopper</span>
+      </div>
+      <div class="quote">
+        "Having admired Bobbi since the 90s for sticking to her unique approach to beauty, I'd like to know that's still the case. I felt that when JRB launched. Now I sometimes feel JRB is chasing demographics."
+        <span class="quote__source">65+, researcher</span>
+      </div>
+      <div class="quote">
+        "I absolutely hate the full width drop downs that cover the whole screen right to left and then only give a small selection of the products in that category."
+        <span class="quote__source">45-54, mixed shopper</span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== 8. SEGMENTATION ========== -->
+    <div class="section" id="r-segmentation">
+      <div class="section-num">Section 08</div>
+      <h2>Segmentation Analysis</h2>
+      <div class="sources">
+        <span class="source-badge source-badge--typeform">Typeform</span>
+        <span class="source-badge source-badge--all">Cross-Source</span>
+      </div>
+
+      <h3>First Action by Age</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Age</th>
+              <th>Nav Menu</th>
+              <th>Bestsellers/New</th>
+              <th>Scroll/Browse</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>35-44 (n=6)</td>
+              <td><strong>50.0%</strong></td>
+              <td>16.7%</td>
+              <td>33.3%</td>
+            </tr>
+            <tr>
+              <td>45-54 (n=23)</td>
+              <td><strong>52.2%</strong></td>
+              <td>26.1%</td>
+              <td>17.4%</td>
+            </tr>
+            <tr>
+              <td>55-64 (n=32)</td>
+              <td>31.2%</td>
+              <td><strong>34.4%</strong></td>
+              <td>28.1%</td>
+            </tr>
+            <tr>
+              <td>65+ (n=30)</td>
+              <td>30.0%</td>
+              <td><strong>36.7%</strong></td>
+              <td>30.0%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Younger customers (35-54) go straight to nav &mdash; they know what they want. Older customers (55+) browse featured content and look for new arrivals. The homepage content experience matters most for the 55+ cohort.</p>
+
+      <h3>What's Missing by Age</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Missing Element</th>
+              <th>35-44</th>
+              <th>45-54</th>
+              <th>55-64</th>
+              <th>65+</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>New Arrivals section</td>
+              <td>33.3%</td>
+              <td>34.8%</td>
+              <td>50.0%</td>
+              <td><strong>63.3%</strong></td>
+            </tr>
+            <tr>
+              <td>Bobbi content</td>
+              <td><strong>83.3%</strong></td>
+              <td>30.4%</td>
+              <td>46.9%</td>
+              <td>46.7%</td>
+            </tr>
+            <tr>
+              <td>Skin type organization</td>
+              <td><strong>83.3%</strong></td>
+              <td>34.8%</td>
+              <td>34.4%</td>
+              <td>40.0%</td>
+            </tr>
+            <tr>
+              <td>Homepage is great as-is</td>
+              <td>0.0%</td>
+              <td><strong>26.1%</strong></td>
+              <td>18.8%</td>
+              <td>6.7%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="insight">
+        <div class="insight__title">65+ Are the Least Satisfied</div>
+        <div class="insight__body">
+          Only 6.7% of the 65+ cohort says the homepage is fine, compared to 26.1% of 45-54. The oldest cohort &mdash; JRB's core customer &mdash; has the strongest demand for change, particularly for a New Arrivals section (63.3%).
+        </div>
+      </div>
+
+      <h3>Priority Rankings by Shopper Type (Top-3 Rate)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Priority</th>
+              <th>Restocker</th>
+              <th>Browser</th>
+              <th>Researcher</th>
+              <th>Mixed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>New arrivals</td>
+              <td><strong>100%</strong></td>
+              <td>82%</td>
+              <td>93%</td>
+              <td>98%</td>
+            </tr>
+            <tr>
+              <td>Promotions/sales</td>
+              <td>79%</td>
+              <td><strong>82%</strong></td>
+              <td>73%</td>
+              <td><strong>85%</strong></td>
+            </tr>
+            <tr>
+              <td>Categories</td>
+              <td><strong>47%</strong></td>
+              <td>29%</td>
+              <td>40%</td>
+              <td>40%</td>
+            </tr>
+            <tr>
+              <td>Bestsellers</td>
+              <td>26%</td>
+              <td><strong>41%</strong></td>
+              <td>27%</td>
+              <td>38%</td>
+            </tr>
+            <tr>
+              <td>Bobbi content</td>
+              <td>32%</td>
+              <td>29%</td>
+              <td><strong>40%</strong></td>
+              <td>32%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>New vs Returning: The Core Tension</h3>
+      <div class="balance-bar">
+        <div class="balance-bar__seg balance-bar__seg--returning" style="width: 55%">Returning: Dashboard</div>
+        <div class="balance-bar__seg balance-bar__seg--prospects" style="width: 45%">Prospects: Storefront</div>
+      </div>
+      <div class="balance-legend">
+        <div class="balance-legend__item"><div class="balance-legend__dot balance-legend__dot--returning"></div> Returning: "What's new? Take me to what I want."</div>
+        <div class="balance-legend__item"><div class="balance-legend__dot balance-legend__dot--prospects"></div> Prospects: "Who are you? Why should I trust you?"</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== 9. TENSIONS ========== -->
+    <div class="section" id="r-tensions">
+      <div class="section-num">Section 09</div>
+      <h2>7 Key Tensions</h2>
+      <p class="lead">Where data sources conflict or create design tradeoffs.</p>
+
+      <div class="tension">
+        <div class="tension__num">1</div>
+        <div class="tension__title">Dashboard vs Storefront</div>
+        <div class="tension__body">Returning customers want efficiency (new arrivals, promos, nav). Prospects need trust and orientation (brand identity, reviews, curated paths).</div>
+        <div class="tension__resolution"><strong>Resolution:</strong> Above-fold serves both (product grid + trust bar). Below-fold diverges: product-discovery for returners, proof-building for prospects. Trust signals benefit everyone.</div>
+      </div>
+
+      <div class="tension">
+        <div class="tension__num">2</div>
+        <div class="tension__title">Bobbi: High Demand, Low Active Engagement</div>
+        <div class="tension__body">45.1% say Bobbi content is missing. 4.20/5 importance. But heatmap shows scattered engagement on the Bobbi section, and only 4% of N=51 cite founder video as a trust builder.</div>
+        <div class="tension__resolution"><strong>Resolution:</strong> Bobbi is a "vitamin, not a painkiller." Don't make Bobbi a standalone dead section. Integrate her INTO product context: "Founded by Bobbi Brown" in trust bar, Bobbi's pick tags, a focused two-column founder section with clear differentiation messaging.</div>
+      </div>
+
+      <div class="tension">
+        <div class="tension__num">3</div>
+        <div class="tension__title">Age Representation vs Brand Aspirationality</div>
+        <div class="tension__body">65+ cohort is least satisfied (6.7% fine). But younger prospects find the brand "boring." Moms report daughters seeing JRB as "mom's makeup."</div>
+        <div class="tension__resolution"><strong>Resolution:</strong> Cast across ages 35-65 with real skin. Bobbi as generational bridge. Don't skew old OR young.</div>
+      </div>
+
+      <div class="tension">
+        <div class="tension__num">4</div>
+        <div class="tension__title">Quiz/Shade Finder: Can't Find It, Don't Trust It</div>
+        <div class="tension__body">17.6% say quiz is hard to find, but 0% of first actions are looking for it. 4/23 prospects found it felt like a marketing funnel.</div>
+        <div class="tension__resolution"><strong>Resolution:</strong> Don't make quiz a homepage hero. Surface "Send a Selfie" and put shade tools contextually near product displays. Consider ILIA model: "Find My Shade" as a nav link.</div>
+      </div>
+
+      <div class="tension">
+        <div class="tension__num">5</div>
+        <div class="tension__title">Product Organization: Categories vs Concern vs Looks</div>
+        <div class="tension__body">37.4% go to nav (categories). 39.6% want skin-concern organization. Prospects want curated "looks."</div>
+        <div class="tension__resolution"><strong>Resolution:</strong> Offer multiple pathways. Category nav for directed shoppers, "Shop by Concern" for researchers, improved product grids for browsers.</div>
+      </div>
+
+      <div class="tension">
+        <div class="tension__num">6</div>
+        <div class="tension__title">Promotions: High Priority but Brand-Risky</div>
+        <div class="tension__body">81.3% rank promos top-3. But this is a loyal-customer sample. Charlotte Tilbury (prospect benchmark) leads with product story, not discounts.</div>
+        <div class="tension__resolution"><strong>Resolution:</strong> Promo bar is sufficient. Don't make promotions the homepage hero. New arrivals and product content lead; promos serve as secondary pull.</div>
+      </div>
+
+      <div class="tension">
+        <div class="tension__num">7</div>
+        <div class="tension__title">Editorial: Customers Reject It, Prospects Need Something</div>
+        <div class="tension__body">Ranked dead last (7.44/8). Zero heatmap engagement. But 5/23 prospects couldn't figure out what differentiates JRB.</div>
+        <div class="tension__resolution"><strong>Resolution:</strong> Don't create a "brand story" section. Weave differentiation into every element: "76K+ Reviews" as trust signal, "Founded by Bobbi Brown" as credential, "Clean Formulations" as product descriptor. Let brand emerge from product experience.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== 10. COMPETITIVE ========== -->
+    <div class="section" id="r-competitive">
+      <div class="section-num">Section 10</div>
+      <h2>Competitive Context</h2>
+      <div class="sources">
+        <span class="source-badge source-badge--competitive">Competitive Audit</span>
+        <span class="source-badge">6 Brands</span>
+      </div>
+
+      <h3>What Every Competitor Has That JRB Lacks on Homepage</h3>
+      <ul class="bullet">
+        <li><strong>Shade Finder / "Find My Shade"</strong> in main nav (ILIA, MERIT, Rare Beauty)</li>
+        <li><strong>Clear product categories</strong> with visible subcategories</li>
+        <li><strong>Prominent review count / social proof</strong></li>
+        <li><strong>Clean/ingredient badges</strong></li>
+        <li><strong>Rewards/loyalty visibility</strong></li>
+      </ul>
+
+      <h3>What JRB Has That No Competitor Can Match</h3>
+      <div class="stats stats--5">
+        <div class="stat stat--dark">
+          <div class="stat__number" style="font-size:22px;">Bobbi</div>
+          <div class="stat__label">Most Credible<br>Founder</div>
+        </div>
+        <div class="stat stat--accent">
+          <div class="stat__number">76K+</div>
+          <div class="stat__label">Reviews<br>(vs 4.8K-16K)</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">$21.59</div>
+          <div class="stat__label">Per oz Value<br>(2-8x More)</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number" style="font-size:18px;">Send a Selfie</div>
+          <div class="stat__label">Unique Human<br>Shade Match</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">4 Uses</div>
+          <div class="stat__label">Per Product<br>Versatility</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- .content -->
+</div><!-- #tab-research -->
+
+
+<!-- ======================================================================
+     TAB 2: STRATEGY
+     ====================================================================== -->
+<div class="tab-panel" id="tab-strategy">
+  <div class="content">
+
+    <div class="toc">
+      <div class="toc__title">In This Section</div>
+      <ul class="toc__list">
+        <li class="toc__item"><a href="#s-tension">Core Tension: Dashboard vs Storefront</a><span>Framework</span></li>
+        <li class="toc__item"><a href="#s-krd">Keep / Replace / Redesign Framework</a><span class="new-badge" style="margin-left:0">NEW</span></li>
+        <li class="toc__item"><a href="#s-architecture">Section Architecture</a><span>Blueprint</span></li>
+        <li class="toc__item"><a href="#s-priorities">Tier-Ranked Priorities</a><span>Decision Guide</span></li>
+      </ul>
+    </div>
+
+    <!-- ========== CORE TENSION ========== -->
+    <div class="section" id="s-tension">
+      <div class="section-num">Section 01</div>
+      <h2>Core Tension: Dashboard vs Storefront</h2>
+      <p class="lead">
+        The homepage must serve two fundamentally different jobs simultaneously. Returning customers want a <strong>dashboard</strong> (what's new, what's on sale, take me there fast). Prospects need a <strong>storefront</strong> (who are you, why should I trust you, help me discover).
+      </p>
+
+      <div class="balance-bar">
+        <div class="balance-bar__seg balance-bar__seg--both" style="width: 40%">Both Audiences</div>
+        <div class="balance-bar__seg balance-bar__seg--returning" style="width: 30%">Returning</div>
+        <div class="balance-bar__seg balance-bar__seg--prospects" style="width: 30%">Prospects</div>
+      </div>
+      <div class="balance-legend">
+        <div class="balance-legend__item"><div class="balance-legend__dot balance-legend__dot--both"></div> Shared: Products, promos, nav</div>
+        <div class="balance-legend__item"><div class="balance-legend__dot balance-legend__dot--returning"></div> Returning: New arrivals, Bobbi, restock</div>
+        <div class="balance-legend__item"><div class="balance-legend__dot balance-legend__dot--prospects"></div> Prospects: Trust, founder story, proof</div>
+      </div>
+
+      <div class="callout">
+        <h3 class="mt0">The Design Principle</h3>
+        <p>Sections that serve <strong>both</strong> audiences go above the fold. Sections that primarily serve one audience use progressive disclosure &mdash; returners get what they want quickly (products, nav), while prospects who scroll deeper find the proof they need (trust, founder, social proof).</p>
+        <p><strong>Trust signals benefit everyone.</strong> A trust bar doesn't slow down returners but dramatically helps prospects.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== KEEP/REPLACE/REDESIGN ========== -->
+    <div class="section" id="s-krd">
+      <div class="section-num">Section 02</div>
+      <h2>Keep / Replace / Redesign Framework <span class="new-badge">NEW</span></h2>
+      <p class="lead">
+        Every current homepage section evaluated against three data sources: heatmap engagement, Typeform priority rankings, and ListenLabs findings. Decisions are evidence-based, not opinion-based.
+      </p>
+
+      <h3 style="color:#2e7d32">Keep</h3>
+
+      <div class="krd-card">
+        <div class="krd-card__action krd-card__action--keep">Keep</div>
+        <div>
+          <div class="krd-card__title">Announcement Bar</div>
+          <div class="krd-card__body">Hottest above-fold element on the heatmap. Clear product CTA + urgency drives immediate action. 81.3% rank promos in top-3 priority.</div>
+          <div class="krd-card__evidence"><strong>Heatmap:</strong> Hot | <strong>Typeform:</strong> 81.3% top-3 | <strong>ListenLabs:</strong> 12% notice promos first</div>
+        </div>
+      </div>
+
+      <div class="krd-card">
+        <div class="krd-card__action krd-card__action--keep">Keep</div>
+        <div>
+          <div class="krd-card__title">Featured Products Position</div>
+          <div class="krd-card__body">Hottest section on the entire page. 63% of old ListenLabs study noticed it first. The #1 engagement zone across 205K sessions. <em>Keep position, test content</em> (current Featured vs New Arrivals vs Bestsellers).</div>
+          <div class="krd-card__evidence"><strong>Heatmap:</strong> Hottest | <strong>Typeform:</strong> 94.5% top-3 (new arrivals) | <strong>ListenLabs 2025:</strong> 63% first-scan attention</div>
+        </div>
+      </div>
+
+      <div class="krd-card">
+        <div class="krd-card__action krd-card__action--keep">Keep</div>
+        <div>
+          <div class="krd-card__title">Press Logo Bar</div>
+          <div class="krd-card__body">Near-zero clicks, but passive trust signals work subconsciously. The Allure badge on Miracle Balm gets notable clicks in heatmap &mdash; brand authority matters. JRB11 and JRB19 A/B tests both had 0 visitors, producing no usable data. <strong>No evidence to remove.</strong></div>
+          <div class="krd-card__evidence"><strong>Heatmap:</strong> Dead clicks, but no A/B data | <strong>Intelligems:</strong> JRB11 + JRB19 = 0 visitors | <strong>Note:</strong> Passive =/= useless</div>
+        </div>
+      </div>
+
+      <div class="krd-card">
+        <div class="krd-card__action krd-card__action--keep">Keep</div>
+        <div>
+          <div class="krd-card__title">Hero Section</div>
+          <div class="krd-card__body">Moderate engagement. 35% of N=51 notice hero/message clarity first. Scattered clicks on hero image itself. Keep but test hero variants (product-focused vs lifestyle vs Bobbi).</div>
+          <div class="krd-card__evidence"><strong>Heatmap:</strong> Moderate | <strong>ListenLabs N=51:</strong> 35% notice first | <strong>Action:</strong> Test variants</div>
+        </div>
+      </div>
+
+      <h3 style="color:#c62828">Replace</h3>
+
+      <div class="krd-card">
+        <div class="krd-card__action krd-card__action--replace">Replace</div>
+        <div>
+          <div class="krd-card__title">"Better Beauty" + "Clean Slate" Editorial Blocks &rarr; <strong>Trust Bar + Social Proof</strong></div>
+          <div class="krd-card__body">Confirmed dead zones. Almost zero engagement from 205K sessions. Editorial ranks dead last in Typeform (7.44/8). Replace with content that addresses the #1 and #2 trust builders: reviews (82%) and social proof (76%).</div>
+          <div class="krd-card__evidence"><strong>Heatmap:</strong> Dead | <strong>Typeform:</strong> 7.44/8 (last) | <strong>ListenLabs N=51:</strong> Reviews 82%, UGC 76% build confidence</div>
+        </div>
+      </div>
+
+      <div class="krd-card">
+        <div class="krd-card__action krd-card__action--replace">Replace</div>
+        <div>
+          <div class="krd-card__title">"Get the Look" Carousel &rarr; <strong>New Arrivals Grid</strong></div>
+          <div class="krd-card__body">Low engagement on heatmap. Carousel format underperforms on mobile. 0% of homepage demand is for "get the look." Meanwhile, 49.5% say New Arrivals is missing and 94.5% rank it top-3.</div>
+          <div class="krd-card__evidence"><strong>Heatmap:</strong> Cold | <strong>Typeform:</strong> 0% demand for looks, 49.5% want New Arrivals | <strong>ListenLabs:</strong> "What's new?" is universal ask</div>
+        </div>
+      </div>
+
+      <h3 style="color:#e65100">Redesign</h3>
+
+      <div class="krd-card">
+        <div class="krd-card__action krd-card__action--redesign">Redesign</div>
+        <div>
+          <div class="krd-card__title">Shop by Collection</div>
+          <div class="krd-card__body">Right intent, wrong execution. Category tabs get moderate clicks but collection cards below them are cold. 39.6% rank clear categories in top-3. Redesign with better card design, same taxonomy. Consider adding "Shop by Concern" alongside.</div>
+          <div class="krd-card__evidence"><strong>Heatmap:</strong> Tabs moderate, cards cold | <strong>Typeform:</strong> 39.6% top-3 | <strong>Gap:</strong> 39.6% want skin-concern organization</div>
+        </div>
+      </div>
+
+      <h3 style="color:#1565c0">Add</h3>
+
+      <div class="krd-card">
+        <div class="krd-card__action krd-card__action--add">Add</div>
+        <div>
+          <div class="krd-card__title">Bobbi Brown Founder Section</div>
+          <div class="krd-card__body">45.1% say Bobbi content is missing. 4.20/5 importance rating. 5/23 prospects can't identify what differentiates JRB. A focused two-column section (portrait + founder quote + credentials) replaces a dead zone. Not an editorial block &mdash; a differentiation engine.</div>
+          <div class="krd-card__evidence"><strong>Typeform:</strong> 45.1% missing, 4.20/5 | <strong>ListenLabs:</strong> 5/23 "Who is JRB?" | <strong>Advisory:</strong> "Bobbi bridges generations"</div>
+        </div>
+      </div>
+
+      <div class="krd-card">
+        <div class="krd-card__action krd-card__action--add">Add</div>
+        <div>
+          <div class="krd-card__title">Shop by Concern</div>
+          <div class="krd-card__body">39.6% say skin-type/concern organization is missing. 83.3% of 35-44 cohort and 53.3% of Researchers want it. Serves both navigation (find products for MY concern) and education for prospects who don't know the catalog.</div>
+          <div class="krd-card__evidence"><strong>Typeform:</strong> 39.6% missing | <strong>By segment:</strong> 83.3% of 35-44, 53.3% of Researchers | <strong>Competitive:</strong> All competitors organize by concern</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== SECTION ARCHITECTURE ========== -->
+    <div class="section" id="s-architecture">
+      <div class="section-num">Section 03</div>
+      <h2>Proposed Section Architecture</h2>
+      <p class="lead">
+        Sections ordered by engagement data + priority ranking. Color-coded by primary audience served.
+      </p>
+
+      <div class="balance-legend" style="margin-bottom:24px">
+        <div class="balance-legend__item"><div class="balance-legend__dot balance-legend__dot--both"></div> Both audiences</div>
+        <div class="balance-legend__item"><div class="balance-legend__dot balance-legend__dot--returning"></div> Returning-focused</div>
+        <div class="balance-legend__item"><div class="balance-legend__dot balance-legend__dot--prospects"></div> Prospect-focused</div>
+      </div>
+
+      <div class="arch-card arch-card--t1">
+        <div class="arch-card__num">1</div>
+        <div>
+          <div class="arch-card__title">Announcement Bar</div>
+          <div class="arch-card__desc">Current promo/launch messaging. Keep as-is &mdash; it works.</div>
+          <div class="arch-card__tags"><span class="arch-card__tag tag--both">Both</span></div>
+        </div>
+        <div class="arch-card__tier tier--1">Tier 1</div>
+      </div>
+
+      <div class="arch-card arch-card--t1">
+        <div class="arch-card__num">2</div>
+        <div>
+          <div class="arch-card__title">Hero + Navigation</div>
+          <div class="arch-card__desc">Product-focused hero image + clear nav. Serve directed shoppers immediately.</div>
+          <div class="arch-card__tags"><span class="arch-card__tag tag--both">Both</span></div>
+        </div>
+        <div class="arch-card__tier tier--1">Tier 1</div>
+      </div>
+
+      <div class="arch-card arch-card--t1">
+        <div class="arch-card__num">3</div>
+        <div>
+          <div class="arch-card__title">Featured Products / New Arrivals</div>
+          <div class="arch-card__desc">Hottest zone on the page. Test: current Featured vs New Arrivals vs Bestsellers in this position. Product cards with ratings, prices, review counts.</div>
+          <div class="arch-card__tags">
+            <span class="arch-card__tag tag--both">Both</span>
+            <span class="arch-card__tag tag--returning">Returning</span>
+          </div>
+        </div>
+        <div class="arch-card__tier tier--1">Tier 1</div>
+      </div>
+
+      <div class="arch-card arch-card--t1">
+        <div class="arch-card__num">4</div>
+        <div>
+          <div class="arch-card__title">Trust Bar</div>
+          <div class="arch-card__desc">"76,000+ Reviews &middot; Free Shipping $55+ &middot; Free Returns &middot; Clean Formula &middot; Founded by Bobbi Brown." Compact horizontal strip. Replaces editorial dead zone.</div>
+          <div class="arch-card__tags"><span class="arch-card__tag tag--prospects">Prospects</span><span class="arch-card__tag tag--both">Both</span></div>
+        </div>
+        <div class="arch-card__tier tier--1">Tier 1</div>
+      </div>
+
+      <div class="arch-card arch-card--t1">
+        <div class="arch-card__num">5</div>
+        <div>
+          <div class="arch-card__title">Press Logo Bar</div>
+          <div class="arch-card__desc">Vogue, WSJ, Allure logos. Passive trust. Keep until A/B tested.</div>
+          <div class="arch-card__tags"><span class="arch-card__tag tag--prospects">Prospects</span></div>
+        </div>
+        <div class="arch-card__tier tier--1">Tier 1</div>
+      </div>
+
+      <div class="arch-card arch-card--t2">
+        <div class="arch-card__num">6</div>
+        <div>
+          <div class="arch-card__title">Social Proof Section</div>
+          <div class="arch-card__desc">76K+ reviews, 4.3 avg rating, 80% recommend stats + 3 mini review quotes. Replaces "Better Beauty"/"Clean Slate" editorial blocks.</div>
+          <div class="arch-card__tags"><span class="arch-card__tag tag--prospects">Prospects</span><span class="arch-card__tag tag--both">Both</span></div>
+        </div>
+        <div class="arch-card__tier tier--2">Tier 2</div>
+      </div>
+
+      <div class="arch-card arch-card--t2">
+        <div class="arch-card__num">7</div>
+        <div>
+          <div class="arch-card__title">Shop by Collection (Redesigned)</div>
+          <div class="arch-card__desc">Better card design, same category taxonomy. Tabs that feel clickable, cards with product previews.</div>
+          <div class="arch-card__tags"><span class="arch-card__tag tag--both">Both</span></div>
+        </div>
+        <div class="arch-card__tier tier--2">Tier 2</div>
+      </div>
+
+      <div class="arch-card arch-card--t2">
+        <div class="arch-card__num">8</div>
+        <div>
+          <div class="arch-card__title">Bobbi Brown Founder Section</div>
+          <div class="arch-card__desc">Two-column: square portrait + founder quote + "Why I started Jones Road" + credentials. Concise and purposeful &mdash; not editorial fluff.</div>
+          <div class="arch-card__tags">
+            <span class="arch-card__tag tag--prospects">Prospects</span>
+            <span class="arch-card__tag tag--returning">Returning</span>
+          </div>
+        </div>
+        <div class="arch-card__tier tier--2">Tier 2</div>
+      </div>
+
+      <div class="arch-card arch-card--t2">
+        <div class="arch-card__num">9</div>
+        <div>
+          <div class="arch-card__title">New Arrivals Grid</div>
+          <div class="arch-card__desc">4-product grid with images, ratings, prices, review counts, featured review quote. Replaces "Get the Look" dead zone.</div>
+          <div class="arch-card__tags"><span class="arch-card__tag tag--returning">Returning</span><span class="arch-card__tag tag--both">Both</span></div>
+        </div>
+        <div class="arch-card__tier tier--2">Tier 2</div>
+      </div>
+
+      <div class="arch-card arch-card--t3">
+        <div class="arch-card__num">10</div>
+        <div>
+          <div class="arch-card__title">Shop by Concern</div>
+          <div class="arch-card__desc">Interactive section: Fine Lines, Dry Skin, Redness, Uneven Texture. Serves researchers and prospects who don't know the catalog.</div>
+          <div class="arch-card__tags"><span class="arch-card__tag tag--prospects">Prospects</span></div>
+        </div>
+        <div class="arch-card__tier tier--3">Tier 3</div>
+      </div>
+
+      <div class="arch-card arch-card--t3">
+        <div class="arch-card__num">11</div>
+        <div>
+          <div class="arch-card__title">Bestsellers Grid</div>
+          <div class="arch-card__desc">Matching the New Arrivals pattern. 34.1% top-3 ranking. Especially important for new visitors who don't know the catalog.</div>
+          <div class="arch-card__tags"><span class="arch-card__tag tag--both">Both</span></div>
+        </div>
+        <div class="arch-card__tier tier--3">Tier 3</div>
+      </div>
+
+      <div class="arch-card arch-card--t3">
+        <div class="arch-card__num">12</div>
+        <div>
+          <div class="arch-card__title">GWP Banner</div>
+          <div class="arch-card__desc">Gift-with-purchase or current promotion banner. Promotional but product-focused.</div>
+          <div class="arch-card__tags"><span class="arch-card__tag tag--returning">Returning</span></div>
+        </div>
+        <div class="arch-card__tier tier--3">Tier 3</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== TIER-RANKED PRIORITIES ========== -->
+    <div class="section" id="s-priorities">
+      <div class="section-num">Section 04</div>
+      <h2>Tier-Ranked Priorities</h2>
+
+      <h3>Tier 1: Non-Negotiable</h3>
+      <ul class="bullet">
+        <li><strong>New Arrivals section:</strong> 94.5% top-3 priority. 49.5% say it's missing. 63.3% of 65+ demand it. The single highest-demand element.</li>
+        <li><strong>Clear product categories:</strong> 37.4% first action = nav. 39.6% top-3 ranking. Fix the confusing nav (22% friction).</li>
+        <li><strong>Visible promotions:</strong> 81.3% top-3. Promo bar works &mdash; heatmap confirms it's the hottest above-fold element.</li>
+        <li><strong>Trust signals for first-time visitors:</strong> Reviews (82% of N=51), return policy (55%), ingredient transparency (73%). Currently invisible on homepage.</li>
+      </ul>
+
+      <h3>Tier 2: High Priority</h3>
+      <ul class="bullet">
+        <li><strong>Bobbi Brown integration:</strong> 45.1% missing. 4.20/5 importance. But integrate purposefully, not as editorial fluff.</li>
+        <li><strong>Shop by Concern:</strong> 39.6% missing. 53.3% of Researchers want it.</li>
+        <li><strong>Age-diverse imagery:</strong> 18-reaction top comment. 46% of old ListenLabs want it. 65+ least satisfied.</li>
+        <li><strong>Bestsellers display:</strong> 34.1% top-3. 31.9% first action. Social proof + discovery for both audiences.</li>
+      </ul>
+
+      <h3>Tier 3: Supporting</h3>
+      <ul class="bullet">
+        <li><strong>Product demo videos:</strong> 27.5% missing. Quality over quantity.</li>
+        <li><strong>"Where to start" guide:</strong> 16.5% missing. Curated entry for first-timers.</li>
+        <li><strong>Shade finder access (contextual):</strong> 17.6% want it easier to find. But not as homepage hero.</li>
+      </ul>
+
+      <h3>Tier 4: Do NOT Prioritize</h3>
+      <ul class="bullet">
+        <li><strong>Editorial / brand story sections:</strong> Dead last (7.44/8). Zero heatmap engagement. Kill these.</li>
+        <li><strong>Quiz as homepage hero:</strong> 0% first action. 6.6% top-3. Move to nav link + PDP.</li>
+        <li><strong>Heavy discount emphasis:</strong> 2.2% first action = look for sales.</li>
+      </ul>
+    </div>
+
+  </div><!-- .content -->
+</div><!-- #tab-strategy -->
+
+
+<!-- ======================================================================
+     TAB 3: TEST PLAN
+     ====================================================================== -->
+<div class="tab-panel" id="tab-testplan">
+  <div class="content">
+
+    <div class="toc">
+      <div class="toc__title">In This Section</div>
+      <ul class="toc__list">
+        <li class="toc__item"><a href="#t-approach">Testing Approach</a><span>Convertibles Stack</span></li>
+        <li class="toc__item"><a href="#t-variations">Variation Details</a><span>Control + V1-V4</span></li>
+        <li class="toc__item"><a href="#t-featured">Key Question: Featured Products Slot</a><span>Within-Test</span></li>
+        <li class="toc__item"><a href="#t-outcomes">Outcome Interpretation</a><span>6 Scenarios</span></li>
+        <li class="toc__item"><a href="#t-implementation">Implementation Notes</a><span>Technical</span></li>
+        <li class="toc__item"><a href="#t-risks">Risk Mitigation</a><span>Safety Plan</span></li>
+        <li class="toc__item"><a href="#t-segments">Segment Analysis Plan</a><span>Analytics</span></li>
+        <li class="toc__item"><a href="#t-timeline">Timeline</a><span>Estimate</span></li>
+      </ul>
+    </div>
+
+    <!-- ========== APPROACH ========== -->
+    <div class="section" id="t-approach">
+      <div class="section-num">Section 01</div>
+      <h2>Testing Approach: Progressive Convertibles Stack</h2>
+      <p class="lead">
+        Each variation <strong>adds</strong> to the previous one, creating a cumulative stack. This lets us isolate the incremental value of each new element while measuring the compounding effect of the full redesign.
+      </p>
+
+      <div class="callout">
+        <h3 class="mt0">Why Progressive Stacking?</h3>
+        <ul>
+          <li><strong>Isolates incremental value:</strong> If V2 beats V1, we know the trust bar + social proof specifically drove the lift</li>
+          <li><strong>Answers the compounding question:</strong> Does the full experience (V4) compound, or do V1-V3 capture most of the value?</li>
+          <li><strong>De-risks implementation:</strong> If V1 alone wins, ship V1 without building V2-V4</li>
+          <li><strong>Informed by heatmap:</strong> We're replacing confirmed dead zones (editorial, Get the Look) with evidence-backed alternatives</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== VARIATIONS ========== -->
+    <div class="section" id="t-variations">
+      <div class="section-num">Section 02</div>
+      <h2>Variation Details</h2>
+
+      <!-- CONTROL -->
+      <div class="var-card var-card--control">
+        <div class="var-card__header">
+          <div class="var-card__badge">Control</div>
+          <div class="var-card__title">Current Homepage (As-Is)</div>
+        </div>
+        <div class="var-card__desc">
+          The existing homepage in its current state: hero, Featured Products, press bar, Shop by Collection, editorial blocks ("Better Beauty," "Clean Slate"), "Get the Look" carousel, Bobbi section, footer.
+        </div>
+        <div class="var-card__learn"><strong>Baseline:</strong> All variations measured against current performance. Revenue per session is the primary metric.</div>
+      </div>
+
+      <!-- V1 -->
+      <div class="var-card var-card--v1">
+        <div class="var-card__header">
+          <div class="var-card__badge">V1</div>
+          <div class="var-card__title">+ New Arrivals (Replacing Get the Look Dead Zone)</div>
+        </div>
+        <div class="var-card__desc">
+          The lowest-risk, highest-demand change. Replace the "Get the Look" carousel (confirmed cold on heatmap) with a "New at Jones Road" product grid.
+        </div>
+        <ul class="var-card__changes">
+          <li class="remove">"Get the Look" carousel removed</li>
+          <li>"New at Jones Road" 4-product grid added in its place</li>
+          <li>Product cards with images, star ratings, prices, review counts</li>
+          <li>Featured review quote beneath each product card</li>
+          <li>Products: Miracle Balm, Lip Recharge, WTF, Eyeshadow Stick</li>
+        </ul>
+        <div class="var-card__learn"><strong>What we learn:</strong> Does surfacing new products in a known dead zone drive more engagement and revenue? Tests the #1 customer demand (49.5% say New Arrivals is missing) against the status quo.</div>
+      </div>
+
+      <!-- V2 -->
+      <div class="var-card var-card--v2">
+        <div class="var-card__header">
+          <div class="var-card__badge">V2</div>
+          <div class="var-card__title">V1 + Trust Bar + Social Proof (Replacing Editorial Dead Zones)</div>
+        </div>
+        <div class="var-card__desc">
+          Everything in V1, plus confidence-building elements replacing the dead editorial blocks. Addresses the #1 trust builder (reviews, 82%) and the #2 trust builder (UGC/social proof, 76%).
+        </div>
+        <ul class="var-card__changes">
+          <li>Everything in V1</li>
+          <li class="remove">"Better Beauty" editorial block removed</li>
+          <li class="remove">"Clean Slate" editorial block removed</li>
+          <li>Trust bar added near top: "76,000+ Reviews &middot; Free Shipping $55+ &middot; Free Returns &middot; Clean Formula &middot; Founded by Bobbi Brown"</li>
+          <li>Social proof section: aggregate stats (76K reviews, 4.3 avg, 80% recommend) + 3 mini review quotes</li>
+        </ul>
+        <div class="var-card__learn"><strong>What we learn:</strong> Do trust signals help conversion? Does replacing dead editorial content (zero heatmap engagement) with proof points lift revenue? Particularly important for prospect conversion.</div>
+      </div>
+
+      <!-- V3 -->
+      <div class="var-card var-card--v3">
+        <div class="var-card__header">
+          <div class="var-card__badge">V3</div>
+          <div class="var-card__title">V2 + Bobbi Brown Founder Section</div>
+        </div>
+        <div class="var-card__desc">
+          Everything in V2, plus a focused founder section. Tests whether Bobbi's presence on the homepage adds incremental conversion lift beyond trust signals.
+        </div>
+        <ul class="var-card__changes">
+          <li>Everything in V2</li>
+          <li>Two-column Bobbi section: square portrait + founder quote about why she started JRB</li>
+          <li>Credentials: "Bobbi Brown &mdash; legendary makeup artist, bestselling author, founder of Bobbi Brown Cosmetics"</li>
+          <li>Placed in or near the existing Bobbi section position, redesigned for more focus</li>
+        </ul>
+        <div class="var-card__learn"><strong>What we learn:</strong> Does Bobbi's presence on the homepage add incremental lift beyond V2? 45.1% say Bobbi content is missing and 4.20/5 rate her importance &mdash; but does this translate to revenue, or is it purely brand-building?</div>
+      </div>
+
+      <!-- V4 -->
+      <div class="var-card var-card--v4">
+        <div class="var-card__header">
+          <div class="var-card__badge">V4</div>
+          <div class="var-card__title">V3 + Redesigned Collections + Shop by Concern (Full Redesign)</div>
+        </div>
+        <div class="var-card__desc">
+          The complete vision. Everything in V3, plus redesigned navigation sections and new browsing pathways. Tests whether the full experience compounds or whether V1-V3 capture most of the value.
+        </div>
+        <ul class="var-card__changes">
+          <li>Everything in V3</li>
+          <li>Redesigned Shop by Collection cards (better design, same taxonomy)</li>
+          <li>New "Shop by Concern" interactive section (Fine Lines, Dry Skin, Redness, Uneven Texture)</li>
+          <li>Improved Bestsellers grid matching the New Arrivals pattern</li>
+          <li>GWP banner section</li>
+        </ul>
+        <div class="var-card__learn"><strong>What we learn:</strong> Does the full experience compound, or do V1-V3 capture most of the value? If V4 wins marginally over V3, it may not be worth the dev investment. If V4 wins big, the full redesign is justified.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== KEY QUESTION ========== -->
+    <div class="section" id="t-featured">
+      <div class="section-num">Section 03</div>
+      <h2>Key Question: What Goes in the Featured Products Slot?</h2>
+      <p class="lead">
+        The Featured Products position is the single hottest spot on the homepage. What we put there matters enormously.
+      </p>
+
+      <div class="callout">
+        <h3 class="mt0">The Dilemma</h3>
+        <p>Three candidates for the hottest slot:</p>
+        <ul>
+          <li><strong>Current Featured Products</strong> &mdash; currently drives the most engagement</li>
+          <li><strong>New Arrivals</strong> &mdash; #1 customer demand (94.5% top-3)</li>
+          <li><strong>Bestsellers</strong> &mdash; safest for prospects (social proof baked in)</li>
+        </ul>
+        <p><strong>Recommendation:</strong> In V1, test New Arrivals in the hot Featured Products position. In V2+, keep Featured Products in the hot position and add New Arrivals as a separate section lower on the page. This tests whether New Arrivals in the prime position outperforms the current curation, while V2+ tests New Arrivals as an additive section.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== OUTCOME INTERPRETATION ========== -->
+    <div class="section" id="t-outcomes">
+      <div class="section-num">Section 04</div>
+      <h2>Outcome Interpretation</h2>
+      <p class="lead">Six scenarios and what they tell us.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:180px">Scenario</th>
+              <th>What It Means</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>V1 wins, V2-V4 flat</strong></td>
+              <td>New Arrivals alone captures most of the value. Trust signals and redesign are nice-to-have but don't drive incremental revenue.</td>
+              <td>Ship V1. Deprioritize trust/redesign work. Focus on keeping New Arrivals fresh and dynamic.</td>
+            </tr>
+            <tr>
+              <td><strong>V2 wins, V3-V4 flat</strong></td>
+              <td>Trust bar + social proof + New Arrivals is the sweet spot. Bobbi section and full redesign don't add incremental revenue.</td>
+              <td>Ship V2. Bobbi is brand-building only (keep for equity, don't prioritize for conversion). Full redesign not needed.</td>
+            </tr>
+            <tr>
+              <td><strong>V3 wins, V4 flat</strong></td>
+              <td>Bobbi adds measurable lift. The full redesign (collections + concern nav) doesn't compound further.</td>
+              <td>Ship V3. Bobbi IS a conversion lever, not just brand. Skip the expensive collections/concern redesign.</td>
+            </tr>
+            <tr>
+              <td><strong>V4 wins biggest</strong></td>
+              <td>The full experience compounds. Each element builds on the previous. The whole is greater than the sum of parts.</td>
+              <td>Ship V4. The investment in the full redesign is justified. The homepage was significantly under-optimized.</td>
+            </tr>
+            <tr>
+              <td><strong>Control wins</strong></td>
+              <td>Stated preference does not equal revealed preference. Customers say they want these changes but don't respond to them with their wallets.</td>
+              <td>Re-examine assumptions. Look at segment-level data (new vs returning may diverge). Consider execution quality as a confound.</td>
+            </tr>
+            <tr>
+              <td><strong>Results vary by segment</strong></td>
+              <td>New visitors may prefer V2-V4 (trust signals help), while returners prefer V1 (they just want products). Or mobile vs desktop may diverge.</td>
+              <td>Consider personalized experiences: V2+ for prospects, V1 for returners. Or device-specific optimizations.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== IMPLEMENTATION NOTES ========== -->
+    <div class="section" id="t-implementation">
+      <div class="section-num">Section 05</div>
+      <h2>Implementation Notes</h2>
+
+      <h3>Platform</h3>
+      <p>Run via <strong>Intelligems Convertibles</strong> (homepage A/B testing tool). Convertibles supports content injection and section-level manipulation without requiring theme changes for each variant.</p>
+
+      <h3>Traffic Allocation</h3>
+      <ul class="bullet">
+        <li><strong>Control:</strong> 20%</li>
+        <li><strong>V1:</strong> 20%</li>
+        <li><strong>V2:</strong> 20%</li>
+        <li><strong>V3:</strong> 20%</li>
+        <li><strong>V4:</strong> 20%</li>
+      </ul>
+
+      <h3>Primary Metric</h3>
+      <p><strong>Revenue per session.</strong> Secondary: conversion rate, AOV, add-to-cart rate, bounce rate.</p>
+
+      <h3>Sample Size</h3>
+      <p>With ~205K mobile sessions over 12 days (heatmap data period), we get ~17K sessions/day. At 20% allocation per variant, that's ~3.4K sessions/day/variant. To detect a 5% lift at 95% confidence (assuming 2% base conversion rate), we need approximately <strong>15K sessions per variant</strong>, or about <strong>5 days of traffic</strong>. Run for a minimum of <strong>14 days</strong> to capture full weekly cycles.</p>
+
+      <h3>Build Requirements by Variation</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Variation</th>
+              <th>New Sections</th>
+              <th>Est. Build Effort</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>V1</strong></td>
+              <td>New Arrivals product grid (replacing Get the Look)</td>
+              <td>1-2 days</td>
+            </tr>
+            <tr>
+              <td><strong>V2</strong></td>
+              <td>Trust bar + social proof section (replacing editorial blocks)</td>
+              <td>1-2 days incremental</td>
+            </tr>
+            <tr>
+              <td><strong>V3</strong></td>
+              <td>Bobbi founder section (two-column redesign)</td>
+              <td>1 day incremental</td>
+            </tr>
+            <tr>
+              <td><strong>V4</strong></td>
+              <td>Redesigned collection cards + Shop by Concern + Bestsellers grid + GWP banner</td>
+              <td>3-5 days incremental</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== RISK MITIGATION ========== -->
+    <div class="section" id="t-risks">
+      <div class="section-num">Section 06</div>
+      <h2>Risk Mitigation</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Risk</th>
+              <th>Probability</th>
+              <th>Mitigation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Novelty effect</strong> &mdash; new content gets temporary attention that fades</td>
+              <td>Medium</td>
+              <td>Run for 3-4 weeks minimum. Compare week 1 vs weeks 3-4 performance.</td>
+            </tr>
+            <tr>
+              <td><strong>Execution quality confound</strong> &mdash; poor design of new sections masks concept value</td>
+              <td>Medium</td>
+              <td>Build to production quality, not prototype quality. QA across devices. Have design review before launch.</td>
+            </tr>
+            <tr>
+              <td><strong>Page load impact</strong> &mdash; additional sections slow page</td>
+              <td>Low-Medium</td>
+              <td>Lazy-load below-fold sections. Monitor Core Web Vitals throughout test. Use Convertibles' built-in injection (no full page rebuilds).</td>
+            </tr>
+            <tr>
+              <td><strong>Interaction effects</strong> &mdash; V4 results are confounded by too many changes</td>
+              <td>Medium</td>
+              <td>The progressive stack design handles this &mdash; V4 is just V3 + more. If V3 wins and V4 is flat, we know the additional elements didn't help.</td>
+            </tr>
+            <tr>
+              <td><strong>Segment masking</strong> &mdash; aggregate results hide segment-level divergence</td>
+              <td>High</td>
+              <td>Pre-define segments before launch (see Segment Analysis Plan). Analyze new vs returning separately.</td>
+            </tr>
+            <tr>
+              <td><strong>Holiday/promo interference</strong></td>
+              <td>Low</td>
+              <td>Check promotional calendar before launch. Avoid overlapping with major site-wide sales events.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== SEGMENT ANALYSIS ========== -->
+    <div class="section" id="t-segments">
+      <div class="section-num">Section 07</div>
+      <h2>Segment Analysis Plan</h2>
+      <p class="lead">Pre-define all segments before launch. Do not mine for segments after the fact.</p>
+
+      <h3>Primary Segments</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Segment</th>
+              <th>Why It Matters</th>
+              <th>Expected Behavior</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>New vs Returning visitors</strong></td>
+              <td>The core tension (dashboard vs storefront). Trust signals in V2-V3 should help new visitors more.</td>
+              <td>New visitors: higher lift in V2+. Returning: highest lift in V1.</td>
+            </tr>
+            <tr>
+              <td><strong>Mobile vs Desktop</strong></td>
+              <td>70% of traffic is mobile. Layout changes impact mobile differently. Desktop users are more likely to look for bestsellers/new (53.8%).</td>
+              <td>Mobile: trust bar matters more (less screen to evaluate trust). Desktop: products-first matters more.</td>
+            </tr>
+            <tr>
+              <td><strong>Direct vs Paid vs Organic</strong></td>
+              <td>Direct traffic is mostly returning customers. Paid traffic is mostly prospects. Organic is mixed.</td>
+              <td>Paid traffic: higher lift in V2-V4 (these visitors need the most convincing).</td>
+            </tr>
+            <tr>
+              <td><strong>Landing page: homepage vs other</strong></td>
+              <td>Only homepage-entry sessions should be analyzed. Visitors who enter on PDP and navigate to homepage have different intent.</td>
+              <td>Homepage-first sessions are the clean signal. Filter out PDP-first navigation.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Secondary Segments (Directional Only)</h3>
+      <ul class="bullet">
+        <li><strong>AOV buckets:</strong> Do trust signals increase AOV for first-time buyers?</li>
+        <li><strong>Product category purchased:</strong> Does New Arrivals prominence change the product mix?</li>
+        <li><strong>Session depth:</strong> Do V2-V4 visitors view more pages (proof of exploration)?</li>
+        <li><strong>Time on page:</strong> Does the redesign increase or decrease homepage dwell time?</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ========== TIMELINE ========== -->
+    <div class="section" id="t-timeline">
+      <div class="section-num">Section 08</div>
+      <h2>Timeline Estimate</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Phase</th>
+              <th>Duration</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Design + Build V1</strong></td>
+              <td>3-4 days</td>
+              <td>New Arrivals grid. Design review. QA across devices. Convertibles setup.</td>
+            </tr>
+            <tr>
+              <td><strong>Build V2-V3</strong></td>
+              <td>3-4 days</td>
+              <td>Trust bar, social proof section, Bobbi section. Can build in parallel.</td>
+            </tr>
+            <tr>
+              <td><strong>Build V4</strong></td>
+              <td>4-5 days</td>
+              <td>Collection card redesign, Shop by Concern, Bestsellers grid, GWP banner. Most complex variation.</td>
+            </tr>
+            <tr>
+              <td><strong>QA + Staging</strong></td>
+              <td>2-3 days</td>
+              <td>Cross-device testing. Performance monitoring. Convertibles traffic split verification.</td>
+            </tr>
+            <tr>
+              <td><strong>Test Run</strong></td>
+              <td>14-28 days</td>
+              <td>Minimum 14 days for statistical significance. 28 days preferred for weekly cycle coverage and novelty fade.</td>
+            </tr>
+            <tr>
+              <td><strong>Analysis + Decision</strong></td>
+              <td>3-5 days</td>
+              <td>Segment analysis. Confidence interval review. Business decision + implementation plan.</td>
+            </tr>
+            <tr>
+              <td style="border-top: 2px solid #1a1a1a;"><strong>Total</strong></td>
+              <td style="border-top: 2px solid #1a1a1a;"><strong>4-7 weeks</strong></td>
+              <td style="border-top: 2px solid #1a1a1a;">From build start to decision. Can launch V1 earlier if V2-V4 build takes longer.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <h3 class="mt0">Option: Staged Launch</h3>
+        <p>If the full 5-way test is too complex to build simultaneously, consider launching in two phases:</p>
+        <ul>
+          <li><strong>Phase 1:</strong> Control vs V1 vs V2 (2-3 weeks). Quick to build, answers the highest-priority questions.</li>
+          <li><strong>Phase 2:</strong> Winning variation vs V3 vs V4 (2-3 weeks). Only build V3-V4 if Phase 1 shows a winner.</li>
+        </ul>
+        <p>This reduces upfront build effort by ~50% while still getting to the same answer.</p>
+      </div>
+    </div>
+
+  </div><!-- .content -->
+</div><!-- #tab-testplan -->
+
+
+<!-- ===== TAB SWITCHING JS ===== -->
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>

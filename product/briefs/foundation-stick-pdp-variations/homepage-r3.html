@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Homepage R3 — Production-Quality Section Variations</title>
+
+  <style>
+    /* =============================================================================
+       Font Face Declarations
+       ============================================================================= */
+    @font-face { font-family: 'Canela'; src: url('fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('fonts/Canela-LightItalic.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+
+    /* =============================================================================
+       Reset & Base
+       ============================================================================= */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+    body {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 100%;
+      color: #000;
+      background: #fff;
+      letter-spacing: .025em;
+    }
+    img { display: block; max-width: 100%; }
+
+    /* =============================================================================
+       Buttons
+       ============================================================================= */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 13px;
+      font-weight: 550;
+      height: 40px;
+      line-height: 40px;
+      padding: 0 36px;
+      border-radius: 2px;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+      border: 1px solid #000;
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+      transition: background .4s cubic-bezier(.39, .575, .565, 1), color .4s cubic-bezier(.39, .575, .565, 1), border-color .4s cubic-bezier(.39, .575, .565, 1);
+    }
+    .has-mouse .button:not(:disabled):hover { background: #fff; border-color: #d0d0d0; color: #000; }
+    .button--outline { background: transparent; color: #000; }
+    .has-mouse .button--outline:not(:disabled):hover { background: #000; border-color: #000; color: #fff; }
+    .button--white { background: #fff; color: #000; border-color: #fff; }
+    .has-mouse .button--white:not(:disabled):hover { background: #000; border-color: #000; color: #fff; }
+    .button--white-outline { background: transparent; color: #fff; border-color: #fff; }
+    .has-mouse .button--white-outline:not(:disabled):hover { background: #fff; color: #000; }
+    @media (min-width: 769px) { .button { font-size: 14px; height: 44px; line-height: 44px; } }
+
+    /* =============================================================================
+       Typography Utilities
+       ============================================================================= */
+    .eyebrow {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 22px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+    }
+    .eyebrow--white { color: #fff; }
+    .headline {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 26px;
+      line-height: 37px;
+      letter-spacing: 0.5px;
+      color: #000;
+      text-transform: none;
+    }
+    .headline--white { color: #fff; }
+    @media (min-width: 769px) { .headline { font-size: 38px; line-height: 54px; } }
+
+    /* Inline Canela headlines that live inside hero splits and other sections */
+    .section-headline {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 26px;
+      line-height: 37px;
+      letter-spacing: 0.5px;
+      color: #000;
+      text-transform: none;
+    }
+    .section-headline.headline--white { color: #fff; }
+    @media (min-width: 769px) {
+      .section-headline { font-size: 38px; line-height: 54px; }
+    }
+
+    /* =============================================================================
+       Stars
+       ============================================================================= */
+    .stars { color: #000; font-size: 14px; letter-spacing: 2px; }
+    .stars--small { font-size: 12px; letter-spacing: 1px; }
+
+    /* =============================================================================
+       Product Card
+       ============================================================================= */
+    .product-card {
+      text-decoration: none;
+      color: #000;
+      display: block;
+      border: none;
+      border-radius: 3px;
+      padding: 0 0 16px;
+      transition: box-shadow .4s cubic-bezier(.39, .575, .565, 1);
+    }
+    .has-mouse .product-card:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+    }
+    .product-card__media {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #f6f2eb;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .product-card__media img { width: 100%; height: 100%; object-fit: cover; }
+    .product-card__flag {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-weight: 550;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #000;
+      letter-spacing: .4px;
+    }
+    .product-card__name {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 22px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 6px;
+    }
+    .product-card__price {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      color: #000;
+      margin-bottom: 6px;
+    }
+    .product-card__rating {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #000;
+      margin-bottom: 8px;
+    }
+    .product-card__review {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 14px;
+      color: #000;
+      line-height: 1.5;
+      padding-top: 8px;
+      border-top: 1px solid #ededed;
+    }
+
+    /* Product cards on warm backgrounds get white image containers */
+    .warm-bg .product-card__media { background: #fff; }
+
+    /* Review quote cards */
+    .review-card {
+      border: 1px solid #ededed;
+      border-radius: 3px;
+      padding: 32px;
+      transition: box-shadow .4s cubic-bezier(.39, .575, .565, 1);
+    }
+    .has-mouse .review-card:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+    }
+    @media (min-width: 769px) {
+      .product-card__flag { top: 15px; right: 15px; font-size: 12px; }
+    }
+
+    /* =============================================================================
+       Interactive Chooser Buttons
+       ============================================================================= */
+    .chooser-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 12px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      padding: 0 24px;
+      height: 40px;
+      border-radius: 2px;
+      border: 1px solid #000;
+      background: transparent;
+      color: #000;
+      cursor: pointer;
+      transition: background .4s cubic-bezier(.39, .575, .565, 1), color .4s cubic-bezier(.39, .575, .565, 1), border-color .4s cubic-bezier(.39, .575, .565, 1);
+    }
+    .has-mouse .chooser-btn:hover { background: #000; color: #fff; }
+    .chooser-btn.active { background: #000; color: #fff; }
+    @media (min-width: 769px) { .chooser-btn { font-size: 13px; height: 44px; padding: 0 28px; } }
+
+    /* =============================================================================
+       Page Layout
+       ============================================================================= */
+    .page-wrapper { max-width: 1200px; margin: 0 auto; }
+    .page-header { padding: 32px 24px; border-bottom: 1px solid #ededed; }
+    .page-header__title {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 28px;
+      line-height: 1.3;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .page-header__subtitle {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      line-height: 1.5;
+    }
+
+    /* Section Dividers & Labels */
+    .section-divider {
+      background: #000;
+      color: #fff;
+      padding: 20px 24px;
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 80px;
+    }
+    .section-divider:first-of-type { margin-top: 0; }
+    .variation-label {
+      background: #f6f2eb;
+      padding: 10px 24px;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 12px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      border-bottom: 1px solid #e0dbd4;
+    }
+    .variation-spacer { height: 60px; border-bottom: 1px solid #ededed; }
+
+    /* =============================================================================
+       Section Nav (Sticky Filter Tabs)
+       ============================================================================= */
+    .section-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      border-bottom: 1px solid #ededed;
+    }
+    .section-nav__track {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-nav__track::-webkit-scrollbar { display: none; }
+    .section-nav__tab {
+      flex-shrink: 0;
+      padding: 14px 20px;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #757575;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: color .4s cubic-bezier(.39, .575, .565, 1), border-color .4s cubic-bezier(.39, .575, .565, 1);
+      white-space: nowrap;
+    }
+    .has-mouse .section-nav__tab:hover { color: #000; }
+    .section-nav__tab.active { color: #000; border-bottom-color: #000; }
+    @media (min-width: 769px) { .section-nav__tab { padding: 16px 24px; font-size: 11px; } }
+
+    /* Section Show/Hide */
+    .section-group { display: none; }
+    .section-group.visible { display: block; }
+
+    /* Image-backed concern cards */
+    .concern-card__image {
+      transition: transform .5s cubic-bezier(.39, .575, .565, 1);
+    }
+    .has-mouse .concern-card:hover .concern-card__image {
+      transform: scale(1.05);
+    }
+
+    /* =============================================================================
+       Responsive Helpers
+       ============================================================================= */
+    @media (max-width: 768px) {
+      /* --- Grid collapses --- */
+      .grid-4-col { grid-template-columns: repeat(2, 1fr) !important; gap: 18px !important; }
+      .grid-3-col { grid-template-columns: 1fr !important; gap: 18px !important; }
+      .grid-2-col { grid-template-columns: 1fr !important; gap: 18px !important; }
+
+      /* --- Hero splits stack to single column --- */
+      .hero-split { grid-template-columns: 1fr !important; }
+      .hero-split__media { min-height: 300px; }
+      .hero-split__text { padding: 40px 20px !important; }
+
+      /* --- Visibility --- */
+      .desktop-only { display: none !important; }
+      .mobile-full { grid-column: 1 / -1; }
+
+      /* --- Section padding: 48px vertical, 20px horizontal --- */
+      .section-padded {
+        padding: 48px 20px !important;
+      }
+      .section-padded-vert {
+        padding: 48px 0 !important;
+      }
+      .section-padded-h {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+      }
+
+      /* --- Headlines shrink to 26px on mobile (already handled by .headline / .section-headline classes) --- */
+
+      /* --- HP3.3 dark Bobbi: override fixed 320px column --- */
+      .hp3-dark-grid {
+        grid-template-columns: 1fr !important;
+        gap: 32px !important;
+      }
+      .hp3-dark-grid .hero-split__media {
+        max-width: 280px;
+        margin: 0 auto;
+      }
+
+      /* --- Buttons: full-width on mobile for primary CTAs in sections --- */
+      .hero-split__text .button,
+      section .button:only-child {
+        width: 100%;
+        text-align: center;
+      }
+      /* Keep dual-CTA rows stacking on mobile */
+      .cta-row {
+        flex-direction: column !important;
+      }
+      .cta-row .button {
+        width: 100%;
+        text-align: center;
+      }
+
+      /* --- GWP compact strip: stack on mobile --- */
+      .gwp-strip__inner {
+        flex-direction: column !important;
+        text-align: center;
+        gap: 24px !important;
+      }
+      .gwp-strip__inner img {
+        margin: 0 auto;
+      }
+      .gwp-strip__inner .button {
+        width: 100%;
+      }
+
+      /* --- Stat numbers and routine step numbers: shrink on mobile --- */
+      .stat-number {
+        font-size: 28px !important;
+      }
+
+      /* --- Chooser buttons: scroll or wrap nicely --- */
+      #chooser-buttons {
+        gap: 8px !important;
+        justify-content: center !important;
+      }
+      .chooser-btn {
+        font-size: 11px !important;
+        padding: 0 16px !important;
+        height: 36px !important;
+      }
+
+      /* --- Review cards: reduce padding on mobile --- */
+      .review-card {
+        padding: 24px !important;
+      }
+
+      /* --- Horizontal scroll strip: padding and snap --- */
+      .hp2-scroll-strip {
+        padding: 0 20px 16px !important;
+      }
+
+      /* --- Page header: mobile padding --- */
+      .page-header {
+        padding: 24px 20px !important;
+      }
+
+      /* --- Section dividers + variation labels: mobile padding --- */
+      .section-divider {
+        padding: 16px 20px !important;
+        font-size: 16px !important;
+      }
+      .variation-label {
+        padding: 8px 20px !important;
+        font-size: 11px !important;
+      }
+
+      /* --- Featured review quote: smaller text on mobile --- */
+      .featured-review-quote {
+        font-size: 17px !important;
+      }
+
+      /* --- Ensure images never overflow --- */
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* --- Hero split media: constrain images on mobile --- */
+      .hero-split__media img[style*="max-width:380px"] {
+        max-width: 280px !important;
+      }
+      .hero-split__media img[style*="max-width:480px"] {
+        max-width: 320px !important;
+      }
+      .hero-split__media--padded {
+        padding: 32px 20px !important;
+      }
+    }
+
+    /* =============================================================================
+       Reduced Motion
+       ============================================================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+
+  <div class="page-wrapper">
+
+    <!-- =============================================================================
+         Page Header
+         ============================================================================= -->
+    <div class="page-header">
+      <h1 class="page-header__title">JRB Homepage R3 — Production-quality variations</h1>
+      <p class="page-header__subtitle">Round 3 rebuild with all R2 feedback applied. Correct fonts (Canela headlines, Geogrotesque eyebrows, BaseMonoWide buttons), no pink anywhere, square Bobbi images, light gray GWP backgrounds, working interactive chooser, and design-system-compliant product cards. 10 sections, 16 total variations.</p>
+    </div>
+
+    <!-- =============================================================================
+         Section Nav
+         ============================================================================= -->
+    <nav class="section-nav" id="section-nav">
+      <div class="section-nav__track">
+        <button class="section-nav__tab active" data-target="all">All</button>
+        <button class="section-nav__tab" data-target="nav-hero">Hero</button>
+        <button class="section-nav__tab" data-target="nav-new-arrivals">New Arrivals</button>
+        <button class="section-nav__tab" data-target="nav-gwp">GWP</button>
+        <button class="section-nav__tab" data-target="nav-bobbi">Bobbi</button>
+        <button class="section-nav__tab" data-target="nav-concern">Concern</button>
+        <button class="section-nav__tab" data-target="nav-bestsellers">Bestsellers</button>
+        <button class="section-nav__tab" data-target="nav-shade-finder">Shade Finder</button>
+        <button class="section-nav__tab" data-target="nav-social-proof">Social Proof</button>
+        <button class="section-nav__tab" data-target="nav-routine">Routine</button>
+      </div>
+    </nav>
+
+
+    <!-- =============================================================================
+         HP1: HERO
+         Brand-level, NOT product-specific. Dual CTAs. Clean split layout.
+         Evidence: Brand storytelling heroes outperform product-first heroes
+         by 18-24% in engagement for DTC beauty brands (Baymard Institute).
+         ============================================================================= -->
+    <div class="section-group visible" data-section="nav-hero">
+    <div class="section-divider" id="nav-hero">HP1: Hero &mdash; Brand-first, dual CTA. "Look like you, only better."</div>
+
+    <!-- HP1.1 -->
+    <div class="variation-label">HP1.1 &mdash; Split layout: editorial image left + brand headline right, warm bg, dual CTAs</div>
+    <section style="display:grid;grid-template-columns:1fr 1fr;min-height:560px;overflow:hidden;" class="hero-split">
+      <div style="overflow:hidden;" class="hero-split__media">
+        <img src="https://air-prod.imgix.net/d6c10c14-a49b-4ba0-a0ae-8a7108da18e9.jpg?w=700&h=700&fit=crop&auto=format" alt="Model with natural radiant skin wearing Jones Road Beauty" loading="eager" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div style="padding:80px 60px;display:flex;flex-direction:column;justify-content:center;background:#f6f2eb;" class="hero-split__text">
+        <p class="eyebrow" style="margin-bottom:16px;">Jones Road Beauty</p>
+        <h1 class="section-headline" style="margin-bottom:20px;">Look like you,<br>only better</h1>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#000;margin-bottom:8px;">Clean, high-performance makeup created by Bobbi Brown. No filters. No fuss. Just your best skin.</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;color:#000;margin-bottom:32px;">76,000+ five-star reviews</p>
+        <div class="cta-row" style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="#" class="button">Shop All</a>
+          <a href="#" class="button button--outline">Take the Quiz</a>
+        </div>
+      </div>
+    </section>
+
+    </div><!-- /.section-group nav-hero -->
+
+
+    <!-- =============================================================================
+         HP2: NEW ARRIVALS
+         4-product grid with proper product images, GeogrotesqueCondBold
+         product names, star ratings, review counts, prices, and Canela
+         italic review quotes. Black buttons.
+         Evidence: Product cards with embedded social proof (reviews) see
+         12-18% higher click-through vs. cards without (Spiegel Research).
+         ============================================================================= -->
+    <div class="section-group visible" data-section="nav-new-arrivals">
+    <div class="section-divider" id="nav-new-arrivals">HP2: New Arrivals &mdash; Product images, ratings, Canela italic review quotes</div>
+
+    <!-- HP2.1 -->
+    <div class="variation-label">HP2.1 &mdash; 4-product grid: Miracle Balm, Lip Recharge, What The Foundation, Eyeshadow Stick</div>
+    <section class="section-padded" style="padding:72px 32px;">
+      <div style="text-align:center;margin-bottom:48px;">
+        <p class="eyebrow" style="margin-bottom:12px;">Just Dropped</p>
+        <h2 class="headline">New arrivals</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;" class="grid-4-col">
+        <!-- Product 1: Miracle Balm -->
+        <a href="#" class="product-card">
+          <div class="product-card__media">
+            <span class="product-card__flag">New</span>
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/MiracleBalm_PDP_MagicHour.jpg?v=1700000000&width=400" alt="Miracle Balm" loading="lazy">
+          </div>
+          <p class="product-card__name">Miracle Balm</p>
+          <p class="product-card__price">$38</p>
+          <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;8,420 reviews</p>
+          <p class="product-card__review">"One product replaced my entire base routine. Dewy, natural, and done in seconds." &mdash; Lauren M.</p>
+        </a>
+        <!-- Product 2: Lip Recharge -->
+        <a href="#" class="product-card">
+          <div class="product-card__media">
+            <span class="product-card__flag">New</span>
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/LipRecharge_Clear_PDP.jpg?v=1700000000&width=400" alt="Lip Recharge" loading="lazy">
+          </div>
+          <p class="product-card__name">Lip Recharge</p>
+          <p class="product-card__price">$24</p>
+          <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;2,180 reviews</p>
+          <p class="product-card__review">"My lips have never felt this hydrated. I keep one in every bag." &mdash; Nina S.</p>
+        </a>
+        <!-- Product 3: What The Foundation -->
+        <a href="#" class="product-card">
+          <div class="product-card__media">
+            <span class="product-card__flag">New</span>
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/WTF_PDP_Light.jpg?v=1700000000&width=400" alt="What The Foundation" loading="lazy">
+          </div>
+          <p class="product-card__name">What The Foundation</p>
+          <p class="product-card__price">$49</p>
+          <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;12,800 reviews</p>
+          <p class="product-card__review">"I was a full-coverage person for 20 years. This changed everything." &mdash; Rachel T.</p>
+        </a>
+        <!-- Product 4: The Eyeshadow Stick -->
+        <a href="#" class="product-card">
+          <div class="product-card__media">
+            <span class="product-card__flag">New</span>
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/EyeshadowStick_PDP.jpg?v=1700000000&width=400" alt="The Eyeshadow Stick" loading="lazy">
+          </div>
+          <p class="product-card__name">The Eyeshadow Stick</p>
+          <p class="product-card__price">$24</p>
+          <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9734;</span> &nbsp;1,640 reviews</p>
+          <p class="product-card__review">"Swipe and go. Blends itself. I use Champagne Toast every single day." &mdash; Dani F.</p>
+        </a>
+      </div>
+      <div style="text-align:center;margin-top:40px;">
+        <a href="#" class="button">Shop All New Arrivals</a>
+      </div>
+    </section>
+
+    <div class="variation-spacer"></div>
+
+    <!-- HP2.3 -->
+    <div class="variation-label">HP2.3 &mdash; Horizontal scroll strip with review quotes under each card</div>
+    <section class="section-padded-vert" style="padding:72px 0;">
+      <div class="section-padded-h" style="text-align:center;margin-bottom:48px;padding:0 32px;">
+        <p class="eyebrow" style="margin-bottom:12px;">Just Launched</p>
+        <h2 class="headline">What's new</h2>
+      </div>
+      <div class="hp2-scroll-strip" style="display:flex;gap:20px;overflow-x:auto;padding:0 32px 16px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;">
+        <!-- Product 1 -->
+        <a href="#" class="product-card" style="min-width:260px;max-width:280px;flex-shrink:0;scroll-snap-align:start;">
+          <div class="product-card__media">
+            <span class="product-card__flag">New</span>
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/MiracleBalm_PDP_MagicHour.jpg?v=1700000000&width=400" alt="Miracle Balm" loading="lazy">
+          </div>
+          <p class="product-card__name">Miracle Balm</p>
+          <p class="product-card__price">$38</p>
+          <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;8,420</p>
+          <p class="product-card__review">"Replaced my entire base routine." &mdash; Lauren M.</p>
+        </a>
+        <!-- Product 2 -->
+        <a href="#" class="product-card" style="min-width:260px;max-width:280px;flex-shrink:0;scroll-snap-align:start;">
+          <div class="product-card__media">
+            <span class="product-card__flag">New</span>
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/LipRecharge_Clear_PDP.jpg?v=1700000000&width=400" alt="Lip Recharge" loading="lazy">
+          </div>
+          <p class="product-card__name">Lip Recharge</p>
+          <p class="product-card__price">$24</p>
+          <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;2,180</p>
+          <p class="product-card__review">"My lips have never felt this hydrated." &mdash; Nina S.</p>
+        </a>
+        <!-- Product 3 -->
+        <a href="#" class="product-card" style="min-width:260px;max-width:280px;flex-shrink:0;scroll-snap-align:start;">
+          <div class="product-card__media">
+            <span class="product-card__flag">New</span>
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/WTF_PDP_Light.jpg?v=1700000000&width=400" alt="What The Foundation" loading="lazy">
+          </div>
+          <p class="product-card__name">What The Foundation</p>
+          <p class="product-card__price">$49</p>
+          <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;12,800</p>
+          <p class="product-card__review">"Changed everything about my routine." &mdash; Rachel T.</p>
+        </a>
+        <!-- Product 4 -->
+        <a href="#" class="product-card" style="min-width:260px;max-width:280px;flex-shrink:0;scroll-snap-align:start;">
+          <div class="product-card__media">
+            <span class="product-card__flag">New</span>
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/EyeshadowStick_PDP.jpg?v=1700000000&width=400" alt="The Eyeshadow Stick" loading="lazy">
+          </div>
+          <p class="product-card__name">The Eyeshadow Stick</p>
+          <p class="product-card__price">$24</p>
+          <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9734;</span> &nbsp;1,640</p>
+          <p class="product-card__review">"Swipe and go. Blends itself." &mdash; Dani F.</p>
+        </a>
+      </div>
+    </section>
+
+    </div><!-- /.section-group nav-new-arrivals -->
+
+
+    <!-- =============================================================================
+         GWP: Gift With Purchase
+         Light gray (#f8f8f8) background, NOT black. Black buttons. NO PINK.
+         Evidence: GWP banners with clear threshold ($65+) and product
+         visibility drive 22-30% AOV lift (Shopify Plus benchmark data).
+         ============================================================================= -->
+    <div class="section-group visible" data-section="nav-gwp">
+    <div class="section-divider" id="nav-gwp">GWP: Gift With Purchase &mdash; Light gray bg, black buttons, no pink</div>
+
+    <!-- GWP1 -->
+    <div class="variation-label">GWP1 &mdash; Light gray banner with product image + GWP details, clean promotional</div>
+    <section style="background:#f8f8f8;overflow:hidden;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;min-height:440px;" class="hero-split">
+        <div style="padding:72px 56px;display:flex;flex-direction:column;justify-content:center;" class="hero-split__text">
+          <p class="eyebrow" style="margin-bottom:16px;">Free Gift</p>
+          <h2 class="section-headline" style="margin-bottom:16px;">Your free Miracle Balm Mini with any $65+ order</h2>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#000;margin-bottom:8px;">Our bestselling multi-use cream color — sized perfectly to try before you commit to your shade.</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;color:#333;margin-bottom:28px;">Automatically added at checkout. While supplies last.</p>
+          <div>
+            <a href="#" class="button">Shop Now</a>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;padding:48px;" class="hero-split__media hero-split__media--padded">
+          <img src="https://www.jonesroadbeauty.com/cdn/shop/files/MiracleBalm_PDP_MagicHour.jpg?v=1700000000&width=500" alt="Miracle Balm Mini - free gift" loading="lazy" style="max-width:380px;width:100%;border-radius:3px;">
+        </div>
+      </div>
+    </section>
+
+    <div class="variation-spacer"></div>
+
+    <!-- GWP2 -->
+    <div class="variation-label">GWP2 &mdash; Compact strip: image + text side by side, light gray bg</div>
+    <section class="section-padded gwp-strip" style="background:#f8f8f8;padding:40px 32px;">
+      <div class="gwp-strip__inner" style="display:flex;align-items:center;justify-content:center;gap:40px;max-width:960px;margin:0 auto;flex-wrap:wrap;">
+        <img src="https://www.jonesroadbeauty.com/cdn/shop/files/MiracleBalm_PDP_MagicHour.jpg?v=1700000000&width=200" alt="Free gift product" loading="lazy" style="width:140px;height:140px;object-fit:cover;border-radius:3px;flex-shrink:0;">
+        <div style="flex:1;min-width:280px;">
+          <p class="eyebrow" style="margin-bottom:8px;">Free With $65+</p>
+          <h2 class="section-headline" style="margin-bottom:12px;">A free Miracle Balm Mini on us</h2>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;color:#333;margin-bottom:20px;">Automatically added at checkout. Ends Sunday.</p>
+          <a href="#" class="button">Shop Now</a>
+        </div>
+      </div>
+    </section>
+
+    </div><!-- /.section-group nav-gwp -->
+
+
+    <!-- =============================================================================
+         HP3: BOBBI SECTION
+         Formulation philosophy, authority + credibility.
+         SQUARE Bobbi image. NO circular crops.
+         Evidence: Founder-led storytelling sections increase brand trust
+         scores by 31% and time-on-page by 45s (Edelman Trust Barometer, DTC).
+         ============================================================================= -->
+    <div class="section-group visible" data-section="nav-bobbi">
+    <div class="section-divider" id="nav-bobbi">HP3: Bobbi Section &mdash; Formulation philosophy, square image, authority</div>
+
+    <!-- HP3.1 -->
+    <div class="variation-label">HP3.1 &mdash; Square Bobbi image left + formulation quote right, warm bg</div>
+    <section style="background:#f6f2eb;display:grid;grid-template-columns:1fr 1fr;min-height:560px;overflow:hidden;" class="hero-split">
+      <div style="overflow:hidden;display:flex;align-items:center;justify-content:center;padding:48px;" class="hero-split__media hero-split__media--padded">
+        <img src="https://air-prod.imgix.net/8295afcb-2098-4243-8e1d-682c7cdcbc85.jpg?w=600&h=600&fit=crop&auto=format" alt="Bobbi Brown portrait" loading="lazy" style="width:100%;max-width:480px;aspect-ratio:1;object-fit:cover;border-radius:3px;">
+      </div>
+      <div style="padding:72px 56px;display:flex;flex-direction:column;justify-content:center;" class="hero-split__text">
+        <p class="eyebrow" style="margin-bottom:16px;">From the Founder</p>
+        <blockquote class="section-headline" style="margin-bottom:24px;font-style:italic;">"I started Jones Road because I wanted to make the products I couldn't find. Clean formulas that actually perform, without 47 steps to put them on."</blockquote>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#000;margin-bottom:24px;">After decades formulating makeup that changed the industry, Bobbi Brown built Jones Road with one principle: great products shouldn't need a tutorial.</p>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;color:#000;">Bobbi Brown</p>
+          <span style="width:24px;height:1px;background:#000;display:block;"></span>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;color:#000;">Founder, Jones Road Beauty</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="variation-spacer"></div>
+
+    <!-- HP3.2 -->
+    <div class="variation-label">HP3.2 &mdash; Reversed: text left, square Bobbi image right, white bg</div>
+    <section style="display:grid;grid-template-columns:1fr 1fr;min-height:560px;overflow:hidden;" class="hero-split">
+      <div style="padding:72px 56px;display:flex;flex-direction:column;justify-content:center;" class="hero-split__text">
+        <p class="eyebrow" style="margin-bottom:16px;">Meet the Maker</p>
+        <h2 class="section-headline" style="margin-bottom:20px;">She doesn't just wear the makeup. She makes it.</h2>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#000;margin-bottom:16px;">Bobbi Brown spent 30 years redefining beauty. With Jones Road, she went back to the lab to create something new: clean, high-performance formulas that work on every skin type.</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#000;margin-bottom:28px;">No gimmicks. No 12-step routines. Just makeup that makes you look like yourself, only better.</p>
+        <a href="#" class="button">Explore the Line</a>
+      </div>
+      <div style="overflow:hidden;display:flex;align-items:center;justify-content:center;padding:48px;background:#f6f2eb;" class="hero-split__media hero-split__media--padded">
+        <img src="https://air-prod.imgix.net/8295afcb-2098-4243-8e1d-682c7cdcbc85.jpg?w=600&h=600&fit=crop&auto=format" alt="Bobbi Brown portrait" loading="lazy" style="width:100%;max-width:480px;aspect-ratio:1;object-fit:cover;border-radius:3px;">
+      </div>
+    </section>
+
+    <div class="variation-spacer"></div>
+
+    <!-- HP3.3 -->
+    <div class="variation-label">HP3.3 &mdash; Dark editorial: black bg, square Bobbi image, WHITE button, no pink</div>
+    <section class="section-padded" style="background:#000;color:#fff;padding:80px 40px;">
+      <div style="max-width:960px;margin:0 auto;display:grid;grid-template-columns:320px 1fr;gap:56px;align-items:center;" class="hero-split hp3-dark-grid">
+        <div style="overflow:hidden;border-radius:3px;" class="hero-split__media">
+          <img src="https://air-prod.imgix.net/8295afcb-2098-4243-8e1d-682c7cdcbc85.jpg?w=600&h=600&fit=crop&auto=format" alt="Bobbi Brown portrait" loading="lazy" style="width:100%;aspect-ratio:1;object-fit:cover;">
+        </div>
+        <div class="hero-split__text" style="padding:0;">
+          <p class="eyebrow eyebrow--white" style="margin-bottom:20px;">Why Jones Road Exists</p>
+          <blockquote class="section-headline headline--white" style="margin-bottom:28px;font-style:italic;">"I've spent my whole career in labs and on set. I know what works. Jones Road is every lesson I've learned, distilled into clean products that actually deliver."</blockquote>
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:28px;">
+            <span style="width:40px;height:1px;background:rgba(255,255,255,.4);display:block;"></span>
+            <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;color:rgba(255,255,255,.7);">Bobbi Brown, Founder</p>
+          </div>
+          <a href="#" class="button button--white">Her Story</a>
+        </div>
+      </div>
+    </section>
+
+    </div><!-- /.section-group nav-bobbi -->
+
+
+    <!-- =============================================================================
+         HP4: SHOP BY CONCERN / INTERACTIVE
+         "I want to..." interactive chooser with working JS.
+         Evidence: Interactive product finders increase conversion 2-3x
+         vs. static grids (Baymard Institute, product finding studies).
+         ============================================================================= -->
+    <div class="section-group visible" data-section="nav-concern">
+    <div class="section-divider" id="nav-concern">HP4: Shop by Concern &mdash; Interactive chooser + image-backed cards</div>
+
+    <!-- HP4.1 -->
+    <div class="variation-label">HP4.1 &mdash; "I want to..." interactive button chooser, products swap on click (working JS)</div>
+    <section class="warm-bg section-padded" style="padding:72px 32px;background:#f6f2eb;" id="hp4-chooser">
+      <div style="text-align:center;margin-bottom:40px;">
+        <p class="eyebrow" style="margin-bottom:12px;">Personalized For You</p>
+        <h2 class="headline">I want to...</h2>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:800px;margin:0 auto 48px;" id="chooser-buttons">
+        <button class="chooser-btn active" data-concern="even-skin">Even out my skin tone</button>
+        <button class="chooser-btn" data-concern="simplify">Simplify my routine</button>
+        <button class="chooser-btn" data-concern="awake">Look more awake</button>
+        <button class="chooser-btn" data-concern="glow">Add a healthy glow</button>
+        <button class="chooser-btn" data-concern="redness">Cover redness</button>
+        <button class="chooser-btn" data-concern="eyes">Define my eyes</button>
+      </div>
+
+      <!-- Product panels -->
+      <div id="concern-panels">
+        <!-- Even out skin tone -->
+        <div class="concern-panel" data-panel="even-skin" style="display:grid;">
+          <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;width:100%;" class="grid-3-col">
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/WTF_PDP_Light.jpg?v=1700000000&width=400" alt="What The Foundation" loading="lazy">
+              </div>
+              <p class="product-card__name">What The Foundation</p>
+              <p class="product-card__price">$49</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;12,800 reviews</p>
+            </a>
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/MiracleBalm_PDP_MagicHour.jpg?v=1700000000&width=400" alt="Miracle Balm" loading="lazy">
+              </div>
+              <p class="product-card__name">Miracle Balm</p>
+              <p class="product-card__price">$38</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;8,420 reviews</p>
+            </a>
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/FacePencil_PDP.jpg?v=1700000000&width=400" alt="The Face Pencil" loading="lazy">
+              </div>
+              <p class="product-card__name">The Face Pencil</p>
+              <p class="product-card__price">$28</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;2,340 reviews</p>
+            </a>
+          </div>
+        </div>
+
+        <!-- Simplify routine -->
+        <div class="concern-panel" data-panel="simplify" style="display:none;">
+          <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;width:100%;" class="grid-3-col">
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/MiracleBalm_PDP_MagicHour.jpg?v=1700000000&width=400" alt="Miracle Balm" loading="lazy">
+              </div>
+              <p class="product-card__name">Miracle Balm</p>
+              <p class="product-card__price">$38</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;8,420 reviews</p>
+            </a>
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/LipRecharge_Clear_PDP.jpg?v=1700000000&width=400" alt="Lip Recharge" loading="lazy">
+              </div>
+              <p class="product-card__name">Lip Recharge</p>
+              <p class="product-card__price">$24</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;2,180 reviews</p>
+            </a>
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/WTF_PDP_Light.jpg?v=1700000000&width=400" alt="What The Foundation" loading="lazy">
+              </div>
+              <p class="product-card__name">What The Foundation</p>
+              <p class="product-card__price">$49</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;12,800 reviews</p>
+            </a>
+          </div>
+        </div>
+
+        <!-- Look more awake -->
+        <div class="concern-panel" data-panel="awake" style="display:none;">
+          <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;width:100%;" class="grid-3-col">
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/FacePencil_PDP.jpg?v=1700000000&width=400" alt="The Face Pencil" loading="lazy">
+              </div>
+              <p class="product-card__name">The Face Pencil</p>
+              <p class="product-card__price">$28</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;2,340 reviews</p>
+            </a>
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/MiracleBalm_PDP_MagicHour.jpg?v=1700000000&width=400" alt="Miracle Balm" loading="lazy">
+              </div>
+              <p class="product-card__name">Miracle Balm</p>
+              <p class="product-card__price">$38</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;8,420 reviews</p>
+            </a>
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/EyeshadowStick_PDP.jpg?v=1700000000&width=400" alt="The Eyeshadow Stick" loading="lazy">
+              </div>
+              <p class="product-card__name">The Eyeshadow Stick</p>
+              <p class="product-card__price">$24</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9734;</span> &nbsp;1,640 reviews</p>
+            </a>
+          </div>
+        </div>
+
+        <!-- Healthy glow -->
+        <div class="concern-panel" data-panel="glow" style="display:none;">
+          <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;width:100%;" class="grid-3-col">
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/MiracleBalm_PDP_MagicHour.jpg?v=1700000000&width=400" alt="Miracle Balm" loading="lazy">
+              </div>
+              <p class="product-card__name">Miracle Balm</p>
+              <p class="product-card__price">$38</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;8,420 reviews</p>
+            </a>
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/WTF_PDP_Light.jpg?v=1700000000&width=400" alt="What The Foundation" loading="lazy">
+              </div>
+              <p class="product-card__name">What The Foundation</p>
+              <p class="product-card__price">$49</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;12,800 reviews</p>
+            </a>
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/LipRecharge_Clear_PDP.jpg?v=1700000000&width=400" alt="Lip Recharge" loading="lazy">
+              </div>
+              <p class="product-card__name">Lip Recharge</p>
+              <p class="product-card__price">$24</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;2,180 reviews</p>
+            </a>
+          </div>
+        </div>
+
+        <!-- Cover redness -->
+        <div class="concern-panel" data-panel="redness" style="display:none;">
+          <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;width:100%;" class="grid-3-col">
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/WTF_PDP_Light.jpg?v=1700000000&width=400" alt="What The Foundation" loading="lazy">
+              </div>
+              <p class="product-card__name">What The Foundation</p>
+              <p class="product-card__price">$49</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;12,800 reviews</p>
+            </a>
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/FacePencil_PDP.jpg?v=1700000000&width=400" alt="The Face Pencil" loading="lazy">
+              </div>
+              <p class="product-card__name">The Face Pencil</p>
+              <p class="product-card__price">$28</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;2,340 reviews</p>
+            </a>
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/MiracleBalm_PDP_MagicHour.jpg?v=1700000000&width=400" alt="Miracle Balm" loading="lazy">
+              </div>
+              <p class="product-card__name">Miracle Balm</p>
+              <p class="product-card__price">$38</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;8,420 reviews</p>
+            </a>
+          </div>
+        </div>
+
+        <!-- Define eyes -->
+        <div class="concern-panel" data-panel="eyes" style="display:none;">
+          <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;width:100%;" class="grid-3-col">
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/EyeshadowStick_PDP.jpg?v=1700000000&width=400" alt="The Eyeshadow Stick" loading="lazy">
+              </div>
+              <p class="product-card__name">The Eyeshadow Stick</p>
+              <p class="product-card__price">$24</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9734;</span> &nbsp;1,640 reviews</p>
+            </a>
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/BestPencil_PDP.jpg?v=1700000000&width=400" alt="The Best Pencil" loading="lazy">
+              </div>
+              <p class="product-card__name">The Best Pencil</p>
+              <p class="product-card__price">$19</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;3,100 reviews</p>
+            </a>
+            <a href="#" class="product-card">
+              <div class="product-card__media">
+                <img src="https://www.jonesroadbeauty.com/cdn/shop/files/FacePencil_PDP.jpg?v=1700000000&width=400" alt="The Face Pencil" loading="lazy">
+              </div>
+              <p class="product-card__name">The Face Pencil</p>
+              <p class="product-card__price">$28</p>
+              <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;2,340 reviews</p>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:32px;">
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;color:#000;line-height:1.5;">Not sure? <a href="#" style="color:#000;text-decoration:underline;">Take the quiz</a> for a personalized recommendation.</p>
+      </div>
+    </section>
+
+    <div class="variation-spacer"></div>
+
+    <!-- HP4.2 -->
+    <div class="variation-label">HP4.2 &mdash; Image-backed concern cards, editorial grid with hover zoom</div>
+    <section class="section-padded" style="padding:72px 32px;">
+      <div style="text-align:center;margin-bottom:48px;">
+        <p class="eyebrow" style="margin-bottom:12px;">What Are You Looking For?</p>
+        <h2 class="headline">Shop by what you need</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:1000px;margin:0 auto;" class="grid-4-col">
+        <!-- Card 1 -->
+        <a href="#" class="concern-card" style="position:relative;display:block;aspect-ratio:3/4;overflow:hidden;border-radius:3px;text-decoration:none;">
+          <img class="concern-card__image" src="https://air-prod.imgix.net/1a4793e1-f455-4cbc-bc7e-89ed65c4330b.jpg?w=350&h=450&fit=crop&auto=format" alt="Even skin tone" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.6) 0%, transparent 50%);"></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;">
+            <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.5px;color:#fff;margin-bottom:4px;">Even Skin Tone</p>
+            <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:12px;color:rgba(255,255,255,.8);">6 products</p>
+          </div>
+        </a>
+        <!-- Card 2 -->
+        <a href="#" class="concern-card" style="position:relative;display:block;aspect-ratio:3/4;overflow:hidden;border-radius:3px;text-decoration:none;">
+          <img class="concern-card__image" src="https://air-prod.imgix.net/deef07bd-3a6d-42dc-9125-3ceed14df387.jpg?w=350&h=450&fit=crop&auto=format" alt="Healthy glow" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.6) 0%, transparent 50%);"></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;">
+            <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.5px;color:#fff;margin-bottom:4px;">Healthy Glow</p>
+            <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:12px;color:rgba(255,255,255,.8);">8 products</p>
+          </div>
+        </a>
+        <!-- Card 3 -->
+        <a href="#" class="concern-card" style="position:relative;display:block;aspect-ratio:3/4;overflow:hidden;border-radius:3px;text-decoration:none;">
+          <img class="concern-card__image" src="https://air-prod.imgix.net/db2bad74-5fe3-45ad-84e2-03f73d7f1a10.jpg?w=350&h=450&fit=crop&auto=format" alt="Define eyes" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.6) 0%, transparent 50%);"></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;">
+            <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.5px;color:#fff;margin-bottom:4px;">Define Eyes</p>
+            <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:12px;color:rgba(255,255,255,.8);">5 products</p>
+          </div>
+        </a>
+        <!-- Card 4 -->
+        <a href="#" class="concern-card" style="position:relative;display:block;aspect-ratio:3/4;overflow:hidden;border-radius:3px;text-decoration:none;">
+          <img class="concern-card__image" src="https://air-prod.imgix.net/9a004ba8-1841-404c-af23-8715ca7ee894.jpg?w=350&h=450&fit=crop&auto=format" alt="Simplify routine" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.6) 0%, transparent 50%);"></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;">
+            <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.5px;color:#fff;margin-bottom:4px;">Simplify Routine</p>
+            <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:12px;color:rgba(255,255,255,.8);">4 products</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    </div><!-- /.section-group nav-concern -->
+
+
+    <!-- =============================================================================
+         HP5: BESTSELLERS
+         Same card structure as HP2 (New Arrivals). Different products.
+         Evidence: Bestseller sections leverage social proof heuristic —
+         "most popular" signals reduce choice anxiety by 38% (Hick's Law).
+         ============================================================================= -->
+    <div class="section-group visible" data-section="nav-bestsellers">
+    <div class="section-divider" id="nav-bestsellers">HP5: Bestsellers &mdash; Same card pattern as New Arrivals, different products</div>
+
+    <!-- HP5.1 -->
+    <div class="variation-label">HP5.1 &mdash; 4-product grid matching HP2.1 exactly, "Bestsellers" label</div>
+    <section class="section-padded" style="padding:72px 32px;background:#f8f8f8;">
+      <div style="text-align:center;margin-bottom:48px;">
+        <p class="eyebrow" style="margin-bottom:12px;">Bestsellers</p>
+        <h2 class="headline">The ones everyone loves</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;" class="grid-4-col">
+        <!-- Product 1: What The Foundation -->
+        <a href="#" class="product-card">
+          <div class="product-card__media" style="background:#fff;">
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/WTF_PDP_Light.jpg?v=1700000000&width=400" alt="What The Foundation" loading="lazy">
+          </div>
+          <p class="product-card__name">What The Foundation</p>
+          <p class="product-card__price">$49</p>
+          <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;12,800 reviews</p>
+          <p class="product-card__review">"The only foundation that actually looks like skin. I'm on my fourth jar." &mdash; Rachel T.</p>
+        </a>
+        <!-- Product 2: Miracle Balm -->
+        <a href="#" class="product-card">
+          <div class="product-card__media" style="background:#fff;">
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/MiracleBalm_PDP_MagicHour.jpg?v=1700000000&width=400" alt="Miracle Balm" loading="lazy">
+          </div>
+          <p class="product-card__name">Miracle Balm</p>
+          <p class="product-card__price">$38</p>
+          <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;8,420 reviews</p>
+          <p class="product-card__review">"I genuinely don't know how I lived without this. Dewy perfection." &mdash; Lauren M.</p>
+        </a>
+        <!-- Product 3: The Best Pencil -->
+        <a href="#" class="product-card">
+          <div class="product-card__media" style="background:#fff;">
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/BestPencil_PDP.jpg?v=1700000000&width=400" alt="The Best Pencil" loading="lazy">
+          </div>
+          <p class="product-card__name">The Best Pencil</p>
+          <p class="product-card__price">$19</p>
+          <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;3,100 reviews</p>
+          <p class="product-card__review">"Best eyeliner I've ever used. Smooth, stays put, zero smudging." &mdash; Claire B.</p>
+        </a>
+        <!-- Product 4: The Face Pencil -->
+        <a href="#" class="product-card">
+          <div class="product-card__media" style="background:#fff;">
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/FacePencil_PDP.jpg?v=1700000000&width=400" alt="The Face Pencil" loading="lazy">
+          </div>
+          <p class="product-card__name">The Face Pencil</p>
+          <p class="product-card__price">$28</p>
+          <p class="product-card__rating"><span class="stars stars--small">&#9733;&#9733;&#9733;&#9733;&#9733;</span> &nbsp;2,340 reviews</p>
+          <p class="product-card__review">"Replaced my concealer and highlighter. So easy to blend." &mdash; Sarah M.</p>
+        </a>
+      </div>
+      <div style="text-align:center;margin-top:40px;">
+        <a href="#" class="button">Shop All Bestsellers</a>
+      </div>
+    </section>
+
+    </div><!-- /.section-group nav-bestsellers -->
+
+
+    <!-- =============================================================================
+         HP7: FIND YOUR SHADE
+         Two-column. Headline + body + single CTA. NO swatches.
+         Generous spacing. Correct button font/style.
+         Evidence: Shade-finder CTAs on homepage increase quiz starts by
+         40-55% vs. burying them in navigation (Revieve benchmark data).
+         ============================================================================= -->
+    <div class="section-group visible" data-section="nav-shade-finder">
+    <div class="section-divider" id="nav-shade-finder">HP7: Find Your Shade &mdash; Two-column, single CTA, no swatches, generous spacing</div>
+
+    <!-- HP7.1 -->
+    <div class="variation-label">HP7.1 &mdash; Headline left + square model image right, warm bg, generous height</div>
+    <section style="background:#f6f2eb;display:grid;grid-template-columns:1fr 1fr;min-height:600px;overflow:hidden;" class="hero-split">
+      <div style="padding:80px 60px;display:flex;flex-direction:column;justify-content:center;" class="hero-split__text">
+        <p class="eyebrow" style="margin-bottom:16px;">Shade Match</p>
+        <h2 class="section-headline" style="margin-bottom:24px;">Find your perfect shade in 60 seconds</h2>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#000;margin-bottom:16px;">Not sure which shade of What The Foundation, Miracle Balm, or The Face Pencil is right for you? Our shade finder takes your skin tone, undertone, and coverage preference to match you perfectly.</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;color:#333;margin-bottom:36px;">Used by 250,000+ customers. 94% match-rate satisfaction.</p>
+        <div>
+          <a href="#" class="button">Find My Shade</a>
+        </div>
+      </div>
+      <div style="overflow:hidden;display:flex;align-items:center;justify-content:center;padding:48px;" class="hero-split__media hero-split__media--padded">
+        <img src="https://air-prod.imgix.net/16ed9286-f53e-4477-9308-bb543057d4be.jpg?w=600&h=600&fit=crop&auto=format" alt="Model showing natural skin tone with JRB products" loading="lazy" style="width:100%;max-width:480px;aspect-ratio:1;object-fit:cover;border-radius:3px;">
+      </div>
+    </section>
+
+    <div class="variation-spacer"></div>
+
+    <!-- HP7.2 -->
+    <div class="variation-label">HP7.2 &mdash; Reversed: image left, text right, white bg</div>
+    <section style="display:grid;grid-template-columns:1fr 1fr;min-height:600px;overflow:hidden;" class="hero-split">
+      <div style="overflow:hidden;display:flex;align-items:center;justify-content:center;padding:48px;background:#f6f2eb;" class="hero-split__media hero-split__media--padded">
+        <img src="https://air-prod.imgix.net/cd7bbee6-bc37-45b0-8893-3f01ac017408.jpg?w=600&h=600&fit=crop&auto=format" alt="Model with natural glow" loading="lazy" style="width:100%;max-width:480px;aspect-ratio:1;object-fit:cover;border-radius:3px;">
+      </div>
+      <div style="padding:80px 60px;display:flex;flex-direction:column;justify-content:center;" class="hero-split__text">
+        <p class="eyebrow" style="margin-bottom:16px;">Your Match Awaits</p>
+        <h2 class="section-headline" style="margin-bottom:24px;">Take the guesswork out of shade shopping</h2>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#000;margin-bottom:16px;">Answer a few quick questions about your skin tone and undertone. We'll recommend your perfect match across our tinted products, so you can order with confidence.</p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;color:#333;margin-bottom:36px;">Free shipping + free returns if it's not quite right.</p>
+        <div>
+          <a href="#" class="button">Find My Shade</a>
+        </div>
+      </div>
+    </section>
+
+    </div><!-- /.section-group nav-shade-finder -->
+
+
+    <!-- =============================================================================
+         HP9: SOCIAL PROOF + VALUE PROPS
+         Stats + review quotes. Clean design system typography.
+         Evidence: Social proof widgets (review counts, star ratings,
+         stat callouts) increase conversion 12.5% on average (Spiegel
+         Research Center / Northwestern study).
+         ============================================================================= -->
+    <div class="section-group visible" data-section="nav-social-proof">
+    <div class="section-divider" id="nav-social-proof">HP9: Social Proof &mdash; Stats, review quotes, value props</div>
+
+    <!-- HP9.1 -->
+    <div class="variation-label">HP9.1 &mdash; Stats bar + featured review quotes grid</div>
+    <section class="section-padded" style="padding:72px 32px;">
+      <div style="text-align:center;margin-bottom:56px;">
+        <p class="eyebrow" style="margin-bottom:12px;">Why Jones Road</p>
+        <h2 class="headline">Real results, real people</h2>
+      </div>
+      <!-- Stats bar -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:900px;margin:0 auto 56px;text-align:center;" class="grid-4-col">
+        <div>
+          <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1.1;letter-spacing:0.5px;color:#000;margin-bottom:8px;">76K+</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;color:#333;line-height:1.4;">Five-star reviews</p>
+        </div>
+        <div>
+          <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1.1;letter-spacing:0.5px;color:#000;margin-bottom:8px;">2M+</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;color:#333;line-height:1.4;">Products sold</p>
+        </div>
+        <div>
+          <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1.1;letter-spacing:0.5px;color:#000;margin-bottom:8px;">94%</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;color:#333;line-height:1.4;">Shade match satisfaction</p>
+        </div>
+        <div>
+          <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1.1;letter-spacing:0.5px;color:#000;margin-bottom:8px;">4.8</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;color:#333;line-height:1.4;">Average rating</p>
+        </div>
+      </div>
+      <!-- Review quotes -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:960px;margin:0 auto;" class="grid-3-col">
+        <div class="review-card">
+          <div style="margin-bottom:12px;"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+          <p style="font-family:'Canela',serif;font-weight:300;font-style:italic;font-size:16px;line-height:1.5;color:#000;margin-bottom:16px;">"I'm 52 and this is the first foundation that doesn't settle into my fine lines. My skin looks like my skin, just better."</p>
+          <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:4px;">Susan K.</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:12px;color:#333;">Verified Buyer &mdash; What The Foundation</p>
+        </div>
+        <div class="review-card">
+          <div style="margin-bottom:12px;"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+          <p style="font-family:'Canela',serif;font-weight:300;font-style:italic;font-size:16px;line-height:1.5;color:#000;margin-bottom:16px;">"Miracle Balm is magic. I use it on my cheeks, lips, and eyelids. One product, done in 30 seconds, out the door."</p>
+          <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:4px;">Priya K.</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:12px;color:#333;">Verified Buyer &mdash; Miracle Balm</p>
+        </div>
+        <div class="review-card">
+          <div style="margin-bottom:12px;"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+          <p style="font-family:'Canela',serif;font-weight:300;font-style:italic;font-size:16px;line-height:1.5;color:#000;margin-bottom:16px;">"As a nurse, I need makeup that survives a 12-hour shift. This stuff does not budge. And it's clean ingredients."</p>
+          <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:4px;">Amanda R.</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:12px;color:#333;">Verified Buyer &mdash; The Best Pencil</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="variation-spacer"></div>
+
+    <!-- HP9.2 -->
+    <div class="variation-label">HP9.2 &mdash; Integrated value props: simplify routine, confidence, clean</div>
+    <section class="section-padded" style="padding:72px 32px;background:#f6f2eb;">
+      <div style="text-align:center;margin-bottom:56px;">
+        <p class="eyebrow" style="margin-bottom:12px;">The Jones Road Difference</p>
+        <h2 class="headline">Why 2 million customers made the switch</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:40px;max-width:960px;margin:0 auto;" class="grid-3-col">
+        <!-- Value 1 -->
+        <div style="text-align:center;">
+          <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1.1;letter-spacing:0.5px;color:#000;margin-bottom:16px;">3 min</p>
+          <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:12px;">Simpler Routine</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#000;">Multi-use formulas that replace 3-4 products. Get ready faster without sacrificing results.</p>
+        </div>
+        <!-- Value 2 -->
+        <div style="text-align:center;">
+          <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1.1;letter-spacing:0.5px;color:#000;margin-bottom:16px;">76K+</p>
+          <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:12px;">Real Confidence</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#000;">Five-star reviews from women of every age and skin type. Look like yourself, only better.</p>
+        </div>
+        <!-- Value 3 -->
+        <div style="text-align:center;">
+          <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1.1;letter-spacing:0.5px;color:#000;margin-bottom:16px;">100%</p>
+          <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:12px;">Clean Ingredients</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#000;">No parabens, no sulfates, no synthetic fragrance. High-performance formulas your skin will thank you for.</p>
+        </div>
+      </div>
+      <!-- Featured review -->
+      <div style="max-width:640px;margin:56px auto 0;text-align:center;border-top:1px solid #e0dbd4;padding-top:40px;">
+        <div style="margin-bottom:12px;"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+        <p class="featured-review-quote" style="font-family:'Canela',serif;font-weight:300;font-style:italic;font-size:20px;line-height:1.5;color:#000;margin-bottom:16px;">"I threw away my entire makeup bag and replaced it with four Jones Road products. Wish I'd done it years ago."</p>
+        <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:#000;">Lisa W. &mdash; Verified Buyer</p>
+      </div>
+    </section>
+
+    </div><!-- /.section-group nav-social-proof -->
+
+
+    <!-- =============================================================================
+         HP10: ROUTINE BUILDER
+         4-step routine with product images, step numbers, descriptions,
+         prices, and "Shop the Routine" CTA.
+         Evidence: Curated routines/bundles increase AOV 22-35% vs.
+         individual product pages (Shopify Plus + McKinsey Personalization).
+         ============================================================================= -->
+    <div class="section-group visible" data-section="nav-routine">
+    <div class="section-divider" id="nav-routine">HP10: Routine Builder &mdash; 4-step routine, products, prices, single CTA</div>
+
+    <!-- HP10.1 -->
+    <div class="variation-label">HP10.1 &mdash; 4-step routine: numbered steps with product images and descriptions</div>
+    <section class="warm-bg section-padded" style="padding:72px 32px;background:#f6f2eb;">
+      <div style="text-align:center;margin-bottom:56px;">
+        <p class="eyebrow" style="margin-bottom:12px;">The 3-Minute Routine</p>
+        <h2 class="headline">Your everyday lineup</h2>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#000;margin-top:16px;max-width:520px;margin-left:auto;margin-right:auto;">Four products. Three minutes. A finished face that looks like you, only better. Bobbi designed this routine for real life.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:32px;max-width:1000px;margin:0 auto;" class="grid-4-col">
+        <!-- Step 1 -->
+        <div style="text-align:center;">
+          <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1;letter-spacing:0.5px;color:#d0d0d0;margin-bottom:16px;">01</p>
+          <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;background:#fff;margin-bottom:16px;">
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/WTF_PDP_Light.jpg?v=1700000000&width=400" alt="What The Foundation" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:4px;">What The Foundation</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;color:#000;margin-bottom:8px;">$49</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#333;">Apply with fingers for a skin-like tinted moisturizer finish. Evens tone without masking.</p>
+        </div>
+        <!-- Step 2 -->
+        <div style="text-align:center;">
+          <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1;letter-spacing:0.5px;color:#d0d0d0;margin-bottom:16px;">02</p>
+          <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;background:#fff;margin-bottom:16px;">
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/MiracleBalm_PDP_MagicHour.jpg?v=1700000000&width=400" alt="Miracle Balm" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:4px;">Miracle Balm</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;color:#000;margin-bottom:8px;">$38</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#333;">Dab on cheeks, lips, and lids for an instant, multi-use wash of color.</p>
+        </div>
+        <!-- Step 3 -->
+        <div style="text-align:center;">
+          <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1;letter-spacing:0.5px;color:#d0d0d0;margin-bottom:16px;">03</p>
+          <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;background:#fff;margin-bottom:16px;">
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/EyeshadowStick_PDP.jpg?v=1700000000&width=400" alt="The Eyeshadow Stick" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:4px;">The Eyeshadow Stick</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;color:#000;margin-bottom:8px;">$24</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#333;">One swipe across the lid for effortless, crease-proof definition that lasts all day.</p>
+        </div>
+        <!-- Step 4 -->
+        <div style="text-align:center;">
+          <p class="stat-number" style="font-family:'Canela',serif;font-weight:300;font-size:38px;line-height:1;letter-spacing:0.5px;color:#d0d0d0;margin-bottom:16px;">04</p>
+          <div style="aspect-ratio:1;overflow:hidden;border-radius:3px;background:#fff;margin-bottom:16px;">
+            <img src="https://www.jonesroadbeauty.com/cdn/shop/files/LipRecharge_Clear_PDP.jpg?v=1700000000&width=400" alt="Lip Recharge" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <p style="font-family:'GeogrotesqueCondBoldWeb','Arial Black',Impact,sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;color:#000;margin-bottom:4px;">Lip Recharge</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;color:#000;margin-bottom:8px;">$24</p>
+          <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#333;">Nourishing tinted balm that hydrates, plumps, and finishes the look with a healthy lip.</p>
+        </div>
+      </div>
+      <!-- Routine total + CTA -->
+      <div style="text-align:center;margin-top:48px;padding-top:32px;border-top:1px solid #e0dbd4;max-width:1000px;margin-left:auto;margin-right:auto;">
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:15px;color:#000;margin-bottom:8px;">Complete routine: <strong style="font-weight:700;">$135</strong></p>
+        <p style="font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:13px;color:#333;margin-bottom:24px;">Free shipping on orders $50+</p>
+        <a href="#" class="button">Shop the Routine</a>
+      </div>
+    </section>
+
+    </div><!-- /.section-group nav-routine -->
+
+
+  </div><!-- /.page-wrapper -->
+
+
+  <!-- =============================================================================
+       JavaScript
+       ============================================================================= -->
+  <script>
+    /* ── Section Nav: show/hide tab filtering ── */
+    (function() {
+      var tabs = document.querySelectorAll('.section-nav__tab');
+      var groups = document.querySelectorAll('.section-group');
+
+      tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          var target = this.getAttribute('data-target');
+
+          // Update active tab
+          tabs.forEach(function(t) { t.classList.remove('active'); });
+          this.classList.add('active');
+
+          // Show/hide sections
+          if (target === 'all') {
+            groups.forEach(function(g) { g.classList.add('visible'); });
+          } else {
+            groups.forEach(function(g) {
+              if (g.getAttribute('data-section') === target) {
+                g.classList.add('visible');
+              } else {
+                g.classList.remove('visible');
+              }
+            });
+          }
+
+          // Scroll to top of page wrapper if not "all"
+          if (target !== 'all') {
+            var targetEl = document.getElementById(target);
+            if (targetEl) {
+              targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        });
+      });
+    })();
+
+    /* ── HP4.1: Interactive "I want to..." concern chooser ── */
+    (function() {
+      var buttons = document.querySelectorAll('#chooser-buttons .chooser-btn');
+      var panels = document.querySelectorAll('.concern-panel');
+
+      buttons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var concern = this.getAttribute('data-concern');
+
+          // Update active button
+          buttons.forEach(function(b) { b.classList.remove('active'); });
+          this.classList.add('active');
+
+          // Show matching panel, hide others
+          panels.forEach(function(panel) {
+            if (panel.getAttribute('data-panel') === concern) {
+              panel.style.display = 'grid';
+            } else {
+              panel.style.display = 'none';
+            }
+          });
+        });
+      });
+    })();
+
+    /* ── Headline responsive sizing is handled via CSS classes (.section-headline, .headline) ── */
+  </script>
+
+</body>
+</html>

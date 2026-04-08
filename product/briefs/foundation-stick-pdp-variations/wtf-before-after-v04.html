@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB WTF Before/After — V04: 6-Photo Gallery Grid</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === 6-PHOTO GALLERY GRID === */
+    .ba-gallery { padding: 64px 20px; background: var(--color-white); }
+    .ba-gallery__inner { max-width: 1100px; margin: 0 auto; }
+    .ba-gallery__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .ba-gallery__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 40px; }
+    .ba-gallery__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .ba-gallery__pair { }
+    .ba-gallery__images { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-block-end: 12px; }
+    .ba-gallery__img-wrap { aspect-ratio: 3 / 4; overflow: hidden; border-radius: 2px; position: relative; }
+    .ba-gallery__img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .ba-gallery__img-tag { position: absolute; bottom: 6px; left: 6px; font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: .5px; color: var(--color-white); background: var(--color-black); padding: 2px 6px; border-radius: 2px; }
+    .ba-gallery__shade { font-family: var(--font-display); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--color-black); text-align: center; }
+    .ba-gallery__cta { text-align: center; margin-block-start: 40px; }
+
+    @media (max-width: 768px) {
+      .ba-gallery { padding: 48px 16px; }
+      .ba-gallery__heading { font-size: 26px; line-height: 1.3; }
+      .ba-gallery__grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .ba-gallery__grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">What The Foundation &mdash; Before/After &mdash; V04: 6-Photo Gallery&nbsp;Grid</div>
+
+  <section class="ba-gallery">
+    <div class="ba-gallery__inner">
+      <p class="ba-gallery__eyebrow">Real Results</p>
+      <h2 class="ba-gallery__heading">Every skin. Every&nbsp;shade.</h2>
+
+      <div class="ba-gallery__grid">
+        <div class="ba-gallery__pair">
+          <div class="ba-gallery__images">
+            <div class="ba-gallery__img-wrap">
+              <img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=400&h=530&fit=crop&auto=format" alt="Before — Fair" loading="lazy">
+              <span class="ba-gallery__img-tag">Before</span>
+            </div>
+            <div class="ba-gallery__img-wrap">
+              <img src="https://air-prod.imgix.net/c1323d9f-71be-4590-9bd7-be213be7032d.jpg?w=400&h=530&fit=crop&auto=format" alt="After — Fair" loading="lazy">
+              <span class="ba-gallery__img-tag">After</span>
+            </div>
+          </div>
+          <p class="ba-gallery__shade">Light Beige</p>
+        </div>
+
+        <div class="ba-gallery__pair">
+          <div class="ba-gallery__images">
+            <div class="ba-gallery__img-wrap">
+              <img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=400&h=530&fit=crop&auto=format" alt="Before — Medium" loading="lazy">
+              <span class="ba-gallery__img-tag">Before</span>
+            </div>
+            <div class="ba-gallery__img-wrap">
+              <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=400&h=530&fit=crop&auto=format" alt="After — Medium" loading="lazy">
+              <span class="ba-gallery__img-tag">After</span>
+            </div>
+          </div>
+          <p class="ba-gallery__shade">Medium</p>
+        </div>
+
+        <div class="ba-gallery__pair">
+          <div class="ba-gallery__images">
+            <div class="ba-gallery__img-wrap">
+              <img src="https://air-prod.imgix.net/476d8004-173d-4a6b-b040-8ee0f7a79da0.jpg?w=400&h=530&fit=crop&auto=format" alt="Before — Deep" loading="lazy">
+              <span class="ba-gallery__img-tag">Before</span>
+            </div>
+            <div class="ba-gallery__img-wrap">
+              <img src="https://air-prod.imgix.net/87f1416c-fef8-441a-b6eb-7733dd536b2f.jpg?w=400&h=530&fit=crop&auto=format" alt="After — Deep" loading="lazy">
+              <span class="ba-gallery__img-tag">After</span>
+            </div>
+          </div>
+          <p class="ba-gallery__shade">Rich</p>
+        </div>
+      </div>
+
+      <div class="ba-gallery__cta">
+        <a href="#" class="button">Shop What The Foundation</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,2684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miracle Balm — Jones Road Beauty</title>
+  <style>
+    /* =========================================================================
+       @font-face
+       ========================================================================= */
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-LightItalic.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+
+    /* =========================================================================
+       CSS Custom Properties
+       ========================================================================= */
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --color-muted: #757575;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    /* =========================================================================
+       Reset & Base
+       ========================================================================= */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+    body {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 100%;
+      color: var(--color-black);
+      background: var(--color-white);
+      letter-spacing: .025em;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* =========================================================================
+       .button (global -- matches site.css exactly)
+       ========================================================================= */
+    .button {
+      background: #000;
+      border: 1px solid #000;
+      border-radius: 2px;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 13px;
+      font-weight: 550;
+      white-space: nowrap;
+      height: 40px;
+      letter-spacing: 0.4px;
+      line-height: 40px;
+      padding: 0 36px;
+      text-align: center;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition-property: background, color, border-color;
+      transition-duration: .4s;
+      transition-timing-function: cubic-bezier(.39,.575,.565,1);
+    }
+    @media (min-width: 1024px) {
+      .button { font-size: 14px; height: 44px; line-height: 44px; }
+    }
+    .has-mouse .button:not(:disabled):hover {
+      background: #fff;
+      border-color: #d0d0d0;
+      color: #000;
+    }
+    .button--outline {
+      background: transparent;
+      color: #000;
+      border: 1px solid #000;
+    }
+    .has-mouse .button--outline:not(:disabled):hover {
+      background: #000;
+      color: #fff;
+      border-color: #000;
+    }
+    .button--sm {
+      height: 34px;
+      line-height: 34px;
+      padding: 0 20px;
+      font-size: 11px;
+    }
+    @media (min-width: 769px) {
+      .button--sm { height: 36px; line-height: 36px; padding: 0 24px; font-size: 12px; }
+    }
+
+    /* =========================================================================
+       Shared Typography
+       ========================================================================= */
+    .eyebrow {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1.18px;
+      line-height: 22px;
+      color: #000;
+    }
+    .headline {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 26px;
+      line-height: 37px;
+      letter-spacing: 0.5px;
+      color: #000;
+    }
+    @media (min-width: 769px) {
+      .headline { font-size: 38px; line-height: 54px; }
+    }
+    .headline--sm {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 22px;
+      line-height: 30px;
+      letter-spacing: 0.5px;
+      color: #000;
+    }
+    @media (min-width: 769px) {
+      .headline--sm { font-size: 30px; line-height: 42px; }
+    }
+    .body-text {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.55;
+      color: #000;
+    }
+    .label {
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .junip-stars {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .junip-stars svg { flex-shrink: 0; display: block; }
+
+    /* =========================================================================
+       1. Announcement Bar
+       ========================================================================= */
+    .announcement-bar {
+      background: #000;
+      color: #fff;
+      text-align: center;
+      padding: 10px 16px;
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      line-height: 1.4;
+    }
+    @media (min-width: 768px) {
+      .announcement-bar { font-size: 14px; letter-spacing: 1px; }
+    }
+
+    /* =========================================================================
+       2. Header / Nav
+       ========================================================================= */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+    }
+    .header__utility {
+      display: none;
+      border-bottom: 1px solid #ededed;
+      height: 36px;
+      padding: 0 28px;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    @media (min-width: 1024px) {
+      .header__utility { display: flex; }
+    }
+    .header__utility-left {
+      position: absolute;
+      left: 28px;
+      top: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .header__utility-left a {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #000;
+      text-transform: capitalize;
+      letter-spacing: .025em;
+      transition-property: opacity;
+      transition-duration: .3s;
+      transition-timing-function: cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .header__utility-left a:hover { opacity: 0.6; }
+    .header__utility-center { display: flex; align-items: center; }
+    .header__utility-center svg { height: 16px; width: auto; }
+    .header__utility-right {
+      position: absolute;
+      right: 28px;
+      top: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .header__utility-right a,
+    .header__utility-right span {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #000;
+      text-transform: capitalize;
+      letter-spacing: .025em;
+      cursor: pointer;
+      transition-property: opacity;
+      transition-duration: .3s;
+      transition-timing-function: cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .header__utility-right a:hover,
+    .has-mouse .header__utility-right span:hover { opacity: 0.6; }
+    .header__utility-right svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: #000;
+      stroke-width: 1.5;
+      cursor: pointer;
+    }
+    .header__catnav {
+      display: none;
+      border-bottom: 1px solid #ededed;
+      height: 44px;
+      align-items: center;
+      justify-content: center;
+    }
+    @media (min-width: 1024px) {
+      .header__catnav { display: flex; }
+    }
+    .header__catnav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+    .header__catnav-links a {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: #000;
+      text-transform: capitalize;
+      letter-spacing: 0.1px;
+      line-height: 44px;
+      position: relative;
+      transition-property: color;
+      transition-duration: .4s;
+      transition-timing-function: cubic-bezier(.39,.575,.565,1);
+    }
+    .header__catnav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: #000;
+      opacity: 0;
+      transition-property: opacity;
+      transition-duration: .3s;
+      transition-timing-function: cubic-bezier(.165,.84,.44,1);
+    }
+    .has-mouse .header__catnav-links a:hover::after { opacity: 1; }
+    .header__mobile {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      padding: 0 16px;
+      border-bottom: 1px solid #ededed;
+    }
+    @media (min-width: 1024px) {
+      .header__mobile { display: none; }
+    }
+    .header__mobile-logo { display: flex; align-items: center; }
+    .header__mobile-logo svg { height: 16px; width: auto; }
+    .header__mobile-icons {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .header__mobile-icons svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: #000;
+      stroke-width: 1.5;
+      cursor: pointer;
+    }
+    .header__hamburger {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .header__hamburger svg { width: 22px; height: 22px; stroke: #000; stroke-width: 1.5; fill: none; }
+
+    /* =========================================================================
+       3. PDP Hero
+       ========================================================================= */
+    .pdp-hero {
+      padding: 0 16px 48px;
+      position: relative;
+      margin-bottom: 42px;
+    }
+    @media (min-width: 700px) {
+      .pdp-hero {
+        display: flex;
+        padding: 0 0 48px;
+      }
+    }
+    .pdp-hero__thumbs {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      overflow-x: auto;
+    }
+    @media (min-width: 700px) {
+      .pdp-hero__thumbs {
+        width: 7.428vw;
+        height: calc(46.875vw - 123px);
+        flex-direction: column;
+        align-items: center;
+        gap: 0.6vw;
+        align-self: flex-start;
+        overflow-y: auto;
+        overflow-x: visible;
+        margin-top: 0;
+        padding-top: 31px;
+        padding-left: 36px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        flex-shrink: 0;
+      }
+      .pdp-hero__thumbs::-webkit-scrollbar { display: none; }
+    }
+    .pdp-hero__thumb {
+      width: 72px;
+      height: 72px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: border-color .2s cubic-bezier(.39,.575,.565,1);
+      flex-shrink: 0;
+    }
+    @media (min-width: 700px) {
+      .pdp-hero__thumb {
+        width: 7.212vw;
+        height: 7.212vw;
+      }
+    }
+    .pdp-hero__thumb.is-active { border-color: #ccc; }
+    .pdp-hero__thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .pdp-hero__gallery {
+      position: relative;
+      flex: 1;
+      padding-top: 31px;
+    }
+    .pdp-hero__main-image {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: #f6f2eb;
+    }
+    .pdp-hero__main-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity .3s cubic-bezier(.39,.575,.565,1);
+    }
+    .pdp-hero__award {
+      position: absolute;
+      top: 50px;
+      left: 20px;
+      width: 80px;
+      height: 80px;
+      z-index: 1;
+    }
+    .pdp-hero__award img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+    .pdp-hero__info {
+      padding: 30px 20px 0;
+      flex-shrink: 0;
+    }
+    @media (min-width: 700px) {
+      .pdp-hero__info {
+        width: 33.333%;
+        padding: 25px 30px 0 32px;
+      }
+    }
+    @media (min-width: 1400px) {
+      .pdp-hero__info {
+        width: 33.62%;
+      }
+    }
+    .pdp-hero__tagline {
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      margin-bottom: 12px;
+    }
+    .pdp-hero__product-name {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      text-transform: uppercase;
+      line-height: 1.2;
+      letter-spacing: 1.18px;
+      margin-bottom: 12px;
+    }
+    .pdp-hero__reviews {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .pdp-hero__reviews-text {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 100%;
+      color: var(--color-black);
+      letter-spacing: .025em;
+    }
+    .pdp-hero__reviews-text a {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .has-mouse .pdp-hero__reviews-text a:hover { opacity: 0.6; }
+    .pdp-hero__description {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+      color: #000;
+      margin-bottom: 24px;
+      max-width: 480px;
+    }
+    .pdp-hero__price {
+      margin-bottom: 6px;
+    }
+    .pdp-hero__price-amount {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #000;
+      letter-spacing: .025em;
+    }
+    .pdp-hero__price-afterpay {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: #000;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .pdp-hero__shade-label {
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      margin-bottom: 12px;
+      color: #000;
+    }
+    .pdp-hero__shades {
+      display: flex;
+      flex-wrap: wrap;
+      row-gap: 8px;
+      column-gap: 10px;
+      margin-bottom: 8px;
+    }
+    .pdp-hero__shade {
+      width: 28px;
+      height: 28px;
+      border-radius: 100%;
+      cursor: pointer;
+      border: 1px solid #d4d4d4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color .4s cubic-bezier(.39,.575,.565,1);
+      position: relative;
+    }
+    .pdp-hero__shade-inner {
+      width: 24px;
+      height: 24px;
+      border-radius: 100%;
+      display: block;
+    }
+    .pdp-hero__shade.is-active {
+      border-color: #000;
+    }
+    .pdp-hero__shade-name {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #000;
+      line-height: 1.4;
+      margin-bottom: 24px;
+      min-height: 20px;
+    }
+    .pdp-hero__atc {
+      width: 100%;
+      display: block;
+      text-align: center;
+    }
+    .pdp-hero__messaging {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #000;
+      text-align: center;
+      margin-top: 12px;
+      letter-spacing: .025em;
+    }
+    .pdp-hero__accordion {
+      margin-top: 24px;
+      border-top: 1px solid #d7d7d7;
+    }
+    .pdp-hero__accordion-item {
+      border-bottom: 1px solid #d7d7d7;
+    }
+    .pdp-hero__accordion-item summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 20px 16px 0;
+      cursor: pointer;
+      list-style: none;
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #000;
+      letter-spacing: 0.5px;
+      text-align: left;
+      width: 100%;
+    }
+    .pdp-hero__accordion-item summary::-webkit-details-marker { display: none; }
+    .pdp-hero__accordion-item summary::after {
+      content: '+';
+      font-size: 18px;
+      font-weight: 300;
+      color: #000;
+      transition: transform .2s cubic-bezier(.39,.575,.565,1);
+    }
+    .pdp-hero__accordion-item[open] summary::after {
+      content: '\2212';
+    }
+    .pdp-hero__accordion-body {
+      padding-bottom: 16px;
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      line-height: 1.6;
+    }
+    .pdp-hero__selfie-link {
+      margin-top: 16px;
+      text-align: center;
+    }
+    .pdp-hero__selfie-link a {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #000;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      letter-spacing: .025em;
+    }
+    .has-mouse .pdp-hero__selfie-link a:hover { opacity: 0.6; }
+
+    /* =========================================================================
+       4. Trust Bar (standalone below hero)
+       ========================================================================= */
+    .trust-bar {
+      background: #f6f2eb;
+      padding: 20px 32px;
+    }
+    .trust-bar__inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .trust-bar__item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #000;
+      white-space: nowrap;
+    }
+    .trust-bar__item svg {
+      width: 18px;
+      height: 18px;
+      stroke: #000;
+      stroke-width: 1.5;
+      fill: none;
+      flex-shrink: 0;
+    }
+    .trust-bar__divider {
+      width: 1px;
+      height: 20px;
+      background: #ccc;
+      flex-shrink: 0;
+    }
+    @media (max-width: 768px) {
+      .trust-bar { padding: 16px 20px; }
+      .trust-bar__inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px 20px;
+      }
+      .trust-bar__divider { display: none; }
+      .trust-bar__item { font-size: 13px; }
+    }
+
+    /* =========================================================================
+       5. How To Use (matches live product-how-to-use.liquid)
+       ========================================================================= */
+    .how-to-use {
+      padding: 50px 71px 69px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .how-to-use { padding: 48px 20px; }
+    }
+    .how-to-use__header {
+      margin-bottom: 40px;
+    }
+    @media (max-width: 768px) {
+      .how-to-use__header { text-align: center; }
+    }
+    .how-to-use__header .eyebrow { margin-bottom: 14px; }
+    .how-to-use__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px 21px;
+    }
+    @media (max-width: 768px) {
+      .how-to-use__grid { grid-template-columns: 1fr; gap: 16px; }
+    }
+    .how-to-use__card {
+      text-align: left;
+      background: #f6f5f1;
+      border-radius: 3px;
+      overflow: hidden;
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+    }
+    .how-to-use__card-number {
+      position: absolute;
+      top: 16px;
+      left: 24px;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-weight: 550;
+      font-size: 32px;
+      color: #000;
+      background: #fff;
+      min-width: 46px;
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      border-radius: 2px;
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
+    }
+    .how-to-use__card-video {
+      position: relative;
+      overflow: hidden;
+      background: #f6f5f1;
+      cursor: pointer;
+    }
+    .how-to-use__card-video img {
+      width: 100%;
+      height: 28.472vw;
+      object-fit: cover;
+    }
+    .how-to-use__card-video::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .how-to-use__play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 46px;
+      height: 46px;
+      background: rgba(246, 245, 241, .5);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+    .how-to-use__play-btn svg { width: 20px; height: 20px; fill: #1C1B1F; }
+    .how-to-use__card-text {
+      padding: 30px 40px 35px 34px;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+    .how-to-use__card-title {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      line-height: 21px;
+      color: #000;
+    }
+    .how-to-use__card-desc {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 325;
+      color: #000;
+      line-height: 24px;
+      letter-spacing: 0;
+    }
+
+    /* =========================================================================
+       6. What Is Miracle Balm? (Comprehension)
+       ========================================================================= */
+    .pdp-comprehend {
+      padding: 56px 32px;
+      background: #f6f2eb;
+    }
+    @media (min-width: 1024px) {
+      .pdp-comprehend { padding: 72px 40px; }
+    }
+    @media (max-width: 768px) {
+      .pdp-comprehend { padding: 48px 20px; }
+    }
+    .pdp-comprehend__inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .pdp-comprehend__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .pdp-comprehend__layout { grid-template-columns: 1fr; gap: 32px; }
+    }
+    .pdp-comprehend__img {
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      border-radius: 3px;
+    }
+    .pdp-comprehend__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .pdp-comprehend__content .eyebrow { margin-bottom: 14px; }
+    .pdp-comprehend__content .headline { margin-bottom: 20px; }
+    .pdp-comprehend__content .body-text { margin-bottom: 24px; color: #000; }
+    .pdp-comprehend__features {
+      list-style: none;
+      padding: 0;
+      border-top: 1px solid rgba(0,0,0,.1);
+    }
+    .pdp-comprehend__feature {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(0,0,0,.1);
+    }
+    .pdp-comprehend__feature-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pdp-comprehend__feature-icon svg { width: 16px; height: 16px; stroke: #000; stroke-width: 1.5; fill: none; }
+    .pdp-comprehend__feature-text {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      line-height: 1.45;
+    }
+
+    /* =========================================================================
+       7. Bobbi Credibility
+       ========================================================================= */
+    .bobbi-v1 {
+      padding: 56px 32px;
+    }
+    .bobbi-v1__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .bobbi-v1__img {
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      border-radius: 3px;
+    }
+    .bobbi-v1__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .bobbi-v1__content .eyebrow {
+      margin-bottom: 16px;
+    }
+    .bobbi-v1__quote {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 22px;
+      line-height: 1.5;
+      color: #000;
+      margin-bottom: 24px;
+    }
+    @media (min-width: 769px) {
+      .bobbi-v1__quote { font-size: 26px; line-height: 1.45; }
+    }
+    .bobbi-v1__attribution {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: .98px;
+      color: #000;
+      margin-bottom: 4px;
+    }
+    .bobbi-v1__role {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #000;
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+    .bobbi-v1__credentials {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+      border-top: 1px solid #ededed;
+      padding-top: 20px;
+    }
+    .bobbi-v1__credential {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #000;
+      line-height: 1.5;
+      padding: 6px 0;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .bobbi-v1__credential::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background: #000;
+      border-radius: 100%;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    @media (max-width: 768px) {
+      .bobbi-v1 { padding: 48px 20px; }
+      .bobbi-v1__layout { grid-template-columns: 1fr; gap: 32px; }
+      .bobbi-v1__img { max-width: 400px; margin: 0 auto; }
+    }
+
+    /* =========================================================================
+       8. The Shades (matches live the-shades.liquid)
+       ========================================================================= */
+    .the-shades {
+      padding: 56px 48px;
+      background: #f6f2eb;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .the-shades { padding: 48px 20px; }
+    }
+    .the-shades__header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .the-shades__header h2 {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 30px;
+      line-height: 42px;
+      letter-spacing: 0.5px;
+    }
+    @media (min-width: 769px) {
+      .the-shades__header h2 { font-size: 38px; line-height: 54px; }
+    }
+    .the-shades__swatches {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      max-width: 1100px;
+      margin: 0 auto 40px;
+    }
+    @media (max-width: 768px) {
+      .the-shades__swatches { gap: 16px; }
+    }
+    .the-shades__swatch {
+      text-align: center;
+      cursor: pointer;
+      width: 80px;
+    }
+    .the-shades__swatch-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      border: 2px solid transparent;
+      transition: border-color .2s cubic-bezier(.39,.575,.565,1);
+      position: relative;
+    }
+    .the-shades__swatch-circle::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      transition: border-color .2s cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .the-shades__swatch:hover .the-shades__swatch-circle::after,
+    .the-shades__swatch.is-active .the-shades__swatch-circle::after {
+      border-color: #000;
+    }
+    .the-shades__swatch-name {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #000;
+    }
+    .the-shades__swatch-desc {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: #000;
+      line-height: 1.4;
+      max-width: 120px;
+      margin: 4px auto 0;
+    }
+    .the-shades__cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .the-shades__cta-text {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      color: #000;
+    }
+
+    /* =========================================================================
+       9. Send a Selfie CTA
+       ========================================================================= */
+    .selfie-cta {
+      padding: 40px 32px;
+      background: #f6f2eb;
+      text-align: center;
+    }
+    @media (max-width: 768px) {
+      .selfie-cta { padding: 32px 20px; }
+    }
+    .selfie-cta__inner {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .selfie-cta__headline {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 22px;
+      line-height: 30px;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    .selfie-cta__body {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+
+    /* =========================================================================
+       10. UGC / Before-After
+       ========================================================================= */
+    .ugc-v2 {
+      padding: 56px 32px;
+    }
+    .ugc-v2__header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .ugc-v2__header .eyebrow { margin-bottom: 14px; }
+    .ugc-v2__stat-inline {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin-top: 16px;
+      display: block;
+      line-height: 1.5;
+    }
+    .ugc-v2__stat-inline strong {
+      color: #000;
+      font-weight: 700;
+    }
+    .ugc-v2__slider-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .ugc-v2__slider {
+      position: relative;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(16, 24, 40, .04);
+      transition: box-shadow .4s cubic-bezier(.39, .575, .565, 1);
+    }
+    .has-mouse .ugc-v2__slider:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+    }
+    .ugc-v2__slider-img {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+    }
+    .ugc-v2__slider-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .ugc-v2__slider-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: #fff;
+      z-index: 2;
+    }
+    .ugc-v2__slider-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,.1);
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+    .ugc-v2__slider-handle svg { width: 16px; height: 16px; color: #000; }
+    .ugc-v2__slider-labels {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      z-index: 2;
+    }
+    .ugc-v2__slider-label {
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 10px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #fff;
+      background: rgba(0,0,0,.5);
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+    .ugc-v2__slider-info { padding: 16px 16px 18px; }
+    .ugc-v2__slider-name {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #000;
+      margin-bottom: 4px;
+    }
+    .ugc-v2__slider-shade {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: #000;
+    }
+    @media (max-width: 768px) {
+      .ugc-v2 { padding: 48px 20px; }
+      .ugc-v2__slider-row { grid-template-columns: 1fr; gap: 16px; max-width: 400px; margin: 0 auto; }
+    }
+
+    /* =========================================================================
+       11. Try the Mini CTA
+       ========================================================================= */
+    .mini-cta {
+      padding: 48px 32px;
+      background: #f6f2eb;
+    }
+    @media (max-width: 768px) {
+      .mini-cta { padding: 40px 20px; }
+    }
+    .mini-cta__inner {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .mini-cta__inner { flex-direction: column; gap: 24px; text-align: center; }
+    }
+    .mini-cta__img {
+      width: 180px;
+      flex-shrink: 0;
+    }
+    .mini-cta__img img {
+      width: 100%;
+      border-radius: 3px;
+    }
+    .mini-cta__content .eyebrow { margin-bottom: 12px; }
+    .mini-cta__content .headline--sm { margin-bottom: 12px; }
+    .mini-cta__body {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+
+    /* =========================================================================
+       12. Value / Cost-Per-Day
+       ========================================================================= */
+    .spec-v1 {
+      padding: 56px 32px;
+    }
+    .spec-v1__layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 48px;
+      align-items: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .spec-v1__img-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .spec-v1__img-wrap img {
+      width: 100%;
+      max-width: 320px;
+      border-radius: 3px;
+    }
+    .spec-v1__content .eyebrow { margin-bottom: 14px; }
+    .spec-v1__content .headline--sm { margin-bottom: 28px; }
+    .spec-v1__list {
+      border-top: 1px solid rgba(0,0,0,.1);
+    }
+    .spec-v1__item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(0,0,0,.1);
+      align-items: baseline;
+    }
+    .spec-v1__item-label {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #000;
+    }
+    .spec-v1__item-value {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      line-height: 1.45;
+    }
+    @media (max-width: 768px) {
+      .spec-v1 { padding: 48px 20px; }
+      .spec-v1__layout { grid-template-columns: 1fr; gap: 32px; }
+      .spec-v1__img-wrap img { max-width: 240px; margin: 0 auto; }
+      .spec-v1__item { grid-template-columns: 100px 1fr; gap: 12px; }
+    }
+
+    /* =========================================================================
+       13. Ingredients
+       ========================================================================= */
+    .ingredients-v1 {
+      padding: 56px 32px;
+      background: #f6f2eb;
+    }
+    .ingredients-v1__header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .ingredients-v1__header .eyebrow { margin-bottom: 14px; }
+    .ingredients-v1__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .ingredients-v1__col {
+      padding: 32px;
+      border-radius: 3px;
+      background: #fff;
+    }
+    .ingredients-v1__col-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(0,0,0,.1);
+    }
+    .ingredients-v1__col-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .ingredients-v1__col-icon svg { width: 20px; height: 20px; }
+    .ingredients-v1__col-icon--in { color: #000; }
+    .ingredients-v1__col-icon--out { color: #757575; }
+    .ingredients-v1__col-title {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1.18px;
+      color: #000;
+    }
+    .ingredients-v1__list { list-style: none; }
+    .ingredients-v1__item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+    .ingredients-v1__item:last-child { border-bottom: none; }
+    .ingredients-v1__item-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 100%;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+    .ingredients-v1__item-dot--in { background: #000; }
+    .ingredients-v1__item-dot--out { background: #d0d0d0; }
+    .ingredients-v1__item-name {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #000;
+      margin-bottom: 3px;
+    }
+    .ingredients-v1__item-benefit {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #000;
+      line-height: 1.4;
+    }
+    .ingredients-v1__excluded-count {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #000;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(0,0,0,.06);
+    }
+    @media (max-width: 768px) {
+      .ingredients-v1 { padding: 48px 20px; }
+      .ingredients-v1__layout { grid-template-columns: 1fr; gap: 24px; }
+      .ingredients-v1__col { padding: 24px; }
+    }
+
+    /* =========================================================================
+       14. FAQs (matches live product-faqs.liquid)
+       ========================================================================= */
+    .pdp-faqs {
+      padding: 50px 20px 40px;
+      max-width: 851px;
+      margin: 0 auto;
+    }
+    .pdp-faqs__heading {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 30px;
+      line-height: 42px;
+      letter-spacing: 0.5px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .pdp-faqs__item {
+      border-bottom: 1px solid #ccc;
+    }
+    .pdp-faqs__item:first-child {
+      border-top: 1px solid #ccc;
+    }
+    .pdp-faqs__question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 0;
+      cursor: pointer;
+      list-style: none;
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--color-black);
+      width: 100%;
+    }
+    .pdp-faqs__question::-webkit-details-marker { display: none; }
+    .pdp-faqs__question svg {
+      flex-shrink: 0;
+      margin-left: 16px;
+      transition: transform .2s cubic-bezier(.39,.575,.565,1);
+    }
+    .pdp-faqs__item[open] .pdp-faqs__question svg {
+      transform: rotate(45deg);
+    }
+    .pdp-faqs__answer {
+      padding-bottom: 16px;
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      line-height: 1.6;
+    }
+
+    /* =========================================================================
+       15. Reviews (matches live junip-product-reviews.liquid)
+       ========================================================================= */
+    .pdp-reviews {
+      padding: 68px 20px 48px;
+    }
+    .pdp-reviews__title {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 30px;
+      line-height: 42px;
+      letter-spacing: 0.5px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .pdp-reviews__stats {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      border-top: 1px solid #d0d0d0;
+      border-bottom: 1px solid #d0d0d0;
+      padding: 28px 35px 35px;
+      margin: 0 auto;
+      gap: 30px;
+      max-width: 1100px;
+    }
+    .pdp-reviews__stat {
+      flex: 1;
+      background: #f6f2eb;
+      padding: 36px 20px;
+      text-align: center;
+      border-radius: 3px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 140px;
+    }
+    .pdp-reviews__stat-number {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 36px;
+      letter-spacing: 0.5px;
+      color: #000;
+      margin-bottom: 8px;
+    }
+    .pdp-reviews__stat-stars {
+      display: flex;
+      justify-content: center;
+      gap: 2px;
+      margin-bottom: 8px;
+    }
+    .pdp-reviews__stat-label {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #000;
+      line-height: 1.4;
+    }
+    @media (max-width: 768px) {
+      .pdp-reviews__stats {
+        padding: 20px 16px;
+        gap: 12px;
+      }
+      .pdp-reviews__stat {
+        min-width: calc(50% - 12px);
+        padding: 24px 16px;
+      }
+      .pdp-reviews__stat-number { font-size: 28px; }
+    }
+
+    /* =========================================================================
+       16. Shipping Banner (matches live product-shipping-banner.liquid)
+       ========================================================================= */
+    .shipping-banner {
+      background: #f6f2eb;
+      padding: 28px 32px;
+      margin-bottom: 0;
+    }
+    .shipping-banner__inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .shipping-banner__item {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #000;
+      text-align: center;
+      line-height: 1.4;
+    }
+    @media (min-width: 1024px) {
+      .shipping-banner__item { font-size: 20px; line-height: 24px; }
+    }
+    .shipping-banner__line {
+      width: 60px;
+      height: 1px;
+      background: #000;
+      flex-shrink: 0;
+    }
+    @media (max-width: 700px) {
+      .shipping-banner__inner {
+        gap: 0;
+        justify-content: space-around;
+      }
+      .shipping-banner__item {
+        width: 125px;
+        font-weight: 325;
+        line-height: 1.3;
+        font-size: 13px;
+      }
+      .shipping-banner__line { width: 40px; }
+    }
+
+    /* =========================================================================
+       17. Related Products (matches live product-related.liquid)
+       ========================================================================= */
+    .pdp-related {
+      padding: 48px 20px 64px;
+    }
+    @media (min-width: 1024px) {
+      .pdp-related { padding: 48px 36px 72px; }
+    }
+    .pdp-related__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .pdp-related__header h2 {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 26px;
+      line-height: 37px;
+      letter-spacing: 0.5px;
+    }
+    @media (min-width: 1024px) {
+      .pdp-related__header h2 { font-size: 30px; line-height: 42px; }
+    }
+    .pdp-related__header a {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #000;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .pdp-related__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 1200px;
+    }
+    @media (max-width: 768px) {
+      .pdp-related__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    }
+    .product-tile {
+      position: relative;
+    }
+    .product-tile__img {
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      background: #f6f2eb;
+      margin-bottom: 12px;
+    }
+    .product-tile__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .product-tile:hover .product-tile__img img {
+      transform: scale(1.03);
+    }
+    .product-tile__name {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #000;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .product-tile__price {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #000;
+    }
+    .product-tile__reviews {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .product-tile__reviews-count {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: #000;
+    }
+
+    /* =========================================================================
+       18. Footer
+       ========================================================================= */
+    .footer {
+      background: #000;
+      color: #fff;
+      padding: 48px 20px;
+    }
+    .footer__inner {
+      max-width: 1100px;
+      margin-inline: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    .footer__logo svg { fill: #fff; height: 16px; width: auto; }
+    .footer__links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .footer__links a {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #fff;
+      letter-spacing: .025em;
+      transition-property: opacity;
+      transition-duration: .3s;
+      transition-timing-function: cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .footer__links a:hover { opacity: 0.7; }
+    .footer__copy {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: #757575;
+      letter-spacing: .025em;
+    }
+
+    /* =========================================================================
+       Reduced Motion
+       ========================================================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =====================================================================
+       1. ANNOUNCEMENT BAR
+       ===================================================================== -->
+  <div class="announcement-bar">
+    Free Shipping on US Orders Over $55 &bull; Free Returns &bull; 30-Day Guarantee
+  </div>
+
+
+  <!-- =====================================================================
+       2. HEADER
+       ===================================================================== -->
+  <header class="header">
+    <div class="header__utility">
+      <div class="header__utility-left">
+        <a href="#">Returns & Exchanges</a>
+        <a href="#">Find Your Shade</a>
+        <a href="#" style="text-transform:none;">justBOBBI</a>
+      </div>
+      <div class="header__utility-center">
+        <svg width="190" height="18" viewBox="0 0 256 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#jrLogo)">
+            <path d="M0 20.26V14C0.920058 14.6837 2.0443 15.0361 3.19 15C5.49 15 6.92 13.82 6.92 11.5V0.710007H16.79V13.27C16.79 19.35 12.69 21.96 6.79 21.96C3.43 22 1 21.08 0 20.26Z" fill="black"/>
+            <path d="M34.2086 0C24.8886 0 19.3086 4.46 19.3086 10.81C19.3086 16.94 24.8886 22 34.1786 22C43.4686 22 49.0586 17 49.0586 10.85C49.0586 4.46 43.4686 0 34.2086 0ZM34.2086 15C33.6528 15.0452 33.0938 14.9708 32.5693 14.7816C32.0447 14.5925 31.5668 14.293 31.1678 13.9035C30.7689 13.514 30.458 13.0434 30.2563 12.5236C30.0546 12.0037 29.9667 11.4467 29.9986 10.89C29.9986 8.52 31.5986 7 34.1786 7C36.7586 7 38.3986 8.5 38.3986 10.87C38.4336 11.4292 38.3477 11.9894 38.1468 12.5125C37.9458 13.0355 37.6345 13.5091 37.2341 13.9011C36.8336 14.293 36.3534 14.594 35.8261 14.7836C35.2989 14.9733 34.7369 15.0471 34.1786 15H34.2086Z" fill="black"/>
+            <path d="M77.7791 0.700195V21.2602H65.8891L59.9991 9.9202V21.2602H51.6191V0.700195H63.7291L69.4391 11.9502V0.700195H77.7791Z" fill="black"/>
+            <path d="M102.689 15.1802V21.2602H81.5586V0.700195H102.629V6.7802H91.4286V8.6002H102.139V13.1802H91.4286V15.1802H102.689Z" fill="black"/>
+            <path d="M105.439 19.09V13.15C108.512 14.9609 112.013 15.9173 115.579 15.92C117.519 15.92 118.339 15.62 118.339 14.92C118.339 14.22 117.859 13.98 116.339 13.77L113.429 13.36C107.929 12.6 105.199 10.57 105.199 7.02002C105.199 3.02002 108.989 0.0200195 117.609 0.0200195C122.929 0.0200195 126.049 1.19002 127.689 2.02002V7.84002C125.025 6.62086 122.119 6.01923 119.189 6.08002C116.549 6.08002 115.849 6.46002 115.849 7.08002C115.849 7.55002 116.159 7.84002 117.979 8.02002L121.109 8.37002C126.209 8.93002 129.109 10.6 129.109 14.37C129.109 19.01 124.109 21.85 116.969 21.85C112.958 21.9439 108.994 20.9634 105.489 19.01" fill="black"/>
+            <path d="M153.07 10.92C154.95 10.92 155.99 10.13 155.99 8.72001C155.99 7.31001 154.99 6.67001 153.16 6.67001H149.88V10.92H153.07ZM155.07 21.26L149.91 13.15V21.26H140V0.710007H157.5C162.84 0.710007 166.18 3.41001 166.18 7.78001C166.243 9.2721 165.759 10.7359 164.821 11.8974C163.882 13.0588 162.552 13.8384 161.08 14.09L166.27 21.26H155.07Z" fill="black"/>
+            <path d="M183.051 0C173.731 0 168.141 4.46 168.141 10.81C168.141 16.94 173.731 22 183.001 22C192.271 22 197.881 17 197.881 10.85C197.891 4.46 192.301 0 183.051 0ZM183.051 15C182.499 15.0462 181.944 14.974 181.422 14.7884C180.9 14.6028 180.425 14.3079 180.026 13.9236C179.627 13.5393 179.316 13.0743 179.111 12.5598C178.907 12.0453 178.814 11.493 178.841 10.94C178.801 8.52 180.431 7 183.001 7C185.571 7 187.221 8.5 187.221 10.87C187.256 11.4292 187.17 11.9894 186.969 12.5125C186.768 13.0355 186.457 13.5091 186.056 13.9011C185.656 14.293 185.175 14.594 184.648 14.7836C184.121 14.9733 183.559 15.0471 183.001 15H183.051Z" fill="black"/>
+            <path d="M214.059 13.5102L211.909 6.1702L209.719 13.5102H214.059ZM215.429 18.1502H208.359L207.449 21.2602H197.789L204.789 0.700195H219.389L226.309 21.2602H216.379L215.429 18.1502Z" fill="black"/>
+            <path d="M241.11 0.699997H228V21.26H240.2C250.79 21.26 255.2 16.21 255.2 10.84C255.23 5.05 250.61 0.699997 241.11 0.699997ZM240.05 15.21H237.89V6.75H240.41C243.41 6.75 244.6 8.55 244.6 10.81C244.6 13.42 243.08 15.21 240.05 15.21Z" fill="black"/>
+          </g>
+          <defs><clipPath id="jrLogo"><rect width="255.23" height="21.96" fill="white"/></clipPath></defs>
+        </svg>
+      </div>
+      <div class="header__utility-right">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span style="font-size: 13px;">$USD</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span style="font-size: 13px;">Bag</span>
+      </div>
+    </div>
+    <nav class="header__catnav">
+      <ul class="header__catnav-links">
+        <li><a href="#">Shop All</a></li>
+        <li><a href="#">Face</a></li>
+        <li><a href="#">Kits</a></li>
+        <li><a href="#">Lips</a></li>
+        <li><a href="#">Eyes</a></li>
+        <li><a href="#">Skin</a></li>
+        <li><a href="#">Body</a></li>
+        <li><a href="#">More</a></li>
+      </ul>
+    </nav>
+    <div class="header__mobile">
+      <button class="header__hamburger" aria-label="Menu">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <a href="#" class="header__mobile-logo">
+        <svg width="140" height="14" viewBox="0 0 256 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#jrLogoMob)">
+            <path d="M0 20.26V14C0.920058 14.6837 2.0443 15.0361 3.19 15C5.49 15 6.92 13.82 6.92 11.5V0.710007H16.79V13.27C16.79 19.35 12.69 21.96 6.79 21.96C3.43 22 1 21.08 0 20.26Z" fill="black"/>
+            <path d="M34.2086 0C24.8886 0 19.3086 4.46 19.3086 10.81C19.3086 16.94 24.8886 22 34.1786 22C43.4686 22 49.0586 17 49.0586 10.85C49.0586 4.46 43.4686 0 34.2086 0ZM34.2086 15C33.6528 15.0452 33.0938 14.9708 32.5693 14.7816C32.0447 14.5925 31.5668 14.293 31.1678 13.9035C30.7689 13.514 30.458 13.0434 30.2563 12.5236C30.0546 12.0037 29.9667 11.4467 29.9986 10.89C29.9986 8.52 31.5986 7 34.1786 7C36.7586 7 38.3986 8.5 38.3986 10.87C38.4336 11.4292 38.3477 11.9894 38.1468 12.5125C37.9458 13.0355 37.6345 13.5091 37.2341 13.9011C36.8336 14.293 36.3534 14.594 35.8261 14.7836C35.2989 14.9733 34.7369 15.0471 34.1786 15H34.2086Z" fill="black"/>
+            <path d="M77.7791 0.700195V21.2602H65.8891L59.9991 9.9202V21.2602H51.6191V0.700195H63.7291L69.4391 11.9502V0.700195H77.7791Z" fill="black"/>
+            <path d="M102.689 15.1802V21.2602H81.5586V0.700195H102.629V6.7802H91.4286V8.6002H102.139V13.1802H91.4286V15.1802H102.689Z" fill="black"/>
+            <path d="M105.439 19.09V13.15C108.512 14.9609 112.013 15.9173 115.579 15.92C117.519 15.92 118.339 15.62 118.339 14.92C118.339 14.22 117.859 13.98 116.339 13.77L113.429 13.36C107.929 12.6 105.199 10.57 105.199 7.02002C105.199 3.02002 108.989 0.0200195 117.609 0.0200195C122.929 0.0200195 126.049 1.19002 127.689 2.02002V7.84002C125.025 6.62086 122.119 6.01923 119.189 6.08002C116.549 6.08002 115.849 6.46002 115.849 7.08002C115.849 7.55002 116.159 7.84002 117.979 8.02002L121.109 8.37002C126.209 8.93002 129.109 10.6 129.109 14.37C129.109 19.01 124.109 21.85 116.969 21.85C112.958 21.9439 108.994 20.9634 105.489 19.01" fill="black"/>
+            <path d="M153.07 10.92C154.95 10.92 155.99 10.13 155.99 8.72001C155.99 7.31001 154.99 6.67001 153.16 6.67001H149.88V10.92H153.07ZM155.07 21.26L149.91 13.15V21.26H140V0.710007H157.5C162.84 0.710007 166.18 3.41001 166.18 7.78001C166.243 9.2721 165.759 10.7359 164.821 11.8974C163.882 13.0588 162.552 13.8384 161.08 14.09L166.27 21.26H155.07Z" fill="black"/>
+            <path d="M183.051 0C173.731 0 168.141 4.46 168.141 10.81C168.141 16.94 173.731 22 183.001 22C192.271 22 197.881 17 197.881 10.85C197.891 4.46 192.301 0 183.051 0ZM183.051 15C182.499 15.0462 181.944 14.974 181.422 14.7884C180.9 14.6028 180.425 14.3079 180.026 13.9236C179.627 13.5393 179.316 13.0743 179.111 12.5598C178.907 12.0453 178.814 11.493 178.841 10.94C178.801 8.52 180.431 7 183.001 7C185.571 7 187.221 8.5 187.221 10.87C187.256 11.4292 187.17 11.9894 186.969 12.5125C186.768 13.0355 186.457 13.5091 186.056 13.9011C185.656 14.293 185.175 14.594 184.648 14.7836C184.121 14.9733 183.559 15.0471 183.001 15H183.051Z" fill="black"/>
+            <path d="M214.059 13.5102L211.909 6.1702L209.719 13.5102H214.059ZM215.429 18.1502H208.359L207.449 21.2602H197.789L204.789 0.700195H219.389L226.309 21.2602H216.379L215.429 18.1502Z" fill="black"/>
+            <path d="M241.11 0.699997H228V21.26H240.2C250.79 21.26 255.2 16.21 255.2 10.84C255.23 5.05 250.61 0.699997 241.11 0.699997ZM240.05 15.21H237.89V6.75H240.41C243.41 6.75 244.6 8.55 244.6 10.81C244.6 13.42 243.08 15.21 240.05 15.21Z" fill="black"/>
+          </g>
+          <defs><clipPath id="jrLogoMob"><rect width="255.23" height="21.96" fill="white"/></clipPath></defs>
+        </svg>
+      </a>
+      <div class="header__mobile-icons">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- =====================================================================
+       3. PDP HERO / BUYBOX
+       ===================================================================== -->
+  <section class="pdp-hero">
+    <!-- Thumbnail Strip (vertical on desktop, horizontal on mobile) -->
+    <div class="pdp-hero__thumbs">
+      <div class="pdp-hero__thumb is-active" data-src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/MiracleBalm_AuNaturel_1.jpg?v=1739188719&width=700">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/MiracleBalm_AuNaturel_1.jpg?v=1739188719&width=120" alt="Swatch">
+      </div>
+      <div class="pdp-hero__thumb" data-src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718&width=700">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718&width=120" alt="Dusty Rose">
+      </div>
+      <div class="pdp-hero__thumb" data-src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_GoldenHour_1.jpg?v=1739188719&width=700">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_GoldenHour_1.jpg?v=1739188719&width=120" alt="Golden Hour">
+      </div>
+      <div class="pdp-hero__thumb" data-src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_Bronze_1.jpg?v=1739188719&width=700">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_Bronze_1.jpg?v=1739188719&width=120" alt="Bronze">
+      </div>
+      <div class="pdp-hero__thumb" data-src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_Bronze_1.jpg?v=1739188719&width=700">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_Bronze_1.jpg?v=1739188719&width=120" alt="Espresso">
+      </div>
+    </div>
+
+    <!-- Gallery (main image + award badge) -->
+    <div class="pdp-hero__gallery">
+      <div class="pdp-hero__award">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/allure-badge.png?v=1700000000&width=160" alt="Allure Best of Beauty" onerror="this.parentElement.style.display='none'">
+      </div>
+      <div class="pdp-hero__main-image">
+        <img id="main-img" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/MiracleBalm_AuNaturel_1.jpg?v=1739188719&width=700" alt="Miracle Balm — Au Naturel">
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="pdp-hero__info">
+      <h1 class="pdp-hero__product-name">Miracle Balm</h1>
+
+      <div class="pdp-hero__reviews">
+        <div class="junip-stars">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><defs><linearGradient id="halfStar"><stop offset="30%" stop-color="#121212"/><stop offset="30%" stop-color="#d0d0d0"/></linearGradient></defs><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="url(#halfStar)"/></svg>
+        </div>
+        <span class="pdp-hero__reviews-text"><a href="#reviews">(76,688 Reviews)</a></span>
+      </div>
+
+      <!-- Select Size -->
+      <p class="pdp-hero__select-size" style="font-family:'BaseMonoWideWeb',Courier,'Courier New',sans-serif; font-weight:550; font-size:11px; text-transform:uppercase; letter-spacing:.4px; margin: 20px 0 12px;">Select Size</p>
+      <div class="pdp-hero__size-toggle" style="display:flex; gap:0; margin-bottom:24px;">
+        <button class="pdp-hero__size-btn is-active" style="flex:1; padding:14px 0; border:2px solid #000; background:#000; color:#fff; font-family:'BaseMonoWideWeb',monospace; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; cursor:pointer; text-align:center;">
+          <strong>Standard</strong><br><span style="font-weight:400; font-size:11px;">(50.0 g / 1.75 oz)</span>
+        </button>
+        <button class="pdp-hero__size-btn" style="flex:1; padding:14px 0; border:2px solid #ccc; border-left:0; background:#fff; color:#000; font-family:'BaseMonoWideWeb',monospace; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; cursor:pointer; text-align:center;">
+          <strong>Mini</strong><br><span style="font-weight:400; font-size:11px;">(8.5 g / 0.3 oz)</span>
+        </button>
+      </div>
+
+      <!-- Shade Category Tabs -->
+      <div class="pdp-hero__shade-tabs" style="display:flex; gap:24px; margin-bottom:16px;">
+        <a href="#" style="font-family:'BaseMonoWideWeb',Courier,'Courier New',sans-serif; font-size:14px; font-weight:550; letter-spacing:0.355px; text-transform:uppercase; color:#000; text-decoration:underline; text-underline-offset:4px;">Tint</a>
+        <a href="#" style="font-family:'BaseMonoWideWeb',Courier,'Courier New',sans-serif; font-size:14px; font-weight:550; letter-spacing:0.355px; text-transform:uppercase; color:#757575;">Blush</a>
+        <a href="#" style="font-family:'BaseMonoWideWeb',Courier,'Courier New',sans-serif; font-size:14px; font-weight:550; letter-spacing:0.355px; text-transform:uppercase; color:#757575;">Highlight</a>
+        <a href="#" style="font-family:'BaseMonoWideWeb',Courier,'Courier New',sans-serif; font-size:14px; font-weight:550; letter-spacing:0.355px; text-transform:uppercase; color:#757575;">Colorless</a>
+        <a href="#" style="font-family:'BaseMonoWideWeb',Courier,'Courier New',sans-serif; font-size:14px; font-weight:550; letter-spacing:0.355px; text-transform:uppercase; color:#757575;">All</a>
+      </div>
+
+      <!-- Shade Swatches -->
+      <div class="pdp-hero__shades">
+        <div class="pdp-hero__shade" data-name="Au Naturel" data-desc="is a clear balm with subtle opal pearl for all skin tones" title="Au Naturel"><i class="pdp-hero__shade-inner" style="background:#ffeae6"></i></div>
+        <div class="pdp-hero__shade" data-name="Happy Hour" data-desc="is a cool sheer pink with silver shimmer for fair to medium tan skin tones" title="Happy Hour"><i class="pdp-hero__shade-inner" style="background:#d8a9a1"></i></div>
+        <div class="pdp-hero__shade is-active" data-name="Dusty Rose" data-desc="is a cool, rosy pink sheer tint for fair to medium skin tones" title="Dusty Rose"><i class="pdp-hero__shade-inner" style="background:#be7e84"></i></div>
+        <div class="pdp-hero__shade" data-name="Flushed" data-desc="is a cool pink with a subtle sheen and sheer to buildable coverage for all skin tones" title="Flushed"><i class="pdp-hero__shade-inner" style="background:#e25668"></i></div>
+        <div class="pdp-hero__shade" data-name="Pinched Cheeks" data-desc="is a medium rosy pink with subtle multidimensional shimmer for fair to dark skin tones" title="Pinched Cheeks"><i class="pdp-hero__shade-inner" style="background:#da6c81"></i></div>
+        <div class="pdp-hero__shade" data-name="Miami Beach" data-desc="is a warm peachy coral with subtle gold shimmer and sheer to buildable coverage for all skin tones" title="Miami Beach"><i class="pdp-hero__shade-inner" style="background:#f55849"></i></div>
+        <div class="pdp-hero__shade" data-name="Golden Hour" data-desc="is a warm, sheer gold with multidimensional shimmer for all skin tones" title="Golden Hour"><i class="pdp-hero__shade-inner" style="background:#e18046"></i></div>
+        <div class="pdp-hero__shade" data-name="Magic Hour" data-desc="is a cool, sheer bronze with silver shimmer for light to medium-dark skin" title="Magic Hour"><i class="pdp-hero__shade-inner" style="background:#c68655"></i></div>
+        <div class="pdp-hero__shade" data-name="Chic" data-desc="is a nude pink tint for fair to medium-dark skin tones" title="Chic"><i class="pdp-hero__shade-inner" style="background:#c36d69"></i></div>
+        <div class="pdp-hero__shade" data-name="Pinky Bronze" data-desc="is a warm pinky brown with low shimmer for fair to dark skin tones" title="Pinky Bronze"><i class="pdp-hero__shade-inner" style="background:#93504a"></i></div>
+        <div class="pdp-hero__shade" data-name="Bronze" data-desc="is a warm brown sheer to buildable tint for fair to dark skin tones" title="Bronze"><i class="pdp-hero__shade-inner" style="background:#844323"></i></div>
+        <div class="pdp-hero__shade" data-name="Cheeky" data-desc="is a plum berry for medium to deep skin tones" title="Cheeky"><i class="pdp-hero__shade-inner" style="background:#7b1e1c"></i></div>
+        <div class="pdp-hero__shade" data-name="Tawny" data-desc="is a reddish/brown sheer to buildable tint for medium to dark skin" title="Tawny"><i class="pdp-hero__shade-inner" style="background:#973331"></i></div>
+        <div class="pdp-hero__shade" data-name="Sunkissed" data-desc="is a deep reddish bronze tint that is sheer to buildable for light to deep skin tones" title="Sunkissed"><i class="pdp-hero__shade-inner" style="background:#85382e"></i></div>
+        <div class="pdp-hero__shade" data-name="Cocoa Bronze" data-desc="is a deep plummy bronze for medium to deep skin tones" title="Cocoa Bronze"><i class="pdp-hero__shade-inner" style="background:#652e23"></i></div>
+      </div>
+
+      <div class="pdp-hero__shade-desc" style="margin:8px 0 4px;">
+        <strong id="shade-name" style="font-family:'RingsideWideWeb',sans-serif; font-weight:600;">Dusty Rose</strong>
+        <span id="shade-desc" style="font-family:var(--font-body); font-size:14px; font-weight:325; color:var(--color-muted); margin-left:8px;">is a cool, rosy pink sheer tint for fair to medium skin tones</span>
+      </div>
+
+      <!-- Compare / Find links -->
+      <div style="display:flex; gap:16px; margin:12px 0 20px; font-family:'RingsideWideWeb',sans-serif; font-size:14px;">
+        <a href="#" style="text-decoration:underline; text-underline-offset:3px;">Compare Shades</a>
+        <a href="#" style="text-decoration:underline; text-underline-offset:3px;">Find my Shade</a>
+      </div>
+
+      <!-- ATC Button -->
+      <div class="pdp-hero__atc-wrap" style="display:flex; margin-bottom:16px; margin-top:24px;">
+        <a href="#" class="pdp-hero__atc button" style="flex:1; display:flex; width:100%; padding:0; white-space:nowrap; box-shadow:0 0 19px rgba(0,0,0,.24); font-size:14px;">
+          <span style="flex-grow:1; min-width:120px; text-align:center;">ADD TO CART</span>
+          <span style="border-left:1px solid rgba(255,255,255,1); display:flex; align-items:center; align-self:stretch; flex-shrink:0; padding:0 16px; color:#fff; font-family:var(--font-body); font-size:14px; transition:color .4s var(--ease-primary);">$38</span>
+        </a>
+      </div>
+
+      <!-- Value Props (real theme SVGs) -->
+      <div style="display:flex; flex-direction:column; gap:0; margin-bottom:24px;">
+        <div style="display:flex; align-items:center; gap:5px; font-family:var(--font-body); font-size:14px; font-weight:325; color:var(--color-black); letter-spacing:0; margin-bottom:18px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex:0 0 20px;"><path d="M8.66157 2.00354C6.71158 2.00354 4.8783 2.6118 3.56651 3.49431C3.47745 3.55411 3.44658 3.67715 3.50156 3.77209L5.08407 6.53919C5.14258 6.63763 5.26604 6.67281 5.36218 6.61304C6.35791 5.99774 7.49769 5.67777 8.66157 5.68481C11.796 5.68481 14.0997 7.94913 14.0997 10.9413C14.0997 13.4904 12.2561 15.3785 9.91805 15.3785C8.01275 15.3785 6.691 14.2428 6.691 12.6395C6.691 11.7218 7.072 10.9694 8.0642 10.4385C8.16708 10.3822 8.20502 10.2521 8.14329 10.1501L6.64985 7.56236C6.60162 7.47799 6.49874 7.43932 6.40582 7.47446C4.40438 8.23393 3 10.0622 3 12.5165C3 16.2294 5.88753 19 9.91484 19C14.6183 19 18 15.6633 18 10.878C18 5.74808 14.0656 2 8.65482 2L8.66157 2.00354Z" fill="black"/></svg>
+          Pay in 2 interest-free installments of <strong style="margin:0 3px;">$19.00</strong> with <span style="display:inline-flex; align-items:center; vertical-align:middle; gap:1px; margin:0 3px;"><span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; font-size:13px; font-weight:700; font-style:italic; color:#757575; letter-spacing:-0.3px;">shop</span><span style="display:inline-flex; align-items:center; background:#757575; color:#fff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; font-size:11px; font-weight:700; font-style:italic; letter-spacing:-0.2px; padding:1px 4px; border-radius:3px; line-height:1.2;">Pay</span></span>. <a href="#" style="text-decoration:underline; text-underline-offset:3px; color:var(--color-muted);">Learn more</a>
+        </div>
+        <div style="display:flex; align-items:center; gap:5px; font-family:var(--font-body); font-size:14px; font-weight:325; color:var(--color-black); letter-spacing:0;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex:0 0 20px;"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.16667 9.16667V10H10.8333V4.16667H2.5V3.33333C2.5 2.87333 2.87333 2.5 3.33333 2.5H11.6667C12.1267 2.5 12.5 2.87333 12.5 3.33333V5H16.3892C17.32 5 17.7225 5.48 18.0025 5.9225C18.4975 6.70583 19.2825 7.94917 19.76 8.7375C19.9167 8.9975 20 9.29583 20 9.6V13.3333C20 14.2408 19.3808 15 18.3333 15H17.5C17.5 16.38 16.38 17.5 15 17.5C13.62 17.5 12.5 16.38 12.5 15H9.16667C9.16667 16.38 8.04667 17.5 6.66667 17.5C5.28667 17.5 4.16667 16.38 4.16667 15H3.33333C2.87333 15 2.5 14.6267 2.5 14.1667V9.16667H0.833333V7.5H6.66667V9.16667H4.16667ZM6.66667 14C7.21833 14 7.66667 14.4483 7.66667 15C7.66667 15.5517 7.21833 16 6.66667 16C6.115 16 5.66667 15.5517 5.66667 15C5.66667 14.4483 6.115 14 6.66667 14ZM15 14C15.5517 14 16 14.4483 16 15C16 15.5517 15.5517 16 15 16C14.4483 16 14 15.5517 14 15C14 14.4483 14.4483 14 15 14ZM12.5 11.6667H4.16667V13.3333H4.80417C5.26167 12.8217 5.92667 12.5 6.66667 12.5C7.40667 12.5 8.07167 12.8217 8.52917 13.3333H13.1375C13.595 12.8217 14.26 12.5 15 12.5C15.74 12.5 16.405 12.8217 16.8625 13.3333H18.3333V9.52083L16.9075 7.08C16.7583 6.82417 16.4842 6.66667 16.1883 6.66667H12.5V11.6667ZM13.3333 7.5V10H17.5L16.3108 7.92C16.1625 7.66 15.8867 7.5 15.5875 7.5H13.3333ZM0 5H6.66667V6.66667H0V5Z" fill="black"/></svg>
+          Free shipping on US orders over $55
+        </div>
+        <div style="display:flex; align-items:center; gap:5px; font-family:var(--font-body); font-size:14px; font-weight:325; color:var(--color-black); letter-spacing:0; margin-top:16px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none" style="flex:0 0 20px;"><path d="M11.1445 4.83667L16.2314 7.25952L16.2256 7.2439L16.7861 7.52417L16.8125 7.53687H16.8115L16.8154 7.53882H16.8174L16.707 7.76245L16.9385 7.67358L17.04 7.93433L17.0605 7.98804L17.0566 8.04468C17.0077 8.73225 17.0187 9.4525 17.043 10.1873L17.0957 11.6658C17.1135 12.2824 17.1188 12.8976 17.083 13.4929L17.0557 13.8474C17.0453 13.9601 17.0257 14.0749 16.958 14.1804C16.893 14.2815 16.7998 14.3486 16.7178 14.4041L16.7002 14.4158L16.6807 14.4246C15.8877 14.787 15.1039 15.1728 14.3174 15.5613C13.9246 15.7553 13.531 15.95 13.1357 16.1423L11.9443 16.7097C11.9045 16.7281 11.8427 16.7585 11.7637 16.7966C11.6868 16.8337 11.597 16.8763 11.5078 16.9167C11.4194 16.9569 11.3271 16.9965 11.2461 17.0261C11.2057 17.0409 11.1642 17.0551 11.125 17.0652C11.0908 17.0739 11.0383 17.084 10.9834 17.0818V17.0828C10.9364 17.0809 10.8921 17.0686 10.8643 17.0603C10.8317 17.0506 10.7967 17.0384 10.7627 17.0251C10.6942 16.9985 10.6157 16.9633 10.54 16.9285C10.4638 16.8934 10.3868 16.8565 10.3213 16.825C10.254 16.7925 10.2014 16.7676 10.1689 16.7527V16.7517C9.03113 16.2324 7.84747 15.6681 6.69922 15.1003L5.56543 14.533C5.53198 14.516 5.50022 14.5013 5.46875 14.4861C5.43808 14.4713 5.4054 14.4559 5.375 14.4402C5.31509 14.4092 5.24722 14.369 5.18555 14.3123C5.08088 14.2158 5.02391 14.0973 4.99414 13.9548L4.97266 13.8054C4.8865 12.8817 4.92061 11.8963 4.95801 10.9265C4.99566 9.95015 5.03704 8.9898 4.97266 8.08862L4.97168 8.08374C4.95864 7.84134 5.08229 7.64353 5.25977 7.52417L5.27441 7.5144L5.29102 7.50562L10.7461 4.87378L10.7744 4.86011L10.8057 4.85425L10.9844 4.81714L11.0674 4.79956L11.1445 4.83667ZM6.07617 13.5554L10.4609 15.655V10.9792L6.07617 8.87964V13.5554ZM11.5645 10.9792V15.655L15.9492 13.5554V8.87964L11.5645 10.9792ZM9.58398 9.31519C9.77259 9.40533 9.9563 9.49958 10.1338 9.5896C10.4478 9.74885 10.748 9.89158 11.0557 9.99097L15.2285 7.99585L13.7285 7.31714L9.58398 9.31519ZM6.83594 8.00366L8.30078 8.69604L12.4678 6.65015L11.0312 5.97534L11.0088 5.97437L6.83594 8.00366Z" fill="black" stroke="black" stroke-width="0.508504"/><path d="M19.9727 6.73059C20.1223 6.73467 20.244 6.80412 20.333 6.88977C20.4296 6.98282 20.4989 7.10423 20.5498 7.21399C20.5994 7.32082 20.6414 7.44161 20.6758 7.54993L20.7559 7.81165V7.81262L20.8389 8.08118C22.4696 13.642 19.152 19.5402 13.5459 20.9415L13.2734 21.006C9.82411 21.7682 6.36422 20.7439 3.84961 18.3575L3.68066 19.9298L3.67871 19.9523L3.67188 19.9738C3.62891 20.1214 3.54279 20.2413 3.42188 20.3156C3.30258 20.3888 3.16504 20.4075 3.03906 20.382C2.78123 20.3294 2.57962 20.0961 2.58789 19.7814L2.60742 19.4327C2.63609 19.081 2.68888 18.7227 2.74121 18.3741C2.8119 17.9034 2.88148 17.4489 2.89746 17.0167L2.89844 16.9816L2.91016 16.9464L2.9668 16.8136C2.98967 16.7718 3.01652 16.7326 3.04883 16.6974C3.11581 16.6245 3.19512 16.5794 3.27734 16.5538C3.35527 16.5297 3.43294 16.5242 3.49707 16.5236C3.55893 16.523 3.62847 16.5272 3.68359 16.5294H3.68457L4.17383 16.5626C4.68727 16.6085 5.25308 16.6857 5.70508 16.7433L5.85449 16.7589C5.91388 16.7647 5.98162 16.772 6.04883 16.7804C6.1158 16.7888 6.18704 16.7995 6.25195 16.8136C6.28205 16.8201 6.31613 16.8279 6.35059 16.839L6.45215 16.882L6.53613 16.9366C6.71432 17.0749 6.77847 17.2868 6.73145 17.4835C6.68076 17.6955 6.50506 17.8741 6.26367 17.9181L6.22754 17.9249L6.19141 17.921L4.86816 17.7833C6.27136 19.062 8.5027 20.0048 10.3252 20.1085L10.626 20.1212C16.8314 20.2895 21.365 14.6807 19.8379 8.63586L19.7588 8.3429C19.7418 8.28358 19.7029 8.18807 19.6475 8.04602C19.5961 7.91455 19.536 7.75566 19.4961 7.60071C19.4584 7.45427 19.4273 7.27141 19.4668 7.10754C19.4881 7.01917 19.532 6.92597 19.6152 6.85266C19.6987 6.7792 19.8011 6.74317 19.9062 6.73254L19.9727 6.73059Z" fill="black" stroke="black" stroke-width="0.508504"/><path d="M7.42383 1.38672C11.1759 0.00510053 15.324 0.901149 18.1768 3.65625L18.3438 2.0498L18.3457 2.03027L18.3506 2.01172C18.4257 1.72166 18.7105 1.57428 18.9639 1.61328C19.0981 1.634 19.2268 1.70573 19.3164 1.83105C19.4043 1.95421 19.4416 2.11078 19.4365 2.28418L19.4375 2.28516C19.4238 2.73981 19.3537 3.21469 19.2861 3.67285C19.2348 4.02109 19.1854 4.36042 19.1572 4.68848L19.1367 5.01172L19.1357 5.04004L19.1289 5.06641C19.0994 5.18117 19.0297 5.28158 18.9502 5.35352C18.8717 5.42451 18.7561 5.49213 18.6182 5.49707L18.5957 5.49805L18.5742 5.49512C18.1659 5.43899 17.7521 5.40344 17.3311 5.36719C16.9124 5.33114 16.4862 5.29395 16.0635 5.23535H16.0625C16.0151 5.22861 15.9187 5.21683 15.834 5.20215C15.7579 5.18895 15.6396 5.1656 15.5518 5.11621H15.5508C15.3135 4.98177 15.2521 4.7256 15.2998 4.52246C15.3473 4.32058 15.5132 4.12086 15.7773 4.09375L15.8018 4.0918L15.8271 4.09375L17.1338 4.2168C14.1179 1.45528 9.53355 1.0919 6.06934 3.31934L5.71875 3.55566C2.4222 5.89705 1.16996 9.92292 2.30957 13.8047L2.39746 14.0273C2.43807 14.1261 2.48664 14.2482 2.51953 14.3701C2.55086 14.4863 2.57785 14.6355 2.54688 14.7783C2.53033 14.8544 2.49657 14.9344 2.43457 15.0029C2.38784 15.0546 2.33139 15.0931 2.26953 15.1201L2.20508 15.1436C2.05578 15.1881 1.90829 15.1821 1.77637 15.1162C1.65199 15.054 1.57035 14.9524 1.51562 14.8604C1.46061 14.7677 1.4213 14.6651 1.3916 14.5781L1.31543 14.3457C-0.488629 9.28922 2.14616 3.55501 7.0459 1.53418L7.42383 1.38672Z" fill="black" stroke="black" stroke-width="0.508504"/><path d="M7.49414 10.5759L7.53027 10.5818L7.56348 10.5984L9.36035 11.4871L9.39355 11.5027L9.4209 11.5281C9.56097 11.658 9.56869 11.8448 9.55566 11.9558C9.54231 12.0691 9.49444 12.2108 9.39551 12.3074L9.39648 12.3083V12.3093L9.39062 12.3152L9.38965 12.3142C9.27866 12.4184 9.13176 12.4366 9.0459 12.4392C8.94805 12.4422 8.8503 12.4278 8.77832 12.4089V12.408C8.73888 12.3976 8.68465 12.3751 8.64062 12.3562C8.58789 12.3335 8.52165 12.3036 8.44727 12.2693C8.29816 12.2005 8.11126 12.1115 7.92578 12.0212C7.74044 11.931 7.55478 11.839 7.40723 11.7634C7.33357 11.7257 7.26819 11.6917 7.2168 11.6638L7.08984 11.5886C6.84032 11.4079 6.79671 11.1242 6.89551 10.9031C6.97616 10.7228 7.1612 10.5698 7.39258 10.5671L7.49414 10.5759Z" fill="black" stroke="black" stroke-width="0.508504"/></svg>
+          Free &amp; Easy Returns
+        </div>
+      </div>
+
+      <!-- As Seen On You -->
+      <div style="margin-top:16px;">
+        <h3 style="font-family:'GeogrotesqueCondBoldWeb',sans-serif; font-weight:700; font-size:16px; text-transform:uppercase; letter-spacing:.5px; margin-bottom:12px;">As Seen On You</h3>
+        <div style="display:flex; gap:8px;">
+          <div style="width:33%; aspect-ratio:3/4; overflow:hidden; border-radius:2px;"><img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718&width=200" alt="Customer photo" style="width:100%; height:100%; object-fit:cover; display:block;"></div>
+          <div style="width:33%; aspect-ratio:3/4; overflow:hidden; border-radius:2px;"><img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_GoldenHour_1.jpg?v=1739188719&width=200" alt="Customer photo" style="width:100%; height:100%; object-fit:cover; display:block;"></div>
+          <div style="width:33%; aspect-ratio:3/4; overflow:hidden; border-radius:2px;"><img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_Bronze_1.jpg?v=1739188719&width=200" alt="Customer photo" style="width:100%; height:100%; object-fit:cover; display:block;"></div>
+        </div>
+      </div>
+
+      <!-- Accordions -->
+      <div class="pdp-hero__accordion">
+        <details class="pdp-hero__accordion-item" open>
+          <summary>Product Description</summary>
+          <div class="pdp-hero__accordion-body">
+            <p style="margin-bottom:16px;">Meet Miracle Balm — a light-reflecting balm that gives your skin a fresh, healthy glow. It's a highlighter, blush, bronzer, and so much more.</p>
+            <p style="margin-bottom:16px;">Tap it on cheeks, lips, or as an all-over tint for an effortlessly natural look. Layer it over foundation to warm things up or wear it on its own for a no-makeup glow.</p>
+            <p style="margin-bottom:16px;">Made with skin-loving ingredients, it melts in to leave skin feeling smooth, moisturized, and comfortable.</p>
+            <p style="margin-bottom:16px;">*Non-Comedogenic</p>
+            <p>(50.0 g / 1.75 oz)</p>
+          </div>
+        </details>
+        <details class="pdp-hero__accordion-item">
+          <summary>Shade Descriptions</summary>
+          <div class="pdp-hero__accordion-body">
+            All 16 shades of Miracle Balm offer buildable, natural color for every skin tone.
+          </div>
+        </details>
+        <details class="pdp-hero__accordion-item">
+          <summary>How to Use</summary>
+          <div class="pdp-hero__accordion-body">
+            Swipe your finger across the surface of the balm to pick up the product. Dab onto cheeks, lips, or anywhere you want color. Blend with fingertips for a seamless finish.
+          </div>
+        </details>
+        <details class="pdp-hero__accordion-item">
+          <summary>Pair With</summary>
+          <div class="pdp-hero__accordion-body">
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <!-- The Everything Brush -->
+              <div style="display:flex; gap:16px; align-items:center;">
+                <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/TheEverythingBrush_1.jpg?v=1700000000&width=120" alt="The Everything Brush" style="width:80px; height:80px; object-fit:cover; border-radius:2px;" onerror="this.src='https://cdn.shopify.com/s/files/1/0424/9527/9254/files/everything-brush.jpg?width=120'">
+                <div style="flex:1;">
+                  <div style="font-family:'GeogrotesqueCondBoldWeb',sans-serif; font-weight:700; font-size:15px; text-transform:uppercase; letter-spacing:0.98px; line-height:22px;">The Everything Brush</div>
+                  <div class="junip-stars" style="margin:4px 0 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                    <span style="font-family:'RingsideWideWeb',sans-serif; font-size:14px; font-weight:400; margin-left:4px;">(3,471)</span>
+                  </div>
+                  <a href="#" class="button button--sm" style="width:fit-content; gap:8px;">ADD TO BAG <span style="border-left:1px solid rgba(255,255,255,1); padding-left:8px;">$44</span></a>
+                </div>
+              </div>
+              <!-- The Mascara -->
+              <div style="display:flex; gap:16px; align-items:center;">
+                <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/TheMascara_1.jpg?v=1700000000&width=120" alt="The Mascara" style="width:80px; height:80px; object-fit:cover; border-radius:2px;" onerror="this.src='https://cdn.shopify.com/s/files/1/0424/9527/9254/files/mascara.jpg?width=120'">
+                <div style="flex:1;">
+                  <div style="font-family:'GeogrotesqueCondBoldWeb',sans-serif; font-weight:700; font-size:15px; text-transform:uppercase; letter-spacing:0.98px; line-height:22px;">The Mascara</div>
+                  <div class="junip-stars" style="margin:4px 0 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><defs><linearGradient id="halfStar2"><stop offset="50%" stop-color="#121212"/><stop offset="50%" stop-color="#d0d0d0"/></linearGradient></defs><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="url(#halfStar2)"/></svg>
+                    <span style="font-family:'RingsideWideWeb',sans-serif; font-size:14px; font-weight:400; margin-left:4px;">(13,960)</span>
+                  </div>
+                  <a href="#" class="button button--sm" style="width:fit-content; gap:8px;">ADD TO BAG <span style="border-left:1px solid rgba(255,255,255,1); padding-left:8px;">$28</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       4. TRUST BAR
+       ===================================================================== -->
+  <section class="trust-bar">
+    <div class="trust-bar__inner">
+      <div class="trust-bar__item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
+        Free Returns
+      </div>
+      <div class="trust-bar__divider"></div>
+      <div class="trust-bar__item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        Free Shipping $55+
+      </div>
+      <div class="trust-bar__divider"></div>
+      <div class="trust-bar__item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2l2.09 6.26L21 9.27l-5.18 4.73L17.18 21 12 17.27 6.82 21l1.36-6.99L3 9.27l6.91-1.01L12 2z"/></svg>
+        76K+ Reviews
+      </div>
+      <div class="trust-bar__divider"></div>
+      <div class="trust-bar__item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        30-Day Guarantee
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       5. HOW TO USE
+       ===================================================================== -->
+  <section class="how-to-use">
+    <div class="how-to-use__header">
+      <h2 style="font-family:'Canela',serif; font-weight:300; font-size:38px; line-height:1.8; letter-spacing:0.5px; margin-bottom:2px;">How to Use</h2>
+      <p style="font-family:'RingsideWideWeb',sans-serif; font-size:18px; font-weight:325; line-height:30px; letter-spacing:0;">Genius in a pot. Once you break the seal of the balm, you can wear it alone, or use it to bronze, highlight, or tint the skin by mixing and matching shades.</p>
+    </div>
+    <div class="how-to-use__grid">
+      <!-- Card 1 -->
+      <div class="how-to-use__card">
+        <div class="how-to-use__card-video">
+          <div class="how-to-use__card-number">1</div>
+          <img src="https://air-prod.imgix.net/03905a65-0ca6-4a40-bf82-b15c4003b42c.jpg?w=700&h=525&fit=crop&auto=format" alt="Step 1 — Break the Seal" loading="lazy">
+          <div class="how-to-use__play-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#1C1B1F"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="how-to-use__card-text">
+          <div class="how-to-use__card-title">Break the Seal</div>
+          <div class="how-to-use__card-desc">Before your first use, press into the top of the balm with your index finger to release the pigment.</div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="how-to-use__card">
+        <div class="how-to-use__card-video">
+          <div class="how-to-use__card-number">2</div>
+          <img src="https://air-prod.imgix.net/b8ff9613-f642-4d3f-b892-7f8914c2a9f0.jpg?w=700&h=525&fit=crop&auto=format" alt="Step 2 — Scoop" loading="lazy">
+          <div class="how-to-use__play-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#1C1B1F"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="how-to-use__card-text">
+          <div class="how-to-use__card-title">Scoop a Small Amount</div>
+          <div class="how-to-use__card-desc">Pick up a small, pea-sized amount and warm it between your fingers to soften the formula.</div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="how-to-use__card">
+        <div class="how-to-use__card-video">
+          <div class="how-to-use__card-number">3</div>
+          <img src="https://air-prod.imgix.net/03905a65-0ca6-4a40-bf82-b15c4003b42c.jpg?w=700&h=525&fit=crop&auto=format" alt="Step 3 — Dab" loading="lazy">
+          <div class="how-to-use__play-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#1C1B1F"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="how-to-use__card-text">
+          <div class="how-to-use__card-title">Dab Onto Skin</div>
+          <div class="how-to-use__card-desc">Using your fingers or The Everything Brush, dab onto face, lips, or anywhere you want to tint or glow.<br><br>*Miracle Balm is not intended to be used on the eyes or eyelids</div>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="how-to-use__card">
+        <div class="how-to-use__card-video">
+          <div class="how-to-use__card-number">4</div>
+          <img src="https://air-prod.imgix.net/b8ff9613-f642-4d3f-b892-7f8914c2a9f0.jpg?w=700&h=525&fit=crop&auto=format" alt="Step 4 — Blend" loading="lazy">
+          <div class="how-to-use__play-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#1C1B1F"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="how-to-use__card-text">
+          <div class="how-to-use__card-title">Blend It In</div>
+          <div class="how-to-use__card-desc">Blend well and layer with other makeup products or wear alone for a natural, no-makeup makeup look.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       6. WHAT IS MIRACLE BALM? (Comprehension)
+       ===================================================================== -->
+  <section class="pdp-comprehend">
+    <div class="pdp-comprehend__inner">
+      <div class="pdp-comprehend__layout">
+        <div class="pdp-comprehend__img">
+          <img src="https://air-prod.imgix.net/1cf52c77-e36b-41dd-add7-821cc89acc92.jpg?w=600&h=750&fit=crop&auto=format" alt="Miracle Balm application" loading="lazy">
+        </div>
+        <div class="pdp-comprehend__content">
+          <p class="eyebrow">What Is Miracle Balm?</p>
+          <h2 class="headline">A Cream Blush for Lips &amp; Cheeks</h2>
+          <p class="body-text">Not a lip balm. Not a tinted moisturizer. Miracle Balm is a cream-to-powder formula that melts into skin, delivering a natural flush of buildable color. One product replaces your blush, bronzer, highlighter, and lip tint.</p>
+          <ul class="pdp-comprehend__features">
+            <li class="pdp-comprehend__feature">
+              <span class="pdp-comprehend__feature-icon"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span class="pdp-comprehend__feature-text">Multi-use: cheeks, eyes, lips, and body</span>
+            </li>
+            <li class="pdp-comprehend__feature">
+              <span class="pdp-comprehend__feature-icon"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span class="pdp-comprehend__feature-text">No brushes needed &mdash; apply with fingertips in 30 seconds</span>
+            </li>
+            <li class="pdp-comprehend__feature">
+              <span class="pdp-comprehend__feature-icon"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span class="pdp-comprehend__feature-text">Buildable from sheer glow to bold color</span>
+            </li>
+            <li class="pdp-comprehend__feature">
+              <span class="pdp-comprehend__feature-icon"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span class="pdp-comprehend__feature-text">Clean formula with jojoba oil and vitamin E</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       7. BOBBI'S GUIDE
+       ===================================================================== -->
+  <section class="bobbi-v1">
+    <div class="bobbi-v1__layout">
+      <div class="bobbi-v1__img">
+        <img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=600&h=600&fit=crop&auto=format" alt="Bobbi Brown" loading="lazy">
+      </div>
+      <div class="bobbi-v1__content">
+        <p class="eyebrow">From the founder</p>
+        <blockquote class="bobbi-v1__quote">&ldquo;I created Miracle Balm because I wanted one product that could do everything &mdash; give you a natural flush, a glow, a hint of color &mdash; in seconds. No brushes, no mirror, no fuss. Just real skin, only better.&rdquo;</blockquote>
+        <p class="bobbi-v1__attribution">Bobbi Brown</p>
+        <p class="bobbi-v1__role">Founder, Jones Road Beauty</p>
+        <ul class="bobbi-v1__credentials">
+          <li class="bobbi-v1__credential">Professional makeup artist for 40+ years</li>
+          <li class="bobbi-v1__credential">Founded Bobbi Brown Cosmetics in 1991</li>
+          <li class="bobbi-v1__credential">NYT best-selling author of 9 beauty and wellness books</li>
+          <li class="bobbi-v1__credential">Champion of clean, skin-first beauty</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       8. THE SHADES
+       ===================================================================== -->
+  <section class="the-shades">
+    <div class="the-shades__header">
+      <h2>The Shades</h2>
+    </div>
+    <div class="the-shades__swatches">
+      <div class="the-shades__swatch is-active">
+        <div class="the-shades__swatch-circle" style="background:#ffeae6;"></div>
+        <div class="the-shades__swatch-name">Au Naturel</div>
+      </div>
+      <div class="the-shades__swatch">
+        <div class="the-shades__swatch-circle" style="background:#d8a9a1;"></div>
+        <div class="the-shades__swatch-name">Happy Hour</div>
+      </div>
+      <div class="the-shades__swatch">
+        <div class="the-shades__swatch-circle" style="background:#be7e84;"></div>
+        <div class="the-shades__swatch-name">Dusty Rose</div>
+      </div>
+      <div class="the-shades__swatch">
+        <div class="the-shades__swatch-circle" style="background:#e25668;"></div>
+        <div class="the-shades__swatch-name">Flushed</div>
+      </div>
+      <div class="the-shades__swatch">
+        <div class="the-shades__swatch-circle" style="background:#da6c81;"></div>
+        <div class="the-shades__swatch-name">Pinched Cheeks</div>
+      </div>
+      <div class="the-shades__swatch">
+        <div class="the-shades__swatch-circle" style="background:#f55849;"></div>
+        <div class="the-shades__swatch-name">Miami Beach</div>
+      </div>
+      <div class="the-shades__swatch">
+        <div class="the-shades__swatch-circle" style="background:#e18046;"></div>
+        <div class="the-shades__swatch-name">Golden Hour</div>
+      </div>
+      <div class="the-shades__swatch">
+        <div class="the-shades__swatch-circle" style="background:#c68655;"></div>
+        <div class="the-shades__swatch-name">Magic Hour</div>
+      </div>
+      <div class="the-shades__swatch">
+        <div class="the-shades__swatch-circle" style="background:#c36d69;"></div>
+        <div class="the-shades__swatch-name">Chic</div>
+      </div>
+      <div class="the-shades__swatch">
+        <div class="the-shades__swatch-circle" style="background:#93504a;"></div>
+        <div class="the-shades__swatch-name">Pinky Bronze</div>
+      </div>
+      <div class="the-shades__swatch">
+        <div class="the-shades__swatch-circle" style="background:#844323;"></div>
+        <div class="the-shades__swatch-name">Bronze</div>
+      </div>
+      <div class="the-shades__swatch">
+        <div class="the-shades__swatch-circle" style="background:#7b1e1c;"></div>
+        <div class="the-shades__swatch-name">Cheeky</div>
+      </div>
+      <div class="the-shades__swatch">
+        <div class="the-shades__swatch-circle" style="background:#973331;"></div>
+        <div class="the-shades__swatch-name">Tawny</div>
+      </div>
+      <div class="the-shades__swatch">
+        <div class="the-shades__swatch-circle" style="background:#85382e;"></div>
+        <div class="the-shades__swatch-name">Sunkissed</div>
+      </div>
+      <div class="the-shades__swatch">
+        <div class="the-shades__swatch-circle" style="background:#652e23;"></div>
+        <div class="the-shades__swatch-name">Cocoa Bronze</div>
+      </div>
+    </div>
+    <div class="the-shades__cta">
+      <span class="the-shades__cta-text">Still Not Sure?</span>
+      <a href="#" class="button button--sm">Find My Shade &nbsp;&rsaquo;</a>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       9. SEND A SELFIE CTA
+       ===================================================================== -->
+  <section class="selfie-cta">
+    <div class="selfie-cta__inner">
+      <h2 class="selfie-cta__headline">Not Sure About Your Shade?</h2>
+      <p class="selfie-cta__body">Send us a no-makeup selfie and our shade experts will personally match you to your perfect Miracle Balm shade. Free, fast, and accurate.</p>
+      <a href="mailto:hi@jonesroadbeauty.com" class="button button--outline">Send a Selfie</a>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       10. UGC / REAL RESULTS
+       ===================================================================== -->
+  <section class="ugc-v2">
+    <div class="ugc-v2__header">
+      <p class="eyebrow">Real results</p>
+      <h2 class="headline">Real Skin. Real Miracle Balm.</h2>
+      <span class="ugc-v2__stat-inline"><strong>76,000+</strong> reviews &middot; <strong>80%</strong> recommend &middot; <strong>4.3</strong> average rating</span>
+    </div>
+    <div class="ugc-v2__slider-row">
+      <div class="ugc-v2__slider">
+        <div class="ugc-v2__slider-img">
+          <img src="https://air-prod.imgix.net/03905a65-0ca6-4a40-bf82-b15c4003b42c.jpg?w=500&h=660&fit=crop&auto=format" alt="Before and after — Crystal" loading="lazy">
+        </div>
+        <div class="ugc-v2__slider-divider"></div>
+        <div class="ugc-v2__slider-handle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5l-5 7 5 7m8-14l5 7-5 7"/></svg>
+        </div>
+        <div class="ugc-v2__slider-labels">
+          <span class="ugc-v2__slider-label">Before</span>
+          <span class="ugc-v2__slider-label">After</span>
+        </div>
+        <div class="ugc-v2__slider-info">
+          <div class="ugc-v2__slider-name">Crystal L.</div>
+          <div class="ugc-v2__slider-shade">Shade: Golden Hour</div>
+        </div>
+      </div>
+      <div class="ugc-v2__slider">
+        <div class="ugc-v2__slider-img">
+          <img src="https://air-prod.imgix.net/b8ff9613-f642-4d3f-b892-7f8914c2a9f0.jpg?w=500&h=660&fit=crop&auto=format" alt="Before and after — Linda" loading="lazy">
+        </div>
+        <div class="ugc-v2__slider-divider"></div>
+        <div class="ugc-v2__slider-handle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5l-5 7 5 7m8-14l5 7-5 7"/></svg>
+        </div>
+        <div class="ugc-v2__slider-labels">
+          <span class="ugc-v2__slider-label">Before</span>
+          <span class="ugc-v2__slider-label">After</span>
+        </div>
+        <div class="ugc-v2__slider-info">
+          <div class="ugc-v2__slider-name">Linda S.</div>
+          <div class="ugc-v2__slider-shade">Shade: Dusty Rose</div>
+        </div>
+      </div>
+      <div class="ugc-v2__slider">
+        <div class="ugc-v2__slider-img">
+          <img src="https://air-prod.imgix.net/1f1aba1c-c948-4af7-8180-41db74c4c497.jpg?w=500&h=660&fit=crop&auto=format" alt="Before and after — Kitty" loading="lazy">
+        </div>
+        <div class="ugc-v2__slider-divider"></div>
+        <div class="ugc-v2__slider-handle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5l-5 7 5 7m8-14l5 7-5 7"/></svg>
+        </div>
+        <div class="ugc-v2__slider-labels">
+          <span class="ugc-v2__slider-label">Before</span>
+          <span class="ugc-v2__slider-label">After</span>
+        </div>
+        <div class="ugc-v2__slider-info">
+          <div class="ugc-v2__slider-name">Kitty M.</div>
+          <div class="ugc-v2__slider-shade">Shade: Au Naturel</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       11. TRY THE MINI CTA
+       ===================================================================== -->
+  <section class="mini-cta">
+    <div class="mini-cta__inner">
+      <div class="mini-cta__img">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/MiracleBalm_AuNaturel_1.jpg?v=1739188719&width=300" alt="Mini Miracle Balm" loading="lazy">
+      </div>
+      <div class="mini-cta__content">
+        <p class="eyebrow">Not ready to commit?</p>
+        <h2 class="headline--sm">Try the Mini First</h2>
+        <p class="mini-cta__body">Get the same formula in a travel-friendly size. Perfect for trying your shade before going full-size. At just $18, it's the risk-free way to discover your perfect Miracle Balm.</p>
+        <a href="#" class="button button--outline">Shop Mini &mdash; $18</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       12. VALUE / COST-PER-DAY
+       ===================================================================== -->
+  <section class="spec-v1">
+    <div class="spec-v1__layout">
+      <div class="spec-v1__img-wrap">
+        <img src="https://air-prod.imgix.net/1cf52c77-e36b-41dd-add7-821cc89acc92.jpg?w=480&h=480&fit=crop&auto=format" alt="Miracle Balm product" loading="lazy">
+      </div>
+      <div class="spec-v1__content">
+        <p class="eyebrow">The value</p>
+        <h2 class="headline--sm">$0.42 per day</h2>
+        <div class="spec-v1__list">
+          <div class="spec-v1__item">
+            <div class="spec-v1__item-label">Lasts</div>
+            <div class="spec-v1__item-value">9&ndash;12 months with daily use</div>
+          </div>
+          <div class="spec-v1__item">
+            <div class="spec-v1__item-label">Replaces</div>
+            <div class="spec-v1__item-value">Blush, bronzer, highlighter, and lip tint &mdash; 4 products in 1</div>
+          </div>
+          <div class="spec-v1__item">
+            <div class="spec-v1__item-label">Size</div>
+            <div class="spec-v1__item-value">1.76 oz (50g) &mdash; full-size compact</div>
+          </div>
+          <div class="spec-v1__item">
+            <div class="spec-v1__item-label">Cost per oz</div>
+            <div class="spec-v1__item-value">$21.59/oz vs. ILIA $49/oz, MERIT $165/oz</div>
+          </div>
+          <div class="spec-v1__item">
+            <div class="spec-v1__item-label">Made in</div>
+            <div class="spec-v1__item-value">USA &middot; Clean &middot; Cruelty-free</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       13. INGREDIENTS / "FREE FROM"
+       ===================================================================== -->
+  <section class="ingredients-v1">
+    <div class="ingredients-v1__header">
+      <p class="eyebrow">Clean formula</p>
+      <h2 class="headline">What Goes In &mdash; and What Doesn't</h2>
+    </div>
+    <div class="ingredients-v1__layout">
+      <div class="ingredients-v1__col ingredients-v1__col--in">
+        <div class="ingredients-v1__col-header">
+          <div class="ingredients-v1__col-icon ingredients-v1__col-icon--in">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <span class="ingredients-v1__col-title">What's in it</span>
+        </div>
+        <ul class="ingredients-v1__list">
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--in"></span>
+            <div>
+              <div class="ingredients-v1__item-name">Jojoba Oil</div>
+              <div class="ingredients-v1__item-benefit">Mimics skin's natural oils for deep hydration</div>
+            </div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--in"></span>
+            <div>
+              <div class="ingredients-v1__item-name">Sunflower Seed Oil</div>
+              <div class="ingredients-v1__item-benefit">Rich in vitamin E and essential fatty acids</div>
+            </div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--in"></span>
+            <div>
+              <div class="ingredients-v1__item-name">Beeswax</div>
+              <div class="ingredients-v1__item-benefit">Creates a protective, breathable barrier</div>
+            </div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--in"></span>
+            <div>
+              <div class="ingredients-v1__item-name">Vitamin E</div>
+              <div class="ingredients-v1__item-benefit">Antioxidant protection and skin nourishment</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="ingredients-v1__col ingredients-v1__col--out">
+        <div class="ingredients-v1__col-header">
+          <div class="ingredients-v1__col-icon ingredients-v1__col-icon--out">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </div>
+          <span class="ingredients-v1__col-title">What's not</span>
+        </div>
+        <ul class="ingredients-v1__list">
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--out"></span>
+            <div class="ingredients-v1__item-name">Parabens</div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--out"></span>
+            <div class="ingredients-v1__item-name">Sulfates</div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--out"></span>
+            <div class="ingredients-v1__item-name">Phthalates</div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--out"></span>
+            <div class="ingredients-v1__item-name">Synthetic fragrances</div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--out"></span>
+            <div class="ingredients-v1__item-name">Mineral oil</div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--out"></span>
+            <div class="ingredients-v1__item-name">Talc, formaldehyde, silicones</div>
+          </li>
+        </ul>
+        <div class="ingredients-v1__excluded-count">2,700+ ingredients excluded from all formulations</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       14. FAQS (matches live product-faqs.liquid)
+       ===================================================================== -->
+  <section class="pdp-faqs" id="faqs">
+    <h2 class="pdp-faqs__heading">FAQs</h2>
+    <details class="pdp-faqs__item" open>
+      <summary class="pdp-faqs__question">
+        <span>What is Miracle Balm?</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1V15" stroke="#CCCCCC" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+          <path d="M1 8H15" stroke="#CCCCCC" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+        </svg>
+      </summary>
+      <div class="pdp-faqs__answer">Miracle Balm is a cream-to-powder multi-use balm that gives cheeks, eyes, and lips a natural flush of color. It's made with nourishing ingredients like jojoba oil, sunflower seed oil, and beeswax. Apply with your fingers in 30 seconds for a dewy, buildable glow.</div>
+    </details>
+    <details class="pdp-faqs__item">
+      <summary class="pdp-faqs__question">
+        <span>How do I choose my shade?</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1V15" stroke="#CCCCCC" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+          <path d="M1 8H15" stroke="#CCCCCC" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+        </svg>
+      </summary>
+      <div class="pdp-faqs__answer">Take our shade-matching quiz for a personalized recommendation, or email us a no-makeup selfie at hi@jonesroadbeauty.com and our experts will match you. Au Naturel is our universal shade that works on all skin tones as a subtle glow.</div>
+    </details>
+    <details class="pdp-faqs__item">
+      <summary class="pdp-faqs__question">
+        <span>How long does Miracle Balm last?</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1V15" stroke="#CCCCCC" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+          <path d="M1 8H15" stroke="#CCCCCC" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+        </svg>
+      </summary>
+      <div class="pdp-faqs__answer">A full-size Miracle Balm (1.76 oz) lasts 9-12 months with daily use. That works out to about $0.42 per day for a multi-use product that replaces 4 separate products.</div>
+    </details>
+    <details class="pdp-faqs__item">
+      <summary class="pdp-faqs__question">
+        <span>Is Miracle Balm good for all skin types?</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1V15" stroke="#CCCCCC" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+          <path d="M1 8H15" stroke="#CCCCCC" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+        </svg>
+      </summary>
+      <div class="pdp-faqs__answer">Yes. Miracle Balm works on all skin types, including dry, oily, combination, and sensitive skin. The clean formula is free from parabens, sulfates, phthalates, synthetic fragrances, and talc.</div>
+    </details>
+    <details class="pdp-faqs__item">
+      <summary class="pdp-faqs__question">
+        <span>What is the return policy?</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1V15" stroke="#CCCCCC" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+          <path d="M1 8H15" stroke="#CCCCCC" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+        </svg>
+      </summary>
+      <div class="pdp-faqs__answer">We offer free returns within 30 days and free exchanges within 45 days. If your shade isn't right, swap it at no extra cost. Visit returns.jonesroadbeauty.com to start a return or exchange.</div>
+    </details>
+  </section>
+
+
+  <!-- =====================================================================
+       15. REVIEWS (matches live junip-product-reviews.liquid)
+       ===================================================================== -->
+  <section class="pdp-reviews" id="reviews">
+    <h2 class="pdp-reviews__title">Reviews</h2>
+    <div class="pdp-reviews__stats">
+      <div class="pdp-reviews__stat">
+        <div class="pdp-reviews__stat-number">4.3</div>
+        <div class="pdp-reviews__stat-stars">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><defs><linearGradient id="halfStar2"><stop offset="30%" stop-color="#121212"/><stop offset="30%" stop-color="#d0d0d0"/></linearGradient></defs><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="url(#halfStar2)"/></svg>
+        </div>
+        <div class="pdp-reviews__stat-label">Based on 76,687 reviews</div>
+      </div>
+      <div class="pdp-reviews__stat">
+        <div class="pdp-reviews__stat-number">80%</div>
+        <div class="pdp-reviews__stat-label">Would recommend to a friend</div>
+      </div>
+      <div class="pdp-reviews__stat">
+        <div class="pdp-reviews__stat-number">92%</div>
+        <div class="pdp-reviews__stat-label">Say it's easy to apply</div>
+      </div>
+      <div class="pdp-reviews__stat">
+        <div class="pdp-reviews__stat-number">87%</div>
+        <div class="pdp-reviews__stat-label">Say it lasts all day</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       16. SHIPPING BANNER (matches live product-shipping-banner.liquid)
+       ===================================================================== -->
+  <section class="shipping-banner">
+    <div class="shipping-banner__inner">
+      <p class="shipping-banner__item">Free returns within 30 days</p>
+      <div class="shipping-banner__line"></div>
+      <p class="shipping-banner__item">Free shade matching</p>
+      <div class="shipping-banner__line"></div>
+      <p class="shipping-banner__item">Free exchanges within 45 days</p>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       17. RELATED PRODUCTS (matches live product-related.liquid)
+       ===================================================================== -->
+  <section class="pdp-related">
+    <div class="pdp-related__header">
+      <h2>We think you'll like</h2>
+      <a href="#">Shop All</a>
+    </div>
+    <div class="pdp-related__grid">
+      <div class="product-tile">
+        <div class="product-tile__img">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504&width=400" alt="What The Foundation" loading="lazy">
+        </div>
+        <div class="product-tile__name">What The Foundation</div>
+        <div class="product-tile__price">$49.00</div>
+        <div class="product-tile__reviews">
+          <div class="junip-stars">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#d0d0d0"/></svg>
+          </div>
+          <span class="product-tile__reviews-count">28,421</span>
+        </div>
+      </div>
+      <div class="product-tile">
+        <div class="product-tile__img">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718&width=400" alt="Just Enough Tinted Moisturizer" loading="lazy">
+        </div>
+        <div class="product-tile__name">Just Enough Tinted Moisturizer</div>
+        <div class="product-tile__price">$39.00</div>
+        <div class="product-tile__reviews">
+          <div class="junip-stars">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#d0d0d0"/></svg>
+          </div>
+          <span class="product-tile__reviews-count">12,847</span>
+        </div>
+      </div>
+      <div class="product-tile">
+        <div class="product-tile__img">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/bestpencil_black_1.jpg?v=1739188771&width=400" alt="The Best Pencil" loading="lazy">
+        </div>
+        <div class="product-tile__name">The Best Pencil</div>
+        <div class="product-tile__price">$19.00</div>
+        <div class="product-tile__reviews">
+          <div class="junip-stars">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </div>
+          <span class="product-tile__reviews-count">8,932</span>
+        </div>
+      </div>
+      <div class="product-tile">
+        <div class="product-tile__img">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718&width=400" alt="The Mini Miracle Balm Trio" loading="lazy">
+        </div>
+        <div class="product-tile__name">The Mini Miracle Balm Trio</div>
+        <div class="product-tile__price">$42.00</div>
+        <div class="product-tile__reviews">
+          <div class="junip-stars">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#d0d0d0"/></svg>
+          </div>
+          <span class="product-tile__reviews-count">3,241</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================================
+       18. FOOTER
+       ===================================================================== -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__logo">
+        <svg width="190" height="18" viewBox="0 0 256 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#jrLogoFooter)">
+            <path d="M0 20.26V14C0.920058 14.6837 2.0443 15.0361 3.19 15C5.49 15 6.92 13.82 6.92 11.5V0.710007H16.79V13.27C16.79 19.35 12.69 21.96 6.79 21.96C3.43 22 1 21.08 0 20.26Z" fill="white"/>
+            <path d="M34.2086 0C24.8886 0 19.3086 4.46 19.3086 10.81C19.3086 16.94 24.8886 22 34.1786 22C43.4686 22 49.0586 17 49.0586 10.85C49.0586 4.46 43.4686 0 34.2086 0ZM34.2086 15C33.6528 15.0452 33.0938 14.9708 32.5693 14.7816C32.0447 14.5925 31.5668 14.293 31.1678 13.9035C30.7689 13.514 30.458 13.0434 30.2563 12.5236C30.0546 12.0037 29.9667 11.4467 29.9986 10.89C29.9986 8.52 31.5986 7 34.1786 7C36.7586 7 38.3986 8.5 38.3986 10.87C38.4336 11.4292 38.3477 11.9894 38.1468 12.5125C37.9458 13.0355 37.6345 13.5091 37.2341 13.9011C36.8336 14.293 36.3534 14.594 35.8261 14.7836C35.2989 14.9733 34.7369 15.0471 34.1786 15H34.2086Z" fill="white"/>
+            <path d="M77.7791 0.700195V21.2602H65.8891L59.9991 9.9202V21.2602H51.6191V0.700195H63.7291L69.4391 11.9502V0.700195H77.7791Z" fill="white"/>
+            <path d="M102.689 15.1802V21.2602H81.5586V0.700195H102.629V6.7802H91.4286V8.6002H102.139V13.1802H91.4286V15.1802H102.689Z" fill="white"/>
+            <path d="M105.439 19.09V13.15C108.512 14.9609 112.013 15.9173 115.579 15.92C117.519 15.92 118.339 15.62 118.339 14.92C118.339 14.22 117.859 13.98 116.339 13.77L113.429 13.36C107.929 12.6 105.199 10.57 105.199 7.02002C105.199 3.02002 108.989 0.0200195 117.609 0.0200195C122.929 0.0200195 126.049 1.19002 127.689 2.02002V7.84002C125.025 6.62086 122.119 6.01923 119.189 6.08002C116.549 6.08002 115.849 6.46002 115.849 7.08002C115.849 7.55002 116.159 7.84002 117.979 8.02002L121.109 8.37002C126.209 8.93002 129.109 10.6 129.109 14.37C129.109 19.01 124.109 21.85 116.969 21.85C112.958 21.9439 108.994 20.9634 105.489 19.01" fill="white"/>
+            <path d="M153.07 10.92C154.95 10.92 155.99 10.13 155.99 8.72001C155.99 7.31001 154.99 6.67001 153.16 6.67001H149.88V10.92H153.07ZM155.07 21.26L149.91 13.15V21.26H140V0.710007H157.5C162.84 0.710007 166.18 3.41001 166.18 7.78001C166.243 9.2721 165.759 10.7359 164.821 11.8974C163.882 13.0588 162.552 13.8384 161.08 14.09L166.27 21.26H155.07Z" fill="white"/>
+            <path d="M183.051 0C173.731 0 168.141 4.46 168.141 10.81C168.141 16.94 173.731 22 183.001 22C192.271 22 197.881 17 197.881 10.85C197.891 4.46 192.301 0 183.051 0ZM183.051 15C182.499 15.0462 181.944 14.974 181.422 14.7884C180.9 14.6028 180.425 14.3079 180.026 13.9236C179.627 13.5393 179.316 13.0743 179.111 12.5598C178.907 12.0453 178.814 11.493 178.841 10.94C178.801 8.52 180.431 7 183.001 7C185.571 7 187.221 8.5 187.221 10.87C187.256 11.4292 187.17 11.9894 186.969 12.5125C186.768 13.0355 186.457 13.5091 186.056 13.9011C185.656 14.293 185.175 14.594 184.648 14.7836C184.121 14.9733 183.559 15.0471 183.001 15H183.051Z" fill="white"/>
+            <path d="M214.059 13.5102L211.909 6.1702L209.719 13.5102H214.059ZM215.429 18.1502H208.359L207.449 21.2602H197.789L204.789 0.700195H219.389L226.309 21.2602H216.379L215.429 18.1502Z" fill="white"/>
+            <path d="M241.11 0.699997H228V21.26H240.2C250.79 21.26 255.2 16.21 255.2 10.84C255.23 5.05 250.61 0.699997 241.11 0.699997ZM240.05 15.21H237.89V6.75H240.41C243.41 6.75 244.6 8.55 244.6 10.81C244.6 13.42 243.08 15.21 240.05 15.21Z" fill="white"/>
+          </g>
+          <defs><clipPath id="jrLogoFooter"><rect width="255.23" height="21.96" fill="white"/></clipPath></defs>
+        </svg>
+      </div>
+      <ul class="footer__links">
+        <li><a href="#">Shop All</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Help</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms</a></li>
+      </ul>
+      <p class="footer__copy">&copy; 2026 Jones Road Beauty. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       JavaScript
+       ===================================================================== -->
+  <script>
+    /* .has-mouse detection */
+    document.addEventListener('mouseover', function () {
+      document.body.classList.add('has-mouse');
+    }, { once: true });
+
+    /* Shade selector */
+    document.querySelectorAll('.pdp-hero__shade').forEach(function(swatch) {
+      swatch.addEventListener('click', function() {
+        document.querySelectorAll('.pdp-hero__shade').forEach(function(s) {
+          s.classList.remove('is-active');
+        });
+        this.classList.add('is-active');
+        var name = this.getAttribute('data-name');
+        var desc = this.getAttribute('data-desc') || '';
+        var shadeNameEl = document.getElementById('shade-name');
+        var shadeDescEl = document.getElementById('shade-desc');
+        if (shadeNameEl) shadeNameEl.textContent = name;
+        if (shadeDescEl) shadeDescEl.textContent = desc;
+      });
+    });
+
+    /* Thumbnail gallery */
+    document.querySelectorAll('.pdp-hero__thumb').forEach(function(thumb) {
+      thumb.addEventListener('click', function() {
+        document.querySelectorAll('.pdp-hero__thumb').forEach(function(t) {
+          t.classList.remove('is-active');
+        });
+        this.classList.add('is-active');
+        var src = this.getAttribute('data-src');
+        var mainImg = document.getElementById('main-img');
+        mainImg.style.opacity = 0;
+        setTimeout(function() {
+          mainImg.src = src;
+          mainImg.style.opacity = 1;
+        }, 150);
+      });
+    });
+
+    /* Filter pills toggle */
+    document.querySelectorAll('.the-shades__pill').forEach(function(pill) {
+      pill.addEventListener('click', function() {
+        this.parentElement.querySelectorAll('.the-shades__pill').forEach(function(p) {
+          p.classList.remove('is-active');
+        });
+        this.classList.add('is-active');
+      });
+    });
+  </script>
+</body>
+</html>

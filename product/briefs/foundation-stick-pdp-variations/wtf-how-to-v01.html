@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB WTF How-To — V01: 2x2 Step Grid</title>
+  <style>
+    /* === FONTS (CDN) === */
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    /* === CUSTOM PROPERTIES === */
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    /* === RESET === */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* === BUTTON === */
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    /* === REDUCED MOTION === */
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    /* === VARIATION LABEL === */
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === SECTION === */
+    .how-to { padding: 64px 20px; background: var(--color-warm-bg); }
+    .how-to__inner { max-width: 960px; margin: 0 auto; }
+    .how-to__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .how-to__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
+    .how-to__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 560px; margin: 0 auto 48px; }
+
+    /* 2x2 Grid */
+    .how-to__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-block-end: 40px; }
+    .how-to__card { background: var(--color-white); border-radius: 3px; overflow: hidden; }
+    .how-to__card-img { aspect-ratio: 16 / 9; overflow: hidden; background: var(--color-warm-bg); }
+    .how-to__card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .how-to__card-body { padding: 24px; }
+    .how-to__step-num { font-family: var(--font-display); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--color-black); margin-block-end: 8px; }
+    .how-to__step-title { font-family: var(--font-serif); font-size: 22px; font-weight: 300; line-height: 1.3; color: var(--color-black); margin-block-end: 8px; }
+    .how-to__step-desc { font-family: var(--font-body); font-size: 14px; line-height: 1.6; color: var(--color-black); }
+
+    /* CTA */
+    .how-to__cta { text-align: center; margin-block-start: 40px; }
+    .how-to__tip { font-family: var(--font-body); font-size: 14px; line-height: 1.5; color: var(--color-black); margin-block-end: 16px; font-style: italic; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .how-to { padding: 48px 16px; }
+      .how-to__heading { font-size: 26px; line-height: 1.3; }
+      .how-to__grid { grid-template-columns: 1fr; }
+      .how-to__step-title { font-size: 20px; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">What The Foundation &mdash; How-To &mdash; V01: 2&times;2 Step Grid</div>
+
+  <section class="how-to">
+    <div class="how-to__inner">
+      <p class="how-to__eyebrow">How to Apply</p>
+      <h2 class="how-to__heading">Four steps to your best&nbsp;skin</h2>
+      <p class="how-to__subhead">What The Foundation feels different because it is different. Here is how to get the most out of every&nbsp;application.</p>
+
+      <div class="how-to__grid">
+        <div class="how-to__card">
+          <div class="how-to__card-img">
+            <img src="https://air-prod.imgix.net/c1323d9f-71be-4590-9bd7-be213be7032d.jpg?w=600&h=340&fit=crop&auto=format" alt="Warm product between fingertips" loading="lazy">
+          </div>
+          <div class="how-to__card-body">
+            <p class="how-to__step-num">Step 01</p>
+            <h3 class="how-to__step-title">Warm it&nbsp;up</h3>
+            <p class="how-to__step-desc">Warm a pea-sized amount between your fingertips for 5 seconds. The heat from your hands activates the&nbsp;formula.</p>
+          </div>
+        </div>
+
+        <div class="how-to__card">
+          <div class="how-to__card-img">
+            <img src="https://air-prod.imgix.net/1d93b483-f9c5-4e9e-b8a5-1a998622b495.jpg?w=600&h=340&fit=crop&auto=format" alt="Press and blend into skin" loading="lazy">
+          </div>
+          <div class="how-to__card-body">
+            <p class="how-to__step-num">Step 02</p>
+            <h3 class="how-to__step-title">Press and&nbsp;blend</h3>
+            <p class="how-to__step-desc">Press and blend into skin &mdash; start at center, work outward. Use your fingers, not a brush. The warmth makes all the&nbsp;difference.</p>
+          </div>
+        </div>
+
+        <div class="how-to__card">
+          <div class="how-to__card-img">
+            <img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=600&h=340&fit=crop&auto=format" alt="Build coverage where needed" loading="lazy">
+          </div>
+          <div class="how-to__card-body">
+            <p class="how-to__step-num">Step 03</p>
+            <h3 class="how-to__step-title">Build your&nbsp;coverage</h3>
+            <p class="how-to__step-desc">Build coverage where needed &mdash; under eyes, around nose. The formula is buildable without looking&nbsp;cakey.</p>
+          </div>
+        </div>
+
+        <div class="how-to__card">
+          <div class="how-to__card-img">
+            <img src="https://air-prod.imgix.net/476d8004-173d-4a6b-b040-8ee0f7a79da0.jpg?w=600&h=340&fit=crop&auto=format" alt="Let it set naturally" loading="lazy">
+          </div>
+          <div class="how-to__card-body">
+            <p class="how-to__step-num">Step 04</p>
+            <h3 class="how-to__step-title">Let it&nbsp;set</h3>
+            <p class="how-to__step-desc">Set with Just A Sec spray or let it self-set in 2 minutes. The initial tackiness disappears as the product bonds with your&nbsp;skin.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="how-to__cta">
+        <p class="how-to__tip">"The initial tackiness is the product bonding with your skin. It disappears in 2&nbsp;minutes."</p>
+        <a href="#" class="button">Shop What The Foundation</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

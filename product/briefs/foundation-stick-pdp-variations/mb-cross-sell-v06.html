@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Miracle Balm Cross-Sell — V06: Shade-Matched Recommendations</title>
+  <style>
+    /* === FONTS (CDN) === */
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    /* === CUSTOM PROPERTIES === */
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    /* === RESET === */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* === BUTTON === */
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    /* === REDUCED MOTION === */
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    /* === VARIATION LABEL === */
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === V06: SHADE-MATCHED RECOMMENDATIONS === */
+    .cross-sell { padding: 64px 20px; background: var(--color-warm-bg); }
+    .cross-sell__inner { max-width: 1100px; margin: 0 auto; }
+
+    /* Shade context bar */
+    .cross-sell__context { display: flex; align-items: center; justify-content: center; gap: 12px; margin-block-end: 32px; }
+    .cross-sell__swatch { width: 24px; height: 24px; border-radius: 100%; background: #e8c9a0; border: 2px solid var(--color-black); }
+    .cross-sell__context-text { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .3px; color: var(--color-black); }
+
+    .cross-sell__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
+    .cross-sell__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 540px; margin: 0 auto 48px; }
+
+    /* Recommendations grid */
+    .cross-sell__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+    .cross-sell__card { background: var(--color-white); border-radius: 3px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,24,40,.04); transition: box-shadow .4s var(--ease-primary); position: relative; }
+    .has-mouse .cross-sell__card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+    .cross-sell__card-img { aspect-ratio: 4 / 5; overflow: hidden; }
+    .cross-sell__card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease-primary); }
+    .has-mouse .cross-sell__card:hover .cross-sell__card-img img { transform: scale(1.03); }
+
+    /* Shade match indicator */
+    .cross-sell__match { position: absolute; top: 12px; right: 12px; font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .3px; color: var(--color-accent); }
+
+    .cross-sell__card-body { padding: 20px; }
+    .cross-sell__card-shade { display: flex; align-items: center; gap: 8px; margin-block-end: 8px; }
+    .cross-sell__card-shade-dot { width: 12px; height: 12px; border-radius: 100%; border: 1px solid var(--color-black); }
+    .cross-sell__card-shade-name { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .3px; color: var(--color-black); opacity: .5; }
+    .cross-sell__card-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; text-transform: uppercase; color: var(--color-black); margin-block-end: 4px; }
+    .cross-sell__card-desc { font-family: var(--font-body); font-size: 14px; line-height: 1.5; color: var(--color-black); margin-block-end: 12px; }
+
+    .cross-sell__card-row { display: flex; align-items: center; justify-content: space-between; }
+    .cross-sell__card-price { font-family: var(--font-mono); font-size: 14px; color: var(--color-black); }
+    .cross-sell__card-add { font-family: var(--font-mono); font-size: 11px; font-weight: 550; text-transform: uppercase; letter-spacing: .3px; color: var(--color-black); border: 1px solid var(--color-black); background: transparent; padding: 6px 16px; border-radius: 2px; cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .cross-sell__card-add:hover { background: var(--color-black); color: var(--color-white); }
+
+    /* CTA */
+    .cross-sell__cta { text-align: center; margin-block-start: 48px; }
+    .cross-sell__cta-note { font-family: var(--font-body); font-size: 14px; color: var(--color-black); margin-block-end: 16px; line-height: 1.5; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .cross-sell { padding: 48px 16px; }
+      .cross-sell__heading { font-size: 26px; line-height: 1.3; }
+      .cross-sell__grid { grid-template-columns: 1fr; gap: 20px; }
+      .cross-sell__card { display: grid; grid-template-columns: 120px 1fr; }
+      .cross-sell__card-img { aspect-ratio: 1; }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .cross-sell__heading { font-size: 32px; }
+      .cross-sell__grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">Miracle Balm &mdash; Cross-Sell &mdash; V06: Shade-Matched&nbsp;Recommendations</div>
+
+  <section class="cross-sell">
+    <div class="cross-sell__inner">
+      <div class="cross-sell__context">
+        <span class="cross-sell__swatch"></span>
+        <span class="cross-sell__context-text">You're viewing Au Naturel</span>
+      </div>
+
+      <h2 class="cross-sell__heading">Pair it with these</h2>
+      <p class="cross-sell__subhead">Curated for your shade. These products are shade-matched to Au Naturel for a cohesive, effortless&nbsp;look.</p>
+
+      <div class="cross-sell__grid">
+        <div class="cross-sell__card">
+          <span class="cross-sell__match">Shade matched</span>
+          <div class="cross-sell__card-img">
+            <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=400&h=400&fit=crop&auto=format" alt="What The Foundation in Light" loading="lazy">
+          </div>
+          <div class="cross-sell__card-body">
+            <div class="cross-sell__card-shade">
+              <span class="cross-sell__card-shade-dot" style="background: #f0d5b0;"></span>
+              <span class="cross-sell__card-shade-name">Light</span>
+            </div>
+            <p class="cross-sell__card-title">What The Foundation</p>
+            <p class="cross-sell__card-desc">Tinted moisture&nbsp;balm</p>
+            <div class="cross-sell__card-row">
+              <span class="cross-sell__card-price">$44</span>
+              <button class="cross-sell__card-add">+ Add</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cross-sell__card">
+          <span class="cross-sell__match">Shade matched</span>
+          <div class="cross-sell__card-img">
+            <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=400&h=400&fit=crop&auto=format" alt="The Face Pencil in Light" loading="lazy">
+          </div>
+          <div class="cross-sell__card-body">
+            <div class="cross-sell__card-shade">
+              <span class="cross-sell__card-shade-dot" style="background: #d4a88a;"></span>
+              <span class="cross-sell__card-shade-name">Light Warm</span>
+            </div>
+            <p class="cross-sell__card-title">The Face Pencil</p>
+            <p class="cross-sell__card-desc">All-over color&nbsp;pencil</p>
+            <div class="cross-sell__card-row">
+              <span class="cross-sell__card-price">$25</span>
+              <button class="cross-sell__card-add">+ Add</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cross-sell__card">
+          <div class="cross-sell__card-img">
+            <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=400&h=400&fit=crop&auto=format" alt="Lip & Cheek Stick in Rose" loading="lazy">
+          </div>
+          <div class="cross-sell__card-body">
+            <div class="cross-sell__card-shade">
+              <span class="cross-sell__card-shade-dot" style="background: #c9847a;"></span>
+              <span class="cross-sell__card-shade-name">Dusty Rose</span>
+            </div>
+            <p class="cross-sell__card-title">Lip &amp; Cheek Stick</p>
+            <p class="cross-sell__card-desc">Buildable lip and cheek&nbsp;color</p>
+            <div class="cross-sell__card-row">
+              <span class="cross-sell__card-price">$24</span>
+              <button class="cross-sell__card-add">+ Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cross-sell__cta">
+        <p class="cross-sell__cta-note">All three products selected in shades that complement Au&nbsp;Naturel.</p>
+        <a href="#" class="button">Add All Three to Cart</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

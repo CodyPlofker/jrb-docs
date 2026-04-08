@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WTF Cross-Sell — V06: Shade-Matched Recommendations</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    .shade-match { padding: 64px 20px; background: var(--color-white); }
+    .shade-match__inner { max-width: 1000px; margin: 0 auto; text-align: center; }
+    .shade-match__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-block-end: 16px; }
+    .shade-match__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; margin-block-end: 8px; }
+    .shade-match__shade-name { font-family: var(--font-display); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--color-accent); margin-block-end: 48px; }
+
+    .shade-match__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-block-end: 40px; }
+    .shade-match__card { background: var(--color-warm-bg); border-radius: 3px; overflow: hidden; text-align: center; }
+    .shade-match__card-img { aspect-ratio: 1 / 1; overflow: hidden; }
+    .shade-match__card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .shade-match__card-body { padding: 16px; }
+    .shade-match__card-name { font-family: var(--font-display); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-block-end: 2px; }
+    .shade-match__card-match { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--color-accent); margin-block-end: 4px; }
+    .shade-match__card-desc { font-family: var(--font-body); font-size: 12px; line-height: 1.4; margin-block-end: 8px; }
+    .shade-match__card-price { font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+
+    @media (max-width: 768px) {
+      .shade-match { padding: 48px 16px; }
+      .shade-match__heading { font-size: 26px; line-height: 1.3; }
+      .shade-match__grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">What The Foundation &mdash; Cross-Sell &mdash; V06: Shade-Matched&nbsp;Recommendations</div>
+
+  <section class="shade-match">
+    <div class="shade-match__inner">
+      <p class="shade-match__eyebrow">Curated for Your Shade</p>
+      <h2 class="shade-match__heading">Picked to match Medium&nbsp;Beige</h2>
+      <p class="shade-match__shade-name">Based on your selected shade</p>
+
+      <div class="shade-match__grid">
+        <div class="shade-match__card">
+          <div class="shade-match__card-img">
+            <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=400&h=400&fit=crop&auto=format" alt="Miracle Balm" loading="lazy">
+          </div>
+          <div class="shade-match__card-body">
+            <p class="shade-match__card-match">Shade matched</p>
+            <p class="shade-match__card-name">Miracle Balm</p>
+            <p class="shade-match__card-desc">Au Naturel for your&nbsp;tone</p>
+            <p class="shade-match__card-price">$38</p>
+          </div>
+        </div>
+        <div class="shade-match__card">
+          <div class="shade-match__card-img">
+            <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=400&h=400&fit=crop&auto=format" alt="Face Pencil" loading="lazy">
+          </div>
+          <div class="shade-match__card-body">
+            <p class="shade-match__card-match">Shade matched</p>
+            <p class="shade-match__card-name">The Face Pencil</p>
+            <p class="shade-match__card-desc">Medium for natural&nbsp;contour</p>
+            <p class="shade-match__card-price">$25</p>
+          </div>
+        </div>
+        <div class="shade-match__card">
+          <div class="shade-match__card-img">
+            <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=400&h=400&fit=crop&auto=format" alt="Lip & Cheek" loading="lazy">
+          </div>
+          <div class="shade-match__card-body">
+            <p class="shade-match__card-name">Lip &amp; Cheek</p>
+            <p class="shade-match__card-desc">Warm nude for medium&nbsp;skin</p>
+            <p class="shade-match__card-price">$24</p>
+          </div>
+        </div>
+        <div class="shade-match__card">
+          <div class="shade-match__card-img">
+            <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=400&h=400&fit=crop&auto=format" alt="Just A Sec" loading="lazy">
+          </div>
+          <div class="shade-match__card-body">
+            <p class="shade-match__card-name">Just A Sec</p>
+            <p class="shade-match__card-desc">Universal setting&nbsp;spray</p>
+            <p class="shade-match__card-price">$28</p>
+          </div>
+        </div>
+      </div>
+
+      <a href="#" class="button">Add All to Cart</a>
+    </div>
+  </section>
+</body>
+</html>

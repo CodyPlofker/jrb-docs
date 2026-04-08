@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WTF Shade Confidence — V06: Inline Mini-Quiz</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === SECTION === */
+    .mini-quiz { padding: 64px 20px; background: var(--color-warm-bg); }
+    .mini-quiz__inner { max-width: 640px; margin: 0 auto; }
+    .mini-quiz__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .mini-quiz__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
+    .mini-quiz__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 500px; margin: 0 auto 40px; }
+
+    /* Progress */
+    .mini-quiz__progress { display: flex; gap: 8px; margin-block-end: 32px; }
+    .mini-quiz__progress-step { flex: 1; height: 3px; background: var(--color-border); border-radius: 2px; }
+    .mini-quiz__progress-step.is-active { background: var(--color-black); }
+    .mini-quiz__progress-step.is-complete { background: var(--color-black); }
+
+    /* Question */
+    .mini-quiz__question { background: var(--color-white); border-radius: 3px; padding: 32px; margin-block-end: 24px; }
+    .mini-quiz__q-number { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; color: var(--color-black); opacity: .5; margin-block-end: 12px; }
+    .mini-quiz__q-text { font-family: var(--font-serif); font-size: 22px; font-weight: 300; line-height: 1.4; color: var(--color-black); margin-block-end: 24px; }
+
+    /* Options */
+    .mini-quiz__options { display: flex; flex-direction: column; gap: 8px; }
+    .mini-quiz__option { display: flex; align-items: center; gap: 16px; padding: 16px; border: 1px solid var(--color-border); border-radius: 3px; cursor: pointer; transition: border-color .4s var(--ease-primary), background .4s var(--ease-primary); }
+    .mini-quiz__option.is-selected { border-color: var(--color-black); background: var(--color-warm-bg); }
+    .has-mouse .mini-quiz__option:hover { border-color: var(--color-black); }
+    .mini-quiz__option-swatch { width: 40px; height: 40px; border-radius: 3px; flex-shrink: 0; }
+    .mini-quiz__option-text { font-family: var(--font-body); font-size: 15px; color: var(--color-black); line-height: 1.4; }
+    .mini-quiz__option-radio { width: 20px; height: 20px; border: 1px solid var(--color-border); border-radius: 100%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: border-color .4s var(--ease-primary); }
+    .mini-quiz__option.is-selected .mini-quiz__option-radio { border-color: var(--color-black); }
+    .mini-quiz__option.is-selected .mini-quiz__option-radio::after { content: ''; width: 10px; height: 10px; background: var(--color-black); border-radius: 100%; }
+
+    /* Result Preview */
+    .mini-quiz__result { background: var(--color-white); border-radius: 3px; padding: 32px; text-align: center; }
+    .mini-quiz__result-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; color: var(--color-black); opacity: .5; margin-block-end: 16px; }
+    .mini-quiz__result-shade { font-family: var(--font-serif); font-size: 28px; font-weight: 300; color: var(--color-black); margin-block-end: 8px; }
+    .mini-quiz__result-swatch { width: 64px; height: 64px; border-radius: 100%; margin: 0 auto 16px; border: 1px solid var(--color-border); }
+    .mini-quiz__result-desc { font-family: var(--font-body); font-size: 14px; color: var(--color-black); line-height: 1.6; margin-block-end: 24px; }
+
+    .mini-quiz__stat { font-family: var(--font-body); font-size: 14px; color: var(--color-black); text-align: center; margin-block-start: 24px; opacity: .7; line-height: 1.5; }
+
+    @media (max-width: 768px) {
+      .mini-quiz { padding: 48px 16px; }
+      .mini-quiz__heading { font-size: 26px; line-height: 1.3; }
+      .mini-quiz__question { padding: 24px; }
+      .mini-quiz__q-text { font-size: 20px; }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .mini-quiz__heading { font-size: 32px; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">What The Foundation &mdash; Shade Confidence &mdash; V06: Inline&nbsp;Mini-Quiz</div>
+
+  <section class="mini-quiz">
+    <div class="mini-quiz__inner">
+      <p class="mini-quiz__eyebrow">Not Sure? Let Us Help</p>
+      <h2 class="mini-quiz__heading">Three questions to your perfect&nbsp;shade</h2>
+      <p class="mini-quiz__subhead">Quiz confidence is only 6.6 out of 10. This quick inline quiz narrows your 12 options down to the one that&nbsp;works.</p>
+
+      <div class="mini-quiz__progress">
+        <div class="mini-quiz__progress-step is-complete"></div>
+        <div class="mini-quiz__progress-step is-active"></div>
+        <div class="mini-quiz__progress-step"></div>
+      </div>
+
+      <div class="mini-quiz__question">
+        <p class="mini-quiz__q-number">Question 2 of 3</p>
+        <p class="mini-quiz__q-text">When you look at the veins on the inside of your wrist, what color do you&nbsp;see?</p>
+
+        <div class="mini-quiz__options">
+          <div class="mini-quiz__option">
+            <div class="mini-quiz__option-radio"></div>
+            <div class="mini-quiz__option-swatch" style="background: linear-gradient(135deg, #6b8fb5, #8fafc9);"></div>
+            <span class="mini-quiz__option-text">Blue or purple &mdash; you're cool-toned</span>
+          </div>
+          <div class="mini-quiz__option is-selected">
+            <div class="mini-quiz__option-radio"></div>
+            <div class="mini-quiz__option-swatch" style="background: linear-gradient(135deg, #7ba37b, #5d8a5d);"></div>
+            <span class="mini-quiz__option-text">Green or olive &mdash; you're warm-toned</span>
+          </div>
+          <div class="mini-quiz__option">
+            <div class="mini-quiz__option-radio"></div>
+            <div class="mini-quiz__option-swatch" style="background: linear-gradient(135deg, #8fa5b5, #7ba37b);"></div>
+            <span class="mini-quiz__option-text">A mix of both &mdash; you're neutral</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mini-quiz__result">
+        <p class="mini-quiz__result-label">Your Recommended Shade</p>
+        <div class="mini-quiz__result-swatch" style="background: #c9a776;"></div>
+        <p class="mini-quiz__result-shade">Medium</p>
+        <p class="mini-quiz__result-desc">Warm, golden undertone. Best for medium skin tones that tan easily. Buildable coverage that feels like&nbsp;skincare.</p>
+        <a href="#" class="button">Add Medium to Cart &mdash; $44</a>
+      </div>
+
+      <p class="mini-quiz__stat">28% of customers aren't sure they picked the right shade. This quiz gets you&nbsp;closer.</p>
+    </div>
+  </section>
+</body>
+</html>

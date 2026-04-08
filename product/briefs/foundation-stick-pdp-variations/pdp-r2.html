@@ -1,0 +1,4728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Miracle Balm PDP Sections — Round 2 Refinements</title>
+
+  <style>
+    /* ========================================
+       @FONT-FACE DECLARATIONS
+       ======================================== */
+    @font-face {
+      font-family: 'Canela';
+      src: url('fonts/Canela-Light.otf') format('opentype');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Canela';
+      src: url('fonts/Canela-LightItalic.otf') format('opentype');
+      font-weight: 300;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'GeogrotesqueCondBoldWeb';
+      src: url('fonts/Geogrotesque.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'BaseMonoWideWeb';
+      src: url('fonts/BaseMonoWideThin_6014.ttf') format('truetype');
+      font-weight: 550;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'RingsideWideWeb';
+      src: url('fonts/RingsideWide-Book_Web.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ========================================
+       RESET & BASE
+       ======================================== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-weight: 400;
+      color: #000;
+      background: #fff;
+      line-height: 1;
+      letter-spacing: .025em;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    /* ========================================
+       GLOBAL BUTTON CLASS
+       ======================================== */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 13px;
+      font-weight: 550;
+      height: 40px;
+      padding: 0 36px;
+      border-radius: 2px;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid #000;
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+      transition: all .3s cubic-bezier(.39, .575, .565, 1);
+    }
+
+    .has-mouse .button:hover {
+      background: transparent;
+      color: #000;
+    }
+
+    .button--outline {
+      background: transparent;
+      color: #000;
+    }
+
+    .has-mouse .button--outline:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    .button--white {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+
+    .has-mouse .button--white:hover {
+      background: transparent;
+      color: #fff;
+      border-color: #fff;
+    }
+
+    .button--accent {
+      background: #ff2e92;
+      color: #fff;
+      border-color: #ff2e92;
+    }
+
+    .has-mouse .button--accent:hover {
+      background: transparent;
+      color: #ff2e92;
+    }
+
+    .button--sm {
+      height: 34px;
+      padding: 0 20px;
+      font-size: 11px;
+    }
+
+    @media (min-width: 769px) {
+      .button {
+        font-size: 14px;
+        height: 44px;
+      }
+      .button--sm {
+        height: 36px;
+        padding: 0 24px;
+        font-size: 12px;
+      }
+    }
+
+    /* ========================================
+       SHARED TYPOGRAPHY
+       ======================================== */
+    .eyebrow {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+    }
+
+    .eyebrow--sm {
+      font-size: 15px;
+    }
+
+    .headline {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 26px;
+      line-height: 37px;
+      color: #000;
+    }
+
+    @media (min-width: 769px) {
+      .headline {
+        font-size: 38px;
+        line-height: 54px;
+      }
+    }
+
+    .headline--sm {
+      font-size: 22px;
+      line-height: 30px;
+    }
+
+    @media (min-width: 769px) {
+      .headline--sm {
+        font-size: 30px;
+        line-height: 42px;
+      }
+    }
+
+    .body-text {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.55;
+      color: #000;
+    }
+
+    .label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    .label--lg {
+      font-size: 13px;
+    }
+
+    /* ========================================
+       PAGE LAYOUT
+       ======================================== */
+    .page-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      padding: 32px 24px;
+      border-bottom: 1px solid #ededed;
+    }
+
+    .page-header__title {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 28px;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .page-header__subtitle {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 14px;
+      color: #000;
+      line-height: 1.5;
+    }
+
+    .page-header__meta {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      margin-top: 12px;
+      opacity: 0.5;
+    }
+
+    /* ========================================
+       SECTION DIVIDERS & LABELS
+       ======================================== */
+    .section-divider {
+      background: #000;
+      color: #fff;
+      padding: 20px 24px;
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 80px;
+    }
+
+    .section-group:first-of-type .section-divider {
+      margin-top: 0;
+    }
+
+    .variation-label {
+      background: #f6f2eb;
+      padding: 10px 24px;
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 12px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      border-bottom: 1px solid #e0dbd4;
+    }
+
+    .variation-spacer {
+      height: 60px;
+      border-bottom: 1px solid #ededed;
+    }
+
+
+    /* ========================================
+       SECTION 2: TRY THE MINI
+       ======================================== */
+
+    /* --- V1: Compact Inline Strip --- */
+    .mini-v1 {
+      border: 1px solid #ededed;
+      border-radius: 3px;
+      padding: 14px 20px;
+      margin: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .mini-v1__thumb {
+      width: 52px;
+      height: 52px;
+      border-radius: 3px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #f6f2eb;
+    }
+
+    .mini-v1__thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .mini-v1__content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .mini-v1__text {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.4;
+    }
+
+    .mini-v1__text strong {
+      font-weight: 700;
+    }
+
+    .mini-v1__price {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 13px;
+      font-weight: 550;
+      color: #000;
+      margin-left: 4px;
+    }
+
+    .mini-v1__action {
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .mini-v1 {
+        margin: 16px;
+        padding: 12px 14px;
+        gap: 12px;
+      }
+      .mini-v1__thumb {
+        width: 44px;
+        height: 44px;
+      }
+      .mini-v1__text {
+        font-size: 13px;
+      }
+    }
+
+    /* --- V2: Small Card --- */
+    .mini-v2 {
+      background: #f6f2eb;
+      border-radius: 3px;
+      margin: 24px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .mini-v2__thumb {
+      width: 72px;
+      height: 72px;
+      border-radius: 3px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #fff;
+    }
+
+    .mini-v2__thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .mini-v2__content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .mini-v2__eyebrow {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #ff2e92;
+      margin-bottom: 6px;
+    }
+
+    .mini-v2__title {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+
+    .mini-v2__price {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 14px;
+      font-weight: 550;
+      color: #000;
+    }
+
+    .mini-v2__action {
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .mini-v2 {
+        margin: 16px;
+        padding: 16px;
+        gap: 14px;
+      }
+      .mini-v2__thumb {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    /* --- V3: Card with Stats --- */
+    .mini-v3 {
+      border: 1px solid #ededed;
+      border-radius: 3px;
+      margin: 24px;
+      padding: 20px 24px;
+    }
+
+    .mini-v3__top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .mini-v3__thumb {
+      width: 64px;
+      height: 64px;
+      border-radius: 3px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #f6f2eb;
+    }
+
+    .mini-v3__thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .mini-v3__info {
+      flex: 1;
+    }
+
+    .mini-v3__eyebrow {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      margin-bottom: 6px;
+    }
+
+    .mini-v3__title {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.4;
+    }
+
+    .mini-v3__stats {
+      display: flex;
+      gap: 24px;
+      padding: 12px 0;
+      border-top: 1px solid #ededed;
+      border-bottom: 1px solid #ededed;
+      margin-bottom: 16px;
+    }
+
+    .mini-v3__stat {
+      text-align: center;
+      flex: 1;
+    }
+
+    .mini-v3__stat-num {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 22px;
+      color: #000;
+      margin-bottom: 4px;
+    }
+
+    .mini-v3__stat-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 9px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      opacity: 0.6;
+    }
+
+    .mini-v3__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mini-v3__price {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 15px;
+      font-weight: 550;
+      color: #000;
+    }
+
+    @media (max-width: 768px) {
+      .mini-v3 {
+        margin: 16px;
+        padding: 16px;
+      }
+      .mini-v3__stats {
+        gap: 12px;
+      }
+      .mini-v3__stat-num {
+        font-size: 18px;
+      }
+    }
+
+
+    /* ========================================
+       SECTION 3: VERSATILITY — 4 USES
+       ======================================== */
+
+    /* --- V1: Model Cards Grid --- */
+    .versatility-v1 {
+      padding: 64px 24px;
+    }
+
+    .versatility-v1__header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .versatility-v1__header .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .versatility-v1__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .versatility-v1__card {
+      text-align: center;
+    }
+
+    .versatility-v1__img {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      border-radius: 3px;
+      margin-bottom: 16px;
+      background: #f6f2eb;
+    }
+
+    .versatility-v1__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .versatility-v1__use-label {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      margin-bottom: 6px;
+    }
+
+    .versatility-v1__use-desc {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.5;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 768px) {
+      .versatility-v1 {
+        padding: 48px 16px;
+      }
+      .versatility-v1__grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .versatility-v1__use-desc {
+        font-size: 12px;
+      }
+    }
+
+    /* --- V2: Routine Simplified (Before/After) --- */
+    .versatility-v2 {
+      padding: 64px 24px;
+      background: #f6f2eb;
+    }
+
+    .versatility-v2__header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .versatility-v2__header .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .versatility-v2__comparison {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 40px;
+      align-items: start;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .versatility-v2__side {
+      text-align: center;
+    }
+
+    .versatility-v2__side-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      margin-bottom: 24px;
+      opacity: 0.5;
+    }
+
+    .versatility-v2__items {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .versatility-v2__item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: #fff;
+      border-radius: 3px;
+      text-align: left;
+    }
+
+    .versatility-v2__item--struck {
+      opacity: 0.4;
+      text-decoration: line-through;
+    }
+
+    .versatility-v2__item-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #ededed;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .versatility-v2__item-name {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.3;
+    }
+
+    .versatility-v2__arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 80px;
+    }
+
+    .versatility-v2__arrow svg {
+      width: 40px;
+      height: 40px;
+      color: #000;
+      opacity: 0.3;
+    }
+
+    .versatility-v2__hero-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .versatility-v2__hero-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #fff;
+      border: 3px solid #fff;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    .versatility-v2__hero-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .versatility-v2__hero-label {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 20px;
+      color: #000;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .versatility-v2__hero-sub {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 13px;
+      color: #000;
+      text-align: center;
+      line-height: 1.5;
+      opacity: 0.7;
+    }
+
+    .versatility-v2__time {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .versatility-v2__time-value {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 48px;
+      color: #000;
+      margin-bottom: 8px;
+    }
+
+    .versatility-v2__time-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      .versatility-v2 {
+        padding: 48px 16px;
+      }
+      .versatility-v2__comparison {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .versatility-v2__arrow {
+        padding-top: 0;
+        transform: rotate(90deg);
+      }
+      .versatility-v2__hero-img {
+        width: 160px;
+        height: 160px;
+      }
+      .versatility-v2__time-value {
+        font-size: 36px;
+      }
+    }
+
+    /* --- V3: Elevated Editorial --- */
+    .versatility-v3 {
+      padding: 80px 24px;
+    }
+
+    .versatility-v3__header {
+      text-align: center;
+      margin-bottom: 56px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .versatility-v3__header .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .versatility-v3__header .body-text {
+      margin-top: 16px;
+      opacity: 0.7;
+    }
+
+    .versatility-v3__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .versatility-v3__feature {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .versatility-v3__feature-img {
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      background: #f6f2eb;
+    }
+
+    .versatility-v3__feature-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .versatility-v3__feature-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 32px 24px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.65));
+      color: #fff;
+    }
+
+    .versatility-v3__feature-num {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 10px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      opacity: 0.7;
+      margin-bottom: 6px;
+    }
+
+    .versatility-v3__feature-title {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .versatility-v3__feature-desc {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.5;
+      opacity: 0.85;
+    }
+
+    @media (max-width: 768px) {
+      .versatility-v3 {
+        padding: 48px 0;
+      }
+      .versatility-v3__header {
+        padding: 0 16px;
+        margin-bottom: 32px;
+      }
+      .versatility-v3__layout {
+        grid-template-columns: 1fr;
+      }
+      .versatility-v3__feature-img {
+        aspect-ratio: 3/4;
+      }
+      .versatility-v3__feature-title {
+        font-size: 20px;
+      }
+    }
+
+
+    /* ========================================
+       SECTION 4: BOBBI CREDIBILITY
+       ======================================== */
+
+    /* --- V1: Two-Column Classic --- */
+    .bobbi-v1 {
+      padding: 64px 24px;
+      background: #f6f2eb;
+    }
+
+    .bobbi-v1__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .bobbi-v1__img {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #e0dbd4;
+    }
+
+    .bobbi-v1__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .bobbi-v1__content {
+      padding: 16px 0;
+    }
+
+    .bobbi-v1__content .eyebrow {
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .bobbi-v1__quote {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 24px;
+      line-height: 1.45;
+      color: #000;
+      margin-bottom: 24px;
+    }
+
+    @media (min-width: 769px) {
+      .bobbi-v1__quote {
+        font-size: 28px;
+        line-height: 1.4;
+      }
+    }
+
+    .bobbi-v1__attribution {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      margin-bottom: 6px;
+    }
+
+    .bobbi-v1__role {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #000;
+      opacity: 0.6;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .bobbi-v1 {
+        padding: 48px 16px;
+      }
+      .bobbi-v1__layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    /* --- V2: Reversed / Asymmetric --- */
+    .bobbi-v2 {
+      padding: 80px 24px;
+    }
+
+    .bobbi-v2__layout {
+      display: grid;
+      grid-template-columns: 5fr 4fr;
+      gap: 64px;
+      align-items: center;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .bobbi-v2__content {
+      order: 1;
+    }
+
+    .bobbi-v2__img-col {
+      order: 2;
+    }
+
+    .bobbi-v2__quotemark {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 80px;
+      line-height: 1;
+      color: #000;
+      opacity: 0.12;
+      margin-bottom: -20px;
+    }
+
+    .bobbi-v2__quote {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 24px;
+      line-height: 1.45;
+      color: #000;
+      margin-bottom: 32px;
+    }
+
+    @media (min-width: 769px) {
+      .bobbi-v2__quote {
+        font-size: 30px;
+        line-height: 1.4;
+      }
+    }
+
+    .bobbi-v2__line {
+      width: 40px;
+      height: 1px;
+      background: #000;
+      margin-bottom: 20px;
+    }
+
+    .bobbi-v2__attribution {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      margin-bottom: 4px;
+    }
+
+    .bobbi-v2__role {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #000;
+      opacity: 0.6;
+      line-height: 1.4;
+    }
+
+    .bobbi-v2__img {
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #f6f2eb;
+    }
+
+    .bobbi-v2__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+      .bobbi-v2 {
+        padding: 48px 16px;
+      }
+      .bobbi-v2__layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .bobbi-v2__content {
+        order: 2;
+      }
+      .bobbi-v2__img-col {
+        order: 1;
+      }
+      .bobbi-v2__quotemark {
+        font-size: 60px;
+      }
+    }
+
+    /* --- V3: Dark Editorial --- */
+    .bobbi-v3 {
+      padding: 80px 24px;
+      background: #1a1714;
+    }
+
+    .bobbi-v3__layout {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      gap: 56px;
+      align-items: center;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .bobbi-v3__img {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #2a2520;
+    }
+
+    .bobbi-v3__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .bobbi-v3__content .eyebrow {
+      color: #fff;
+      opacity: 0.4;
+      margin-bottom: 16px;
+    }
+
+    .bobbi-v3__quote {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 24px;
+      line-height: 1.45;
+      color: #fff;
+      margin-bottom: 32px;
+    }
+
+    @media (min-width: 769px) {
+      .bobbi-v3__quote {
+        font-size: 30px;
+        line-height: 1.4;
+      }
+    }
+
+    .bobbi-v3__line {
+      width: 40px;
+      height: 1px;
+      background: #fff;
+      opacity: 0.3;
+      margin-bottom: 20px;
+    }
+
+    .bobbi-v3__attribution {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .bobbi-v3__role {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #fff;
+      opacity: 0.5;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .bobbi-v3 {
+        padding: 48px 16px;
+      }
+      .bobbi-v3__layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+
+    /* ========================================
+       SECTION 6: SHADE MATCH
+       ======================================== */
+
+    /* --- V1: Quiz + Swatches + Stats --- */
+    .shade-v1 {
+      padding: 64px 24px;
+      background: #f6f2eb;
+    }
+
+    .shade-v1__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .shade-v1__content .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .shade-v1__content .headline {
+      margin-bottom: 16px;
+    }
+
+    .shade-v1__content .body-text {
+      margin-bottom: 24px;
+      opacity: 0.8;
+    }
+
+    .shade-v1__swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .shade-v1__swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.5);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      transition: transform .2s ease;
+    }
+
+    .shade-v1__swatch:hover {
+      transform: scale(1.2);
+    }
+
+    .shade-v1__stats {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .shade-v1__stat {
+      text-align: center;
+    }
+
+    .shade-v1__stat-num {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 28px;
+      color: #000;
+      margin-bottom: 4px;
+    }
+
+    .shade-v1__stat-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 9px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      opacity: 0.5;
+    }
+
+    .shade-v1__visual {
+      position: relative;
+    }
+
+    .shade-v1__visual-img {
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #e0dbd4;
+    }
+
+    .shade-v1__visual-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .shade-v1__quote-card {
+      position: absolute;
+      bottom: 24px;
+      left: -20px;
+      right: 24px;
+      background: #fff;
+      border-radius: 3px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .shade-v1__quote-text {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 15px;
+      line-height: 1.4;
+      color: #000;
+      margin-bottom: 8px;
+    }
+
+    .shade-v1__quote-author {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 9px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      .shade-v1 {
+        padding: 48px 16px;
+      }
+      .shade-v1__layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .shade-v1__quote-card {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        right: auto;
+        margin-top: 16px;
+      }
+      .shade-v1__stat-num {
+        font-size: 22px;
+      }
+    }
+
+    /* --- V2: Full-Width Quiz CTA --- */
+    .shade-v2 {
+      padding: 64px 24px;
+    }
+
+    .shade-v2__header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .shade-v2__header .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .shade-v2__header .headline {
+      margin-bottom: 16px;
+    }
+
+    .shade-v2__header .body-text {
+      max-width: 520px;
+      margin: 0 auto;
+      opacity: 0.7;
+    }
+
+    .shade-v2__swatch-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .shade-v2__swatch {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      transition: transform .2s ease;
+    }
+
+    .shade-v2__swatch:hover {
+      transform: scale(1.15);
+    }
+
+    .shade-v2__stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-bottom: 32px;
+    }
+
+    .shade-v2__stat {
+      text-align: center;
+    }
+
+    .shade-v2__stat-num {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 36px;
+      color: #000;
+      margin-bottom: 4px;
+    }
+
+    .shade-v2__stat-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 10px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      opacity: 0.5;
+    }
+
+    .shade-v2__cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .shade-v2__or {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 13px;
+      color: #000;
+      opacity: 0.4;
+    }
+
+    @media (max-width: 768px) {
+      .shade-v2 {
+        padding: 48px 16px;
+      }
+      .shade-v2__swatch {
+        width: 28px;
+        height: 28px;
+      }
+      .shade-v2__stats-row {
+        gap: 24px;
+      }
+      .shade-v2__stat-num {
+        font-size: 28px;
+      }
+    }
+
+    /* --- V3: Two-Column with Selfie Preview --- */
+    .shade-v3 {
+      padding: 64px 24px;
+      background: #f6f2eb;
+    }
+
+    .shade-v3__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .shade-v3__visual {
+      position: relative;
+    }
+
+    .shade-v3__phone-frame {
+      width: 280px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+      padding: 12px;
+    }
+
+    .shade-v3__phone-screen {
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 9/16;
+      background: #e0dbd4;
+      position: relative;
+    }
+
+    .shade-v3__phone-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .shade-v3__phone-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 16px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.5));
+    }
+
+    .shade-v3__phone-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 10px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #fff;
+      opacity: 0.8;
+    }
+
+    .shade-v3__content .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .shade-v3__content .headline {
+      margin-bottom: 16px;
+    }
+
+    .shade-v3__content .body-text {
+      margin-bottom: 24px;
+      opacity: 0.7;
+    }
+
+    .shade-v3__steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .shade-v3__step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .shade-v3__step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #000;
+      color: #fff;
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      font-weight: 550;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .shade-v3__step-text {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.5;
+      padding-top: 4px;
+    }
+
+    .shade-v3__cta-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .shade-v3__stat-inline {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 13px;
+      color: #000;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      .shade-v3 {
+        padding: 48px 16px;
+      }
+      .shade-v3__layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .shade-v3__phone-frame {
+        width: 220px;
+      }
+    }
+
+
+    /* ========================================
+       SECTION 7: INGREDIENTS
+       ======================================== */
+
+    /* --- V1: Two-Column Split --- */
+    .ingredients-v1 {
+      padding: 64px 24px;
+    }
+
+    .ingredients-v1__header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .ingredients-v1__header .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .ingredients-v1__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .ingredients-v1__col {
+      padding: 32px;
+      border-radius: 3px;
+    }
+
+    .ingredients-v1__col--in {
+      background: #f6f2eb;
+    }
+
+    .ingredients-v1__col--out {
+      border: 1px solid #ededed;
+    }
+
+    .ingredients-v1__col-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .ingredients-v1__col-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .ingredients-v1__col-icon--in {
+      background: #000;
+      color: #fff;
+    }
+
+    .ingredients-v1__col-icon--out {
+      background: #ededed;
+      color: #000;
+    }
+
+    .ingredients-v1__col-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .ingredients-v1__col-title {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+    }
+
+    .ingredients-v1__list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .ingredients-v1__item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .ingredients-v1__item-name {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.3;
+    }
+
+    .ingredients-v1__item-benefit {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #000;
+      opacity: 0.6;
+      line-height: 1.4;
+      margin-top: 2px;
+    }
+
+    .ingredients-v1__item-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .ingredients-v1__item-dot--in {
+      background: #000;
+    }
+
+    .ingredients-v1__item-dot--out {
+      background: #ccc;
+    }
+
+    .ingredients-v1__excluded-count {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid #ededed;
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      .ingredients-v1 {
+        padding: 48px 16px;
+      }
+      .ingredients-v1__layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .ingredients-v1__col {
+        padding: 24px;
+      }
+    }
+
+    /* --- V2: Visual Cards with Icons --- */
+    .ingredients-v2 {
+      padding: 64px 24px;
+      background: #f6f2eb;
+    }
+
+    .ingredients-v2__header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .ingredients-v2__header .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .ingredients-v2__header .body-text {
+      margin-top: 16px;
+      opacity: 0.7;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .ingredients-v2__in-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      max-width: 900px;
+      margin: 0 auto 40px;
+    }
+
+    .ingredients-v2__card {
+      background: #fff;
+      border-radius: 3px;
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .ingredients-v2__card-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ingredients-v2__card-icon svg {
+      width: 40px;
+      height: 40px;
+      color: #000;
+    }
+
+    .ingredients-v2__card-name {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      margin-bottom: 8px;
+    }
+
+    .ingredients-v2__card-desc {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.5;
+      opacity: 0.7;
+    }
+
+    .ingredients-v2__out-section {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .ingredients-v2__out-label {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      margin-bottom: 16px;
+    }
+
+    .ingredients-v2__out-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .ingredients-v2__pill {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 10px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      opacity: 0.5;
+      padding: 6px 14px;
+      border: 1px solid #d4cfc7;
+      border-radius: 20px;
+      text-decoration: line-through;
+    }
+
+    .ingredients-v2__out-total {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      opacity: 0.4;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .ingredients-v2 {
+        padding: 48px 16px;
+      }
+      .ingredients-v2__in-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .ingredients-v2__card {
+        padding: 20px 16px;
+      }
+    }
+
+    /* --- V3: Horizontal Scroll with Product Image --- */
+    .ingredients-v3 {
+      padding: 64px 24px;
+    }
+
+    .ingredients-v3__layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 48px;
+      align-items: start;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .ingredients-v3__left .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .ingredients-v3__left .headline {
+      margin-bottom: 16px;
+    }
+
+    .ingredients-v3__left .body-text {
+      margin-bottom: 24px;
+      opacity: 0.7;
+    }
+
+    .ingredients-v3__product-img {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 3px;
+      max-width: 240px;
+      background: #f6f2eb;
+    }
+
+    .ingredients-v3__product-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ingredients-v3__right {
+      padding-top: 8px;
+    }
+
+    .ingredients-v3__in-section {
+      margin-bottom: 32px;
+    }
+
+    .ingredients-v3__section-title {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ingredients-v3__section-title svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .ingredients-v3__ingredient-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid #ededed;
+      align-items: start;
+    }
+
+    .ingredients-v3__ingredient-row:first-of-type {
+      border-top: 1px solid #ededed;
+    }
+
+    .ingredients-v3__ingredient-name {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.3;
+    }
+
+    .ingredients-v3__ingredient-desc {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.5;
+      opacity: 0.6;
+    }
+
+    .ingredients-v3__out-section {
+      padding-top: 8px;
+    }
+
+    .ingredients-v3__out-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .ingredients-v3__out-tag {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 10px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+      color: #000;
+      opacity: 0.4;
+      padding: 5px 10px;
+      border: 1px solid #ededed;
+      border-radius: 2px;
+      text-decoration: line-through;
+    }
+
+    .ingredients-v3__excluded-count {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      opacity: 0.4;
+    }
+
+    @media (max-width: 768px) {
+      .ingredients-v3 {
+        padding: 48px 16px;
+      }
+      .ingredients-v3__layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .ingredients-v3__product-img {
+        max-width: 160px;
+      }
+      .ingredients-v3__ingredient-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+    }
+
+
+    /* ========================================
+       SECTION 9: UGC + BEFORE/AFTER + SOCIAL PROOF
+       ======================================== */
+
+    /* --- V1: Gallery Grid with Stats Bar --- */
+    .ugc-v1 {
+      padding: 64px 24px;
+    }
+
+    .ugc-v1__stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #ededed;
+    }
+
+    .ugc-v1__stat {
+      text-align: center;
+    }
+
+    .ugc-v1__stat-num {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 36px;
+      color: #000;
+      margin-bottom: 4px;
+    }
+
+    .ugc-v1__stat-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 10px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      opacity: 0.5;
+    }
+
+    .ugc-v1__header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .ugc-v1__header .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .ugc-v1__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .ugc-v1__pair {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .ugc-v1__pair-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 9px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      text-align: center;
+      padding: 6px 0;
+    }
+
+    .ugc-v1__pair-label--before {
+      color: #000;
+      opacity: 0.4;
+    }
+
+    .ugc-v1__pair-label--after {
+      color: #ff2e92;
+    }
+
+    .ugc-v1__pair-imgs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+
+    .ugc-v1__pair-img {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #f6f2eb;
+    }
+
+    .ugc-v1__pair-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ugc-v1__pair-img--before {
+      background: #e8e4de;
+      position: relative;
+    }
+
+    .ugc-v1__pair-img--before::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(246,242,235,0.15);
+    }
+
+    @media (max-width: 768px) {
+      .ugc-v1 {
+        padding: 48px 16px;
+      }
+      .ugc-v1__stats-bar {
+        gap: 24px;
+      }
+      .ugc-v1__stat-num {
+        font-size: 28px;
+      }
+      .ugc-v1__grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    /* --- V2: Slider Concept Before/After --- */
+    .ugc-v2 {
+      padding: 64px 24px;
+      background: #f6f2eb;
+    }
+
+    .ugc-v2__header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .ugc-v2__header .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .ugc-v2__header .headline {
+      margin-bottom: 16px;
+    }
+
+    .ugc-v2__stat-inline {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 15px;
+      color: #000;
+      opacity: 0.7;
+    }
+
+    .ugc-v2__stat-inline strong {
+      font-weight: 400;
+      opacity: 1;
+      color: #000;
+    }
+
+    .ugc-v2__slider-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      max-width: 800px;
+      margin: 0 auto 32px;
+    }
+
+    .ugc-v2__slider {
+      position: relative;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .ugc-v2__slider-img {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      background: #e0dbd4;
+    }
+
+    .ugc-v2__slider-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ugc-v2__slider-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: #fff;
+      transform: translateX(-50%);
+    }
+
+    .ugc-v2__slider-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ugc-v2__slider-handle svg {
+      width: 16px;
+      height: 16px;
+      color: #000;
+    }
+
+    .ugc-v2__slider-labels {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .ugc-v2__slider-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 9px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #fff;
+      background: rgba(0,0,0,0.5);
+      padding: 4px 8px;
+      border-radius: 2px;
+    }
+
+    .ugc-v2__more-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .ugc-v2__more-img {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #e0dbd4;
+    }
+
+    .ugc-v2__more-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+      .ugc-v2 {
+        padding: 48px 16px;
+      }
+      .ugc-v2__slider-row {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .ugc-v2__more-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* --- V3: Testimonial + Before/After Cards --- */
+    .ugc-v3 {
+      padding: 64px 24px;
+    }
+
+    .ugc-v3__top-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .ugc-v3__stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: #f6f2eb;
+      border-radius: 20px;
+    }
+
+    .ugc-v3__stat-pill-num {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 22px;
+      color: #000;
+    }
+
+    .ugc-v3__stat-pill-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 9px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      opacity: 0.5;
+    }
+
+    .ugc-v3__header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .ugc-v3__header .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .ugc-v3__cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .ugc-v3__card {
+      background: #f6f2eb;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .ugc-v3__card-imgs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .ugc-v3__card-img {
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: #e0dbd4;
+    }
+
+    .ugc-v3__card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ugc-v3__card-content {
+      padding: 16px;
+    }
+
+    .ugc-v3__card-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .ugc-v3__card-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 9px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+
+    .ugc-v3__card-label--before {
+      color: #000;
+      opacity: 0.4;
+    }
+
+    .ugc-v3__card-label--after {
+      color: #ff2e92;
+    }
+
+    .ugc-v3__card-quote {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 15px;
+      line-height: 1.4;
+      color: #000;
+      margin-bottom: 8px;
+    }
+
+    .ugc-v3__card-author {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 9px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      opacity: 0.4;
+    }
+
+    @media (max-width: 768px) {
+      .ugc-v3 {
+        padding: 48px 16px;
+      }
+      .ugc-v3__cards {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+      }
+    }
+
+    /* --- V4: Full-Width Before/After Strip --- */
+    .ugc-v4 {
+      padding: 64px 0;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .ugc-v4__header {
+      text-align: center;
+      padding: 0 24px;
+      margin-bottom: 40px;
+    }
+
+    .ugc-v4__header .eyebrow {
+      color: #fff;
+      opacity: 0.5;
+      margin-bottom: 12px;
+    }
+
+    .ugc-v4__header .headline {
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .ugc-v4__stat-row {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    .ugc-v4__stat {
+      text-align: center;
+    }
+
+    .ugc-v4__stat-num {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 28px;
+      color: #ff2e92;
+      margin-bottom: 2px;
+    }
+
+    .ugc-v4__stat-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 9px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #fff;
+      opacity: 0.4;
+    }
+
+    .ugc-v4__strip {
+      display: flex;
+      gap: 16px;
+      padding: 0 24px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .ugc-v4__strip::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ugc-v4__pair {
+      flex-shrink: 0;
+      width: 320px;
+    }
+
+    .ugc-v4__pair-imgs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .ugc-v4__pair-img {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #1a1714;
+    }
+
+    .ugc-v4__pair-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ugc-v4__pair-labels {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 4px;
+    }
+
+    .ugc-v4__pair-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 9px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    .ugc-v4__pair-label--before {
+      color: #fff;
+      opacity: 0.3;
+    }
+
+    .ugc-v4__pair-label--after {
+      color: #ff2e92;
+    }
+
+
+    /* ========================================
+       SECTION 11: PRODUCT SPEC
+       ======================================== */
+
+    /* --- V1: Two-Column with Image --- */
+    .spec-v1 {
+      padding: 64px 24px;
+      background: #f6f2eb;
+    }
+
+    .spec-v1__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .spec-v1__img {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #e0dbd4;
+      max-width: 340px;
+    }
+
+    .spec-v1__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .spec-v1__content .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .spec-v1__content .headline--sm {
+      margin-bottom: 24px;
+    }
+
+    .spec-v1__list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .spec-v1__item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid #d4cfc7;
+      align-items: start;
+    }
+
+    .spec-v1__item:first-child {
+      border-top: 1px solid #d4cfc7;
+    }
+
+    .spec-v1__item-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 10px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      opacity: 0.5;
+      padding-top: 2px;
+    }
+
+    .spec-v1__item-value {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .spec-v1 {
+        padding: 48px 16px;
+      }
+      .spec-v1__layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .spec-v1__img {
+        max-width: 200px;
+        margin: 0 auto;
+      }
+      .spec-v1__item {
+        grid-template-columns: 100px 1fr;
+      }
+    }
+
+    /* --- V2: Horizontal Cards --- */
+    .spec-v2 {
+      padding: 64px 24px;
+    }
+
+    .spec-v2__header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .spec-v2__header .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .spec-v2__grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .spec-v2__card {
+      background: #f6f2eb;
+      border-radius: 3px;
+      padding: 28px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .spec-v2__card-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.6;
+    }
+
+    .spec-v2__card-icon svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .spec-v2__card-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 9px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      opacity: 0.5;
+      margin-bottom: 8px;
+    }
+
+    .spec-v2__card-value {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .spec-v2 {
+        padding: 48px 16px;
+      }
+      .spec-v2__grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .spec-v2__card {
+        padding: 20px 16px;
+      }
+    }
+
+    /* --- V3: Dark Editorial Spec Sheet --- */
+    .spec-v3 {
+      padding: 80px 24px;
+      background: #000;
+    }
+
+    .spec-v3__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .spec-v3__content .eyebrow {
+      color: #fff;
+      opacity: 0.4;
+      margin-bottom: 12px;
+    }
+
+    .spec-v3__content .headline--sm {
+      color: #fff;
+      margin-bottom: 32px;
+    }
+
+    .spec-v3__list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .spec-v3__item {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 20px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .spec-v3__item:first-child {
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .spec-v3__item-label {
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 10px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #fff;
+      opacity: 0.4;
+      flex-shrink: 0;
+    }
+
+    .spec-v3__item-value {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: #fff;
+      line-height: 1.4;
+      text-align: right;
+    }
+
+    .spec-v3__img {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #1a1714;
+      max-width: 320px;
+      margin-left: auto;
+    }
+
+    .spec-v3__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+      .spec-v3 {
+        padding: 48px 16px;
+      }
+      .spec-v3__layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .spec-v3__img {
+        max-width: 200px;
+        margin: 0 auto;
+      }
+    }
+
+
+    /* ========================================
+       SECTION 12: SHADE GUARANTEE
+       ======================================== */
+
+    /* --- V1: Light BG Timeline --- */
+    .guarantee-v1 {
+      padding: 64px 24px;
+      background: #f6f2eb;
+    }
+
+    .guarantee-v1__header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .guarantee-v1__header .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .guarantee-v1__header .body-text {
+      margin-top: 16px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0.7;
+    }
+
+    .guarantee-v1__timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto 40px;
+      position: relative;
+    }
+
+    .guarantee-v1__timeline::before {
+      content: '';
+      position: absolute;
+      top: 24px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: #d4cfc7;
+    }
+
+    .guarantee-v1__step {
+      text-align: center;
+      position: relative;
+    }
+
+    .guarantee-v1__step-dot {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .guarantee-v1__step-dot svg {
+      width: 20px;
+      height: 20px;
+      color: #000;
+    }
+
+    .guarantee-v1__step-title {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      margin-bottom: 6px;
+    }
+
+    .guarantee-v1__step-desc {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.5;
+      opacity: 0.6;
+    }
+
+    .guarantee-v1__cta {
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .guarantee-v1 {
+        padding: 48px 16px;
+      }
+      .guarantee-v1__timeline {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .guarantee-v1__timeline::before {
+        top: 0;
+        bottom: 0;
+        left: 24px;
+        right: auto;
+        width: 1px;
+        height: auto;
+      }
+      .guarantee-v1__step {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        gap: 16px;
+        text-align: left;
+        align-items: start;
+      }
+      .guarantee-v1__step-dot {
+        margin: 0;
+      }
+    }
+
+    /* --- V2: Compact Policy Cards --- */
+    .guarantee-v2 {
+      padding: 64px 24px;
+      background: #f6f2eb;
+    }
+
+    .guarantee-v2__header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .guarantee-v2__header .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .guarantee-v2__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      max-width: 900px;
+      margin: 0 auto 32px;
+    }
+
+    .guarantee-v2__card {
+      background: #fff;
+      border-radius: 3px;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .guarantee-v2__card-icon {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.6;
+    }
+
+    .guarantee-v2__card-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .guarantee-v2__card-title {
+      font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      margin-bottom: 8px;
+    }
+
+    .guarantee-v2__card-desc {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.5;
+      opacity: 0.6;
+    }
+
+    .guarantee-v2__cta {
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .guarantee-v2 {
+        padding: 48px 16px;
+      }
+      .guarantee-v2__grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .guarantee-v2__card {
+        padding: 20px 16px;
+      }
+    }
+
+
+    /* ========================================
+       SECTION 13: CLINICAL RESULTS
+       ======================================== */
+
+    /* --- V1: Image + Stat List --- */
+    .clinical-v1 {
+      padding: 64px 24px;
+    }
+
+    .clinical-v1__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .clinical-v1__img {
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #f6f2eb;
+    }
+
+    .clinical-v1__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .clinical-v1__content .eyebrow {
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+
+    .clinical-v1__content .headline--sm {
+      margin-bottom: 24px;
+    }
+
+    .clinical-v1__stats {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .clinical-v1__stat {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid #ededed;
+    }
+
+    .clinical-v1__stat:first-child {
+      border-top: 1px solid #ededed;
+    }
+
+    .clinical-v1__stat-num {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 32px;
+      color: #000;
+      flex-shrink: 0;
+      min-width: 80px;
+    }
+
+    .clinical-v1__stat-text {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.4;
+      opacity: 0.7;
+    }
+
+    .clinical-v1__disclaimer {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: #000;
+      opacity: 0.4;
+      margin-top: 20px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      .clinical-v1 {
+        padding: 48px 16px;
+      }
+      .clinical-v1__layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .clinical-v1__stat-num {
+        font-size: 26px;
+        min-width: 64px;
+      }
+    }
+
+    /* --- V2: Big Stat Cards --- */
+    .clinical-v2 {
+      padding: 64px 24px;
+      background: #f6f2eb;
+    }
+
+    .clinical-v2__header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .clinical-v2__header .eyebrow {
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+
+    .clinical-v2__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto 24px;
+    }
+
+    .clinical-v2__card {
+      background: #fff;
+      border-radius: 3px;
+      padding: 36px 24px;
+      text-align: center;
+    }
+
+    .clinical-v2__card-num {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 48px;
+      color: #000;
+      margin-bottom: 8px;
+    }
+
+    .clinical-v2__card-text {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.4;
+      opacity: 0.7;
+    }
+
+    .clinical-v2__disclaimer {
+      text-align: center;
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: #000;
+      opacity: 0.4;
+      line-height: 1.5;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .clinical-v2 {
+        padding: 48px 16px;
+      }
+      .clinical-v2__grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .clinical-v2__card {
+        padding: 28px 20px;
+      }
+      .clinical-v2__card-num {
+        font-size: 36px;
+      }
+    }
+
+    /* --- V3: Progress Bars --- */
+    .clinical-v3 {
+      padding: 64px 24px;
+    }
+
+    .clinical-v3__layout {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      gap: 56px;
+      align-items: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .clinical-v3__left .eyebrow {
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+
+    .clinical-v3__left .headline--sm {
+      margin-bottom: 16px;
+    }
+
+    .clinical-v3__left .body-text {
+      opacity: 0.7;
+    }
+
+    .clinical-v3__bars {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .clinical-v3__bar-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .clinical-v3__bar-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .clinical-v3__bar-label {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.3;
+    }
+
+    .clinical-v3__bar-num {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 24px;
+      color: #000;
+      flex-shrink: 0;
+    }
+
+    .clinical-v3__bar-track {
+      width: 100%;
+      height: 6px;
+      background: #ededed;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .clinical-v3__bar-fill {
+      height: 100%;
+      background: #000;
+      border-radius: 3px;
+      transition: width .6s cubic-bezier(.39, .575, .565, 1);
+    }
+
+    .clinical-v3__disclaimer {
+      font-family: 'RingsideWideWeb', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: #000;
+      opacity: 0.4;
+      margin-top: 20px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      .clinical-v3 {
+        padding: 48px 16px;
+      }
+      .clinical-v3__layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    /* ========================================
+       STICKY TAB NAV
+       ======================================== */
+    .pdp-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      overflow: hidden;
+    }
+
+    .pdp-nav__track {
+      display: flex;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding: 0 16px;
+    }
+
+    .pdp-nav__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .pdp-nav__tab {
+      flex: 0 0 auto;
+      padding: 14px 16px 12px;
+      font-family: 'BaseMonoWideWeb', monospace;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #999;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color .25s cubic-bezier(.39, .575, .565, 1),
+                  border-color .25s cubic-bezier(.39, .575, .565, 1);
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      -webkit-appearance: none;
+    }
+
+    .pdp-nav__tab:hover {
+      color: #000;
+    }
+
+    .pdp-nav__tab--active {
+      color: #000;
+      border-bottom-color: #000;
+    }
+
+    @media (min-width: 769px) {
+      .pdp-nav__track {
+        padding: 0 24px;
+      }
+      .pdp-nav__tab {
+        padding: 16px 20px 13px;
+      }
+    }
+
+  </style>
+</head>
+<body class="has-mouse">
+
+<div class="page-wrapper">
+
+  <!-- ============================================
+       PAGE HEADER
+       ============================================ -->
+  <div class="page-header">
+    <h1 class="page-header__title">Miracle Balm PDP Sections — Round 2</h1>
+    <p class="page-header__subtitle">Refined variations based on Cody's feedback. Surviving sections only, iterated designs. Each section includes 2-4 variations for review.</p>
+    <p class="page-header__meta">March 2026 &middot; Jones Road Beauty</p>
+  </div>
+
+  <!-- ============================================
+       STICKY TAB NAV
+       ============================================ -->
+  <nav class="pdp-nav" id="pdp-nav">
+    <div class="pdp-nav__track">
+      <button class="pdp-nav__tab pdp-nav__tab--active" data-target="all">All</button>
+      <button class="pdp-nav__tab" data-target="nav-mini">Mini</button>
+      <button class="pdp-nav__tab" data-target="nav-versatility">Versatility</button>
+      <button class="pdp-nav__tab" data-target="nav-bobbi">Bobbi</button>
+      <button class="pdp-nav__tab" data-target="nav-shade-match">Shade Match</button>
+      <button class="pdp-nav__tab" data-target="nav-ingredients">Ingredients</button>
+      <button class="pdp-nav__tab" data-target="nav-ugc">UGC / B&amp;A</button>
+      <button class="pdp-nav__tab" data-target="nav-spec">Spec</button>
+      <button class="pdp-nav__tab" data-target="nav-guarantee">Guarantee</button>
+      <button class="pdp-nav__tab" data-target="nav-clinical">Clinical</button>
+    </div>
+  </nav>
+
+
+  <div class="section-group" data-section="nav-mini">
+  <!-- ============================================
+       SECTION 2: TRY THE MINI
+       ============================================ -->
+  <div class="section-divider" id="nav-mini">Section 2: Try the Mini — inline upsell module for new-to-brand shoppers</div>
+
+  <div class="variation-label">2.1 — Compact inline strip (AG1-style minimal)</div>
+  <div class="mini-v1">
+    <div class="mini-v1__thumb">
+      <img src="https://air-prod.imgix.net/1cf52c77-e36b-41dd-add7-821cc89acc92.jpg?w=120&h=120&fit=crop&auto=format" alt="Miracle Balm Mini">
+    </div>
+    <div class="mini-v1__content">
+      <span class="mini-v1__text">New to Miracle Balm? <strong>Try the mini</strong> <span class="mini-v1__price">$22</span></span>
+    </div>
+    <div class="mini-v1__action">
+      <button class="button button--sm button--outline">Quick Add</button>
+    </div>
+  </div>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">2.2 — Small card with eyebrow and description</div>
+  <div class="mini-v2">
+    <div class="mini-v2__thumb">
+      <img src="https://air-prod.imgix.net/1cf52c77-e36b-41dd-add7-821cc89acc92.jpg?w=160&h=160&fit=crop&auto=format" alt="Miracle Balm Mini">
+    </div>
+    <div class="mini-v2__content">
+      <div class="mini-v2__eyebrow">Try it first</div>
+      <div class="mini-v2__title">Miracle Balm Mini &mdash; the perfect way to find your shade</div>
+      <div class="mini-v2__price">$22</div>
+    </div>
+    <div class="mini-v2__action">
+      <button class="button button--sm">Add to Bag</button>
+    </div>
+  </div>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">2.3 — Card with mini stats (social proof)</div>
+  <div class="mini-v3">
+    <div class="mini-v3__top">
+      <div class="mini-v3__thumb">
+        <img src="https://air-prod.imgix.net/1cf52c77-e36b-41dd-add7-821cc89acc92.jpg?w=140&h=140&fit=crop&auto=format" alt="Miracle Balm Mini">
+      </div>
+      <div class="mini-v3__info">
+        <div class="mini-v3__eyebrow">Not sure? Start small</div>
+        <div class="mini-v3__title">Miracle Balm Mini &mdash; all 13 shades, travel-ready size</div>
+      </div>
+    </div>
+    <div class="mini-v3__stats">
+      <div class="mini-v3__stat">
+        <div class="mini-v3__stat-num">80%</div>
+        <div class="mini-v3__stat-label">Come back for full size</div>
+      </div>
+      <div class="mini-v3__stat">
+        <div class="mini-v3__stat-num">4.3</div>
+        <div class="mini-v3__stat-label">Average rating</div>
+      </div>
+      <div class="mini-v3__stat">
+        <div class="mini-v3__stat-num">76K+</div>
+        <div class="mini-v3__stat-label">Reviews</div>
+      </div>
+    </div>
+    <div class="mini-v3__bottom">
+      <div class="mini-v3__price">$22</div>
+      <button class="button button--sm">Add Mini to Bag</button>
+    </div>
+  </div>
+
+
+  </div><!-- /.section-group -->
+
+  <div class="section-group" data-section="nav-versatility">
+  <!-- ============================================
+       SECTION 3: VERSATILITY — 4 USES
+       ============================================ -->
+  <div class="section-divider" id="nav-versatility">Section 3: Versatility — replace 4 products with 1 (routine simplification)</div>
+
+  <div class="variation-label">3.1 — Full model imagery grid with 4 uses</div>
+  <section class="versatility-v1">
+    <div class="versatility-v1__header">
+      <p class="eyebrow">One product, four ways</p>
+      <h2 class="headline">Everything your routine is missing</h2>
+    </div>
+    <div class="versatility-v1__grid">
+      <div class="versatility-v1__card">
+        <div class="versatility-v1__img">
+          <img src="https://air-prod.imgix.net/5345a83f-eb6b-49b3-801e-b45b16ecc7ee.jpg?w=400&h=530&fit=crop&auto=format" alt="Blush">
+        </div>
+        <div class="versatility-v1__use-label">Blush</div>
+        <div class="versatility-v1__use-desc">A natural flush of color on the cheeks</div>
+      </div>
+      <div class="versatility-v1__card">
+        <div class="versatility-v1__img">
+          <img src="https://air-prod.imgix.net/deef07bd-3a6d-42dc-9125-3ceed14df387.jpg?w=400&h=530&fit=crop&auto=format" alt="Bronzer">
+        </div>
+        <div class="versatility-v1__use-label">Bronzer</div>
+        <div class="versatility-v1__use-desc">Warm, sun-kissed dimension</div>
+      </div>
+      <div class="versatility-v1__card">
+        <div class="versatility-v1__img">
+          <img src="https://air-prod.imgix.net/16ed9286-f53e-4477-9308-bb543057d4be.jpg?w=400&h=530&fit=crop&auto=format" alt="Highlighter">
+        </div>
+        <div class="versatility-v1__use-label">Highlighter</div>
+        <div class="versatility-v1__use-desc">A dewy, lit-from-within glow</div>
+      </div>
+      <div class="versatility-v1__card">
+        <div class="versatility-v1__img">
+          <img src="https://air-prod.imgix.net/3094fe9e-3efc-4a57-ba06-5db526cc1b4a.jpg?w=400&h=530&fit=crop&auto=format" alt="All-Over Tint">
+        </div>
+        <div class="versatility-v1__use-label">All-over tint</div>
+        <div class="versatility-v1__use-desc">One-step color for eyes, lips, and cheeks</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">3.2 — "Your routine, simplified" before/after complexity</div>
+  <section class="versatility-v2">
+    <div class="versatility-v2__header">
+      <p class="eyebrow">Simplify everything</p>
+      <h2 class="headline">Your routine, simplified</h2>
+    </div>
+    <div class="versatility-v2__comparison">
+      <div class="versatility-v2__side">
+        <div class="versatility-v2__side-label">Your current routine</div>
+        <div class="versatility-v2__items">
+          <div class="versatility-v2__item versatility-v2__item--struck">
+            <div class="versatility-v2__item-icon">1</div>
+            <div class="versatility-v2__item-name">Blush</div>
+          </div>
+          <div class="versatility-v2__item versatility-v2__item--struck">
+            <div class="versatility-v2__item-icon">2</div>
+            <div class="versatility-v2__item-name">Bronzer</div>
+          </div>
+          <div class="versatility-v2__item versatility-v2__item--struck">
+            <div class="versatility-v2__item-icon">3</div>
+            <div class="versatility-v2__item-name">Highlighter</div>
+          </div>
+          <div class="versatility-v2__item versatility-v2__item--struck">
+            <div class="versatility-v2__item-icon">4</div>
+            <div class="versatility-v2__item-name">Lip tint</div>
+          </div>
+        </div>
+      </div>
+      <div class="versatility-v2__arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m0 0l-4-4m4 4l-4 4"/></svg>
+      </div>
+      <div class="versatility-v2__side">
+        <div class="versatility-v2__side-label">With Miracle Balm</div>
+        <div class="versatility-v2__hero-card">
+          <div class="versatility-v2__hero-img">
+            <img src="https://air-prod.imgix.net/ff54d7ef-01bf-4341-b804-449c5d766a01.jpg?w=400&h=400&fit=crop&auto=format" alt="Miracle Balm">
+          </div>
+          <div class="versatility-v2__hero-label">Just Miracle Balm</div>
+          <div class="versatility-v2__hero-sub">Blush, bronzer, highlighter, and lip tint &mdash; all in one compact</div>
+        </div>
+      </div>
+    </div>
+    <div class="versatility-v2__time">
+      <div class="versatility-v2__time-value">30 sec</div>
+      <div class="versatility-v2__time-label">Average application time</div>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">3.3 — Elevated editorial with overlay text</div>
+  <section class="versatility-v3">
+    <div class="versatility-v3__header">
+      <p class="eyebrow">Four products in one</p>
+      <h2 class="headline">One balm does it all</h2>
+      <p class="body-text">Miracle Balm replaces four steps in your routine with one effortless swipe of creamy, buildable color.</p>
+    </div>
+    <div class="versatility-v3__layout">
+      <div class="versatility-v3__feature">
+        <div class="versatility-v3__feature-img">
+          <img src="https://air-prod.imgix.net/d6c10c14-a49b-4ba0-a0ae-8a7108da18e9.jpg?w=600&h=750&fit=crop&auto=format" alt="Blush application">
+        </div>
+        <div class="versatility-v3__feature-overlay">
+          <div class="versatility-v3__feature-num">Use 01</div>
+          <div class="versatility-v3__feature-title">A natural blush</div>
+          <div class="versatility-v3__feature-desc">Tap onto cheeks for a soft, natural flush</div>
+        </div>
+      </div>
+      <div class="versatility-v3__feature">
+        <div class="versatility-v3__feature-img">
+          <img src="https://air-prod.imgix.net/544100b2-2e78-46a3-99c5-1f7e4e7e77ea.jpg?w=600&h=750&fit=crop&auto=format" alt="Bronzer application">
+        </div>
+        <div class="versatility-v3__feature-overlay">
+          <div class="versatility-v3__feature-num">Use 02</div>
+          <div class="versatility-v3__feature-title">Warm bronzer</div>
+          <div class="versatility-v3__feature-desc">Blend along temples and cheekbones for warmth</div>
+        </div>
+      </div>
+      <div class="versatility-v3__feature">
+        <div class="versatility-v3__feature-img">
+          <img src="https://air-prod.imgix.net/cd7bbee6-bc37-45b0-8893-3f01ac017408.jpg?w=600&h=750&fit=crop&auto=format" alt="Highlighter application">
+        </div>
+        <div class="versatility-v3__feature-overlay">
+          <div class="versatility-v3__feature-num">Use 03</div>
+          <div class="versatility-v3__feature-title">Dewy highlighter</div>
+          <div class="versatility-v3__feature-desc">Dab on high points for a lit-from-within glow</div>
+        </div>
+      </div>
+      <div class="versatility-v3__feature">
+        <div class="versatility-v3__feature-img">
+          <img src="https://air-prod.imgix.net/ec7ec9b5-8896-4f82-af4f-604015e5a268.jpg?w=600&h=750&fit=crop&auto=format" alt="All-over tint">
+        </div>
+        <div class="versatility-v3__feature-overlay">
+          <div class="versatility-v3__feature-num">Use 04</div>
+          <div class="versatility-v3__feature-title">All-over tint</div>
+          <div class="versatility-v3__feature-desc">One swipe across eyes, lips, and cheeks</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  </div><!-- /.section-group -->
+
+  <div class="section-group" data-section="nav-bobbi">
+  <!-- ============================================
+       SECTION 4: BOBBI CREDIBILITY
+       ============================================ -->
+  <div class="section-divider" id="nav-bobbi">Section 4: Bobbi Credibility — product-specific quote, no CTA</div>
+
+  <div class="variation-label">4.1 — Two-column: Bobbi portrait + product-specific quote</div>
+  <section class="bobbi-v1">
+    <div class="bobbi-v1__layout">
+      <div class="bobbi-v1__img">
+        <img src="https://air-prod.imgix.net/d3b4ba90-b447-4cb1-908f-b09f8fe31464.jpg?w=600&h=800&fit=crop&auto=format" alt="Bobbi Brown">
+      </div>
+      <div class="bobbi-v1__content">
+        <p class="eyebrow">From the founder</p>
+        <blockquote class="bobbi-v1__quote">&ldquo;I created Miracle Balm because I wanted one product that could do everything &mdash; give you a natural flush, a glow, a hint of color &mdash; in seconds. No brushes, no mirror, no fuss. Just real skin, only better.&rdquo;</blockquote>
+        <p class="bobbi-v1__attribution">Bobbi Brown</p>
+        <p class="bobbi-v1__role">Founder, Jones Road Beauty</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">4.2 — Asymmetric layout with oversized quotation mark</div>
+  <section class="bobbi-v2">
+    <div class="bobbi-v2__layout">
+      <div class="bobbi-v2__content">
+        <div class="bobbi-v2__quotemark">&ldquo;</div>
+        <blockquote class="bobbi-v2__quote">Miracle Balm is the product I wish I had 30 years ago. It&rsquo;s what real women need &mdash; something that makes your skin look like skin, just more alive. I use it every single day.</blockquote>
+        <div class="bobbi-v2__line"></div>
+        <p class="bobbi-v2__attribution">Bobbi Brown</p>
+        <p class="bobbi-v2__role">Founder, Jones Road Beauty</p>
+      </div>
+      <div class="bobbi-v2__img-col">
+        <div class="bobbi-v2__img">
+          <img src="https://air-prod.imgix.net/d3b4ba90-b447-4cb1-908f-b09f8fe31464.jpg?w=560&h=700&fit=crop&auto=format" alt="Bobbi Brown">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">4.3 — Dark editorial variant</div>
+  <section class="bobbi-v3">
+    <div class="bobbi-v3__layout">
+      <div class="bobbi-v3__img">
+        <img src="https://air-prod.imgix.net/d3b4ba90-b447-4cb1-908f-b09f8fe31464.jpg?w=480&h=640&fit=crop&auto=format" alt="Bobbi Brown">
+      </div>
+      <div class="bobbi-v3__content">
+        <p class="eyebrow">Why I made this</p>
+        <blockquote class="bobbi-v3__quote">&ldquo;Miracle Balm started with a simple idea: what if one product could replace your blush, bronzer, and highlighter? I wanted to create something that works on every skin tone and feels like nothing at all. That&rsquo;s Miracle Balm.&rdquo;</blockquote>
+        <div class="bobbi-v3__line"></div>
+        <p class="bobbi-v3__attribution">Bobbi Brown</p>
+        <p class="bobbi-v3__role">Founder, Jones Road Beauty</p>
+      </div>
+    </div>
+  </section>
+
+
+  </div><!-- /.section-group -->
+
+  <div class="section-group" data-section="nav-shade-match">
+  <!-- ============================================
+       SECTION 6: SHADE MATCH
+       ============================================ -->
+  <div class="section-divider" id="nav-shade-match">Section 6: Shade Match — quiz + swatches + stats merged</div>
+
+  <div class="variation-label">6.1 — Two-column: swatches + stats + quiz CTA with customer quote</div>
+  <section class="shade-v1">
+    <div class="shade-v1__layout">
+      <div class="shade-v1__content">
+        <p class="eyebrow">Find your shade</p>
+        <h2 class="headline">13 shades for every skin tone</h2>
+        <p class="body-text">Our shade quiz takes 60 seconds and matches you to your perfect Miracle Balm shade with 96% accuracy.</p>
+        <div class="shade-v1__swatches">
+          <span class="shade-v1__swatch" style="background:#F5E1D0"></span>
+          <span class="shade-v1__swatch" style="background:#EED5BD"></span>
+          <span class="shade-v1__swatch" style="background:#E5C5A7"></span>
+          <span class="shade-v1__swatch" style="background:#D4AD8C"></span>
+          <span class="shade-v1__swatch" style="background:#C99B77"></span>
+          <span class="shade-v1__swatch" style="background:#BC8A64"></span>
+          <span class="shade-v1__swatch" style="background:#D4956B"></span>
+          <span class="shade-v1__swatch" style="background:#C27F56"></span>
+          <span class="shade-v1__swatch" style="background:#A96E4A"></span>
+          <span class="shade-v1__swatch" style="background:#8E5B3A"></span>
+          <span class="shade-v1__swatch" style="background:#7A4E32"></span>
+          <span class="shade-v1__swatch" style="background:#6B422B"></span>
+          <span class="shade-v1__swatch" style="background:#5A3624"></span>
+        </div>
+        <div class="shade-v1__stats">
+          <div class="shade-v1__stat">
+            <div class="shade-v1__stat-num">96%</div>
+            <div class="shade-v1__stat-label">Match accuracy</div>
+          </div>
+          <div class="shade-v1__stat">
+            <div class="shade-v1__stat-num">60 sec</div>
+            <div class="shade-v1__stat-label">Quiz time</div>
+          </div>
+          <div class="shade-v1__stat">
+            <div class="shade-v1__stat-num">250K+</div>
+            <div class="shade-v1__stat-label">Matches made</div>
+          </div>
+        </div>
+        <a href="#" class="button">Take the Shade Quiz</a>
+      </div>
+      <div class="shade-v1__visual">
+        <div class="shade-v1__visual-img">
+          <img src="https://air-prod.imgix.net/1a4793e1-f455-4cbc-bc7e-89ed65c4330b.jpg?w=560&h=700&fit=crop&auto=format" alt="Shade match result">
+        </div>
+        <div class="shade-v1__quote-card">
+          <p class="shade-v1__quote-text">&ldquo;The quiz nailed my shade on the first try &mdash; I&rsquo;ve never had that happen before.&rdquo;</p>
+          <p class="shade-v1__quote-author">Sarah M., verified buyer</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">6.2 — Centered full-width: swatches + big stats + dual CTA</div>
+  <section class="shade-v2">
+    <div class="shade-v2__header">
+      <p class="eyebrow">Your perfect match</p>
+      <h2 class="headline">Find your Miracle Balm shade</h2>
+      <p class="body-text">13 shades designed by Bobbi Brown to work on every skin tone. Take our 60-second quiz or upload a selfie for an instant match.</p>
+    </div>
+    <div class="shade-v2__swatch-row">
+      <span class="shade-v2__swatch" style="background:#F5E1D0"></span>
+      <span class="shade-v2__swatch" style="background:#EED5BD"></span>
+      <span class="shade-v2__swatch" style="background:#E5C5A7"></span>
+      <span class="shade-v2__swatch" style="background:#D4AD8C"></span>
+      <span class="shade-v2__swatch" style="background:#C99B77"></span>
+      <span class="shade-v2__swatch" style="background:#BC8A64"></span>
+      <span class="shade-v2__swatch" style="background:#D4956B"></span>
+      <span class="shade-v2__swatch" style="background:#C27F56"></span>
+      <span class="shade-v2__swatch" style="background:#A96E4A"></span>
+      <span class="shade-v2__swatch" style="background:#8E5B3A"></span>
+      <span class="shade-v2__swatch" style="background:#7A4E32"></span>
+      <span class="shade-v2__swatch" style="background:#6B422B"></span>
+      <span class="shade-v2__swatch" style="background:#5A3624"></span>
+    </div>
+    <div class="shade-v2__stats-row">
+      <div class="shade-v2__stat">
+        <div class="shade-v2__stat-num">250K+</div>
+        <div class="shade-v2__stat-label">Matches made</div>
+      </div>
+      <div class="shade-v2__stat">
+        <div class="shade-v2__stat-num">96%</div>
+        <div class="shade-v2__stat-label">Match accuracy</div>
+      </div>
+      <div class="shade-v2__stat">
+        <div class="shade-v2__stat-num">60 sec</div>
+        <div class="shade-v2__stat-label">Quiz time</div>
+      </div>
+    </div>
+    <div class="shade-v2__cta-row">
+      <a href="#" class="button">Take the Quiz</a>
+      <span class="shade-v2__or">or</span>
+      <a href="#" class="button button--outline">Upload a Selfie</a>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">6.3 — Two-column: phone mockup + step-by-step quiz flow</div>
+  <section class="shade-v3">
+    <div class="shade-v3__layout">
+      <div class="shade-v3__visual">
+        <div class="shade-v3__phone-frame">
+          <div class="shade-v3__phone-screen">
+            <img src="https://air-prod.imgix.net/5c108ff7-59fb-4163-b279-f2c1debec1cc.jpg?w=400&h=710&fit=crop&auto=format" alt="Shade quiz preview">
+            <div class="shade-v3__phone-overlay">
+              <div class="shade-v3__phone-label">Your match: Miracle Balm in Tawny</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="shade-v3__content">
+        <p class="eyebrow">Shade quiz</p>
+        <h2 class="headline">Your shade in 3 steps</h2>
+        <p class="body-text">Our quiz has matched over 250,000 customers to their perfect shade. It takes less than a minute.</p>
+        <div class="shade-v3__steps">
+          <div class="shade-v3__step">
+            <div class="shade-v3__step-num">1</div>
+            <div class="shade-v3__step-text">Answer 4 questions about your skin tone and undertone</div>
+          </div>
+          <div class="shade-v3__step">
+            <div class="shade-v3__step-num">2</div>
+            <div class="shade-v3__step-text">Get your personalized shade recommendation</div>
+          </div>
+          <div class="shade-v3__step">
+            <div class="shade-v3__step-num">3</div>
+            <div class="shade-v3__step-text">Add to bag with confidence &mdash; free exchanges if it&rsquo;s not right</div>
+          </div>
+        </div>
+        <div class="shade-v3__cta-row">
+          <a href="#" class="button">Take the Quiz</a>
+          <span class="shade-v3__stat-inline">96% match accuracy</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  </div><!-- /.section-group -->
+
+  <div class="section-group" data-section="nav-ingredients">
+  <!-- ============================================
+       SECTION 7: INGREDIENTS
+       ============================================ -->
+  <div class="section-divider" id="nav-ingredients">Section 7: Ingredients — what's in it vs what's not</div>
+
+  <div class="variation-label">7.1 — Two-column split: in vs out</div>
+  <section class="ingredients-v1">
+    <div class="ingredients-v1__header">
+      <p class="eyebrow">Clean ingredients</p>
+      <h2 class="headline">What goes on your skin matters</h2>
+    </div>
+    <div class="ingredients-v1__layout">
+      <div class="ingredients-v1__col ingredients-v1__col--in">
+        <div class="ingredients-v1__col-header">
+          <div class="ingredients-v1__col-icon ingredients-v1__col-icon--in">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <span class="ingredients-v1__col-title">What's in it</span>
+        </div>
+        <ul class="ingredients-v1__list">
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--in"></span>
+            <div>
+              <div class="ingredients-v1__item-name">Jojoba Oil</div>
+              <div class="ingredients-v1__item-benefit">Mimics skin's natural oils for deep hydration</div>
+            </div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--in"></span>
+            <div>
+              <div class="ingredients-v1__item-name">Sunflower Seed Oil</div>
+              <div class="ingredients-v1__item-benefit">Rich in vitamin E and essential fatty acids</div>
+            </div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--in"></span>
+            <div>
+              <div class="ingredients-v1__item-name">Beeswax</div>
+              <div class="ingredients-v1__item-benefit">Creates a protective, breathable barrier</div>
+            </div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--in"></span>
+            <div>
+              <div class="ingredients-v1__item-name">Vitamin E</div>
+              <div class="ingredients-v1__item-benefit">Antioxidant protection and skin nourishment</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="ingredients-v1__col ingredients-v1__col--out">
+        <div class="ingredients-v1__col-header">
+          <div class="ingredients-v1__col-icon ingredients-v1__col-icon--out">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </div>
+          <span class="ingredients-v1__col-title">What's not</span>
+        </div>
+        <ul class="ingredients-v1__list">
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--out"></span>
+            <div class="ingredients-v1__item-name">Parabens</div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--out"></span>
+            <div class="ingredients-v1__item-name">Sulfates</div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--out"></span>
+            <div class="ingredients-v1__item-name">Phthalates</div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--out"></span>
+            <div class="ingredients-v1__item-name">Synthetic fragrances</div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--out"></span>
+            <div class="ingredients-v1__item-name">Mineral oil</div>
+          </li>
+          <li class="ingredients-v1__item">
+            <span class="ingredients-v1__item-dot ingredients-v1__item-dot--out"></span>
+            <div class="ingredients-v1__item-name">Talc, formaldehyde, silicones</div>
+          </li>
+        </ul>
+        <div class="ingredients-v1__excluded-count">2,700+ ingredients excluded</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">7.2 — Visual cards with icons + struck-through "free from" pills</div>
+  <section class="ingredients-v2">
+    <div class="ingredients-v2__header">
+      <p class="eyebrow">Clean beauty</p>
+      <h2 class="headline">Powered by nature, backed by science</h2>
+      <p class="body-text">Every ingredient is chosen with intention. Nothing unnecessary goes in.</p>
+    </div>
+    <div class="ingredients-v2__in-grid">
+      <div class="ingredients-v2__card">
+        <div class="ingredients-v2__card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8 7 4 10 4 14a8 8 0 0016 0c0-4-4-7-8-12z"/></svg>
+        </div>
+        <div class="ingredients-v2__card-name">Jojoba Oil</div>
+        <div class="ingredients-v2__card-desc">Mimics your skin's natural oils for seamless hydration</div>
+      </div>
+      <div class="ingredients-v2__card">
+        <div class="ingredients-v2__card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.36-6.36l-1.41 1.41M7.05 16.95l-1.41 1.41m12.72 0l-1.41-1.41M7.05 7.05L5.64 5.64"/></svg>
+        </div>
+        <div class="ingredients-v2__card-name">Sunflower Seed Oil</div>
+        <div class="ingredients-v2__card-desc">Vitamin E-rich protection and nourishment</div>
+      </div>
+      <div class="ingredients-v2__card">
+        <div class="ingredients-v2__card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l2.09 6.26L21 9.27l-5.18 4.73L17.18 21 12 17.27 6.82 21l1.36-6.99L3 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="ingredients-v2__card-name">Beeswax</div>
+        <div class="ingredients-v2__card-desc">Protective barrier that lets skin breathe</div>
+      </div>
+      <div class="ingredients-v2__card">
+        <div class="ingredients-v2__card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div class="ingredients-v2__card-name">Vitamin E</div>
+        <div class="ingredients-v2__card-desc">Antioxidant defense against environmental stress</div>
+      </div>
+    </div>
+    <div class="ingredients-v2__out-section">
+      <div class="ingredients-v2__out-label">Free from</div>
+      <div class="ingredients-v2__out-pills">
+        <span class="ingredients-v2__pill">Parabens</span>
+        <span class="ingredients-v2__pill">Sulfates</span>
+        <span class="ingredients-v2__pill">Phthalates</span>
+        <span class="ingredients-v2__pill">Synthetic Fragrances</span>
+        <span class="ingredients-v2__pill">Mineral Oil</span>
+        <span class="ingredients-v2__pill">Talc</span>
+        <span class="ingredients-v2__pill">Formaldehyde</span>
+        <span class="ingredients-v2__pill">Silicones</span>
+      </div>
+      <div class="ingredients-v2__out-total">2,700+ ingredients excluded from all formulations</div>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">7.3 — Two-column: product image + ingredient spec rows</div>
+  <section class="ingredients-v3">
+    <div class="ingredients-v3__layout">
+      <div class="ingredients-v3__left">
+        <p class="eyebrow">Ingredients</p>
+        <h2 class="headline">Clean formula, real results</h2>
+        <p class="body-text">Every Miracle Balm is made with skin-first ingredients and nothing you don't need.</p>
+        <div class="ingredients-v3__product-img">
+          <img src="https://air-prod.imgix.net/1cf52c77-e36b-41dd-add7-821cc89acc92.jpg?w=480&h=480&fit=crop&auto=format" alt="Miracle Balm product">
+        </div>
+      </div>
+      <div class="ingredients-v3__right">
+        <div class="ingredients-v3__in-section">
+          <div class="ingredients-v3__section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            Key Ingredients
+          </div>
+          <div class="ingredients-v3__ingredient-row">
+            <div class="ingredients-v3__ingredient-name">Jojoba Oil</div>
+            <div class="ingredients-v3__ingredient-desc">Closely mimics skin's natural sebum. Absorbs quickly without clogging pores, delivering deep moisture.</div>
+          </div>
+          <div class="ingredients-v3__ingredient-row">
+            <div class="ingredients-v3__ingredient-name">Sunflower Seed Oil</div>
+            <div class="ingredients-v3__ingredient-desc">Packed with linoleic acid and vitamin E. Strengthens the skin barrier and helps retain moisture.</div>
+          </div>
+          <div class="ingredients-v3__ingredient-row">
+            <div class="ingredients-v3__ingredient-name">Beeswax</div>
+            <div class="ingredients-v3__ingredient-desc">Creates a breathable protective layer. Locks in hydration without suffocating the skin.</div>
+          </div>
+          <div class="ingredients-v3__ingredient-row">
+            <div class="ingredients-v3__ingredient-name">Vitamin E</div>
+            <div class="ingredients-v3__ingredient-desc">A potent antioxidant that shields against environmental damage and supports skin repair.</div>
+          </div>
+        </div>
+        <div class="ingredients-v3__out-section">
+          <div class="ingredients-v3__section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            Free From
+          </div>
+          <div class="ingredients-v3__out-list">
+            <span class="ingredients-v3__out-tag">Parabens</span>
+            <span class="ingredients-v3__out-tag">Sulfates</span>
+            <span class="ingredients-v3__out-tag">Phthalates</span>
+            <span class="ingredients-v3__out-tag">Synthetic Fragrances</span>
+            <span class="ingredients-v3__out-tag">Mineral Oil</span>
+            <span class="ingredients-v3__out-tag">Talc</span>
+            <span class="ingredients-v3__out-tag">Formaldehyde</span>
+            <span class="ingredients-v3__out-tag">Silicones</span>
+          </div>
+          <div class="ingredients-v3__excluded-count">+ 2,700 more excluded ingredients</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  </div><!-- /.section-group -->
+
+  <div class="section-group" data-section="nav-ugc">
+  <!-- ============================================
+       SECTION 9: UGC + BEFORE/AFTER + SOCIAL PROOF
+       ============================================ -->
+  <div class="section-divider" id="nav-ugc">Section 9: UGC + Before/After + Social Proof — merged section</div>
+
+  <div class="variation-label">9.1 — Stats bar + before/after grid (3 pairs)</div>
+  <section class="ugc-v1">
+    <div class="ugc-v1__stats-bar">
+      <div class="ugc-v1__stat">
+        <div class="ugc-v1__stat-num">76K+</div>
+        <div class="ugc-v1__stat-label">Reviews</div>
+      </div>
+      <div class="ugc-v1__stat">
+        <div class="ugc-v1__stat-num">4.3</div>
+        <div class="ugc-v1__stat-label">Average Rating</div>
+      </div>
+      <div class="ugc-v1__stat">
+        <div class="ugc-v1__stat-num">80%</div>
+        <div class="ugc-v1__stat-label">Recommend</div>
+      </div>
+      <div class="ugc-v1__stat">
+        <div class="ugc-v1__stat-num">62%</div>
+        <div class="ugc-v1__stat-label">Five-Star</div>
+      </div>
+    </div>
+    <div class="ugc-v1__header">
+      <p class="eyebrow">Real results</p>
+      <h2 class="headline">See the difference</h2>
+    </div>
+    <div class="ugc-v1__grid">
+      <!-- Pair 1 -->
+      <div class="ugc-v1__pair">
+        <div class="ugc-v1__pair-imgs">
+          <div>
+            <div class="ugc-v1__pair-label ugc-v1__pair-label--before">Before</div>
+            <div class="ugc-v1__pair-img ugc-v1__pair-img--before">
+              <img src="https://air-prod.imgix.net/03905a65-0ca6-4a40-bf82-b15c4003b42c.jpg?w=300&h=400&fit=crop&auto=format&sat=-100&con=-10" alt="Before">
+            </div>
+          </div>
+          <div>
+            <div class="ugc-v1__pair-label ugc-v1__pair-label--after">After</div>
+            <div class="ugc-v1__pair-img">
+              <img src="https://air-prod.imgix.net/03905a65-0ca6-4a40-bf82-b15c4003b42c.jpg?w=300&h=400&fit=crop&auto=format" alt="After - Crystal">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Pair 2 -->
+      <div class="ugc-v1__pair">
+        <div class="ugc-v1__pair-imgs">
+          <div>
+            <div class="ugc-v1__pair-label ugc-v1__pair-label--before">Before</div>
+            <div class="ugc-v1__pair-img ugc-v1__pair-img--before">
+              <img src="https://air-prod.imgix.net/b8ff9613-f642-4d3f-b892-7f8914c2a9f0.jpg?w=300&h=400&fit=crop&auto=format&sat=-100&con=-10" alt="Before">
+            </div>
+          </div>
+          <div>
+            <div class="ugc-v1__pair-label ugc-v1__pair-label--after">After</div>
+            <div class="ugc-v1__pair-img">
+              <img src="https://air-prod.imgix.net/b8ff9613-f642-4d3f-b892-7f8914c2a9f0.jpg?w=300&h=400&fit=crop&auto=format" alt="After - Linda">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Pair 3 -->
+      <div class="ugc-v1__pair">
+        <div class="ugc-v1__pair-imgs">
+          <div>
+            <div class="ugc-v1__pair-label ugc-v1__pair-label--before">Before</div>
+            <div class="ugc-v1__pair-img ugc-v1__pair-img--before">
+              <img src="https://air-prod.imgix.net/1f1aba1c-c948-4af7-8180-41db74c4c497.jpg?w=300&h=400&fit=crop&auto=format&sat=-100&con=-10" alt="Before">
+            </div>
+          </div>
+          <div>
+            <div class="ugc-v1__pair-label ugc-v1__pair-label--after">After</div>
+            <div class="ugc-v1__pair-img">
+              <img src="https://air-prod.imgix.net/1f1aba1c-c948-4af7-8180-41db74c4c497.jpg?w=300&h=400&fit=crop&auto=format" alt="After - Kitty">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">9.2 — Before/after slider concept with UGC thumbnails</div>
+  <section class="ugc-v2">
+    <div class="ugc-v2__header">
+      <p class="eyebrow">Before &amp; after</p>
+      <h2 class="headline">Real skin. Real Miracle Balm.</h2>
+      <p class="ugc-v2__stat-inline"><strong>76,000+</strong> reviews &middot; <strong>80%</strong> recommend &middot; <strong>4.3</strong> average rating</p>
+    </div>
+    <div class="ugc-v2__slider-row">
+      <!-- Slider 1 -->
+      <div class="ugc-v2__slider">
+        <div class="ugc-v2__slider-img">
+          <img src="https://air-prod.imgix.net/5c108ff7-59fb-4163-b279-f2c1debec1cc.jpg?w=600&h=800&fit=crop&auto=format" alt="Before and After - Mecca">
+        </div>
+        <div class="ugc-v2__slider-divider"></div>
+        <div class="ugc-v2__slider-handle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5l-5 7 5 7m8-14l5 7-5 7"/></svg>
+        </div>
+        <div class="ugc-v2__slider-labels">
+          <span class="ugc-v2__slider-label">Before</span>
+          <span class="ugc-v2__slider-label">After</span>
+        </div>
+      </div>
+      <!-- Slider 2 -->
+      <div class="ugc-v2__slider">
+        <div class="ugc-v2__slider-img">
+          <img src="https://air-prod.imgix.net/9a004ba8-1841-404c-af23-8715ca7ee894.jpg?w=600&h=800&fit=crop&auto=format" alt="Before and After - Abuk">
+        </div>
+        <div class="ugc-v2__slider-divider"></div>
+        <div class="ugc-v2__slider-handle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5l-5 7 5 7m8-14l5 7-5 7"/></svg>
+        </div>
+        <div class="ugc-v2__slider-labels">
+          <span class="ugc-v2__slider-label">Before</span>
+          <span class="ugc-v2__slider-label">After</span>
+        </div>
+      </div>
+    </div>
+    <div class="ugc-v2__more-row">
+      <div class="ugc-v2__more-img">
+        <img src="https://air-prod.imgix.net/f9dd33eb-d3ca-4231-b9ad-b07045753f4a.jpg?w=300&h=300&fit=crop&auto=format" alt="UGC - Kitty">
+      </div>
+      <div class="ugc-v2__more-img">
+        <img src="https://air-prod.imgix.net/db2bad74-5fe3-45ad-84e2-03f73d7f1a10.jpg?w=300&h=300&fit=crop&auto=format" alt="UGC - Saraya">
+      </div>
+      <div class="ugc-v2__more-img">
+        <img src="https://air-prod.imgix.net/bd5fe1b4-6cd8-46a1-b72b-899c4be95f88.jpg?w=300&h=300&fit=crop&auto=format" alt="UGC - Maria">
+      </div>
+      <div class="ugc-v2__more-img">
+        <img src="https://air-prod.imgix.net/b5ce5a55-4dab-418e-bb39-6d960fc73312.jpg?w=300&h=300&fit=crop&auto=format" alt="UGC - Abuk">
+      </div>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">9.3 — Stat pills + before/after cards with mini quotes</div>
+  <section class="ugc-v3">
+    <div class="ugc-v3__top-stats">
+      <div class="ugc-v3__stat-pill">
+        <span class="ugc-v3__stat-pill-num">76K+</span>
+        <span class="ugc-v3__stat-pill-label">Reviews</span>
+      </div>
+      <div class="ugc-v3__stat-pill">
+        <span class="ugc-v3__stat-pill-num">80%</span>
+        <span class="ugc-v3__stat-pill-label">Recommend</span>
+      </div>
+      <div class="ugc-v3__stat-pill">
+        <span class="ugc-v3__stat-pill-num">4.3</span>
+        <span class="ugc-v3__stat-pill-label">Average</span>
+      </div>
+      <div class="ugc-v3__stat-pill">
+        <span class="ugc-v3__stat-pill-num">62%</span>
+        <span class="ugc-v3__stat-pill-label">Five-star</span>
+      </div>
+    </div>
+    <div class="ugc-v3__header">
+      <p class="eyebrow">Real results</p>
+      <h2 class="headline">The proof is in the glow</h2>
+    </div>
+    <div class="ugc-v3__cards">
+      <!-- Card 1 -->
+      <div class="ugc-v3__card">
+        <div class="ugc-v3__card-imgs">
+          <div class="ugc-v3__card-img">
+            <img src="https://air-prod.imgix.net/03905a65-0ca6-4a40-bf82-b15c4003b42c.jpg?w=300&h=300&fit=crop&auto=format&sat=-100" alt="Before">
+          </div>
+          <div class="ugc-v3__card-img">
+            <img src="https://air-prod.imgix.net/03905a65-0ca6-4a40-bf82-b15c4003b42c.jpg?w=300&h=300&fit=crop&auto=format" alt="After">
+          </div>
+        </div>
+        <div class="ugc-v3__card-content">
+          <div class="ugc-v3__card-labels">
+            <span class="ugc-v3__card-label ugc-v3__card-label--before">Before</span>
+            <span class="ugc-v3__card-label ugc-v3__card-label--after">After</span>
+          </div>
+          <p class="ugc-v3__card-quote">&ldquo;My skin has never looked this radiant with so little product.&rdquo;</p>
+          <p class="ugc-v3__card-author">Crystal L.</p>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="ugc-v3__card">
+        <div class="ugc-v3__card-imgs">
+          <div class="ugc-v3__card-img">
+            <img src="https://air-prod.imgix.net/b8ff9613-f642-4d3f-b892-7f8914c2a9f0.jpg?w=300&h=300&fit=crop&auto=format&sat=-100" alt="Before">
+          </div>
+          <div class="ugc-v3__card-img">
+            <img src="https://air-prod.imgix.net/b8ff9613-f642-4d3f-b892-7f8914c2a9f0.jpg?w=300&h=300&fit=crop&auto=format" alt="After">
+          </div>
+        </div>
+        <div class="ugc-v3__card-content">
+          <div class="ugc-v3__card-labels">
+            <span class="ugc-v3__card-label ugc-v3__card-label--before">Before</span>
+            <span class="ugc-v3__card-label ugc-v3__card-label--after">After</span>
+          </div>
+          <p class="ugc-v3__card-quote">&ldquo;Replaced my blush, bronzer, and highlighter. I&rsquo;m never going back.&rdquo;</p>
+          <p class="ugc-v3__card-author">Linda S.</p>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="ugc-v3__card">
+        <div class="ugc-v3__card-imgs">
+          <div class="ugc-v3__card-img">
+            <img src="https://air-prod.imgix.net/1f1aba1c-c948-4af7-8180-41db74c4c497.jpg?w=300&h=300&fit=crop&auto=format&sat=-100" alt="Before">
+          </div>
+          <div class="ugc-v3__card-img">
+            <img src="https://air-prod.imgix.net/1f1aba1c-c948-4af7-8180-41db74c4c497.jpg?w=300&h=300&fit=crop&auto=format" alt="After">
+          </div>
+        </div>
+        <div class="ugc-v3__card-content">
+          <div class="ugc-v3__card-labels">
+            <span class="ugc-v3__card-label ugc-v3__card-label--before">Before</span>
+            <span class="ugc-v3__card-label ugc-v3__card-label--after">After</span>
+          </div>
+          <p class="ugc-v3__card-quote">&ldquo;The most natural-looking color I&rsquo;ve ever found. Just beautiful.&rdquo;</p>
+          <p class="ugc-v3__card-author">Kitty M.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">9.4 — Dark strip with horizontal scroll before/after pairs</div>
+  <section class="ugc-v4">
+    <div class="ugc-v4__header">
+      <p class="eyebrow">Real transformations</p>
+      <h2 class="headline">Before Miracle Balm. After Miracle Balm.</h2>
+      <div class="ugc-v4__stat-row">
+        <div class="ugc-v4__stat">
+          <div class="ugc-v4__stat-num">76K+</div>
+          <div class="ugc-v4__stat-label">Reviews</div>
+        </div>
+        <div class="ugc-v4__stat">
+          <div class="ugc-v4__stat-num">80%</div>
+          <div class="ugc-v4__stat-label">Recommend</div>
+        </div>
+        <div class="ugc-v4__stat">
+          <div class="ugc-v4__stat-num">62%</div>
+          <div class="ugc-v4__stat-label">Five-star</div>
+        </div>
+      </div>
+    </div>
+    <div class="ugc-v4__strip">
+      <!-- Pair 1 -->
+      <div class="ugc-v4__pair">
+        <div class="ugc-v4__pair-imgs">
+          <div class="ugc-v4__pair-img">
+            <img src="https://air-prod.imgix.net/03905a65-0ca6-4a40-bf82-b15c4003b42c.jpg?w=300&h=400&fit=crop&auto=format&sat=-100" alt="Before">
+          </div>
+          <div class="ugc-v4__pair-img">
+            <img src="https://air-prod.imgix.net/03905a65-0ca6-4a40-bf82-b15c4003b42c.jpg?w=300&h=400&fit=crop&auto=format" alt="After">
+          </div>
+        </div>
+        <div class="ugc-v4__pair-labels">
+          <span class="ugc-v4__pair-label ugc-v4__pair-label--before">Before</span>
+          <span class="ugc-v4__pair-label ugc-v4__pair-label--after">After</span>
+        </div>
+      </div>
+      <!-- Pair 2 -->
+      <div class="ugc-v4__pair">
+        <div class="ugc-v4__pair-imgs">
+          <div class="ugc-v4__pair-img">
+            <img src="https://air-prod.imgix.net/b8ff9613-f642-4d3f-b892-7f8914c2a9f0.jpg?w=300&h=400&fit=crop&auto=format&sat=-100" alt="Before">
+          </div>
+          <div class="ugc-v4__pair-img">
+            <img src="https://air-prod.imgix.net/b8ff9613-f642-4d3f-b892-7f8914c2a9f0.jpg?w=300&h=400&fit=crop&auto=format" alt="After">
+          </div>
+        </div>
+        <div class="ugc-v4__pair-labels">
+          <span class="ugc-v4__pair-label ugc-v4__pair-label--before">Before</span>
+          <span class="ugc-v4__pair-label ugc-v4__pair-label--after">After</span>
+        </div>
+      </div>
+      <!-- Pair 3 -->
+      <div class="ugc-v4__pair">
+        <div class="ugc-v4__pair-imgs">
+          <div class="ugc-v4__pair-img">
+            <img src="https://air-prod.imgix.net/1f1aba1c-c948-4af7-8180-41db74c4c497.jpg?w=300&h=400&fit=crop&auto=format&sat=-100" alt="Before">
+          </div>
+          <div class="ugc-v4__pair-img">
+            <img src="https://air-prod.imgix.net/1f1aba1c-c948-4af7-8180-41db74c4c497.jpg?w=300&h=400&fit=crop&auto=format" alt="After">
+          </div>
+        </div>
+        <div class="ugc-v4__pair-labels">
+          <span class="ugc-v4__pair-label ugc-v4__pair-label--before">Before</span>
+          <span class="ugc-v4__pair-label ugc-v4__pair-label--after">After</span>
+        </div>
+      </div>
+      <!-- Pair 4 (model) -->
+      <div class="ugc-v4__pair">
+        <div class="ugc-v4__pair-imgs">
+          <div class="ugc-v4__pair-img">
+            <img src="https://air-prod.imgix.net/f9dd33eb-d3ca-4231-b9ad-b07045753f4a.jpg?w=300&h=400&fit=crop&auto=format&sat=-100" alt="Before">
+          </div>
+          <div class="ugc-v4__pair-img">
+            <img src="https://air-prod.imgix.net/f9dd33eb-d3ca-4231-b9ad-b07045753f4a.jpg?w=300&h=400&fit=crop&auto=format" alt="After">
+          </div>
+        </div>
+        <div class="ugc-v4__pair-labels">
+          <span class="ugc-v4__pair-label ugc-v4__pair-label--before">Before</span>
+          <span class="ugc-v4__pair-label ugc-v4__pair-label--after">After</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  </div><!-- /.section-group -->
+
+  <div class="section-group" data-section="nav-spec">
+  <!-- ============================================
+       SECTION 11: PRODUCT SPEC
+       ============================================ -->
+  <div class="section-divider" id="nav-spec">Section 11: Product Spec — elevated "what to expect" module</div>
+
+  <div class="variation-label">11.1 — Two-column: small product image + spec table</div>
+  <section class="spec-v1">
+    <div class="spec-v1__layout">
+      <div class="spec-v1__img">
+        <img src="https://air-prod.imgix.net/1cf52c77-e36b-41dd-add7-821cc89acc92.jpg?w=680&h=680&fit=crop&auto=format" alt="Miracle Balm">
+      </div>
+      <div class="spec-v1__content">
+        <p class="eyebrow">Product details</p>
+        <h2 class="headline--sm">What to expect</h2>
+        <div class="spec-v1__list">
+          <div class="spec-v1__item">
+            <div class="spec-v1__item-label">Good for</div>
+            <div class="spec-v1__item-value">All skin types</div>
+          </div>
+          <div class="spec-v1__item">
+            <div class="spec-v1__item-label">Feels like</div>
+            <div class="spec-v1__item-value">A creamy, lightweight balm that melts into skin</div>
+          </div>
+          <div class="spec-v1__item">
+            <div class="spec-v1__item-label">Looks like</div>
+            <div class="spec-v1__item-value">A natural, dewy flush of color</div>
+          </div>
+          <div class="spec-v1__item">
+            <div class="spec-v1__item-label">Smells like</div>
+            <div class="spec-v1__item-value">Nothing &mdash; fragrance-free</div>
+          </div>
+          <div class="spec-v1__item">
+            <div class="spec-v1__item-label">FYI</div>
+            <div class="spec-v1__item-value">Clean, cruelty-free, made in the USA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">11.2 — Five-card horizontal grid (icon + label + value)</div>
+  <section class="spec-v2">
+    <div class="spec-v2__header">
+      <p class="eyebrow">The details</p>
+      <h2 class="headline">Know before you glow</h2>
+    </div>
+    <div class="spec-v2__grid">
+      <div class="spec-v2__card">
+        <div class="spec-v2__card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div class="spec-v2__card-label">Good for</div>
+        <div class="spec-v2__card-value">All skin types</div>
+      </div>
+      <div class="spec-v2__card">
+        <div class="spec-v2__card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8 7 4 10 4 14a8 8 0 0016 0c0-4-4-7-8-12z"/></svg>
+        </div>
+        <div class="spec-v2__card-label">Feels like</div>
+        <div class="spec-v2__card-value">Creamy, lightweight balm</div>
+      </div>
+      <div class="spec-v2__card">
+        <div class="spec-v2__card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.36-6.36l-1.41 1.41M7.05 16.95l-1.41 1.41m12.72 0l-1.41-1.41M7.05 7.05L5.64 5.64"/></svg>
+        </div>
+        <div class="spec-v2__card-label">Looks like</div>
+        <div class="spec-v2__card-value">Natural, dewy flush</div>
+      </div>
+      <div class="spec-v2__card">
+        <div class="spec-v2__card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22c4-4 8-7 8-12a8 8 0 00-16 0c0 5 4 8 8 12z"/></svg>
+        </div>
+        <div class="spec-v2__card-label">Smells like</div>
+        <div class="spec-v2__card-value">Nothing (fragrance-free)</div>
+      </div>
+      <div class="spec-v2__card">
+        <div class="spec-v2__card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <div class="spec-v2__card-label">FYI</div>
+        <div class="spec-v2__card-value">Clean, cruelty-free, made in USA</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">11.3 — Dark editorial spec sheet with product image</div>
+  <section class="spec-v3">
+    <div class="spec-v3__layout">
+      <div class="spec-v3__content">
+        <p class="eyebrow">Miracle Balm specs</p>
+        <h2 class="headline--sm" style="color:#fff">The fine print</h2>
+        <div class="spec-v3__list">
+          <div class="spec-v3__item">
+            <div class="spec-v3__item-label">Good for</div>
+            <div class="spec-v3__item-value">All skin types</div>
+          </div>
+          <div class="spec-v3__item">
+            <div class="spec-v3__item-label">Feels like</div>
+            <div class="spec-v3__item-value">A creamy, lightweight balm that melts into skin</div>
+          </div>
+          <div class="spec-v3__item">
+            <div class="spec-v3__item-label">Looks like</div>
+            <div class="spec-v3__item-value">A natural, dewy flush of color</div>
+          </div>
+          <div class="spec-v3__item">
+            <div class="spec-v3__item-label">Smells like</div>
+            <div class="spec-v3__item-value">Nothing &mdash; fragrance-free</div>
+          </div>
+          <div class="spec-v3__item">
+            <div class="spec-v3__item-label">FYI</div>
+            <div class="spec-v3__item-value">Clean, cruelty-free, made in the USA</div>
+          </div>
+        </div>
+      </div>
+      <div class="spec-v3__img">
+        <img src="https://air-prod.imgix.net/1cf52c77-e36b-41dd-add7-821cc89acc92.jpg?w=640&h=640&fit=crop&auto=format" alt="Miracle Balm">
+      </div>
+    </div>
+  </section>
+
+
+  </div><!-- /.section-group -->
+
+  <div class="section-group" data-section="nav-guarantee">
+  <!-- ============================================
+       SECTION 12: SHADE GUARANTEE
+       ============================================ -->
+  <div class="section-divider" id="nav-guarantee">Section 12: Shade Guarantee — light BG, timeline, policy cards</div>
+
+  <div class="variation-label">12.1 — Timeline flow with policy icons (light warm bg)</div>
+  <section class="guarantee-v1">
+    <div class="guarantee-v1__header">
+      <p class="eyebrow">Risk-free guarantee</p>
+      <h2 class="headline">Not your shade? We've got you.</h2>
+      <p class="body-text">Try Miracle Balm with zero risk. If the shade isn't right, we make it easy to find the one that is.</p>
+    </div>
+    <div class="guarantee-v1__timeline">
+      <div class="guarantee-v1__step">
+        <div class="guarantee-v1__step-dot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="guarantee-v1__step-title">Free exchanges</div>
+        <div class="guarantee-v1__step-desc">Swap your shade at no cost, as many times as you need</div>
+      </div>
+      <div class="guarantee-v1__step">
+        <div class="guarantee-v1__step-dot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
+        </div>
+        <div class="guarantee-v1__step-title">Free returns</div>
+        <div class="guarantee-v1__step-desc">Full refund within 30 days, no questions asked</div>
+      </div>
+      <div class="guarantee-v1__step">
+        <div class="guarantee-v1__step-dot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <div class="guarantee-v1__step-title">Free shipping</div>
+        <div class="guarantee-v1__step-desc">Prepaid return label included with every order</div>
+      </div>
+      <div class="guarantee-v1__step">
+        <div class="guarantee-v1__step-dot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div class="guarantee-v1__step-title">Expert help</div>
+        <div class="guarantee-v1__step-desc">Our shade experts are here to find your perfect match</div>
+      </div>
+    </div>
+    <div class="guarantee-v1__cta">
+      <a href="#" class="button button--outline">Chat with a Shade Expert</a>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">12.2 — Four policy cards with icons (light warm bg)</div>
+  <section class="guarantee-v2">
+    <div class="guarantee-v2__header">
+      <p class="eyebrow">Our promise</p>
+      <h2 class="headline">Buy with confidence</h2>
+    </div>
+    <div class="guarantee-v2__grid">
+      <div class="guarantee-v2__card">
+        <div class="guarantee-v2__card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
+        </div>
+        <div class="guarantee-v2__card-title">Free exchanges</div>
+        <div class="guarantee-v2__card-desc">Wrong shade? Swap it for free, no limit on tries</div>
+      </div>
+      <div class="guarantee-v2__card">
+        <div class="guarantee-v2__card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <div class="guarantee-v2__card-title">30-day returns</div>
+        <div class="guarantee-v2__card-desc">Full refund within 30 days, no questions asked</div>
+      </div>
+      <div class="guarantee-v2__card">
+        <div class="guarantee-v2__card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <div class="guarantee-v2__card-title">Free return shipping</div>
+        <div class="guarantee-v2__card-desc">Prepaid return label with every order</div>
+      </div>
+      <div class="guarantee-v2__card">
+        <div class="guarantee-v2__card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </div>
+        <div class="guarantee-v2__card-title">Expert shade help</div>
+        <div class="guarantee-v2__card-desc">Chat or email our team for a personalized recommendation</div>
+      </div>
+    </div>
+    <div class="guarantee-v2__cta">
+      <a href="#" class="button button--outline">Need Help? Chat with Us</a>
+    </div>
+  </section>
+
+
+  </div><!-- /.section-group -->
+
+  <div class="section-group" data-section="nav-clinical">
+  <!-- ============================================
+       SECTION 13: CLINICAL RESULTS
+       ============================================ -->
+  <div class="section-divider" id="nav-clinical">Section 13: Clinical Results — aspirational (no live data yet)</div>
+
+  <div class="variation-label">13.1 — Two-column: model image + stat list (refined)</div>
+  <section class="clinical-v1">
+    <div class="clinical-v1__layout">
+      <div class="clinical-v1__img">
+        <img src="https://air-prod.imgix.net/ec7ec9b5-8896-4f82-af4f-604015e5a268.jpg?w=560&h=700&fit=crop&auto=format" alt="Model with Miracle Balm">
+      </div>
+      <div class="clinical-v1__content">
+        <p class="eyebrow">Clinical study</p>
+        <h2 class="headline--sm">Proven to transform your skin</h2>
+        <div class="clinical-v1__stats">
+          <div class="clinical-v1__stat">
+            <div class="clinical-v1__stat-num">94%</div>
+            <div class="clinical-v1__stat-text">said skin looked more radiant and healthy after 2 weeks</div>
+          </div>
+          <div class="clinical-v1__stat">
+            <div class="clinical-v1__stat-num">91%</div>
+            <div class="clinical-v1__stat-text">noticed improved skin hydration throughout the day</div>
+          </div>
+          <div class="clinical-v1__stat">
+            <div class="clinical-v1__stat-num">88%</div>
+            <div class="clinical-v1__stat-text">said they needed fewer products in their routine</div>
+          </div>
+          <div class="clinical-v1__stat">
+            <div class="clinical-v1__stat-num">97%</div>
+            <div class="clinical-v1__stat-text">would recommend Miracle Balm to a friend</div>
+          </div>
+        </div>
+        <p class="clinical-v1__disclaimer">*Based on a 4-week consumer study of 100 participants</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">13.2 — Big stat cards on warm background (refined)</div>
+  <section class="clinical-v2">
+    <div class="clinical-v2__header">
+      <p class="eyebrow">Clinical results</p>
+      <h2 class="headline">The numbers don't lie</h2>
+    </div>
+    <div class="clinical-v2__grid">
+      <div class="clinical-v2__card">
+        <div class="clinical-v2__card-num">94%</div>
+        <div class="clinical-v2__card-text">said skin looked more radiant and healthy</div>
+      </div>
+      <div class="clinical-v2__card">
+        <div class="clinical-v2__card-num">91%</div>
+        <div class="clinical-v2__card-text">noticed improved hydration throughout the day</div>
+      </div>
+      <div class="clinical-v2__card">
+        <div class="clinical-v2__card-num">97%</div>
+        <div class="clinical-v2__card-text">would recommend Miracle Balm to a friend</div>
+      </div>
+    </div>
+    <p class="clinical-v2__disclaimer">*Based on a 4-week consumer study of 100 participants</p>
+  </section>
+
+  <div class="variation-spacer"></div>
+
+  <div class="variation-label">13.3 — Progress bars with side copy (refined)</div>
+  <section class="clinical-v3">
+    <div class="clinical-v3__layout">
+      <div class="clinical-v3__left">
+        <p class="eyebrow">Proven results</p>
+        <h2 class="headline--sm">Clinically tested, woman-approved</h2>
+        <p class="body-text">In a 4-week consumer study of 100 participants, Miracle Balm delivered measurable improvements in skin radiance, hydration, and overall satisfaction.</p>
+      </div>
+      <div class="clinical-v3__bars">
+        <div class="clinical-v3__bar-item">
+          <div class="clinical-v3__bar-top">
+            <span class="clinical-v3__bar-label">Improved skin radiance</span>
+            <span class="clinical-v3__bar-num">94%</span>
+          </div>
+          <div class="clinical-v3__bar-track">
+            <div class="clinical-v3__bar-fill" style="width:94%"></div>
+          </div>
+        </div>
+        <div class="clinical-v3__bar-item">
+          <div class="clinical-v3__bar-top">
+            <span class="clinical-v3__bar-label">Better hydration all day</span>
+            <span class="clinical-v3__bar-num">91%</span>
+          </div>
+          <div class="clinical-v3__bar-track">
+            <div class="clinical-v3__bar-fill" style="width:91%"></div>
+          </div>
+        </div>
+        <div class="clinical-v3__bar-item">
+          <div class="clinical-v3__bar-top">
+            <span class="clinical-v3__bar-label">Fewer products needed</span>
+            <span class="clinical-v3__bar-num">88%</span>
+          </div>
+          <div class="clinical-v3__bar-track">
+            <div class="clinical-v3__bar-fill" style="width:88%"></div>
+          </div>
+        </div>
+        <div class="clinical-v3__bar-item">
+          <div class="clinical-v3__bar-top">
+            <span class="clinical-v3__bar-label">Would recommend</span>
+            <span class="clinical-v3__bar-num">97%</span>
+          </div>
+          <div class="clinical-v3__bar-track">
+            <div class="clinical-v3__bar-fill" style="width:97%"></div>
+          </div>
+        </div>
+        <p class="clinical-v3__disclaimer">*Based on a 4-week consumer study of 100 participants</p>
+      </div>
+    </div>
+  </section>
+
+  </div><!-- /.section-group -->
+
+</div><!-- /.page-wrapper -->
+
+<div style="height:120px"></div>
+
+<script>
+(function() {
+  var tabs = document.querySelectorAll('.pdp-nav__tab');
+  var groups = document.querySelectorAll('.section-group');
+  var track = document.querySelector('.pdp-nav__track');
+
+  function showSection(targetId) {
+    // Update active tab
+    tabs.forEach(function(t) {
+      t.classList.toggle('pdp-nav__tab--active', t.getAttribute('data-target') === targetId);
+    });
+
+    // Show/hide section groups
+    if (targetId === 'all') {
+      groups.forEach(function(g) { g.style.display = ''; });
+    } else {
+      groups.forEach(function(g) {
+        g.style.display = (g.getAttribute('data-section') === targetId) ? '' : 'none';
+      });
+    }
+
+    // Scroll to top of page
+    window.scrollTo(0, 0);
+
+    // Scroll active tab into view within nav track
+    var activeTab = document.querySelector('.pdp-nav__tab--active');
+    if (activeTab && track) {
+      var trackRect = track.getBoundingClientRect();
+      var tabRect = activeTab.getBoundingClientRect();
+      if (tabRect.left < trackRect.left || tabRect.right > trackRect.right) {
+        activeTab.scrollIntoView({ inline: 'center', block: 'nearest' });
+      }
+    }
+  }
+
+  // Tab click handler
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      showSection(this.getAttribute('data-target'));
+    });
+  });
+
+  // Default: show all on page load
+  showSection('all');
+})();
+</script>
+
+</body>
+</html>

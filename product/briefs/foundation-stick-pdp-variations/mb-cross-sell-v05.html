@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Miracle Balm Cross-Sell — V05: Before/After with Product Annotations</title>
+  <style>
+    /* === FONTS (CDN) === */
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    /* === CUSTOM PROPERTIES === */
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-accent: #ff2e92;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    /* === RESET === */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 100%; color: var(--color-black); letter-spacing: .025em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; background: var(--color-white); }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* === BUTTON === */
+    .button { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 550; text-transform: uppercase; letter-spacing: .4px; height: 40px; padding: 0 36px; border-radius: 2px; border: 1px solid var(--color-black); background: var(--color-black); color: var(--color-white); cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .button:not(:disabled):hover { background: transparent; color: var(--color-black); }
+    @media screen and (min-width: 768px) { .button { font-size: 14px; height: 44px; } }
+
+    /* === REDUCED MOTION === */
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+    /* === VARIATION LABEL === */
+    .v-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: #999; text-align: center; padding: 12px; background: var(--color-white); }
+
+    /* === V05: BEFORE/AFTER WITH ANNOTATIONS === */
+    .cross-sell { padding: 64px 20px; background: var(--color-white); }
+    .cross-sell__inner { max-width: 1100px; margin: 0 auto; }
+    .cross-sell__eyebrow { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-black); margin-block-end: 16px; text-align: center; }
+    .cross-sell__heading { font-family: var(--font-serif); font-size: 38px; font-weight: 300; line-height: 1.2; color: var(--color-black); text-align: center; margin-block-end: 12px; }
+    .cross-sell__subhead { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--color-black); text-align: center; max-width: 520px; margin: 0 auto 48px; }
+
+    /* Layout: annotated image + product list */
+    .cross-sell__layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+
+    /* Annotated image */
+    .cross-sell__image { position: relative; }
+    .cross-sell__image-wrap { aspect-ratio: 3 / 4; overflow: hidden; border-radius: 3px; }
+    .cross-sell__image-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Annotation labels on image */
+    .cross-sell__annotation { position: absolute; display: flex; align-items: center; gap: 8px; }
+    .cross-sell__annotation-dot { width: 10px; height: 10px; border-radius: 100%; background: var(--color-white); border: 2px solid var(--color-black); flex-shrink: 0; }
+    .cross-sell__annotation-line { width: 40px; height: 1px; background: var(--color-black); }
+    .cross-sell__annotation-text { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .3px; color: var(--color-white); background: var(--color-black); padding: 4px 8px; border-radius: 2px; white-space: nowrap; }
+
+    .cross-sell__annotation--1 { top: 15%; right: 8%; }
+    .cross-sell__annotation--2 { top: 38%; right: 5%; }
+    .cross-sell__annotation--3 { top: 58%; left: 5%; flex-direction: row-reverse; }
+    .cross-sell__annotation--4 { top: 78%; right: 10%; }
+
+    /* Before label */
+    .cross-sell__before-label { position: absolute; bottom: 16px; left: 16px; font-family: var(--font-display); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--color-white); background: var(--color-black); padding: 6px 12px; border-radius: 2px; }
+
+    /* Product list */
+    .cross-sell__list { display: flex; flex-direction: column; gap: 0; }
+
+    .cross-sell__item { display: grid; grid-template-columns: 64px 1fr auto; gap: 16px; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--color-warm-bg); }
+    .cross-sell__item:first-child { padding-top: 0; }
+    .cross-sell__item:last-child { border-bottom: none; }
+
+    .cross-sell__item-img { aspect-ratio: 1; overflow: hidden; border-radius: 3px; background: var(--color-warm-bg); }
+    .cross-sell__item-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    .cross-sell__item-body { }
+    .cross-sell__item-area { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .3px; color: var(--color-black); opacity: .5; margin-block-end: 4px; }
+    .cross-sell__item-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; text-transform: uppercase; color: var(--color-black); margin-block-end: 2px; }
+    .cross-sell__item-desc { font-family: var(--font-body); font-size: 13px; line-height: 1.5; color: var(--color-black); }
+
+    .cross-sell__item-right { text-align: right; }
+    .cross-sell__item-price { font-family: var(--font-mono); font-size: 14px; color: var(--color-black); margin-block-end: 8px; }
+    .cross-sell__item-add { font-family: var(--font-mono); font-size: 11px; font-weight: 550; text-transform: uppercase; letter-spacing: .3px; color: var(--color-black); border: 1px solid var(--color-black); background: transparent; padding: 6px 14px; border-radius: 2px; cursor: pointer; transition: background .4s var(--ease-primary), color .4s var(--ease-primary); }
+    .has-mouse .cross-sell__item-add:hover { background: var(--color-black); color: var(--color-white); }
+
+    .cross-sell__flag { font-family: var(--font-mono); font-size: 11px; color: var(--color-accent); text-transform: uppercase; letter-spacing: .3px; }
+
+    /* CTA */
+    .cross-sell__cta { text-align: center; margin-block-start: 48px; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .cross-sell { padding: 48px 16px; }
+      .cross-sell__heading { font-size: 26px; line-height: 1.3; }
+      .cross-sell__layout { grid-template-columns: 1fr; gap: 32px; }
+      .cross-sell__annotation-line { width: 20px; }
+      .cross-sell__annotation-text { font-size: 9px; }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .cross-sell__heading { font-size: 32px; }
+      .cross-sell__layout { gap: 32px; }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+  <div class="v-label">Miracle Balm &mdash; Cross-Sell &mdash; V05: Before/After with Product&nbsp;Annotations</div>
+
+  <section class="cross-sell">
+    <div class="cross-sell__inner">
+      <p class="cross-sell__eyebrow">The Transformation</p>
+      <h2 class="cross-sell__heading">What you're seeing on her skin</h2>
+      <p class="cross-sell__subhead">Every product on her face, labeled. Because 51% of you said "show me what she's&nbsp;wearing."</p>
+
+      <div class="cross-sell__layout">
+        <!-- Annotated model image -->
+        <div class="cross-sell__image">
+          <div class="cross-sell__image-wrap">
+            <img src="https://air-prod.imgix.net/26c698d6-9998-4f96-bae0-4f0671452fc6.jpg?w=600&h=800&fit=crop&auto=format" alt="Model wearing Jones Road routine with product annotations" loading="lazy">
+          </div>
+          <span class="cross-sell__before-label">After &mdash; 3 Products</span>
+
+          <div class="cross-sell__annotation cross-sell__annotation--1">
+            <span class="cross-sell__annotation-dot"></span>
+            <span class="cross-sell__annotation-line"></span>
+            <span class="cross-sell__annotation-text">Miracle Balm</span>
+          </div>
+          <div class="cross-sell__annotation cross-sell__annotation--2">
+            <span class="cross-sell__annotation-dot"></span>
+            <span class="cross-sell__annotation-line"></span>
+            <span class="cross-sell__annotation-text">What The Foundation</span>
+          </div>
+          <div class="cross-sell__annotation cross-sell__annotation--3">
+            <span class="cross-sell__annotation-dot"></span>
+            <span class="cross-sell__annotation-line"></span>
+            <span class="cross-sell__annotation-text">Face Pencil</span>
+          </div>
+          <div class="cross-sell__annotation cross-sell__annotation--4">
+            <span class="cross-sell__annotation-dot"></span>
+            <span class="cross-sell__annotation-line"></span>
+            <span class="cross-sell__annotation-text">Lip &amp; Cheek</span>
+          </div>
+        </div>
+
+        <!-- Product list -->
+        <div class="cross-sell__list">
+          <div class="cross-sell__item">
+            <div class="cross-sell__item-img">
+              <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=400&h=400&fit=crop&auto=format" alt="Miracle Balm" loading="lazy">
+            </div>
+            <div class="cross-sell__item-body">
+              <p class="cross-sell__item-area">Skin + Glow</p>
+              <p class="cross-sell__item-title">Miracle Balm</p>
+              <p class="cross-sell__item-desc">Multi-use face&nbsp;balm</p>
+            </div>
+            <div class="cross-sell__item-right">
+              <p class="cross-sell__item-price">$38</p>
+              <span class="cross-sell__flag">Viewing</span>
+            </div>
+          </div>
+
+          <div class="cross-sell__item">
+            <div class="cross-sell__item-img">
+              <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=400&h=400&fit=crop&auto=format" alt="What The Foundation" loading="lazy">
+            </div>
+            <div class="cross-sell__item-body">
+              <p class="cross-sell__item-area">Complexion</p>
+              <p class="cross-sell__item-title">What The Foundation</p>
+              <p class="cross-sell__item-desc">Tinted moisture&nbsp;balm</p>
+            </div>
+            <div class="cross-sell__item-right">
+              <p class="cross-sell__item-price">$44</p>
+              <button class="cross-sell__item-add">+ Add</button>
+            </div>
+          </div>
+
+          <div class="cross-sell__item">
+            <div class="cross-sell__item-img">
+              <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=400&h=400&fit=crop&auto=format" alt="The Face Pencil" loading="lazy">
+            </div>
+            <div class="cross-sell__item-body">
+              <p class="cross-sell__item-area">Define</p>
+              <p class="cross-sell__item-title">The Face Pencil</p>
+              <p class="cross-sell__item-desc">All-over color&nbsp;pencil</p>
+            </div>
+            <div class="cross-sell__item-right">
+              <p class="cross-sell__item-price">$25</p>
+              <button class="cross-sell__item-add">+ Add</button>
+            </div>
+          </div>
+
+          <div class="cross-sell__item">
+            <div class="cross-sell__item-img">
+              <img src="https://air-prod.imgix.net/a53971aa-9c94-4d41-82b6-8f4d2345317c.jpg?w=400&h=400&fit=crop&auto=format" alt="Lip & Cheek Stick" loading="lazy">
+            </div>
+            <div class="cross-sell__item-body">
+              <p class="cross-sell__item-area">Lip + Cheek</p>
+              <p class="cross-sell__item-title">Lip &amp; Cheek Stick</p>
+              <p class="cross-sell__item-desc">Buildable lip and cheek&nbsp;color</p>
+            </div>
+            <div class="cross-sell__item-right">
+              <p class="cross-sell__item-price">$24</p>
+              <button class="cross-sell__item-add">+ Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cross-sell__cta">
+        <a href="#" class="button">Shop The Full Look</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

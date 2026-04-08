@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blushing Stick — Section Review &amp; Vote</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', monospace;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --black: #000;
+      --white: #fff;
+      --warm: #f6f2eb;
+      --pink: #ff2e92;
+      --border: #e0e0e0;
+      --green: #22c55e;
+      --red: #ef4444;
+      --amber: #f59e0b;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background: var(--warm); color: var(--black); -webkit-font-smoothing: antialiased; }
+
+    /* === TOP BAR === */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--black); color: var(--white);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; height: 56px;
+    }
+    .topbar__title {
+      font-family: var(--font-display); font-size: 16px; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .topbar__product {
+      font-family: var(--font-serif); font-size: 20px; font-weight: 300;
+    }
+    .topbar__progress {
+      font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .3px; opacity: .6;
+    }
+    .topbar__summary-btn {
+      font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .4px;
+      background: var(--pink); color: var(--white); border: none; padding: 8px 20px; border-radius: 2px; cursor: pointer;
+      transition: opacity .3s;
+    }
+    .topbar__summary-btn:hover { opacity: .85; }
+
+    /* === LAYOUT === */
+    .layout { display: flex; padding-top: 56px; height: 100vh; }
+
+    /* === SIDEBAR === */
+    .sidebar {
+      width: 240px; min-width: 240px; background: var(--white);
+      border-right: 1px solid var(--border); overflow-y: auto;
+      display: flex; flex-direction: column;
+    }
+    .sidebar__label {
+      font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .5px;
+      color: #999; padding: 16px 16px 8px;
+    }
+    .sidebar__item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; cursor: pointer; border-left: 3px solid transparent;
+      transition: background .2s, border-color .2s;
+      font-family: var(--font-body); font-size: 14px;
+    }
+    .sidebar__item:hover { background: var(--warm); }
+    .sidebar__item.is-active { background: var(--warm); border-left-color: var(--black); font-weight: 600; }
+    .sidebar__item-name { flex: 1; }
+    .sidebar__item-count {
+      font-family: var(--font-mono); font-size: 11px; color: #999;
+      min-width: 32px; text-align: right;
+    }
+    .sidebar__item-count.has-votes { color: var(--green); }
+
+    /* === MAIN === */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* === VARIATION TABS === */
+    .vartabs {
+      display: flex; align-items: center; gap: 0; background: var(--white);
+      border-bottom: 1px solid var(--border); padding: 0 24px; min-height: 48px;
+    }
+    .vartab {
+      font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .3px;
+      padding: 14px 16px; cursor: pointer; border-bottom: 2px solid transparent;
+      color: #999; transition: color .2s, border-color .2s; position: relative;
+      background: none; border-top: none; border-left: none; border-right: none;
+    }
+    .vartab:hover { color: var(--black); }
+    .vartab.is-active { color: var(--black); border-bottom-color: var(--black); }
+    .vartab .vote-dot {
+      position: absolute; top: 8px; right: 4px; width: 8px; height: 8px; border-radius: 50%;
+    }
+    .vartab .vote-dot.yes { background: var(--green); }
+    .vartab .vote-dot.no { background: var(--red); }
+    .vartab .vote-dot.maybe { background: var(--amber); }
+
+    .vartabs__desc {
+      margin-left: auto; font-family: var(--font-body); font-size: 13px; color: #666;
+      max-width: 300px; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* === IFRAME === */
+    .preview { flex: 1; position: relative; background: var(--white); }
+    .preview iframe { width: 100%; height: 100%; border: none; }
+
+    /* === VOTE BAR === */
+    .votebar {
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+      background: var(--white); border-top: 1px solid var(--border); padding: 12px 24px;
+    }
+    .vote-btn {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: .4px;
+      padding: 10px 24px; border-radius: 2px; cursor: pointer; border: 1px solid var(--border);
+      background: var(--white); color: var(--black); transition: all .2s;
+    }
+    .vote-btn:hover { border-color: var(--black); }
+    .vote-btn.is-selected { color: var(--white); border-color: transparent; }
+    .vote-btn.is-selected.vote-yes { background: var(--green); }
+    .vote-btn.is-selected.vote-no { background: var(--red); }
+    .vote-btn.is-selected.vote-maybe { background: var(--amber); }
+    .vote-btn svg { width: 18px; height: 18px; }
+
+    .votebar__nav {
+      display: flex; gap: 8px; margin-left: auto;
+    }
+    .nav-btn {
+      font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .3px;
+      padding: 10px 20px; border: 1px solid var(--black); background: var(--black); color: var(--white);
+      border-radius: 2px; cursor: pointer; transition: background .2s, color .2s;
+    }
+    .nav-btn:hover { background: transparent; color: var(--black); }
+    .nav-btn:disabled { opacity: .3; cursor: default; }
+    .nav-btn:disabled:hover { background: var(--black); color: var(--white); }
+
+    /* === SUMMARY MODAL === */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,.6); align-items: center; justify-content: center;
+    }
+    .modal-overlay.is-open { display: flex; }
+    .modal {
+      background: var(--white); border-radius: 3px; width: 90%; max-width: 800px; max-height: 85vh;
+      overflow-y: auto; padding: 40px;
+    }
+    .modal__title {
+      font-family: var(--font-serif); font-size: 32px; font-weight: 300; margin-bottom: 8px;
+    }
+    .modal__subtitle {
+      font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .5px;
+      color: #999; margin-bottom: 32px;
+    }
+    .modal__section-title {
+      font-family: var(--font-display); font-size: 15px; text-transform: uppercase; letter-spacing: .5px;
+      margin-bottom: 12px; padding-top: 24px; border-top: 1px solid var(--border);
+    }
+    .modal__section-title:first-of-type { border-top: none; padding-top: 0; }
+    .modal__row {
+      display: flex; align-items: center; padding: 8px 0; gap: 12px;
+    }
+    .modal__var {
+      font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .3px;
+      width: 40px; color: #999;
+    }
+    .modal__desc {
+      font-family: var(--font-body); font-size: 14px; flex: 1;
+    }
+    .modal__vote-badge {
+      font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .3px;
+      padding: 4px 12px; border-radius: 2px; color: var(--white);
+    }
+    .modal__vote-badge.yes { background: var(--green); }
+    .modal__vote-badge.no { background: var(--red); }
+    .modal__vote-badge.maybe { background: var(--amber); }
+    .modal__vote-badge.none { background: #ddd; color: #999; }
+    .modal__stats {
+      display: flex; gap: 24px; margin-bottom: 32px; padding: 20px; background: var(--warm); border-radius: 3px;
+    }
+    .modal__stat { text-align: center; flex: 1; }
+    .modal__stat-num {
+      font-family: var(--font-display); font-size: 32px;
+    }
+    .modal__stat-label {
+      font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .3px; color: #999; margin-top: 4px;
+    }
+    .modal__close {
+      position: sticky; top: 0; float: right;
+      font-family: var(--font-mono); font-size: 12px; text-transform: uppercase;
+      background: var(--black); color: var(--white); border: none; padding: 8px 20px;
+      border-radius: 2px; cursor: pointer;
+    }
+    .modal__export {
+      font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: .4px;
+      padding: 12px 32px; border-radius: 2px; cursor: pointer; border: 1px solid var(--black);
+      background: var(--black); color: var(--white); margin-top: 24px; display: inline-block;
+      transition: background .2s, color .2s;
+    }
+    .modal__export:hover { background: transparent; color: var(--black); }
+
+    /* === KEYBOARD HINTS === */
+    .keyhints {
+      display: flex; gap: 16px; margin-right: auto;
+      font-family: var(--font-mono); font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: .3px;
+    }
+    .keyhints kbd {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 22px; height: 22px; padding: 0 6px;
+      background: var(--warm); border: 1px solid var(--border); border-radius: 3px;
+      font-family: inherit; font-size: 11px; margin-right: 4px;
+    }
+  </style>
+</head>
+<body>
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <span class="topbar__title">Section Review</span>
+    <span class="topbar__product">Blushing Stick</span>
+    <span class="topbar__progress" id="progress">0 / 100 voted</span>
+    <button class="topbar__summary-btn" id="openSummary">View Results</button>
+  </div>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar__label">Sections (10)</div>
+    </nav>
+
+    <!-- MAIN -->
+    <div class="main">
+      <div class="vartabs" id="vartabs"></div>
+      <div class="preview">
+        <iframe id="previewFrame" src="about:blank"></iframe>
+      </div>
+      <div class="votebar">
+        <div class="keyhints">
+          <span><kbd>Y</kbd> Yes</span>
+          <span><kbd>N</kbd> No</span>
+          <span><kbd>M</kbd> Maybe</span>
+          <span><kbd>&larr;</kbd><kbd>&rarr;</kbd> Navigate</span>
+        </div>
+        <button class="vote-btn vote-yes" data-vote="yes" id="btnYes">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+          Yes
+        </button>
+        <button class="vote-btn vote-maybe" data-vote="maybe" id="btnMaybe">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>
+          Maybe
+        </button>
+        <button class="vote-btn vote-no" data-vote="no" id="btnNo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15V19a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10zM17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"/></svg>
+          No
+        </button>
+        <div class="votebar__nav">
+          <button class="nav-btn" id="btnPrev">&larr; Prev</button>
+          <button class="nav-btn" id="btnNext">Next &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal"></div>
+  </div>
+
+  <script>
+    const PRODUCT = 'bs';
+    const PRODUCT_NAME = 'Blushing Stick';
+    const STORAGE_KEY = `pdp-votes-bs`;
+
+    const SECTIONS = [
+      { slug: 'shade-confidence', name: 'Shade Confidence', variations: [
+        'v01: 3-Column Skin Tone Grid',
+        'v02: Arm Swatch Carousel',
+        'v03: Interactive Shade Picker',
+        'v04: Split Comparison (2 Models)',
+        'v05: Vertical Shade Cards',
+        'v06: Inline Mini-Quiz',
+        'v07: Customer Match Gallery',
+        'v08: Shade Spectrum Strip',
+        'v09: Shade Story Cards',
+        'v10: Send a Selfie CTA'
+      ]},
+      { slug: 'social-proof', name: 'Social Proof', variations: [
+        'v01: Stats Bar + Review Cards',
+        'v02: Pull Quote Hero',
+        'v03: Before/After Review Cards',
+        'v04: Review Filtering UI',
+        'v05: Testimonial Wall',
+        'v06: Stats Dashboard',
+        'v07: Real Women Carousel',
+        'v08: Press + Customer Reviews',
+        'v09: Star Breakdown Chart',
+        'v10: Holy Grail Highlight'
+      ]},
+      { slug: 'how-to', name: 'How To', variations: [
+        'v01: 2x2 Step Grid',
+        'v02: Horizontal Timeline',
+        'v03: Hero Video + Steps',
+        'v04: Accordion Steps',
+        'v05: Before/During/After',
+        'v06: Pro Tip Callout',
+        'v07: Split Image + Steps',
+        'v08: Carousel Steps',
+        'v09: Texture Timeline',
+        'v10: Customer Tips Grid'
+      ]},
+      { slug: 'value', name: 'Value', variations: [
+        'v01: Cost-Per-Use Math',
+        'v02: Replaces Icon Row',
+        'v03: Spec Table',
+        'v04: Longevity Timeline',
+        'v05: Price Comparison Bars',
+        'v06: Customer Quote + Math',
+        'v07: Morning Simplification',
+        'v08: You Save Calculator',
+        'v09: Skincare + Makeup Split',
+        'v10: Per-Use Breakdown'
+      ]},
+      { slug: 'bobbi', name: 'Bobbi', variations: [
+        'v01: Classic 2-Column',
+        'v02: Full-Bleed Portrait',
+        'v03: Bobbi Says Callout',
+        'v04: Credentials Ticker',
+        'v05: Video + Quote',
+        'v06: Career Timeline',
+        'v07: Philosophy Split',
+        'v08: Quote Banner',
+        'v09: Expert + Customer',
+        'v10: Behind the Scenes'
+      ]},
+      { slug: 'before-after', name: 'Before/After', variations: [
+        'v01: 3-Column Cards',
+        'v02: Single Hero Pair',
+        'v03: Video Before/After',
+        'v04: 6-Photo Grid',
+        'v05: Skin Tone Grouped',
+        'v06: Foundation Refugee',
+        'v07: Split Slider',
+        'v08: Time-Lapse Strip',
+        'v09: Age-Grouped',
+        'v10: Macro Zoom'
+      ]},
+      { slug: 'ingredients', name: 'Ingredients', variations: [
+        'v01: What\'s In + What\'s Not',
+        'v02: Ingredient Spotlight Cards',
+        'v03: Clean Formula Badge Bar',
+        'v04: Accordion List',
+        'v05: Comparison Table',
+        'v06: Skincare Meets Makeup',
+        'v07: Hero Ingredient Story',
+        'v08: Clean at a Glance',
+        'v09: Full INCI Transparency',
+        'v10: Efficacy Claims'
+      ]},
+      { slug: 'mini-trial', name: 'Mini / Trial', variations: [
+        'v01: Split Photo + CTA',
+        'v02: Standard vs Mini Card',
+        'v03: Risk Reversal',
+        'v04: Math Card',
+        'v05: Conversion Story',
+        'v06: Discovery Set',
+        'v07: Inline ATC',
+        'v08: Gift Framing',
+        'v09: Purse-Size',
+        'v10: Full-Width Banner'
+      ]},
+      { slug: 'cross-sell', name: 'Cross-Sell', variations: [
+        'v01: Model + Product Cards',
+        'v02: Scrollable Strip',
+        'v03: Routine Builder',
+        'v04: Bundle with Savings',
+        'v05: Annotated Before/After',
+        'v06: Shade-Matched Recs',
+        'v07: Customer Routine',
+        'v08: Accordion Companions',
+        'v09: Editorial Flat-Lay',
+        'v10: Duo Card'
+      ]},
+      { slug: 'buildability', name: 'Buildability', variations: [
+        'v01: 1/2/3-Swipe Strip',
+        'v02: Sheer-to-Bold Gradient',
+        'v03: Video Demo',
+        'v04: Fear Reversal (Cartoony)',
+        'v05: Worst Case Reassurance',
+        'v06: Competitor Comparison',
+        'v07: 10-Second Timer',
+        'v08: Finger-Blend Closeup',
+        'v09: Emily Applying',
+        'v10: The Undo Correction'
+      ]}
+    ];
+
+    // State
+    let currentSection = 0;
+    let currentVariation = 0;
+    let votes = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+    function getVoteKey(sIdx, vIdx) {
+      return `${SECTIONS[sIdx].slug}-v${String(vIdx + 1).padStart(2, '0')}`;
+    }
+
+    function getFilename(sIdx, vIdx) {
+      return `${PRODUCT}-${SECTIONS[sIdx].slug}-v${String(vIdx + 1).padStart(2, '0')}.html`;
+    }
+
+    function saveVotes() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(votes));
+    }
+
+    function countVotes() {
+      return Object.keys(votes).length;
+    }
+
+    function countSectionVotes(sIdx) {
+      let c = 0;
+      for (let i = 0; i < 10; i++) {
+        if (votes[getVoteKey(sIdx, i)]) c++;
+      }
+      return c;
+    }
+
+    // Render sidebar
+    function renderSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.innerHTML = '<div class="sidebar__label">Sections (10)</div>';
+      SECTIONS.forEach((s, i) => {
+        const vc = countSectionVotes(i);
+        const item = document.createElement('div');
+        item.className = `sidebar__item${i === currentSection ? ' is-active' : ''}`;
+        item.innerHTML = `
+          <span class="sidebar__item-name">${s.name}</span>
+          <span class="sidebar__item-count${vc > 0 ? ' has-votes' : ''}">${vc}/10</span>
+        `;
+        item.addEventListener('click', () => { currentSection = i; currentVariation = 0; render(); });
+        sidebar.appendChild(item);
+      });
+    }
+
+    // Render variation tabs
+    function renderTabs() {
+      const tabs = document.getElementById('vartabs');
+      const section = SECTIONS[currentSection];
+      let html = '';
+      for (let i = 0; i < 10; i++) {
+        const key = getVoteKey(currentSection, i);
+        const vote = votes[key];
+        const dotClass = vote ? `vote-dot ${vote}` : '';
+        html += `<button class="vartab${i === currentVariation ? ' is-active' : ''}" data-idx="${i}">
+          V${String(i + 1).padStart(2, '0')}
+          ${vote ? `<span class="${dotClass}"></span>` : ''}
+        </button>`;
+      }
+      html += `<span class="vartabs__desc">${section.variations[currentVariation]}</span>`;
+      tabs.innerHTML = html;
+      tabs.querySelectorAll('.vartab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentVariation = parseInt(btn.dataset.idx);
+          render();
+        });
+      });
+    }
+
+    // Render iframe
+    function renderPreview() {
+      const frame = document.getElementById('previewFrame');
+      frame.src = getFilename(currentSection, currentVariation);
+    }
+
+    // Render vote buttons
+    function renderVoteButtons() {
+      const key = getVoteKey(currentSection, currentVariation);
+      const vote = votes[key];
+      document.querySelectorAll('.vote-btn').forEach(btn => {
+        btn.classList.toggle('is-selected', btn.dataset.vote === vote);
+      });
+    }
+
+    // Update progress
+    function renderProgress() {
+      document.getElementById('progress').textContent = `${countVotes()} / 100 voted`;
+    }
+
+    function render() {
+      renderSidebar();
+      renderTabs();
+      renderPreview();
+      renderVoteButtons();
+      renderProgress();
+    }
+
+    // Vote
+    function castVote(value) {
+      const key = getVoteKey(currentSection, currentVariation);
+      if (votes[key] === value) {
+        delete votes[key]; // toggle off
+      } else {
+        votes[key] = value;
+      }
+      saveVotes();
+      render();
+    }
+
+    // Navigation
+    function goNext() {
+      if (currentVariation < 9) {
+        currentVariation++;
+      } else if (currentSection < SECTIONS.length - 1) {
+        currentSection++;
+        currentVariation = 0;
+      }
+      render();
+    }
+
+    function goPrev() {
+      if (currentVariation > 0) {
+        currentVariation--;
+      } else if (currentSection > 0) {
+        currentSection--;
+        currentVariation = 9;
+      }
+      render();
+    }
+
+    // Summary modal
+    function openSummary() {
+      const modal = document.getElementById('modal');
+      const yesCount = Object.values(votes).filter(v => v === 'yes').length;
+      const noCount = Object.values(votes).filter(v => v === 'no').length;
+      const maybeCount = Object.values(votes).filter(v => v === 'maybe').length;
+      const unvoted = 100 - countVotes();
+
+      let html = `
+        <button class="modal__close" id="closeModal">Close</button>
+        <h2 class="modal__title">${PRODUCT_NAME} — Vote Summary</h2>
+        <p class="modal__subtitle">${countVotes()} of 100 variations reviewed</p>
+        <div class="modal__stats">
+          <div class="modal__stat"><div class="modal__stat-num" style="color:var(--green)">${yesCount}</div><div class="modal__stat-label">Yes</div></div>
+          <div class="modal__stat"><div class="modal__stat-num" style="color:var(--amber)">${maybeCount}</div><div class="modal__stat-label">Maybe</div></div>
+          <div class="modal__stat"><div class="modal__stat-num" style="color:var(--red)">${noCount}</div><div class="modal__stat-label">No</div></div>
+          <div class="modal__stat"><div class="modal__stat-num">${unvoted}</div><div class="modal__stat-label">Unvoted</div></div>
+        </div>
+      `;
+
+      SECTIONS.forEach((s, sIdx) => {
+        html += `<h3 class="modal__section-title">${s.name}</h3>`;
+        for (let i = 0; i < 10; i++) {
+          const key = getVoteKey(sIdx, i);
+          const vote = votes[key] || 'none';
+          const label = vote === 'none' ? '—' : vote.charAt(0).toUpperCase() + vote.slice(1);
+          html += `<div class="modal__row">
+            <span class="modal__var">V${String(i + 1).padStart(2, '0')}</span>
+            <span class="modal__desc">${s.variations[i].split(': ')[1] || s.variations[i]}</span>
+            <span class="modal__vote-badge ${vote}">${label}</span>
+          </div>`;
+        }
+      });
+
+      html += `<button class="modal__export" id="exportBtn">Copy Winners to Clipboard</button>`;
+      modal.innerHTML = html;
+      document.getElementById('modalOverlay').classList.add('is-open');
+      document.getElementById('closeModal').addEventListener('click', closeSummary);
+      document.getElementById('exportBtn').addEventListener('click', exportWinners);
+    }
+
+    function closeSummary() {
+      document.getElementById('modalOverlay').classList.remove('is-open');
+    }
+
+    function exportWinners() {
+      let text = `${PRODUCT_NAME} — Section Winners\n${'='.repeat(40)}\n\n`;
+      SECTIONS.forEach((s, sIdx) => {
+        const winners = [];
+        const maybes = [];
+        for (let i = 0; i < 10; i++) {
+          const key = getVoteKey(sIdx, i);
+          if (votes[key] === 'yes') winners.push(`  YES: ${s.variations[i]}`);
+          if (votes[key] === 'maybe') maybes.push(`  MAYBE: ${s.variations[i]}`);
+        }
+        if (winners.length || maybes.length) {
+          text += `${s.name}\n`;
+          winners.forEach(w => text += w + '\n');
+          maybes.forEach(m => text += m + '\n');
+          text += '\n';
+        }
+      });
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('exportBtn');
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy Winners to Clipboard', 2000);
+      });
+    }
+
+    // Event listeners
+    document.getElementById('btnYes').addEventListener('click', () => castVote('yes'));
+    document.getElementById('btnNo').addEventListener('click', () => castVote('no'));
+    document.getElementById('btnMaybe').addEventListener('click', () => castVote('maybe'));
+    document.getElementById('btnNext').addEventListener('click', goNext);
+    document.getElementById('btnPrev').addEventListener('click', goPrev);
+    document.getElementById('openSummary').addEventListener('click', openSummary);
+    document.getElementById('modalOverlay').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeSummary();
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (document.getElementById('modalOverlay').classList.contains('is-open')) {
+        if (e.key === 'Escape') closeSummary();
+        return;
+      }
+      if (e.key === 'y' || e.key === 'Y') { castVote('yes'); }
+      else if (e.key === 'n' || e.key === 'N') { castVote('no'); }
+      else if (e.key === 'm' || e.key === 'M') { castVote('maybe'); }
+      else if (e.key === 'ArrowRight') { goNext(); }
+      else if (e.key === 'ArrowLeft') { goPrev(); }
+    });
+
+    // Init
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jones Road Beauty — Homepage V2</title>
+  <style>
+    /* =============================================================================
+       Font Face Declarations
+       ============================================================================= */
+    @font-face { font-family: 'Canela'; src: url('fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('fonts/Canela-LightItalic.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+
+    /* =============================================================================
+       Reset & Base
+       ============================================================================= */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+    body {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 100%;
+      color: #000;
+      background: #fff;
+      letter-spacing: .025em;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* =============================================================================
+       Test Label
+       ============================================================================= */
+    .test-label {
+      background: #000;
+      color: #fff;
+      text-align: center;
+      padding: 6px 16px;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 10px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    /* =============================================================================
+       Announcement Bar
+       ============================================================================= */
+    .announcement-bar {
+      background: #f6f2eb;
+      text-align: center;
+      padding: 10px 16px;
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #000;
+      letter-spacing: .025em;
+      line-height: 1.4;
+    }
+    .announcement-bar a {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* =============================================================================
+       Nav Bar
+       ============================================================================= */
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid #ededed;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+    }
+    .nav-bar__hamburger {
+      width: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .nav-bar__hamburger span {
+      display: block;
+      width: 100%;
+      height: 1.5px;
+      background: #000;
+    }
+    .nav-bar__logo {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #000;
+    }
+    .nav-bar__cart {
+      width: 24px;
+      height: 24px;
+      position: relative;
+      cursor: pointer;
+    }
+    .nav-bar__cart svg { width: 100%; height: 100%; }
+    .nav-bar__links {
+      display: none;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-bar__links li a {
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 11px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+    }
+    @media (min-width: 769px) {
+      .nav-bar { padding: 16px 40px; }
+      .nav-bar__hamburger { display: none; }
+      .nav-bar__links { display: flex; }
+      .nav-bar__logo { font-size: 22px; }
+    }
+
+    /* =============================================================================
+       Buttons
+       ============================================================================= */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 13px;
+      font-weight: 550;
+      height: 40px;
+      line-height: 40px;
+      padding: 0 36px;
+      border-radius: 2px;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+      border: 1px solid #000;
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+      transition: background .4s cubic-bezier(.39,.575,.565,1), color .4s cubic-bezier(.39,.575,.565,1), border-color .4s cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .button:not(:disabled):hover { background: #fff; border-color: #d0d0d0; color: #000; }
+    .button--outline { background: transparent; color: #000; }
+    .has-mouse .button--outline:not(:disabled):hover { background: #000; border-color: #000; color: #fff; }
+    .button--white { background: #fff; color: #000; border-color: #fff; }
+    .has-mouse .button--white:not(:disabled):hover { background: #000; border-color: #000; color: #fff; }
+    .button--white-outline { background: transparent; color: #fff; border-color: #fff; }
+    .has-mouse .button--white-outline:not(:disabled):hover { background: #fff; color: #000; }
+    @media (min-width: 769px) { .button { font-size: 14px; height: 44px; line-height: 44px; } }
+
+    /* =============================================================================
+       Typography Utilities
+       ============================================================================= */
+    .eyebrow {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 22px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+    }
+    .eyebrow--white { color: #fff; }
+    .headline {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 26px;
+      line-height: 37px;
+      letter-spacing: 0.5px;
+      color: #000;
+      text-transform: none;
+    }
+    .headline--white { color: #fff; }
+    @media (min-width: 769px) { .headline { font-size: 38px; line-height: 54px; } }
+    .stars { color: #121212; font-size: 14px; letter-spacing: 2px; }
+    .stars--small { font-size: 12px; letter-spacing: 1px; }
+
+    /* =============================================================================
+       Hero
+       ============================================================================= */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: #f6f2eb;
+    }
+    .hero__image {
+      width: 100%;
+      min-height: 520px;
+      object-fit: cover;
+      display: block;
+    }
+    .hero__overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 40px 24px 48px;
+      background: linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.2) 60%, transparent 100%);
+      color: #fff;
+      text-align: center;
+    }
+    .hero__headline {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 26px;
+      line-height: 37px;
+      letter-spacing: .5px;
+      color: #fff;
+      margin-bottom: 20px;
+      text-wrap: balance;
+    }
+    @media (min-width: 769px) {
+      .hero__image { min-height: 640px; }
+      .hero__headline { font-size: 38px; line-height: 54px; }
+      .hero__overlay { padding: 60px 40px 72px; }
+    }
+
+    /* =============================================================================
+       Trust Bar (NEW in V2)
+       ============================================================================= */
+    .trust-bar {
+      background: #f6f2eb;
+      padding: 14px 20px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .trust-bar__inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 10px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #000;
+      line-height: 1.6;
+    }
+    .trust-bar__sep {
+      color: #999;
+      font-size: 10px;
+    }
+    @media (min-width: 769px) {
+      .trust-bar { padding: 16px 40px; }
+      .trust-bar__inner { font-size: 11px; gap: 12px; flex-wrap: nowrap; }
+    }
+
+    /* =============================================================================
+       Featured Products
+       ============================================================================= */
+    .featured-products {
+      padding: 48px 20px;
+    }
+    .featured-products__header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .featured-products__eyebrow {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      margin-bottom: 8px;
+    }
+    .featured-products__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    @media (min-width: 769px) {
+      .featured-products { padding: 72px 40px; }
+      .featured-products__grid { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    }
+
+    /* Product Card */
+    .product-card {
+      display: block;
+      text-decoration: none;
+      color: #000;
+      border: none;
+      border-radius: 3px;
+      padding: 0 0 16px;
+      transition: box-shadow .4s cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .product-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+    .product-card__media {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 3px;
+      background: #f6f2eb;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .product-card__media img { width: 100%; height: 100%; object-fit: cover; }
+    .product-card__flag {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-weight: 550;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #000;
+      letter-spacing: .4px;
+    }
+    .product-card__name {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 22px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 6px;
+    }
+    .product-card__price {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      color: #000;
+      margin-bottom: 6px;
+    }
+    .product-card__cta {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .product-card__rating {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #000;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .product-card__rating-stars {
+      display: inline-flex;
+      gap: 2px;
+      align-items: center;
+    }
+    .product-card__review {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 14px;
+      color: #000;
+      line-height: 1.5;
+      padding-top: 8px;
+      border-top: 1px solid #ededed;
+    }
+
+    /* Product cards on warm backgrounds get white image containers */
+    .warm-bg .product-card__media { background: #fff; }
+
+    /* =============================================================================
+       Press Bar
+       ============================================================================= */
+    .press-bar {
+      background: #000;
+      padding: 28px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .press-bar__logo {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255,255,255,.6);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    @media (min-width: 769px) {
+      .press-bar { padding: 32px 40px; gap: 56px; }
+      .press-bar__logo { font-size: 16px; }
+    }
+
+    /* =============================================================================
+       Shop by Collection
+       ============================================================================= */
+    .collection-section {
+      padding: 48px 20px;
+    }
+    .collection-section__header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .collection-section__eyebrow {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      margin-bottom: 8px;
+    }
+    .collection-section__headline {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 26px;
+      line-height: 37px;
+      letter-spacing: .5px;
+    }
+    .collection-tabs {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .collection-tab {
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 12px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      padding: 0 20px;
+      height: 36px;
+      border-radius: 2px;
+      border: 1px solid #000;
+      background: transparent;
+      color: #000;
+      cursor: pointer;
+      transition: background .4s cubic-bezier(.39,.575,.565,1), color .4s cubic-bezier(.39,.575,.565,1), border-color .4s cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .collection-tab:hover, .collection-tab.active { background: #000; color: #fff; }
+    .collection-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .collection-card {
+      position: relative;
+      border-radius: 3px;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      display: block;
+    }
+    .collection-card img { width: 100%; height: 100%; object-fit: cover; }
+    .collection-card__label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(0,0,0,.5), transparent);
+      text-align: center;
+    }
+    .collection-card__label span {
+      font-family: 'BaseMonoWideWeb', Courier, 'Courier New', sans-serif;
+      font-size: 12px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: #fff;
+    }
+    @media (min-width: 769px) {
+      .collection-section { padding: 72px 40px; }
+      .collection-section__headline { font-size: 38px; line-height: 54px; }
+      .collection-cards { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+      .collection-tab { font-size: 13px; height: 40px; padding: 0 24px; }
+    }
+
+    /* =============================================================================
+       Bobbi Brown Section
+       ============================================================================= */
+    .bobbi-section {
+      display: grid;
+      grid-template-columns: 1fr;
+      overflow: hidden;
+    }
+    .bobbi-section__media {
+      aspect-ratio: 1;
+      overflow: hidden;
+    }
+    .bobbi-section__media img { width: 100%; height: 100%; object-fit: cover; }
+    .bobbi-section__text {
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .bobbi-section__eyebrow {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      margin-bottom: 16px;
+    }
+    .bobbi-section__headline {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 26px;
+      line-height: 37px;
+      letter-spacing: .5px;
+      color: #000;
+      margin-bottom: 20px;
+    }
+    .bobbi-section__body {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #000;
+      margin-bottom: 28px;
+    }
+    @media (min-width: 769px) {
+      .bobbi-section { grid-template-columns: 1fr 1fr; min-height: 560px; }
+      .bobbi-section__text { padding: 72px 56px; }
+      .bobbi-section__headline { font-size: 38px; line-height: 54px; }
+      .bobbi-section__media { aspect-ratio: auto; }
+    }
+
+    /* =============================================================================
+       Hype Section (Promotional)
+       ============================================================================= */
+    .hype-section {
+      background: #f6f2eb;
+      padding: 48px 20px;
+      text-align: center;
+    }
+    .hype-section__eyebrow {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      margin-bottom: 12px;
+    }
+    .hype-section__headline {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 26px;
+      line-height: 37px;
+      letter-spacing: .5px;
+      color: #000;
+      margin-bottom: 16px;
+    }
+    .hype-section__body {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #000;
+      max-width: 560px;
+      margin: 0 auto 28px;
+    }
+    .hype-section__image {
+      max-width: 320px;
+      margin: 0 auto 28px;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .hype-section__image img { width: 100%; display: block; }
+    @media (min-width: 769px) {
+      .hype-section { padding: 80px 40px; }
+      .hype-section__headline { font-size: 38px; line-height: 54px; }
+      .hype-section__image { max-width: 400px; }
+    }
+
+    /* =============================================================================
+       Social Proof Section (NEW in V2 — replaces editorial blocks)
+       ============================================================================= */
+    .social-proof {
+      background: #f6f2eb;
+      padding: 48px 20px;
+    }
+    .social-proof__header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .social-proof__eyebrow {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      margin-bottom: 12px;
+    }
+    .social-proof__headline {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 26px;
+      line-height: 37px;
+      letter-spacing: .5px;
+      color: #000;
+    }
+    .social-proof__stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 800px;
+      margin: 0 auto 48px;
+      text-align: center;
+    }
+    .social-proof__stat-number {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 36px;
+      line-height: 1.1;
+      letter-spacing: .5px;
+      color: #000;
+      margin-bottom: 8px;
+    }
+    .social-proof__stat-label {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: #000;
+      line-height: 1.4;
+    }
+    .social-proof__reviews {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .social-proof__review-card {
+      background: #fff;
+      border: 1px solid #ededed;
+      border-radius: 3px;
+      padding: 28px;
+    }
+    .social-proof__review-stars {
+      display: flex;
+      gap: 2px;
+      margin-bottom: 12px;
+    }
+    .social-proof__review-quote {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #000;
+      margin-bottom: 16px;
+    }
+    .social-proof__review-author {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #000;
+      margin-bottom: 4px;
+    }
+    .social-proof__review-product {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: #000;
+    }
+    @media (min-width: 769px) {
+      .social-proof { padding: 80px 40px; }
+      .social-proof__headline { font-size: 38px; line-height: 54px; }
+      .social-proof__stat-number { font-size: 42px; }
+      .social-proof__reviews { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+      .social-proof__review-card { padding: 32px; }
+    }
+    @media (max-width: 768px) {
+      .social-proof__stats { gap: 16px; }
+      .social-proof__stat-number { font-size: 28px; }
+    }
+
+    /* =============================================================================
+       New Arrivals Section
+       ============================================================================= */
+    .new-arrivals {
+      padding: 48px 20px;
+    }
+    .new-arrivals__header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .new-arrivals__eyebrow {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #000;
+      margin-bottom: 12px;
+    }
+    .new-arrivals__headline {
+      font-family: 'Canela', serif;
+      font-weight: 300;
+      font-size: 26px;
+      line-height: 37px;
+      letter-spacing: .5px;
+    }
+    .new-arrivals__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .new-arrivals__footer {
+      text-align: center;
+      margin-top: 40px;
+    }
+    @media (min-width: 769px) {
+      .new-arrivals { padding: 72px 40px; }
+      .new-arrivals__headline { font-size: 38px; line-height: 54px; }
+      .new-arrivals__grid { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+      .product-card__flag { top: 15px; right: 15px; font-size: 12px; }
+    }
+
+    /* =============================================================================
+       Footer
+       ============================================================================= */
+    .footer {
+      background: #000;
+      color: #fff;
+      padding: 48px 20px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .footer__heading {
+      font-family: 'GeogrotesqueCondBoldWeb', 'Arial Black', Impact, sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .footer__links {
+      list-style: none;
+    }
+    .footer__links li {
+      margin-bottom: 10px;
+    }
+    .footer__links li a {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: rgba(255,255,255,.7);
+      transition: color .4s cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .footer__links li a:hover { color: #fff; }
+    .footer__bottom {
+      max-width: 1100px;
+      margin: 40px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer__copyright {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+    .footer__social {
+      display: flex;
+      gap: 16px;
+    }
+    .footer__social a {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+      transition: color .4s cubic-bezier(.39,.575,.565,1);
+    }
+    .has-mouse .footer__social a:hover { color: #fff; }
+    @media (min-width: 769px) {
+      .footer { padding: 64px 40px; }
+      .footer__grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* =============================================================================
+       Reduced Motion
+       ============================================================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body class="has-mouse">
+
+  <!-- Test Label -->
+  <div class="test-label">Homepage Test — V2</div>
+
+  <!-- ===== 1. Announcement Bar ===== -->
+  <div class="announcement-bar">
+    Introducing Your Next Holy Grail: <a href="#">Lip Recharge Is Here</a>
+  </div>
+
+  <!-- ===== 2. Nav Bar ===== -->
+  <nav class="nav-bar">
+    <div class="nav-bar__hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul class="nav-bar__links">
+      <li><a href="#">Shop</a></li>
+      <li><a href="#">Bestsellers</a></li>
+      <li><a href="#">New</a></li>
+      <li><a href="#">Skincare</a></li>
+    </ul>
+    <a href="#" class="nav-bar__logo">Jones Road</a>
+    <div class="nav-bar__cart">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    </div>
+  </nav>
+
+  <!-- ===== 3. Hero ===== -->
+  <section class="hero">
+    <img class="hero__image" src="https://air-prod.imgix.net/d6c10c14-a49b-4ba0-a0ae-8a7108da18e9.jpg?w=1200&h=700&fit=crop&auto=format" alt="Model with natural radiant skin wearing Jones Road Beauty" loading="eager">
+    <div class="hero__overlay">
+      <h1 class="hero__headline">Say Hello To The New<br>Lip Recharge</h1>
+      <a href="#" class="button button--white">Shop Now</a>
+    </div>
+  </section>
+
+  <!-- ===== 4. NEW: Trust Bar (V2 addition) ===== -->
+  <div class="trust-bar">
+    <div class="trust-bar__inner">
+      <span>76,000+ Reviews</span>
+      <span class="trust-bar__sep">&middot;</span>
+      <span>Free Shipping $55+</span>
+      <span class="trust-bar__sep">&middot;</span>
+      <span>Free Returns</span>
+      <span class="trust-bar__sep">&middot;</span>
+      <span>Clean Formula</span>
+      <span class="trust-bar__sep">&middot;</span>
+      <span>Founded by Bobbi Brown</span>
+    </div>
+  </div>
+
+  <!-- ===== 5. Featured Products ===== -->
+  <section class="featured-products">
+    <div class="featured-products__header">
+      <p class="featured-products__eyebrow">Featured Products</p>
+    </div>
+    <div class="featured-products__grid">
+      <!-- Lip Recharge -->
+      <a href="#" class="product-card">
+        <div class="product-card__media">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/OTR_Lip_Recharge_PDP_-_1.png?v=1773763814&width=400" alt="Lip Recharge" loading="lazy">
+        </div>
+        <p class="product-card__name">Lip Recharge</p>
+        <p class="product-card__price">$24</p>
+        <span class="product-card__cta button" style="margin:0 4px;">Shop Now</span>
+      </a>
+      <!-- Miracle Balm -->
+      <a href="#" class="product-card">
+        <div class="product-card__media">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718&width=400" alt="Miracle Balm" loading="lazy">
+        </div>
+        <p class="product-card__name">Miracle Balm</p>
+        <p class="product-card__price">$38</p>
+        <span class="product-card__cta button" style="margin:0 4px;">Shop Now</span>
+      </a>
+      <!-- What The Foundation -->
+      <a href="#" class="product-card">
+        <div class="product-card__media">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504&width=400" alt="What The Foundation" loading="lazy">
+        </div>
+        <p class="product-card__name">What The Foundation</p>
+        <p class="product-card__price">$49</p>
+        <span class="product-card__cta button" style="margin:0 4px;">Shop Now</span>
+      </a>
+      <!-- The Best Pencil -->
+      <a href="#" class="product-card">
+        <div class="product-card__media">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/bestpencil_black_1.jpg?v=1739188771&width=400" alt="The Best Pencil" loading="lazy">
+        </div>
+        <p class="product-card__name">The Best Pencil</p>
+        <p class="product-card__price">$19</p>
+        <span class="product-card__cta button" style="margin:0 4px;">Shop Now</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== 6. Press Bar ===== -->
+  <div class="press-bar">
+    <span class="press-bar__logo">Vogue</span>
+    <span class="press-bar__logo">WSJ</span>
+    <span class="press-bar__logo">Fast Company</span>
+    <span class="press-bar__logo">Allure</span>
+    <span class="press-bar__logo">InStyle</span>
+    <span class="press-bar__logo">Forbes</span>
+  </div>
+
+  <!-- ===== 7. Shop by Collection ===== -->
+  <section class="collection-section">
+    <div class="collection-section__header">
+      <p class="collection-section__eyebrow">Explore</p>
+      <h2 class="collection-section__headline">Shop by collection</h2>
+    </div>
+    <div class="collection-tabs">
+      <button class="collection-tab active">Face</button>
+      <button class="collection-tab">Eyes</button>
+      <button class="collection-tab">Lips</button>
+      <button class="collection-tab">Skincare</button>
+      <button class="collection-tab">Body</button>
+    </div>
+    <div class="collection-cards">
+      <a href="#" class="collection-card">
+        <img src="https://air-prod.imgix.net/d6c10c14-a49b-4ba0-a0ae-8a7108da18e9.jpg?w=400&h=540&fit=crop&auto=format" alt="Shop Face" loading="lazy">
+        <div class="collection-card__label"><span>Shop Face</span></div>
+      </a>
+      <a href="#" class="collection-card">
+        <img src="https://air-prod.imgix.net/d6c10c14-a49b-4ba0-a0ae-8a7108da18e9.jpg?w=400&h=540&fit=crop&crop=left&auto=format" alt="Shop Eyes" loading="lazy">
+        <div class="collection-card__label"><span>Shop Eyes</span></div>
+      </a>
+      <a href="#" class="collection-card">
+        <img src="https://air-prod.imgix.net/d6c10c14-a49b-4ba0-a0ae-8a7108da18e9.jpg?w=400&h=540&fit=crop&crop=right&auto=format" alt="Shop Lips" loading="lazy">
+        <div class="collection-card__label"><span>Shop Lips</span></div>
+      </a>
+      <a href="#" class="collection-card">
+        <img src="https://air-prod.imgix.net/d6c10c14-a49b-4ba0-a0ae-8a7108da18e9.jpg?w=400&h=540&fit=crop&crop=top&auto=format" alt="Shop Skincare" loading="lazy">
+        <div class="collection-card__label"><span>Shop Skincare</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== 8. Bobbi Brown Section ===== -->
+  <section class="bobbi-section">
+    <div class="bobbi-section__media">
+      <img src="https://air-prod.imgix.net/8295afcb-2098-4243-8e1d-682c7cdcbc85.jpg?w=600&h=600&fit=crop&auto=format" alt="Bobbi Brown" loading="lazy">
+    </div>
+    <div class="bobbi-section__text">
+      <p class="bobbi-section__eyebrow">Meet the Maker</p>
+      <h2 class="bobbi-section__headline">She doesn't just wear the makeup. She makes it.</h2>
+      <p class="bobbi-section__body">Bobbi Brown spent 30 years redefining beauty. With Jones Road, she went back to the lab to create something new: clean, high-performance formulas that work on every skin type. No gimmicks. No 12-step routines.</p>
+      <a href="#" class="button">Her Story</a>
+    </div>
+  </section>
+
+  <!-- ===== 9. "The Hype Is Real" Promo ===== -->
+  <section class="hype-section">
+    <p class="hype-section__eyebrow">The Hype Is Real</p>
+    <h2 class="hype-section__headline">Lip Recharge</h2>
+    <div class="hype-section__image">
+      <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/OTR_Lip_Recharge_PDP_-_1.png?v=1773763814&width=400" alt="Lip Recharge" loading="lazy">
+    </div>
+    <p class="hype-section__body">The treatment-first lip balm that hydrates, plumps, and gives the perfect wash of color. Clean, nourishing, and addictively smooth.</p>
+    <a href="#" class="button">Shop Now</a>
+  </section>
+
+  <!-- ===== 10. NEW: Social Proof Section (replaces editorial blocks) ===== -->
+  <section class="social-proof">
+    <div class="social-proof__header">
+      <p class="social-proof__eyebrow">Why Jones Road</p>
+      <h2 class="social-proof__headline">Real results, real people</h2>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="social-proof__stats">
+      <div>
+        <p class="social-proof__stat-number">76K+</p>
+        <p class="social-proof__stat-label">Verified Reviews</p>
+      </div>
+      <div>
+        <p class="social-proof__stat-number">4.3</p>
+        <p class="social-proof__stat-label">Average Rating</p>
+      </div>
+      <div>
+        <p class="social-proof__stat-number">80%</p>
+        <p class="social-proof__stat-label">Would Recommend</p>
+      </div>
+    </div>
+
+    <!-- Review Quote Cards -->
+    <div class="social-proof__reviews">
+      <div class="social-proof__review-card">
+        <div class="social-proof__review-stars">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+        </div>
+        <p class="social-proof__review-quote">"I'm 52 and this is the first foundation that doesn't settle into my fine lines. My skin looks like my skin, just better."</p>
+        <p class="social-proof__review-author">Susan K.</p>
+        <p class="social-proof__review-product">Verified Buyer — What The Foundation</p>
+      </div>
+
+      <div class="social-proof__review-card">
+        <div class="social-proof__review-stars">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+        </div>
+        <p class="social-proof__review-quote">"Miracle Balm is magic. I use it on my cheeks, lips, and eyelids. One product, done in 30 seconds, out the door."</p>
+        <p class="social-proof__review-author">Priya K.</p>
+        <p class="social-proof__review-product">Verified Buyer — Miracle Balm</p>
+      </div>
+
+      <div class="social-proof__review-card">
+        <div class="social-proof__review-stars">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+        </div>
+        <p class="social-proof__review-quote">"As a nurse, I need makeup that survives a 12-hour shift. This stuff does not budge. And it's clean ingredients."</p>
+        <p class="social-proof__review-author">Amanda R.</p>
+        <p class="social-proof__review-product">Verified Buyer — The Best Pencil</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 11. New Arrivals (same as V1, replaces "Get the Look") ===== -->
+  <section class="new-arrivals">
+    <div class="new-arrivals__header">
+      <p class="new-arrivals__eyebrow">Just Dropped</p>
+      <h2 class="new-arrivals__headline">New at Jones Road</h2>
+    </div>
+    <div class="new-arrivals__grid">
+      <!-- Eyeshadow Stick -->
+      <a href="#" class="product-card">
+        <div class="product-card__media">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/Eyeshadow_Stick_Sand_PDP_Launch_1_36afcc84-a7a0-4b1b-b86d-ebd49044a970.jpg?v=1770129741&width=400" alt="The Eyeshadow Stick" loading="lazy">
+        </div>
+        <p class="product-card__name">The Eyeshadow Stick</p>
+        <p class="product-card__price">$24</p>
+        <div class="product-card__rating">
+          <span class="product-card__rating-stars">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+          <span>4.8 (342)</span>
+        </div>
+        <p class="product-card__review">"Swipe and go. Blends itself. I use Champagne Toast every single day."</p>
+      </a>
+      <!-- Lip Recharge -->
+      <a href="#" class="product-card">
+        <div class="product-card__media">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/OTR_Lip_Recharge_PDP_-_1.png?v=1773763814&width=400" alt="Lip Recharge" loading="lazy">
+        </div>
+        <p class="product-card__name">Lip Recharge</p>
+        <p class="product-card__price">$24</p>
+        <div class="product-card__rating">
+          <span class="product-card__rating-stars">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+          <span>4.7 (89)</span>
+        </div>
+        <p class="product-card__review">"My lips have never felt this hydrated. I keep one in every bag."</p>
+      </a>
+      <!-- Mini Miracle Balms -->
+      <a href="#" class="product-card">
+        <div class="product-card__media">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718&width=400" alt="Mini Miracle Balms" loading="lazy">
+        </div>
+        <p class="product-card__name">Mini Miracle Balms</p>
+        <p class="product-card__price">$22</p>
+        <div class="product-card__rating">
+          <span class="product-card__rating-stars">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+          <span>4.3 (1,204)</span>
+        </div>
+        <p class="product-card__review">"The perfect way to try before committing. Now I own every shade."</p>
+      </a>
+      <!-- The Blushing Stick -->
+      <a href="#" class="product-card">
+        <div class="product-card__media">
+          <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/products/JonesRoad_Mascara_main.jpg?v=1739188781&width=400" alt="The Blushing Stick" loading="lazy">
+        </div>
+        <p class="product-card__name">The Blushing Stick</p>
+        <p class="product-card__price">$30</p>
+        <div class="product-card__rating">
+          <span class="product-card__rating-stars">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14"><path d="M8 1L10.0636 5.75252L15 6.34753L11.339 9.87976L12.3263 15L8 12.4305L3.67376 15L4.661 9.87976L1 6.34753L5.93638 5.75252L8 1Z" fill="#121212"/></svg>
+          </span>
+          <span>4.7 (567)</span>
+        </div>
+        <p class="product-card__review">"The most natural-looking flush. I tap it on cheeks and lips for a monochrome look."</p>
+      </a>
+    </div>
+    <div class="new-arrivals__footer">
+      <a href="#" class="button button--outline">View All New</a>
+    </div>
+  </section>
+
+  <!-- ===== 12. Footer ===== -->
+  <footer class="footer">
+    <div class="footer__grid">
+      <div>
+        <p class="footer__heading">Shop</p>
+        <ul class="footer__links">
+          <li><a href="#">Face</a></li>
+          <li><a href="#">Eyes</a></li>
+          <li><a href="#">Lips</a></li>
+          <li><a href="#">Skincare</a></li>
+          <li><a href="#">Body</a></li>
+          <li><a href="#">Bestsellers</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer__heading">Help</p>
+        <ul class="footer__links">
+          <li><a href="#">Shipping &amp; Returns</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Shade Finder Quiz</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer__heading">About</p>
+        <ul class="footer__links">
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Clean Ingredients</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer__heading">Follow Us</p>
+        <ul class="footer__links">
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="footer__copyright">&copy; 2026 Jones Road Beauty. All rights reserved.</p>
+      <div class="footer__social">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Section Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #111111;
+    --surface: #1a1a1a;
+    --surface-2: #222222;
+    --border: #2a2a2a;
+    --text: #f0f0f0;
+    --text-muted: #888;
+    --text-dim: #555;
+    --accent: #6366f1;
+    --accent-glow: rgba(99, 102, 241, 0.3);
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --radius: 14px;
+    --radius-sm: 10px;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* -- Screens -- */
+  .screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100dvh;
+    padding: 24px 16px;
+  }
+  .screen.active { display: flex; }
+
+  /* -- Welcome Screen -- */
+  #welcome {
+    justify-content: center;
+    gap: 32px;
+    text-align: center;
+  }
+  .welcome-title {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+  .welcome-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+  .input-group {
+    width: 100%;
+    max-width: 360px;
+  }
+  .input-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-align: left;
+  }
+  .input-group input {
+    width: 100%;
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 17px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input-group input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+  .input-group input::placeholder { color: var(--text-dim); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #fff;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: var(--accent);
+    box-shadow: 0 4px 20px var(--accent-glow);
+  }
+  .btn-primary:hover { background: #818cf8; }
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  .btn-primary:disabled:active { transform: none; }
+  .btn-ghost {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .btn-ghost:hover { background: var(--surface-2); }
+  .btn-sm { padding: 10px 18px; font-size: 14px; }
+
+  /* -- Choose Screen -- */
+  #choose {
+    justify-content: center;
+    gap: 32px;
+    text-align: center;
+  }
+  .choose-title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .choose-options {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    max-width: 420px;
+  }
+  .choose-card {
+    flex: 1;
+    padding: 28px 16px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .choose-card:hover {
+    border-color: var(--accent);
+    background: var(--surface-2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .choose-card .icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+    color: var(--text-muted);
+  }
+  .choose-card .label {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .choose-card .count {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .choose-card .done-badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--green);
+  }
+
+  /* -- Voting Screen -- */
+  #voting {
+    padding-top: 16px;
+    gap: 16px;
+    min-height: 100dvh;
+  }
+
+  .vote-header {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .vote-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .vote-header-top .back-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 500;
+    padding: 4px 0;
+    transition: color 0.15s;
+  }
+  .vote-header-top .back-btn:hover { color: var(--text); }
+  .vote-counter {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .vote-counter span { color: var(--text); }
+  .progress-track {
+    width: 100%;
+    height: 3px;
+    background: var(--surface-2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* -- Card -- */
+  .card-container {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+  }
+
+  .vote-card {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    user-select: none;
+    position: relative;
+  }
+
+  .card-image-wrap {
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #fff;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+  }
+  .card-image-wrap::-webkit-scrollbar { width: 4px; }
+  .card-image-wrap::-webkit-scrollbar-track { background: transparent; }
+  .card-image-wrap::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 2px; }
+  .card-image-wrap img {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+  }
+  .scroll-hint {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 36px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.45));
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .scroll-hint.visible { opacity: 1; }
+  .scroll-hint span {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .card-info {
+    padding: 16px 20px 8px;
+  }
+  .card-page-tag {
+    display: inline-block;
+    padding: 3px 8px;
+    background: var(--surface-2);
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-right: 6px;
+  }
+  .card-section-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: var(--accent);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+  .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 2px;
+  }
+  .card-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* Notes */
+  .notes-area {
+    padding: 0 20px 12px;
+  }
+  .notes-toggle {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 4px 0;
+    transition: color 0.15s;
+  }
+  .notes-toggle:hover { color: var(--text); }
+  .notes-input {
+    display: none;
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    min-height: 56px;
+    transition: border-color 0.2s;
+  }
+  .notes-input:focus { border-color: var(--accent); }
+  .notes-input.show { display: block; }
+
+  /* -- Rating Scale -- */
+  .vote-actions {
+    width: 100%;
+    max-width: 640px;
+    padding: 8px 0 8px;
+  }
+  .rating-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    margin-bottom: 8px;
+  }
+  .rating-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-dim);
+  }
+  .rating-scale {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+  .rating-btn {
+    flex: 1;
+    height: 52px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: inherit;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .rating-btn:hover {
+    border-color: var(--text-muted);
+    color: var(--text);
+    background: var(--surface-2);
+  }
+  .rating-btn.selected {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 16px var(--accent-glow);
+  }
+  .rating-btn[data-score="1"]:hover { border-color: var(--red); color: var(--red); }
+  .rating-btn[data-score="1"].selected { background: var(--red); border-color: var(--red); box-shadow: 0 4px 16px rgba(239,68,68,0.3); }
+  .rating-btn[data-score="2"]:hover { border-color: #f97316; color: #f97316; }
+  .rating-btn[data-score="2"].selected { background: #f97316; border-color: #f97316; box-shadow: 0 4px 16px rgba(249,115,22,0.3); }
+  .rating-btn[data-score="3"]:hover { border-color: var(--amber); color: var(--amber); }
+  .rating-btn[data-score="3"].selected { background: var(--amber); border-color: var(--amber); box-shadow: 0 4px 16px rgba(245,158,11,0.3); }
+  .rating-btn[data-score="4"]:hover { border-color: #84cc16; color: #84cc16; }
+  .rating-btn[data-score="4"].selected { background: #84cc16; border-color: #84cc16; box-shadow: 0 4px 16px rgba(132,204,22,0.3); }
+  .rating-btn[data-score="5"]:hover { border-color: var(--green); color: var(--green); }
+  .rating-btn[data-score="5"].selected { background: var(--green); border-color: var(--green); box-shadow: 0 4px 16px rgba(34,197,94,0.3); }
+
+  .vote-nav {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    max-width: 640px;
+    justify-content: center;
+    padding: 4px 0 16px;
+  }
+  .vote-nav .btn {
+    flex: 1;
+    max-width: 200px;
+  }
+
+  /* -- Keyboard hint -- */
+  .keyboard-hint {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-align: center;
+    padding-bottom: 12px;
+  }
+  .keyboard-hint kbd {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 11px;
+    margin: 0 2px;
+  }
+
+  /* -- Results Screen -- */
+  #results {
+    padding: 40px 16px;
+    gap: 28px;
+    min-height: 100dvh;
+    align-items: center;
+    text-align: center;
+  }
+  .results-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .results-title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  .results-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .results-stats {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    max-width: 480px;
+  }
+  .stat-card {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px 10px;
+    text-align: center;
+  }
+  .stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .stat-number.accent { color: var(--accent); }
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+
+  .results-filter {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+  .filter-btn {
+    padding: 6px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { background: var(--surface-2); color: var(--text); }
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .results-list {
+    width: 100%;
+    max-width: 540px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+  }
+  .results-section-header {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    padding: 16px 0 4px;
+  }
+  .result-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .result-item:hover { background: var(--surface-2); }
+  .result-item .score-badge {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+  }
+  .score-1 { background: var(--red); }
+  .score-2 { background: #f97316; }
+  .score-3 { background: var(--amber); }
+  .score-4 { background: #84cc16; }
+  .score-5 { background: var(--green); }
+  .result-item .info {
+    flex: 1;
+    min-width: 0;
+  }
+  .result-item .name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .result-item .desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .result-item .note {
+    font-size: 12px;
+    color: var(--accent);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  .result-item .thumb {
+    width: 56px;
+    height: 40px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 6px;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+  }
+
+  /* Modal for result image preview */
+  .preview-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .preview-modal.open { display: flex; }
+  .preview-modal-inner {
+    max-width: 700px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: var(--radius);
+    background: #fff;
+  }
+  .preview-modal-inner::-webkit-scrollbar { width: 4px; }
+  .preview-modal-inner::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 2px; }
+  .preview-modal-inner img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .preview-modal-close {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--surface);
+    color: var(--text);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+  }
+
+  .results-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .copy-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--green);
+    color: #000;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .copy-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  /* -- Responsive -- */
+  @media (max-width: 480px) {
+    .welcome-title { font-size: 26px; }
+    .choose-title { font-size: 20px; }
+    .results-title { font-size: 24px; }
+    .keyboard-hint { display: none; }
+    .rating-btn { height: 46px; font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ WELCOME ============ -->
+<div id="welcome" class="screen active">
+  <div>
+    <h1 class="welcome-title">Section Review</h1>
+    <p class="welcome-sub">Rate each section on a 1&ndash;5 scale.<br>Your feedback shapes what ships.</p>
+  </div>
+  <div class="input-group">
+    <label>Your name</label>
+    <input type="text" id="name-input" placeholder="e.g. Cody" autocomplete="off" spellcheck="false">
+  </div>
+  <button class="btn btn-primary" id="start-btn" disabled>Continue</button>
+</div>
+
+<!-- ============ CHOOSE ============ -->
+<div id="choose" class="screen">
+  <div>
+    <h2 class="choose-title">Which sections?</h2>
+    <p class="welcome-sub" style="margin-top:8px;" id="greeting-text"></p>
+  </div>
+  <div class="choose-options">
+    <div class="choose-card" data-type="hp" id="choose-hp">
+      <div class="icon">Homepage</div>
+      <div class="label">Homepage</div>
+      <div class="count">16 sections</div>
+    </div>
+    <div class="choose-card" data-type="pdp" id="choose-pdp">
+      <div class="icon">PDP</div>
+      <div class="label">PDP</div>
+      <div class="count">15 sections</div>
+    </div>
+  </div>
+  <button class="btn btn-ghost btn-sm" id="vote-both-btn">Vote on everything (31)</button>
+</div>
+
+<!-- ============ VOTING ============ -->
+<div id="voting" class="screen">
+  <div class="vote-header">
+    <div class="vote-header-top">
+      <button class="back-btn" id="back-btn">&larr; Back</button>
+      <div class="vote-counter"><span id="current-num">1</span> / <span id="total-num">16</span></div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="card-container" id="card-container">
+    <div class="vote-card" id="vote-card">
+      <div class="card-image-wrap" id="card-image-wrap">
+        <img id="card-image" src="" alt="" draggable="false">
+        <div class="scroll-hint" id="scroll-hint"><span>Scroll to see more &darr;</span></div>
+      </div>
+      <div class="card-info">
+        <span class="card-page-tag" id="card-page-tag">HP</span>
+        <span class="card-section-badge" id="card-badge"></span>
+        <h3 class="card-title" id="card-title"></h3>
+        <p class="card-desc" id="card-desc"></p>
+      </div>
+      <div class="notes-area">
+        <button class="notes-toggle" id="notes-toggle">+ Add a note</button>
+        <textarea class="notes-input" id="notes-input" placeholder="Any thoughts on this one?"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="vote-actions">
+    <div class="rating-labels">
+      <span class="rating-label">Cut</span>
+      <span class="rating-label">Neutral</span>
+      <span class="rating-label">Love</span>
+    </div>
+    <div class="rating-scale" id="rating-scale">
+      <button class="rating-btn" data-score="1">1</button>
+      <button class="rating-btn" data-score="2">2</button>
+      <button class="rating-btn" data-score="3">3</button>
+      <button class="rating-btn" data-score="4">4</button>
+      <button class="rating-btn" data-score="5">5</button>
+    </div>
+  </div>
+
+  <div class="vote-nav">
+    <button class="btn btn-ghost btn-sm" id="undo-btn">Undo</button>
+    <button class="btn btn-primary btn-sm" id="submit-btn" disabled>Next</button>
+  </div>
+
+  <div class="keyboard-hint">
+    <kbd>1</kbd>&ndash;<kbd>5</kbd> to rate &nbsp;&middot;&nbsp; <kbd>Enter</kbd> to submit &nbsp;&middot;&nbsp; <kbd>Z</kbd> undo
+  </div>
+</div>
+
+<!-- ============ RESULTS ============ -->
+<div id="results" class="screen">
+  <div class="results-header">
+    <h2 class="results-title">Review Complete</h2>
+    <p class="results-sub" id="results-sub">Here's how you voted.</p>
+  </div>
+
+  <div class="results-stats" id="results-stats"></div>
+
+  <div class="results-filter">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="high">4&ndash;5</button>
+    <button class="filter-btn" data-filter="mid">3</button>
+    <button class="filter-btn" data-filter="low">1&ndash;2</button>
+  </div>
+
+  <div class="results-list" id="results-list"></div>
+
+  <div class="results-actions">
+    <button class="btn btn-primary" id="copy-btn">Copy Results</button>
+    <button class="btn btn-ghost" id="restart-btn">Start Over</button>
+  </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="preview-modal" id="preview-modal">
+  <button class="preview-modal-close" id="preview-close">&times;</button>
+  <div class="preview-modal-inner">
+    <img id="preview-img" src="" alt="">
+  </div>
+</div>
+
+<div class="copy-toast" id="copy-toast">Copied to clipboard!</div>
+
+<script>
+// --- SECTION DATA ---
+const sections = {
+  hp: [
+    { id: 'hp-1.1', file: 'hp-1.1.jpg', section: 'Hero', title: 'Split Layout', desc: 'Editorial image + brand headline, split composition' },
+    { id: 'hp-2.1', file: 'hp-2.1.jpg', section: 'New Arrivals', title: '4-Product Grid', desc: 'Grid layout with star ratings' },
+    { id: 'hp-2.3', file: 'hp-2.3.jpg', section: 'New Arrivals', title: 'Horizontal Scroll', desc: 'Horizontal scroll strip with review quotes' },
+    { id: 'hp-gwp.1', file: 'hp-gwp.1.jpg', section: 'GWP', title: 'Light Banner', desc: 'Light gray banner with product image' },
+    { id: 'hp-gwp.2', file: 'hp-gwp.2.jpg', section: 'GWP', title: 'Compact Strip', desc: 'Compact promotional strip' },
+    { id: 'hp-3.1', file: 'hp-3.1.jpg', section: 'Bobbi', title: 'Image Left + Quote', desc: 'Square image left, formulation quote right' },
+    { id: 'hp-3.2', file: 'hp-3.2.jpg', section: 'Bobbi', title: 'Reversed Layout', desc: 'Text left, image right' },
+    { id: 'hp-3.3', file: 'hp-3.3.jpg', section: 'Bobbi', title: 'Dark Editorial', desc: 'Black background editorial treatment' },
+    { id: 'hp-4.1', file: 'hp-4.1.jpg', section: 'Concern', title: 'Button Chooser', desc: 'Interactive "I want to..." button chooser' },
+    { id: 'hp-4.2', file: 'hp-4.2.jpg', section: 'Concern', title: 'Image Cards', desc: 'Image-backed concern cards' },
+    { id: 'hp-5.1', file: 'hp-5.1.jpg', section: 'Bestsellers', title: '4-Product Grid', desc: '4-product bestseller grid layout' },
+    { id: 'hp-7.1', file: 'hp-7.1.jpg', section: 'Shade Finder', title: 'Headline + Model', desc: 'Headline left, model imagery right' },
+    { id: 'hp-7.2', file: 'hp-7.2.jpg', section: 'Shade Finder', title: 'Reversed', desc: 'Model image left, headline right' },
+    { id: 'hp-9.1', file: 'hp-9.1.jpg', section: 'Social Proof', title: 'Stats + Quotes', desc: 'Stats bar with review quotes' },
+    { id: 'hp-9.2', file: 'hp-9.2.jpg', section: 'Social Proof', title: 'Value Props', desc: 'Integrated value propositions' },
+    { id: 'hp-10.1', file: 'hp-10.1.jpg', section: 'Routine', title: '4-Step Routine', desc: '4-step numbered routine layout' },
+  ],
+  pdp: [
+    { id: 'pdp-3.1', file: 'pdp-3.1.jpg', section: 'Versatility', title: 'Model Imagery Grid', desc: 'Full model imagery grid layout' },
+    { id: 'pdp-3.3', file: 'pdp-3.3.jpg', section: 'Versatility', title: 'Editorial Overlay', desc: 'Contained editorial with overlay text' },
+    { id: 'pdp-4.1', file: 'pdp-4.1.jpg', section: 'Bobbi', title: 'Quote + Credentials', desc: 'Two-column with quote and credentials' },
+    { id: 'pdp-4.3', file: 'pdp-4.3.jpg', section: 'Bobbi', title: 'Black Editorial', desc: 'Black background editorial treatment' },
+    { id: 'pdp-6.1', file: 'pdp-6.1.jpg', section: 'Shade Match', title: 'Stats + Quote', desc: 'Two-column stats with quote card' },
+    { id: 'pdp-6.3', file: 'pdp-6.3.jpg', section: 'Shade Match', title: 'Quiz Forward', desc: 'Standard image, quiz-forward layout' },
+    { id: 'pdp-7.1', file: 'pdp-7.1.jpg', section: 'Ingredients', title: 'In It vs Not', desc: 'Two-column "what\'s in it vs what\'s not"' },
+    { id: 'pdp-7.2', file: 'pdp-7.2.jpg', section: 'Ingredients', title: 'Icon Cards', desc: 'Icon cards with excluded ingredient tags' },
+    { id: 'pdp-9.2', file: 'pdp-9.2.jpg', section: 'UGC / B&A', title: 'Slider Grid', desc: 'Before/after slider grid layout' },
+    { id: 'pdp-9.3', file: 'pdp-9.3.jpg', section: 'UGC / B&A', title: 'Cards + Quotes', desc: 'Before/after cards with customer quotes' },
+    { id: 'pdp-11.1', file: 'pdp-11.1.jpg', section: 'Spec', title: 'Details Table', desc: 'Product details table layout' },
+    { id: 'pdp-12.1', file: 'pdp-12.1.jpg', section: 'Guarantee', title: 'Icon Cards', desc: 'Icon cards with CTA button' },
+    { id: 'pdp-12.2', file: 'pdp-12.2.jpg', section: 'Guarantee', title: 'Timeline Flow', desc: 'Timeline flow layout' },
+    { id: 'pdp-13.1', file: 'pdp-13.1.jpg', section: 'Clinical', title: 'Model + Stats', desc: 'Two-column with model and stat highlights' },
+    { id: 'pdp-13.2', file: 'pdp-13.2.jpg', section: 'Clinical', title: 'Big Stat Cards', desc: 'Large stat cards in a row' },
+  ]
+};
+
+// --- STATE ---
+let state = {
+  userName: '',
+  currentType: null,
+  cardOrder: [],
+  currentIndex: 0,
+  votes: {}   // { cardId: { score: 1-5, note: '' } }
+};
+
+// --- PERSISTENCE ---
+const STORAGE_KEY = 'section-review-v3';
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      state = { ...state, ...parsed };
+    }
+  } catch(e) { /* ignore */ }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch(e) { /* ignore */ }
+}
+
+function getCardsForCurrentSession() {
+  const allSections = [...sections.hp, ...sections.pdp];
+  const lookup = {};
+  allSections.forEach(c => lookup[c.id] = c);
+  return state.cardOrder.map(id => lookup[id]).filter(Boolean);
+}
+
+// --- DOM HELPERS ---
+const $ = id => document.getElementById(id);
+const screens = {
+  welcome: $('welcome'),
+  choose: $('choose'),
+  voting: $('voting'),
+  results: $('results')
+};
+
+function showScreen(name) {
+  Object.values(screens).forEach(s => s.classList.remove('active'));
+  screens[name].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// --- WELCOME ---
+const nameInput = $('name-input');
+const startBtn = $('start-btn');
+
+nameInput.addEventListener('input', () => {
+  startBtn.disabled = !nameInput.value.trim();
+});
+nameInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && nameInput.value.trim()) goToChoose();
+});
+startBtn.addEventListener('click', goToChoose);
+
+function goToChoose() {
+  state.userName = nameInput.value.trim();
+  saveState();
+  $('greeting-text').textContent = `Hey ${state.userName}, pick a set to review.`;
+  updateChooseScreen();
+  showScreen('choose');
+}
+
+function updateChooseScreen() {
+  const hpVoted = sections.hp.filter(c => state.votes[c.id]).length;
+  const pdpVoted = sections.pdp.filter(c => state.votes[c.id]).length;
+
+  const hpCard = $('choose-hp');
+  const pdpCard = $('choose-pdp');
+
+  hpCard.querySelectorAll('.done-badge').forEach(el => el.remove());
+  pdpCard.querySelectorAll('.done-badge').forEach(el => el.remove());
+
+  if (hpVoted === sections.hp.length) {
+    const badge = document.createElement('div');
+    badge.className = 'done-badge';
+    badge.textContent = 'Completed';
+    hpCard.appendChild(badge);
+  } else if (hpVoted > 0) {
+    const badge = document.createElement('div');
+    badge.className = 'done-badge';
+    badge.textContent = `${hpVoted}/${sections.hp.length} done`;
+    hpCard.appendChild(badge);
+  }
+
+  if (pdpVoted === sections.pdp.length) {
+    const badge = document.createElement('div');
+    badge.className = 'done-badge';
+    badge.textContent = 'Completed';
+    pdpCard.appendChild(badge);
+  } else if (pdpVoted > 0) {
+    const badge = document.createElement('div');
+    badge.className = 'done-badge';
+    badge.textContent = `${pdpVoted}/${sections.pdp.length} done`;
+    pdpCard.appendChild(badge);
+  }
+}
+
+// --- CHOOSE ---
+$('choose-hp').addEventListener('click', () => startVoting('hp'));
+$('choose-pdp').addEventListener('click', () => startVoting('pdp'));
+$('vote-both-btn').addEventListener('click', () => startVoting('all'));
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startVoting(type) {
+  state.currentType = type;
+
+  let pool;
+  if (type === 'all') {
+    pool = [...sections.hp, ...sections.pdp];
+  } else {
+    pool = [...sections[type]];
+  }
+
+  const unvoted = pool.filter(c => !state.votes[c.id]);
+
+  if (unvoted.length === 0) {
+    state.cardOrder = pool.map(c => c.id);
+    state.currentIndex = pool.length;
+    saveState();
+    renderResults();
+    showScreen('results');
+    return;
+  }
+
+  state.cardOrder = shuffleArray(unvoted).map(c => c.id);
+  state.currentIndex = 0;
+  saveState();
+
+  selectedScore = null;
+  loadCurrentCard();
+  showScreen('voting');
+}
+
+$('back-btn').addEventListener('click', () => {
+  showScreen('choose');
+  updateChooseScreen();
+});
+
+// --- VOTING ---
+let selectedScore = null;
+const submitBtn = $('submit-btn');
+
+function loadCurrentCard() {
+  const cards = getCardsForCurrentSession();
+
+  if (state.currentIndex >= cards.length) {
+    let pool;
+    if (state.currentType === 'all') {
+      pool = [...sections.hp, ...sections.pdp];
+    } else {
+      pool = [...sections[state.currentType]];
+    }
+    state.cardOrder = pool.map(c => c.id);
+    saveState();
+    renderResults();
+    showScreen('results');
+    return;
+  }
+
+  const card = cards[state.currentIndex];
+  const totalCards = cards.length;
+
+  $('current-num').textContent = state.currentIndex + 1;
+  $('total-num').textContent = totalCards;
+  $('progress-fill').style.width = ((state.currentIndex) / totalCards * 100) + '%';
+
+  $('card-image').src = 'vote-images/' + card.file;
+  $('card-page-tag').textContent = card.id.startsWith('pdp') ? 'PDP' : 'HP';
+  $('card-badge').textContent = card.section;
+  $('card-title').textContent = card.title;
+  $('card-desc').textContent = card.desc;
+
+  // Reset notes
+  $('notes-input').value = '';
+  $('notes-input').classList.remove('show');
+  $('notes-toggle').textContent = '+ Add a note';
+
+  // Reset rating
+  selectedScore = null;
+  submitBtn.disabled = true;
+  document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
+
+  // Check if image is tall enough to scroll
+  const img = $('card-image');
+  const checkScroll = () => {
+    const wrap = $('card-image-wrap');
+    wrap.scrollTop = 0;
+    if (wrap.scrollHeight > wrap.clientHeight + 20) {
+      $('scroll-hint').classList.add('visible');
+    } else {
+      $('scroll-hint').classList.remove('visible');
+    }
+  };
+
+  if (img.complete && img.naturalHeight > 0) {
+    setTimeout(checkScroll, 50);
+  } else {
+    img.onload = () => setTimeout(checkScroll, 50);
+  }
+}
+
+// Scroll hint hide on scroll
+$('card-image-wrap').addEventListener('scroll', function() {
+  if (this.scrollTop > 20) {
+    $('scroll-hint').classList.remove('visible');
+  }
+});
+
+// Notes toggle
+$('notes-toggle').addEventListener('click', () => {
+  const inp = $('notes-input');
+  inp.classList.toggle('show');
+  if (inp.classList.contains('show')) {
+    inp.focus();
+    $('notes-toggle').textContent = '- Hide note';
+  } else {
+    $('notes-toggle').textContent = '+ Add a note';
+  }
+});
+
+// Rating buttons
+document.querySelectorAll('.rating-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedScore = parseInt(btn.dataset.score);
+    document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    submitBtn.disabled = false;
+  });
+});
+
+// Submit vote
+submitBtn.addEventListener('click', () => castVote());
+$('undo-btn').addEventListener('click', undoVote);
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (!screens.voting.classList.contains('active')) return;
+  if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+
+  if (e.key >= '1' && e.key <= '5') {
+    selectedScore = parseInt(e.key);
+    document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelector(`.rating-btn[data-score="${e.key}"]`).classList.add('selected');
+    submitBtn.disabled = false;
+  } else if (e.key === 'Enter' && selectedScore !== null) {
+    castVote();
+  } else if (e.key === 'z' || e.key === 'Z') {
+    undoVote();
+  }
+});
+
+function castVote() {
+  if (selectedScore === null) return;
+
+  const cards = getCardsForCurrentSession();
+  if (state.currentIndex >= cards.length) return;
+
+  const card = cards[state.currentIndex];
+  const note = $('notes-input').value.trim();
+
+  state.votes[card.id] = { score: selectedScore, note };
+  state.currentIndex++;
+  saveState();
+
+  selectedScore = null;
+  loadCurrentCard();
+}
+
+function undoVote() {
+  if (state.currentIndex === 0) return;
+
+  state.currentIndex--;
+  const cards = getCardsForCurrentSession();
+  const card = cards[state.currentIndex];
+  if (card) {
+    delete state.votes[card.id];
+  }
+  saveState();
+  selectedScore = null;
+  loadCurrentCard();
+}
+
+// --- RESULTS ---
+let currentFilter = 'all';
+
+function renderResults() {
+  const allCards = getCardsForCurrentSession();
+  let totalScore = 0;
+  let count = 0;
+  const scoreCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+
+  allCards.forEach(c => {
+    const v = state.votes[c.id];
+    if (v && v.score) {
+      totalScore += v.score;
+      count++;
+      scoreCounts[v.score]++;
+    }
+  });
+
+  const avgScore = count > 0 ? (totalScore / count).toFixed(1) : '0';
+
+  // Build stats
+  const statsEl = $('results-stats');
+  statsEl.innerHTML = `
+    <div class="stat-card">
+      <div class="stat-number accent">${avgScore}</div>
+      <div class="stat-label">Avg Score</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:var(--green)">${scoreCounts[4] + scoreCounts[5]}</div>
+      <div class="stat-label">Scored 4-5</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:var(--red)">${scoreCounts[1] + scoreCounts[2]}</div>
+      <div class="stat-label">Scored 1-2</div>
+    </div>
+  `;
+
+  $('results-sub').textContent = `${state.userName} reviewed ${count} sections. Average score: ${avgScore}/5.`;
+
+  renderResultsList(currentFilter);
+  $('progress-fill').style.width = '100%';
+}
+
+function renderResultsList(filter) {
+  const allCards = getCardsForCurrentSession();
+
+  const grouped = {};
+  allCards.forEach(c => {
+    const v = state.votes[c.id];
+    if (!v) return;
+
+    if (filter === 'high' && v.score < 4) return;
+    if (filter === 'mid' && v.score !== 3) return;
+    if (filter === 'low' && v.score > 2) return;
+
+    const type = c.id.startsWith('pdp') ? 'PDP' : 'Homepage';
+    if (!grouped[type]) grouped[type] = [];
+    grouped[type].push(c);
+  });
+
+  const list = $('results-list');
+  list.innerHTML = '';
+
+  ['Homepage', 'PDP'].forEach(type => {
+    const cards = grouped[type];
+    if (!cards || cards.length === 0) return;
+
+    const header = document.createElement('div');
+    header.className = 'results-section-header';
+    header.textContent = type;
+    list.appendChild(header);
+
+    // Sort by score descending
+    cards.sort((a, b) => (state.votes[b.id]?.score || 0) - (state.votes[a.id]?.score || 0));
+
+    cards.forEach(c => {
+      const v = state.votes[c.id];
+      if (!v) return;
+
+      const item = document.createElement('div');
+      item.className = 'result-item';
+      item.innerHTML = `
+        <div class="score-badge score-${v.score}">${v.score}</div>
+        <div class="info">
+          <div class="name">${c.section}: ${c.title}</div>
+          <div class="desc">${c.desc}</div>
+          ${v.note ? `<div class="note">&ldquo;${v.note}&rdquo;</div>` : ''}
+        </div>
+        <img class="thumb" src="vote-images/${c.file}" alt="${c.title}" loading="lazy">
+      `;
+      item.addEventListener('click', () => {
+        $('preview-img').src = 'vote-images/' + c.file;
+        $('preview-modal').classList.add('open');
+      });
+      list.appendChild(item);
+    });
+  });
+
+  if (list.children.length === 0) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'text-align:center; padding:40px 0; color:var(--text-dim); font-size:14px;';
+    empty.textContent = 'No sections match this filter.';
+    list.appendChild(empty);
+  }
+}
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderResultsList(currentFilter);
+  });
+});
+
+// Preview modal
+$('preview-close').addEventListener('click', () => {
+  $('preview-modal').classList.remove('open');
+});
+$('preview-modal').addEventListener('click', e => {
+  if (e.target === $('preview-modal')) {
+    $('preview-modal').classList.remove('open');
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && $('preview-modal').classList.contains('open')) {
+    $('preview-modal').classList.remove('open');
+  }
+});
+
+// Copy results
+$('copy-btn').addEventListener('click', () => {
+  const allCards = getCardsForCurrentSession();
+
+  let text = `SECTION REVIEW RESULTS\n`;
+  text += `Reviewer: ${state.userName}\n`;
+  text += `Date: ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}\n`;
+  text += `${'─'.repeat(40)}\n\n`;
+
+  const scoreLabel = (s) => {
+    if (s === 1) return '1 (Cut)';
+    if (s === 2) return '2';
+    if (s === 3) return '3 (Neutral)';
+    if (s === 4) return '4';
+    if (s === 5) return '5 (Love)';
+    return s;
+  };
+
+  const grouped = {};
+  allCards.forEach(c => {
+    const type = c.id.startsWith('pdp') ? 'PDP' : 'Homepage';
+    if (!grouped[type]) grouped[type] = [];
+    grouped[type].push(c);
+  });
+
+  let totalScore = 0;
+  let count = 0;
+
+  ['Homepage', 'PDP'].forEach(type => {
+    const cards = grouped[type];
+    if (!cards) return;
+
+    text += `${type.toUpperCase()}\n`;
+    cards.sort((a, b) => (state.votes[b.id]?.score || 0) - (state.votes[a.id]?.score || 0));
+    cards.forEach(c => {
+      const v = state.votes[c.id];
+      if (!v) return;
+      totalScore += v.score;
+      count++;
+      const bar = '\u2588'.repeat(v.score) + '\u2591'.repeat(5 - v.score);
+      text += `  ${bar}  ${scoreLabel(v.score)}  ${c.section}: ${c.title}`;
+      if (v.note) text += ` \u2014 "${v.note}"`;
+      text += '\n';
+    });
+    text += '\n';
+  });
+
+  const avg = count > 0 ? (totalScore / count).toFixed(1) : '0';
+  text += `${'─'.repeat(40)}\n`;
+  text += `AVERAGE: ${avg}/5  |  ${count} sections reviewed\n`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const toast = $('copy-toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const toast = $('copy-toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+  });
+});
+
+// Restart
+$('restart-btn').addEventListener('click', () => {
+  if (!confirm('This will clear all your votes. Are you sure?')) return;
+  state.votes = {};
+  state.currentIndex = 0;
+  state.cardOrder = [];
+  state.currentType = null;
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+  saveState();
+  showScreen('choose');
+  updateChooseScreen();
+});
+
+// Handle window resize
+window.addEventListener('resize', () => {});
+
+// --- INIT ---
+loadState();
+
+if (state.userName) {
+  nameInput.value = state.userName;
+  startBtn.disabled = false;
+}
+</script>
+</body>
+</html>
