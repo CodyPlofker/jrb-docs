@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JRB Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --black: #000; --white: #fff;
+    --gray-50: #fafafa; --gray-100: #f5f5f5; --gray-200: #e5e5e5;
+    --gray-300: #d4d4d4; --gray-400: #a3a3a3; --gray-500: #737373;
+    --gray-700: #404040; --gray-900: #171717;
+    --pink: #ff2e92;
+    --brand: #7c3aed;
+    --ecom: #2563eb;
+    --growth: #16a34a;
+    --ops: #d97706;
+    --product: #db2777;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--gray-50); color: var(--gray-900); }
+
+  /* HEADER */
+  .header {
+    background: var(--black); color: var(--white);
+    padding: 40px 48px 32px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  .header h1 span { color: var(--pink); }
+  .header p { font-size: 13px; color: var(--gray-400); margin-top: 4px; }
+  .search-wrap { position: relative; flex-shrink: 0; }
+  .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--gray-500); pointer-events: none; }
+  #search {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px; padding: 9px 14px 9px 36px;
+    color: var(--white); font-family: 'Inter', sans-serif; font-size: 14px;
+    width: 260px; outline: none;
+  }
+  #search::placeholder { color: var(--gray-500); }
+  #search:focus { border-color: var(--pink); }
+
+  /* DEPT TABS */
+  .tabs { display: flex; gap: 4px; margin-top: 20px; }
+  .tab {
+    padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 500;
+    cursor: pointer; border: none; background: transparent; color: var(--gray-400);
+    transition: all 0.15s; text-transform: capitalize; letter-spacing: 0.2px;
+  }
+  .tab:hover { color: var(--white); background: rgba(255,255,255,0.08); }
+  .tab.active { color: var(--white); background: rgba(255,255,255,0.12); }
+  .tab[data-dept="all"].active { background: var(--pink); color: var(--white); }
+  .tab[data-dept="brand"].active { background: var(--brand); color: var(--white); }
+  .tab[data-dept="ecom"].active { background: var(--ecom); color: var(--white); }
+  .tab[data-dept="growth"].active { background: var(--growth); color: var(--white); }
+  .tab[data-dept="ops"].active { background: var(--ops); color: var(--white); }
+  .tab[data-dept="product"].active { background: var(--product); color: var(--white); }
+
+  /* MAIN */
+  .main { max-width: 1280px; margin: 0 auto; padding: 40px 48px 80px; }
+
+  /* DEPT SECTION */
+  .dept-section { margin-bottom: 48px; }
+  .dept-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    padding-bottom: 12px; border-bottom: 1px solid var(--gray-200);
+  }
+  .dept-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .dept-title { font-size: 18px; font-weight: 600; text-transform: capitalize; }
+  .dept-count { font-size: 13px; color: var(--gray-400); font-weight: 400; }
+
+  /* FOLDER GRID */
+  .folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+
+  /* FOLDER CARD */
+  .folder-card {
+    background: var(--white); border: 1px solid var(--gray-200); border-radius: 12px;
+    overflow: hidden;
+  }
+  .folder-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px; border-bottom: 1px solid var(--gray-100);
+    cursor: default;
+  }
+  .folder-icon { font-size: 16px; flex-shrink: 0; }
+  .folder-name { font-size: 14px; font-weight: 600; flex: 1; min-width: 0; }
+  .type-badge {
+    font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;
+    padding: 2px 7px; border-radius: 4px; flex-shrink: 0;
+    background: var(--gray-100); color: var(--gray-500);
+  }
+  .doc-count {
+    font-size: 11px; color: var(--gray-400); flex-shrink: 0;
+    background: var(--gray-100); border-radius: 10px; padding: 1px 7px;
+  }
+
+  /* DOC LIST */
+  .doc-list { padding: 8px 0; }
+  .doc-item { display: flex; align-items: center; gap: 8px; padding: 0; }
+  .doc-item a {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 16px; width: 100%; text-decoration: none; color: var(--gray-700);
+    font-size: 13px; transition: background 0.1s;
+  }
+  .doc-item a:hover { background: var(--gray-50); color: var(--gray-900); }
+  .doc-item a svg { flex-shrink: 0; color: var(--gray-300); }
+  .doc-item .doc-name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* COLLAPSIBLE */
+  .collapse-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 16px; width: 100%; background: none; border: none;
+    cursor: pointer; font-size: 13px; color: var(--gray-500);
+    font-family: 'Inter', sans-serif; transition: background 0.1s; text-align: left;
+  }
+  .collapse-btn:hover { background: var(--gray-50); color: var(--gray-700); }
+  .collapse-btn svg { transition: transform 0.2s; flex-shrink: 0; }
+  .collapse-btn.open svg { transform: rotate(90deg); }
+  .collapsible-docs { display: none; }
+  .collapsible-docs.open { display: block; }
+
+  /* EMPTY STATE */
+  .empty { text-align: center; padding: 80px 40px; color: var(--gray-400); }
+  .empty p { font-size: 15px; margin-top: 8px; }
+
+  /* HIDDEN */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>JRB <span>Docs</span></h1>
+      <p>Jones Road Beauty · Internal documents, briefs &amp; analysis</p>
+    </div>
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search" placeholder="Search documents…">
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" data-dept="all">All</button>
+    <button class="tab" data-dept="brand">Brand</button>
+    <button class="tab" data-dept="ecom">Ecom</button>
+    <button class="tab" data-dept="growth">Growth</button>
+    <button class="tab" data-dept="ops">Ops</button>
+    <button class="tab" data-dept="product">Product</button>
+  </div>
+</div>
+
+<div class="main" id="main"></div>
+
+<script>
+const BASE = 'https://codyplofker.github.io/jrb-docs/';
+
+const DEPT_COLORS = {
+  brand: '#7c3aed', ecom: '#2563eb', growth: '#16a34a', ops: '#d97706', product: '#db2777'
+};
+
+const TYPE_LABELS = {
+  analysis: 'Analysis', briefs: 'Brief', specs: 'Spec', guides: 'Guide',
+  presentations: 'Presentation', research: 'Research', plans: 'Plan',
+  proposals: 'Proposal', 'naming-briefs': 'Naming', reports: 'Report',
+  recaps: 'Recap', templates: 'Template'
+};
+
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const DATA = [
+
+  // ── BRAND ────────────────────────────────────────────────────────────────
+  { dept: 'brand', type: 'analysis', folder: 'brand-health-research', docs: [
+    { name: 'Brand Health Research', path: 'brand/analysis/brand-health-research/' }
+  ]},
+  { dept: 'brand', type: 'briefs', folder: 'ooh-haus-brief', docs: [
+    { name: 'OOH Haus Brief', path: 'brand/briefs/ooh-haus-brief/' }
+  ]},
+
+  // ── ECOM ─────────────────────────────────────────────────────────────────
+  { dept: 'ecom', type: 'analysis', folder: 'stores-redesign', docs: [
+    { name: 'Stores Redesign', path: 'ecom/analysis/stores-redesign/' },
+    { name: 'Competitive Audit', path: 'ecom/analysis/stores-redesign/competitive-audit.html' }
+  ]},
+  { dept: 'ecom', type: 'analysis', folder: 'jurni-audit', docs: [
+    { name: 'Jurni Audit', path: 'ecom/analysis/jurni-audit/' }
+  ]},
+  { dept: 'ecom', type: 'analysis', folder: 'mb-quiz-analysis', docs: [
+    { name: 'MB Quiz Analysis', path: 'ecom/analysis/mb-quiz-analysis.html' }
+  ]},
+  { dept: 'ecom', type: 'briefs', folder: 'emily-blushing-stick-lp', docs: [
+    { name: 'Emily Blushing Stick LP', path: 'ecom/briefs/emily-blushing-stick-lp/' },
+    { name: 'Storytelling', path: 'ecom/briefs/emily-blushing-stick-lp/storytelling.html' }
+  ]},
+  { dept: 'ecom', type: 'briefs', folder: 'homepage-redesign', docs: [
+    { name: 'Homepage Redesign', path: 'ecom/briefs/homepage-redesign/' }
+  ]},
+  { dept: 'ecom', type: 'briefs', folder: 'miracle-balm-pdp-redesign', docs: [
+    { name: 'Miracle Balm PDP Redesign', path: 'ecom/briefs/miracle-balm-pdp-redesign/' }
+  ]},
+  { dept: 'ecom', type: 'briefs', folder: 'quiz-landing-redesign', docs: [
+    { name: 'Quiz Landing Redesign', path: 'ecom/briefs/quiz-landing-redesign/' }
+  ]},
+  { dept: 'ecom', type: 'briefs', folder: 'desktop-nav-redesign', docs: [
+    { name: 'Desktop Nav Redesign', path: 'ecom/desktop-nav-redesign/' }
+  ]},
+  { dept: 'ecom', type: 'briefs', folder: 'shade-feedback', docs: [
+    { name: 'Shade Feedback', path: 'ecom/shade-feedback/' }
+  ]},
+  { dept: 'ecom', type: 'guides', folder: 'component-library', docs: [
+    { name: 'Component Library', path: 'ecom/guides/component-library/' }
+  ]},
+  { dept: 'ecom', type: 'guides', folder: 'design-system-guide', docs: [
+    { name: 'Design System Guide', path: 'ecom/guides/design-system-guide/' },
+    { name: 'JRB Visual Reference', path: 'ecom/guides/design-system-guide/jrb-visual-reference.html' },
+    { name: 'Template', path: 'ecom/guides/design-system-guide/template.html' }
+  ]},
+  { dept: 'ecom', type: 'guides', folder: 'jrb-build-workflow', docs: [
+    { name: 'JRB Build Workflow', path: 'ecom/guides/jrb-build-workflow/' }
+  ]},
+  { dept: 'ecom', type: 'guides', folder: 'jrb-component-library', docs: [
+    { name: 'JRB Component Library', path: 'ecom/guides/jrb-component-library/' }
+  ]},
+  { dept: 'ecom', type: 'research', folder: 'homepage-research-synthesis', docs: [
+    { name: 'Homepage Research Synthesis', path: 'ecom/research/homepage-research-synthesis/' }
+  ]},
+  { dept: 'ecom', type: 'specs', folder: 'about-us-redesign', docs: [
+    { name: 'About Us Redesign', path: 'ecom/specs/about-us-redesign/' }
+  ]},
+  { dept: 'ecom', type: 'specs', folder: 'homepage-v1', docs: [
+    { name: 'Homepage V1', path: 'ecom/specs/homepage-v1/' }
+  ]},
+  { dept: 'ecom', type: 'specs', folder: 'pdp-section-winners', docs: [
+    { name: 'PDP Section Winners', path: 'ecom/specs/pdp-section-winners/' }
+  ]},
+
+  // ── GROWTH ───────────────────────────────────────────────────────────────
+  { dept: 'growth', type: 'analysis', folder: 'complexion-quiz-analysis', docs: [
+    { name: 'Complexion Quiz Analysis', path: 'growth/analysis/complexion-quiz-analysis/' }
+  ]},
+  { dept: 'growth', type: 'analysis', folder: 'cro-top3-opportunities', docs: [
+    { name: 'CRO Top 3 Opportunities', path: 'growth/analysis/cro-top3-opportunities/' }
+  ]},
+  { dept: 'growth', type: 'analysis', folder: 'gwp-survey-results', docs: [
+    { name: 'GWP Survey Results', path: 'growth/analysis/gwp-survey-results/' }
+  ]},
+  { dept: 'growth', type: 'analysis', folder: 'mb-quiz-analysis', docs: [
+    { name: 'MB Quiz Analysis', path: 'growth/analysis/mb-quiz-analysis/' }
+  ]},
+  { dept: 'growth', type: 'analysis', folder: 'meta-ia-attribution-test', docs: [
+    { name: 'Meta IA Attribution Test', path: 'growth/analysis/meta-ia-attribution-test/' }
+  ]},
+  { dept: 'growth', type: 'analysis', folder: 'quiz-audit', docs: [
+    { name: 'Quiz Audit', path: 'growth/analysis/quiz-audit/' }
+  ]},
+  { dept: 'growth', type: 'analysis', folder: 'shade-ai-junip-v2', docs: [
+    { name: 'Shade AI Junip V2', path: 'growth/analysis/shade-ai-junip-v2/' }
+  ]},
+  { dept: 'growth', type: 'briefs', folder: 'homepage-redesign', docs: [
+    { name: 'Homepage Redesign Brief', path: 'growth/briefs/homepage-redesign/' }
+  ]},
+  { dept: 'growth', type: 'briefs', folder: 'mjio-persona-brief', docs: [
+    { name: 'MJIO Persona Brief', path: 'growth/briefs/mjio-persona-brief/' }
+  ]},
+  { dept: 'growth', type: 'briefs', folder: 'pdp-redesign', docs: [
+    { name: 'PDP Redesign Brief', path: 'growth/briefs/pdp-redesign/' }
+  ]},
+  { dept: 'growth', type: 'presentations', folder: 'customer-intelligence-system', docs: [
+    { name: 'Customer Intelligence System', path: 'growth/presentations/customer-intelligence-system/' }
+  ]},
+  { dept: 'growth', type: 'specs', folder: 'homepage-sections', docs: [
+    { name: 'Homepage Sections', path: 'growth/specs/homepage-sections/' }
+  ]},
+  { dept: 'growth', type: 'specs', folder: 'homepage-v1', docs: [
+    { name: 'Homepage V1 Spec', path: 'growth/specs/homepage-v1/' }
+  ]},
+  { dept: 'growth', type: 'specs', folder: 'homepage-v1-variations', docs: [
+    { name: 'Homepage V1 Variations', path: 'growth/specs/homepage-v1-variations/' }
+  ]},
+  { dept: 'growth', type: 'specs', folder: 'pdp-sections', docs: [
+    { name: 'PDP Sections', path: 'growth/specs/pdp-sections/' }
+  ]},
+  { dept: 'growth', type: 'specs', folder: 'section-vote', docs: [
+    { name: 'Section Vote', path: 'growth/specs/section-vote/' }
+  ]},
+
+  // ── OPS ──────────────────────────────────────────────────────────────────
+  { dept: 'ops', type: 'guides', folder: 'product-naming-process', docs: [
+    { name: 'Product Naming Process', path: 'ops/guides/product-naming-process/' }
+  ]},
+  { dept: 'ops', type: 'plans', folder: '2026-big-rocks-objectives', docs: [
+    { name: '2026 Big Rocks & Objectives', path: 'ops/plans/2026-big-rocks-objectives/' }
+  ]},
+  { dept: 'ops', type: 'presentations', folder: 'claude-code-training-session-1', docs: [
+    { name: 'Claude Code Training — Session 1', path: 'ops/presentations/claude-code-training-session-1/' }
+  ]},
+
+  // ── PRODUCT ──────────────────────────────────────────────────────────────
+  { dept: 'product', type: 'analysis', folder: 'derm-partnership', docs: [
+    { name: 'Derm Partnership', path: 'product/analysis/derm-partnership/' }
+  ]},
+  { dept: 'product', type: 'analysis', folder: 'discovery-set-analysis', docs: [
+    { name: 'Discovery Set Analysis', path: 'product/analysis/discovery-set-analysis/' }
+  ]},
+  { dept: 'product', type: 'analysis', folder: 'gel-tint-viability', docs: [
+    { name: 'Gel Tint Viability', path: 'product/analysis/gel-tint-viability/' }
+  ]},
+  { dept: 'product', type: 'analysis', folder: 'skincare-strategy', docs: [
+    { name: 'Skincare Strategy', path: 'product/analysis/skincare-strategy/' }
+  ]},
+  { dept: 'product', type: 'briefs', folder: 'foundation-stick-pdp-variations', collapsible: true, docs: [
+    { name: 'Index', path: 'product/briefs/foundation-stick-pdp-variations/' },
+    { name: 'Foundation Stick — Review', path: 'product/briefs/foundation-stick-pdp-variations/fs-review.html' },
+    { name: 'FS Before/After V01', path: 'product/briefs/foundation-stick-pdp-variations/fs-before-after-v01.html' },
+    { name: 'FS Before/After V02', path: 'product/briefs/foundation-stick-pdp-variations/fs-before-after-v02.html' },
+    { name: 'FS Before/After V07', path: 'product/briefs/foundation-stick-pdp-variations/fs-before-after-v07.html' },
+    { name: 'FS Before/After V08', path: 'product/briefs/foundation-stick-pdp-variations/fs-before-after-v08.html' },
+    { name: 'FS Before/After V10', path: 'product/briefs/foundation-stick-pdp-variations/fs-before-after-v10.html' },
+    { name: 'FS Before/After V11', path: 'product/briefs/foundation-stick-pdp-variations/fs-before-after-v11.html' },
+    { name: 'FS Before/After V12', path: 'product/briefs/foundation-stick-pdp-variations/fs-before-after-v12.html' },
+    { name: 'FS Before/After V13', path: 'product/briefs/foundation-stick-pdp-variations/fs-before-after-v13.html' },
+    { name: 'FS Before/After V14', path: 'product/briefs/foundation-stick-pdp-variations/fs-before-after-v14.html' },
+    { name: 'FS Before/After V15', path: 'product/briefs/foundation-stick-pdp-variations/fs-before-after-v15.html' },
+    { name: 'FS Bobbi V01', path: 'product/briefs/foundation-stick-pdp-variations/fs-bobbi-v01.html' },
+    { name: 'FS Bobbi V08', path: 'product/briefs/foundation-stick-pdp-variations/fs-bobbi-v08.html' },
+    { name: 'FS Bobbi V09', path: 'product/briefs/foundation-stick-pdp-variations/fs-bobbi-v09.html' },
+    { name: 'FS Bobbi V10', path: 'product/briefs/foundation-stick-pdp-variations/fs-bobbi-v10.html' },
+    { name: 'FS Bobbi V11', path: 'product/briefs/foundation-stick-pdp-variations/fs-bobbi-v11.html' },
+    { name: 'FS Bobbi V12', path: 'product/briefs/foundation-stick-pdp-variations/fs-bobbi-v12.html' },
+    { name: 'FS Bobbi V13', path: 'product/briefs/foundation-stick-pdp-variations/fs-bobbi-v13.html' },
+    { name: 'FS Bobbi V14', path: 'product/briefs/foundation-stick-pdp-variations/fs-bobbi-v14.html' },
+    { name: 'FS Cross-Sell V01', path: 'product/briefs/foundation-stick-pdp-variations/fs-cross-sell-v01.html' },
+    { name: 'FS How-To V02', path: 'product/briefs/foundation-stick-pdp-variations/fs-how-to-v02.html' },
+    { name: 'FS How-To V03', path: 'product/briefs/foundation-stick-pdp-variations/fs-how-to-v03.html' },
+    { name: 'FS How-To V04', path: 'product/briefs/foundation-stick-pdp-variations/fs-how-to-v04.html' },
+    { name: 'FS How-To V05', path: 'product/briefs/foundation-stick-pdp-variations/fs-how-to-v05.html' },
+    { name: 'FS How-To V06', path: 'product/briefs/foundation-stick-pdp-variations/fs-how-to-v06.html' },
+    { name: 'FS How-To V08', path: 'product/briefs/foundation-stick-pdp-variations/fs-how-to-v08.html' },
+    { name: 'FS How-To V10', path: 'product/briefs/foundation-stick-pdp-variations/fs-how-to-v10.html' },
+    { name: 'FS Ingredients V01', path: 'product/briefs/foundation-stick-pdp-variations/fs-ingredients-v01.html' },
+    { name: 'FS Ingredients V02', path: 'product/briefs/foundation-stick-pdp-variations/fs-ingredients-v02.html' },
+    { name: 'FS Ingredients V03', path: 'product/briefs/foundation-stick-pdp-variations/fs-ingredients-v03.html' },
+    { name: 'FS Ingredients V04', path: 'product/briefs/foundation-stick-pdp-variations/fs-ingredients-v04.html' },
+    { name: 'FS Ingredients V05', path: 'product/briefs/foundation-stick-pdp-variations/fs-ingredients-v05.html' },
+    { name: 'FS Ingredients V06', path: 'product/briefs/foundation-stick-pdp-variations/fs-ingredients-v06.html' },
+    { name: 'FS Objection Buster V01', path: 'product/briefs/foundation-stick-pdp-variations/fs-objection-buster-v01.html' },
+    { name: 'FS Shade Confidence V02', path: 'product/briefs/foundation-stick-pdp-variations/fs-shade-confidence-v02.html' },
+    { name: 'FS Shade Confidence V03', path: 'product/briefs/foundation-stick-pdp-variations/fs-shade-confidence-v03.html' },
+    { name: 'FS Shade Confidence V04', path: 'product/briefs/foundation-stick-pdp-variations/fs-shade-confidence-v04.html' },
+    { name: 'FS Shade Confidence V05', path: 'product/briefs/foundation-stick-pdp-variations/fs-shade-confidence-v05.html' },
+    { name: 'FS Shade Confidence V06', path: 'product/briefs/foundation-stick-pdp-variations/fs-shade-confidence-v06.html' },
+    { name: 'FS Shade Confidence V07', path: 'product/briefs/foundation-stick-pdp-variations/fs-shade-confidence-v07.html' },
+    { name: 'FS Shade Confidence V10', path: 'product/briefs/foundation-stick-pdp-variations/fs-shade-confidence-v10.html' },
+    { name: 'FS Social Proof V03', path: 'product/briefs/foundation-stick-pdp-variations/fs-social-proof-v03.html' },
+    { name: 'FS Social Proof V04', path: 'product/briefs/foundation-stick-pdp-variations/fs-social-proof-v04.html' },
+    { name: 'FS Social Proof V06', path: 'product/briefs/foundation-stick-pdp-variations/fs-social-proof-v06.html' },
+    { name: 'FS Social Proof V07', path: 'product/briefs/foundation-stick-pdp-variations/fs-social-proof-v07.html' },
+    { name: 'FS Social Proof V08', path: 'product/briefs/foundation-stick-pdp-variations/fs-social-proof-v08.html' },
+    { name: 'FS Social Proof V09', path: 'product/briefs/foundation-stick-pdp-variations/fs-social-proof-v09.html' },
+    { name: 'FS Social Proof V10', path: 'product/briefs/foundation-stick-pdp-variations/fs-social-proof-v10.html' },
+    { name: 'FS Social Proof V11', path: 'product/briefs/foundation-stick-pdp-variations/fs-social-proof-v11.html' },
+    { name: 'FS Index', path: 'product/briefs/foundation-stick-pdp-variations/fs-index.html' },
+    { name: 'Miracle Balm — Review', path: 'product/briefs/foundation-stick-pdp-variations/mb-review.html' },
+    { name: 'MB Before/After V01', path: 'product/briefs/foundation-stick-pdp-variations/mb-before-after-v01.html' },
+    { name: 'MB Before/After V07', path: 'product/briefs/foundation-stick-pdp-variations/mb-before-after-v07.html' },
+    { name: 'MB Bobbi V01', path: 'product/briefs/foundation-stick-pdp-variations/mb-bobbi-v01.html' },
+    { name: 'MB Cross-Sell V01', path: 'product/briefs/foundation-stick-pdp-variations/mb-cross-sell-v01.html' },
+    { name: 'MB Cross-Sell V02', path: 'product/briefs/foundation-stick-pdp-variations/mb-cross-sell-v02.html' },
+    { name: 'MB Cross-Sell V03', path: 'product/briefs/foundation-stick-pdp-variations/mb-cross-sell-v03.html' },
+    { name: 'MB Cross-Sell V04', path: 'product/briefs/foundation-stick-pdp-variations/mb-cross-sell-v04.html' },
+    { name: 'MB Cross-Sell V05', path: 'product/briefs/foundation-stick-pdp-variations/mb-cross-sell-v05.html' },
+    { name: 'MB Cross-Sell V06', path: 'product/briefs/foundation-stick-pdp-variations/mb-cross-sell-v06.html' },
+    { name: 'MB How-To V01', path: 'product/briefs/foundation-stick-pdp-variations/mb-how-to-v01.html' },
+    { name: 'MB How-To V07', path: 'product/briefs/foundation-stick-pdp-variations/mb-how-to-v07.html' },
+    { name: 'MB Hybrid Identity V02', path: 'product/briefs/foundation-stick-pdp-variations/mb-hybrid-identity-v02.html' },
+    { name: 'MB Hybrid Identity V07', path: 'product/briefs/foundation-stick-pdp-variations/mb-hybrid-identity-v07.html' },
+    { name: 'MB Hybrid Identity V09', path: 'product/briefs/foundation-stick-pdp-variations/mb-hybrid-identity-v09.html' },
+    { name: 'MB Ingredients V02', path: 'product/briefs/foundation-stick-pdp-variations/mb-ingredients-v02.html' },
+    { name: 'MB Ingredients V07', path: 'product/briefs/foundation-stick-pdp-variations/mb-ingredients-v07.html' },
+    { name: 'MB Mini Trial V07', path: 'product/briefs/foundation-stick-pdp-variations/mb-mini-trial-v07.html' },
+    { name: 'MB Social Proof V03', path: 'product/briefs/foundation-stick-pdp-variations/mb-social-proof-v03.html' },
+    { name: 'MB Social Proof V06', path: 'product/briefs/foundation-stick-pdp-variations/mb-social-proof-v06.html' },
+    { name: 'MB Social Proof V07', path: 'product/briefs/foundation-stick-pdp-variations/mb-social-proof-v07.html' },
+    { name: 'MB Social Proof V08', path: 'product/briefs/foundation-stick-pdp-variations/mb-social-proof-v08.html' },
+    { name: 'MB Value V03', path: 'product/briefs/foundation-stick-pdp-variations/mb-value-v03.html' },
+    { name: 'MB Value V07', path: 'product/briefs/foundation-stick-pdp-variations/mb-value-v07.html' },
+    { name: 'Blushing Stick — Review', path: 'product/briefs/foundation-stick-pdp-variations/bs-review.html' },
+    { name: 'BS Before/After V01', path: 'product/briefs/foundation-stick-pdp-variations/bs-before-after-v01.html' },
+    { name: 'BS Before/After V03', path: 'product/briefs/foundation-stick-pdp-variations/bs-before-after-v03.html' },
+    { name: 'BS Before/After V07', path: 'product/briefs/foundation-stick-pdp-variations/bs-before-after-v07.html' },
+    { name: 'BS Bobbi V01', path: 'product/briefs/foundation-stick-pdp-variations/bs-bobbi-v01.html' },
+    { name: 'BS Bobbi V08', path: 'product/briefs/foundation-stick-pdp-variations/bs-bobbi-v08.html' },
+    { name: 'BS Buildability V06', path: 'product/briefs/foundation-stick-pdp-variations/bs-buildability-v06.html' },
+    { name: 'BS Cross-Sell V01', path: 'product/briefs/foundation-stick-pdp-variations/bs-cross-sell-v01.html' },
+    { name: 'BS Cross-Sell V05', path: 'product/briefs/foundation-stick-pdp-variations/bs-cross-sell-v05.html' },
+    { name: 'BS Cross-Sell V07', path: 'product/briefs/foundation-stick-pdp-variations/bs-cross-sell-v07.html' },
+    { name: 'BS How-To V01', path: 'product/briefs/foundation-stick-pdp-variations/bs-how-to-v01.html' },
+    { name: 'BS Ingredients V01', path: 'product/briefs/foundation-stick-pdp-variations/bs-ingredients-v01.html' },
+    { name: 'BS Ingredients V02', path: 'product/briefs/foundation-stick-pdp-variations/bs-ingredients-v02.html' },
+    { name: 'BS Ingredients V07', path: 'product/briefs/foundation-stick-pdp-variations/bs-ingredients-v07.html' },
+    { name: 'BS Mini Trial V03', path: 'product/briefs/foundation-stick-pdp-variations/bs-mini-trial-v03.html' },
+    { name: 'BS Shade Confidence V02', path: 'product/briefs/foundation-stick-pdp-variations/bs-shade-confidence-v02.html' },
+    { name: 'BS Shade Confidence V03', path: 'product/briefs/foundation-stick-pdp-variations/bs-shade-confidence-v03.html' },
+    { name: 'BS Shade Confidence V05', path: 'product/briefs/foundation-stick-pdp-variations/bs-shade-confidence-v05.html' },
+    { name: 'BS Shade Confidence V07', path: 'product/briefs/foundation-stick-pdp-variations/bs-shade-confidence-v07.html' },
+    { name: 'BS Shade Confidence V10', path: 'product/briefs/foundation-stick-pdp-variations/bs-shade-confidence-v10.html' },
+    { name: 'BS Social Proof V02', path: 'product/briefs/foundation-stick-pdp-variations/bs-social-proof-v02.html' },
+    { name: 'BS Social Proof V03', path: 'product/briefs/foundation-stick-pdp-variations/bs-social-proof-v03.html' },
+    { name: 'BS Value V09', path: 'product/briefs/foundation-stick-pdp-variations/bs-value-v09.html' },
+    { name: 'WTF Review', path: 'product/briefs/foundation-stick-pdp-variations/wtf-review.html' },
+    { name: 'WTF Before/After V01', path: 'product/briefs/foundation-stick-pdp-variations/wtf-before-after-v01.html' },
+    { name: 'WTF Before/After V04', path: 'product/briefs/foundation-stick-pdp-variations/wtf-before-after-v04.html' },
+    { name: 'WTF Bobbi V01', path: 'product/briefs/foundation-stick-pdp-variations/wtf-bobbi-v01.html' },
+    { name: 'WTF Bobbi V02', path: 'product/briefs/foundation-stick-pdp-variations/wtf-bobbi-v02.html' },
+    { name: 'WTF Bobbi V05', path: 'product/briefs/foundation-stick-pdp-variations/wtf-bobbi-v05.html' },
+    { name: 'WTF Cross-Sell V06', path: 'product/briefs/foundation-stick-pdp-variations/wtf-cross-sell-v06.html' },
+    { name: 'WTF How-To V01', path: 'product/briefs/foundation-stick-pdp-variations/wtf-how-to-v01.html' },
+    { name: 'WTF How-To V08', path: 'product/briefs/foundation-stick-pdp-variations/wtf-how-to-v08.html' },
+    { name: 'WTF Ingredients V01', path: 'product/briefs/foundation-stick-pdp-variations/wtf-ingredients-v01.html' },
+    { name: 'WTF Ingredients V02', path: 'product/briefs/foundation-stick-pdp-variations/wtf-ingredients-v02.html' },
+    { name: 'WTF Ingredients V07', path: 'product/briefs/foundation-stick-pdp-variations/wtf-ingredients-v07.html' },
+    { name: 'WTF Ingredients V10', path: 'product/briefs/foundation-stick-pdp-variations/wtf-ingredients-v10.html' },
+    { name: 'WTF Quiz Builder V01', path: 'product/briefs/foundation-stick-pdp-variations/wtf-quiz-builder-v01.html' },
+    { name: 'WTF Quiz Builder V03', path: 'product/briefs/foundation-stick-pdp-variations/wtf-quiz-builder-v03.html' },
+    { name: 'WTF Quiz Builder V07', path: 'product/briefs/foundation-stick-pdp-variations/wtf-quiz-builder-v07.html' },
+    { name: 'WTF Shade Confidence V01', path: 'product/briefs/foundation-stick-pdp-variations/wtf-shade-confidence-v01.html' },
+    { name: 'WTF Shade Confidence V02', path: 'product/briefs/foundation-stick-pdp-variations/wtf-shade-confidence-v02.html' },
+    { name: 'WTF Shade Confidence V03', path: 'product/briefs/foundation-stick-pdp-variations/wtf-shade-confidence-v03.html' },
+    { name: 'WTF Shade Confidence V06', path: 'product/briefs/foundation-stick-pdp-variations/wtf-shade-confidence-v06.html' },
+    { name: 'WTF Social Proof V02', path: 'product/briefs/foundation-stick-pdp-variations/wtf-social-proof-v02.html' },
+    { name: 'WTF Social Proof V03', path: 'product/briefs/foundation-stick-pdp-variations/wtf-social-proof-v03.html' },
+    { name: 'WTF Social Proof V07', path: 'product/briefs/foundation-stick-pdp-variations/wtf-social-proof-v07.html' },
+    { name: 'WTF Value V09', path: 'product/briefs/foundation-stick-pdp-variations/wtf-value-v09.html' },
+    { name: 'PDP Brief', path: 'product/briefs/foundation-stick-pdp-variations/pdp-brief.html' },
+    { name: 'PDP R2', path: 'product/briefs/foundation-stick-pdp-variations/pdp-r2.html' },
+    { name: 'PDP R3', path: 'product/briefs/foundation-stick-pdp-variations/pdp-r3.html' },
+    { name: 'PDP Rebuild', path: 'product/briefs/foundation-stick-pdp-variations/pdp-rebuild.html' },
+    { name: 'PDP Section Variations', path: 'product/briefs/foundation-stick-pdp-variations/pdp-section-variations.html' },
+    { name: 'PDP Section Winners', path: 'product/briefs/foundation-stick-pdp-variations/pdp-section-winners.html' },
+    { name: 'PDP V1', path: 'product/briefs/foundation-stick-pdp-variations/pdp-v1.html' },
+    { name: 'PDP Variations', path: 'product/briefs/foundation-stick-pdp-variations/pdp-variations.html' },
+    { name: 'Vote', path: 'product/briefs/foundation-stick-pdp-variations/vote.html' },
+    { name: 'Homepage Brief', path: 'product/briefs/foundation-stick-pdp-variations/homepage-brief.html' },
+    { name: 'Homepage Brief V2', path: 'product/briefs/foundation-stick-pdp-variations/homepage-brief-v2.html' },
+    { name: 'Homepage R2', path: 'product/briefs/foundation-stick-pdp-variations/homepage-r2.html' },
+    { name: 'Homepage R3', path: 'product/briefs/foundation-stick-pdp-variations/homepage-r3.html' },
+    { name: 'Homepage V1', path: 'product/briefs/foundation-stick-pdp-variations/homepage-v1.html' },
+    { name: 'Homepage V1 Variations', path: 'product/briefs/foundation-stick-pdp-variations/homepage-v1-variations.html' },
+    { name: 'Homepage V2', path: 'product/briefs/foundation-stick-pdp-variations/homepage-v2.html' },
+    { name: 'Homepage V3', path: 'product/briefs/foundation-stick-pdp-variations/homepage-v3.html' },
+    { name: 'Homepage V4', path: 'product/briefs/foundation-stick-pdp-variations/homepage-v4.html' },
+    { name: 'Homepage Variations', path: 'product/briefs/foundation-stick-pdp-variations/homepage-variations.html' }
+  ]},
+  { dept: 'product', type: 'briefs', folder: 'foundation-stick-research', docs: [
+    { name: 'Foundation Stick Research', path: 'product/briefs/foundation-stick-research/' }
+  ]},
+  { dept: 'product', type: 'briefs', folder: 'shade-ai-v2', docs: [
+    { name: 'Shade AI V2', path: 'product/briefs/shade-ai-v2/' }
+  ]},
+  { dept: 'product', type: 'naming-briefs', folder: 'highlighter-stick', docs: [
+    { name: 'Highlighter Stick', path: 'product/naming-briefs/highlighter-stick/' },
+    { name: 'Highlighter Stick (standalone)', path: 'product/naming-briefs/highlighter-stick.html' }
+  ]},
+  { dept: 'product', type: 'proposals', folder: 'shade-ai-v3-proposal', docs: [
+    { name: 'Shade AI V3 Proposal', path: 'product/proposals/shade-ai-v3-proposal/' }
+  ]},
+  { dept: 'product', type: 'specs', folder: 'cclp-section-library', docs: [
+    { name: 'CCLP Section Library', path: 'product/specs/cclp-section-library/' }
+  ]},
+  { dept: 'product', type: 'specs', folder: 'emily-blushing-stick-performance', docs: [
+    { name: 'Emily Blushing Stick — Performance', path: 'product/specs/emily-blushing-stick-performance/' }
+  ]},
+  { dept: 'product', type: 'specs', folder: 'emily-blushing-stick-storytelling', docs: [
+    { name: 'Emily Blushing Stick — Storytelling', path: 'product/specs/emily-blushing-stick-storytelling/' }
+  ]},
+];
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+const DEPTS = ['brand', 'ecom', 'growth', 'ops', 'product'];
+let activeDept = 'all';
+let searchQuery = '';
+
+function iconSvg() {
+  return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>`;
+}
+
+function chevronSvg() {
+  return `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg>`;
+}
+
+function folderIconSvg(color) {
+  return `<svg width="16" height="16" viewBox="0 0 24 24" fill="${color}22" stroke="${color}" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`;
+}
+
+function renderCard(entry) {
+  const color = DEPT_COLORS[entry.dept];
+  const typeLabel = TYPE_LABELS[entry.type] || entry.type;
+  const isCollapsible = entry.collapsible && entry.docs.length > 4;
+  const previewDocs = isCollapsible ? entry.docs.slice(0, 3) : entry.docs;
+  const extraDocs = isCollapsible ? entry.docs.slice(3) : [];
+  const id = `${entry.dept}-${entry.type}-${entry.folder}`.replace(/[^a-z0-9-]/g, '-');
+
+  const docItem = (doc) => `
+    <div class="doc-item" data-name="${doc.name.toLowerCase()}">
+      <a href="${BASE}${doc.path}" target="_blank" rel="noopener">
+        ${iconSvg()}
+        <span class="doc-name">${doc.name}</span>
+      </a>
+    </div>`;
+
+  return `
+    <div class="folder-card" data-dept="${entry.dept}" data-folder="${entry.folder.toLowerCase()}" data-docs="${entry.docs.map(d=>d.name.toLowerCase()).join('|')}">
+      <div class="folder-header">
+        ${folderIconSvg(color)}
+        <span class="folder-name">${slugToTitle(entry.folder)}</span>
+        <span class="type-badge">${typeLabel}</span>
+        <span class="doc-count">${entry.docs.length}</span>
+      </div>
+      <div class="doc-list">
+        ${previewDocs.map(docItem).join('')}
+        ${isCollapsible ? `
+          <div class="collapsible-docs" id="extra-${id}">
+            ${extraDocs.map(docItem).join('')}
+          </div>
+          <button class="collapse-btn" onclick="toggleExtra('extra-${id}', this)">
+            ${chevronSvg()}
+            Show ${extraDocs.length} more files
+          </button>
+        ` : ''}
+      </div>
+    </div>`;
+}
+
+function slugToTitle(slug) {
+  return slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function toggleExtra(id, btn) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+  btn.classList.toggle('open');
+  const count = el.querySelectorAll('.doc-item').length;
+  btn.innerHTML = btn.classList.contains('open')
+    ? `${chevronSvg()} Show fewer files`
+    : `${chevronSvg()} Show ${count} more files`;
+}
+
+function countDeptDocs(dept) {
+  return DATA.filter(e => e.dept === dept).reduce((sum, e) => sum + e.docs.length, 0);
+}
+
+function render() {
+  const main = document.getElementById('main');
+  const depts = activeDept === 'all' ? DEPTS : [activeDept];
+  let html = '';
+  let anyVisible = false;
+
+  for (const dept of depts) {
+    const entries = DATA.filter(e => {
+      if (e.dept !== dept) return false;
+      if (!searchQuery) return true;
+      const q = searchQuery.toLowerCase();
+      return e.folder.includes(q) || e.docs.some(d => d.name.toLowerCase().includes(q));
+    });
+    if (!entries.length) continue;
+    anyVisible = true;
+    const color = DEPT_COLORS[dept];
+    const total = entries.reduce((s, e) => s + e.docs.length, 0);
+    html += `
+      <div class="dept-section">
+        <div class="dept-header">
+          <div class="dept-dot" style="background:${color}"></div>
+          <span class="dept-title">${dept}</span>
+          <span class="dept-count">${entries.length} folder${entries.length !== 1 ? 's' : ''} · ${total} doc${total !== 1 ? 's' : ''}</span>
+        </div>
+        <div class="folder-grid">
+          ${entries.map(renderCard).join('')}
+        </div>
+      </div>`;
+  }
+
+  if (!anyVisible) {
+    html = `<div class="empty">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d4d4d4" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <p>No documents match "<strong>${searchQuery}</strong>"</p>
+    </div>`;
+  }
+
+  main.innerHTML = html;
+
+  // If searching, expand all collapsibles
+  if (searchQuery) {
+    document.querySelectorAll('.collapsible-docs').forEach(el => el.classList.add('open'));
+    // Hide non-matching doc items
+    document.querySelectorAll('.doc-item').forEach(item => {
+      const name = item.dataset.name || '';
+      item.style.display = name.includes(searchQuery.toLowerCase()) || !searchQuery ? '' : 'none';
+    });
+  }
+}
+
+// Tabs
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    activeDept = tab.dataset.dept;
+    render();
+  });
+});
+
+// Search
+document.getElementById('search').addEventListener('input', e => {
+  searchQuery = e.target.value.trim();
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
