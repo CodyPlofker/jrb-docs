@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PLP Optimization Brief — Jones Road Beauty</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #000;
+      background: #fff;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── HEADER ── */
+    .brief-header {
+      background: #000;
+      color: #fff;
+      padding: 48px 0 40px;
+    }
+
+    .brief-header .container {}
+
+    .brief-eyebrow {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #ff2e92;
+      margin-bottom: 12px;
+    }
+
+    .brief-title {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .brief-subtitle {
+      font-size: 15px;
+      color: #ccc;
+      margin-bottom: 32px;
+    }
+
+    .evidence-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      border-top: 1px solid #333;
+      padding-top: 24px;
+    }
+
+    .evidence-stat {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .evidence-stat__value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .evidence-stat__value.pink {
+      color: #ff2e92;
+    }
+
+    .evidence-stat__label {
+      font-size: 11px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-top: 2px;
+    }
+
+    /* ── NAV ── */
+    .page-nav {
+      background: #f8f8f8;
+      border-bottom: 1px solid #e0e0e0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .page-nav ul {
+      display: flex;
+      gap: 0;
+      list-style: none;
+      overflow-x: auto;
+    }
+
+    .page-nav a {
+      display: block;
+      padding: 14px 20px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #000;
+      text-decoration: none;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+    }
+
+    .page-nav a:hover {
+      border-bottom-color: #ff2e92;
+      color: #ff2e92;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 56px 0;
+    }
+
+    section:nth-child(even) {
+      background: #f8f8f8;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #ff2e92;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-desc {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 32px;
+      max-width: 640px;
+    }
+
+    /* ── HEATMAP SUMMARY CARDS ── */
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .heatmap-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 20px;
+    }
+
+    .heatmap-card__page {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #999;
+      margin-bottom: 8px;
+    }
+
+    .heatmap-card__finding {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .heatmap-card__detail {
+      font-size: 12px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .heatmap-card__clicks {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 3px 8px;
+      background: #000;
+      color: #fff;
+      font-size: 11px;
+      border-radius: 2px;
+    }
+
+    /* ── PRIORITY TABLE ── */
+    .fix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .fix-table th {
+      text-align: left;
+      padding: 10px 12px;
+      background: #000;
+      color: #fff;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 600;
+    }
+
+    .fix-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid #e0e0e0;
+      vertical-align: top;
+    }
+
+    .fix-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .fix-table tr:nth-child(even) td {
+      background: #fafafa;
+    }
+
+    .fix-name {
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    .fix-tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .fix-tag--step1 { background: #ff2e92; color: #fff; }
+    .fix-tag--step2 { background: #000; color: #fff; }
+    .fix-tag--step3 { background: #e0e0e0; color: #000; }
+
+    .ice-score {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .ice-score--high { color: #ff2e92; }
+    .ice-score--med { color: #000; }
+
+    .ice-breakdown {
+      font-size: 10px;
+      color: #999;
+      margin-top: 2px;
+    }
+
+    .evidence-pill {
+      display: inline-block;
+      padding: 2px 7px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 10px;
+      margin: 2px 2px 2px 0;
+      white-space: nowrap;
+    }
+
+    /* ── EVIDENCE CARDS ── */
+    .evidence-cards {
+      display: grid;
+      gap: 24px;
+    }
+
+    .evidence-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .evidence-card__header {
+      background: #000;
+      color: #fff;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .evidence-card__step {
+      background: #ff2e92;
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .evidence-card__title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .evidence-card__ice {
+      margin-left: auto;
+      font-size: 11px;
+      color: #ccc;
+    }
+
+    .evidence-card__body {
+      padding: 20px;
+    }
+
+    .evidence-card__body h4 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #999;
+      margin-bottom: 8px;
+      margin-top: 16px;
+    }
+
+    .evidence-card__body h4:first-child {
+      margin-top: 0;
+    }
+
+    .evidence-card__body p {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .stat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 12px 0;
+    }
+
+    .stat-chip {
+      background: #f8f8f8;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 8px 12px;
+      text-align: center;
+    }
+
+    .stat-chip__value {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .stat-chip__label {
+      font-size: 10px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .quote-block {
+      background: #f8f8f8;
+      border-left: 3px solid #ff2e92;
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .quote-block cite {
+      display: block;
+      font-style: normal;
+      font-size: 11px;
+      color: #999;
+      margin-top: 6px;
+    }
+
+    .competitive-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 12px 0;
+    }
+
+    .competitive-item {
+      background: #f8f8f8;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 12px;
+    }
+
+    .competitive-item__brand {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .competitive-item__feature {
+      font-size: 12px;
+      color: #555;
+    }
+
+    .check { color: #22c55e; font-weight: 700; }
+    .cross { color: #ef4444; font-weight: 700; }
+
+    /* ── OPTIMAL PLP VISION ── */
+    .vision-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    .vision-item {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 16px;
+    }
+
+    .vision-item__zone {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #ff2e92;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .vision-item__title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .vision-item ul {
+      padding-left: 16px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #333;
+    }
+
+    /* ── VARIATION LADDER ── */
+    .variation-ladder {
+      display: grid;
+      gap: 16px;
+    }
+
+    .variation {
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .variation__header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .variation--control .variation__header { background: #f8f8f8; }
+    .variation--v1 .variation__header { background: #ff2e92; color: #fff; }
+    .variation--v2 .variation__header { background: #000; color: #fff; }
+    .variation--v3 .variation__header { background: #333; color: #fff; }
+
+    .variation__name {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .variation__hypothesis {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .variation__body {
+      padding: 16px 20px;
+      background: #fff;
+    }
+
+    .variation__body ul {
+      padding-left: 18px;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .variation__rationale {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #555;
+      font-style: italic;
+    }
+
+    /* ── FOOTER ── */
+    .brief-footer {
+      background: #000;
+      color: #ccc;
+      padding: 32px 0;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .brief-footer a { color: #ff2e92; text-decoration: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .brief-title { font-size: 26px; }
+      .heatmap-grid { grid-template-columns: 1fr; }
+      .competitive-row { grid-template-columns: 1fr; }
+      .vision-grid { grid-template-columns: 1fr; }
+      .evidence-bar { flex-direction: column; gap: 12px; }
+      .fix-table { font-size: 12px; }
+      .fix-table th, .fix-table td { padding: 10px 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="brief-header">
+    <div class="container">
+      <div class="brief-eyebrow">CRO Brief — Collection Pages</div>
+      <h1 class="brief-title">PLP Optimization Brief</h1>
+      <p class="brief-subtitle">Jones Road Beauty &nbsp;·&nbsp; April 14, 2026 &nbsp;·&nbsp; Convertibles Framework</p>
+
+      <div class="evidence-bar">
+        <div class="evidence-stat">
+          <div class="evidence-stat__value">435K</div>
+          <div class="evidence-stat__label">Monthly PLP sessions</div>
+        </div>
+        <div class="evidence-stat">
+          <div class="evidence-stat__value">3.6%</div>
+          <div class="evidence-stat__label">Shop All CVR (heatmap)</div>
+        </div>
+        <div class="evidence-stat">
+          <div class="evidence-stat__value pink">2.12%</div>
+          <div class="evidence-stat__label">Kits CVR (GA4 — worst)</div>
+        </div>
+        <div class="evidence-stat">
+          <div class="evidence-stat__value">3.8%</div>
+          <div class="evidence-stat__label">Site avg CVR</div>
+        </div>
+        <div class="evidence-stat">
+          <div class="evidence-stat__value">5</div>
+          <div class="evidence-stat__label">Key collection pages analyzed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="page-nav">
+    <div class="container">
+      <ul>
+        <li><a href="#heatmap">Heatmap Findings</a></li>
+        <li><a href="#priority-table">Priority Fixes</a></li>
+        <li><a href="#evidence">Evidence Deep-Dives</a></li>
+        <li><a href="#competitive">Competitive Audit</a></li>
+        <li><a href="#vision">Optimal PLP</a></li>
+        <li><a href="#ladder">Variation Ladder</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- SECTION 1: HEATMAP FINDINGS -->
+  <section id="heatmap">
+    <div class="container">
+      <div class="section-label">Heatmap Data — Mar 28 to Apr 13, 2026</div>
+      <h2>What Users Are Actually Clicking</h2>
+      <p class="section-desc">Click data pulled via Heatmap.com API (site ID 2821). Top 20 click events per page, filtered for event type 2 (clicks). Key patterns extracted below.</p>
+
+      <div class="heatmap-grid">
+        <div class="heatmap-card">
+          <div class="heatmap-card__page">Shop All</div>
+          <div class="heatmap-card__finding">Alia popups dominate click volume</div>
+          <div class="heatmap-card__detail">~14,000 combined clicks on Alia quiz/popup elements vs 1,658 on the first sub-nav category tab. The popup is the #1 engagement destination — either highly compelling or blocking intent.</div>
+          <span class="heatmap-card__clicks">14K+ Alia clicks</span>
+        </div>
+        <div class="heatmap-card">
+          <div class="heatmap-card__page">Face Collection</div>
+          <div class="heatmap-card__finding">Top click is mobile nav EXIT (6,593)</div>
+          <div class="heatmap-card__detail">The single most-clicked element on the Face collection page is the mobile menu — users are leaving the page immediately after landing. This is a strong signal the page isn't capturing intent.</div>
+          <span class="heatmap-card__clicks">6,593 exit clicks</span>
+        </div>
+        <div class="heatmap-card">
+          <div class="heatmap-card__page">Kits Collection</div>
+          <div class="heatmap-card__finding">5,424 exit via menu + 4,080 "Shop All" escapes</div>
+          <div class="heatmap-card__detail">Users on the Kits page click the mobile menu to leave (5,424) and then click "Shop All" within the menu (4,080). This ~9K exit signal on a 73K/month page explains the 2.12% GA4 CVR.</div>
+          <span class="heatmap-card__clicks">~9K nav exit clicks</span>
+        </div>
+        <div class="heatmap-card">
+          <div class="heatmap-card__page">Shop All + Face + Kits</div>
+          <div class="heatmap-card__finding">Product tile 2nd image heavily clicked</div>
+          <div class="heatmap-card__detail">Every collection shows multiple entries for the 2nd image in the tile swiper (1,179 on Shop All; 1,559 + 1,443 on Kits; 780 on Face). Users are previewing product images at the tile level — wanting more info before clicking through.</div>
+          <span class="heatmap-card__clicks">4K+ swipe-to-2nd-image</span>
+        </div>
+        <div class="heatmap-card">
+          <div class="heatmap-card__page">Shop All</div>
+          <div class="heatmap-card__finding">Sort dropdown: 1,293 clicks</div>
+          <div class="heatmap-card__detail">Filter/sort gets meaningful use. Sub-nav category tabs also receive 1,658 + 1,320 + 1,424 (next-arrow) clicks. Users are actively trying to filter and navigate — the tools exist but may not surface the right signals.</div>
+          <span class="heatmap-card__clicks">1,293 sort clicks</span>
+        </div>
+        <div class="heatmap-card">
+          <div class="heatmap-card__page">Face Collection</div>
+          <div class="heatmap-card__finding">Products #4, #5, #6 get all direct tile clicks</div>
+          <div class="heatmap-card__detail">Product #4 = 1,559 clicks, #6 = 1,135, #5 = 846. Products beyond position #6 receive very few direct clicks. The collection has a steep engagement drop-off — early positions dominate.</div>
+          <span class="heatmap-card__clicks">Top-6 position bias</span>
+        </div>
+      </div>
+
+      <div style="background:#f8f8f8; border:1px solid #e0e0e0; border-radius:4px; padding:20px; font-size:13px; line-height:1.7;">
+        <strong>Scroll depth context (rawPageviewAnalytics, 14-day window):</strong><br>
+        Shop All: avg ~280 scroll units/session across ~3,500 sessions/day — moderate engagement, users browsing but not deep-scrolling.<br>
+        Kits: avg ~700 scroll units/session across ~2,700 sessions/day — higher per-session engagement when users stay, but most leave via nav before scrolling.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: PRIORITY TABLE -->
+  <section id="priority-table">
+    <div class="container">
+      <div class="section-label">ICE-Scored Fix List</div>
+      <h2>Prioritized Fixes — Ranked by Impact</h2>
+      <p class="section-desc">Each fix is scored on Impact (1–10), Confidence (1–10), and Ease (1–10) per the ICE framework. Higher Ease = easier to implement. Convertibles Step indicates when this change enters the variation ladder.</p>
+
+      <table class="fix-table">
+        <thead>
+          <tr>
+            <th style="width:28px">#</th>
+            <th style="width:220px">Fix</th>
+            <th>Problem &amp; Evidence</th>
+            <th style="width:80px; text-align:center">ICE Score</th>
+            <th style="width:90px">Step</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1</strong></td>
+            <td>
+              <div class="fix-name">Ratings + Review Count on Product Tiles</div>
+              <span class="evidence-pill">Customer Research</span>
+              <span class="evidence-pill">Heatmap Signal</span>
+            </td>
+            <td>
+              No social proof on collection tiles. 71% of prospects want ratings visible before they scroll. "Glaring zero" documented as a conversion killer — moving reviews below fold hurt PDP CVR. Competitive standard: Rare Beauty shows 4.8★ + 1,091 reviews on tiles.
+            </td>
+            <td style="text-align:center">
+              <div class="ice-score ice-score--high">25</div>
+              <div class="ice-breakdown">I:9 C:9 E:7</div>
+            </td>
+            <td><span class="fix-tag fix-tag--step1">Step 1 — V1</span></td>
+          </tr>
+          <tr>
+            <td><strong>2</strong></td>
+            <td>
+              <div class="fix-name">Price Prominent + Compare Price on Tiles</div>
+              <span class="evidence-pill">Customer Research</span>
+              <span class="evidence-pill">Price Sensitivity</span>
+            </td>
+            <td>
+              71% explicitly want price visible on product tiles. 26.4% of MB buyers almost didn't purchase due to price concerns — they need value justification early. Sale pricing and savings should be visible at tile level, not just on PDP.
+            </td>
+            <td style="text-align:center">
+              <div class="ice-score ice-score--high">25</div>
+              <div class="ice-breakdown">I:8 C:9 E:8</div>
+            </td>
+            <td><span class="fix-tag fix-tag--step1">Step 1 — V1</span></td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td>
+            <td>
+              <div class="fix-name">"New" + "Bestseller" + Award Badges on Tiles</div>
+              <span class="evidence-pill">Homepage Research</span>
+              <span class="evidence-pill">Low Ease Cost</span>
+            </td>
+            <td>
+              49.5% of customers say "New Arrivals" section is missing. 63% first notice featured products. Featured products get maximum first-scan attention — badges replicate that signal at tile level. JRB08 tested award badge on PDP. Easy implementation.
+            </td>
+            <td style="text-align:center">
+              <div class="ice-score ice-score--high">20</div>
+              <div class="ice-breakdown">I:6 C:7 E:7</div>
+            </td>
+            <td><span class="fix-tag fix-tag--step2">Step 2 — V2</span></td>
+          </tr>
+          <tr>
+            <td><strong>4</strong></td>
+            <td>
+              <div class="fix-name">Shade Swatches on Tiles (shade-variant products)</div>
+              <span class="evidence-pill">7,048 CX Tickets/qtr</span>
+              <span class="evidence-pill">Heatmap: Tile Swiping</span>
+            </td>
+            <td>
+              46% shade uncertainty (prospects). 78% want swatches on 3+ skin tones. Heatmap shows users swiping to 2nd product image on tiles (4K+ events across 3 pages) — they are searching for shade info at tile level. 7,048 CX shade tickets/quarter means the PDP isn't resolving this early enough.
+            </td>
+            <td style="text-align:center">
+              <div class="ice-score ice-score--high">22</div>
+              <div class="ice-breakdown">I:9 C:8 E:5</div>
+            </td>
+            <td><span class="fix-tag fix-tag--step2">Step 2 — V2</span></td>
+          </tr>
+          <tr>
+            <td><strong>5</strong></td>
+            <td>
+              <div class="fix-name">Quick-Add to Cart (non-shade products + Kits)</div>
+              <span class="evidence-pill">Kits CVR: 2.12%</span>
+              <span class="evidence-pill">Competitive Standard</span>
+            </td>
+            <td>
+              Kits CVR is 2.12% (GA4) vs 6.3% heatmap-reported — worst performing collection. Kits are single-SKU or low-shade products — ideal quick-add candidates. JRB30 ("make collection card clickable") had 0.9% engagement, but that was a tap-area fix, not a dedicated ATC action. Industry data: quick-add increases ATC 15–20%.
+            </td>
+            <td style="text-align:center">
+              <div class="ice-score ice-score--med">20</div>
+              <div class="ice-breakdown">I:8 C:7 E:5</div>
+            </td>
+            <td><span class="fix-tag fix-tag--step2">Step 2 — V2</span></td>
+          </tr>
+          <tr>
+            <td><strong>6</strong></td>
+            <td>
+              <div class="fix-name">Trust Bar Above Product Grid</div>
+              <span class="evidence-pill">First-Scan Attention</span>
+              <span class="evidence-pill">17% Clean Messaging</span>
+            </td>
+            <td>
+              Clean beauty messaging is noticed by only 17% on first scan — not breaking through. A thin trust bar above the grid ("Clean ingredients · 4.8★ average · Free shipping $85+") answers the "why buy here" question before users scroll into products. Low implementation cost.
+            </td>
+            <td style="text-align:center">
+              <div class="ice-score ice-score--med">20</div>
+              <div class="ice-breakdown">I:7 C:6 E:7</div>
+            </td>
+            <td><span class="fix-tag fix-tag--step3">Step 3 — V3</span></td>
+          </tr>
+          <tr>
+            <td><strong>7</strong></td>
+            <td>
+              <div class="fix-name">Enhanced Filters — Skin Concern + New Arrivals</div>
+              <span class="evidence-pill">1,293 Sort Clicks</span>
+              <span class="evidence-pill">New Arrivals Gap</span>
+            </td>
+            <td>
+              Sort dropdown gets 1,293 clicks on Shop All. Sub-nav tabs get 3K+ combined clicks. Users want to filter — but current options are category-only. Adding "New Arrivals", "Best Sellers", and skin concern filters (dry, oily, aging) aligns with competitive standard and customer stated needs.
+            </td>
+            <td style="text-align:center">
+              <div class="ice-score ice-score--med">19</div>
+              <div class="ice-breakdown">I:7 C:7 E:5</div>
+            </td>
+            <td><span class="fix-tag fix-tag--step3">Step 3 — V3</span></td>
+          </tr>
+          <tr>
+            <td><strong>8</strong></td>
+            <td>
+              <div class="fix-name">Kits Collection — "What's Inside" Preview</div>
+              <span class="evidence-pill">2.12% Kits CVR</span>
+              <span class="evidence-pill">Kit Customization Demand</span>
+            </td>
+            <td>
+              Kits tiles show product packaging but not individual products inside. Kit customization is the #1 open-ended request (Holiday Kit survey). "Products the model is wearing" is absent per 51.7% of website feedback respondents. A rollover or secondary image showing individual kit items could reduce the need to click through.
+            </td>
+            <td style="text-align:center">
+              <div class="ice-score ice-score--med">17</div>
+              <div class="ice-breakdown">I:7 C:6 E:4</div>
+            </td>
+            <td><span class="fix-tag fix-tag--step3">Step 3 — V3</span></td>
+          </tr>
+          <tr>
+            <td><strong>9</strong></td>
+            <td>
+              <div class="fix-name">Anchor Content to Reduce Nav Exits (Mobile)</div>
+              <span class="evidence-pill">Face: 6,593 exits</span>
+              <span class="evidence-pill">Kits: 9K nav exits</span>
+            </td>
+            <td>
+              Face collection: top click is mobile menu exit (6,593). Kits: ~9K combined exit clicks. A collection-level hero statement or curated callout above the grid (e.g., "Our 5 hero face products" or "Kits built by Bobbi") may reduce the impulse to immediately navigate away. Requires investigation of traffic sources.
+            </td>
+            <td style="text-align:center">
+              <div class="ice-score ice-score--med">18</div>
+              <div class="ice-breakdown">I:8 C:6 E:4</div>
+            </td>
+            <td><span class="fix-tag fix-tag--step3">Step 3 — V3</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 3: EVIDENCE DEEP-DIVES -->
+  <section id="evidence">
+    <div class="container">
+      <div class="section-label">Evidence Deep-Dives</div>
+      <h2>Top 3 Fixes — Full Evidence Stack</h2>
+      <p class="section-desc">For the three highest-priority fixes, this section documents the full evidence chain: heatmap data, customer research findings, customer quotes, and competitive benchmarks.</p>
+
+      <div class="evidence-cards">
+
+        <!-- Card 1: Ratings on Tiles -->
+        <div class="evidence-card">
+          <div class="evidence-card__header">
+            <div class="evidence-card__step">1</div>
+            <div class="evidence-card__title">Ratings + Review Count on Product Tiles</div>
+            <div class="evidence-card__ice">ICE: 9 · 9 · 7 = 25</div>
+          </div>
+          <div class="evidence-card__body">
+
+            <h4>The Problem</h4>
+            <p>JRB collection page tiles show product image, name, and price — but zero social proof. There are no star ratings, no review counts, and no "bestseller" signals. On a brand that relies on "earned trust" positioning, this creates a silent credibility gap at the discovery layer.</p>
+
+            <h4>Quantified Customer Evidence</h4>
+            <div class="stat-row">
+              <div class="stat-chip">
+                <div class="stat-chip__value">71%</div>
+                <div class="stat-chip__label">want ratings early</div>
+              </div>
+              <div class="stat-chip">
+                <div class="stat-chip__value">144%</div>
+                <div class="stat-chip__label">CVR lift from UGC engagement</div>
+              </div>
+              <div class="stat-chip">
+                <div class="stat-chip__value">22%</div>
+                <div class="stat-chip__label">AOV increase from social proof</div>
+              </div>
+              <div class="stat-chip">
+                <div class="stat-chip__value">15%</div>
+                <div class="stat-chip__label">higher ATC with social proof on tiles</div>
+              </div>
+            </div>
+
+            <div class="quote-block">
+              "I want to see reviews before I scroll down."
+              <cite>— ListenLabs User Research, Jun 2025 Homepage Evaluation</cite>
+            </div>
+
+            <div class="quote-block">
+              "Reviews showing zero kills conversion" — documented in CRO knowledge base as a named pattern. Moving reviews below the fold on PDPs hurt conversions.
+              <cite>— JRB CRO Knowledge Base, derived from Convertibles testing learnings</cite>
+            </div>
+
+            <h4>Heatmap Signal</h4>
+            <p>No direct heatmap click on a "rating" element exists because ratings don't exist on tiles yet. However, the heavy tile-image swiping behavior (4K+ swipe-to-2nd-image events across 3 pages) suggests users are seeking additional product information at the tile level — ratings would be consumed in this discovery moment.</p>
+
+            <h4>Competitive Benchmark</h4>
+            <div class="competitive-row">
+              <div class="competitive-item">
+                <div class="competitive-item__brand">Rare Beauty</div>
+                <div class="competitive-item__feature"><span class="check">✓</span> Star rating (4.8★) + review count (1,091) visible on all collection tiles</div>
+              </div>
+              <div class="competitive-item">
+                <div class="competitive-item__brand">Ilia Beauty</div>
+                <div class="competitive-item__feature"><span class="check">✓</span> Reviews prominently surfaced on product cards. "Skincare-grade" trust positioning backed by visible proof.</div>
+              </div>
+              <div class="competitive-item">
+                <div class="competitive-item__brand">JRB (current)</div>
+                <div class="competitive-item__feature"><span class="cross">✗</span> No ratings or review count visible on any collection tile. Users must click to PDP to see social proof.</div>
+              </div>
+            </div>
+
+            <h4>Recommended Change</h4>
+            <p>Add star rating (1 decimal, e.g. 4.7) + review count in parentheses below the product title on all collection tiles. Use Junip review data already integrated. Style: small text, star icon, lightweight — does not require redesign of tile card.</p>
+          </div>
+        </div>
+
+        <!-- Card 2: Price Visibility -->
+        <div class="evidence-card">
+          <div class="evidence-card__header">
+            <div class="evidence-card__step">2</div>
+            <div class="evidence-card__title">Price Prominent + Compare Price on Tiles</div>
+            <div class="evidence-card__ice">ICE: 8 · 9 · 8 = 25</div>
+          </div>
+          <div class="evidence-card__body">
+
+            <h4>The Problem</h4>
+            <p>While price appears on tiles today, the implementation may not be prominent enough — especially for sale/compare pricing. When 71% of users want price visible and 26.4% of actual buyers almost didn't purchase due to price, every pixel of price signal matters. Compare price (strikethrough) and savings percentage ("Save 20%") should be tile-level features, not PDP-only.</p>
+
+            <h4>Quantified Customer Evidence</h4>
+            <div class="stat-row">
+              <div class="stat-chip">
+                <div class="stat-chip__value">71%</div>
+                <div class="stat-chip__label">want price on tiles</div>
+              </div>
+              <div class="stat-chip">
+                <div class="stat-chip__value">26.4%</div>
+                <div class="stat-chip__label">MB buyers almost didn't buy due to price</div>
+              </div>
+              <div class="stat-chip">
+                <div class="stat-chip__value">#1</div>
+                <div class="stat-chip__label">barrier for non-purchasers</div>
+              </div>
+            </div>
+
+            <div class="quote-block">
+              "I buy makeup online but choosing the right Miracle Balm tint online was too hard for me. I didn't want to select incorrect color and lose the money."
+              <cite>— Non-purchaser, Miracle Balm Didn't Buy Survey (n=1,185), age 51–65</cite>
+            </div>
+
+            <div class="quote-block">
+              "As a senior citizen, it is a lot of money for me to spend without guaranteeing it will work for me."
+              <cite>— Non-purchaser, Miracle Balm Didn't Buy Survey (n=1,185), age 65+</cite>
+            </div>
+
+            <h4>Recommended Change</h4>
+            <p>Audit tile price display on all 5 collection pages. Ensure: (1) price is in a readable size (14px minimum), (2) compare/original price shows as strikethrough when product is on sale, (3) "Save X%" badge appears on any discounted tile, (4) on mobile, price is not truncated or hidden below fold within the tile card.</p>
+          </div>
+        </div>
+
+        <!-- Card 3: Shade Swatches -->
+        <div class="evidence-card">
+          <div class="evidence-card__header">
+            <div class="evidence-card__step">3</div>
+            <div class="evidence-card__title">Shade Swatches on Tiles (shade-variant products)</div>
+            <div class="evidence-card__ice">ICE: 9 · 8 · 5 = 22</div>
+          </div>
+          <div class="evidence-card__body">
+
+            <h4>The Problem</h4>
+            <p>Shade-variant products (Miracle Balm, JETM, WTF, Face Pencil, etc.) show no shade indication on collection tiles. Users must click to PDP to discover shade options — and 46% arrive at the PDP already uncertain. The tile is the first moment to set shade expectations and build confidence.</p>
+
+            <h4>Quantified Customer Evidence</h4>
+            <div class="stat-row">
+              <div class="stat-chip">
+                <div class="stat-chip__value">46%</div>
+                <div class="stat-chip__label">shade uncertainty (prospects)</div>
+              </div>
+              <div class="stat-chip">
+                <div class="stat-chip__value">78%</div>
+                <div class="stat-chip__label">want swatches on 3+ skin tones</div>
+              </div>
+              <div class="stat-chip">
+                <div class="stat-chip__value">7,048</div>
+                <div class="stat-chip__label">shade CX tickets/quarter</div>
+              </div>
+              <div class="stat-chip">
+                <div class="stat-chip__value">76.4%</div>
+                <div class="stat-chip__label">say skin tone swatches missing from site</div>
+              </div>
+            </div>
+
+            <div class="quote-block">
+              "The shade matching part was confusing — I wasn't sure which undertone I am."
+              <cite>— ListenLabs User Research, Jun 2025 Homepage Evaluation</cite>
+            </div>
+
+            <div class="quote-block">
+              "Being unable to sample on my skin in person makes the proper shade selection nearly impossible."
+              <cite>— Non-purchaser, Miracle Balm Didn't Buy Survey, Mar 2024</cite>
+            </div>
+
+            <h4>Heatmap Signal</h4>
+            <p>Across all three collection pages, the swipe-to-2nd-image behavior accounts for 4,000+ click events: 1,179 on Shop All, 780 + 721 on Face, and 1,559 + 1,443 + 1,008 + 1,004 on Kits. Users are using the 2nd product image as a shade/detail preview. This is improvised swatch behavior — confirming that shade context at tile level is actively sought.</p>
+
+            <h4>Competitive Benchmark</h4>
+            <div class="competitive-row">
+              <div class="competitive-item">
+                <div class="competitive-item__brand">Sephora / Ulta</div>
+                <div class="competitive-item__feature"><span class="check">✓</span> Shade dots on every shade-variant tile. Hover to preview shade name. Click dot to see tile image change.</div>
+              </div>
+              <div class="competitive-item">
+                <div class="competitive-item__brand">Merit Beauty</div>
+                <div class="competitive-item__feature"><span class="check">✓</span> Up to 14 shade variants shown as swatches on PLP tile. Tile image updates on swatch hover.</div>
+              </div>
+              <div class="competitive-item">
+                <div class="competitive-item__brand">JRB (current)</div>
+                <div class="competitive-item__feature"><span class="cross">✗</span> No shade indication on tiles. Users must click to PDP to see any shade options or swatch imagery.</div>
+              </div>
+            </div>
+
+            <h4>Recommended Change</h4>
+            <p>Add shade swatch dots below the product title on tiles for any product with multiple shades. Show top 5–6 shades (or all if ≤6). On hover/tap of swatch, tile image updates to show that shade. This is a Step 2 implementation because it requires more development than ratings (tile image-swap logic) but the impact is very high for complexion products.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: COMPETITIVE AUDIT -->
+  <section id="competitive">
+    <div class="container">
+      <div class="section-label">Competitive Audit — April 14, 2026</div>
+      <h2>What Best-in-Class PLPs Look Like</h2>
+      <p class="section-desc">Live visit + screenshot audit of 10 brands (6 beauty, 4 non-beauty) via Chrome. Full markdown report in <code>competitive-audit-plp.md</code>. Key patterns mapped to JRB's known friction below.</p>
+
+      <div class="heatmap-grid">
+        <div class="heatmap-card">
+          <div class="heatmap-card__page">Universal Patterns</div>
+          <div class="heatmap-card__finding">Table stakes that 10/10 brands execute</div>
+          <div class="heatmap-card__detail">Price on every tile (10/10), product name, sort control, breadcrumb, sale / strikethrough pricing when discounted. JRB already does price — this confirms the 71% ask is the baseline, not an aspiration.</div>
+          <span class="heatmap-card__clicks">10/10 brands</span>
+        </div>
+        <div class="heatmap-card">
+          <div class="heatmap-card__page">Common Patterns</div>
+          <div class="heatmap-card__finding">Near-standard in modern DTC (6–9 of 10)</div>
+          <div class="heatmap-card__detail">Sub-category pill nav above grid (7/10), descriptive tagline under product name (6/10), tile-level quick-add or shade CTA (7/10), badge system — New / Bestseller / Sale (8/10), 4-col desktop grid (6/10), product count in UI (6/10).</div>
+          <span class="heatmap-card__clicks">6–9 of 10</span>
+        </div>
+        <div class="heatmap-card">
+          <div class="heatmap-card__page">Differentiators</div>
+          <div class="heatmap-card__finding">Opportunities — only 1–3 brands execute</div>
+          <div class="heatmap-card__detail">Shade count overlay on image (Kosas only), stars + review count on tile (Rare Beauty — 1091 REVIEWS prominent), dermatology certifications on tile (Tower 28 only), editorial promo tiles inline with grid (Glossier / Kosas / ILIA), category-specific smart filters (Mejuri, On, Rare Beauty), award badges embedded on product image (ILIA).</div>
+          <span class="heatmap-card__clicks">1–3 brands</span>
+        </div>
+      </div>
+
+      <h3 style="font-size:18px; font-weight:700; margin:32px 0 8px;">Brand-by-Brand Snapshot</h3>
+      <p class="section-desc">Tile info shown, filter UX, grid density, single most distinct feature.</p>
+
+      <table class="fix-table">
+        <thead>
+          <tr>
+            <th style="width:18%;">Brand</th>
+            <th style="width:32%;">Tile Info</th>
+            <th style="width:20%;">Filters</th>
+            <th style="width:10%;">Grid</th>
+            <th style="width:20%;">Distinct Feature</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="fix-name">Merit</div></td>
+            <td>Name + strikethrough + sale price only. No stars, no tagline, no badges.</td>
+            <td>Sort only. No filters at all.</td>
+            <td>3-col</td>
+            <td>Pure minimalism; named editorial sets</td>
+          </tr>
+          <tr>
+            <td><div class="fix-name">ILIA</div></td>
+            <td>Stars (no count) + name + tagline + SELECT SHADE $48 CTA + Allure award badges on image.</td>
+            <td>Header category nav. No drawer.</td>
+            <td>4-col</td>
+            <td>Press awards embedded on product images</td>
+          </tr>
+          <tr>
+            <td><div class="fix-name">Glossier</div></td>
+            <td>Badge (Best-seller / Top-rated) + name + tagline + shade swatch dots + "Add to bag" CTA + price.</td>
+            <td>Pill-chip sub-nav + Filter + Sort toolbar.</td>
+            <td>4-col</td>
+            <td>Lifestyle hero tile inline with grid</td>
+          </tr>
+          <tr>
+            <td><div class="fix-name">Kosas</div></td>
+            <td>"38 SHADES" overlay on image + name + tagline + Select Shade — $32 CTA.</td>
+            <td>Pill-chip sub-nav (Face, Cheek, Lip, Eye, Brow…).</td>
+            <td>4-col</td>
+            <td><span class="check">★</span> Shade count overlay on image</td>
+          </tr>
+          <tr>
+            <td><div class="fix-name">Tower 28</div></td>
+            <td>Derm certifications (Eczema, Rosacea, Psoriasis) on image + name + tagline + shade swatches + Add — $20 CTA.</td>
+            <td>Sort only.</td>
+            <td>4-col</td>
+            <td><span class="check">★</span> Dermatology certifications on tile</td>
+          </tr>
+          <tr>
+            <td><div class="fix-name">Rare Beauty</div></td>
+            <td>Stars + "1091 REVIEWS" prominent + name + ADD TO BAG • $30 CTA.</td>
+            <td>Pill nav + Filter drawer (Coverage, Finish) + Sort.</td>
+            <td>3-col</td>
+            <td><span class="check">★</span> Stars + review count (1091 REVIEWS)</td>
+          </tr>
+          <tr>
+            <td><div class="fix-name">Mejuri</div></td>
+            <td>Name + price + small material swatches + material name (18k Gold Vermeil).</td>
+            <td>Material / Stone / Price / All Filters (sticky).</td>
+            <td>4-col</td>
+            <td>Category-specific smart filters</td>
+          </tr>
+          <tr>
+            <td><div class="fix-name">On Running</div></td>
+            <td>Wishlist heart + colorway thumbnails row + badge + name + use-case tagline + price.</td>
+            <td>Activity pill-chip nav (Running, Hiking, Tennis, Lifestyle) + Filter drawer.</td>
+            <td>3-col</td>
+            <td>Activity sub-nav + colorway previews</td>
+          </tr>
+          <tr>
+            <td><div class="fix-name">Aesop</div></td>
+            <td>Editorial story: "For evolving skin needs" tag + large serif name + long copy + bookmark.</td>
+            <td>None visible.</td>
+            <td>2-col editorial</td>
+            <td>Magazine-format PLP (one product per screen)</td>
+          </tr>
+          <tr>
+            <td><div class="fix-name">Allbirds</div></td>
+            <td>Badge + name + color name + color dots + "+8" / "+11" overflow + price. No stars despite strong reviews.</td>
+            <td>FILTER (45 products) + Gender toggle + Sort.</td>
+            <td>4-col</td>
+            <td>Color overflow counter "+N"</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:18px; font-weight:700; margin:40px 0 8px;">Whitespace — What Nobody Does Well</h3>
+      <p class="section-desc">Seven gaps in the audited set. Each is a candidate for JRB to own.</p>
+
+      <div class="vision-grid">
+        <div class="vision-item">
+          <div class="vision-item__zone">Gap 1</div>
+          <div class="vision-item__title">Explicit Kit Savings Math</div>
+          <ul>
+            <li>Merit shows strikethrough ($156 → $133) but no "Save $23" math.</li>
+            <li>Tower 28 uses "Save $6" badges but doesn't break out value.</li>
+            <li>Nobody says "Save $23 vs. buying separately."</li>
+            <li>Kits CVR = 2.12% — this is the single clearest whitespace move.</li>
+          </ul>
+        </div>
+        <div class="vision-item">
+          <div class="vision-item__zone">Gap 2</div>
+          <div class="vision-item__title">Skin Concern / Persona Filters</div>
+          <ul>
+            <li>Rare Beauty: Coverage + Finish (closest).</li>
+            <li>Kosas: shade family + undertone.</li>
+            <li>On: activity (Running, Hiking, Tennis).</li>
+            <li>Nobody in beauty filters by concern (aging, redness, dullness) — which is how 45+ customers actually shop.</li>
+          </ul>
+        </div>
+        <div class="vision-item">
+          <div class="vision-item__zone">Gap 3</div>
+          <div class="vision-item__title">Collection-Level Trust Bar</div>
+          <ul>
+            <li>No brand added a trust strip above the grid with review averages or ingredient callouts specific to that collection.</li>
+            <li>Opportunity: "4.8★ average · Clean ingredients · Dermatologist tested" strip above Face collection.</li>
+          </ul>
+        </div>
+        <div class="vision-item">
+          <div class="vision-item__zone">Gap 4</div>
+          <div class="vision-item__title">Inline Video on Tile</div>
+          <ul>
+            <li>Despite video being the dominant ad format in beauty, every tile used static images.</li>
+            <li>3–5-second texture / application loop on hover would be a dramatic differentiator.</li>
+          </ul>
+        </div>
+        <div class="vision-item">
+          <div class="vision-item__zone">Gap 5</div>
+          <div class="vision-item__title">"Bought Together" Logic on PLP</div>
+          <ul>
+            <li>No tile in the audit surfaced cross-sell or bundle logic at the grid level.</li>
+            <li>Opportunity on Kits collection: "Complete the routine — add Gentle Cleanser for $X more."</li>
+          </ul>
+        </div>
+        <div class="vision-item">
+          <div class="vision-item__zone">Gap 6</div>
+          <div class="vision-item__title">Velocity / Trending Proof</div>
+          <ul>
+            <li>No "X bought this week" or "trending now" signal on any tile.</li>
+            <li>Cheap to ship, high FOMO lift, especially for sale / seasonal products.</li>
+          </ul>
+        </div>
+        <div class="vision-item">
+          <div class="vision-item__zone">Gap 7</div>
+          <div class="vision-item__title">Age / Life-Stage Matching</div>
+          <ul>
+            <li>No brand explicitly matches products to age or life stage.</li>
+            <li>Given JRB's 45+ core and Bobbi positioning, "Best for mature skin" filter or tile badge is a natural fit.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="font-size:18px; font-weight:700; margin:40px 0 8px;">Implications for JRB — Priority Adjustments</h3>
+      <p class="section-desc">How the audit changes or validates the fix priorities in the table above.</p>
+
+      <div class="evidence-cards">
+        <div class="evidence-card">
+          <div class="evidence-card__header">
+            <span class="evidence-card__step">1</span>
+            <span class="evidence-card__title">Ratings — upgrade to Stars + Review Count (Rare Beauty model)</span>
+            <span class="evidence-card__ice">Keep Step 1</span>
+          </div>
+          <div class="evidence-card__body">
+            <p>Rare Beauty's <strong>★★★★★ 1091 REVIEWS</strong> treatment is doing more work than stars alone. The review count (1091, 218, 436) is the credibility carrier — large, legible, visually anchored under the product name. Keep ratings as a Step 1 priority but specify the format as <em>stars + full count</em>, not stars + "(N)" in small type. ILIA's stars-only treatment is weaker.</p>
+            <div class="competitive-row">
+              <div class="competitive-item">
+                <div class="competitive-item__brand">Rare Beauty</div>
+                <div class="competitive-item__feature"><span class="check">✓</span> "★★★★★ 1091 REVIEWS" — count is prominent, hyperlinked.</div>
+              </div>
+              <div class="competitive-item">
+                <div class="competitive-item__brand">ILIA</div>
+                <div class="competitive-item__feature"><span class="check">~</span> Stars visible, no count shown — weaker social proof.</div>
+              </div>
+              <div class="competitive-item">
+                <div class="competitive-item__brand">Allbirds, Glossier, Kosas, Tower 28, Merit, Mejuri, On</div>
+                <div class="competitive-item__feature"><span class="cross">✗</span> No stars on tile at all.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="evidence-card">
+          <div class="evidence-card__header">
+            <span class="evidence-card__step">2</span>
+            <span class="evidence-card__title">Shade indication — add "X SHADES" overlay as Step 1, swatch dots as Step 2</span>
+            <span class="evidence-card__ice">Split into two phases</span>
+          </div>
+          <div class="evidence-card__body">
+            <p>Kosas's shade-count overlay ("38 SHADES" / "6 SHADES" text over the image) is a <strong>Step 1-effort move</strong> — a CSS overlay on product imagery, no tile image-swap backend. It delivers ~70% of the shade-visibility benefit. The full swatch-dot pattern with tile image-swap (Tower 28, Merit model) can come in Step 2.</p>
+            <p><strong>Revised plan:</strong> Step 1 adds "X SHADES" text overlay on the image for any product with ≥ 2 shades. Step 2 replaces it with interactive swatch dots that swap the tile image.</p>
+          </div>
+        </div>
+
+        <div class="evidence-card">
+          <div class="evidence-card__header">
+            <span class="evidence-card__step">3</span>
+            <span class="evidence-card__title">Kit Savings Math — raise priority</span>
+            <span class="evidence-card__ice">New Step 1 / 2 candidate</span>
+          </div>
+          <div class="evidence-card__body">
+            <p>This is <strong>whitespace</strong> — no brand in the 10-brand set shows explicit "Save $X vs. buying separately" math on kit tiles. Given Kits CVR at 2.12% (44% below site average), this is the highest-leverage move on the weakest-performing collection. Merit shows strikethrough pricing ($156 → $133); Tower 28 uses "Save $6" generic badges. Nobody does the explicit math.</p>
+            <p><strong>Proposal:</strong> Kits tiles get three additions — (a) "Save $23" badge top-right, (b) "Includes Miracle Balm, JETM + 3 more" subtitle, (c) 2nd tile image shows individual products laid out. Low-dev, on-brand, direct revenue logic.</p>
+          </div>
+        </div>
+
+        <div class="evidence-card">
+          <div class="evidence-card__header">
+            <span class="evidence-card__step">4</span>
+            <span class="evidence-card__title">Sub-category Pill Nav — validates the mobile-exit fix</span>
+            <span class="evidence-card__ice">Keep Step 2</span>
+          </div>
+          <div class="evidence-card__body">
+            <p>Seven of ten brands (Glossier, Kosas, Rare Beauty, Mejuri, On, Allbirds, ILIA) use horizontal pill-chip sub-nav above the grid. This directly addresses JRB's mobile-exit pattern (6,593 exits on Face; 5,424 on Kits). Users leaving to the hamburger menu and clicking "Shop All" are doing what a pill-chip nav would let them do in-place.</p>
+            <p><strong>Proposal:</strong> Sticky horizontal pill-chip sub-nav above the grid, showing current sub-category + 4–6 related ones (e.g., on Face: Base · Lip · Cheek · Eyes · Brow · Tools). Kosas and Rare Beauty are the cleanest templates.</p>
+          </div>
+        </div>
+
+        <div class="evidence-card">
+          <div class="evidence-card__header">
+            <span class="evidence-card__step">5</span>
+            <span class="evidence-card__title">Third-party Trust — add Press / Dermatology badges on hero products (Step 3)</span>
+            <span class="evidence-card__ice">New Step 3 candidate</span>
+          </div>
+          <div class="evidence-card__body">
+            <p>ILIA overlays Allure / Byrdie award badges directly on product imagery. Tower 28 overlays National Eczema / Rosacea / Psoriasis Foundation certifications. Both are <strong>cheap to implement</strong> (static image badges) and lift credibility. JRB has an existing press kit and clean-beauty positioning — there is no reason Allure / Byrdie / Vogue badges shouldn't appear on top-selling product tiles.</p>
+          </div>
+        </div>
+
+        <div class="evidence-card">
+          <div class="evidence-card__header">
+            <span class="evidence-card__step">6</span>
+            <span class="evidence-card__title">Concern / Life-Stage Filters — fully untapped in beauty (Step 2 / 3)</span>
+            <span class="evidence-card__ice">New Step 2 / 3 candidate</span>
+          </div>
+          <div class="evidence-card__body">
+            <p>On Running's activity-based nav (Running, Hiking, Tennis) translates cleanly to beauty as concern-based nav (Dryness, Redness, Aging, Uneven tone, Sensitive). No brand in the audited set does this in beauty. Given JRB's 45+ customer research showing concern-driven shopping, this is a genuine whitespace move that reframes PLP around customer intent, not product type.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 5: OPTIMAL PLP VISION -->
+  <section id="vision">
+    <div class="container">
+      <div class="section-label">Design Vision</div>
+      <h2>What the Optimal JRB PLP Looks Like</h2>
+      <p class="section-desc">A description of the fully-optimized collection page with all fixes applied. This is the "best challenger" — the full-treatment variation that V3 represents.</p>
+
+      <div class="vision-grid">
+        <div class="vision-item">
+          <div class="vision-item__zone">Zone 1 — Above Grid</div>
+          <div class="vision-item__title">Collection Trust Bar + Filter Nav</div>
+          <ul>
+            <li>Thin trust bar: "Clean ingredients · 4.8★ average · Free shipping $85+"</li>
+            <li>Category sub-nav tabs (existing) + "New Arrivals" and "Best Sellers" filter options</li>
+            <li>Sort by: Featured · Best Sellers · Price Low-High · New Arrivals</li>
+            <li>Skin concern filter: Dry skin · Aging · Uneven tone · Sensitive</li>
+            <li>Mobile: horizontal scrollable filter pills, always visible above grid</li>
+          </ul>
+        </div>
+        <div class="vision-item">
+          <div class="vision-item__zone">Zone 2 — Product Tile</div>
+          <div class="vision-item__title">Tile Card — Full Information Layer</div>
+          <ul>
+            <li>Product image (swiper with 2nd lifestyle/on-skin image)</li>
+            <li>Badge (New / Bestseller / Award Winner / Sale) — top-left corner</li>
+            <li>Star rating (e.g., 4.7) + review count (e.g., 1,247 reviews) — below image</li>
+            <li>Product name — clear, full title</li>
+            <li>Shade swatch dots (for shade variants) — click to preview on tile</li>
+            <li>Price — prominent, compare price strikethrough + "Save X%" on sale items</li>
+            <li>Quick-Add CTA (single SKU products) — appears on hover/tap of tile</li>
+          </ul>
+        </div>
+        <div class="vision-item">
+          <div class="vision-item__zone">Zone 3 — Kits Specific</div>
+          <div class="vision-item__title">Kit Tile Enhancements</div>
+          <ul>
+            <li>2nd tile image shows individual products included in kit</li>
+            <li>Badges: "Save $X vs. buying separately" value callout</li>
+            <li>Quick-add available (kits are single-SKU, no shade selection needed)</li>
+            <li>Kit contents preview: "Includes Miracle Balm, JETM + 3 more" as subtitle text</li>
+          </ul>
+        </div>
+        <div class="vision-item">
+          <div class="vision-item__zone">Zone 4 — Mobile UX</div>
+          <div class="vision-item__title">Mobile-First Tile Grid</div>
+          <ul>
+            <li>2-column grid maintained (current, confirmed working)</li>
+            <li>Touch-friendly swatch dots: minimum 7mm × 7mm per Baymard standard</li>
+            <li>Sticky mini filter bar above grid on scroll</li>
+            <li>Rating + price always visible within first scroll on 375px viewport</li>
+            <li>No content above grid that increases scroll-to-product distance</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="background:#f8f8f8; border-left:3px solid #ff2e92; padding:20px 24px; margin-top:24px; font-size:13px; line-height:1.7;">
+        <strong>What this version does not include:</strong> Major layout changes (no grid-to-list toggle, no sticky sidebar filters, no hero banner above grid). The Convertibles framework prioritizes additive changes to the tile card over structural page redesigns — consistent with the test history pattern that major redesigns underperform incremental improvements.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: VARIATION LADDER -->
+  <section id="ladder">
+    <div class="container">
+      <div class="section-label">Convertibles Framework</div>
+      <h2>Variation Ladder</h2>
+      <p class="section-desc">The Convertibles approach builds the optimal version first, then tests by adding complexity in steps — or removes elements to isolate what's driving lift. V1 is the minimum viable improvement; V3 is the full treatment.</p>
+
+      <div class="variation-ladder">
+
+        <div class="variation variation--v1">
+          <div class="variation__header">
+            <div class="variation__name">V1 — "Proof on Tiles"</div>
+            <div class="variation__hypothesis">Hypothesis: Adding ratings + ensuring price prominence moves the conversion needle without requiring shade-matching infrastructure</div>
+          </div>
+          <div class="variation__body">
+            <ul>
+              <li>Add star rating (1 decimal) + review count below product title on all tiles (Pull from Junip)</li>
+              <li>Ensure price is visible, readable (14px+), and not truncated on mobile viewports</li>
+              <li>Show compare price strikethrough + "Save X%" badge on any discounted products</li>
+            </ul>
+            <p class="variation__rationale">The lightest-lift combination of the two highest-confidence fixes. Should be testable with minimal dev work (likely CSS + liquid adjustments to tile card). If this doesn't move RPV, it tells us social proof and price clarity aren't the primary blocker — and we look deeper at shade/navigation friction.</p>
+          </div>
+        </div>
+
+        <div class="variation variation--v2">
+          <div class="variation__header">
+            <div class="variation__name">V2 — "Shade + Signals"</div>
+            <div class="variation__hypothesis">Hypothesis: V1 gains + shade swatches + product badging increase both click-through rate and shade confidence — reducing returns and repeat sessions</div>
+          </div>
+          <div class="variation__body">
+            <ul>
+              <li>Everything in V1 +</li>
+              <li>Shade swatch dots on tiles for all shade-variant products (tap to preview, image updates)</li>
+              <li>New / Bestseller / Award badges on qualifying tiles</li>
+              <li>Quick-Add CTA for single-SKU products (Kits priority) — appears on tile hover/tap</li>
+            </ul>
+            <p class="variation__rationale">Adds the two highest-impact changes that require more development. Shade swatches address the #1 compound friction point (46% shade uncertainty + 7,048 CX tickets). Kits quick-add targets the worst-performing collection (2.12% GA4 CVR). If V2 beats V1, shade infrastructure is a confirmed lever.</p>
+          </div>
+        </div>
+
+        <div class="variation variation--v3">
+          <div class="variation__header">
+            <div class="variation__name">V3 — "Full Discovery Layer"</div>
+            <div class="variation__hypothesis">Hypothesis: The full optimal PLP — proof + shades + filters + anchoring — achieves maximum CVR improvement by resolving all identified friction simultaneously</div>
+          </div>
+          <div class="variation__body">
+            <ul>
+              <li>Everything in V2 +</li>
+              <li>Trust bar above grid: "Clean ingredients · 4.8★ average · Free shipping $85+"</li>
+              <li>Enhanced filters: New Arrivals + Best Sellers tabs + skin concern filter options</li>
+              <li>Kits tile: 2nd image shows kit contents (individual products); "Includes X, Y, Z" subtitle</li>
+              <li>Collection-level anchor content (Face + Kits): single-line curated headline above grid to reduce nav exits</li>
+            </ul>
+            <p class="variation__rationale">The full-treatment build. Tests whether structural additions (filter expansion, trust bar, kit content preview) compound the gains from V1/V2 or dilute focus. If V3 underperforms V2, the structural additions are adding noise. If V3 beats V2, filter/anchoring is a real conversion driver.</p>
+          </div>
+        </div>
+
+        <div class="variation variation--control">
+          <div class="variation__header">
+            <div class="variation__name">Control — Current State</div>
+            <div class="variation__hypothesis">Baseline: current JRB collection page (no ratings on tiles, price as-is, no shade swatches, no quick-add, current filter tabs)</div>
+          </div>
+          <div class="variation__body">
+            <ul>
+              <li>Product image + product name + price on tiles</li>
+              <li>Category sub-nav tabs above grid</li>
+              <li>Sort dropdown (price, featured, new)</li>
+              <li>Alia quiz widget (existing popup)</li>
+              <li>No ratings, no shade swatches, no badges, no quick-add</li>
+            </ul>
+            <p class="variation__rationale">Keep all users on control during test ramp-up. Stop criteria: any variation down more than 5% RPV after 3 days should be paused. Minimum test duration: 2 weeks. Run on Shop All first (159K sessions/month) for fastest significance, then apply winner to Face + Kits.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Test Plan Notes -->
+      <div style="margin-top:32px; padding:24px; background:#f8f8f8; border:1px solid #e0e0e0; border-radius:4px;">
+        <h3 style="font-size:16px; font-weight:700; margin-bottom:12px;">Test Plan Notes</h3>
+        <ul style="padding-left:18px; font-size:13px; line-height:1.9;">
+          <li><strong>Primary metric:</strong> Revenue Per Visitor (RPV) — consistent with all JRB tests</li>
+          <li><strong>Secondary metrics:</strong> Add-to-Cart rate, Collection-to-PDP CTR, Collection CVR</li>
+          <li><strong>Launch sequence:</strong> V1 first (lowest risk, fastest to build). If winner, layer V2 on top. If V2 wins, layer V3.</li>
+          <li><strong>Start page:</strong> Shop All (159K sessions/month) — highest volume, fastest to significance</li>
+          <li><strong>Significance threshold:</strong> 95% minimum, 98% preferred before calling winner</li>
+          <li><strong>JRB30 learning:</strong> "Make collection card clickable" had only 0.9% engagement — this was a tap-area fix, not a dedicated action. V2 quick-add test is a different hypothesis (explicit ATC button) and should not be conflated with JRB30.</li>
+          <li><strong>JRB22 (Collection Page Filters) status:</strong> Documented in registry but outcome not recorded — check with Convertibles before re-running filter test to avoid duplicating inconclusive work.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="brief-footer">
+    <div class="container">
+      <p>Jones Road Beauty · PLP Optimization Brief · April 14, 2026 · Internal CRO Strategy Document</p>
+      <p style="margin-top:8px;">Data sources: Heatmap.com API (site 2821) · ListenLabs (11 studies, 446 respondents) · Typeform (7,545 responses) · Junip (240,797 reviews) · OuterSignal (436,700 customers) · Richpanel (29,661 CX tickets)</p>
+    </div>
+  </div>
+
+</body>
+</html>
