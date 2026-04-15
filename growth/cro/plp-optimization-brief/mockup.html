@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile-First PLP Mockup — 375px Viewport | Jones Road Beauty</title>
+
+<style>
+  @font-face {
+    font-family: 'Canela';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');
+    font-weight: 300; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'GeogrotesqueCondBoldWeb';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'ArticulatCF';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f6f2eb;
+    color: #000;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+    line-height: 1.5;
+    font-size: 14px;
+  }
+
+  /* ============================================================
+     PAGE HEADER
+     ============================================================ */
+  .doc-header {
+    max-width: 1280px;
+    margin: 0 auto 40px;
+    padding: 32px;
+    background: #000;
+    color: #fff;
+    border-radius: 4px;
+  }
+
+  .doc-header .eyebrow {
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #ff2e92;
+    margin-bottom: 8px;
+  }
+
+  .doc-header h1 {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+
+  .doc-header p {
+    font-size: 14px;
+    color: #ccc;
+    max-width: 780px;
+    line-height: 1.6;
+  }
+
+  /* ============================================================
+     COMPARISON LAYOUT — 4 variants side by side
+     ============================================================ */
+  .variants-row {
+    max-width: 1720px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  @media (max-width: 1400px) {
+    .variants-row { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 720px) {
+    .variants-row { grid-template-columns: 1fr; }
+  }
+
+  /* Mobile device frame */
+  .device {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 16px;
+    border: 1px solid #e0e0e0;
+  }
+
+  .device__label {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .device__tag {
+    display: inline-block;
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    background: #000;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-bottom: 6px;
+  }
+
+  .device__tag--v1 { background: #666; }
+  .device__tag--v2 { background: #ff2e92; }
+  .device__tag--v3 { background: #000; }
+
+  .device__name {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+
+  .device__hyp {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.4;
+    min-height: 32px;
+  }
+
+  /* Phone shell @ 375px */
+  .phone {
+    background: #000;
+    border-radius: 28px;
+    padding: 10px;
+    max-width: 375px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .phone__screen {
+    background: #fff;
+    border-radius: 22px;
+    overflow: hidden;
+    min-height: 780px;
+    position: relative;
+  }
+
+  .phone__notch {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 24px;
+    background: #000;
+    border-radius: 0 0 14px 14px;
+    z-index: 10;
+  }
+
+  /* ============================================================
+     PLP UI INSIDE PHONE
+     ============================================================ */
+  .plp {
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color: #000;
+  }
+
+  /* Top bar (shared across all) */
+  .plp__nav {
+    background: #000;
+    color: #fff;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    padding-top: 12px;
+    position: relative;
+  }
+
+  .plp__nav__menu {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .plp__nav__logo {
+    font-family: 'Canela', Georgia, serif;
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .plp__nav__cart {
+    font-size: 12px;
+  }
+
+  /* Utility strip */
+  .plp__utility {
+    background: #f6f2eb;
+    color: #000;
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 8px 16px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  /* Breadcrumb */
+  .plp__crumb {
+    padding: 12px 16px 4px;
+    font-size: 11px;
+    color: #666;
+  }
+
+  /* Collection header */
+  .plp__head {
+    padding: 4px 16px 12px;
+  }
+
+  .plp__head__title {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 26px;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+
+  .plp__head__count {
+    font-size: 11px;
+    color: #666;
+  }
+
+  /* Sub-nav pill chips */
+  .plp__chips {
+    display: flex;
+    gap: 6px;
+    padding: 8px 16px 12px;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .plp__chip {
+    flex-shrink: 0;
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border: 1px solid #000;
+    border-radius: 20px;
+    color: #000;
+    background: #fff;
+  }
+
+  .plp__chip--active {
+    background: #000;
+    color: #fff;
+  }
+
+  /* Trust strip (V3 only) */
+  .plp__trust {
+    background: #f6f2eb;
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 8px 16px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  /* Filter/sort bar */
+  .plp__filter-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 16px;
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  /* Grid */
+  .plp__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  /* ============================================================
+     TILE — CONTROL
+     ============================================================ */
+  .tile {
+    display: block;
+  }
+
+  .tile__img {
+    aspect-ratio: 1;
+    background: #f6f2eb;
+    margin-bottom: 8px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: #999;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tile__title {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+
+  .tile__price {
+    font-size: 12px;
+  }
+
+  /* ============================================================
+     TILE — V1 ADDITIONS
+     ============================================================ */
+  .tile--v1 .tile__title,
+  .tile--v2 .tile__title,
+  .tile--v3 .tile__title {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .tile__rating {
+    font-size: 11px;
+    color: #000;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  .tile__rating__star {
+    color: #000;
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .tile__rating__count {
+    color: #666;
+  }
+
+  .tile__shades {
+    display: inline-block;
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    background: #f6f2eb;
+    padding: 3px 7px;
+    margin-bottom: 4px;
+    border-radius: 2px;
+  }
+
+  .tile__price--v1 {
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .tile__price__compare {
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 6px;
+    font-weight: 400;
+    font-size: 11px;
+  }
+
+  .tile__includes {
+    font-size: 11px;
+    color: #000;
+    line-height: 1.4;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ============================================================
+     TILE — V2 ADDITIONS
+     ============================================================ */
+  .tile__badges {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .tile__badge {
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 3px 6px;
+    border-radius: 2px;
+    color: #fff;
+    background: #000;
+    display: inline-block;
+  }
+
+  .tile__badge--new { background: #ff2e92; }
+  .tile__badge--best { background: #000; }
+
+  .tile__hover-hint {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 3px 6px;
+    border-radius: 2px;
+  }
+
+  .tile__swatches {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+
+  .tile__swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid #d0d0d0;
+    display: inline-block;
+  }
+
+  .tile__swatch--more {
+    width: auto;
+    height: auto;
+    border: none;
+    font-size: 10px;
+    color: #666;
+    line-height: 16px;
+  }
+
+  /* ============================================================
+     TILE — V3 ADDITIONS (stock state)
+     ============================================================ */
+  .tile__stock {
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+
+  .tile__stock--in { color: #0a7a0a; }
+  .tile__stock--low { color: #c06000; }
+  .tile__stock--oos {
+    background: #f6f2eb;
+    color: #000;
+    border: 1px solid #000;
+  }
+
+  .tile__stock__notify {
+    margin-top: 4px;
+    width: 100%;
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    background: transparent;
+    color: #000;
+    border: 1px solid #000;
+    padding: 6px;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+
+  /* Dummy image colors per product (fake them with gradients for the mockup) */
+  .img--face-pencil { background: linear-gradient(135deg, #d4a373 0%, #a67c52 100%); color: #fff; }
+  .img--mb { background: linear-gradient(135deg, #e8c4a0 0%, #c19a6b 100%); color: #fff; }
+  .img--wtf { background: linear-gradient(135deg, #a67c52 0%, #6b4423 100%); color: #fff; }
+  .img--lr { background: linear-gradient(135deg, #e8a5a5 0%, #c47070 100%); color: #fff; }
+  .img--kit { background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); color: #ff2e92; }
+  .img--oos { background: #f6f2eb; color: #999; }
+
+  /* ============================================================
+     ANNOTATIONS
+     ============================================================ */
+  .annotations {
+    max-width: 1280px;
+    margin: 48px auto 0;
+    background: #000;
+    color: #fff;
+    padding: 32px;
+    border-radius: 4px;
+  }
+
+  .annotations h2 {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 26px;
+    margin-bottom: 16px;
+  }
+
+  .annotations__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 16px;
+  }
+
+  @media (max-width: 1100px) {
+    .annotations__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 600px) {
+    .annotations__grid { grid-template-columns: 1fr; }
+  }
+
+  .anno-col {
+    padding: 16px;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 4px;
+  }
+
+  .anno-col__head {
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #ff2e92;
+    margin-bottom: 10px;
+  }
+
+  .anno-col ul {
+    list-style: none;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .anno-col li {
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 8px;
+    color: #ccc;
+  }
+
+  .anno-col li::before {
+    content: counter(anno);
+    counter-increment: anno;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 14px;
+    height: 14px;
+    background: #ff2e92;
+    color: #000;
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .anno-col ul { counter-reset: anno; }
+
+  /* Numbered callouts on the mockup itself */
+  .cue {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #ff2e92;
+    color: #000;
+    border: 2px solid #000;
+    font-family: 'GeogrotesqueCondBoldWeb', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="doc-header">
+  <div class="eyebrow">Mobile mockup · 375px viewport · Apr 15, 2026</div>
+  <h1>Mobile-First PLP — Tile Template V1 / V2 / V3</h1>
+  <p>70% of JRB traffic is mobile. This mockup shows the Control tile + V1 / V2 / V3 variations on a 375px viewport, built to JRB design-system spec. Product frames are gradient placeholders; all typography, spacing, and touch-target sizes match production intent. Pink numbered callouts correspond to the annotation columns below. Grid is 2-column (current production pattern, confirmed working).</p>
+</div>
+
+<div class="variants-row">
+
+  <!-- ============================================================
+       CONTROL
+       ============================================================ -->
+  <div class="device">
+    <div class="device__label">
+      <div class="device__tag">Control</div>
+      <div class="device__name">Current State</div>
+      <p class="device__hyp">Product image + name + price only. No ratings, shades, or badges.</p>
+    </div>
+    <div class="phone">
+      <div class="phone__screen">
+        <div class="phone__notch"></div>
+        <div class="plp">
+          <div class="plp__nav">
+            <span class="plp__nav__menu">☰</span>
+            <span class="plp__nav__logo">JONES ROAD</span>
+            <span class="plp__nav__cart">CART (0)</span>
+          </div>
+          <div class="plp__utility">Free shipping on $85+</div>
+          <div class="plp__crumb">Home / Face</div>
+          <div class="plp__head">
+            <div class="plp__head__title">Face</div>
+            <div class="plp__head__count">24 products</div>
+          </div>
+          <div class="plp__chips">
+            <span class="plp__chip plp__chip--active">All</span>
+            <span class="plp__chip">Complexion</span>
+            <span class="plp__chip">Concealer</span>
+            <span class="plp__chip">Bronze</span>
+          </div>
+          <div class="plp__filter-bar">
+            <span>Filter</span>
+            <span>Sort</span>
+          </div>
+          <div class="plp__grid">
+            <a class="tile">
+              <div class="tile__img img--mb">🤎</div>
+              <div class="tile__title">Miracle Balm</div>
+              <div class="tile__price">$38</div>
+            </a>
+            <a class="tile">
+              <div class="tile__img img--wtf">🤎</div>
+              <div class="tile__title">What the Foundation</div>
+              <div class="tile__price">$42</div>
+            </a>
+            <a class="tile">
+              <div class="tile__img img--face-pencil">✏️</div>
+              <div class="tile__title">The Face Pencil</div>
+              <div class="tile__price">$28</div>
+            </a>
+            <a class="tile">
+              <div class="tile__img img--lr">💋</div>
+              <div class="tile__title">Lip Recharge</div>
+              <div class="tile__price">$24</div>
+            </a>
+            <a class="tile">
+              <div class="tile__img img--kit">💼</div>
+              <div class="tile__title">Bobbi Kit 5.0</div>
+              <div class="tile__price">$156</div>
+            </a>
+            <a class="tile">
+              <div class="tile__img img--oos">✕</div>
+              <div class="tile__title">Dusty Rose Bronzer</div>
+              <div class="tile__price">$38</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       V1
+       ============================================================ -->
+  <div class="device">
+    <div class="device__label">
+      <div class="device__tag device__tag--v1">V1</div>
+      <div class="device__name">Proof + Shade Count</div>
+      <p class="device__hyp">Rating + review count + shade count + bundle contents on tile.</p>
+    </div>
+    <div class="phone">
+      <div class="phone__screen">
+        <div class="phone__notch"></div>
+        <div class="plp">
+          <div class="plp__nav">
+            <span class="plp__nav__menu">☰</span>
+            <span class="plp__nav__logo">JONES ROAD</span>
+            <span class="plp__nav__cart">CART (0)</span>
+          </div>
+          <div class="plp__utility">Free shipping on $85+</div>
+          <div class="plp__crumb">Home / Face</div>
+          <div class="plp__head">
+            <div class="plp__head__title">Face</div>
+            <div class="plp__head__count">24 products</div>
+          </div>
+          <div class="plp__chips">
+            <span class="plp__chip plp__chip--active">All</span>
+            <span class="plp__chip">Complexion</span>
+            <span class="plp__chip">Concealer</span>
+            <span class="plp__chip">Bronze</span>
+          </div>
+          <div class="plp__filter-bar">
+            <span>Filter</span>
+            <span>Sort</span>
+          </div>
+          <div class="plp__grid">
+            <a class="tile tile--v1" style="position: relative;">
+              <div class="tile__img img--mb">🤎</div>
+              <span class="cue" style="top: 8px; right: 8px;">1</span>
+              <div class="tile__title">Miracle Balm</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.8</span>
+                <span class="tile__rating__count">(3,241)</span>
+              </div>
+              <span class="tile__shades">8 SHADES</span>
+              <div class="tile__price tile__price--v1">$38</div>
+            </a>
+            <a class="tile tile--v1">
+              <div class="tile__img img--wtf">🤎</div>
+              <div class="tile__title">What the Foundation</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.6</span>
+                <span class="tile__rating__count">(1,890)</span>
+              </div>
+              <span class="tile__shades">14 SHADES</span>
+              <div class="tile__price tile__price--v1">$42</div>
+            </a>
+            <a class="tile tile--v1">
+              <div class="tile__img img--face-pencil">✏️</div>
+              <div class="tile__title">The Face Pencil</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.7</span>
+                <span class="tile__rating__count">(2,144)</span>
+              </div>
+              <span class="tile__shades">6 SHADES</span>
+              <div class="tile__price tile__price--v1">$28</div>
+            </a>
+            <a class="tile tile--v1">
+              <div class="tile__img img--lr">💋</div>
+              <div class="tile__title">Lip Recharge</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.5</span>
+                <span class="tile__rating__count">(876)</span>
+              </div>
+              <span class="tile__shades">5 SHADES</span>
+              <div class="tile__price tile__price--v1">$24</div>
+            </a>
+            <a class="tile tile--v1" style="position: relative;">
+              <div class="tile__img img--kit">💼</div>
+              <span class="cue" style="bottom: 50%; right: -8px;">2</span>
+              <div class="tile__title">Bobbi Kit 5.0</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.9</span>
+                <span class="tile__rating__count">(412)</span>
+              </div>
+              <div class="tile__includes">Includes: Miracle Balm, Face Pencil, Mascara, Lip &amp; Cheek</div>
+              <div class="tile__price tile__price--v1">
+                $156 <span class="tile__price__compare">$179</span>
+              </div>
+            </a>
+            <a class="tile tile--v1">
+              <div class="tile__img img--oos">✕</div>
+              <div class="tile__title">Dusty Rose Bronzer</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.9</span>
+                <span class="tile__rating__count">(521)</span>
+              </div>
+              <span class="tile__shades">1 SHADE</span>
+              <div class="tile__price tile__price--v1">$38</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       V2
+       ============================================================ -->
+  <div class="device">
+    <div class="device__label">
+      <div class="device__tag device__tag--v2">V2</div>
+      <div class="device__name">+ Hover/Tap Preview + Swatches</div>
+      <p class="device__hyp">V1 + 2nd-image preview + tappable shade swatches + badges.</p>
+    </div>
+    <div class="phone">
+      <div class="phone__screen">
+        <div class="phone__notch"></div>
+        <div class="plp">
+          <div class="plp__nav">
+            <span class="plp__nav__menu">☰</span>
+            <span class="plp__nav__logo">JONES ROAD</span>
+            <span class="plp__nav__cart">CART (0)</span>
+          </div>
+          <div class="plp__utility">Free shipping on $85+</div>
+          <div class="plp__crumb">Home / Face</div>
+          <div class="plp__head">
+            <div class="plp__head__title">Face</div>
+            <div class="plp__head__count">24 products</div>
+          </div>
+          <div class="plp__chips">
+            <span class="plp__chip plp__chip--active">All</span>
+            <span class="plp__chip">Complexion</span>
+            <span class="plp__chip">Concealer</span>
+            <span class="plp__chip">Bronze</span>
+          </div>
+          <div class="plp__filter-bar">
+            <span>Filter</span>
+            <span>Sort</span>
+          </div>
+          <div class="plp__grid">
+            <a class="tile tile--v2">
+              <div class="tile__img img--mb">
+                🤎
+                <div class="tile__badges">
+                  <span class="tile__badge tile__badge--best">Best-Seller</span>
+                </div>
+                <span class="cue" style="bottom: 8px; left: 8px;">3</span>
+                <span class="tile__hover-hint">Tap to preview</span>
+              </div>
+              <div class="tile__title">Miracle Balm</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.8</span>
+                <span class="tile__rating__count">(3,241)</span>
+              </div>
+              <div class="tile__swatches">
+                <span class="tile__swatch" style="background: #f3d2b5"></span>
+                <span class="tile__swatch" style="background: #d4a373"></span>
+                <span class="tile__swatch" style="background: #b08458"></span>
+                <span class="tile__swatch" style="background: #8b6240"></span>
+                <span class="tile__swatch" style="background: #5c3a1f"></span>
+                <span class="tile__swatch tile__swatch--more">+3</span>
+              </div>
+              <div class="tile__price tile__price--v1">$38</div>
+            </a>
+            <a class="tile tile--v2" style="position: relative;">
+              <div class="tile__img img--wtf">
+                🤎
+                <div class="tile__badges">
+                  <span class="tile__badge tile__badge--best">Best-Seller</span>
+                </div>
+                <span class="cue" style="top: 8px; right: -10px;">4</span>
+              </div>
+              <div class="tile__title">What the Foundation</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.6</span>
+                <span class="tile__rating__count">(1,890)</span>
+              </div>
+              <div class="tile__swatches">
+                <span class="tile__swatch" style="background: #f5dfc9"></span>
+                <span class="tile__swatch" style="background: #e0b898"></span>
+                <span class="tile__swatch" style="background: #c49575"></span>
+                <span class="tile__swatch" style="background: #946b48"></span>
+                <span class="tile__swatch" style="background: #5c3a1f"></span>
+                <span class="tile__swatch tile__swatch--more">+9</span>
+              </div>
+              <div class="tile__price tile__price--v1">$42</div>
+            </a>
+            <a class="tile tile--v2">
+              <div class="tile__img img--face-pencil">
+                ✏️
+                <div class="tile__badges">
+                  <span class="tile__badge tile__badge--new">New</span>
+                </div>
+              </div>
+              <div class="tile__title">The Face Pencil</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.7</span>
+                <span class="tile__rating__count">(2,144)</span>
+              </div>
+              <div class="tile__swatches">
+                <span class="tile__swatch" style="background: #e0b898"></span>
+                <span class="tile__swatch" style="background: #c49575"></span>
+                <span class="tile__swatch" style="background: #946b48"></span>
+                <span class="tile__swatch" style="background: #5c3a1f"></span>
+                <span class="tile__swatch tile__swatch--more">+2</span>
+              </div>
+              <div class="tile__price tile__price--v1">$28</div>
+            </a>
+            <a class="tile tile--v2">
+              <div class="tile__img img--lr">💋</div>
+              <div class="tile__title">Lip Recharge</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.5</span>
+                <span class="tile__rating__count">(876)</span>
+              </div>
+              <div class="tile__swatches">
+                <span class="tile__swatch" style="background: #e8a5a5"></span>
+                <span class="tile__swatch" style="background: #c47070"></span>
+                <span class="tile__swatch" style="background: #8c3a3a"></span>
+                <span class="tile__swatch" style="background: #5a1a1a"></span>
+                <span class="tile__swatch" style="background: #3a0d0d"></span>
+              </div>
+              <div class="tile__price tile__price--v1">$24</div>
+            </a>
+            <a class="tile tile--v2" style="position: relative;">
+              <div class="tile__img img--kit">
+                💼
+                <div class="tile__badges">
+                  <span class="tile__badge tile__badge--best">Save $23</span>
+                </div>
+                <span class="cue" style="bottom: 8px; right: 8px;">5</span>
+                <span class="tile__hover-hint">Tap: see inside</span>
+              </div>
+              <div class="tile__title">Bobbi Kit 5.0</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.9</span>
+                <span class="tile__rating__count">(412)</span>
+              </div>
+              <div class="tile__includes">Includes: Miracle Balm, Face Pencil, Mascara, Lip &amp; Cheek</div>
+              <div class="tile__price tile__price--v1">
+                $156 <span class="tile__price__compare">$179</span>
+              </div>
+            </a>
+            <a class="tile tile--v2">
+              <div class="tile__img img--oos">✕</div>
+              <div class="tile__title">Dusty Rose Bronzer</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.9</span>
+                <span class="tile__rating__count">(521)</span>
+              </div>
+              <span class="tile__shades">1 SHADE</span>
+              <div class="tile__price tile__price--v1">$38</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       V3
+       ============================================================ -->
+  <div class="device">
+    <div class="device__label">
+      <div class="device__tag device__tag--v3">V3</div>
+      <div class="device__name">Full Discovery Layer</div>
+      <p class="device__hyp">V2 + trust strip + stock state + Notify Me + no "see all."</p>
+    </div>
+    <div class="phone">
+      <div class="phone__screen">
+        <div class="phone__notch"></div>
+        <div class="plp">
+          <div class="plp__nav">
+            <span class="plp__nav__menu">☰</span>
+            <span class="plp__nav__logo">JONES ROAD</span>
+            <span class="plp__nav__cart">CART (0)</span>
+          </div>
+          <div class="plp__utility">Free shipping on $85+</div>
+          <div class="plp__crumb">Home / Face</div>
+          <div class="plp__head">
+            <div class="plp__head__title">Face</div>
+            <div class="plp__head__count">24 products · showing all</div>
+          </div>
+          <div class="plp__trust" style="position: relative;">
+            <span class="cue" style="top: 4px; right: 8px;">6</span>
+            4.8★ avg · Clean · Free ship $85+
+          </div>
+          <div class="plp__chips">
+            <span class="plp__chip plp__chip--active">All</span>
+            <span class="plp__chip">New</span>
+            <span class="plp__chip">Best-Sellers</span>
+            <span class="plp__chip">Complexion</span>
+            <span class="plp__chip">Concealer</span>
+          </div>
+          <div class="plp__filter-bar">
+            <span>Filter (Concern, Undertone)</span>
+            <span>Sort</span>
+          </div>
+          <div class="plp__grid">
+            <a class="tile tile--v2">
+              <div class="tile__img img--mb">
+                🤎
+                <div class="tile__badges">
+                  <span class="tile__badge tile__badge--best">Best-Seller</span>
+                </div>
+              </div>
+              <div class="tile__title">Miracle Balm</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.8</span>
+                <span class="tile__rating__count">(3,241)</span>
+              </div>
+              <div class="tile__swatches">
+                <span class="tile__swatch" style="background: #f3d2b5"></span>
+                <span class="tile__swatch" style="background: #d4a373"></span>
+                <span class="tile__swatch" style="background: #b08458"></span>
+                <span class="tile__swatch" style="background: #8b6240"></span>
+                <span class="tile__swatch" style="background: #5c3a1f"></span>
+                <span class="tile__swatch tile__swatch--more">+3</span>
+              </div>
+              <span class="tile__stock tile__stock--in">● In Stock</span>
+              <div class="tile__price tile__price--v1">$38</div>
+            </a>
+            <a class="tile tile--v2">
+              <div class="tile__img img--wtf">
+                🤎
+                <div class="tile__badges">
+                  <span class="tile__badge tile__badge--best">Best-Seller</span>
+                </div>
+              </div>
+              <div class="tile__title">What the Foundation</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.6</span>
+                <span class="tile__rating__count">(1,890)</span>
+              </div>
+              <div class="tile__swatches">
+                <span class="tile__swatch" style="background: #f5dfc9"></span>
+                <span class="tile__swatch" style="background: #e0b898"></span>
+                <span class="tile__swatch" style="background: #c49575"></span>
+                <span class="tile__swatch" style="background: #946b48"></span>
+                <span class="tile__swatch" style="background: #5c3a1f"></span>
+                <span class="tile__swatch tile__swatch--more">+9</span>
+              </div>
+              <span class="tile__stock tile__stock--low">● Low Stock</span>
+              <div class="tile__price tile__price--v1">$42</div>
+            </a>
+            <a class="tile tile--v2">
+              <div class="tile__img img--face-pencil">
+                ✏️
+                <div class="tile__badges">
+                  <span class="tile__badge tile__badge--new">New</span>
+                </div>
+              </div>
+              <div class="tile__title">The Face Pencil</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.7</span>
+                <span class="tile__rating__count">(2,144)</span>
+              </div>
+              <div class="tile__swatches">
+                <span class="tile__swatch" style="background: #e0b898"></span>
+                <span class="tile__swatch" style="background: #c49575"></span>
+                <span class="tile__swatch" style="background: #946b48"></span>
+                <span class="tile__swatch" style="background: #5c3a1f"></span>
+                <span class="tile__swatch tile__swatch--more">+2</span>
+              </div>
+              <span class="tile__stock tile__stock--in">● In Stock</span>
+              <div class="tile__price tile__price--v1">$28</div>
+            </a>
+            <a class="tile tile--v2">
+              <div class="tile__img img--lr">💋</div>
+              <div class="tile__title">Lip Recharge</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.5</span>
+                <span class="tile__rating__count">(876)</span>
+              </div>
+              <div class="tile__swatches">
+                <span class="tile__swatch" style="background: #e8a5a5"></span>
+                <span class="tile__swatch" style="background: #c47070"></span>
+                <span class="tile__swatch" style="background: #8c3a3a"></span>
+                <span class="tile__swatch" style="background: #5a1a1a"></span>
+                <span class="tile__swatch" style="background: #3a0d0d"></span>
+              </div>
+              <span class="tile__stock tile__stock--in">● In Stock</span>
+              <div class="tile__price tile__price--v1">$24</div>
+            </a>
+            <a class="tile tile--v2">
+              <div class="tile__img img--kit">
+                💼
+                <div class="tile__badges">
+                  <span class="tile__badge tile__badge--best">Save $23</span>
+                </div>
+              </div>
+              <div class="tile__title">Bobbi Kit 5.0</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.9</span>
+                <span class="tile__rating__count">(412)</span>
+              </div>
+              <div class="tile__includes">Includes: Miracle Balm, Face Pencil, Mascara, Lip &amp; Cheek</div>
+              <span class="tile__stock tile__stock--in">● In Stock</span>
+              <div class="tile__price tile__price--v1">
+                $156 <span class="tile__price__compare">$179</span>
+              </div>
+            </a>
+            <a class="tile tile--v2" style="position: relative;">
+              <div class="tile__img img--oos">
+                ✕
+                <span class="cue" style="top: 8px; left: 8px;">7</span>
+              </div>
+              <div class="tile__title">Dusty Rose Bronzer</div>
+              <div class="tile__rating">
+                <span class="tile__rating__star">★ 4.9</span>
+                <span class="tile__rating__count">(521)</span>
+              </div>
+              <span class="tile__stock tile__stock--oos">Out of Stock · Back Apr 28</span>
+              <div class="tile__price tile__price--v1">$38</div>
+              <button class="tile__stock__notify">✉ Notify Me</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     ANNOTATIONS
+     ============================================================ -->
+<div class="annotations">
+  <h2>Numbered Callouts — Survey-Backed Decisions</h2>
+
+  <div class="annotations__grid">
+    <div class="anno-col">
+      <div class="anno-col__head">V1 Additions</div>
+      <ul>
+        <li><strong>Star + review count</strong> below title. Survey Q3: 25% cite star rating pre-click; "glaring zero" is a documented conversion killer.</li>
+        <li><strong>"Includes:" subtitle on bundles</strong> — primary, not secondary. Survey Q8: 77% of respondents rank what's-inside as most important (vs 13% total savings).</li>
+      </ul>
+    </div>
+
+    <div class="anno-col">
+      <div class="anno-col__head">V2 Additions</div>
+      <ul>
+        <li><strong>Tap-to-preview hint</strong> on mobile; hover on desktop. Survey Q9: 65% chose this as their #1 tile upgrade.</li>
+        <li><strong>Tappable shade swatches</strong> (5 + overflow). 86% need shade info pre-click (Q3); MAC cited unprompted in Q10 for swatches on 3 skin tones.</li>
+        <li><strong>Save $X on bundles</strong> = secondary, NOT primary. Respects the 6:1 contents-over-savings ratio.</li>
+      </ul>
+    </div>
+
+    <div class="anno-col">
+      <div class="anno-col__head">V3 Additions</div>
+      <ul>
+        <li><strong>Trust strip</strong> above the grid. 17% clean-beauty recall — answers "why buy here" pre-scroll.</li>
+        <li><strong>Stock-state indicators</strong> + inline "Notify Me" button. 188 Richpanel OOS tickets/60d; survey Q4 requested restock dates unprompted.</li>
+        <li><strong>"Showing all" in count</strong> — no "see all" click. Q11 verbatim: "You are going to lose significant sales on items/lines not displayed."</li>
+        <li><strong>Expanded chips</strong>: New + Best-Sellers surfaced alongside categories. Concern/undertone filters in the filter drawer.</li>
+      </ul>
+    </div>
+
+    <div class="anno-col">
+      <div class="anno-col__head">Mobile-Specific Choices</div>
+      <ul>
+        <li><strong>2-column grid maintained</strong> — current production pattern, confirmed working.</li>
+        <li><strong>14px minimum</strong> for price (currently 13px — raised to prevent mobile truncation).</li>
+        <li><strong>Swatches are 16px visual / 28px touch area</strong> per Baymard 7mm minimum.</li>
+        <li><strong>Sticky sub-nav chips</strong> — horizontally scrollable, first-chip active visible.</li>
+        <li><strong>No sidebar filters</strong> — filter/sort stays as drawer toggles in the top bar.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
