@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Launch Process · Jones Road Beauty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #1a1a1a; background: #FAF9F7; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+
+  /* CONTAINER */
+  .wrap { max-width: 900px; margin: 0 auto; padding: 60px 40px; }
+
+  /* HEADER */
+  header.page-header { text-align: center; margin-bottom: 40px; }
+  h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; color: #777; max-width: 640px; margin: 0 auto 20px; }
+  .owner-badge { display: inline-block; background: #f0ebe4; color: #1a1a1a; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+
+  /* TABS */
+  .tier-tabs { display: flex; justify-content: center; gap: 6px; margin-bottom: 32px; }
+  .tier-tab { font-family: inherit; font-size: 12px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; padding: 10px 20px; background: #fff; border: 1px solid #e8e4df; border-radius: 999px; cursor: pointer; color: #777; transition: all 0.2s; }
+  .tier-tab:hover { color: #1a1a1a; border-color: #c4b9ab; }
+  .tier-tab.active { background: #8B7355; color: #fff; border-color: #8B7355; }
+
+  /* STATS BAR */
+  .stats-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; padding: 20px 28px; background: #fff; border: 1px solid #e8e4df; border-radius: 12px; margin-bottom: 40px; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 600; color: #1a1a1a; }
+  .stat-label { font-size: 11px; color: #777; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 2px; }
+
+  /* TIER CONTAINER */
+  .tier-content { display: none; }
+  .tier-content.active { display: block; }
+
+  /* GATE MARKER */
+  .gate { display: flex; align-items: center; gap: 16px; margin: 36px 0 20px; }
+  .gate-line { flex: 1; height: 1px; background-image: repeating-linear-gradient(to right, #c4b9ab 0, #c4b9ab 6px, transparent 6px, transparent 18px); }
+  .gate-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #8B7355; background: #FAF9F7; padding: 0 12px; }
+  .gate-weeks { font-size: 10px; color: #bbb; letter-spacing: 0.5px; }
+
+  /* CONNECTOR */
+  .connector { display: flex; flex-direction: column; align-items: center; height: 40px; justify-content: center; }
+  .connector-line { width: 2px; height: 28px; background: linear-gradient(to bottom, #d4cfc7, #c4b9ab); }
+  .connector-arrow { width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid #c4b9ab; margin-top: -1px; }
+  .connector-gap { font-size: 10px; color: #bbb; margin-top: 4px; letter-spacing: 0.5px; }
+
+  /* STEP CARD */
+  .step { max-width: 680px; margin: 0 auto; background: #fff; border: 1px solid #e8e4df; border-radius: 16px; padding: 20px 32px; transition: all 0.25s; cursor: pointer; }
+  .step:hover { border-color: #c4b9ab; box-shadow: 0 4px 20px rgba(0,0,0,0.04); transform: translateY(-1px); }
+  .step.active { border-color: #8B7355; box-shadow: 0 6px 28px rgba(139, 115, 85, 0.12); }
+  .step.removed { opacity: 0.55; background: #f5f2ee; }
+  .step.removed .step-title { text-decoration: line-through; color: #999; }
+
+  .step-head { display: flex; align-items: center; gap: 16px; }
+  .step-num { width: 40px; height: 40px; border-radius: 50%; background: #f0ebe4; color: #777; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; transition: all 0.2s; }
+  .step.active .step-num { background: #8B7355; color: #fff; }
+  .step-head-main { flex: 1; min-width: 0; }
+  .step-title { font-size: 17px; font-weight: 600; letter-spacing: -0.2px; }
+  .step-subline { font-size: 12px; color: #777; margin-top: 2px; }
+  .step-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+
+  .tag { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
+  .tag-key { background: #fff4d6; color: #8a6a1a; }
+  .tag-optional { background: #eef0ec; color: #5a6a5a; }
+  .tag-merged { background: #e8f0eb; color: #2d7a5f; }
+  .tag-removed { background: #fbe7e7; color: #a84141; }
+  .tag-deliverable { background: #e3edf8; color: #2f5a8a; }
+  .tag-work { background: #efece6; color: #7a6a4a; }
+  .tag-review { background: #fbeede; color: #a36a2a; }
+  .output { font-size: 13px; color: #333; padding: 10px 14px; background: #faf8f3; border-left: 3px solid #8B7355; border-radius: 4px; margin-bottom: 16px; }
+  .output-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #8B7355; text-transform: uppercase; margin-right: 8px; }
+
+  .chevron { width: 14px; height: 14px; margin-left: 6px; color: #bbb; transition: transform 0.3s; flex-shrink: 0; }
+  .step.active .chevron { transform: rotate(180deg); }
+
+  .step-details { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease; padding-left: 56px; }
+  .step.active .step-details { max-height: 1200px; opacity: 1; padding-top: 20px; }
+  .step-details-inner { border-top: 1px solid #f0ebe4; padding-top: 20px; }
+
+  .step-desc { font-size: 14px; color: #555; margin-bottom: 16px; line-height: 1.6; }
+
+  /* ROLES */
+  .roles { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+  .role { flex: 1 1 180px; min-width: 0; }
+  .role-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: #8B7355; margin-bottom: 6px; }
+  .role-label.rev { color: #5a7a6a; }
+  .role-label.sup { color: #6a6a8a; }
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; background: #faf8f5; border: 1px solid #ece7e0; border-radius: 20px; padding: 4px 10px 4px 8px; font-size: 12px; color: #1a1a1a; font-weight: 500; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .pill.empty { color: #bbb; font-style: italic; font-weight: 400; background: transparent; border-style: dashed; }
+
+  /* PERSON COLORS */
+  .dot-chrissy { background: #d96a8a; }
+  .dot-payal { background: #d67a5a; }
+  .dot-kirsten { background: #8B7355; }
+  .dot-erin { background: #4a6fa5; }
+  .dot-cody { background: #2d7a5f; }
+  .dot-bobbi { background: #b38a3a; }
+  .dot-carly { background: #7a4a8f; }
+  .dot-genevieve { background: #5a9a6a; }
+  .dot-diana { background: #9a7aa8; }
+  .dot-emma { background: #d4a574; }
+  .dot-sam { background: #6a8a4a; }
+  .dot-jessie { background: #4a8a9a; }
+  .dot-nicole { background: #a85a7a; }
+  .dot-ben { background: #3a5a5a; }
+  .dot-jon { background: #7a5a3a; }
+  .dot-teamleads { background: #8a8a8a; }
+  .dot-pdteam { background: #8a6a5a; }
+  .dot-marketing { background: #6a7a8a; }
+  .dot-diana-design { background: #9a7aa8; }
+  .dot-katie { background: #c98a4a; }
+
+  /* NOTES */
+  .notes { font-size: 12px; color: #999; font-style: italic; padding: 10px 14px; background: #fafafa; border-radius: 8px; margin-bottom: 16px; }
+
+  /* SKILLS SECTION */
+  .skills-section { border-top: 1px solid #f0ebe4; padding-top: 16px; margin-top: 4px; }
+  .skills-heading { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: #777; margin-bottom: 10px; }
+  .skill { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 8px 12px; border-radius: 8px; font-size: 12px; margin-bottom: 6px; }
+  .skill.exists { background: #f0f7f0; }
+  .skill.needed { background: #fff5f0; }
+  .skill.primary { background: #eef2fb; border: 1px solid #c9d4ee; }
+  .skill-name { font-family: 'SF Mono', Menlo, monospace; font-weight: 500; }
+  .skill-status { font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; padding: 2px 8px; border-radius: 10px; }
+  .skill-desc { flex-basis: 100%; font-size: 11px; color: #5a6a5a; margin-top: 4px; line-height: 1.4; }
+  .skill.needed .skill-desc { color: #8a6a4a; }
+  .skill.primary .skill-desc { color: #3a4a6a; }
+  .skill.exists .skill-status { background: #c8e0c8; color: #2d5a2d; }
+  .skill.needed .skill-status { background: #f0d0b4; color: #8a5a2d; }
+  .skill.primary .skill-status { background: #c4d1ee; color: #2d3d6a; }
+
+  /* LEGEND / FOOTER */
+  .legend { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; font-size: 11px; color: #999; margin-top: 40px; padding-top: 24px; border-top: 1px solid #e8e4df; }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+
+  .page-footer { text-align: center; margin-top: 32px; font-size: 11px; color: #bbb; }
+
+  @media (max-width: 600px) {
+    .wrap { padding: 40px 20px; }
+    .step { padding: 18px 20px; }
+    .step-details { padding-left: 0; }
+    .stats-row { gap: 20px; padding: 16px 20px; }
+    .role { flex: 1 1 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="page-header">
+    <h1>Product Launch Process</h1>
+    <p class="subtitle">The full marketing launch process from PD kickoff to retrospective. One owner per step with supporting contributors and approvers called out. Skills noted where Claude can do the work today or where we'd build new ones.</p>
+  </header>
+
+  <div class="tier-tabs">
+    <button class="tier-tab active" data-tier="t1">Tier 1 · 40 Weeks</button>
+    <button class="tier-tab" data-tier="t23">Tier 2–3 · 28 Weeks</button>
+  </div>
+
+  <!-- ================= TIER 1 ================= -->
+  <div class="tier-content active" id="t1">
+
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num">40 wks</div><div class="stat-label">Runway</div></div>
+      <div class="stat"><div class="stat-num">27</div><div class="stat-label">Steps</div></div>
+      <div class="stat"><div class="stat-num">Ben Ritter</div><div class="stat-label">Shoot Included</div></div>
+      <div class="stat"><div class="stat-num">2</div><div class="stat-label">Separate Retros</div></div>
+      <div class="stat"><div class="stat-num">Full</div><div class="stat-label">Consumer Research</div></div>
+    </div>
+
+    <!-- PHASE: KICK OFF -->
+    <div class="gate">
+      <div class="gate-line"></div>
+      <div class="gate-label">Phase 1 · Kick Off</div>
+      <div class="gate-weeks">Weeks 40–28</div>
+      <div class="gate-line"></div>
+    </div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">1</div>
+        <div class="step-head-main">
+          <div class="step-title">PD Kickoff</div>
+          <div class="step-subline">Week 40 · PD briefs marketing on product, competitive research, Bobbi insight & positioning</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-review">Review</span><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">PD team briefs marketing on the product, shares competitive research, Bobbi's insight and positioning, and reviews tiering. Include shade comparison chart vs. existing/discontinued.</div>
+          <div class="output"><span class="output-label">Output</span>Aligned team context + PD bulletin posted</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-katie"></span>Katie</span><span class="pill"><span class="dot dot-chrissy"></span>Chrissy</span></div></div>
+            <div class="role"><div class="role-label sup">Attendees</div><div class="pills">
+              <span class="pill"><span class="dot dot-cody"></span>Cody</span>
+              <span class="pill"><span class="dot dot-bobbi"></span>Bobbi</span>
+              <span class="pill"><span class="dot dot-nicole"></span>Nicole</span>
+              <span class="pill"><span class="dot dot-payal"></span>Payal</span>
+              <span class="pill"><span class="dot dot-genevieve"></span>Genevieve</span>
+              <span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span>
+              <span class="pill"><span class="dot dot-sam"></span>Sam</span>
+              <span class="pill"><span class="dot dot-erin"></span>Erin</span>
+            </div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill exists"><span class="skill-name">/pd-bulletin</span><span class="skill-status">Exists</span></div>
+            <div class="skill exists"><span class="skill-name">/competitor-insights</span><span class="skill-status">Exists</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">4 wks</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">2</div>
+        <div class="step-head-main">
+          <div class="step-title">Survey & Collect Consumer Information</div>
+          <div class="step-subline">Week 36 · Synthesize insights + prior campaign data</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-deliverable">Deliverable</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Synthesize existing consumer insights and prior campaign/creative performance data. Run a Typeform for CAB (customers) and a ListenLabs study for prospects.</div>
+          <div class="output"><span class="output-label">Output</span>Typeform survey posted in CAB (customers) + ListenLabs study live for prospects</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-payal"></span>Payal</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill primary"><span class="skill-name">/product-launch-survey</span><span class="skill-status">Built for this step</span><span class="skill-desc">Drafts paired Typeform (customer) + ListenLabs (prospect) launch surveys from a reusable question library. Feeds the Strategic Brief.</span></div>
+            <div class="skill exists"><span class="skill-name">/listenlabs</span><span class="skill-status">Exists</span><span class="skill-desc">Pulls + analyzes ListenLabs prospect interviews once the study closes.</span></div>
+            <div class="skill exists"><span class="skill-name">/jrb-consumer-insights</span><span class="skill-status">Exists</span><span class="skill-desc">Synthesizes customer + prospect findings into the brief-input doc.</span></div>
+            <div class="skill exists"><span class="skill-name">/outersignal</span><span class="skill-status">Exists</span><span class="skill-desc">Purchase-backed behavioral persona data (demographics, AOV, LTV, repeat rate).</span></div>
+            <div class="skill exists"><span class="skill-name">/richpanel</span><span class="skill-status">Exists</span><span class="skill-desc">CX ticket analysis — pre-purchase questions + post-purchase friction themes.</span></div>
+            <div class="skill exists"><span class="skill-name">/junip</span><span class="skill-status">Exists</span><span class="skill-desc">Review mining for category-level sentiment + benefit language.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">2 wks</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">3</div>
+        <div class="step-head-main">
+          <div class="step-title">Strategic Brief</div>
+          <div class="step-subline">Week 34 · Insights, barriers, differentiators, positioning, messaging</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-work">Work Period</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Develop the strategic brief covering consumer insights, barriers, differentiators, positioning, and core messaging.</div>
+          <div class="output"><span class="output-label">Output</span>Draft strategic brief (insights, positioning, messaging)</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-payal"></span>Payal</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill primary"><span class="skill-name">/competitive-landscape</span><span class="skill-status">Built for this step</span><span class="skill-desc">Builds a 5-competitor one-pager from sites, Meta Ads Library, Amazon + Reddit reviews. Skippable for promos + well-known relaunches.</span></div>
+            <div class="skill primary"><span class="skill-name">/strategic-brief</span><span class="skill-status">Built for this step</span><span class="skill-desc">Drafts Kirsten's brief format. Handles new-product, relaunch, promo-sale, and kit/bundle launch types.</span></div>
+            <div class="skill exists"><span class="skill-name">/jrb-consumer-insights</span><span class="skill-status">Exists</span><span class="skill-desc">Upstream — synthesizes customer + prospect data before the brief is drafted.</span></div>
+            <div class="skill exists"><span class="skill-name">/pd-bulletin</span><span class="skill-status">Exists</span><span class="skill-desc">Upstream — product-level differentiators + ingredient story from PD team.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">4</div>
+        <div class="step-head-main">
+          <div class="step-title">Deliver Strategic Brief for Sign-Off</div>
+          <div class="step-subline">Week 33 · Route to Bobbi via Payal</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-deliverable">Deliverable</span><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Deliver finalized strategic brief to Bobbi for sign-off. Post in #brand channel.</div>
+          <div class="output"><span class="output-label">Output</span>Signed-off strategic brief (due Wk 33)</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-payal"></span>Payal</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-bobbi"></span>Bobbi</span></div></div>
+          </div>
+          <div class="notes">Post in #brand channel</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">5</div>
+        <div class="step-head-main">
+          <div class="step-title">Finalize Strategic Brief</div>
+          <div class="step-subline">Week 32 · Final sign-off from Cody & Bobbi</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Confirm strategy and incorporate any final adjustments. Cody and Bobbi sign off.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-payal"></span>Payal</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span><span class="pill"><span class="dot dot-bobbi"></span>Bobbi</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">6</div>
+        <div class="step-head-main">
+          <div class="step-title">Hand Off Brief + Creative Request to Erin</div>
+          <div class="step-subline">Week 31 · Shared in #creative-direction</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Strategic Brief handed off to Erin with accompanying Creative Request.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+          <div class="notes">Shared in #creative-direction</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">3 wks</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">7</div>
+        <div class="step-head-main">
+          <div class="step-title">Hand Samples Received</div>
+          <div class="step-subline">Week 28 · Final formula, not final packaging</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Hand samples received — final formula, not final packaging.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-pdteam"></span>PD Team</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE: CREATIVE CONCEPT -->
+    <div class="gate">
+      <div class="gate-line"></div>
+      <div class="gate-label">Phase 2 · Creative Concept</div>
+      <div class="gate-weeks">Weeks 28–25</div>
+      <div class="gate-line"></div>
+    </div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">8</div>
+        <div class="step-head-main">
+          <div class="step-title">Copy & Creative Develop Campaign Pitch</div>
+          <div class="step-subline">Week 28 · Later becomes channel brief</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Erin and Sam develop campaign direction pitch together. Later turns into the channel brief.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-sam"></span>Sam O'Hara</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">2 wks</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">9</div>
+        <div class="step-head-main">
+          <div class="step-title">Creative Direction Meeting</div>
+          <div class="step-subline">Week 26 · Present to leadership, revisions incorporated</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-review">Review</span><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Erin & Sam present campaign direction to leadership. Revisions incorporated. Separate from Thursday meeting. Async for smaller campaigns.</div>
+          <div class="output"><span class="output-label">Output</span>Approved creative direction + feedback captured</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills">
+              <span class="pill"><span class="dot dot-jessie"></span>Jessie</span>
+              <span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span>
+              <span class="pill"><span class="dot dot-payal"></span>Payal</span>
+              <span class="pill"><span class="dot dot-sam"></span>Sam</span>
+              <span class="pill"><span class="dot dot-genevieve"></span>Genevieve</span>
+            </div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-bobbi"></span>Bobbi</span><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">10</div>
+        <div class="step-head-main">
+          <div class="step-title">Incorporate Revisions + Solidify Creative Direction</div>
+          <div class="step-subline">Week 25 · Approver: Cody & Bobbi</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Erin incorporates revisions and solidifies final creative direction.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span><span class="pill"><span class="dot dot-bobbi"></span>Bobbi</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE: CHANNEL BRIEF & STRATEGY -->
+    <div class="gate">
+      <div class="gate-line"></div>
+      <div class="gate-label">Phase 3 · Channel Brief & Strategy</div>
+      <div class="gate-weeks">Weeks 24–18</div>
+      <div class="gate-line"></div>
+    </div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">11</div>
+        <div class="step-head-main">
+          <div class="step-title">Launch Brief</div>
+          <div class="step-subline">Week 24 · Erin builds deck in Figma (all channels)</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Erin builds the launch deck in Figma covering Growth, Retail, Influencer, Retention, Social, PR/Brand, Experiential, and PD. Pitch deck evolves into the launch brief. Content sheet auto-assembled from upstream skills, scaled by launch tier.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin (build)</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten (brief)</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill available"><span class="skill-name">/launch-brief</span><span class="skill-status">Available</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">12</div>
+        <div class="step-head-main">
+          <div class="step-title">Share Launch Brief</div>
+          <div class="step-subline">Week 23 · Share in #marketing and #cx-marketing</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Internal and external distribution of the launch brief.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-carly"></span>Carly</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-genevieve"></span>Genevieve</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">13</div>
+        <div class="step-head-main">
+          <div class="step-title">Kirsten × Team Leads Alignment</div>
+          <div class="step-subline">Week 22 · 30 min/lead</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-optional">Optional</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">1:1 alignment with team leads. Tier A definitely, Tier B maybe.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-payal"></span>Payal (maybe)</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">14</div>
+        <div class="step-head-main">
+          <div class="step-title">Channel Strategy Due</div>
+          <div class="step-subline">Week 21 · Channels outline strategy, KPIs, asset needs</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Each channel lead outlines individual strategy, KPIs, and asset needs. Shared with Cody. Fill out in Figma with dropdowns: pending / feedback / approved.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-teamleads"></span>Team Leads</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+          </div>
+          <div class="notes">EOD Tuesday deadline</div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill needed"><span class="skill-name">/channel-strategy-template</span><span class="skill-status">Needed</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">15</div>
+        <div class="step-head-main">
+          <div class="step-title">Channel Feedback</div>
+          <div class="step-subline">Week 20 · Async Friday after meeting</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Cody (and Kirsten) review channel submissions and provide feedback.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">16</div>
+        <div class="step-head-main">
+          <div class="step-title">Channel Strategy Locked & Approved</div>
+          <div class="step-subline">Week 19 · Landing pages, deliverables, tech approved</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">All channel strategies locked. Landing pages, deliverables, and tech approved.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">17</div>
+        <div class="step-head-main">
+          <div class="step-title">Asset & Content Requests with Rationale Due</div>
+          <div class="step-subline">Week 18 · Carly sends template in #marketing</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Marketing requests additional shots needed, with rationale.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-teamleads"></span>Team Leads</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-carly"></span>Carly</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill needed"><span class="skill-name">/asset-request-brief</span><span class="skill-status">Needed</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE: CREATIVE PRODUCTION -->
+    <div class="gate">
+      <div class="gate-line"></div>
+      <div class="gate-label">Phase 4 · Creative Production & Photoshoots</div>
+      <div class="gate-weeks">Weeks 17–7</div>
+      <div class="gate-line"></div>
+    </div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">18</div>
+        <div class="step-head-main">
+          <div class="step-title">Final Shot List Confirmation</div>
+          <div class="step-subline">Week 17 · Erin advises on what's possible</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Erin advises on what's possible based on requests and confirms the final shot list.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-genevieve"></span>Genevieve</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">19</div>
+        <div class="step-head-main">
+          <div class="step-title">Pre-Series Samples Received</div>
+          <div class="step-subline">Week 16 · Final formula, final packaging</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Pre-series samples received — final formula, final packaging, may be hand-filled.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-pdteam"></span>PD Team</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">20</div>
+        <div class="step-head-main">
+          <div class="step-title">Photoshoots — Ben Ritter + Jon Paterson + In-House</div>
+          <div class="step-subline">Week 15 · Tier 1: all three shoots</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Production across three shoots: Ben Ritter, Jon Paterson, and the in-house team.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-genevieve"></span>Genevieve</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span><span class="pill"><span class="dot dot-ben"></span>Ben Ritter</span><span class="pill"><span class="dot dot-jon"></span>Jon Paterson</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">select cycle</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">21</div>
+        <div class="step-head-main">
+          <div class="step-title">Image Review & Selects Cycle</div>
+          <div class="step-subline">Weeks 14.5–12 · BR lo-res → Bobbi selects R1 & R2 → retouching</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Ben Ritter shares lo-res images. Erin reviews and organizes, shares with Bobbi for Round 1 selects, then Round 2. Final selects sent for retouching.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-bobbi"></span>Bobbi (selecting)</span><span class="pill"><span class="dot dot-kirsten"></span>Kirsten (visibility)</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">2 wks</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">22</div>
+        <div class="step-head-main">
+          <div class="step-title">Receive Retouched Images & Review</div>
+          <div class="step-subline">Week 10</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Receive retouched images and review for approval.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">23</div>
+        <div class="step-head-main">
+          <div class="step-title">All Images Approved — Tiers Assigned</div>
+          <div class="step-subline">Week 9 · Approver: Bobbi</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">All images approved by Bobbi & Erin. Tiers assigned for downstream use.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-bobbi"></span>Bobbi</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">same wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">24</div>
+        <div class="step-head-main">
+          <div class="step-title">Creative Asset Review</div>
+          <div class="step-subline">Week 9 · Full retouched suite presented</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Present the full retouched suite — model, product, lifestyle, texture.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-diana"></span>Diana</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill needed"><span class="skill-name">/creative-asset-review</span><span class="skill-status">Needed</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE: LAUNCH PREPARATION -->
+    <div class="gate">
+      <div class="gate-line"></div>
+      <div class="gate-label">Phase 5 · Launch Preparation</div>
+      <div class="gate-weeks">Weeks 9–2</div>
+      <div class="gate-line"></div>
+    </div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">25</div>
+        <div class="step-head-main">
+          <div class="step-title">Assets Briefed and Designed</div>
+          <div class="step-subline">Weeks 9–7 · Diana leads design</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Channel leads brief assets; Diana designs per channel requirements.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-teamleads"></span>Team Leads</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-diana"></span>Diana (design)</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">2 wks</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">26</div>
+        <div class="step-head-main">
+          <div class="step-title">Asset Deliverables Shared with Kirsten & Payal</div>
+          <div class="step-subline">Week 7 · Note in #brandmarketingops</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Marketing shares asset deliverables with Kirsten and Payal ahead of Asset Review.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-carly"></span>Carly</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span><span class="pill"><span class="dot dot-payal"></span>Payal</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">27</div>
+        <div class="step-head-main">
+          <div class="step-title">Iterative Review with Cody</div>
+          <div class="step-subline">Week 6 · Wed review → Thu revise → Fri 2nd review</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Carly shares deliverables with Cody for iterative review Tue–Fri.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-carly"></span>Carly</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">28</div>
+        <div class="step-head-main">
+          <div class="step-title">Marketing Asset Review</div>
+          <div class="step-subline">Week 5 · Live team meeting</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-optional">Optional</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Live meeting to review all assets as a team.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-carly"></span>Carly</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-marketing"></span>Marketing Team</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">29</div>
+        <div class="step-head-main">
+          <div class="step-title">Share Marketing Assets with Bobbi (Usage Plan)</div>
+          <div class="step-subline">Week 4 · Add slides to launch brief</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Share marketing assets with Bobbi with the usage plan. Determine channel placement. Add slides to launch brief (homepage image, sizzle reel).</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-bobbi"></span>Bobbi</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">30</div>
+        <div class="step-head-main">
+          <div class="step-title">Marketing Plans & Creative Locked In</div>
+          <div class="step-subline">Week 3 · Final lock</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Marketing plans and creative are locked in.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-bobbi"></span>Bobbi</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">31</div>
+        <div class="step-head-main">
+          <div class="step-title">Social Content Shot by Emma</div>
+          <div class="step-subline">Week 2 · Last-minute requests</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Emma captures last-minute social content. Goal: social team takes over.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-emma"></span>Emma</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE: RETROSPECTIVE -->
+    <div class="gate">
+      <div class="gate-line"></div>
+      <div class="gate-label">Phase 6 · Retrospective</div>
+      <div class="gate-weeks">+2 Weeks After Launch</div>
+      <div class="gate-line"></div>
+    </div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">32</div>
+        <div class="step-head-main">
+          <div class="step-title">Strategy Retrospective</div>
+          <div class="step-subline">+2 wks · Campaign performance + creative review</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Campaign performance retro including creative review. Separate from ops retro.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-payal"></span>Payal</span><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill needed"><span class="skill-name">/launch-retro</span><span class="skill-status">Needed</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">same wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">33</div>
+        <div class="step-head-main">
+          <div class="step-title">Operations Retrospective</div>
+          <div class="step-subline">+2 wks · Channel performance</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Channel performance retro. Separate meeting from strategy retro.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-carly"></span>Carly</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-teamleads"></span>Channel Leads</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill needed"><span class="skill-name">/launch-retro</span><span class="skill-status">Needed</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- /TIER 1 -->
+
+  <!-- ================= TIER 2-3 ================= -->
+  <div class="tier-content" id="t23">
+
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num">28 wks</div><div class="stat-label">Runway</div></div>
+      <div class="stat"><div class="stat-num">20</div><div class="stat-label">Steps</div></div>
+      <div class="stat"><div class="stat-num">Jon P + IH</div><div class="stat-label">Shoots Only</div></div>
+      <div class="stat"><div class="stat-num">1</div><div class="stat-label">Combined Retro</div></div>
+      <div class="stat"><div class="stat-num">Existing</div><div class="stat-label">Insights Used</div></div>
+    </div>
+
+    <div class="gate">
+      <div class="gate-line"></div>
+      <div class="gate-label">Phase 1 · Kick Off</div>
+      <div class="gate-weeks">Weeks 28–24</div>
+      <div class="gate-line"></div>
+    </div>
+
+    <div class="step removed" data-step>
+      <div class="step-head">
+        <div class="step-num">—</div>
+        <div class="step-head-main">
+          <div class="step-title">Survey & Collect Consumer Information</div>
+          <div class="step-subline">Removed — existing insights sufficient for T3/4</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-removed">Removed</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Existing insights sufficient. Research investment not proportional for T3/4.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">1</div>
+        <div class="step-head-main">
+          <div class="step-title">PD Kickoff</div>
+          <div class="step-subline">Week 28 · Start of condensed process</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">PD briefs marketing on product, competitive research, Bobbi insight & positioning. Review tiering.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-katie"></span>Katie</span><span class="pill"><span class="dot dot-chrissy"></span>Chrissy</span></div></div>
+            <div class="role"><div class="role-label sup">Attendees</div><div class="pills">
+              <span class="pill"><span class="dot dot-cody"></span>Cody</span>
+              <span class="pill"><span class="dot dot-bobbi"></span>Bobbi</span>
+              <span class="pill"><span class="dot dot-payal"></span>Payal</span>
+              <span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span>
+              <span class="pill"><span class="dot dot-erin"></span>Erin</span>
+              <span class="pill"><span class="dot dot-sam"></span>Sam</span>
+            </div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill exists"><span class="skill-name">/pd-bulletin</span><span class="skill-status">Exists</span></div>
+            <div class="skill exists"><span class="skill-name">/competitor-insights</span><span class="skill-status">Exists</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">2 wks</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">2</div>
+        <div class="step-head-main">
+          <div class="step-title">Strategic Brief</div>
+          <div class="step-subline">Week 26 · Combined with campaign brainstorm</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-merged">Merged</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Kirsten & Payal develop the brief (consumer insights, barriers, differentiators, positioning, messaging). Combined with campaign brainstorm — one meeting, one brief. Separate brainstorm eliminated.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-payal"></span>Payal</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill primary"><span class="skill-name">/competitive-landscape</span><span class="skill-status">Built for this step</span><span class="skill-desc">5-competitor one-pager. Skippable for promos + well-known relaunches.</span></div>
+            <div class="skill primary"><span class="skill-name">/strategic-brief</span><span class="skill-status">Built for this step</span><span class="skill-desc">Drafts Kirsten's brief. Handles new-product, relaunch, promo-sale, and kit/bundle launches.</span></div>
+            <div class="skill exists"><span class="skill-name">/pd-bulletin</span><span class="skill-status">Exists</span><span class="skill-desc">Upstream — product-level differentiators + ingredient story from PD team.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">3</div>
+        <div class="step-head-main">
+          <div class="step-title">Solidify Strategy + Hand Off to Erin</div>
+          <div class="step-subline">Week 25 · Consolidates 3 T1 steps</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-merged">Merged</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Confirm strategy, sign-off from Cody & Bobbi, hand off brief in one motion. Consolidates 3 T1 steps (solidify, sign-off, hand-off) into one.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-payal"></span>Payal</span><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span><span class="pill"><span class="dot dot-bobbi"></span>Bobbi</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">4</div>
+        <div class="step-head-main">
+          <div class="step-title">Hand Samples Received</div>
+          <div class="step-subline">Week 24</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Final formula, not final packaging.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-pdteam"></span>PD Team</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gate">
+      <div class="gate-line"></div>
+      <div class="gate-label">Phase 2 · Creative Concept</div>
+      <div class="gate-weeks">Week 24</div>
+      <div class="gate-line"></div>
+    </div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">5</div>
+        <div class="step-head-main">
+          <div class="step-title">Creative Direction Meeting</div>
+          <div class="step-subline">Week 24 · Copy/Creative deck folded in</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Erin & Sam respond to creative ask, present to leadership, revisions incorporated. Copy/Creative deck folded in — no standalone deck. Async for smaller campaigns.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-sam"></span>Sam</span><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span><span class="pill"><span class="dot dot-payal"></span>Payal</span><span class="pill"><span class="dot dot-genevieve"></span>Genevieve</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-bobbi"></span>Bobbi</span><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gate">
+      <div class="gate-line"></div>
+      <div class="gate-label">Phase 3 · Channel Brief & Strategy</div>
+      <div class="gate-weeks">Weeks 20–14</div>
+      <div class="gate-line"></div>
+    </div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">6</div>
+        <div class="step-head-main">
+          <div class="step-title">Launch Brief</div>
+          <div class="step-subline">Week 20 · Single source of truth deck</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-key">Key</span><span class="tag tag-merged">Merged</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Erin builds the deck in Figma. Covers all channels. Also serves as launch deck. Separate Product Launch Deck eliminated. Content sheet auto-assembled from upstream skills, scaled by launch tier.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin (build)</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten (brief)</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill available"><span class="skill-name">/launch-brief</span><span class="skill-status">Available</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">4 wks</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">7</div>
+        <div class="step-head-main">
+          <div class="step-title">Channel Strategy Due</div>
+          <div class="step-subline">Week 16 · Team Leads alignment meeting eliminated</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Channels outline strategy, KPIs, asset needs. Share with Cody. Async review replaces the team leads alignment meeting.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-teamleads"></span>Team Leads</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill needed"><span class="skill-name">/channel-strategy-template</span><span class="skill-status">Needed</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">8</div>
+        <div class="step-head-main">
+          <div class="step-title">Cody Provides Channel Feedback</div>
+          <div class="step-subline">Week 15</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Cody reviews channel submissions and provides feedback.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">9</div>
+        <div class="step-head-main">
+          <div class="step-title">Channel Strategy Locked + Asset Requests Due</div>
+          <div class="step-subline">Week 14</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Channel strategy locked. Asset requests due at the same time.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-teamleads"></span>Team Leads</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill needed"><span class="skill-name">/asset-request-brief</span><span class="skill-status">Needed</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gate">
+      <div class="gate-line"></div>
+      <div class="gate-label">Phase 4 · Creative Production & Photoshoots</div>
+      <div class="gate-weeks">Weeks 13–7</div>
+      <div class="gate-line"></div>
+    </div>
+
+    <div class="step removed" data-step>
+      <div class="step-head">
+        <div class="step-num">—</div>
+        <div class="step-head-main">
+          <div class="step-title">Ben Ritter Photoshoot</div>
+          <div class="step-subline">Removed — biggest resource cut. Jon P + In-House only</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-removed">Removed</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Ben Ritter shoot eliminated for Tier 3/4. Jon Paterson + In-House only. All BR-specific review steps eliminated.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">10</div>
+        <div class="step-head-main">
+          <div class="step-title">Pre-Series Samples + Final Shot List</div>
+          <div class="step-subline">Week 13</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Pre-series samples received (final formula, final packaging). Erin advises on what's possible and confirms the shot list.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-pdteam"></span>PD</span><span class="pill"><span class="dot dot-genevieve"></span>Genevieve</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">2 wks</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">11</div>
+        <div class="step-head-main">
+          <div class="step-title">Jon Paterson + In-House Shoot</div>
+          <div class="step-subline">Week 11 · Ben Ritter eliminated</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Production across Jon Paterson and in-house team.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-genevieve"></span>Genevieve</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span><span class="pill"><span class="dot dot-jon"></span>Jon Paterson</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1–3 wks</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">12</div>
+        <div class="step-head-main">
+          <div class="step-title">Selects & Retouching Cycle</div>
+          <div class="step-subline">Weeks 10–8 · Standard select/retouch</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Erin reviews images, organizes for Bobbi, Rounds 1 & 2 selects, final selects to retouching. BR steps eliminated.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-bobbi"></span>Bobbi (selecting)</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1–2 wks</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">13</div>
+        <div class="step-head-main">
+          <div class="step-title">Retouched Received & Approved — Tiers Assigned</div>
+          <div class="step-subline">Week 7</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Retouched images received; all images approved; tiers assigned.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-bobbi"></span>Bobbi</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">same wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">14</div>
+        <div class="step-head-main">
+          <div class="step-title">Creative Asset Review</div>
+          <div class="step-subline">Week 7 · Full retouched suite</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Present full retouched suite — model, product, lifestyle, texture.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-diana"></span>Diana</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill needed"><span class="skill-name">/creative-asset-review</span><span class="skill-status">Needed</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gate">
+      <div class="gate-line"></div>
+      <div class="gate-label">Phase 5 · Launch Preparation</div>
+      <div class="gate-weeks">Weeks 7–2</div>
+      <div class="gate-line"></div>
+    </div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">15</div>
+        <div class="step-head-main">
+          <div class="step-title">Assets Briefed and Designed</div>
+          <div class="step-subline">Weeks 7–5</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Channel leads brief assets; Diana designs.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-teamleads"></span>Team Leads</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-diana"></span>Diana (design)</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">2 wks</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">16</div>
+        <div class="step-head-main">
+          <div class="step-title">Asset Deliverables Shared</div>
+          <div class="step-subline">Week 5 · With Kirsten & Payal</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Marketing shares asset deliverables with Kirsten and Payal.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-carly"></span>Carly</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span><span class="pill"><span class="dot dot-payal"></span>Payal</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">17</div>
+        <div class="step-head-main">
+          <div class="step-title">Marketing Asset Review</div>
+          <div class="step-subline">Week 4 · Live meeting</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Live meeting to review all assets as a team.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-carly"></span>Carly</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-marketing"></span>Marketing Team</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">18</div>
+        <div class="step-head-main">
+          <div class="step-title">Share Marketing Assets with Bobbi</div>
+          <div class="step-subline">Week 3 · Usage plan + channel placement</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Kirsten shares marketing assets with Bobbi; usage plan and channel placement determined.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-erin"></span>Erin</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-bobbi"></span>Bobbi</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">same wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">19</div>
+        <div class="step-head-main">
+          <div class="step-title">Marketing Plans & Creative Locked In</div>
+          <div class="step-subline">Week 3 · Final lock</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-key">Key</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Marketing plans and creative locked in.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-bobbi"></span>Bobbi</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div><div class="connector-gap">1 wk</div></div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">20</div>
+        <div class="step-head-main">
+          <div class="step-title">Social Content Shot by Emma</div>
+          <div class="step-subline">Week 2 · Last-minute requests</div>
+        </div>
+        <div class="step-badges"></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Emma captures last-minute social content.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-emma"></span>Emma</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill empty">—</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill empty">—</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gate">
+      <div class="gate-line"></div>
+      <div class="gate-label">Phase 6 · Retrospective</div>
+      <div class="gate-weeks">+2 Weeks After Launch</div>
+      <div class="gate-line"></div>
+    </div>
+
+    <div class="step" data-step>
+      <div class="step-head">
+        <div class="step-num">21</div>
+        <div class="step-head-main">
+          <div class="step-title">Combined Retrospective</div>
+          <div class="step-subline">+2 wks · Strategy + ops in one meeting</div>
+        </div>
+        <div class="step-badges"><span class="tag tag-merged">Merged</span></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="step-details">
+        <div class="step-details-inner">
+          <div class="step-desc">Strategy + operations channel performance retro in one meeting. Two separate T1 retros consolidated.</div>
+          <div class="roles">
+            <div class="role"><div class="role-label">Owner</div><div class="pills"><span class="pill"><span class="dot dot-kirsten"></span>Kirsten</span></div></div>
+            <div class="role"><div class="role-label sup">Supporting</div><div class="pills"><span class="pill"><span class="dot dot-carly"></span>Carly</span><span class="pill"><span class="dot dot-teamleads"></span>Channel Leads</span></div></div>
+            <div class="role"><div class="role-label rev">Approver</div><div class="pills"><span class="pill"><span class="dot dot-cody"></span>Cody</span></div></div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-heading">Skills Available</div>
+            <div class="skill needed"><span class="skill-name">/launch-retro</span><span class="skill-status">Needed</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- /TIER 2-3 -->
+
+  <div class="legend">
+    <div class="legend-item"><span class="tag tag-key">Key</span> Critical milestone</div>
+    <div class="legend-item"><span class="tag tag-optional">Optional</span> Tier-dependent</div>
+    <div class="legend-item"><span class="tag tag-merged">Merged</span> Consolidated vs. T1</div>
+    <div class="legend-item"><span class="tag tag-removed">Removed</span> Cut for T2–3</div>
+  </div>
+
+  <div class="page-footer">
+    Source: JRB_Launch_Process_2026.pdf · Generated 2026-04-15
+  </div>
+
+</div>
+
+<script>
+  const steps = document.querySelectorAll('[data-step]');
+  steps.forEach(s => {
+    s.addEventListener('click', () => {
+      const wasActive = s.classList.contains('active');
+      document.querySelectorAll('.tier-content.active [data-step].active').forEach(el => el.classList.remove('active'));
+      if (!wasActive) s.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.tier-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tier-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tier-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.tier).classList.add('active');
+      document.querySelectorAll('[data-step].active').forEach(el => el.classList.remove('active'));
+      const firstStep = document.querySelector(`#${tab.dataset.tier} [data-step]`);
+      if (firstStep) firstStep.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  // Open first step by default
+  const first = document.querySelector('#t1 [data-step]');
+  if (first) first.classList.add('active');
+</script>
+
+</body>
+</html>
