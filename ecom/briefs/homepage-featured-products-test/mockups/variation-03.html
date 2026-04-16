@@ -3,49 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>V3 — Category Toggle (Complexion · Eyes · Lips · New)</title>
+<title>V4 — V3 + Multi-Section (Bestsellers / New / Bobbi's Picks)</title>
 <link rel="stylesheet" href="_shared.css">
 <style>
-  .v3-bg { background: #fff; }
-  .v3-tabs {
-    display: flex;
-    gap: 0;
-    justify-content: center;
-    margin-bottom: 36px;
-    border-bottom: 1px solid #e8e8e8;
-    overflow-x: auto;
-    scrollbar-width: none;
+  .vp-mobile .products-carousel { padding-bottom: 8px; }
+  .vp-mobile .product-card__img { aspect-ratio: 1/1; }
+  .stars-wrap { position: relative; display: inline-block; font-size: 0; line-height: 1; color: #e4e4e4; }
+  .stars-wrap .stars-fill { position: absolute; top: 0; left: 0; overflow: hidden; white-space: nowrap; color: #000; }
+
+  /* V4-specific: each curation row is tighter, separated by subtle divider */
+  .shelf {
+    padding: 40px 24px;
+    max-width: 1400px;
+    margin: 0 auto;
   }
-  .v3-tabs::-webkit-scrollbar { display: none; }
-  .v3-tab {
-    font-family: 'ArticulatCF', 'Geogrotesque', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    padding: 14px 22px;
-    color: #000;
-    opacity: 0.5;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    white-space: nowrap;
-    cursor: pointer;
-    flex-shrink: 0;
+  @media (min-width: 900px) {
+    .shelf { padding: 56px 40px; }
   }
-  .v3-tab:hover { opacity: 0.8; }
-  .v3-tab.active { opacity: 1; border-bottom-color: #000; }
-  .v3-tab__count {
-    display: inline-block;
-    margin-left: 6px;
-    opacity: 0.55;
-    font-size: 11px;
-  }
-  .v3-tab--new { color: #ff2e92; }
-  .v3-tab--new.active { border-bottom-color: #ff2e92; opacity: 1; }
-  .vp-mobile .products-grid { grid-template-columns: 1fr 1fr; gap: 16px 12px; }
-  .vp-mobile .v3-tab { padding: 12px 14px; font-size: 11px; letter-spacing: 1px; }
-  .vp-mobile .product-card__name { font-size: 13px; }
-  .vp-mobile .section-title { font-size: 28px !important; }
+  .shelf + .shelf { border-top: 1px solid #eee; }
+  .shelf .section-head-row { margin-bottom: 24px; }
+  .shelf .section-title { font-size: clamp(24px, 3vw, 32px); }
+  .shelf--alt { background: #f8f8f8; }
 </style>
 </head>
 <body>
@@ -59,165 +37,248 @@
 </svg>
 
 <div class="mockup-banner">
-  <span class="label"><strong>V3</strong> — Category Toggle (Complexion / Eyes / Lips / New) <span style="color:#ff2e92;">· ICE 19</span></span>
-  <span>ILIA-style pattern · Mobile: swipeable tab bar</span>
+  <span class="label"><strong>V4</strong> — V3 + Multi-Section: Bestsellers / New / Bobbi's Picks</span>
+  <span>Isolates: curation variety</span>
 </div>
 
 <div class="variation-header">
-  <div class="vh-eyebrow">Variation 03 · Discovery Lever</div>
-  <h1>Shop by what you came for</h1>
-  <p>Directly addresses the "I don't know where to start" signal (28% of first-time visitors, Website Feedback n=91). Four tabs let visitors self-sort by category instead of the brand picking for them — the exact pattern ILIA uses for its homepage "Curated Favorites" row. Counts are visible on each tab so shoppers see the assortment depth before tapping.</p>
+  <div class="vh-eyebrow">Variation 04 · Isolate curation</div>
+  <h1>V3 carousel mechanics applied across three merchandising rows</h1>
+  <p>Keeps V3's carousel + stars + reviews + price + NEW badge. The single change: one featured row becomes three rows — Bestsellers, New Arrivals, and Bobbi's Picks — each with its own horizontal carousel. This tests whether showing multiple curation lenses drives more engagement than a single row, and gives us directional signal (via row-level click share) on which curation type customers prefer. A clean A/B on curation type is Phase 2.</p>
   <div class="vh-chips">
-    <span class="chip pink">Category toggle</span>
-    <span class="chip">4 tabs</span>
-    <span class="chip">Stars on every tile</span>
-    <span class="chip">ILIA pattern</span>
-    <span class="chip">Mobile: swipe tabs</span>
+    <span class="chip pink">3 shelves</span>
+    <span class="chip pink">Bestsellers</span>
+    <span class="chip pink">New Arrivals</span>
+    <span class="chip pink">Bobbi's Picks</span>
+    <span class="chip">Carousel per row</span>
+    <span class="chip">Stars + reviews + price</span>
   </div>
 </div>
 
 <!-- ============ DESKTOP ============ -->
 <div class="viewport-label">Desktop · 1440</div>
-<div class="viewport-meta">4 category tabs · COMPLEXION active by default · 4 products per tab · Counts visible</div>
+<div class="viewport-meta">3 curated carousels · alternating backgrounds · row-level click share reveals curation preference</div>
 <div class="vp-desktop">
-  <section class="section-pad v3-bg">
-    <div style="text-align:center; margin-bottom: 20px;">
-      <div class="section-eyebrow">Shop</div>
-      <h2 class="section-title">Find your next favorite</h2>
-    </div>
 
-    <div class="v3-tabs">
-      <div class="v3-tab active">Complexion <span class="v3-tab__count">6</span></div>
-      <div class="v3-tab">Eyes <span class="v3-tab__count">9</span></div>
-      <div class="v3-tab">Lips <span class="v3-tab__count">7</span></div>
-      <div class="v3-tab">Skincare <span class="v3-tab__count">11</span></div>
-      <div class="v3-tab v3-tab--new">New Arrivals <span class="v3-tab__count">4</span></div>
+  <!-- BESTSELLERS -->
+  <section class="shelf" style="background:#fff;">
+    <div class="section-head-row">
+      <div>
+        <div class="section-eyebrow">Shop</div>
+        <h2 class="section-title">Bestsellers</h2>
+      </div>
+      <a href="#" class="shop-all">Shop all bestsellers →</a>
     </div>
-
-    <div class="products-grid">
+    <div class="products-carousel">
       <a href="#" class="product-card">
-        <div class="product-card__img">
-          <img src="https://air-prod.imgix.net/89d71b42-5a15-4bb0-8c45-9377a505f52c.jpg?w=800&h=800&fit=crop&auto=format" alt="Miracle Balm">
-        </div>
-        <div class="product-card__name">Miracle Balm</div>
-        <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">24,108 reviews</span>
-        </div>
-        <div class="product-card__price">$38.00</div>
-        <div class="product-card__meta">14 shades</div>
-      </a>
-      <a href="#" class="product-card">
-        <div class="product-card__img">
-          <img src="https://air-prod.imgix.net/93cf74f2-fc23-4dfe-8662-e705832fe8ae.jpg?w=800&h=800&fit=crop&auto=format" alt="What The Foundation">
-        </div>
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/93cf74f2-fc23-4dfe-8662-e705832fe8ae.jpg?w=800&h=800&fit=crop&auto=format" alt="WTF"></div>
         <div class="product-card__name">What The Foundation</div>
-        <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">8,241 reviews</span>
-        </div>
-        <div class="product-card__price">$42.00</div>
-        <div class="product-card__meta">14 shades</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:89.2%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.46 · 52,572</span></div>
+        <div class="product-card__price">$46.00</div>
       </a>
       <a href="#" class="product-card">
-        <div class="product-card__img">
-          <img src="https://air-prod.imgix.net/4248348b-18c9-4696-9ecb-01fa6b971af6.jpg?w=800&h=800&fit=crop&auto=format" alt="Blushing Stick">
-        </div>
-        <div class="product-card__name">Blushing Stick</div>
-        <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">6,802 reviews</span>
-        </div>
-        <div class="product-card__price">$34.00</div>
-        <div class="product-card__meta">10 shades</div>
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/89d71b42-5a15-4bb0-8c45-9377a505f52c.jpg?w=800&h=800&fit=crop&auto=format" alt="Mini Miracle Balm"></div>
+        <div class="product-card__name">Mini Miracle Balm</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:89%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.45 · 5,390</span></div>
+        <div class="product-card__price">$20.00</div>
       </a>
       <a href="#" class="product-card">
-        <div class="product-card__img">
-          <img src="https://air-prod.imgix.net/89d71b42-5a15-4bb0-8c45-9377a505f52c.jpg?w=800&h=800&fit=crop&auto=format" alt="Miracle Balm · Au Naturel">
-        </div>
-        <div class="product-card__name">Miracle Balm · Au Naturel</div>
-        <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">3,914 reviews</span>
-        </div>
-        <div class="product-card__price">$28.00</div>
-        <div class="product-card__meta">6 shades</div>
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/a031c2a7-fce8-4265-bc1d-db1e9bb3029f.jpg?w=800&h=800&fit=crop&auto=format" alt="Lip Recharge"></div>
+        <div class="product-card__name">Lip Recharge</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:94%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.7 · 532</span></div>
+        <div class="product-card__price">$24.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/89d71b42-5a15-4bb0-8c45-9377a505f52c.jpg?w=800&h=800&fit=crop&auto=format" alt="Miracle Balm"></div>
+        <div class="product-card__name">Miracle Balm</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:84.6%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.23 · 84,634</span></div>
+        <div class="product-card__price">$38.00</div>
       </a>
     </div>
+  </section>
 
-    <div style="text-align:center; margin-top: 32px;">
-      <a href="#" class="button button--outline">Shop all complexion</a>
+  <!-- NEW ARRIVALS -->
+  <section class="shelf shelf--alt">
+    <div class="section-head-row">
+      <div>
+        <div class="section-eyebrow" style="color:#ff2e92;">Just In</div>
+        <h2 class="section-title">New arrivals</h2>
+      </div>
+      <a href="#" class="shop-all">Shop all new →</a>
+    </div>
+    <div class="products-carousel">
+      <a href="#" class="product-card">
+        <div class="product-card__img"><span class="product-card__badge product-card__badge--new">New</span><img src="https://air-prod.imgix.net/4248348b-18c9-4696-9ecb-01fa6b971af6.jpg?w=800&h=800&fit=crop&auto=format" alt="Blushing Stick"></div>
+        <div class="product-card__name">Blushing Stick</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:92.4%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.62 · 26</span></div>
+        <div class="product-card__price">$34.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><span class="product-card__badge product-card__badge--new">New</span><img src="https://air-prod.imgix.net/4248348b-18c9-4696-9ecb-01fa6b971af6.jpg?w=800&h=800&fit=crop&auto=format" alt="The Eyeshadow Stick"></div>
+        <div class="product-card__name">The Eyeshadow Stick</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:89.6%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.48 · 1,852</span></div>
+        <div class="product-card__price">$32.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/93cf74f2-fc23-4dfe-8662-e705832fe8ae.jpg?w=800&h=800&fit=crop&auto=format" alt="Just Enough TM"></div>
+        <div class="product-card__name">Just Enough Tinted Moisturizer</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:92.4%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.62 · 6,901</span></div>
+        <div class="product-card__price">$44.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/a031c2a7-fce8-4265-bc1d-db1e9bb3029f.jpg?w=800&h=800&fit=crop&auto=format" alt="Lip Recharge"></div>
+        <div class="product-card__name">Lip Recharge</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:94%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.7 · 532</span></div>
+        <div class="product-card__price">$24.00</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- BOBBI'S PICKS -->
+  <section class="shelf" style="background:#fff;">
+    <div class="section-head-row">
+      <div>
+        <div class="section-eyebrow">Curated</div>
+        <h2 class="section-title">Bobbi's picks</h2>
+      </div>
+      <a href="#" class="shop-all">Shop Bobbi's edit →</a>
+    </div>
+    <div class="products-carousel">
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/89d71b42-5a15-4bb0-8c45-9377a505f52c.jpg?w=800&h=800&fit=crop&auto=format" alt="Miracle Balm"></div>
+        <div class="product-card__name">Miracle Balm</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:84.6%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.23 · 84,634</span></div>
+        <div class="product-card__price">$38.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/93cf74f2-fc23-4dfe-8662-e705832fe8ae.jpg?w=800&h=800&fit=crop&auto=format" alt="WTF"></div>
+        <div class="product-card__name">What The Foundation</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:89.2%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.46 · 52,572</span></div>
+        <div class="product-card__price">$46.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/93cf74f2-fc23-4dfe-8662-e705832fe8ae.jpg?w=800&h=800&fit=crop&auto=format" alt="Just Enough TM"></div>
+        <div class="product-card__name">Just Enough Tinted Moisturizer</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:92.4%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.62 · 6,901</span></div>
+        <div class="product-card__price">$44.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/a031c2a7-fce8-4265-bc1d-db1e9bb3029f.jpg?w=800&h=800&fit=crop&auto=format" alt="Lip Recharge"></div>
+        <div class="product-card__name">Lip Recharge</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:94%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.7 · 532</span></div>
+        <div class="product-card__price">$24.00</div>
+      </a>
     </div>
   </section>
 </div>
 
 <!-- ============ MOBILE ============ -->
 <div class="viewport-label">Mobile · 390</div>
-<div class="viewport-meta">Tabs swipe horizontally · Grid stays 2×2 for fast scanning · CTA shifts to match active tab</div>
+<div class="viewport-meta">3 stacked shelves · each a swipeable carousel · row-level engagement reveals curation preference</div>
 <div class="vp-mobile">
-  <section class="section-pad v3-bg" style="padding: 32px 20px;">
-    <div style="text-align:center; margin-bottom: 20px;">
-      <div class="section-eyebrow">Shop</div>
-      <h2 class="section-title" style="font-size: 28px;">Find your next favorite</h2>
-    </div>
 
-    <div class="v3-tabs">
-      <div class="v3-tab active">Complexion</div>
-      <div class="v3-tab">Eyes</div>
-      <div class="v3-tab">Lips</div>
-      <div class="v3-tab">Skincare</div>
-      <div class="v3-tab v3-tab--new">New</div>
+  <section class="shelf" style="padding: 32px 20px; background:#fff;">
+    <div class="section-head-row" style="margin-bottom:20px;">
+      <div>
+        <div class="section-eyebrow">Shop</div>
+        <h2 class="section-title" style="font-size: 26px;">Bestsellers</h2>
+      </div>
     </div>
-
-    <div class="products-grid">
+    <div class="products-carousel">
       <a href="#" class="product-card">
-        <div class="product-card__img">
-          <img src="https://air-prod.imgix.net/89d71b42-5a15-4bb0-8c45-9377a505f52c.jpg?w=800&h=800&fit=crop&auto=format" alt="Miracle Balm">
-        </div>
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/93cf74f2-fc23-4dfe-8662-e705832fe8ae.jpg?w=800&h=800&fit=crop&auto=format" alt="WTF"></div>
+        <div class="product-card__name">What The Foundation</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:89.2%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.46 · 52,572</span></div>
+        <div class="product-card__price">$46.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/89d71b42-5a15-4bb0-8c45-9377a505f52c.jpg?w=800&h=800&fit=crop&auto=format" alt="Mini MB"></div>
+        <div class="product-card__name">Mini Miracle Balm</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:89%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.45 · 5,390</span></div>
+        <div class="product-card__price">$20.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/a031c2a7-fce8-4265-bc1d-db1e9bb3029f.jpg?w=800&h=800&fit=crop&auto=format" alt="Lip Recharge"></div>
+        <div class="product-card__name">Lip Recharge</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:94%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.7 · 532</span></div>
+        <div class="product-card__price">$24.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/89d71b42-5a15-4bb0-8c45-9377a505f52c.jpg?w=800&h=800&fit=crop&auto=format" alt="MB"></div>
         <div class="product-card__name">Miracle Balm</div>
-        <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">24,108</span>
-        </div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:84.6%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.23 · 84,634</span></div>
         <div class="product-card__price">$38.00</div>
       </a>
+    </div>
+  </section>
+
+  <section class="shelf shelf--alt" style="padding: 32px 20px;">
+    <div class="section-head-row" style="margin-bottom:20px;">
+      <div>
+        <div class="section-eyebrow" style="color:#ff2e92;">Just In</div>
+        <h2 class="section-title" style="font-size: 26px;">New arrivals</h2>
+      </div>
+    </div>
+    <div class="products-carousel">
       <a href="#" class="product-card">
-        <div class="product-card__img">
-          <img src="https://air-prod.imgix.net/93cf74f2-fc23-4dfe-8662-e705832fe8ae.jpg?w=800&h=800&fit=crop&auto=format" alt="WTF">
-        </div>
-        <div class="product-card__name">What The Foundation</div>
-        <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">8,241</span>
-        </div>
-        <div class="product-card__price">$42.00</div>
-      </a>
-      <a href="#" class="product-card">
-        <div class="product-card__img">
-          <img src="https://air-prod.imgix.net/4248348b-18c9-4696-9ecb-01fa6b971af6.jpg?w=800&h=800&fit=crop&auto=format" alt="Blushing Stick">
-        </div>
+        <div class="product-card__img"><span class="product-card__badge product-card__badge--new">New</span><img src="https://air-prod.imgix.net/4248348b-18c9-4696-9ecb-01fa6b971af6.jpg?w=800&h=800&fit=crop&auto=format" alt="Blushing Stick"></div>
         <div class="product-card__name">Blushing Stick</div>
-        <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">6,802</span>
-        </div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:92.4%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.62 · 26</span></div>
         <div class="product-card__price">$34.00</div>
       </a>
       <a href="#" class="product-card">
-        <div class="product-card__img">
-          <img src="https://air-prod.imgix.net/89d71b42-5a15-4bb0-8c45-9377a505f52c.jpg?w=800&h=800&fit=crop&auto=format" alt="Miracle Balm · Au Naturel">
-        </div>
-        <div class="product-card__name">Miracle Balm · Au Naturel</div>
-        <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">3,914</span>
-        </div>
-        <div class="product-card__price">$28.00</div>
+        <div class="product-card__img"><span class="product-card__badge product-card__badge--new">New</span><img src="https://air-prod.imgix.net/4248348b-18c9-4696-9ecb-01fa6b971af6.jpg?w=800&h=800&fit=crop&auto=format" alt="Eyeshadow Stick"></div>
+        <div class="product-card__name">The Eyeshadow Stick</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:89.6%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.48 · 1,852</span></div>
+        <div class="product-card__price">$32.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/93cf74f2-fc23-4dfe-8662-e705832fe8ae.jpg?w=800&h=800&fit=crop&auto=format" alt="JETM"></div>
+        <div class="product-card__name">Just Enough Tinted Moisturizer</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:92.4%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.62 · 6,901</span></div>
+        <div class="product-card__price">$44.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/a031c2a7-fce8-4265-bc1d-db1e9bb3029f.jpg?w=800&h=800&fit=crop&auto=format" alt="Lip Recharge"></div>
+        <div class="product-card__name">Lip Recharge</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:94%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.7 · 532</span></div>
+        <div class="product-card__price">$24.00</div>
       </a>
     </div>
+  </section>
 
-    <div style="text-align:center; margin-top: 28px;">
-      <a href="#" class="button button--outline">Shop all complexion</a>
+  <section class="shelf" style="padding: 32px 20px; background:#fff;">
+    <div class="section-head-row" style="margin-bottom:20px;">
+      <div>
+        <div class="section-eyebrow">Curated</div>
+        <h2 class="section-title" style="font-size: 26px;">Bobbi's picks</h2>
+      </div>
+    </div>
+    <div class="products-carousel">
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/89d71b42-5a15-4bb0-8c45-9377a505f52c.jpg?w=800&h=800&fit=crop&auto=format" alt="MB"></div>
+        <div class="product-card__name">Miracle Balm</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:84.6%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.23 · 84,634</span></div>
+        <div class="product-card__price">$38.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/93cf74f2-fc23-4dfe-8662-e705832fe8ae.jpg?w=800&h=800&fit=crop&auto=format" alt="WTF"></div>
+        <div class="product-card__name">What The Foundation</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:89.2%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.46 · 52,572</span></div>
+        <div class="product-card__price">$46.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/93cf74f2-fc23-4dfe-8662-e705832fe8ae.jpg?w=800&h=800&fit=crop&auto=format" alt="JETM"></div>
+        <div class="product-card__name">Just Enough Tinted Moisturizer</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:92.4%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.62 · 6,901</span></div>
+        <div class="product-card__price">$44.00</div>
+      </a>
+      <a href="#" class="product-card">
+        <div class="product-card__img"><img src="https://air-prod.imgix.net/a031c2a7-fce8-4265-bc1d-db1e9bb3029f.jpg?w=800&h=800&fit=crop&auto=format" alt="Lip Recharge"></div>
+        <div class="product-card__name">Lip Recharge</div>
+        <div class="product-card__rating"><span class="stars-wrap"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span><span class="stars-fill" style="width:94%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span></span><span class="product-card__count">4.7 · 532</span></div>
+        <div class="product-card__price">$24.00</div>
+      </a>
     </div>
   </section>
 </div>

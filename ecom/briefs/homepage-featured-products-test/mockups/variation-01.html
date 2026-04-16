@@ -3,18 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>V1 — New Arrivals + Social Proof Tiles</title>
+<title>V2 — Control + Stars, Reviews & Price</title>
 <link rel="stylesheet" href="_shared.css">
 <style>
-  .new-arrivals-bg { background: #fff; }
-  .vp-mobile .products-grid { grid-template-columns: 1fr 1fr; gap: 16px 12px; }
-  .vp-mobile .product-card__name { font-size: 13px; }
-  .vp-mobile .section-title { font-size: 28px !important; }
+  /* Same layout as control: desktop 4-up, mobile stacks */
+  .vp-mobile .products-grid { grid-template-columns: 1fr; gap: 32px; }
+  .vp-mobile .product-card__img { aspect-ratio: 1/1; }
+
+  /* Star rating — partial fill via width */
+  .stars-wrap {
+    position: relative;
+    display: inline-block;
+    font-size: 0;
+    line-height: 1;
+    color: #e4e4e4;
+  }
+  .stars-wrap .stars-fill {
+    position: absolute;
+    top: 0; left: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    color: #000;
+  }
 </style>
 </head>
 <body>
 
-<!-- SVG sprite (Junip star, per JRB design system) -->
+<!-- SVG star sprite -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="jrb-star" viewBox="0 0 18 17">
@@ -24,127 +39,145 @@
 </svg>
 
 <div class="mockup-banner">
-  <span class="label"><strong>V1</strong> — New Arrivals Row + Ratings on Every Tile <span style="color:#ff2e92;">· ICE 26 + 25</span></span>
-  <span>Mobile: 2×2 grid (not stack)</span>
+  <span class="label"><strong>V2</strong> — Control + Stars, Review Count, Price</span>
+  <span>Isolates: social proof + price transparency</span>
 </div>
 
 <div class="variation-header">
-  <div class="vh-eyebrow">Variation 01 · Highest ICE</div>
-  <h1>New Arrivals first, ratings on every tile</h1>
-  <p>Addresses the two biggest signals in the data: 49.5% of customers say "New Arrivals" is MISSING from the homepage (#1 ranked priority, avg rank 1.7) and 63% of prospects scan featured products first, reading ratings + price before copy. Mobile goes 2×2 to halve scroll depth.</p>
+  <div class="vh-eyebrow">Variation 02 · Isolate social proof</div>
+  <h1>Same layout as control — adds stars, review counts, price, NEW badge</h1>
+  <p>The single-variable arm. Same 4-up grid, same 4 products, same mobile stack as today — the only change is that every card now shows star rating + review count + price, and products with few reviews (because they're new, not because they're unloved) get an optional NEW badge for context. This isolates whether social proof alone moves the needle.</p>
   <div class="vh-chips">
-    <span class="chip pink">New Arrivals row</span>
-    <span class="chip pink">Stars + review counts</span>
-    <span class="chip">NEW badge</span>
-    <span class="chip">Mobile 2×2</span>
-    <span class="chip">4 products</span>
+    <span class="chip pink">★ Stars (real)</span>
+    <span class="chip pink">Review counts (honest)</span>
+    <span class="chip pink">Price</span>
+    <span class="chip">Optional NEW badge</span>
+    <span class="chip">Layout unchanged</span>
   </div>
 </div>
 
-<!-- ============ DESKTOP ============ -->
+<!-- ============ DESKTOP (1440) ============ -->
 <div class="viewport-label">Desktop · 1440</div>
-<div class="viewport-meta">New Arrivals heading · NEW badges on tiles 1-2 · Stars + review counts visible on every card</div>
+<div class="viewport-meta">4-up grid · stars + review count + price on every card · NEW badge on Blushing Stick (26 reviews, just launched)</div>
 <div class="vp-desktop">
-  <section class="section-pad new-arrivals-bg">
+  <section class="section-pad" style="background: #fff;">
     <div class="section-head-row">
       <div>
-        <div class="section-eyebrow" style="color:#ff2e92;">Just In</div>
-        <h2 class="section-title">New arrivals</h2>
+        <div class="section-eyebrow">Shop</div>
+        <h2 class="section-title">Featured products</h2>
       </div>
-      <a href="#" class="shop-all">Shop all new →</a>
+      <a href="#" class="shop-all">Shop all →</a>
     </div>
 
     <div class="products-grid">
+      <!-- Miracle Balm: 4.23★ · 84,634 reviews · $38 -->
       <a href="#" class="product-card">
         <div class="product-card__img">
-          <span class="product-card__badge product-card__badge--new">New · This Week</span>
-          <img src="https://air-prod.imgix.net/89d71b42-5a15-4bb0-8c45-9377a505f52c.jpg?w=800&h=800&fit=crop&auto=format" alt="Miracle Balm Illuminating">
+          <img src="https://air-prod.imgix.net/89d71b42-5a15-4bb0-8c45-9377a505f52c.jpg?w=800&h=800&fit=crop&auto=format" alt="Miracle Balm">
         </div>
-        <div class="product-card__name">Miracle Balm · Illuminating</div>
+        <div class="product-card__name">Miracle Balm</div>
         <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">2,341 reviews</span>
+          <span class="stars-wrap" aria-label="4.23 out of 5 stars">
+            <span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span>
+            <span class="stars-fill" style="width:84.6%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span>
+          </span>
+          <span class="product-card__count">4.23 · 84,634 reviews</span>
         </div>
         <div class="product-card__price">$38.00</div>
-        <div class="product-card__meta">6 shades</div>
       </a>
+
+      <!-- WTF: 4.46★ · 52,572 reviews · $46 -->
       <a href="#" class="product-card">
         <div class="product-card__img">
-          <span class="product-card__badge product-card__badge--new">New · This Week</span>
-          <img src="https://air-prod.imgix.net/93cf74f2-fc23-4dfe-8662-e705832fe8ae.jpg?w=800&h=800&fit=crop&auto=format" alt="What The Foundation Mini">
+          <img src="https://air-prod.imgix.net/93cf74f2-fc23-4dfe-8662-e705832fe8ae.jpg?w=800&h=800&fit=crop&auto=format" alt="What The Foundation">
         </div>
-        <div class="product-card__name">What The Foundation · Mini</div>
+        <div class="product-card__name">What The Foundation</div>
         <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">418 reviews</span>
+          <span class="stars-wrap" aria-label="4.46 out of 5 stars">
+            <span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span>
+            <span class="stars-fill" style="width:89.2%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span>
+          </span>
+          <span class="product-card__count">4.46 · 52,572 reviews</span>
         </div>
-        <div class="product-card__price">$28.00</div>
-        <div class="product-card__meta">14 shades</div>
+        <div class="product-card__price">$46.00</div>
       </a>
+
+      <!-- Lip Recharge: 4.7★ · 532 reviews · $24 -->
       <a href="#" class="product-card">
         <div class="product-card__img">
           <img src="https://air-prod.imgix.net/a031c2a7-fce8-4265-bc1d-db1e9bb3029f.jpg?w=800&h=800&fit=crop&auto=format" alt="Lip Recharge">
         </div>
-        <div class="product-card__name">Lip Recharge Glossy Treatment</div>
+        <div class="product-card__name">Lip Recharge</div>
         <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">9,412 reviews</span>
+          <span class="stars-wrap" aria-label="4.7 out of 5 stars">
+            <span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span>
+            <span class="stars-fill" style="width:94%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span>
+          </span>
+          <span class="product-card__count">4.7 · 532 reviews</span>
         </div>
         <div class="product-card__price">$24.00</div>
-        <div class="product-card__meta">8 shades</div>
       </a>
+
+      <!-- Blushing Stick: 4.62★ · 26 reviews · $34 · NEW -->
       <a href="#" class="product-card">
         <div class="product-card__img">
+          <span class="product-card__badge product-card__badge--new">New</span>
           <img src="https://air-prod.imgix.net/4248348b-18c9-4696-9ecb-01fa6b971af6.jpg?w=800&h=800&fit=crop&auto=format" alt="Blushing Stick">
         </div>
         <div class="product-card__name">Blushing Stick</div>
         <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">6,802 reviews</span>
+          <span class="stars-wrap" aria-label="4.62 out of 5 stars">
+            <span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span>
+            <span class="stars-fill" style="width:92.4%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span>
+          </span>
+          <span class="product-card__count">4.62 · 26 reviews</span>
         </div>
         <div class="product-card__price">$34.00</div>
-        <div class="product-card__meta">10 shades</div>
       </a>
     </div>
   </section>
 </div>
 
-<!-- ============ MOBILE ============ -->
+<!-- ============ MOBILE (390) ============ -->
 <div class="viewport-label">Mobile · 390</div>
-<div class="viewport-meta">2×2 grid · New Arrivals heading · Stars visible in viewport · ≈50% less scroll vs control</div>
+<div class="viewport-meta">Layout unchanged from control — 4 products stacked vertically · stars + reviews + price added</div>
 <div class="vp-mobile">
-  <section class="section-pad new-arrivals-bg" style="padding: 32px 20px;">
-    <div class="section-head-row" style="margin-bottom: 24px;">
+  <section class="section-pad" style="background: #fff; padding: 32px 20px;">
+    <div class="section-head-row">
       <div>
-        <div class="section-eyebrow" style="color:#ff2e92;">Just In</div>
-        <h2 class="section-title" style="font-size: 28px;">New arrivals</h2>
+        <div class="section-eyebrow">Shop</div>
+        <h2 class="section-title" style="font-size: 28px;">Featured products</h2>
       </div>
     </div>
 
     <div class="products-grid">
       <a href="#" class="product-card">
         <div class="product-card__img">
-          <span class="product-card__badge product-card__badge--new" style="font-size:9px;padding:3px 6px;">New</span>
           <img src="https://air-prod.imgix.net/89d71b42-5a15-4bb0-8c45-9377a505f52c.jpg?w=800&h=800&fit=crop&auto=format" alt="Miracle Balm">
         </div>
-        <div class="product-card__name">Miracle Balm · Illuminating</div>
+        <div class="product-card__name">Miracle Balm</div>
         <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">2,341</span>
+          <span class="stars-wrap">
+            <span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span>
+            <span class="stars-fill" style="width:84.6%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span>
+          </span>
+          <span class="product-card__count">4.23 · 84,634 reviews</span>
         </div>
         <div class="product-card__price">$38.00</div>
       </a>
       <a href="#" class="product-card">
         <div class="product-card__img">
-          <span class="product-card__badge product-card__badge--new" style="font-size:9px;padding:3px 6px;">New</span>
-          <img src="https://air-prod.imgix.net/93cf74f2-fc23-4dfe-8662-e705832fe8ae.jpg?w=800&h=800&fit=crop&auto=format" alt="WTF Mini">
+          <img src="https://air-prod.imgix.net/93cf74f2-fc23-4dfe-8662-e705832fe8ae.jpg?w=800&h=800&fit=crop&auto=format" alt="What The Foundation">
         </div>
-        <div class="product-card__name">What The Foundation · Mini</div>
+        <div class="product-card__name">What The Foundation</div>
         <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">418</span>
+          <span class="stars-wrap">
+            <span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span>
+            <span class="stars-fill" style="width:89.2%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span>
+          </span>
+          <span class="product-card__count">4.46 · 52,572 reviews</span>
         </div>
-        <div class="product-card__price">$28.00</div>
+        <div class="product-card__price">$46.00</div>
       </a>
       <a href="#" class="product-card">
         <div class="product-card__img">
@@ -152,26 +185,33 @@
         </div>
         <div class="product-card__name">Lip Recharge</div>
         <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">9,412</span>
+          <span class="stars-wrap">
+            <span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span>
+            <span class="stars-fill" style="width:94%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span>
+          </span>
+          <span class="product-card__count">4.7 · 532 reviews</span>
         </div>
         <div class="product-card__price">$24.00</div>
       </a>
       <a href="#" class="product-card">
         <div class="product-card__img">
+          <span class="product-card__badge product-card__badge--new">New</span>
           <img src="https://air-prod.imgix.net/4248348b-18c9-4696-9ecb-01fa6b971af6.jpg?w=800&h=800&fit=crop&auto=format" alt="Blushing Stick">
         </div>
         <div class="product-card__name">Blushing Stick</div>
         <div class="product-card__rating">
-          <span class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><use href="#jrb-star"/></svg></span>
-          <span class="product-card__count">6,802</span>
+          <span class="stars-wrap">
+            <span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span>
+            <span class="stars-fill" style="width:92.4%;"><span class="stars"><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg><svg viewBox="0 0 18 17"><use href="#jrb-star"/></svg></span></span>
+          </span>
+          <span class="product-card__count">4.62 · 26 reviews</span>
         </div>
         <div class="product-card__price">$34.00</div>
       </a>
     </div>
 
-    <div style="text-align:center; margin-top: 28px;">
-      <a href="#" class="button button--outline">Shop all new</a>
+    <div style="text-align: center; margin-top: 28px;">
+      <a href="#" class="button button--outline">Shop all</a>
     </div>
   </section>
 </div>

@@ -134,6 +134,34 @@ ICE scale: Impact/Confidence/Ease each 1–10. Ease: higher = easier to ship.
 
 ---
 
+## Test Design — Incremental Isolation (Apr 15, 2026 update)
+
+**Context**: An earlier draft of this brief bundled 4 hypotheses into each arm (e.g., V1 = rename + stars + badge + 2×2 grid). Cody pushed back: if V1 wins, we can't attribute the lift to any single lever. Replaced with an incremental-isolation design so each arm differs from the prior arm by exactly one variable.
+
+**The four arms**:
+
+| Arm | Layers on top of... | Isolates | What we learn if it wins |
+|-----|--------------------|---------|----------------------------|
+| V1 Control | — | (baseline) | Today's ceiling on PDP CTR with no stars/reviews/price |
+| V2 +Social proof | V1 | Stars + honest review counts + price + optional NEW badge | Social proof alone is enough — no layout change needed |
+| V3 +Carousel | V2 | Layout (carousel vs 4-up grid, 6 products in same vertical space) | Layout is the binding constraint — mobile scroll reduction drives the lift |
+| V4 +Multi-section | V3 | Curation variety (Bestsellers / New / Bobbi's Picks shelves) | Multiple curation lenses beat a single "Featured" row → Phase 2 A/B of curation types on V3 carousel |
+
+**Why this beats a bundled design**:
+1. Clean attribution per lever — no "V1 won but we don't know why" debate.
+2. V4's row-level click share is a <strong>free diagnostic</strong> for Phase 2 — tells us which curation lens to put into a clean A/B (Bestsellers-only vs New-only vs Bobbi's-only) without running an additional 5-arm curation test first.
+3. Deferred low-confidence hypotheses (customer-phrase badges, category toggle, inline ATC) keeps each arm interpretable and the dev scope tight.
+
+**Honest review counts over hidden counts**: Original mockups proposed hiding review counts under 100 to avoid the "glaring zero" problem. Cody corrected this: show the real number (e.g., Blushing Stick = 26 reviews) and add an optional NEW badge for just-launched SKUs. The NEW badge reframes low counts as "this just dropped" rather than "unproven." Preserves honesty; handles the newness-context problem.
+
+**What's held for Phase 2+**:
+- Clean A/B of curation <em>type</em> on the winning layout (informed by V4 row-level share)
+- Customer-phrase badges ("Holy Grail", "Life-changing") — deferred so they don't confound the V2 social-proof isolation
+- Inline ATC on tile (requires variant-selection UX — scope creep)
+- Category toggle — survey rank #6, not worth an arm
+
+---
+
 ## Data Gaps to Close Before Brief Finalization
 
 1. **Heatmap.com MCP pull** (site ID 2821) — clickmap on homepage, scroll-depth % on mobile vs desktop, tile-level CTR by position, time-on-homepage.
