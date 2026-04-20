@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PLP Template Test — QA Brief</title>
+  <style>
+    @font-face {
+      font-family: 'CanelaWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');
+      font-weight: 300;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'CanelaWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-LightItalic.otf') format('opentype');
+      font-weight: 300;
+      font-style: italic;
+    }
+    @font-face {
+      font-family: 'GeogrotesqueWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'ArticulatCF';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'RingsideWideWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      background: #fff;
+      color: #000;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .page-header {
+      background: #000;
+      color: #fff;
+      padding: 48px 40px 40px;
+    }
+    .page-header__eyebrow {
+      font-family: 'ArticulatCF', Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 10px;
+    }
+    .page-header__title {
+      font-family: 'CanelaWeb', Georgia, serif;
+      font-weight: 300;
+      font-size: 42px;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .page-header__meta {
+      font-family: 'RingsideWideWeb', Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .content {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 40px 80px;
+    }
+
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-family: 'ArticulatCF', Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #000;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #000;
+      margin-bottom: 12px;
+    }
+
+    /* Variants grid */
+    .variants-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 700px) {
+      .variants-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .variant-card {
+      border: 1px solid #e8e8e8;
+      border-radius: 3px;
+      padding: 16px;
+    }
+    .variant-card--control {
+      background: #f8f8f8;
+    }
+    .variant-card__label {
+      font-family: 'ArticulatCF', Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      font-size: 10px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #000;
+      margin-bottom: 8px;
+    }
+    .variant-card__desc {
+      font-size: 12px;
+      line-height: 1.55;
+      color: #000;
+    }
+    .variant-card__link {
+      display: block;
+      margin-top: 12px;
+      background: #000;
+      color: #fff;
+      text-decoration: none;
+      font-family: 'ArticulatCF', Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 8px 10px;
+      border-radius: 3px;
+    }
+    .variant-card__link:hover {
+      background: #333;
+    }
+
+    /* Checklist */
+    .checklist-group {
+      margin-bottom: 28px;
+    }
+    .checklist-group__title {
+      font-family: 'ArticulatCF', Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #000;
+      margin-bottom: 10px;
+    }
+    .checklist {
+      list-style: none;
+    }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+    .checklist__box {
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid #ccc;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Known items */
+    .known-items {
+      list-style: none;
+    }
+    .known-items li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .known-items li:last-child { border-bottom: none; }
+    .known-items__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ccc;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .note {
+      background: #f8f8f8;
+      border-left: 3px solid #000;
+      border-radius: 0 3px 3px 0;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: #000;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-header__eyebrow">Ecom / QA Brief</div>
+  <h1 class="page-header__title">PLP Template Test</h1>
+  <div class="page-header__meta">Draft theme 147895025814 &nbsp;&middot;&nbsp; April 2026 &nbsp;&middot;&nbsp; 5 variants</div>
+</div>
+
+<div class="content">
+
+  <div class="section">
+    <div class="section-title">Overview</div>
+    <p>5-cell Intelligems A/B test on the Shop All PLP. All variants are live on draft theme <strong>147895025814</strong> and route via the <code>?view=</code> URL parameter. The test has not been wired to Intelligems yet — links below are for design and QA review only.</p>
+    <p>Two items are pending before launch: (1) design team review of filter pill styling, and (2) swatch metafield population for products missing swatch data (e.g. Best Blush). Neither blocks QA.</p>
+    <div class="note">Links require being logged into jonesroad.myshopify.com as a staff member.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Variants</div>
+    <div class="variants-grid">
+
+      <div class="variant-card variant-card--control">
+        <div class="variant-card__label">Control</div>
+        <div class="variant-card__desc">Live site. Current grouped layout. Baseline for comparison.</div>
+        <a class="variant-card__link" href="https://jonesroad.myshopify.com/collections/shop-all?preview_theme_id=147895025814&view=cclp-plp-control&cb=42" target="_blank">Preview</a>
+      </div>
+
+      <div class="variant-card">
+        <div class="variant-card__label">V1</div>
+        <div class="variant-card__desc">Shade/size count in meta line, Save $ flag on sale products, hover image on desktop.</div>
+        <a class="variant-card__link" href="https://jonesroad.myshopify.com/collections/shop-all?preview_theme_id=147895025814&view=cclp-plp-v1&cb=42" target="_blank">Preview</a>
+      </div>
+
+      <div class="variant-card">
+        <div class="variant-card__label">V2</div>
+        <div class="variant-card__desc">V1 + swatch dots on card. Overlay on image (desktop), inline pill below title (mobile).</div>
+        <a class="variant-card__link" href="https://jonesroad.myshopify.com/collections/shop-all?preview_theme_id=147895025814&view=cclp-plp-v2&cb=42" target="_blank">Preview</a>
+      </div>
+
+      <div class="variant-card">
+        <div class="variant-card__label">V3</div>
+        <div class="variant-card__desc">V2 + Quick Shop modal. Bottom sheet on mobile, centered modal on desktop.</div>
+        <a class="variant-card__link" href="https://jonesroad.myshopify.com/collections/shop-all?preview_theme_id=147895025814&view=cclp-plp-v3&cb=42" target="_blank">Preview</a>
+      </div>
+
+      <div class="variant-card">
+        <div class="variant-card__label">V4</div>
+        <div class="variant-card__desc">V3 card behavior + flat (non-grouped) Shop All layout. All products in one grid.</div>
+        <a class="variant-card__link" href="https://jonesroad.myshopify.com/collections/shop-all?preview_theme_id=147895025814&view=cclp-plp-v4&cb=42" target="_blank">Preview</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">QA Checklist</div>
+
+    <div class="checklist-group">
+      <div class="checklist-group__title">All Variants</div>
+      <ul class="checklist">
+        <li><span class="checklist__box"></span><span>Product cards render correctly at all breakpoints (mobile 375px, tablet 768px, desktop 1280px+)</span></li>
+        <li><span class="checklist__box"></span><span>Review counts match PDP counts — not individual product counts (should show group totals e.g. "2.2K Reviews")</span></li>
+        <li><span class="checklist__box"></span><span>"X shades" meta line appears for shade products; weight (e.g. "1.2 oz") shows for single-SKU products</span></li>
+        <li><span class="checklist__box"></span><span>Apparel shows "X sizes" not "X shades"</span></li>
+        <li><span class="checklist__box"></span><span>Save $ flag shows on sale products</span></li>
+        <li><span class="checklist__box"></span><span>Sold-out products show gray "Sold Out" button</span></li>
+        <li><span class="checklist__box"></span><span>Filter pills work — selecting a category filters the grid correctly</span></li>
+        <li><span class="checklist__box"></span><span>Grouped layout (Control / V1 / V2 / V3): group headers visible, correct group order</span></li>
+        <li><span class="checklist__box"></span><span>Flat layout (V4): all products in one continuous grid, no group headers</span></li>
+        <li><span class="checklist__box"></span><span>No orphan words in any text element at any breakpoint</span></li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group__title">V1 Only</div>
+      <ul class="checklist">
+        <li><span class="checklist__box"></span><span>Hover image swaps on desktop card hover</span></li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group__title">V2 Only</div>
+      <ul class="checklist">
+        <li><span class="checklist__box"></span><span>Swatch dots appear on cards that have swatch metafields populated</span></li>
+        <li><span class="checklist__box"></span><span>Desktop: swatch overlay appears on image hover, positioned at bottom of image</span></li>
+        <li><span class="checklist__box"></span><span>Mobile: inline swatch pill visible below title — centered, subtle gray background</span></li>
+        <li><span class="checklist__box"></span><span>Clicking or tapping a swatch swaps the card image to that shade</span></li>
+        <li><span class="checklist__box"></span><span>Shade description text appears on swatch hover (card meta line)</span></li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group__title">V3 and V4</div>
+      <ul class="checklist">
+        <li><span class="checklist__box"></span><span>"Quick Shop" button appears on available non-bundle products</span></li>
+        <li><span class="checklist__box"></span><span>Tapping Quick Shop opens modal — bottom sheet on mobile, centered modal on desktop</span></li>
+        <li><span class="checklist__box"></span><span>Modal shows: product images/carousel, shade swatches, ATC button, trust messages, description, "See full product details" link at bottom</span></li>
+        <li><span class="checklist__box"></span><span>Hovering or tapping a swatch in the modal updates the carousel image</span></li>
+        <li><span class="checklist__box"></span><span>ATC button adds to cart and closes modal</span></li>
+        <li><span class="checklist__box"></span><span>Close (X) button is visible and functional on mobile (white circle, top-right corner)</span></li>
+        <li><span class="checklist__box"></span><span>Bundle products show "Customize" button instead of Quick Shop</span></li>
+        <li><span class="checklist__box"></span><span>V4 specifically: flat layout, no group headers, Quick Shop works as expected</span></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <div class="section-title">Known Items — Not Bugs</div>
+    <ul class="known-items">
+      <li><span class="known-items__dot"></span><span><strong>Filter pill styling</strong> — Design team reviewing. Styling may update before launch. Not blocking QA.</span></li>
+      <li><span class="known-items__dot"></span><span><strong>Missing swatches on some products</strong> — e.g. Best Blush shows "5 shades" but no swatch dots. Swatch metafields not yet populated in Shopify admin. Data task, not a code bug.</span></li>
+      <li><span class="known-items__dot"></span><span><strong>V1 hover image</strong> — Currently enabled on V1. Confirm with Cody whether hover should be V1 or V2+ only before launch.</span></li>
+      <li><span class="known-items__dot"></span><span><strong>Intelligems not wired</strong> — Templates are ready; test not yet configured in Intelligems. Links above use direct ?view= routing for preview only.</span></li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>
