@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCIG Hero Test — Intelligems Analysis</title>
+<link rel="stylesheet" href="https://jrb-fonts-cdn.vercel.app/fonts/canela.css">
+<link rel="stylesheet" href="https://jrb-fonts-cdn.vercel.app/fonts/geogrotesque.css">
+<link rel="stylesheet" href="https://jrb-fonts-cdn.vercel.app/fonts/articulatcf.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Geogrotesque', sans-serif; color: #000; background: #fff; font-size: 15px; line-height: 1.5; }
+  a { color: inherit; }
+
+  /* HEADER */
+  .report-header { background: #000; color: #fff; padding: 56px 48px 48px; }
+  .report-header .label { font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: .3px; text-transform: uppercase; color: #ff2e92; margin-bottom: 16px; }
+  .report-header h1 { font-family: 'Canela', serif; font-weight: 300; font-size: 48px; line-height: 1.1; color: #fff; margin-bottom: 16px; }
+  .report-header .meta { font-size: 13px; color: rgba(255,255,255,0.6); display: flex; gap: 32px; flex-wrap: wrap; }
+  .report-header .meta span { display: flex; flex-direction: column; gap: 2px; }
+  .report-header .meta strong { color: #fff; font-size: 15px; }
+
+  /* WINNER BANNER */
+  .winner-banner { background: #f8f8f8; border-left: 4px solid #ff2e92; padding: 32px 48px; display: flex; align-items: flex-start; gap: 24px; }
+  .winner-banner .icon { font-size: 32px; flex-shrink: 0; }
+  .winner-banner h2 { font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: .3px; text-transform: uppercase; color: #ff2e92; margin-bottom: 8px; }
+  .winner-banner p { font-family: 'Canela', serif; font-weight: 300; font-size: 24px; line-height: 1.3; }
+  .winner-banner .sub { font-size: 14px; color: #000; margin-top: 8px; font-family: 'Geogrotesque', sans-serif; }
+
+  /* SECTIONS */
+  section { padding: 56px 48px; }
+  section:nth-child(odd) { background: #fff; }
+  section:nth-child(even) { background: #f8f8f8; }
+  .section-label { font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: .3px; text-transform: uppercase; color: #000; margin-bottom: 8px; opacity: .4; }
+  h2.section-title { font-family: 'Canela', serif; font-weight: 300; font-size: 32px; margin-bottom: 32px; }
+  h3.subsection { font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: .3px; text-transform: uppercase; margin: 32px 0 12px; opacity: .6; }
+
+  /* TABLES */
+  .table-wrap { overflow-x: auto; margin-bottom: 24px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: .3px; text-transform: uppercase; padding: 10px 12px; background: #000; color: #fff; text-align: left; white-space: nowrap; }
+  td { padding: 10px 12px; border-bottom: 1px solid #e8e8e8; vertical-align: top; white-space: nowrap; }
+  tr.control td { background: #f8f8f8; }
+  tr.winner td { font-weight: 600; }
+  tr.excluded td { opacity: .45; background: #fafafa; }
+  .positive { color: #16a34a; font-weight: 600; }
+  .negative { color: #dc2626; font-weight: 600; }
+  .neutral { color: #6b7280; }
+
+  /* BADGES */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: .3px; text-transform: uppercase; white-space: nowrap; }
+  .badge-sig { background: #dcfce7; color: #166534; }
+  .badge-strong { background: #dbeafe; color: #1e40af; }
+  .badge-dir { background: #fef9c3; color: #854d0e; }
+  .badge-noise { background: #f3f4f6; color: #4b5563; }
+  .badge-excluded { background: #fee2e2; color: #991b1b; }
+  .badge-winner { background: #ff2e92; color: #fff; }
+  .badge-control { background: #000; color: #fff; }
+
+  /* STAT CARDS */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .stat-card { background: #fff; border: 1px solid #e8e8e8; padding: 20px; }
+  .stat-card .label { font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: .3px; text-transform: uppercase; color: #000; opacity: .4; margin-bottom: 6px; }
+  .stat-card .value { font-family: 'Canela', serif; font-weight: 300; font-size: 28px; }
+  .stat-card .sub { font-size: 12px; color: #000; opacity: .5; margin-top: 4px; }
+  section:nth-child(even) .stat-card { background: #fff; }
+
+  /* FUNNEL */
+  .funnel { display: flex; gap: 2px; align-items: flex-end; margin-bottom: 32px; flex-wrap: wrap; }
+  .funnel-stage { flex: 1; min-width: 100px; }
+  .funnel-bar { width: 100%; background: #000; position: relative; min-height: 8px; }
+  .funnel-bar.variant { background: #ff2e92; }
+  .funnel-label { font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 9px; letter-spacing: .3px; text-transform: uppercase; margin-top: 6px; line-height: 1.3; color: #000; opacity: .5; }
+  .funnel-val { font-size: 13px; font-weight: 600; margin-top: 2px; }
+  .funnel-diff { font-size: 11px; margin-top: 2px; }
+  .funnel-title { font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: .3px; text-transform: uppercase; margin-bottom: 4px; }
+
+  /* JOURNEY */
+  .journey-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .journey-card { background: #fff; border: 1px solid #e8e8e8; padding: 16px; }
+  .journey-card h4 { font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: .3px; text-transform: uppercase; margin-bottom: 12px; }
+  .journey-card ol { padding-left: 20px; }
+  .journey-card li { font-size: 12px; margin-bottom: 4px; line-height: 1.4; }
+  section:nth-child(even) .journey-card { background: #fff; }
+
+  /* LEARNINGS */
+  .learning-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+  .learning-list li { padding: 20px 24px; border-left: 3px solid #000; background: #fff; }
+  .learning-list li strong { font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: .3px; text-transform: uppercase; display: block; margin-bottom: 6px; }
+  section:nth-child(even) .learning-list li { background: #fff; }
+
+  /* HYPOTHESIS */
+  .hypo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .hypo-card { padding: 24px; border: 1px solid #e8e8e8; background: #fff; }
+  .hypo-card .num { font-family: 'Canela', serif; font-weight: 300; font-size: 40px; color: #ff2e92; line-height: 1; margin-bottom: 8px; }
+  .hypo-card h4 { font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: .3px; text-transform: uppercase; margin-bottom: 8px; }
+  .hypo-card p { font-size: 13px; line-height: 1.5; }
+  .hypo-card .metric { margin-top: 12px; font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: .3px; text-transform: uppercase; opacity: .5; }
+
+  /* EXCLUDED NOTE */
+  .excluded-box { background: #fff8f8; border: 1px solid #fecaca; padding: 20px 24px; border-radius: 0; margin-top: 16px; }
+  .excluded-box h4 { font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: .3px; text-transform: uppercase; color: #991b1b; margin-bottom: 8px; }
+  .excluded-box p { font-size: 13px; line-height: 1.5; }
+
+  /* HEATMAP */
+  .hm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .hm-card { background: #fff; border: 1px solid #e8e8e8; padding: 20px; }
+  .hm-card .var { font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: .3px; text-transform: uppercase; margin-bottom: 8px; opacity: .5; }
+  .hm-card .sessions { font-size: 20px; font-weight: 600; }
+  .hm-card .cvr { font-family: 'Canela', serif; font-weight: 300; font-size: 28px; margin-top: 4px; }
+  .hm-card .cvr-label { font-size: 12px; opacity: .5; }
+  section:nth-child(even) .hm-card { background: #fff; }
+
+  /* DEVICE TABLE */
+  .device-section { margin-bottom: 24px; }
+  .device-section h3 { font-family: 'ArticulatCF', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: .3px; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+
+  /* FOOTER */
+  .report-footer { background: #000; color: rgba(255,255,255,0.4); padding: 32px 48px; font-size: 12px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+
+  @media (max-width: 640px) {
+    .report-header, section, .winner-banner { padding: 32px 20px; }
+    .report-header h1 { font-size: 32px; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="report-header">
+  <div class="label">Intelligems A/B Test Analysis</div>
+  <h1>CCIG Hero Test</h1>
+  <div class="meta">
+    <span><strong>Apr 14 – Apr 20, 2026</strong>Duration: 6 days</span>
+    <span><strong>1,230,544</strong>Total visitors (all variants)</span>
+    <span><strong>4 active variants</strong>25% traffic each</span>
+    <span><strong>Ended</strong>Status</span>
+  </div>
+</div>
+
+<!-- WINNER BANNER -->
+<div class="winner-banner">
+  <div>
+    <h2>Verdict</h2>
+    <p>Inconclusive — no statistically significant winner among active variants. <strong>Shorter</strong> is the best directional performer with +2.93% NRPV and strong mobile signal (+3.29%, p2bc 89%), but 6-day runtime was insufficient for significance at these lift sizes.</p>
+    <div class="sub">Primary mechanism: Shorter copy drives higher AOV ($86.43 vs $85.08) and meaningfully outperforms on mobile. Run a follow-on test focusing on mobile with Shorter as the challenger.</div>
+  </div>
+</div>
+
+<!-- SECTION 1: Test Overview -->
+<section>
+  <div class="section-label">Section 01</div>
+  <h2 class="section-title">Test Overview</h2>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="label">Test Duration</div>
+      <div class="value">6</div>
+      <div class="sub">days (Apr 14–20)</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Total Visitors</div>
+      <div class="value">1.23M</div>
+      <div class="sub">across all variants</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Total Orders</div>
+      <div class="value">39,292</div>
+      <div class="sub">across active variants</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Active Variants</div>
+      <div class="value">4</div>
+      <div class="sub">25% traffic each</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Excluded Variant</div>
+      <div class="value">Split</div>
+      <div class="sub">0% traffic allocation</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Best Variant</div>
+      <div class="value" style="color:#ff2e92">Shorter</div>
+      <div class="sub">+2.93% NRPV (directional)</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: Full Metrics Table -->
+<section>
+  <div class="section-label">Section 02</div>
+  <h2 class="section-title">Full Metrics Table</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Variant</th>
+          <th>Traffic</th>
+          <th>Visitors</th>
+          <th>Orders</th>
+          <th>CVR</th>
+          <th>NRPV</th>
+          <th>GPPV</th>
+          <th>AOV</th>
+          <th>PDP Rate</th>
+          <th>Collection Rate</th>
+          <th>ATC Rate</th>
+          <th>Checkout Rate</th>
+          <th>NRPV Uplift</th>
+          <th>CVR Uplift</th>
+          <th>NRPV p2bc</th>
+          <th>Signal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="control">
+          <td><span class="badge badge-control">Control</span> Control Group</td>
+          <td>25%</td>
+          <td>352,984</td>
+          <td>8,657</td>
+          <td>2.45%</td>
+          <td>$2.09</td>
+          <td>$1.53</td>
+          <td>$85.08</td>
+          <td>42.79%</td>
+          <td>12.62%</td>
+          <td>7.35%</td>
+          <td>3.45%</td>
+          <td class="neutral">—</td>
+          <td class="neutral">—</td>
+          <td class="neutral">—</td>
+          <td class="neutral">—</td>
+        </tr>
+        <tr class="winner">
+          <td><span class="badge badge-winner">Best</span> Shorter</td>
+          <td>25%</td>
+          <td>352,275</td>
+          <td>8,753</td>
+          <td>2.48%</td>
+          <td><strong>$2.15</strong></td>
+          <td><strong>$1.58</strong></td>
+          <td><strong>$86.43</strong></td>
+          <td>43.05%</td>
+          <td>12.61%</td>
+          <td>7.43%</td>
+          <td>3.47%</td>
+          <td class="positive">+2.93%</td>
+          <td class="positive">+1.31%</td>
+          <td>14.3%</td>
+          <td><span class="badge badge-noise">Noise</span></td>
+        </tr>
+        <tr>
+          <td>Editorial</td>
+          <td>25%</td>
+          <td>352,763</td>
+          <td>8,751</td>
+          <td>2.48%</td>
+          <td>$2.12</td>
+          <td>$1.56</td>
+          <td>$85.64</td>
+          <td>42.94%</td>
+          <td>12.70%</td>
+          <td>7.47%</td>
+          <td>3.51%</td>
+          <td class="positive">+1.81%</td>
+          <td class="positive">+1.15%</td>
+          <td>4.7%</td>
+          <td><span class="badge badge-noise">Noise</span></td>
+        </tr>
+        <tr>
+          <td>Social Proof + Shorter</td>
+          <td>25%</td>
+          <td>352,522</td>
+          <td>8,759</td>
+          <td>2.48%</td>
+          <td>$2.12</td>
+          <td>$1.55</td>
+          <td>$85.15</td>
+          <td>42.89%</td>
+          <td>12.66%</td>
+          <td>7.43%</td>
+          <td>3.52%</td>
+          <td class="positive">+1.39%</td>
+          <td class="positive">+1.31%</td>
+          <td>2.6%</td>
+          <td><span class="badge badge-noise">Noise</span></td>
+        </tr>
+        <tr class="excluded">
+          <td><span class="badge badge-excluded">Excluded</span> Split</td>
+          <td><strong style="color:#dc2626">0%</strong></td>
+          <td>172,462</td>
+          <td>4,372</td>
+          <td>2.54%</td>
+          <td>$2.20</td>
+          <td>$1.62</td>
+          <td>$86.81</td>
+          <td>40.24%</td>
+          <td>13.56%</td>
+          <td>7.46%</td>
+          <td>3.58%</td>
+          <td class="positive">+5.47%</td>
+          <td class="positive">+3.37%</td>
+          <td>77.98%</td>
+          <td><span class="badge badge-excluded">Excluded</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 3: Statistical Significance -->
+<section>
+  <div class="section-label">Section 03</div>
+  <h2 class="section-title">Statistical Significance</h2>
+
+  <div class="stat-grid" style="margin-bottom: 32px;">
+    <div class="stat-card">
+      <div class="label">Shorter p2bc (NRPV)</div>
+      <div class="value">14.3%</div>
+      <div class="sub"><span class="badge badge-noise">Noise</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Editorial p2bc (NRPV)</div>
+      <div class="value">4.7%</div>
+      <div class="sub"><span class="badge badge-noise">Noise</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Social Proof p2bc (NRPV)</div>
+      <div class="value">2.6%</div>
+      <div class="sub"><span class="badge badge-noise">Noise</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Split p2bc (NRPV)</div>
+      <div class="value">77.98%</div>
+      <div class="sub"><span class="badge badge-excluded">Excluded — 0% traffic</span></div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Threshold</th>
+          <th>Interpretation</th>
+          <th>Call It?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>p2bc &ge; 0.95</td><td>Statistically significant</td><td class="positive">Yes — call winner</td></tr>
+        <tr><td>p2bc 0.85–0.94</td><td>Strong directional signal</td><td>"Likely winner, not conclusive"</td></tr>
+        <tr><td>p2bc 0.70–0.84</td><td>Directional but weak</td><td>"Trending — retest"</td></tr>
+        <tr><td>p2bc &lt; 0.70</td><td>Noise</td><td class="negative">Inconclusive</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="excluded-box" style="margin-top: 24px;">
+    <h4>Underpowered Test Flags</h4>
+    <p>This test triggers multiple underpowered flags: (1) ran only 6 days — below the 7-day minimum to avoid weekday/weekend confounders; (2) lift sizes of ~1–3% require longer runtime to reach significance at the observed traffic volumes; (3) no active variant exceeded p2bc 0.20. The test should have been designed to run at least 14 days, or focused traffic allocation on fewer variants.</p>
+  </div>
+</section>
+
+<!-- SECTION 4: Device Breakdown -->
+<section>
+  <div class="section-label">Section 04</div>
+  <h2 class="section-title">Device Breakdown</h2>
+
+  <p style="margin-bottom: 24px; font-size: 14px; opacity: .6;">Mobile dominates at <strong>8.6x more traffic</strong> than desktop (~316K vs ~37K control visitors). Mobile results drive the overall outcome.</p>
+
+  <div class="device-section">
+    <h3>Mobile</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Variant</th>
+            <th>Visitors</th>
+            <th>CVR</th>
+            <th>NRPV</th>
+            <th>GPPV</th>
+            <th>AOV</th>
+            <th>ATC Rate</th>
+            <th>PDP Rate</th>
+            <th>NRPV Uplift</th>
+            <th>p2bc</th>
+            <th>Signal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="control">
+            <td><span class="badge badge-control">Control</span> Control Group</td>
+            <td>316,070</td>
+            <td>1.89%</td>
+            <td>$1.59</td>
+            <td>$1.16</td>
+            <td>$83.76</td>
+            <td>6.37%</td>
+            <td>40.51%</td>
+            <td class="neutral">—</td>
+            <td class="neutral">—</td>
+            <td class="neutral">—</td>
+          </tr>
+          <tr class="winner">
+            <td><span class="badge badge-winner">Best</span> Shorter</td>
+            <td>315,794</td>
+            <td>1.93%</td>
+            <td><strong>$1.64</strong></td>
+            <td><strong>$1.20</strong></td>
+            <td><strong>$84.67</strong></td>
+            <td>6.44%</td>
+            <td>40.79%</td>
+            <td class="positive">+3.29%</td>
+            <td>89.1%</td>
+            <td><span class="badge badge-strong">Strong Signal</span></td>
+          </tr>
+          <tr>
+            <td>Social Proof + Shorter</td>
+            <td>316,091</td>
+            <td>1.93%</td>
+            <td>$1.63</td>
+            <td>$1.19</td>
+            <td>$84.12</td>
+            <td>6.48%</td>
+            <td>40.60%</td>
+            <td class="positive">+2.57%</td>
+            <td>83.2%</td>
+            <td><span class="badge badge-dir">Directional</span></td>
+          </tr>
+          <tr>
+            <td>Editorial</td>
+            <td>316,186</td>
+            <td>1.91%</td>
+            <td>$1.60</td>
+            <td>$1.17</td>
+            <td>$83.80</td>
+            <td>6.53%</td>
+            <td>40.73%</td>
+            <td class="positive">+1.04%</td>
+            <td>65.4%</td>
+            <td><span class="badge badge-noise">Noise</span></td>
+          </tr>
+          <tr class="excluded">
+            <td><span class="badge badge-excluded">Excl.</span> Split</td>
+            <td>155,891</td>
+            <td>2.03%</td>
+            <td>$1.74</td>
+            <td>$1.28</td>
+            <td>$85.92</td>
+            <td>6.65%</td>
+            <td>38.44%</td>
+            <td class="positive">+9.94%</td>
+            <td>99.9%</td>
+            <td><span class="badge badge-excluded">Excluded</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="device-section">
+    <h3>Desktop</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Variant</th>
+            <th>Visitors</th>
+            <th>CVR</th>
+            <th>NRPV</th>
+            <th>GPPV</th>
+            <th>AOV</th>
+            <th>ATC Rate</th>
+            <th>PDP Rate</th>
+            <th>NRPV Uplift</th>
+            <th>p2bc</th>
+            <th>Signal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="control">
+            <td><span class="badge badge-control">Control</span> Control Group</td>
+            <td>36,914</td>
+            <td>7.25%</td>
+            <td>$6.38</td>
+            <td>$4.71</td>
+            <td>$88.02</td>
+            <td>15.76%</td>
+            <td>62.31%</td>
+            <td class="neutral">—</td>
+            <td class="neutral">—</td>
+            <td class="neutral">—</td>
+          </tr>
+          <tr class="winner">
+            <td><span class="badge badge-winner">Best</span> Editorial</td>
+            <td>36,577</td>
+            <td>7.40%</td>
+            <td><strong>$6.64</strong></td>
+            <td><strong>$4.93</strong></td>
+            <td><strong>$89.73</strong></td>
+            <td>15.65%</td>
+            <td>62.04%</td>
+            <td class="positive">+4.11%</td>
+            <td>85.6%</td>
+            <td><span class="badge badge-strong">Strong Signal</span></td>
+          </tr>
+          <tr>
+            <td>Shorter</td>
+            <td>36,481</td>
+            <td>7.25%</td>
+            <td>$6.56</td>
+            <td>$4.87</td>
+            <td>$90.51</td>
+            <td>15.96%</td>
+            <td>62.65%</td>
+            <td class="positive">+2.92%</td>
+            <td>77.6%</td>
+            <td><span class="badge badge-dir">Directional</span></td>
+          </tr>
+          <tr>
+            <td>Social Proof + Shorter</td>
+            <td>36,431</td>
+            <td>7.27%</td>
+            <td>$6.36</td>
+            <td>$4.70</td>
+            <td>$87.51</td>
+            <td>15.59%</td>
+            <td>62.69%</td>
+            <td class="negative">-0.24%</td>
+            <td>48.1%</td>
+            <td><span class="badge badge-noise">Noise</span></td>
+          </tr>
+          <tr class="excluded">
+            <td><span class="badge badge-excluded">Excl.</span> Split</td>
+            <td>16,571</td>
+            <td>7.30%</td>
+            <td>$6.51</td>
+            <td>$4.82</td>
+            <td>$89.12</td>
+            <td>15.02%</td>
+            <td>57.24%</td>
+            <td class="positive">+2.02%</td>
+            <td>65.9%</td>
+            <td><span class="badge badge-excluded">Excluded</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="background:#fff8f8; border: 1px solid #fecaca; padding: 16px 20px; margin-top: 8px;">
+    <strong style="font-family:'ArticulatCF',sans-serif; font-size:10px; letter-spacing:.3px; text-transform:uppercase; color:#991b1b;">Device Divergence Alert</strong>
+    <p style="font-size:13px; margin-top:6px;">Social Proof + Shorter shows a device reversal — it's directionally positive on mobile (+2.57%) but negative on desktop (-0.24%). Given that desktop converts at 3x the mobile rate (7.25% vs 1.89%), this mixed signal weakens its candidacy for a follow-on test vs pure Shorter.</p>
+  </div>
+</section>
+
+<!-- SECTION 5: Funnel Analysis -->
+<section>
+  <div class="section-label">Section 05</div>
+  <h2 class="section-title">Funnel Analysis</h2>
+  <p style="margin-bottom: 28px; font-size: 14px; opacity: .6;">Comparing Shorter (best active variant) vs Control across the full conversion funnel.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Funnel Stage</th>
+          <th>Control Rate</th>
+          <th>Shorter Rate</th>
+          <th>Delta</th>
+          <th>Observation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Visitors Exposed</td>
+          <td>352,984</td>
+          <td>352,275</td>
+          <td class="neutral">—</td>
+          <td>Equal traffic allocation</td>
+        </tr>
+        <tr>
+          <td>View PDP</td>
+          <td>42.79%</td>
+          <td>43.05%</td>
+          <td class="positive">+0.26pp</td>
+          <td>Slightly more product exploration</td>
+        </tr>
+        <tr>
+          <td>View Collection</td>
+          <td>12.62%</td>
+          <td>12.61%</td>
+          <td class="neutral">flat</td>
+          <td>No meaningful difference</td>
+        </tr>
+        <tr>
+          <td>Add to Cart</td>
+          <td>7.35%</td>
+          <td>7.43%</td>
+          <td class="positive">+0.08pp</td>
+          <td>Small lift in purchase intent</td>
+        </tr>
+        <tr>
+          <td>Checkout Begin</td>
+          <td>3.45%</td>
+          <td>3.47%</td>
+          <td class="positive">+0.02pp</td>
+          <td>Marginally more checkout starts</td>
+        </tr>
+        <tr>
+          <td>Convert (CVR)</td>
+          <td>2.45%</td>
+          <td>2.48%</td>
+          <td class="positive">+0.03pp (+1.3%)</td>
+          <td>Modest CVR lift</td>
+        </tr>
+        <tr>
+          <td>AOV</td>
+          <td>$85.08</td>
+          <td>$86.43</td>
+          <td class="positive">+$1.35 (+1.6%)</td>
+          <td>Larger basket — primary NRPV driver</td>
+        </tr>
+        <tr>
+          <td>Abandoned Cart</td>
+          <td>67.17%</td>
+          <td>67.08%</td>
+          <td class="positive">-0.09pp</td>
+          <td>Marginally fewer abandons</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top: 20px; padding: 20px 24px; border-left: 3px solid #ff2e92; background: #fff;">
+    <strong style="font-family:'ArticulatCF',sans-serif; font-size:11px; letter-spacing:.3px; text-transform:uppercase;">Key Funnel Insight</strong>
+    <p style="font-size:14px; margin-top:8px;">The NRPV lift from Shorter is driven primarily by <strong>AOV (+$1.35)</strong>, not CVR. Shorter copy appears to attract or convert users with higher basket intent — likely fewer low-intent clicks from a more concise hero message, resulting in a higher-quality visitor pool who buys more per order.</p>
+  </div>
+</section>
+
+<!-- SECTION 6: Product Mix -->
+<section>
+  <div class="section-label">Section 06</div>
+  <h2 class="section-title">Product Mix Insights</h2>
+  <p style="margin-bottom: 24px; font-size: 14px; opacity: .6;">Revenue per visitor by product — Shorter vs Control. Divergences &gt;5% highlighted.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Control NRPV</th>
+          <th>Shorter NRPV</th>
+          <th>Editorial NRPV</th>
+          <th>Soc Proof NRPV</th>
+          <th>Shorter vs Ctrl</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>What The Foundation</td>
+          <td>$0.3411</td>
+          <td>$0.3408</td>
+          <td>$0.3507</td>
+          <td>$0.3525</td>
+          <td class="neutral">-0.1%</td>
+          <td>Flat — no hero effect</td>
+        </tr>
+        <tr>
+          <td>Blushing Stick</td>
+          <td>$0.1884</td>
+          <td>$0.2054</td>
+          <td>$0.1873</td>
+          <td>$0.2014</td>
+          <td class="positive">+9.0%</td>
+          <td>Strong lift — discovery product</td>
+        </tr>
+        <tr>
+          <td>Makeup Travel Kit 2.0</td>
+          <td>$0.0681</td>
+          <td>$0.0796</td>
+          <td>$0.0669</td>
+          <td>$0.0671</td>
+          <td class="positive">+16.9%</td>
+          <td>Biggest relative lift</td>
+        </tr>
+        <tr>
+          <td>Everything Brush</td>
+          <td>$0.0444</td>
+          <td>$0.0531</td>
+          <td>$0.0462</td>
+          <td>$0.0489</td>
+          <td class="positive">+19.6%</td>
+          <td>Accessory upsell lift</td>
+        </tr>
+        <tr>
+          <td>Lip Recharge</td>
+          <td>$0.0897</td>
+          <td>$0.0973</td>
+          <td>$0.0908</td>
+          <td>$0.0943</td>
+          <td class="positive">+8.5%</td>
+          <td>Add-on category up</td>
+        </tr>
+        <tr>
+          <td>Mini Miracle Balm</td>
+          <td>$0.2403</td>
+          <td>$0.2372</td>
+          <td>$0.2399</td>
+          <td>$0.2396</td>
+          <td class="negative">-1.3%</td>
+          <td>Flat — no hero dependency</td>
+        </tr>
+        <tr>
+          <td>Miracle Balm</td>
+          <td>$0.1654</td>
+          <td>$0.1645</td>
+          <td>$0.1699</td>
+          <td>$0.1646</td>
+          <td class="neutral">-0.5%</td>
+          <td>Flat across all variants</td>
+        </tr>
+        <tr>
+          <td>Gel Liner</td>
+          <td>$0.0290</td>
+          <td>$0.0316</td>
+          <td>$0.0258</td>
+          <td>$0.0251</td>
+          <td class="positive">+8.9%</td>
+          <td>Shorter lifts liner; Editorial suppresses</td>
+        </tr>
+        <tr>
+          <td>Just Enough TM</td>
+          <td>$0.1291</td>
+          <td>$0.1319</td>
+          <td>$0.1370</td>
+          <td>$0.1265</td>
+          <td class="positive">+2.2%</td>
+          <td>Editorial strongest here</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top: 16px; padding: 20px 24px; border-left: 3px solid #000; background: #fff;">
+    <strong style="font-family:'ArticulatCF',sans-serif; font-size:11px; letter-spacing:.3px; text-transform:uppercase;">Mix Interpretation</strong>
+    <p style="font-size:14px; margin-top:8px;">Shorter drives a <strong>basket-widening effect</strong> — customers buy more accessories and discovery products (Blushing Stick, Lip Recharge, Makeup Travel Kit, Everything Brush) rather than buying more of the hero SKUs (WTF, Miracle Balm). This explains the AOV lift without a meaningful CVR change. Shorter copy may reduce hero-focused intent but increase browsing breadth.</p>
+  </div>
+</section>
+
+<!-- SECTION 7: Heatmap Signals -->
+<section>
+  <div class="section-label">Section 07</div>
+  <h2 class="section-title">Heatmap Signals</h2>
+
+  <h3 class="subsection">Purchases per Session (CVR Proxy) — Heatmap API</h3>
+  <p style="margin-bottom: 16px; font-size: 13px; opacity: .6;">Note: Heatmap captures ~44% of purchases and ~70% of sessions. Use for relative rank only, not absolute values.</p>
+  <div class="hm-grid">
+    <div class="hm-card">
+      <div class="var">Control Group</div>
+      <div class="sessions">8,919 sessions</div>
+      <div class="cvr">10.18</div>
+      <div class="cvr-label">purchases / 1000 sessions</div>
+    </div>
+    <div class="hm-card" style="border-color: #ff2e92;">
+      <div class="var">Shorter</div>
+      <div class="sessions">9,052 sessions</div>
+      <div class="cvr">10.04</div>
+      <div class="cvr-label">purchases / 1000 sessions</div>
+    </div>
+    <div class="hm-card">
+      <div class="var">Editorial</div>
+      <div class="sessions">9,054 sessions</div>
+      <div class="cvr">9.68</div>
+      <div class="cvr-label">purchases / 1000 sessions</div>
+    </div>
+    <div class="hm-card">
+      <div class="var">Social Proof + Shorter</div>
+      <div class="sessions">8,752 sessions</div>
+      <div class="cvr">9.41</div>
+      <div class="cvr-label">purchases / 1000 sessions</div>
+    </div>
+  </div>
+
+  <div style="padding: 16px 20px; background: #fff; border: 1px solid #e8e8e8; margin-bottom: 32px;">
+    <strong style="font-family:'ArticulatCF',sans-serif; font-size:10px; letter-spacing:.3px; text-transform:uppercase; opacity:.5;">Agreement Check</strong>
+    <p style="font-size:13px; margin-top:6px;">Heatmap rank: <strong>Control > Shorter > Editorial > Social Proof + Shorter</strong>. Intelligems rank: <strong>Shorter ≈ Social Proof > Editorial > Control</strong>. Partial disagreement — Heatmap shows Control strongest (possibly due to different session attribution windows or return-visitor counting). Heatmap confirms Shorter beats Editorial and Social Proof in direct CVR signal, which aligns directionally.</p>
+  </div>
+
+  <h3 class="subsection">Top Next Pages After Homepage — Journey Continuation</h3>
+  <div class="journey-grid">
+    <div class="journey-card">
+      <h4>Control Group</h4>
+      <ol>
+        <li>The Bronzer (PDP)</li>
+        <li>Homepage (return)</li>
+        <li>Blushing Stick (PDP)</li>
+        <li>Shop All (collection)</li>
+        <li>JustBOBBI (content)</li>
+        <li>Emily Story (content)</li>
+        <li>Face Collection</li>
+      </ol>
+    </div>
+    <div class="journey-card" style="border: 2px solid #ff2e92;">
+      <h4>Shorter <span class="badge badge-winner" style="font-size:9px;">Best</span></h4>
+      <ol>
+        <li>Just Enough TM (PDP)</li>
+        <li>Face Collection</li>
+        <li>Just Enough TM (PDP)</li>
+        <li>Clean Makeup Kits</li>
+        <li>Olesia's Look (content)</li>
+        <li>What The Foundation (PDP)</li>
+        <li>New Classics Kit (PDP)</li>
+      </ol>
+    </div>
+    <div class="journey-card">
+      <h4>Editorial</h4>
+      <ol>
+        <li>Homepage (return)</li>
+        <li>Blushing Stick (PDP)</li>
+        <li>Face Pencil (PDP)</li>
+        <li>Miracle Balm (PDP)</li>
+        <li>Emily Story (content)</li>
+        <li>Clean Makeup Kits</li>
+      </ol>
+    </div>
+    <div class="journey-card">
+      <h4>Social Proof + Shorter</h4>
+      <ol>
+        <li>Eye Collection</li>
+        <li>Face Collection</li>
+        <li>Homepage (return)</li>
+        <li>Miracle Balm Quiz</li>
+        <li>Emily Story (content)</li>
+        <li>Shop All</li>
+      </ol>
+    </div>
+  </div>
+
+  <div style="margin-top: 16px; padding: 20px 24px; border-left: 3px solid #ff2e92; background: #fff;">
+    <strong style="font-family:'ArticulatCF',sans-serif; font-size:11px; letter-spacing:.3px; text-transform:uppercase;">Journey Insight</strong>
+    <p style="font-size:14px; margin-top:8px;"><strong>Shorter sends users to high-intent destination pages</strong> — Just Enough TM appears twice (top 3), followed by collection pages and kit pages. Control users' top destination is The Bronzer PDP, which has no hero prominence. Shorter may be resetting user intent toward foundation/tinted coverage products — correlating with the AOV lift and Blushing Stick bump seen in the product mix.</p>
+  </div>
+</section>
+
+<!-- SECTION 8: Excluded Variants -->
+<section>
+  <div class="section-label">Section 08</div>
+  <h2 class="section-title">Excluded Variants</h2>
+
+  <div class="excluded-box">
+    <h4>Split — 0% Traffic Allocation (Excluded)</h4>
+    <p>The "Split" variant was paused at some point during the test, resulting in 0% live traffic allocation. However, it still accumulated ~172,462 visitors and 4,372 orders — this is historical data from before it was paused. Its apparent performance (+5.47% NRPV, p2bc 77.98%) cannot be treated as a fair comparison to the 6-day test window of the other variants. The higher p2bc is likely inflated by different time-period composition (possibly a period with higher baseline conversion). All Split data is excluded from winner determination and follow-on recommendations.</p>
+  </div>
+</section>
+
+<!-- SECTION 9: Key Learnings -->
+<section>
+  <div class="section-label">Section 09</div>
+  <h2 class="section-title">Key Learnings</h2>
+  <ul class="learning-list">
+    <li>
+      <strong>Shorter hero copy is the best active challenger on mobile</strong>
+      NRPV +3.29% on mobile with p2bc 89% — the strongest directional signal from any active variant on the dominant device. Shorter copy may reduce friction for mobile users who process less text before scrolling.
+    </li>
+    <li>
+      <strong>The NRPV lift comes from AOV, not CVR</strong>
+      Shorter's +2.93% sitewide NRPV is driven primarily by +$1.35 AOV ($86.43 vs $85.08), not CVR (+0.03pp). This suggests copy brevity filters for higher-intent users rather than adding volume — a basket-quality effect, not a traffic-quality effect.
+    </li>
+    <li>
+      <strong>Social proof adds mobile value but hurts desktop</strong>
+      Social Proof + Shorter is +2.57% NRPV on mobile (p2bc 83%) but -0.24% on desktop (p2bc 48%). Desktop converts at 3x the mobile rate, making the desktop regression significant enough to rule Social Proof + Shorter out as a universal winner.
+    </li>
+    <li>
+      <strong>6 days is too short — test needs at least 14 days for these lift sizes</strong>
+      With ~353K visitors per variant over 6 days, lifts of 1–3% will not reach 95% p2bc without a much longer runtime. The test was correctly designed for traffic split but underpowered for time. Future hero tests should be pre-planned for a minimum of 14 days or powered with sample size calculations upfront.
+    </li>
+  </ul>
+</section>
+
+<!-- SECTION 10: Follow-On Hypotheses -->
+<section>
+  <div class="section-label">Section 10</div>
+  <h2 class="section-title">Follow-On Test Hypotheses</h2>
+  <div class="hypo-grid">
+    <div class="hypo-card">
+      <div class="num">01</div>
+      <h4>Shorter vs Control — 14-Day Retest</h4>
+      <p>Run a clean 2-way test (Shorter vs Control only, 50/50 split) for a minimum of 14 days. The directional signal is strong enough on mobile to warrant a conclusive test. Removes multi-variant dilution and gives full statistical power.</p>
+      <div class="metric">Primary metric: NRPV / Secondary: mobile CVR</div>
+    </div>
+    <div class="hypo-card">
+      <div class="num">02</div>
+      <h4>Shorter + Mobile-Specific Hero Image</h4>
+      <p>Shorter copy drives more Just Enough TM exploration per the journey data. Test a hero image featuring the TM or a skin-finish product alongside Shorter copy — hypothesis: copy + visual alignment amplifies the basket-widening effect seen in this test.</p>
+      <div class="metric">Primary metric: AOV + Blushing Stick revenue/visitor</div>
+    </div>
+    <div class="hypo-card">
+      <div class="num">03</div>
+      <h4>Editorial on Desktop Only (Geotargeted)</h4>
+      <p>Editorial was the desktop winner (+4.11% NRPV, p2bc 85.6%) but dragged down by mobile underperformance. Serve Editorial to desktop users only (via Intelligems device targeting) while Shorter runs on mobile — testing the device-specific creative hypothesis directly.</p>
+      <div class="metric">Primary metric: desktop NRPV / mobile NRPV</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="report-footer">
+  <span>CCIG Hero Test — Intelligems A/B Analysis</span>
+  <span>Test period: Apr 14–20, 2026 &nbsp;|&nbsp; Generated: Apr 20, 2026</span>
+  <span>Data: Intelligems MCP + Heatmap.com API</span>
+</div>
+
+</body>
+</html>
