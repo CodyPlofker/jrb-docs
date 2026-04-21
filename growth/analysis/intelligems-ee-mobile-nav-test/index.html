@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EE - New Mobile Navigation A/B Test — Analysis</title>
+<link rel="stylesheet" href="https://jrb-fonts-cdn.vercel.app/fonts/canela.css">
+<link rel="stylesheet" href="https://jrb-fonts-cdn.vercel.app/fonts/geogrotesque.css">
+<link rel="stylesheet" href="https://jrb-fonts-cdn.vercel.app/fonts/articulatcf.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Geogrotesque', 'Arial Narrow', Arial, sans-serif;
+    background: #f8f8f8;
+    color: #000;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* HEADER */
+  .page-header {
+    background: #000;
+    color: #fff;
+    padding: 48px 40px;
+  }
+  .page-header__eyebrow {
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #ff2e92;
+    margin-bottom: 12px;
+  }
+  .page-header__title {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .page-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .page-header__meta-item {
+    font-family: 'Geogrotesque', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+  }
+  .page-header__meta-item span {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* WINNER BANNER */
+  .winner-banner {
+    background: #fff;
+    border-left: 4px solid #22c55e;
+    padding: 28px 40px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .winner-banner--alert {
+    border-left-color: #ef4444;
+  }
+  .winner-banner__icon {
+    font-size: 28px;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .winner-banner__label {
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #ef4444;
+    margin-bottom: 6px;
+  }
+  .winner-banner--alert .winner-banner__label {
+    color: #ef4444;
+  }
+  .winner-banner__heading {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .winner-banner__body {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.6;
+    max-width: 700px;
+  }
+
+  /* SECTION */
+  .section {
+    padding: 48px 40px;
+    background: #fff;
+  }
+  .section--gray {
+    background: #f8f8f8;
+  }
+  .section__heading {
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #000;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .section__subheading {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 1.3;
+    margin-bottom: 20px;
+  }
+
+  /* VARIANT DESCRIPTION CARDS */
+  .variant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .variant-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 20px;
+  }
+  .variant-card--control { border-top: 3px solid #6b7280; }
+  .variant-card--v1 { border-top: 3px solid #3b82f6; }
+  .variant-card--v2 { border-top: 3px solid #ef4444; }
+  .variant-card--v3 { border-top: 3px solid #8b5cf6; }
+  .variant-card__badge {
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #6b7280;
+    margin-bottom: 8px;
+  }
+  .variant-card--v1 .variant-card__badge { color: #3b82f6; }
+  .variant-card--v2 .variant-card__badge { color: #ef4444; }
+  .variant-card--v3 .variant-card__badge { color: #8b5cf6; }
+  .variant-card__name {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+  .variant-card__desc {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+  }
+  .variant-card__visitors {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 12px;
+    color: #999;
+  }
+  .variant-card__visitors strong {
+    color: #000;
+    font-size: 15px;
+  }
+
+  /* TABLE */
+  .table-wrap {
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 700px;
+  }
+  th {
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 10px 12px;
+    background: #000;
+    color: #fff;
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    white-space: nowrap;
+  }
+  tr:hover td { background: #fafafa; }
+  tr.row--control td { background: #f8f8f8; font-weight: 600; }
+  tr.row--v2 td { background: #fff5f5; }
+  .uplift-pos { color: #16a34a; font-weight: 600; }
+  .uplift-neg { color: #dc2626; font-weight: 600; }
+  .uplift-neu { color: #6b7280; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+  .badge--sig { background: #dcfce7; color: #15803d; }
+  .badge--strong { background: #dbeafe; color: #1d4ed8; }
+  .badge--dir { background: #fef9c3; color: #854d0e; }
+  .badge--noise { background: #f3f4f6; color: #6b7280; }
+  .badge--loser { background: #fee2e2; color: #b91c1c; }
+  .badge--alert { background: #fef3c7; color: #92400e; }
+
+  /* FUNNEL */
+  .funnel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 8px;
+  }
+  .funnel-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 20px;
+  }
+  .funnel-card--gray { background: #f8f8f8; }
+  .funnel-card__label {
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .funnel-card__label--control { color: #6b7280; }
+  .funnel-card__label--v1 { color: #3b82f6; }
+  .funnel-card__label--v2 { color: #ef4444; }
+  .funnel-card__label--v3 { color: #8b5cf6; }
+
+  /* SCORECARD GRID */
+  .scorecard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .scorecard {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 20px 20px 16px;
+  }
+  .scorecard__label {
+    font-size: 11px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .scorecard__value {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 30px;
+    line-height: 1;
+    color: #000;
+    margin-bottom: 4px;
+  }
+  .scorecard__uplift {
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .scorecard__uplift--pos { color: #16a34a; }
+  .scorecard__uplift--neg { color: #dc2626; }
+  .scorecard__uplift--neu { color: #6b7280; }
+
+  /* LEARNING BULLETS */
+  .learning-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .learning-list li {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .learning-list__bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #000;
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+  .learning-list__text {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .learning-list__text strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  /* HYPOTHESIS CARDS */
+  .hypo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .hypo-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 24px;
+    border-top: 3px solid #000;
+  }
+  .hypo-card__num {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 36px;
+    color: #e5e5e5;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .hypo-card__heading {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .hypo-card__body {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .hypo-card__metric {
+    font-size: 12px;
+    color: #000;
+    background: #f8f8f8;
+    padding: 8px 12px;
+    border-radius: 3px;
+  }
+  .hypo-card__metric strong { font-weight: 700; }
+
+  /* ALERT BOX */
+  .alert-box {
+    background: #fff5f5;
+    border: 1px solid #fca5a5;
+    border-radius: 4px;
+    padding: 16px 20px;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .alert-box__heading {
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #b91c1c;
+    margin-bottom: 4px;
+  }
+
+  /* HEATMAP TABLE */
+  .heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .heatmap-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 20px;
+  }
+  .heatmap-card__label {
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .heatmap-card__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 13px;
+  }
+  .heatmap-card__row:last-child { border-bottom: none; }
+
+  /* CHART CONTAINER */
+  .chart-wrap {
+    position: relative;
+    height: 280px;
+    margin-top: 16px;
+  }
+
+  /* TWO-COL */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 680px) {
+    .two-col { grid-template-columns: 1fr; }
+    .section, .page-header, .winner-banner { padding: 28px 20px; }
+  }
+
+  /* SEPARATOR */
+  .section-divider {
+    height: 1px;
+    background: #e5e5e5;
+  }
+
+  /* note */
+  .note {
+    font-size: 12px;
+    color: #999;
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+
+  /* TAG ROW */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .tag {
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 3px;
+    background: #f0f0f0;
+    color: #333;
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header__eyebrow">Intelligems A/B Test Analysis</div>
+  <h1 class="page-header__title">EE — New Mobile Navigation A/B Test</h1>
+  <div class="page-header__meta">
+    <div class="page-header__meta-item">Status: <span>Running (not ended)</span></div>
+    <div class="page-header__meta-item">Started: <span>April 6, 2026</span></div>
+    <div class="page-header__meta-item">Analysis Date: <span>April 20, 2026</span></div>
+    <div class="page-header__meta-item">Duration: <span>14 days</span></div>
+    <div class="page-header__meta-item">Total Visitors: <span>1,468,240</span></div>
+    <div class="page-header__meta-item">Primary Metric: <span>CVR / NRPV</span></div>
+  </div>
+</div>
+
+<!-- WINNER BANNER -->
+<div class="winner-banner winner-banner--alert">
+  <div class="winner-banner__icon">⚠</div>
+  <div>
+    <div class="winner-banner__label">Key Finding — Currently Deployed</div>
+    <h2 class="winner-banner__heading">V2 (Bestsellers Row) is a statistically significant conversion loser — but is live at 100% traffic</h2>
+    <div class="winner-banner__body">
+      V2 reduces CVR by 3.17% (p2bc 0.022 — statistically significant) and checkout begin rate by 3.42% (p2bc 0.003). The bestsellers row creates browse-mode behavior: users click more products and visit more PDPs (+6.9%), but fewer reach checkout. V1 (PLP category links only, no bestsellers) is the cleanest variant — directionally flat on revenue with a massive +52.7% collection navigation lift that doesn't hurt conversion. V2 has been ramped to 100% allocation, likely before revenue signal became clear.
+    </div>
+  </div>
+</div>
+
+<!-- VARIANT DESCRIPTIONS -->
+<div class="section">
+  <div class="section__heading">Variant Descriptions</div>
+  <div class="variant-grid">
+    <div class="variant-card variant-card--control">
+      <div class="variant-card__badge">Control</div>
+      <div class="variant-card__name">Original Mobile Nav</div>
+      <div class="variant-card__desc">Existing mobile navigation — hamburger menu with megamenu columns. Baseline behavior.</div>
+      <div class="variant-card__visitors">Visitors: <strong>298,301</strong></div>
+    </div>
+    <div class="variant-card variant-card--v1">
+      <div class="variant-card__badge">V1</div>
+      <div class="variant-card__name">PLP Category Links</div>
+      <div class="variant-card__desc">Hides old megamenu columns. Adds direct PLP category hit links in mobile nav. No bestsellers row.</div>
+      <div class="variant-card__visitors">Visitors: <strong>297,032</strong></div>
+    </div>
+    <div class="variant-card variant-card--v2">
+      <div class="variant-card__badge">V2 — Live at 100%</div>
+      <div class="variant-card__name">PLP Links + Bestsellers Row</div>
+      <div class="variant-card__desc">All V1 changes, plus a horizontal mobile bestsellers product row inside the nav. "Shop All Primary" CTA.</div>
+      <div class="variant-card__visitors">Visitors: <strong>575,808</strong> (ramped to 100%)</div>
+    </div>
+    <div class="variant-card variant-card--v3">
+      <div class="variant-card__badge">V3</div>
+      <div class="variant-card__name">Bestsellers + Alt Shop All</div>
+      <div class="variant-card__desc">Same as V2, but swaps "Shop All Primary" for "Shop All Secondary" CTA in the bestsellers row.</div>
+      <div class="variant-card__visitors">Visitors: <strong>297,099</strong></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- FULL METRICS TABLE -->
+<div class="section section--gray">
+  <div class="section__heading">Full Metrics Table</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Variant</th>
+          <th>Visitors</th>
+          <th>CVR</th>
+          <th>CVR Uplift</th>
+          <th>NRPV</th>
+          <th>NRPV Uplift</th>
+          <th>AOV</th>
+          <th>ATC Rate</th>
+          <th>Checkout Begin</th>
+          <th>Collection View</th>
+          <th>PDP View</th>
+          <th>p2bc (NRPV)</th>
+          <th>Signal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row--control">
+          <td><strong>Control</strong></td>
+          <td>298,301</td>
+          <td>1.992%</td>
+          <td class="uplift-neu">—</td>
+          <td>$1.682</td>
+          <td class="uplift-neu">—</td>
+          <td>$84.45</td>
+          <td>6.540%</td>
+          <td>2.925%</td>
+          <td>8.359%</td>
+          <td>39.30%</td>
+          <td class="uplift-neu">—</td>
+          <td><span class="badge badge--noise">Baseline</span></td>
+        </tr>
+        <tr>
+          <td><strong>V1</strong> — PLP Links</td>
+          <td>297,032</td>
+          <td>2.006%</td>
+          <td class="uplift-pos">+0.68%</td>
+          <td>$1.689</td>
+          <td class="uplift-pos">+0.40%</td>
+          <td>$84.21</td>
+          <td>6.590%</td>
+          <td>2.930%</td>
+          <td>12.762%</td>
+          <td>39.23%</td>
+          <td>0.566</td>
+          <td><span class="badge badge--noise">Noise</span></td>
+        </tr>
+        <tr class="row--v2">
+          <td><strong>V2</strong> — + Bestsellers ⚠</td>
+          <td>575,808</td>
+          <td>1.929%</td>
+          <td class="uplift-neg">−3.17%</td>
+          <td>$1.637</td>
+          <td class="uplift-neg">−2.67%</td>
+          <td>$84.89</td>
+          <td>6.483%</td>
+          <td>2.825%</td>
+          <td>11.767%</td>
+          <td>41.99%</td>
+          <td>0.118</td>
+          <td><span class="badge badge--loser">Significant Loser</span></td>
+        </tr>
+        <tr>
+          <td><strong>V3</strong> — Alt Shop All</td>
+          <td>297,099</td>
+          <td>2.007%</td>
+          <td class="uplift-pos">+0.74%</td>
+          <td>$1.680</td>
+          <td class="uplift-neg">−0.10%</td>
+          <td>$83.74</td>
+          <td>6.549%</td>
+          <td>2.937%</td>
+          <td>12.009%</td>
+          <td>39.38%</td>
+          <td>0.492</td>
+          <td><span class="badge badge--noise">Noise</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">NRPV = Net Revenue Per Visitor. AOV = Average Order Value. p2bc = probability to beat control (NRPV). V2 ramped to 100% mid-test — visitor count is ~2× others.</p>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- STATISTICAL SIGNIFICANCE -->
+<div class="section">
+  <div class="section__heading">Statistical Significance</div>
+  <div class="two-col" style="margin-bottom:24px">
+    <div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Variant</th>
+              <th>Metric</th>
+              <th>Uplift</th>
+              <th>p2bc</th>
+              <th>Signal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row--v2">
+              <td>V2</td>
+              <td>CVR</td>
+              <td class="uplift-neg">−3.17%</td>
+              <td>0.022</td>
+              <td><span class="badge badge--loser">Significant Loser</span></td>
+            </tr>
+            <tr class="row--v2">
+              <td>V2</td>
+              <td>Checkout Begin</td>
+              <td class="uplift-neg">−3.42%</td>
+              <td>0.003</td>
+              <td><span class="badge badge--loser">Significant Loser</span></td>
+            </tr>
+            <tr class="row--v2">
+              <td>V2</td>
+              <td>PDP View Rate</td>
+              <td class="uplift-pos">+6.87%</td>
+              <td>1.000</td>
+              <td><span class="badge badge--sig">Significant</span></td>
+            </tr>
+            <tr class="row--v2">
+              <td>V2</td>
+              <td>Collection View</td>
+              <td class="uplift-pos">+40.8%</td>
+              <td>1.000</td>
+              <td><span class="badge badge--sig">Significant</span></td>
+            </tr>
+            <tr class="row--v2">
+              <td>V2</td>
+              <td>Hamburger Clicks</td>
+              <td class="uplift-pos">+3.08%</td>
+              <td>1.000</td>
+              <td><span class="badge badge--sig">Significant</span></td>
+            </tr>
+            <tr>
+              <td>V1</td>
+              <td>Collection View</td>
+              <td class="uplift-pos">+52.7%</td>
+              <td>1.000</td>
+              <td><span class="badge badge--sig">Significant</span></td>
+            </tr>
+            <tr>
+              <td>V3</td>
+              <td>Collection View</td>
+              <td class="uplift-pos">+43.7%</td>
+              <td>1.000</td>
+              <td><span class="badge badge--sig">Significant</span></td>
+            </tr>
+            <tr>
+              <td>V1</td>
+              <td>CVR</td>
+              <td class="uplift-pos">+0.68%</td>
+              <td>0.650</td>
+              <td><span class="badge badge--noise">Noise</span></td>
+            </tr>
+            <tr>
+              <td>V3</td>
+              <td>CVR</td>
+              <td class="uplift-pos">+0.74%</td>
+              <td>0.664</td>
+              <td><span class="badge badge--noise">Noise</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">p2bc: probability to beat control. &lt;0.05 = statistically significant loser. &gt;0.95 = statistically significant winner.</p>
+    </div>
+    <div>
+      <div class="scorecard-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="scorecard">
+          <div class="scorecard__label">V2 CVR Uplift</div>
+          <div class="scorecard__value" style="color:#dc2626">−3.2%</div>
+          <div class="scorecard__uplift scorecard__uplift--neg">p2bc 0.022 — Significant</div>
+        </div>
+        <div class="scorecard">
+          <div class="scorecard__label">V2 Checkout Begin</div>
+          <div class="scorecard__value" style="color:#dc2626">−3.4%</div>
+          <div class="scorecard__uplift scorecard__uplift--neg">p2bc 0.003 — Very Significant</div>
+        </div>
+        <div class="scorecard">
+          <div class="scorecard__label">All Variants: Collection Views</div>
+          <div class="scorecard__value" style="color:#16a34a">+41–53%</div>
+          <div class="scorecard__uplift scorecard__uplift--pos">p2bc 1.000 — Extremely Significant</div>
+        </div>
+        <div class="scorecard">
+          <div class="scorecard__label">V2: PDP View Rate</div>
+          <div class="scorecard__value" style="color:#16a34a">+6.9%</div>
+          <div class="scorecard__uplift scorecard__uplift--pos">p2bc 1.000 — But CVR drops</div>
+        </div>
+      </div>
+      <div class="alert-box" style="margin-top:16px">
+        <div class="alert-box__heading">Critical Paradox</div>
+        V2 simultaneously drives more browsing (more PDP views, more collection views, more hamburger clicks) and less converting. This is a classic "browse mode" trap — increased engagement without purchase intent. The bestsellers row may be triggering discovery behavior at a moment when users had higher purchase intent.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- FUNNEL ANALYSIS -->
+<div class="section section--gray">
+  <div class="section__heading">Funnel Analysis</div>
+  <div class="section__subheading">Where the variants diverge</div>
+  <div class="funnel-grid">
+    <div class="funnel-card funnel-card--gray">
+      <div class="funnel-card__label funnel-card__label--control">Control</div>
+      <div id="funnel-control"></div>
+    </div>
+    <div class="funnel-card">
+      <div class="funnel-card__label funnel-card__label--v1">V1 — PLP Links</div>
+      <div id="funnel-v1"></div>
+    </div>
+    <div class="funnel-card">
+      <div class="funnel-card__label funnel-card__label--v2">V2 — + Bestsellers</div>
+      <div id="funnel-v2"></div>
+    </div>
+    <div class="funnel-card">
+      <div class="funnel-card__label funnel-card__label--v3">V3 — Alt Shop All</div>
+      <div id="funnel-v3"></div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px">
+    <div class="section__subheading" style="font-size:17px">Stage-by-Stage Comparison vs Control</div>
+    <div class="table-wrap" style="margin-top:12px">
+      <table>
+        <thead>
+          <tr>
+            <th>Funnel Stage</th>
+            <th>Control</th>
+            <th>V1 vs Control</th>
+            <th>V2 vs Control</th>
+            <th>V3 vs Control</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Collection View Rate</strong></td>
+            <td>8.36%</td>
+            <td class="uplift-pos">12.76% (+52.7%)</td>
+            <td class="uplift-pos">11.77% (+40.8%)</td>
+            <td class="uplift-pos">12.01% (+43.7%)</td>
+          </tr>
+          <tr>
+            <td><strong>PDP View Rate</strong></td>
+            <td>39.30%</td>
+            <td class="uplift-neu">39.23% (−0.16%)</td>
+            <td class="uplift-pos">41.99% (+6.87%)</td>
+            <td class="uplift-neu">39.38% (+0.23%)</td>
+          </tr>
+          <tr>
+            <td><strong>Add to Cart Rate</strong></td>
+            <td>6.54%</td>
+            <td class="uplift-pos">6.59% (+0.76%)</td>
+            <td class="uplift-neg">6.48% (−0.86%)</td>
+            <td class="uplift-pos">6.55% (+0.14%)</td>
+          </tr>
+          <tr>
+            <td><strong>Checkout Begin Rate</strong></td>
+            <td>2.925%</td>
+            <td class="uplift-pos">2.930% (+0.15%)</td>
+            <td class="uplift-neg">2.825% (−3.42%)</td>
+            <td class="uplift-pos">2.937% (+0.40%)</td>
+          </tr>
+          <tr>
+            <td><strong>Conversion Rate</strong></td>
+            <td>1.992%</td>
+            <td class="uplift-pos">2.006% (+0.68%)</td>
+            <td class="uplift-neg">1.929% (−3.17%)</td>
+            <td class="uplift-pos">2.007% (+0.74%)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">The "leak" for V2 is at the ATC → Checkout transition. Users browse more PDPs but fewer add to cart, and fewer of those who add to cart start checkout. V1 and V3 show no such leak.</p>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- DEVICE BREAKDOWN -->
+<div class="section">
+  <div class="section__heading">Device Breakdown</div>
+  <div class="alert-box">
+    <div class="alert-box__heading">Desktop Sample Too Small</div>
+    Desktop accounts for &lt;0.1% of sessions (Control: 66 visitors, V2: 180 visitors). Desktop metrics are not statistically meaningful and should not influence decisions. This is effectively a mobile-only test.
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Variant</th>
+          <th>Device</th>
+          <th>Visitors</th>
+          <th>CVR</th>
+          <th>NRPV</th>
+          <th>NRPV Uplift</th>
+          <th>Collection View</th>
+          <th>PDP View</th>
+          <th>ATC Rate</th>
+          <th>Checkout Begin</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row--control">
+          <td><strong>Control</strong></td>
+          <td>Mobile</td>
+          <td>298,235</td>
+          <td>1.988%</td>
+          <td>$1.679</td>
+          <td class="uplift-neu">—</td>
+          <td>8.35%</td>
+          <td>39.29%</td>
+          <td>6.532%</td>
+          <td>2.921%</td>
+        </tr>
+        <tr>
+          <td><strong>V1</strong></td>
+          <td>Mobile</td>
+          <td>296,957</td>
+          <td>2.002%</td>
+          <td>$1.685</td>
+          <td class="uplift-pos">+0.34%</td>
+          <td>12.75%</td>
+          <td>39.23%</td>
+          <td>6.579%</td>
+          <td>2.926%</td>
+        </tr>
+        <tr class="row--v2">
+          <td><strong>V2</strong> ⚠</td>
+          <td>Mobile</td>
+          <td>575,783</td>
+          <td>1.924%</td>
+          <td>$1.632</td>
+          <td class="uplift-neg">−2.82%</td>
+          <td>11.76%</td>
+          <td>41.97%</td>
+          <td>6.469%</td>
+          <td>2.817%</td>
+        </tr>
+        <tr>
+          <td><strong>V3</strong></td>
+          <td>Mobile</td>
+          <td>297,029</td>
+          <td>2.003%</td>
+          <td>$1.676</td>
+          <td class="uplift-neg">−0.19%</td>
+          <td>12.00%</td>
+          <td>39.38%</td>
+          <td>6.540%</td>
+          <td>2.933%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note" style="margin-top:16px">All variants drove essentially all traffic from mobile. Desktop data excluded from analysis due to sample sizes of 66–180 visitors.</p>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- HEATMAP SIGNALS -->
+<div class="section section--gray">
+  <div class="section__heading">Heatmap.com Behavioral Signals</div>
+
+  <div class="two-col" style="margin-bottom:32px">
+    <div>
+      <p style="font-size:14px;margin-bottom:16px;color:#555">Per-variation sessions and purchase signals from Heatmap.com (April 6–20, 2026). Revenue/session = CVR proxy (purchase count, not dollars).</p>
+      <div class="heatmap-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="heatmap-card">
+          <div class="heatmap-card__label" style="color:#6b7280">Control</div>
+          <div class="heatmap-card__row"><span>Sessions</span><strong>49,967</strong></div>
+          <div class="heatmap-card__row"><span>Pageviews</span><strong>79,657</strong></div>
+          <div class="heatmap-card__row"><span>Rev/Session</span><strong style="color:#16a34a">8.29</strong></div>
+        </div>
+        <div class="heatmap-card">
+          <div class="heatmap-card__label" style="color:#3b82f6">V1</div>
+          <div class="heatmap-card__row"><span>Sessions</span><strong>20,424</strong></div>
+          <div class="heatmap-card__row"><span>Pageviews</span><strong>31,372</strong></div>
+          <div class="heatmap-card__row"><span>Rev/Session</span><strong>7.74</strong></div>
+        </div>
+        <div class="heatmap-card" style="border:1px solid #fca5a5">
+          <div class="heatmap-card__label" style="color:#ef4444">V2 (Live)</div>
+          <div class="heatmap-card__row"><span>Sessions</span><strong>21,049</strong></div>
+          <div class="heatmap-card__row"><span>Pageviews</span><strong>32,163</strong></div>
+          <div class="heatmap-card__row"><span>Rev/Session</span><strong style="color:#dc2626">7.74</strong></div>
+        </div>
+        <div class="heatmap-card">
+          <div class="heatmap-card__label" style="color:#8b5cf6">V3</div>
+          <div class="heatmap-card__row"><span>Sessions</span><strong>20,211</strong></div>
+          <div class="heatmap-card__row"><span>Pageviews</span><strong>30,930</strong></div>
+          <div class="heatmap-card__row"><span>Rev/Session</span><strong style="color:#dc2626">7.54</strong></div>
+        </div>
+      </div>
+      <p class="note">Heatmap captures ~44% of purchases, ~70% of sessions vs Intelligems. Use for relative comparison only. Control's higher session count may reflect homepage traffic pre-test-assignment or longer attribution window.</p>
+    </div>
+    <div>
+      <p style="font-size:14px;margin-bottom:16px;color:#555">Top next-page destinations after homepage by variant (journey continuation analytics).</p>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="heatmap-card">
+          <div class="heatmap-card__label" style="color:#3b82f6">V1 — Top Next Pages</div>
+          <div style="font-size:12px;line-height:1.8;color:#333">
+            1. Eye Makeup Collection<br>
+            2. What The Foundation (PDP)<br>
+            3. Miracle Balm (PDP)<br>
+            4. Makeup Accessories Collection<br>
+            5. Face Makeup Collection
+          </div>
+          <div class="tag-row"><span class="tag">Collection-Led</span></div>
+        </div>
+        <div class="heatmap-card" style="border:1px solid #fca5a5">
+          <div class="heatmap-card__label" style="color:#ef4444">V2 — Top Next Pages</div>
+          <div style="font-size:12px;line-height:1.8;color:#333">
+            1. Homepage (return visit)<br>
+            2. Makeup Accessories Collection<br>
+            3. Miracle Balm (PDP)<br>
+            4. Clean Makeup Kits Collection<br>
+            5. The Lip Pencil (PDP)
+          </div>
+          <div class="tag-row"><span class="tag" style="background:#fee2e2;color:#991b1b">Homepage Re-entry</span><span class="tag">Product Browsing</span></div>
+        </div>
+        <div class="heatmap-card">
+          <div class="heatmap-card__label" style="color:#8b5cf6">V3 — Top Next Pages</div>
+          <div style="font-size:12px;line-height:1.8;color:#333">
+            1. Eye Makeup Collection<br>
+            2. Face Makeup Collection<br>
+            3. Shop All<br>
+            4. Just Enough Tinted Moisturizer (PDP)<br>
+            5. New Classics Kit (PDP)
+          </div>
+          <div class="tag-row"><span class="tag">Mix of Collection + PDP</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-box">
+    <div class="alert-box__heading">Heatmap Behavioral Insight</div>
+    V2's #1 next destination is the homepage itself — users are entering the nav, clicking a bestseller, then returning to the homepage. This back-and-forth suggests the bestsellers row is interrupting the navigation decision, not completing it. V1 sends users directly to collections (the intended behavior). The Heatmap rev/session rank agrees with Intelligems: Control &gt; V1 ≈ V2 &gt; V3.
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- CHART -->
+<div class="section">
+  <div class="section__heading">NRPV Comparison</div>
+  <div style="max-width:600px">
+    <div class="chart-wrap" style="height:200px">
+      <canvas id="nrpvChart"></canvas>
+    </div>
+  </div>
+  <div style="margin-top:32px">
+    <div class="section__subheading" style="font-size:17px">Collection View Rate — All Variants</div>
+    <p style="font-size:13px;color:#555;margin-bottom:12px">The most statistically significant effect of this test: all nav variants dramatically increase collection page navigation. This is expected — but V2 proves navigation lift alone does not equal revenue lift.</p>
+    <div style="max-width:600px">
+      <div class="chart-wrap" style="height:200px">
+        <canvas id="collectionChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- KEY LEARNINGS -->
+<div class="section section--gray">
+  <div class="section__heading">Key Learnings</div>
+  <ul class="learning-list">
+    <li>
+      <div class="learning-list__bullet"></div>
+      <div class="learning-list__text">
+        <strong>Bestsellers rows in navigation create browse mode, not purchase intent</strong>
+        V2 added a horizontal bestsellers product row to the nav. It drove +6.87% more PDP views (p2bc 1.0) and +3.08% more hamburger clicks (p2bc 1.0) — all engagement metrics went up. But CVR dropped 3.17% (p2bc 0.022) and checkout begin dropped 3.42% (p2bc 0.003). Navigation is a wayfinding tool; injecting product content into it shifts user mindset from "I'm going somewhere" to "I'm browsing," which kills purchase intent.
+      </div>
+    </li>
+    <li>
+      <div class="learning-list__bullet"></div>
+      <div class="learning-list__text">
+        <strong>PLP category links in nav are safely neutral — not a revenue risk</strong>
+        V1 (PLP links only, no bestsellers) increased collection view rate by +52.7% (p2bc 1.0) — the highest of all variants — without hurting CVR (+0.68%, p2bc 0.65 — noise), ATC, or checkout. The nav change successfully routes more users to collections without cannibalizing conversion. This is the safe foundational layer.
+      </div>
+    </li>
+    <li>
+      <div class="learning-list__bullet"></div>
+      <div class="learning-list__text">
+        <strong>V2 is live at 100% and losing revenue every day</strong>
+        V2 was ramped to 100% allocation — likely because navigation metrics and engagement looked positive before revenue signal was conclusive. At 298K control visitors over 14 days (~21K/day) with a $1.682 baseline NRPV, V2's −2.67% NRPV drag costs approximately $350–$400 per day in net revenue. Immediate action to revert or replace with V1 is recommended.
+      </div>
+    </li>
+    <li>
+      <div class="learning-list__bullet"></div>
+      <div class="learning-list__text">
+        <strong>The "Shop All" CTA variant (V3) makes no difference</strong>
+        V3 swapped "Shop All Primary" for "Shop All Secondary" in the bestsellers row. Metrics are virtually identical to V1 (CVR +0.74% vs +0.68%, NRPV −0.10% vs +0.40%). The difference is not measurable. The Shop All CTA swap is not a lever worth testing further.
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- FUTURE HYPOTHESES -->
+<div class="section">
+  <div class="section__heading">Future Test Hypotheses</div>
+  <div class="hypo-grid">
+    <div class="hypo-card">
+      <div class="hypo-num">01</div>
+      <div class="hypo-card__heading">Ship V1 as Permanent Foundation</div>
+      <div class="hypo-card__body">V1 delivers +52.7% collection navigation with zero revenue cost. It should be shipped permanently (not as a test). The learnings from V2 confirm the base nav improvement is safe — the bestsellers row was the problem, not the PLP links.</div>
+      <div class="hypo-card__metric"><strong>Action:</strong> Revert V2 → ship V1 to 100%</div>
+    </div>
+    <div class="hypo-card">
+      <div class="hypo-num">02</div>
+      <div class="hypo-card__heading">Test Bestsellers on PDP or Cart, Not Nav</div>
+      <div class="hypo-card__body">The bestsellers row drove genuine product interest (+6.87% PDP views). The problem was placement inside the nav at the decision-making moment. Test a bestsellers row module on the PDP sidebar, cart drawer, or a dedicated collection page — where browse mode is appropriate and high-intent users are already in product discovery.</div>
+      <div class="hypo-card__metric"><strong>Primary metric:</strong> ATC rate → CVR | <strong>Why:</strong> Same product content, different timing in journey</div>
+    </div>
+    <div class="hypo-card">
+      <div class="hypo-num">03</div>
+      <div class="hypo-card__heading">Test Intent-Gated Nav Merchandising</div>
+      <div class="hypo-card__body">If merchandising in nav is desired, test showing bestsellers only after the user has been on site 2+ minutes or has visited a PDP (returning user intent signal). This surfaces product content to browse-mode users who have already engaged, rather than interrupting navigate-intent users.</div>
+      <div class="hypo-card__metric"><strong>Primary metric:</strong> CVR (mobile) | <strong>Hypothesis:</strong> Behavioral targeting preserves nav utility for high-intent users</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- TRAFFIC ANOMALY NOTE -->
+<div class="section section--gray">
+  <div class="section__heading">Traffic Allocation Note</div>
+  <p style="font-size:14px;line-height:1.6;color:#444;max-width:700px">
+    V2 received approximately 2× the traffic of other variants (575,808 vs ~297,000–298,300) because it was ramped to 100% allocation mid-test. This means V2 has statistically stronger confidence intervals than V1/V3. However, even with higher power, V2's CVR and checkout begin losses remain statistically significant (p2bc 0.022 and 0.003). The ramp did not help V2 — it only confirmed the signal more definitively.
+  </p>
+  <p style="font-size:14px;line-height:1.6;color:#444;max-width:700px;margin-top:12px">
+    V1 and V3 remain at noise-level on revenue metrics — not because they are losers, but because the signal is genuinely small and the test would need longer run time or higher traffic to reach significance on NRPV. V1's directional positive trend (+0.40% NRPV, +0.68% CVR) and its zero-cost collection navigation improvement make it the recommended path forward.
+  </p>
+</div>
+
+<!-- FOOTER -->
+<div style="background:#000;color:rgba(255,255,255,0.4);padding:24px 40px;font-size:12px">
+  Jones Road Beauty — Intelligems A/B Test Analysis | EE - New Mobile Navigation A/B Test | Analyzed April 20, 2026
+</div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────
+const COLORS = {
+  control: '#6b7280',
+  v1:      '#3b82f6',
+  v2:      '#ef4444',
+  v3:      '#8b5cf6',
+};
+
+const funnelData = {
+  control: {
+    stages: [
+      { label: 'Collection View', pct: 8.36 },
+      { label: 'PDP View', pct: 39.30 },
+      { label: 'Add to Cart', pct: 6.54 },
+      { label: 'Checkout Begin', pct: 2.93 },
+      { label: 'Purchase (CVR)', pct: 1.99 },
+    ],
+    color: COLORS.control,
+  },
+  v1: {
+    stages: [
+      { label: 'Collection View', pct: 12.76 },
+      { label: 'PDP View', pct: 39.23 },
+      { label: 'Add to Cart', pct: 6.59 },
+      { label: 'Checkout Begin', pct: 2.93 },
+      { label: 'Purchase (CVR)', pct: 2.01 },
+    ],
+    color: COLORS.v1,
+  },
+  v2: {
+    stages: [
+      { label: 'Collection View', pct: 11.77 },
+      { label: 'PDP View', pct: 41.99 },
+      { label: 'Add to Cart', pct: 6.48 },
+      { label: 'Checkout Begin', pct: 2.83 },
+      { label: 'Purchase (CVR)', pct: 1.93 },
+    ],
+    color: COLORS.v2,
+  },
+  v3: {
+    stages: [
+      { label: 'Collection View', pct: 12.01 },
+      { label: 'PDP View', pct: 39.38 },
+      { label: 'Add to Cart', pct: 6.55 },
+      { label: 'Checkout Begin', pct: 2.94 },
+      { label: 'Purchase (CVR)', pct: 2.01 },
+    ],
+    color: COLORS.v3,
+  },
+};
+
+// ─── BUILD FUNNELS ─────────────────────────────────────────────────────
+function buildFunnel(containerId, data) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const maxPct = 42; // PDP view is max visible metric
+  el.innerHTML = data.stages.map(s => {
+    const barWidth = Math.max((s.pct / maxPct) * 100, 2);
+    return `
+      <div style="margin-bottom:7px">
+        <div style="font-size:10px;color:#999;margin-bottom:2px">${s.label}</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="flex:1;height:16px;background:#f0f0f0;border-radius:2px;overflow:hidden">
+            <div style="width:${barWidth}%;height:100%;border-radius:2px;background:${data.color};opacity:0.85"></div>
+          </div>
+          <div style="font-size:11px;font-weight:700;width:36px;text-align:right;flex-shrink:0">${s.pct}%</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+buildFunnel('funnel-control', funnelData.control);
+buildFunnel('funnel-v1', funnelData.v1);
+buildFunnel('funnel-v2', funnelData.v2);
+buildFunnel('funnel-v3', funnelData.v3);
+
+// ─── NRPV BAR CHART ─────────────────────────────────────────────────────
+const nrpvCtx = document.getElementById('nrpvChart').getContext('2d');
+new Chart(nrpvCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Control', 'V1 — PLP Links', 'V2 — + Bestsellers', 'V3 — Alt Shop All'],
+    datasets: [{
+      label: 'NRPV ($)',
+      data: [1.6821, 1.6889, 1.6372, 1.6804],
+      backgroundColor: [COLORS.control, COLORS.v1, COLORS.v2, COLORS.v3],
+      borderRadius: 3,
+    }],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => `NRPV: $${ctx.parsed.y.toFixed(4)}`,
+        },
+      },
+    },
+    scales: {
+      y: {
+        min: 1.60,
+        max: 1.72,
+        ticks: {
+          callback: (v) => `$${v.toFixed(2)}`,
+          font: { family: 'Geogrotesque', size: 11 },
+        },
+        grid: { color: '#f0f0f0' },
+      },
+      x: {
+        ticks: { font: { family: 'Geogrotesque', size: 11 }, maxRotation: 0 },
+        grid: { display: false },
+      },
+    },
+  },
+});
+
+// ─── COLLECTION VIEW BAR CHART ─────────────────────────────────────────
+const colCtx = document.getElementById('collectionChart').getContext('2d');
+new Chart(colCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Control', 'V1 (+52.7%)', 'V2 (+40.8%)', 'V3 (+43.7%)'],
+    datasets: [{
+      label: 'Collection View Rate (%)',
+      data: [8.36, 12.76, 11.77, 12.01],
+      backgroundColor: [COLORS.control, COLORS.v1, COLORS.v2, COLORS.v3],
+      borderRadius: 3,
+    }],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => `Collection View Rate: ${ctx.parsed.y.toFixed(2)}%`,
+        },
+      },
+    },
+    scales: {
+      y: {
+        min: 0,
+        max: 15,
+        ticks: {
+          callback: (v) => `${v}%`,
+          font: { family: 'Geogrotesque', size: 11 },
+        },
+        grid: { color: '#f0f0f0' },
+      },
+      x: {
+        ticks: { font: { family: 'Geogrotesque', size: 11 }, maxRotation: 0 },
+        grid: { display: false },
+      },
+    },
+  },
+});
+</script>
+</body>
+</html>
