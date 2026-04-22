@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Launch Whiteboard · Jones Road Beauty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1a1a1a;
+    background: #FAF9F7;
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: rgba(250, 249, 247, 0.96);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e8e4df;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  h1 { font-size: 16px; font-weight: 600; letter-spacing: -0.3px; }
+  .subtitle { font-size: 11px; color: #888; margin-top: 2px; }
+  .legend { display: flex; gap: 14px; font-size: 10.5px; color: #555; align-items: center; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-dot { width: 9px; height: 9px; border-radius: 2px; }
+  .back-link {
+    font-size: 11px; color: #8B7355; text-decoration: none;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    font-weight: 600; padding-left: 12px;
+    border-left: 1px solid #e0dacf;
+  }
+  .back-link:hover { text-decoration: underline; }
+
+  .scroll-hint {
+    text-align: center;
+    font-size: 11px;
+    color: #8B7355;
+    padding: 8px;
+    background: #f4f1ec;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  .canvas {
+    overflow-x: auto;
+    overflow-y: visible;
+    padding: 0 0 60px;
+    isolation: isolate;
+  }
+
+  .board {
+    position: relative;
+    min-width: 3600px;
+    padding: 12px 32px 0;
+  }
+
+  /* PHASE BAND ROW */
+  .phase-row {
+    display: grid;
+    grid-template-columns: 170px repeat(17, 200px);
+    gap: 0;
+    margin-bottom: 4px;
+  }
+  .phase-band {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 16px;
+    border-radius: 10px 10px 0 0;
+    margin-right: 4px;
+  }
+  .phase-band .phase-num {
+    display: inline-block;
+    width: 20px; height: 20px;
+    background: rgba(255,255,255,0.28);
+    border-radius: 50%;
+    text-align: center; line-height: 20px;
+    font-size: 10px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .phase-band .phase-time {
+    font-size: 9.5px; font-weight: 400;
+    letter-spacing: 1px; text-transform: uppercase;
+    opacity: 0.75;
+  }
+  .band-1 { background: #8B7355; }
+  .band-2 { background: #4A5D6C; }
+  .band-3 { background: #2F5D50; }
+  .band-4 { background: #B8574F; }
+  .band-5 { background: #1F2C3D; }
+
+  /* Handoff marker between Phase 2 and Phase 3 */
+  .handoff-marker {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(170px + 8 * 200px + 32px);
+    width: 0;
+    border-left: 2px dashed #ff2e92;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .handoff-marker::before {
+    content: "GTM Handoff →";
+    position: absolute;
+    top: -26px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff2e92;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.6px;
+    white-space: nowrap;
+  }
+
+  /* Callout badges on nodes */
+  .ssot-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    background: #ff2e92;
+    color: #fff;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-top: 4px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .concept-counter {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    background: #f4f1ec;
+    color: #8B7355;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 4px;
+    letter-spacing: 0.3px;
+  }
+
+  /* Open questions callout */
+  .questions-callout {
+    max-width: 1100px;
+    margin: 32px auto 0;
+    padding: 22px 32px;
+    background: #fffbf2;
+    border: 1px dashed #e0c882;
+    border-radius: 12px;
+  }
+  .questions-callout h3 {
+    font-size: 12px;
+    font-weight: 700;
+    color: #a08030;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .questions-callout ul {
+    padding-left: 20px;
+    font-size: 12.5px;
+    color: #7a6a40;
+    line-height: 1.8;
+  }
+  .questions-callout strong { color: #a08030; }
+
+  /* MAIN GRID — 4 rows (PD, PM, Marketing, Creative) + labels */
+  .dept-grid {
+    display: grid;
+    grid-template-columns: 170px repeat(17, 200px);
+    grid-auto-rows: minmax(180px, auto);
+    gap: 6px;
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* Colored row background stripes */
+  .row-bg {
+    grid-column: 1 / -1;
+    border-radius: 10px;
+    opacity: 0.06;
+    z-index: 0;
+    margin-left: 178px; /* don't bleed under sticky label */
+  }
+  .row-bg-pd { background: #4A5D6C; grid-row: 1; }
+  .row-bg-pm { background: #8B7355; grid-row: 2; }
+  .row-bg-marketing { background: #2F5D50; grid-row: 3; }
+  .row-bg-creative { background: #B8574F; grid-row: 4; }
+
+  /* DEPT LABEL (sticky on left) */
+  .dept-label {
+    grid-column: 1;
+    background: #fff;
+    border: 1px solid #e0dacf;
+    border-left: 6px solid;
+    border-radius: 10px;
+    padding: 14px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: sticky;
+    left: 32px;
+    z-index: 15;
+    min-height: 164px;
+    box-shadow: 4px 0 8px -4px rgba(0,0,0,0.04);
+  }
+  .dept-label h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+    letter-spacing: -0.2px;
+  }
+  .dept-label .owner {
+    font-size: 10.5px;
+    font-weight: 500;
+    color: #888;
+    line-height: 1.4;
+  }
+  .dept-label .phase-tag {
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-top: 8px;
+    color: #b0a89d;
+  }
+  .label-pd { border-left-color: #4A5D6C; grid-row: 1; }
+  .label-pm { border-left-color: #8B7355; grid-row: 2; }
+  .label-marketing { border-left-color: #2F5D50; grid-row: 3; }
+  .label-creative { border-left-color: #B8574F; grid-row: 4; }
+
+  /* NODE (card) */
+  .node {
+    background: #fff;
+    border: 1px solid #e8e4df;
+    border-radius: 10px;
+    padding: 12px 14px;
+    position: relative;
+    transition: all 0.18s;
+    min-height: 164px;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    align-self: center;
+    height: 164px;
+    cursor: pointer;
+  }
+  .node:hover {
+    border-color: #c4b9ab;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+    z-index: 9;
+  }
+  .node::after {
+    content: "↗ click for detail";
+    position: absolute;
+    bottom: 6px;
+    right: 10px;
+    font-size: 9px;
+    color: #c4b9ab;
+    letter-spacing: 0.3px;
+    opacity: 0;
+    transition: opacity 0.18s;
+  }
+  .node:hover::after { opacity: 1; }
+  .node-num {
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    background: #fff;
+    border: 1.5px solid currentColor;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 20px;
+  }
+  .node-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.3;
+    margin: 6px 0 4px;
+  }
+  .node-owner {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 0.2px;
+    margin-bottom: 6px;
+  }
+  .node-skill {
+    display: inline-block;
+    font-size: 10px;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    background: #f4f1ec;
+    color: #8B7355;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin: 1px 2px 1px 0;
+    line-height: 1.4;
+  }
+  .node-note {
+    font-size: 10.5px;
+    color: #666;
+    margin-top: auto;
+    padding-top: 6px;
+    line-height: 1.4;
+  }
+  .node.ongoing {
+    background: repeating-linear-gradient(45deg, #fff, #fff 12px, #f4f1ec 12px, #f4f1ec 24px);
+    border-style: dashed;
+    border-color: #4A5D6C;
+    min-height: 130px;
+    height: auto;
+  }
+  .node.example-attached { border-top: 3px solid #ff2e92; }
+  .node.example-attached::before {
+    content: "◆";
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    font-size: 10px;
+    color: #ff2e92;
+  }
+
+  /* phase-colored left stripes for cards */
+  .p1 { border-left: 3px solid #8B7355; color: #8B7355; }
+  .p2 { border-left: 3px solid #4A5D6C; color: #4A5D6C; }
+  .p3 { border-left: 3px solid #2F5D50; color: #2F5D50; }
+  .p4 { border-left: 3px solid #B8574F; color: #B8574F; }
+  .p5 { border-left: 3px solid #1F2C3D; color: #1F2C3D; }
+
+  /* GATE */
+  .gate {
+    background: #FFF8E7;
+    border: 1px dashed #d4a94f;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 11px;
+    color: #8B6F1F;
+    line-height: 1.4;
+    min-height: 164px;
+    height: 164px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+    z-index: 2;
+    cursor: pointer;
+  }
+  .gate:hover { box-shadow: 0 4px 12px rgba(212, 169, 79, 0.25); }
+  .gate-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #c28c1c;
+    margin-bottom: 5px;
+  }
+
+  /* MILESTONE — Launch Day */
+  .milestone {
+    background: linear-gradient(135deg, #ff2e92 0%, #d91f78 100%);
+    color: #fff;
+    border: none;
+    box-shadow: 0 8px 24px rgba(255, 46, 146, 0.2);
+  }
+  .milestone .node-title,
+  .milestone .node-owner,
+  .milestone .node-note { color: #fff !important; }
+  .milestone .node-skill { background: rgba(255,255,255,0.22); color: #fff; }
+  .milestone .node-num {
+    border-color: #fff;
+    color: #d91f78;
+    background: #fff;
+  }
+  .milestone::after { color: rgba(255,255,255,0.8) !important; }
+
+  /* Footer */
+  .footer-note {
+    max-width: 1100px;
+    margin: 30px auto 0;
+    padding: 24px 40px 80px;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.65;
+  }
+  .footer-note h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 20px 0 8px;
+  }
+  .tier-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+  .tier-row:last-child { border: none; }
+  .tier-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: #f0ebe4;
+    color: #8B7355;
+    text-transform: uppercase;
+    height: fit-content;
+  }
+
+  /* ═══════ MODAL ═══════ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.55);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 60px 24px 40px;
+    overflow-y: auto;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 14px;
+    max-width: 720px;
+    width: 100%;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+    position: relative;
+    animation: modalIn 0.2s ease;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .modal-close {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #f4f1ec;
+    font-size: 18px;
+    cursor: pointer;
+    color: #8B7355;
+    transition: all 0.15s;
+  }
+  .modal-close:hover { background: #e8e4df; }
+  .modal-head {
+    padding: 24px 28px 16px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .modal-step-num {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: #ff2e92;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .modal-phase {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #8B7355;
+    margin-bottom: 4px;
+  }
+  .modal-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.4px;
+    line-height: 1.2;
+  }
+  .modal-timing {
+    font-size: 11px;
+    color: #888;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .modal-body {
+    padding: 20px 28px 28px;
+  }
+  .modal-section {
+    margin-bottom: 18px;
+  }
+  .modal-section h3 {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #8B7355;
+    margin-bottom: 8px;
+  }
+  .modal-section p, .modal-section div.value {
+    font-size: 13px;
+    color: #1a1a1a;
+    line-height: 1.55;
+  }
+  .modal-section ul {
+    font-size: 13px;
+    color: #1a1a1a;
+    padding-left: 18px;
+    line-height: 1.7;
+  }
+  .modal-skill {
+    display: inline-block;
+    font-size: 11px;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    background: #f4f1ec;
+    color: #8B7355;
+    padding: 3px 9px;
+    border-radius: 4px;
+    margin: 2px 4px 2px 0;
+  }
+
+  /* Example slot */
+  .modal-example {
+    background: #faf7f2;
+    border: 1px dashed #d4c5a5;
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-top: 22px;
+  }
+  .modal-example h3 { color: #a08030; margin-bottom: 10px; }
+  .example-empty {
+    font-size: 12px;
+    color: #8B7355;
+    line-height: 1.6;
+  }
+  .example-empty strong { color: #a08030; }
+  .example-empty .tip {
+    font-size: 10.5px;
+    color: #b0a89d;
+    margin-top: 6px;
+    font-style: italic;
+  }
+  .example-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #2F5D50;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 14px;
+    background: #fff;
+    border: 1px solid #d4c5a5;
+    border-radius: 8px;
+    transition: all 0.15s;
+  }
+  .example-link:hover {
+    border-color: #8B7355;
+    box-shadow: 0 2px 8px rgba(139,115,85,0.15);
+  }
+  .example-image {
+    max-width: 100%;
+    border-radius: 8px;
+    border: 1px solid #e8e4df;
+    display: block;
+    margin-top: 6px;
+  }
+
+  /* PRINT STYLESHEET — vertical list layout */
+  @media print {
+    @page { size: letter portrait; margin: 0.5in; }
+    header, .scroll-hint, .back-link, .modal-overlay, .canvas .board > .phase-row, .handoff-marker, .node::after { display: none !important; }
+    body { background: #fff !important; }
+    .canvas { overflow: visible !important; padding: 0 !important; }
+    .board { min-width: 100% !important; padding: 0 !important; }
+    .dept-grid {
+      display: block !important;
+    }
+    .row-bg { display: none !important; }
+    .dept-label {
+      display: none !important;
+    }
+    .node, .gate {
+      position: static !important;
+      display: block !important;
+      width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
+      page-break-inside: avoid;
+      margin-bottom: 10px !important;
+      box-shadow: none !important;
+      transform: none !important;
+      border: 1px solid #ccc !important;
+      background: #fff !important;
+      color: #1a1a1a !important;
+    }
+    .node.ongoing { background: #fafafa !important; }
+    .milestone { background: #fff !important; border: 2px solid #ff2e92 !important; }
+    .milestone .node-title, .milestone .node-owner, .milestone .node-note { color: #1a1a1a !important; }
+    .milestone .node-num { background: #ff2e92 !important; color: #fff !important; }
+    .footer-note { margin: 20px 0 !important; padding: 0 !important; page-break-before: auto; }
+  }
+
+  .print-hint {
+    display: inline-block;
+    margin-left: 12px;
+    padding: 5px 10px;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #2F5D50;
+    background: #e0ebe6;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #c3dbcf;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .print-hint:hover { background: #c3dbcf; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Product Launch Whiteboard · 4-Row Flow</h1>
+    <div class="subtitle">Product Dev (background) → Product Marketing → Marketing → Creative · GTM handoff between Phase 2 & 3 · Click any step for detail</div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot" style="background:#8B7355"></span>1 Product Dev</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#4A5D6C"></span>2 Naming</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#2F5D50"></span>3 Strategy</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#B8574F"></span>4 Creative</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#1F2C3D"></span>5 Launch</div>
+    <button class="print-hint" onclick="window.print()">Print list ⎙</button>
+    <a href="index.html" class="back-link">Detailed view →</a>
+  </div>
+</header>
+
+<div class="scroll-hint">← Scroll horizontally — click any step to open detail with example slot →</div>
+
+<div class="canvas">
+<div class="board">
+
+  <!-- PHASE BANDS -->
+  <div class="phase-row">
+    <div></div>
+    <div class="phase-band band-1" style="grid-column: 2 / span 3;"><span><span class="phase-num">1</span>Product Development</span><span class="phase-time">T–40 to T–24 wks</span></div>
+    <div class="phase-band band-2" style="grid-column: 5 / span 4;"><span><span class="phase-num">2</span>Naming</span><span class="phase-time">T–24 to T–16 wks</span></div>
+    <div class="phase-band band-3" style="grid-column: 9 / span 3;"><span><span class="phase-num">3</span>Strategy &amp; Master Brief</span><span class="phase-time">T–16 to T–10 wks</span></div>
+    <div class="phase-band band-4" style="grid-column: 12 / span 3;"><span><span class="phase-num">4</span>Channel Briefs &amp; Production</span><span class="phase-time">T–10 to T–2 wks</span></div>
+    <div class="phase-band band-5" style="grid-column: 15 / span 4;"><span><span class="phase-num">5</span>Launch &amp; Iterate</span><span class="phase-time">T–0 to T+12 wks</span></div>
+  </div>
+
+  <!-- MAIN 4-ROW GRID (PD · PM · Marketing · Creative) -->
+  <div class="dept-grid">
+
+    <!-- Row background stripes -->
+    <div class="row-bg row-bg-pd"></div>
+    <div class="row-bg row-bg-pm"></div>
+    <div class="row-bg row-bg-marketing"></div>
+    <div class="row-bg row-bg-creative"></div>
+
+    <!-- DEPT LABELS -->
+    <div class="dept-label label-pd">
+      <h2>Product Dev</h2>
+      <div class="owner">Chrissy · Dana · Bobbi · Lab · Mfg</div>
+      <div class="phase-tag">Ongoing · Behind scenes</div>
+    </div>
+    <div class="dept-label label-pm">
+      <h2>Product Marketing</h2>
+      <div class="owner">Katie · (dotted line to PD)</div>
+      <div class="phase-tag">Phases 1–2 · T–40 to T–16</div>
+    </div>
+    <div class="dept-label label-marketing">
+      <h2>Marketing</h2>
+      <div class="owner">Cody · Erin · Channel leads</div>
+      <div class="phase-tag">Phases 3, 5 · T–16 to T+12</div>
+    </div>
+    <div class="dept-label label-creative">
+      <h2>Creative</h2>
+      <div class="owner">Creative Dir · Design · Growth Creative</div>
+      <div class="phase-tag">Phases 4–5 · T–10 to T+12</div>
+    </div>
+
+    <!-- ═══════ PRODUCT DEV ROW (grid-row: 1) · ongoing background work ═══════ -->
+    <div class="node ongoing" data-step="0" style="grid-column: 2 / span 7; grid-row: 1;">
+      <div class="node-title" style="color:#4A5D6C;">Product Development · Ongoing</div>
+      <div class="node-owner">Chrissy · Dana · Lab · Mfg</div>
+      <div class="node-note">Formula finalization · Packaging · Manufacturing · Compliance · TM clearance — runs in parallel to PM & Marketing. Delivers approved product at T–10.</div>
+    </div>
+
+    <!-- ═══════ PRODUCT MARKETING ROW (grid-row: 2) ═══════ -->
+    <div class="node p1" data-step="1" style="grid-column: 2; grid-row: 2;">
+      <div class="node-num">1</div>
+      <div class="node-title">Kickoff w/ PD</div>
+      <div class="node-owner">Katie · Bobbi · Cody · Chrissy</div>
+      <div class="node-note">PD briefs PM. Formula direction locked.</div>
+    </div>
+
+    <div class="node p1" data-step="2" style="grid-column: 3; grid-row: 2;">
+      <div class="node-num">2</div>
+      <div class="node-title">PD Bulletin + Landscape</div>
+      <div class="node-owner">Katie</div>
+      <span class="node-skill">/pd-bulletin</span>
+      <span class="node-skill">/competitor-insights</span>
+      <div class="node-note">Formula · Cost · Competitive context.</div>
+    </div>
+
+    <div class="node p1" data-step="3" style="grid-column: 4; grid-row: 2;">
+      <div class="node-num">3</div>
+      <div class="node-title">Consumer Insights (Naming)</div>
+      <div class="node-owner">Katie</div>
+      <span class="node-skill">/jrb-consumer-insights</span>
+      <div class="node-note">WGSN + existing data + CAB pulse.</div>
+    </div>
+
+    <div class="node p2" data-step="4" style="grid-column: 5; grid-row: 2;">
+      <div class="node-num">4</div>
+      <div class="node-title">Naming Brief Assembled</div>
+      <div class="node-owner">Katie</div>
+      <div class="node-note">Bulletin + landscape + insights merged.</div>
+    </div>
+
+    <div class="gate" data-step="gate1" style="grid-column: 6; grid-row: 2;">
+      <div class="gate-label">Gate · Sign-Offs</div>
+      Marketing review → Bobbi brief sign-off before name generation.
+    </div>
+
+    <div class="node p2" data-step="5" style="grid-column: 7; grid-row: 2;">
+      <div class="node-num">5</div>
+      <div class="node-title">Rd 1 Name List</div>
+      <div class="node-owner">Katie · Cody</div>
+      <span class="node-skill">/product-naming</span>
+    </div>
+
+    <div class="node p2" data-step="6" style="grid-column: 8; grid-row: 2;">
+      <div class="node-num">6</div>
+      <div class="node-title">Shortlist → TM → CAB</div>
+      <div class="node-owner">Katie · Chrissy · Dana · CAB</div>
+      <div class="node-note">PM runs shortlist. PD's TM check in parallel.</div>
+    </div>
+
+    <div class="node p2" data-step="7" style="grid-column: 9; grid-row: 2;">
+      <div class="node-num">7</div>
+      <div class="node-title">Final Name Locked</div>
+      <div class="node-owner">Bobbi · Cody · Chrissy + Mktg</div>
+      <div class="node-note">Leadership picks. Marketing signs off on GTM readiness.</div>
+    </div>
+
+    <!-- ═══════ MARKETING ROW (grid-row: 3) ═══════ -->
+    <div class="node p3" data-step="8" style="grid-column: 10; grid-row: 3;">
+      <div class="node-num">8</div>
+      <div class="node-title">Launch Surveys (paired)</div>
+      <div class="node-owner">Cody · PM</div>
+      <span class="node-skill">/product-launch-survey</span>
+      <div class="node-note">Typeform → Customers<br>ListenLabs → Prospects</div>
+    </div>
+
+    <div class="node p3" data-step="9" style="grid-column: 11; grid-row: 3;">
+      <div class="node-num">9</div>
+      <span class="concept-counter">3 concepts → 1 selected</span>
+      <div class="node-title">Strategic Brief</div>
+      <div class="node-owner">Cody · Marketing</div>
+      <span class="node-skill">/strategic-brief</span>
+      <div class="node-note">Positioning · Target · Core message · Barriers · Tier.</div>
+    </div>
+
+    <div class="node p3" data-step="10" style="grid-column: 12; grid-row: 3;">
+      <div class="node-num">10</div>
+      <span class="ssot-badge">Single source of truth</span>
+      <div class="node-title">Launch Brief Deck</div>
+      <div class="node-owner">Cody · Erin</div>
+      <span class="node-skill">/launch-brief</span>
+      <div class="node-note"><strong>Tier set here → rolls out to all channel briefs ↓</strong></div>
+    </div>
+
+    <div class="node p4" data-step="11" style="grid-column: 13; grid-row: 3;">
+      <div class="node-num">11</div>
+      <div class="node-title">Channel Briefs (parallel)</div>
+      <div class="node-owner">Marketing → Channel leads</div>
+      <span class="node-skill">/brand-brief</span>
+      <span class="node-skill">/paid-social-creative</span>
+      <span class="node-skill">/retention-brief</span>
+      <span class="node-skill">/organic-social-brief</span>
+      <span class="node-skill">/ecomm-brief</span>
+      <span class="node-skill">/press-brief</span>
+      <span class="node-skill">/influencer-brief</span>
+      <span class="node-skill">/retail-brief</span>
+    </div>
+
+    <div class="node milestone" data-step="14" style="grid-column: 15; grid-row: 3;">
+      <div class="node-num">14</div>
+      <div class="node-title">LAUNCH DAY (T–0)</div>
+      <div class="node-owner">All-hands</div>
+      <div class="node-note">Site live · Email · Paid on · PR embargo lifts.</div>
+    </div>
+
+    <div class="node p5" data-step="15" style="grid-column: 16; grid-row: 3;">
+      <div class="node-num">15</div>
+      <div class="node-title">Performance Read + CX</div>
+      <div class="node-owner">Mktg · Analytics · CX</div>
+      <div class="node-note">Wk 1–2 cross-channel read · Reviews · CX tickets.</div>
+    </div>
+
+    <div class="node p5" data-step="17" style="grid-column: 17; grid-row: 3;">
+      <div class="node-num">17</div>
+      <div class="node-title">Customer Intelligence Merge</div>
+      <div class="node-owner">CX · Data · PMs</div>
+      <div class="node-note">CX + reviews + surveys → repo merge.</div>
+    </div>
+
+    <div class="node p5" data-step="18" style="grid-column: 18; grid-row: 3;">
+      <div class="node-num">18</div>
+      <div class="node-title">Post-Launch Debrief</div>
+      <div class="node-owner">Leadership + Channel leads</div>
+      <span class="node-skill">/cro-learnings</span>
+      <div class="node-note">Feeds next launch's Strategic Brief. Loop closed.</div>
+    </div>
+
+    <!-- ═══════ CREATIVE ROW (grid-row: 4) ═══════ -->
+    <div class="node p4" data-step="12" style="grid-column: 13; grid-row: 4;">
+      <div class="node-num">12</div>
+      <div class="node-title">Creative Kickoff</div>
+      <div class="node-owner">Creative Dir · Growth · Social</div>
+      <span class="node-skill">/creative-kickoff</span>
+      <div class="node-note">Translates briefs → production plan. Territory + key visual locked.</div>
+    </div>
+
+    <div class="node p4" data-step="13" style="grid-column: 14; grid-row: 4;">
+      <div class="node-num">13</div>
+      <div class="node-title">Creative Production (all formats)</div>
+      <div class="node-owner">Creators · Design · Growth Creative</div>
+      <span class="node-skill">/jrb-tv-creative-director</span>
+      <div class="node-note">Ads · UGC · Advertorials · TV · LPs · PDP sections · Email · Organic — built from channel briefs.</div>
+    </div>
+
+    <div class="node p5" data-step="16" style="grid-column: 16; grid-row: 4;">
+      <div class="node-num">16</div>
+      <div class="node-title">Iterate Creative</div>
+      <div class="node-owner">Creative team · Growth</div>
+      <div class="node-note">Refresh winners · Kill losers · Build next round from perf read.</div>
+    </div>
+
+  </div>
+
+  <!-- GTM Handoff dashed line -->
+  <div class="handoff-marker"></div>
+</div>
+</div>
+
+<div class="footer-note">
+
+  <h3>How to read this board</h3>
+  <p>Four rows = four ownership lanes: <strong>Product Dev</strong> (ongoing background), <strong>Product Marketing</strong> (Katie · Phases 1–2), <strong>Marketing</strong> (Cody + channel leads · Phases 3, 5), <strong>Creative</strong> (Phases 4–5). Time flows left-to-right across five color-coded phases. Follow numbered badges <strong>1 → 18</strong> to read chronologically — work hops between rows as ownership changes.</p>
+  <p><strong>GTM handoff</strong> happens between Phase 2 and Phase 3 — Final Name (Step 7) locks, then Marketing picks up with Launch Surveys (Step 8). PD keeps running in parallel the whole time, delivering approved product at T–10.</p>
+  <p><strong>Click any step</strong> to open its detail panel — includes inputs, deliverables, related skills, and an example slot you can link or upload to.</p>
+
+  <h3>Tier scoping (set at Step 10 · /launch-brief)</h3>
+  <div class="tier-row"><span class="tier-tag">Tier 1</span><span>Hero launch. TV/CTV · Homepage takeover · LP · 30–50 ad concepts · 8+ emails · 4-week organic calendar.</span></div>
+  <div class="tier-row"><span class="tier-tag">Tier 2</span><span>Major launch. No TV · LP · 20–30 ads · 5–6 emails · 2–3 week organic.</span></div>
+  <div class="tier-row"><span class="tier-tag">Tier 3</span><span>Standard. PDP + minimal homepage · 10–15 ads · 3–4 emails · 2-week organic.</span></div>
+  <div class="tier-row"><span class="tier-tag">Tier 4</span><span>Restock / quiet. PDP only · 5 ads max · 1 email · Reactive organic.</span></div>
+
+  <h3>Feedback loop</h3>
+  <p>Post-launch learnings (Steps 15–18) flow back upstream: CX + review signals to PD · Meta analysis to Creative · CRO learnings to next launch's Strategic Brief. The <code>jrb-customer-intelligence</code> repo gets merged on every launch — each new launch starts smarter than the last.</p>
+
+</div>
+
+<!-- ═══════ STEP DETAIL MODAL ═══════ -->
+<div id="modal-overlay" class="modal-overlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" aria-label="Close" id="modal-close-btn">×</button>
+    <div class="modal-head">
+      <div class="modal-step-num" id="modal-step-num">1</div>
+      <div style="flex:1;">
+        <div class="modal-phase" id="modal-phase">Phase 1 · Product Development</div>
+        <div class="modal-title" id="modal-title">Title</div>
+        <div class="modal-timing" id="modal-timing">T–40 to T–24 wks</div>
+      </div>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const STEPS = {
+  "0": {
+    phase: "Background · All Phases",
+    phaseColor: "#4A5D6C",
+    title: "Product Development · Ongoing",
+    owner: "Chrissy · Dana · Bobbi · Lab · Manufacturing",
+    timing: "T–40 to T–10 wks · runs continuously",
+    skills: [],
+    inputs: ["Bobbi creative direction", "Formula brief", "Market opportunity"],
+    deliverables: [
+      "Final formula (stability tested)",
+      "Packaging + components ordered and landed",
+      "Manufacturing complete",
+      "TM clearance",
+      "Compliance + reg sign-off",
+      "Approved product delivered at T–10"
+    ],
+    notes: "Runs the entire timeline in parallel to marketing work. PM (Katie) has a dotted-line relationship into PD for bulletin + info feeds, but PD owns all execution here. If PD misses its T–10 date, everything downstream slips.",
+    example: null
+  },
+  "1": {
+    phase: "Phase 1 · Product Development",
+    phaseColor: "#8B7355",
+    title: "Kickoff w/ Product Development",
+    owner: "Katie · Bobbi · Cody · Chrissy",
+    timing: "T–40 wks",
+    skills: [],
+    inputs: ["PD formula direction locked", "Bobbi creative vision"],
+    deliverables: [
+      "PM understands product direction",
+      "Timing gates agreed",
+      "Key stakeholders aligned on vision"
+    ],
+    notes: "Kicks off the PM workstream. The Product team tells Product Marketing what's coming and when. From here, PM starts building intelligence in parallel.",
+    example: null
+  },
+  "2": {
+    phase: "Phase 1 · Product Development",
+    phaseColor: "#8B7355",
+    title: "PD Bulletin + Competitive Landscape",
+    owner: "Katie (PM)",
+    timing: "T–40 to T–32 wks",
+    skills: ["/pd-bulletin", "/competitor-insights"],
+    inputs: ["Formula spec from PD", "Cost inputs", "Market category intel"],
+    deliverables: [
+      "PD bulletin: formula, cost, target, positioning hypothesis",
+      "Competitive landscape: what's in market, white space"
+    ],
+    notes: "First PM artifact. Becomes core input for naming brief + strategic brief downstream. Katie owns.",
+    example: null
+  },
+  "3": {
+    phase: "Phase 1 · Product Development",
+    phaseColor: "#8B7355",
+    title: "Consumer Insights (Naming)",
+    owner: "Katie (PM)",
+    timing: "T–32 to T–24 wks",
+    skills: ["/jrb-consumer-insights"],
+    inputs: ["WGSN trend data", "Existing JRB customer intelligence", "CAB (Customer Advisory Board) pulse"],
+    deliverables: [
+      "Consumer insights deck — trends, emotional territory, language drivers",
+      "Naming inspiration inputs (words, feelings, associations)"
+    ],
+    notes: "Narrow lens: what names would land with target consumer. Feeds naming brief, NOT yet the full strategic brief.",
+    example: null
+  },
+  "4": {
+    phase: "Phase 2 · Naming",
+    phaseColor: "#4A5D6C",
+    title: "Naming Brief Assembled",
+    owner: "Katie (PM)",
+    timing: "T–24 wks",
+    skills: [],
+    inputs: ["PD Bulletin (Step 2)", "Competitive Landscape (Step 2)", "Consumer Insights (Step 3)"],
+    deliverables: [
+      "Naming Brief doc: product context, target, naming criteria, territories, tone"
+    ],
+    notes: "Single artifact that drives Round 1 name generation. Needs Marketing review + Bobbi sign-off before moving forward (Gate).",
+    example: null
+  },
+  "gate1": {
+    phase: "Phase 2 · Naming Gate",
+    phaseColor: "#d4a94f",
+    title: "Gate · Naming Brief Sign-Offs",
+    owner: "Marketing review → Bobbi final sign-off",
+    timing: "T–24 wks",
+    skills: [],
+    inputs: ["Naming Brief (Step 4)"],
+    deliverables: [
+      "Marketing review notes incorporated",
+      "Bobbi signed off on naming brief"
+    ],
+    notes: "Hard gate. Do not start name generation without Bobbi sign-off — prevents wasted cycles on directions leadership won't accept.",
+    example: null
+  },
+  "5": {
+    phase: "Phase 2 · Naming",
+    phaseColor: "#4A5D6C",
+    title: "Round 1 Name List",
+    owner: "Katie · Cody",
+    timing: "T–24 to T–20 wks",
+    skills: ["/product-naming"],
+    inputs: ["Signed-off Naming Brief"],
+    deliverables: [
+      "Long list of candidate names (50–100)",
+      "Grouped by territory / feeling"
+    ],
+    notes: "Volume-first pass. Filter happens at shortlist.",
+    example: null
+  },
+  "6": {
+    phase: "Phase 2 · Naming",
+    phaseColor: "#4A5D6C",
+    title: "Shortlist → TM Check → CAB Test",
+    owner: "Katie (PM) · Chrissy · Dana · CAB",
+    timing: "T–20 to T–18 wks",
+    skills: [],
+    inputs: ["Round 1 Name List"],
+    deliverables: [
+      "Shortlist of 8–12 names",
+      "TM clearance results (owned by PD/Chrissy+Dana in parallel)",
+      "CAB reactions + rankings"
+    ],
+    notes: "PM runs shortlist + CAB. PD runs TM check in parallel. Names that fail TM get eliminated before CAB sees them.",
+    example: null
+  },
+  "7": {
+    phase: "Phase 2 · Naming",
+    phaseColor: "#4A5D6C",
+    title: "Final Name Locked",
+    owner: "Bobbi · Cody · Chrissy + Marketing",
+    timing: "T–16 wks",
+    skills: [],
+    inputs: ["TM-cleared shortlist", "CAB reactions"],
+    deliverables: [
+      "Final product name",
+      "Marketing GTM readiness sign-off"
+    ],
+    notes: "THIS IS THE GTM HANDOFF POINT. Once Bobbi locks the name and Marketing signs off on GTM readiness, the launch workstream moves from PM to Marketing.",
+    example: null
+  },
+  "8": {
+    phase: "Phase 3 · Strategy",
+    phaseColor: "#2F5D50",
+    title: "Launch Surveys (paired)",
+    owner: "Cody · PM",
+    timing: "T–16 to T–14 wks",
+    skills: ["/product-launch-survey"],
+    inputs: ["Final name locked", "Product positioning hypothesis"],
+    deliverables: [
+      "Typeform survey → existing customers",
+      "ListenLabs survey → prospects",
+      "Combined insights report"
+    ],
+    notes: "Paired insight — validate with customers and prospects simultaneously. Informs Strategic Brief.",
+    example: null
+  },
+  "9": {
+    phase: "Phase 3 · Strategy",
+    phaseColor: "#2F5D50",
+    title: "Strategic Brief (3 concepts → 1)",
+    owner: "Cody · Marketing",
+    timing: "T–14 to T–12 wks",
+    skills: ["/strategic-brief"],
+    inputs: ["Survey results", "PD Bulletin", "Consumer Insights", "Competitive Landscape"],
+    deliverables: [
+      "3 territory concepts developed",
+      "Marketing selects 1 to move forward",
+      "Brief covers: Positioning, Target, Core Message, Barriers, Tier"
+    ],
+    notes: "Per Katie 4/22 sync — we develop 3 concepts in parallel, then Marketing picks. Tier is set here tentatively, locked at Step 10.",
+    example: null
+  },
+  "10": {
+    phase: "Phase 3 · Strategy",
+    phaseColor: "#2F5D50",
+    title: "Launch Brief Deck (Single Source of Truth)",
+    owner: "Cody · Erin",
+    timing: "T–12 to T–10 wks",
+    skills: ["/launch-brief"],
+    inputs: ["Strategic Brief (Step 9, chosen concept)"],
+    deliverables: [
+      "Master Launch Brief Deck — the SSOT for the launch",
+      "Tier locked (1, 2, 3, 4)",
+      "Auto-rollout schema to 8 channel briefs"
+    ],
+    notes: "This is THE canonical document. Tier set here fans out to every channel brief's scope. If the Launch Brief changes, ALL channel briefs update.",
+    example: null
+  },
+  "11": {
+    phase: "Phase 4 · Channel Briefs",
+    phaseColor: "#B8574F",
+    title: "Channel Briefs (all in parallel)",
+    owner: "Marketing → Channel leads",
+    timing: "T–10 to T–8 wks",
+    skills: ["/brand-brief", "/paid-social-creative", "/retention-brief", "/organic-social-brief", "/ecomm-brief", "/press-brief", "/influencer-brief", "/retail-brief"],
+    inputs: ["Launch Brief Deck (SSOT)"],
+    deliverables: [
+      "8 channel briefs generated in parallel",
+      "Each scoped to tier, consistent with master brief",
+      "Channel leads own execution from here"
+    ],
+    notes: "Tier gates: Brand (T1), Paid/Press/Influencer/Ecomm/Retail (T1–3), Retention/Organic (T1–4). All briefs fire off /launch-brief orchestrator.",
+    example: null
+  },
+  "12": {
+    phase: "Phase 4 · Channel Briefs",
+    phaseColor: "#B8574F",
+    title: "Creative Kickoff",
+    owner: "Creative Director · Growth · Social",
+    timing: "T–8 wks",
+    skills: ["/creative-kickoff"],
+    inputs: ["All channel briefs"],
+    deliverables: [
+      "Creative territory locked",
+      "Key visual direction agreed",
+      "Production plan: what to shoot, when, for whom"
+    ],
+    notes: "Translates channel requirements into a single creative plan. Prevents siloed creative per channel.",
+    example: null
+  },
+  "13": {
+    phase: "Phase 4 · Creative Production",
+    phaseColor: "#B8574F",
+    title: "Creative Production (all formats)",
+    owner: "Creators · Design · Growth Creative",
+    timing: "T–8 to T–2 wks",
+    skills: ["/jrb-tv-creative-director"],
+    inputs: ["Creative Kickoff plan", "Channel brief specs"],
+    deliverables: [
+      "Ad creative (paid social, display)",
+      "UGC + advertorials",
+      "TV / CTV spots (T1 only)",
+      "Landing pages, PDP sections",
+      "Email design",
+      "Organic social content"
+    ],
+    notes: "Everything built from the single creative plan. Ready to ship by T–2.",
+    example: null
+  },
+  "14": {
+    phase: "Phase 5 · Launch",
+    phaseColor: "#ff2e92",
+    title: "LAUNCH DAY (T–0)",
+    owner: "All-hands",
+    timing: "T–0",
+    skills: [],
+    inputs: ["Product in-stock", "All creative live", "All channels armed"],
+    deliverables: [
+      "Site live (PDP, LP, homepage mod if T1)",
+      "Email sent to list",
+      "Paid ads turned on",
+      "PR embargo lifted",
+      "Organic social posted",
+      "Retail live (T1–2)"
+    ],
+    notes: "The go / no-go moment. All lanes execute simultaneously.",
+    example: null
+  },
+  "15": {
+    phase: "Phase 5 · Launch & Iterate",
+    phaseColor: "#1F2C3D",
+    title: "Performance Read + CX",
+    owner: "Marketing · Analytics · CX",
+    timing: "T+1 to T+2 wks",
+    skills: [],
+    inputs: ["Shopify data", "Meta ads data", "Reviews (Junip)", "CX tickets (Richpanel)"],
+    deliverables: [
+      "Cross-channel performance report",
+      "Review sentiment summary",
+      "CX issue list + early red flags"
+    ],
+    notes: "Week 1–2 read. What's working, what's broken, what needs a hotfix.",
+    example: null
+  },
+  "16": {
+    phase: "Phase 5 · Launch & Iterate",
+    phaseColor: "#1F2C3D",
+    title: "Iterate Creative",
+    owner: "Creative team · Growth",
+    timing: "T+2 to T+8 wks",
+    skills: [],
+    inputs: ["Performance Read (Step 15)", "Meta analysis"],
+    deliverables: [
+      "Refresh winning creative variants",
+      "Kill losers",
+      "Next creative round built from learnings"
+    ],
+    notes: "Creative team stays active post-launch. Paid social especially needs fresh creative on a rolling basis.",
+    example: null
+  },
+  "17": {
+    phase: "Phase 5 · Launch & Iterate",
+    phaseColor: "#1F2C3D",
+    title: "Customer Intelligence Merge",
+    owner: "CX · Data · PMs",
+    timing: "T+4 to T+8 wks",
+    skills: [],
+    inputs: ["CX ticket themes", "Reviews", "Post-purchase survey data"],
+    deliverables: [
+      "Insights merged into jrb-customer-intelligence repo",
+      "New prospect + customer intel available to every skill"
+    ],
+    notes: "Closes the loop. Next launch's Strategic Brief starts with fresh data.",
+    example: null
+  },
+  "18": {
+    phase: "Phase 5 · Launch & Iterate",
+    phaseColor: "#1F2C3D",
+    title: "Post-Launch Debrief",
+    owner: "Leadership + Channel leads",
+    timing: "T+8 to T+12 wks",
+    skills: ["/cro-learnings"],
+    inputs: ["Performance read", "Creative learnings", "CX + review themes"],
+    deliverables: [
+      "Debrief doc: what worked, what didn't, what to repeat",
+      "Next launch's Strategic Brief starter"
+    ],
+    notes: "Feeds directly into the next launch's Phase 3 strategy work. Loop closed.",
+    example: null
+  }
+};
+
+const overlay = document.getElementById('modal-overlay');
+const body = document.getElementById('modal-body');
+
+function renderExample(s) {
+  if (!s.example) {
+    return `<div class="modal-section modal-example">
+      <h3>Example</h3>
+      <div class="example-empty">
+        <strong>No example attached yet.</strong><br>
+        Link me to a Google Doc / Figma / Loom / PDF URL, or share a screenshot — I'll drop it in.
+        <div class="tip">Each step can hold one example: a real artifact from a past launch to use as reference.</div>
+      </div>
+    </div>`;
+  }
+  if (s.example.type === 'image') {
+    return `<div class="modal-section modal-example">
+      <h3>Example</h3>
+      <img src="${s.example.url}" alt="${s.example.label || ''}" class="example-image">
+      ${s.example.label ? `<div style="font-size:11px;color:#888;margin-top:6px;">${s.example.label}</div>` : ''}
+    </div>`;
+  }
+  return `<div class="modal-section modal-example">
+    <h3>Example</h3>
+    <a href="${s.example.url}" target="_blank" rel="noopener" class="example-link">
+      ↗ ${s.example.label || s.example.url}
+    </a>
+  </div>`;
+}
+
+function openStep(id) {
+  const s = STEPS[id];
+  if (!s) return;
+
+  document.getElementById('modal-step-num').textContent = (id === 'gate1') ? '⚑' : id;
+  document.getElementById('modal-step-num').style.background = s.phaseColor;
+  document.getElementById('modal-phase').textContent = s.phase;
+  document.getElementById('modal-phase').style.color = s.phaseColor;
+  document.getElementById('modal-title').textContent = s.title;
+  document.getElementById('modal-timing').textContent = s.timing;
+
+  let html = '';
+  html += `<div class="modal-section"><h3>Owner</h3><div class="value">${s.owner}</div></div>`;
+  if (s.skills && s.skills.length) {
+    html += `<div class="modal-section"><h3>Skills used</h3><div>${s.skills.map(k => `<span class="modal-skill">${k}</span>`).join('')}</div></div>`;
+  }
+  if (s.inputs && s.inputs.length) {
+    html += `<div class="modal-section"><h3>Inputs</h3><ul>${s.inputs.map(i => `<li>${i}</li>`).join('')}</ul></div>`;
+  }
+  if (s.deliverables && s.deliverables.length) {
+    html += `<div class="modal-section"><h3>Deliverables</h3><ul>${s.deliverables.map(d => `<li>${d}</li>`).join('')}</ul></div>`;
+  }
+  if (s.notes) {
+    html += `<div class="modal-section"><h3>Notes</h3><p>${s.notes}</p></div>`;
+  }
+  html += renderExample(s);
+
+  body.innerHTML = html;
+  overlay.classList.add('active');
+  overlay.setAttribute('aria-hidden', 'false');
+}
+
+function closeStep() {
+  overlay.classList.remove('active');
+  overlay.setAttribute('aria-hidden', 'true');
+}
+
+document.querySelectorAll('[data-step]').forEach(el => {
+  el.addEventListener('click', () => openStep(el.dataset.step));
+  // flag nodes that already have an example attached
+  const id = el.dataset.step;
+  if (STEPS[id] && STEPS[id].example) el.classList.add('example-attached');
+});
+
+document.getElementById('modal-close-btn').addEventListener('click', closeStep);
+overlay.addEventListener('click', (e) => { if (e.target === overlay) closeStep(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeStep(); });
+</script>
+
+</body>
+</html>
