@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML to Shopify Liquid — JRB Shopify Dev Training</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="topic-nav">
+        <a href="index.html" class="topic-nav__back">Back to all modules</a>
+    </nav>
+
+    <header class="topic-header">
+        <div class="topic-header__label">Stage 04 &mdash; Ship</div>
+        <h1>One mockup, many sections.</h1>
+        <p>The build skills produce HTML mockups. Shopify needs Liquid sections with scoped CSS and editable schema settings. This skill bridges them in one command.</p>
+    </header>
+
+    <div class="loom-embed">
+        <div class="loom-embed__placeholder">
+            <div class="loom-embed__icon"></div>
+            <span class="loom-embed__text">Loom video coming soon</span>
+        </div>
+    </div>
+
+    <div class="topic-content">
+        <h2>The skill</h2>
+
+        <a class="skill-row" href="https://github.com/CodyPlofker/jrb-skills/tree/main/html-to-shopify" target="_blank" rel="noopener">
+            <div class="skill-row__cmd">/html-to-shopify</div>
+            <div class="skill-row__title">Convert HTML into multiple Liquid sections</div>
+            <div class="skill-row__desc">Takes a complete HTML mockup and splits it into separate <code>.liquid</code> files, one per section. Scopes the CSS so sections don't bleed into each other. Extracts editable text, images, and links into Shopify schema settings so merchants can edit them in the admin without touching code.</div>
+        </a>
+
+        <h2>Naming conventions</h2>
+        <p>Section files follow strict prefixes so the theme's section list stays organized.</p>
+        <ul>
+            <li><code>ccig-*.liquid</code> for general sections (e.g. <code>ccig-hero-banner.liquid</code>)</li>
+            <li><code>cclp-*.liquid</code> for landing-page-specific sections (e.g. <code>cclp-miracle-balm-hero.liquid</code>)</li>
+            <li>Theme-native sections (existing) keep their original names — never rename existing files</li>
+        </ul>
+
+        <h2>What the conversion does</h2>
+        <div class="code-block"><span class="comment">Input: one HTML file with seven sections</span>
+mockup.html
+
+<span class="comment">Output: seven Liquid files, each with scoped CSS and schema</span>
+sections/
+├── cclp-miracle-balm-hero.liquid
+├── cclp-miracle-balm-problem.liquid
+├── cclp-miracle-balm-proof.liquid
+├── cclp-miracle-balm-ingredients.liquid
+├── cclp-miracle-balm-shades.liquid
+├── cclp-miracle-balm-faq.liquid
+└── cclp-miracle-balm-cta.liquid</div>
+
+        <h2>Schema extraction — what becomes editable</h2>
+        <p>Anything that should be editable in the Shopify admin gets pulled into the schema. Headlines, body copy, button text, button URLs, image fields, and image alt text. Fixed brand patterns — fonts, colors, spacing, button styles — stay in the CSS.</p>
+        <div class="code-block">{% schema %}
+{
+  "name": "Miracle Balm Hero",
+  "settings": [
+    {
+      "type": "<span class="string">text</span>",
+      "id": "<span class="string">headline</span>",
+      "label": "<span class="string">Headline</span>",
+      "default": "<span class="string">A new gold standard.</span>"
+    },
+    {
+      "type": "<span class="string">image_picker</span>",
+      "id": "<span class="string">hero_image</span>",
+      "label": "<span class="string">Hero image</span>"
+    }
+  ]
+}
+{% endschema %}</div>
+
+        <h2>The pre-build safety rules</h2>
+        <p>Lives at <code>~/.claude/skills/shared/shopify-section-safety-rules.md</code>. Loaded automatically before any HTML-to-Liquid conversion. Covers:</p>
+        <ul>
+            <li>CSS scoping — no global selectors that escape the section</li>
+            <li>JavaScript scoping — IIFE pattern, no globals, no <code>document.querySelector</code> without a section root</li>
+            <li>Liquid syntax — proper <code>{% schema %}</code> JSON, valid block hierarchies, translation keys where required</li>
+            <li>Image handling — Shopify CDN URLs only, no Air imgix URLs in Liquid</li>
+            <li>Performance — lazy-load images below the fold, no oversized assets</li>
+        </ul>
+
+        <div class="callout">
+            <p>If the resulting Liquid files break theme conventions or violate the safety rules, <code>/jrb-qa</code> + <code>/section-audit</code> catch it before the PR is opened. Don't skip QA after a conversion just because the build skill produced clean HTML.</p>
+        </div>
+
+        <h2>SPA architecture note</h2>
+        <p>The JRB theme is a SPA. JavaScript and CSS that need to work across navigation must live in the <code>/app</code> folder, not in section-local <code>{% javascript %}</code> tags. Liquid-only changes are safe to put in section files. JS-driven behavior gets routed to <code>/app</code> by the build pipeline.</p>
+
+        <div class="try-it">
+            <div class="try-it__label">Try it</div>
+            <div class="try-it__prompt">Build a section as HTML with <code>/jrb-section-builder</code>. Then run <code>/html-to-shopify</code> on the output. Compare the input HTML to the output Liquid — note what got pulled into schema and what stayed in CSS.</div>
+        </div>
+    </div>
+
+    <nav class="topic-bottom-nav">
+        <a href="07-qa-and-compliance.html">
+            <div class="topic-bottom-nav__label">Previous</div>
+            <div class="topic-bottom-nav__title">QA and compliance</div>
+        </a>
+        <a href="09-theme-push.html" class="topic-bottom-nav__next">
+            <div class="topic-bottom-nav__label">Next</div>
+            <div class="topic-bottom-nav__title">Theme push</div>
+        </a>
+    </nav>
+</body>
+</html>

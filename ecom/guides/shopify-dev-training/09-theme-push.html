@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme push — JRB Shopify Dev Training</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="topic-nav">
+        <a href="index.html" class="topic-nav__back">Back to all modules</a>
+    </nav>
+
+    <header class="topic-header">
+        <div class="topic-header__label">Stage 04 &mdash; Ship</div>
+        <h1>Branch from develop. PR to develop. Never main.</h1>
+        <p>The theme push workflow is the most rule-bound part of the system. It has to be — the theme is production. One bad merge takes down a section. The skill encodes every safety check so the workflow can run without thinking.</p>
+    </header>
+
+    <div class="loom-embed">
+        <div class="loom-embed__placeholder">
+            <div class="loom-embed__icon"></div>
+            <span class="loom-embed__text">Loom video coming soon</span>
+        </div>
+    </div>
+
+    <div class="topic-content">
+        <h2>The skill</h2>
+
+        <a class="skill-row" href="https://github.com/CodyPlofker/jrb-skills/tree/main/jrb-theme-push" target="_blank" rel="noopener">
+            <div class="skill-row__cmd">/jrb-theme-push</div>
+            <div class="skill-row__title">The full GitHub PR workflow</div>
+            <div class="skill-row__desc">Pre-push QA, dev-theme preview, branch creation, scoped commits, and a PR opened against the develop branch with the right reviewers and labels. Ten steps, all encoded in the skill so nothing gets skipped.</div>
+            <div class="skill-row__meta">Theme repo: EcomExperts org &middot; Local clone: ~/Desktop/01-Projects/jrb-theme/</div>
+        </a>
+
+        <h2>The non-negotiables</h2>
+        <ul>
+            <li><strong>PRs target <code>develop</code>.</strong> Never <code>main</code>. <code>main</code> is only updated by the EcomExperts deploy pipeline.</li>
+            <li><strong>Section prefixes are <code>cclp-</code> or <code>ccig-</code>.</strong> Anything Claude-built carries the prefix. Files without the prefix are theme-native and stay untouched.</li>
+            <li><strong>Never push the whole theme.</strong> Always scoped pushes — only the specific files in the change.</li>
+            <li><strong>Never push to the published theme.</strong> Always ask which preview theme to push to. The skill enforces this with a prompt before any push runs.</li>
+            <li><strong>No generated files in commits.</strong> EcomExperts repo rule. <code>/ee-audit</code> catches violations before the PR opens.</li>
+        </ul>
+
+        <h2>The branch naming convention</h2>
+        <div class="code-block">cclp/sleepless-nights-kit       <span class="comment">// new landing page</span>
+cclp/fix-hero-mobile-aspect     <span class="comment">// bug fix</span>
+cclp/refactor-shared-styles     <span class="comment">// refactor</span></div>
+
+        <h2>The full sequence</h2>
+        <ol style="list-style: decimal inside; padding-left: 1rem; margin-bottom: 1.5rem; max-width: 60ch;">
+            <li style="padding: 6px 0; font-size: 15px;">Run <span class="cmd">/ee-audit</span> and fix all Critical and High issues</li>
+            <li style="padding: 6px 0; font-size: 15px;">Run <span class="cmd">/simplify</span> and address actionable findings</li>
+            <li style="padding: 6px 0; font-size: 15px;">Update the section registry in <code>jrb-theme-docs/claude-created-sections.json</code></li>
+            <li style="padding: 6px 0; font-size: 15px;">Ask the user which preview theme to push to (never assume)</li>
+            <li style="padding: 6px 0; font-size: 15px;">Scoped <code>shopify theme push</code> with <code>--only</code> flags</li>
+            <li style="padding: 6px 0; font-size: 15px;">Share the preview URL inline so it can be verified</li>
+            <li style="padding: 6px 0; font-size: 15px;"><code>git checkout develop &amp;&amp; git pull</code> to sync</li>
+            <li style="padding: 6px 0; font-size: 15px;">Branch with <code>cclp/[descriptive-name]</code></li>
+            <li style="padding: 6px 0; font-size: 15px;">Stage and commit only the changed files</li>
+            <li style="padding: 6px 0; font-size: 15px;">Push and open a PR against <code>develop</code> using <a href="https://cli.github.com" target="_blank" rel="noopener"><code>gh pr create</code></a></li>
+        </ol>
+
+        <h2>Why this is structured this way</h2>
+        <p>Three reasons.</p>
+        <ul>
+            <li><strong>Scoped pushes prevent collateral damage.</strong> <code>shopify theme push</code> without <code>--only</code> would overwrite every file in the preview theme. Scoping limits the blast radius to the actual change.</li>
+            <li><strong>The dev-theme preview catches what local testing misses.</strong> Liquid syntax is fine locally, but Shopify renders it with real product data, real cart context, and real customer login state. A section that works on a static HTML preview can break on a live store.</li>
+            <li><strong>The PR is the conversation.</strong> EcomExperts engineers review every PR before it merges to develop. The PR description, the screenshots, and the preview URL are how the change gets explained.</li>
+        </ul>
+
+        <div class="callout">
+            <p>The dev preview URL gets shared inline after every push. It's a saved feedback memory — Cody asked for this so he can verify on his phone without scrolling back through the terminal output. The skill always includes the URL.</p>
+        </div>
+
+        <h2>The SPA architecture rule</h2>
+        <p>JS and CSS that need to work across navigation must live in the <code>/app</code> folder, not in section-local <code>{% javascript %}</code> tags. Liquid-only changes are safe to put in section files. The skill catches misplaced JS during the audit pass.</p>
+
+        <h2>What the PR looks like</h2>
+        <div class="code-block">Title: cclp/sleepless-nights-kit hero + problem sections
+
+Body:
+- Adds 2 new cclp-*.liquid sections for the Sleepless Nights LP
+- Preview: https://jonesroadbeauty.myshopify.com/admin/themes/...
+- Touches: sections/cclp-sleepless-hero.liquid (new),
+           sections/cclp-sleepless-problem.liquid (new),
+           templates/page.sleepless-nights.json (modified)
+
+QA: /jrb-qa pass, /section-audit pass, /ee-audit pass</div>
+
+        <div class="try-it">
+            <div class="try-it__label">Try it</div>
+            <div class="try-it__prompt">After running <code>/html-to-shopify</code> on a built mockup, run <code>/jrb-theme-push</code>. Watch the skill ask which preview theme to push to, run the three QA gates, then open the PR. Click the preview URL and verify on the live store.</div>
+        </div>
+    </div>
+
+    <nav class="topic-bottom-nav">
+        <a href="08-html-to-shopify.html">
+            <div class="topic-bottom-nav__label">Previous</div>
+            <div class="topic-bottom-nav__title">HTML to Shopify Liquid</div>
+        </a>
+        <a href="10-github-repos.html" class="topic-bottom-nav__next">
+            <div class="topic-bottom-nav__label">Next</div>
+            <div class="topic-bottom-nav__title">GitHub repo map</div>
+        </a>
+    </nav>
+</body>
+</html>

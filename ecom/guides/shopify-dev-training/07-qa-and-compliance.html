@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA and compliance — JRB Shopify Dev Training</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="topic-nav">
+        <a href="index.html" class="topic-nav__back">Back to all modules</a>
+    </nav>
+
+    <header class="topic-header">
+        <div class="topic-header__label">Stage 03 &mdash; Build</div>
+        <h1>Three gates between a build and the live store.</h1>
+        <p>Even with the design system loaded, things drift. Three QA skills run before any code reaches the theme repo. Each one checks a different layer — brand, repo safety, and section conventions.</p>
+    </header>
+
+    <div class="loom-embed">
+        <div class="loom-embed__placeholder">
+            <div class="loom-embed__icon"></div>
+            <span class="loom-embed__text">Loom video coming soon</span>
+        </div>
+    </div>
+
+    <div class="topic-content">
+        <h2>Gate 1 — Brand compliance</h2>
+
+        <a class="skill-row" href="https://github.com/CodyPlofker/jrb-skills/tree/main/jrb-qa" target="_blank" rel="noopener">
+            <div class="skill-row__cmd">/jrb-qa</div>
+            <div class="skill-row__title">Post-build brand checker</div>
+            <div class="skill-row__desc">Reads generated Liquid, HTML, or CSS and validates against the JRB design system. Outputs a pass/fail report with line numbers and suggested fixes. Catches font substitutions, wrong color values, missing button classes, broken naming conventions.</div>
+            <div class="skill-row__meta">Run after every build. Before every PR.</div>
+        </a>
+
+        <p>Common things <span class="cmd">/jrb-qa</span> catches:</p>
+        <ul>
+            <li>Body text colored <code>#666</code> or <code>#555</code> instead of <code>#000</code></li>
+            <li>Headlines using Geogrotesque instead of Canela</li>
+            <li>A "new" FAQ section with custom JS toggles instead of reusing <code>casting-faq.liquid</code></li>
+            <li>Placeholder.com images that survived from a draft</li>
+            <li>Section files using the wrong naming convention (missing <code>ccig-</code> or <code>cclp-</code> prefix)</li>
+            <li>Auto-advance carousels with <code>setInterval</code></li>
+        </ul>
+
+        <h2>Gate 2 — Repo safety</h2>
+
+        <a class="skill-row" href="https://github.com/CodyPlofker/jrb-skills/tree/main/ee-audit" target="_blank" rel="noopener">
+            <div class="skill-row__cmd">/ee-audit</div>
+            <div class="skill-row__title">Pre-PR safety against EcomExperts rules</div>
+            <div class="skill-row__desc">Before opening a PR against the theme repo, this skill checks every changed file against the EcomExperts safety rules — no generated files, no committed build artifacts, no broken Liquid syntax, no edits to files outside the change scope.</div>
+        </a>
+
+        <div class="callout">
+            <p>The EcomExperts repo has a "no generated files" rule. Built artifacts that look like source files (compiled CSS, generated Liquid) are not allowed in commits. This skill catches them before the PR is open and the team has to ask for a force-push.</p>
+        </div>
+
+        <h2>Gate 3 — Section conventions</h2>
+
+        <a class="skill-row" href="https://github.com/CodyPlofker/jrb-skills/tree/main/section-audit" target="_blank" rel="noopener">
+            <div class="skill-row__cmd">/section-audit</div>
+            <div class="skill-row__title">Section-level pattern check</div>
+            <div class="skill-row__desc">Audits a single Shopify section file against the JRB design system and existing theme patterns. Different from <code>/jrb-qa</code> in that it focuses on section structure — schema settings, block organization, scoped CSS, the section-level rules that aren't visible in a rendered preview.</div>
+        </a>
+
+        <h2>The order they run</h2>
+        <p>For a section build:</p>
+        <div class="code-block">1. <span class="highlight">/jrb-qa</span>          <span class="comment">// Brand compliance on the rendered output</span>
+2. <span class="highlight">/section-audit</span>   <span class="comment">// Section structure and Liquid conventions</span>
+3. <span class="highlight">/ee-audit</span>        <span class="comment">// Repo safety, last check before PR</span></div>
+
+        <p>For an LP that lives in <code>jrb-landing-pages</code> rather than the theme:</p>
+        <div class="code-block">1. <span class="highlight">/jrb-qa</span>          <span class="comment">// Brand compliance only</span>
+   <span class="comment">// (no theme PR, so no /ee-audit needed)</span></div>
+
+        <h2>Why three gates instead of one</h2>
+        <p>Each gate catches a different category of failure:</p>
+        <ul>
+            <li><strong>Brand drift</strong> is visible — wrong color, wrong font. Caught by <span class="cmd">/jrb-qa</span>.</li>
+            <li><strong>Convention drift</strong> is structural — wrong file name, missing schema, broken block hierarchy. Caught by <span class="cmd">/section-audit</span>.</li>
+            <li><strong>Repo drift</strong> is procedural — wrong files committed, generated artifacts, edits outside scope. Caught by <span class="cmd">/ee-audit</span>.</li>
+        </ul>
+        <p>Combining them into one skill loses precision. Keeping them separate means each one has a tight, well-tuned ruleset.</p>
+
+        <div class="try-it">
+            <div class="try-it__label">Try it</div>
+            <div class="try-it__prompt">After building any section, run <code>/jrb-qa</code>, then <code>/section-audit</code>, then <code>/ee-audit</code> in order. Fix every Critical and Warning before opening the PR. The skills are fast — the whole pass is under two minutes for a typical section.</div>
+        </div>
+    </div>
+
+    <nav class="topic-bottom-nav">
+        <a href="06-page-and-section-building.html">
+            <div class="topic-bottom-nav__label">Previous</div>
+            <div class="topic-bottom-nav__title">Page and section building</div>
+        </a>
+        <a href="08-html-to-shopify.html" class="topic-bottom-nav__next">
+            <div class="topic-bottom-nav__label">Next</div>
+            <div class="topic-bottom-nav__title">HTML to Shopify Liquid</div>
+        </a>
+    </nav>
+</body>
+</html>

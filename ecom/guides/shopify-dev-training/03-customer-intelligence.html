@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Intelligence — JRB Shopify Dev Training</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="topic-nav">
+        <a href="index.html" class="topic-nav__back">Back to all modules</a>
+    </nav>
+
+    <header class="topic-header">
+        <div class="topic-header__label">Stage 01 &mdash; Intelligence</div>
+        <h1>One file. Five inputs. The whole system reads from it.</h1>
+        <p>Customer Intelligence is the foundation. It's a single Markdown file in a private GitHub repo. Five skills write to it. Every other skill — CRO, copywriting, page building — reads from it before doing anything else.</p>
+    </header>
+
+    <div class="loom-embed">
+        <div class="loom-embed__placeholder">
+            <div class="loom-embed__icon"></div>
+            <span class="loom-embed__text">Loom video coming soon</span>
+        </div>
+    </div>
+
+    <div class="topic-content">
+        <h2>The hub file</h2>
+        <p>One file is the source of truth for everything we know about JRB customers — what they say, what they buy, what they complain about, what they search for, what they wish existed. It lives at:</p>
+        <div class="code-block">~/Desktop/01-Projects/jrb-customer-intelligence/customer-intelligence.md
+
+<span class="comment">Private GitHub repo: CodyPlofker/jrb-customer-intelligence</span>
+<span class="comment">Every team member clones this locally.</span></div>
+        <p>Each entry in the file is tagged by source — Prospect, Customer (Behavioral), Customer (Post-Purchase), Customer (Public Reviews), Customer (Survey). That's how downstream skills decide whether they're looking at someone who's never bought, someone who has, someone who returned, or someone who left a five-star review.</p>
+
+        <h2>Five input skills</h2>
+        <p>Each skill pulls from a different data source, analyzes it, and merges the findings into the shared file with an automatic <code>git pull</code> + <code>git push</code>.</p>
+
+        <a class="skill-row" href="https://github.com/CodyPlofker/jrb-skills/tree/main/listenlabs" target="_blank" rel="noopener">
+            <div class="skill-row__cmd">/listenlabs</div>
+            <div class="skill-row__title">Qualitative interview transcripts</div>
+            <div class="skill-row__desc">ListenLabs runs AI-moderated customer interviews. The skill pulls transcripts via API, extracts personas, themes, problems, and golden quotes, then writes the findings to the hub. Twelve studies, four hundred-plus responses on record.</div>
+            <div class="skill-row__meta">Tool: <a href="https://listenlabs.ai" target="_blank" rel="noopener">listenlabs.ai</a> &middot; Tag: Prospect</div>
+        </a>
+
+        <a class="skill-row" href="https://github.com/CodyPlofker/jrb-skills/tree/main/outersignal" target="_blank" rel="noopener">
+            <div class="skill-row__cmd">/outersignal</div>
+            <div class="skill-row__title">Purchase-backed behavioral personas</div>
+            <div class="skill-row__desc">OuterSignal connects to Shopify orders and enriches buyers with demographic, geographic, and professional data. The skill pulls AOV, LTV, repeat rate, and what each persona actually buys.</div>
+            <div class="skill-row__meta">Tool: <a href="https://outersignal.io" target="_blank" rel="noopener">outersignal.io</a> &middot; Tag: Customer (Behavioral)</div>
+        </a>
+
+        <a class="skill-row" href="https://github.com/CodyPlofker/jrb-skills/tree/main/richpanel" target="_blank" rel="noopener">
+            <div class="skill-row__cmd">/richpanel</div>
+            <div class="skill-row__title">Customer service tickets</div>
+            <div class="skill-row__desc">Richpanel is our help desk. The skill pulls ticket themes, resolution times, and the actual customer language from messages. Pre-purchase questions become CRO opportunities — the site should answer them.</div>
+            <div class="skill-row__meta">Tool: <a href="https://richpanel.com" target="_blank" rel="noopener">richpanel.com</a> &middot; Tag: Customer (Post-Purchase)</div>
+        </a>
+
+        <a class="skill-row" href="https://github.com/CodyPlofker/jrb-skills/tree/main/junip" target="_blank" rel="noopener">
+            <div class="skill-row__cmd">/junip</div>
+            <div class="skill-row__title">Public product reviews</div>
+            <div class="skill-row__desc">Junip is the on-site reviews engine. The skill pulls reviews across all SKUs, surfaces ratings, demographic breakdowns, recurring critical issues, and the top customer quotes. The Mini Miracle Balm alone has over ten thousand reviews to mine.</div>
+            <div class="skill-row__meta">Tool: <a href="https://junip.co" target="_blank" rel="noopener">junip.co</a> &middot; Tag: Customer (Public Reviews)</div>
+        </a>
+
+        <a class="skill-row" href="https://github.com/CodyPlofker/jrb-skills/tree/main/jrb-consumer-insights" target="_blank" rel="noopener">
+            <div class="skill-row__cmd">/jrb-consumer-insights</div>
+            <div class="skill-row__title">Typeform survey synthesis</div>
+            <div class="skill-row__desc">For product launches we run paired Typeform + ListenLabs surveys. The skill takes raw responses and writes them into the GTM brief Consumer Insights section. Then merges the same findings into the hub.</div>
+            <div class="skill-row__meta">Tool: <a href="https://typeform.com" target="_blank" rel="noopener">typeform.com</a> &middot; Tag: Customer (Survey)</div>
+        </a>
+
+        <h2>Supporting skills</h2>
+        <p>Four more skills work on customer data without writing to the hub.</p>
+
+        <div class="skill-row">
+            <div class="skill-row__cmd">/simulate-research</div>
+            <div class="skill-row__title">Pre-flight a survey question</div>
+            <div class="skill-row__desc">Reads the hub and simulates how customers would likely answer a strategic question. Quick directional read before commissioning real research. Five-step workflow with four-tier confidence scoring and backtesting against past surveys.</div>
+        </div>
+
+        <div class="skill-row">
+            <div class="skill-row__cmd">/persona-enrichment</div>
+            <div class="skill-row__title">Add psychological depth to personas</div>
+            <div class="skill-row__desc">Applies Sarah Levinger's Three-Layer System to enrich a persona with belief patterns, identity drivers, and emotional triggers. Used when a persona feels flat and needs the layer below the demographics.</div>
+        </div>
+
+        <div class="skill-row">
+            <div class="skill-row__cmd">/quick-analysis</div>
+            <div class="skill-row__title">Rapid review and feedback analysis</div>
+            <div class="skill-row__desc">Drop in a CSV of reviews or open-ended survey responses. Get back personas, themes, problems, and golden quotes in minutes. The fastest way to extract structure from unstructured customer language.</div>
+        </div>
+
+        <div class="skill-row">
+            <div class="skill-row__cmd">/product-review-analysis</div>
+            <div class="skill-row__title">Per-product review intelligence</div>
+            <div class="skill-row__desc">Analyzes Junip reviews for a single SKU. Returns rating distribution, top quotes, critical issues, and demographic breakdowns. Useful when scoping a PDP rebuild.</div>
+        </div>
+
+        <h2>What reads from the hub</h2>
+        <p>This is where the leverage shows up. Every one of these skills does a <code>git pull</code> on the customer intelligence repo before running, so they always work from the latest data.</p>
+        <ul>
+            <li><span class="cmd">/jrb-cro</span> — pulls customer language to ground every test idea</li>
+            <li><span class="cmd">/jrb-copywriter</span> — pulls customer language for ad copy, email, SMS, landing pages</li>
+            <li><span class="cmd">/jrb-video-hooks</span> — pulls golden quotes for scroll-stopping video hooks</li>
+            <li><span class="cmd">/newlandingpage</span> — pulls personas and pain points for hero, problem, and proof sections</li>
+            <li><span class="cmd">/optimize</span> — pulls customer sentiment to weigh against heatmap and Intelligems data</li>
+            <li><span class="cmd">/page-redesign</span> — pulls customer journey signals to prioritize sections in a redesign</li>
+            <li><span class="cmd">/ad-iteration-brief</span> — pulls customer language to diagnose what's breaking on a yellow ad</li>
+        </ul>
+
+        <h2>The wiring skill</h2>
+        <div class="skill-row">
+            <div class="skill-row__cmd">/ci-connect</div>
+            <div class="skill-row__title">Connect a new skill to the hub</div>
+            <div class="skill-row__desc">When we build a new skill that should read or write to customer intelligence, this skill adds the auto git pull and push steps. Keeps the wiring consistent across the whole skill library.</div>
+        </div>
+
+        <div class="callout">
+            <p>The reason this works at all: the file is a single source of truth. If five skills each had their own private notes, the system would drift. One file means every skill agrees on who the customer is.</p>
+        </div>
+
+        <div class="try-it">
+            <div class="try-it__label">Try it</div>
+            <div class="try-it__prompt">Run <code>/listenlabs</code> and ask Claude to pull the most recent study and merge findings into the hub. Then run <code>/jrb-cro</code> and ask for a test idea — watch it pick up the new findings without being told.</div>
+        </div>
+    </div>
+
+    <nav class="topic-bottom-nav">
+        <a href="02-claude-code-recap.html">
+            <div class="topic-bottom-nav__label">Previous</div>
+            <div class="topic-bottom-nav__title">Claude Code recap</div>
+        </a>
+        <a href="04-cro-and-testing.html" class="topic-bottom-nav__next">
+            <div class="topic-bottom-nav__label">Next</div>
+            <div class="topic-bottom-nav__title">CRO and testing</div>
+        </a>
+    </nav>
+</body>
+</html>

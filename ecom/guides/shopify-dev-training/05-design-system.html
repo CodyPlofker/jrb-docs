@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The design system — JRB Shopify Dev Training</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="topic-nav">
+        <a href="index.html" class="topic-nav__back">Back to all modules</a>
+    </nav>
+
+    <header class="topic-header">
+        <div class="topic-header__label">Stage 03 &mdash; Build</div>
+        <h1>One design system. Loaded before any code is written.</h1>
+        <p>The biggest leverage in our build pipeline isn't the AI — it's the rule that the design system loads <em>before</em> the AI starts writing. Every page begins brand-accurate. Nothing has to be corrected later.</p>
+    </header>
+
+    <div class="loom-embed">
+        <div class="loom-embed__placeholder">
+            <div class="loom-embed__icon"></div>
+            <span class="loom-embed__text">Loom video coming soon</span>
+        </div>
+    </div>
+
+    <div class="topic-content">
+        <h2>The mandatory pre-build sequence</h2>
+        <p>Before any HTML, CSS, or Liquid gets written for JRB, three files load in order:</p>
+        <div class="code-block">1. <span class="highlight">~/.claude/skills/shared/component-templates.md</span>
+   <span class="comment">// 51 paste-ready section templates</span>
+
+2. <span class="highlight">/jrb-design-system</span>
+   <span class="comment">// Tokens, fonts, colors, button standards</span>
+
+3. <span class="highlight">/jrb-section-library</span>
+   <span class="comment">// 108 existing sections to check before building new</span></div>
+        <p>Skipping any of those is a compliance failure. The QA skill catches it later, but the loss is wasted output.</p>
+
+        <h2>Tokens</h2>
+        <p>The whole design system fits on one screen.</p>
+        <ul>
+            <li><strong>Colors.</strong> <code>#000</code> black, <code>#fff</code> white, <code>#f8f8f8</code> light gray, <code>#f6f2eb</code> warm cream, <code>#ff2e92</code> hot pink. Section backgrounds alternate <code>#fff</code> and <code>#f8f8f8</code>. Cream is utility-bar and footer only.</li>
+            <li><strong>Headlines.</strong> Canela Light, sentence case. Never Geogrotesque for large headlines.</li>
+            <li><strong>Body.</strong> RingsideWide. Always <code>#000</code>. Never <code>#555</code>, <code>#666</code>, <code>#333</code>, or <code>--color-muted</code>.</li>
+            <li><strong>Subheadlines.</strong> ArticulatCF Bold, ALL CAPS, letter-spacing 0.3px. Never substitute with Geogrotesque.</li>
+            <li><strong>Mono.</strong> BaseMonoWide for labels and data.</li>
+            <li><strong>Buttons.</strong> Always the <code>.button</code> class. Default black background. Pink only when explicitly requested.</li>
+            <li><strong>Corners.</strong> 2px. Sharp, not pill.</li>
+        </ul>
+
+        <h2>The skill</h2>
+
+        <a class="skill-row" href="https://github.com/CodyPlofker/jrb-skills/tree/main/jrb-design-system" target="_blank" rel="noopener">
+            <div class="skill-row__cmd">/jrb-design-system</div>
+            <div class="skill-row__title">The executable reference</div>
+            <div class="skill-row__desc">Loads tokens, patterns, and the JRB rules into context. Every page-builder skill calls this first. The rules aren't in a PDF — they're loaded directly into the model, which means they shape the output, not just review it.</div>
+            <div class="skill-row__meta">Allowed tools: Read, WebFetch</div>
+        </a>
+
+        <h2>The component templates file</h2>
+        <p>Fifty-one paste-ready HTML+CSS templates for the section types we build over and over — heroes, CTA bands, review carousels, press logos, FAQ, founders, steps, product cards, trust bars. Lives at:</p>
+        <div class="code-block">~/.claude/skills/shared/component-templates.md
+
+<span class="comment">// The single source of truth for reusable component HTML+CSS.</span>
+<span class="comment">// Loaded BEFORE the design system reference.</span></div>
+
+        <h2>The "never write CSS from scratch" rule</h2>
+        <p>This is the rule that beats every other rule. Before writing any new CSS for any UI element, check four sources in order:</p>
+        <ul>
+            <li>1. <code>component-library.html</code> in the current project</li>
+            <li>2. Existing sections in the project that already implement the element</li>
+            <li>3. <code>~/.claude/skills/shared/component-templates.md</code></li>
+            <li>4. The JRB theme — buybox, existing sections, <code>__index-css.liquid</code></li>
+        </ul>
+        <p>If the element exists anywhere in those four sources, copy the exact pattern verbatim. Don't approximate, simplify, or resize. This applies to swatches, buttons, stars, trust badges, cards, accordions, and every other reusable element.</p>
+
+        <div class="callout">
+            <p>Why this matters: every drift becomes a future bug. A button that's "almost" the JRB button breaks the visual consistency of the site one place at a time. The cumulative effect is a brand that looks slightly off everywhere. Copying verbatim prevents that.</p>
+        </div>
+
+        <h2>What's NOT in the design system</h2>
+        <ul>
+            <li>Auto-advance carousels. Manual click and swipe only. No <code>setInterval</code>.</li>
+            <li>Emojis. Anywhere.</li>
+            <li>Orphan words. Use <code>text-wrap: balance</code> or hide overflow on mobile.</li>
+            <li>Scroll animations, unless explicitly requested.</li>
+            <li>The colors <code>#1A1A1A</code>, <code>#FAF8F5</code>, <code>#C73A3A</code>. Common AI substitutions. Caught by QA.</li>
+        </ul>
+
+        <h2>The shared reference files</h2>
+        <p>Three files in <code>~/.claude/skills/shared/</code> are loaded into every JRB build session. They live alongside the skills (private repo) but are worth knowing by name:</p>
+        <ul>
+            <li><code>component-templates.md</code> — 51 paste-ready section templates (heroes, CTAs, reviews, press, FAQ, founders, steps, product cards, trust bars)</li>
+            <li><code>jrb-approved-patterns.md</code> — patterns that have been validated in production and are safe to reuse</li>
+            <li><code>shopify-section-safety-rules.md</code> — Liquid scoping, JS isolation, schema conventions for any HTML-to-Liquid conversion</li>
+        </ul>
+
+        <h2>For the deeper design walkthrough</h2>
+        <p>The full design-only training lives at <a href="https://jrb-design-training.vercel.app" target="_blank" rel="noopener">jrb-design-training.vercel.app</a> — sixteen modules covering terminal basics, design system iteration, Figma to code, Paper, Pencil, prompting patterns, feedback loops. This module is the summary.</p>
+
+        <div class="try-it">
+            <div class="try-it__label">Try it</div>
+            <div class="try-it__prompt">Run <code>/jrb-design-system</code> in a fresh session. Watch what gets loaded. Then ask Claude to build a hero section for the Miracle Balm PDP. Note that you didn't have to specify any colors, fonts, or button styles — they came in with the skill.</div>
+        </div>
+    </div>
+
+    <nav class="topic-bottom-nav">
+        <a href="04-cro-and-testing.html">
+            <div class="topic-bottom-nav__label">Previous</div>
+            <div class="topic-bottom-nav__title">CRO and testing</div>
+        </a>
+        <a href="06-page-and-section-building.html" class="topic-bottom-nav__next">
+            <div class="topic-bottom-nav__label">Next</div>
+            <div class="topic-bottom-nav__title">Page and section building</div>
+        </a>
+    </nav>
+</body>
+</html>
