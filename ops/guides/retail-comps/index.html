@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Updating Retail Comps · Jones Road Beauty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #1a1a1a; background: #FAF9F7; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 56px 32px 80px; }
+
+  header.page-header { text-align: center; margin-bottom: 32px; }
+  .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #8B7355; margin-bottom: 8px; }
+  h1 { font-size: 30px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; color: #777; max-width: 540px; margin: 0 auto 16px; }
+  .owner-badge { display: inline-block; background: #f0ebe4; color: #1a1a1a; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+
+  .toc { background: #fff; border: 1px solid #e8e4df; border-radius: 12px; padding: 18px 22px; margin: 32px 0 40px; }
+  .toc-title { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #777; margin-bottom: 10px; }
+  .toc ol { list-style: none; counter-reset: toc; }
+  .toc li { counter-increment: toc; padding: 4px 0; font-size: 14px; color: #555; }
+  .toc li::before { content: counter(toc) "."; color: #8B7355; font-weight: 600; margin-right: 10px; }
+  .toc a { color: #1a1a1a; text-decoration: none; }
+  .toc a:hover { color: #8B7355; }
+
+  h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; margin: 48px 0 14px; padding-top: 8px; border-top: 1px solid #e8e4df; padding-top: 28px; }
+  h2:first-of-type { border-top: none; padding-top: 0; }
+  h3 { font-size: 15px; font-weight: 600; margin: 22px 0 8px; color: #1a1a1a; }
+
+  p { margin-bottom: 14px; color: #333; }
+  p.lede { font-size: 15px; color: #555; }
+
+  ol.steps { counter-reset: stepnum; list-style: none; margin: 18px 0 18px 0; }
+  ol.steps li { counter-increment: stepnum; position: relative; padding: 10px 0 10px 44px; min-height: 32px; }
+  ol.steps li::before { content: counter(stepnum); position: absolute; left: 0; top: 8px; width: 28px; height: 28px; border-radius: 50%; background: #f0ebe4; color: #8B7355; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  ol.steps li + li { border-top: 1px dashed #e8e4df; }
+
+  ul.bullets { margin: 8px 0 14px 22px; }
+  ul.bullets li { margin-bottom: 4px; color: #333; }
+
+  code, kbd { background: #f0ebe4; padding: 2px 6px; border-radius: 3px; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 13px; color: #1a1a1a; }
+  kbd { border: 1px solid #d4cfc7; box-shadow: 0 1px 0 #d4cfc7; }
+
+  .callout { background: #fff; border-left: 3px solid #8B7355; padding: 14px 18px; margin: 18px 0; border-radius: 0 6px 6px 0; font-size: 14px; color: #555; }
+  .callout strong { color: #1a1a1a; }
+  .callout.warn { border-left-color: #c45454; background: #fdf6f5; }
+  .callout.warn strong { color: #c45454; }
+  .callout.tip { border-left-color: #2e7d32; background: #f4fbf5; }
+  .callout.tip strong { color: #2e7d32; }
+
+  table.fields { width: 100%; border-collapse: collapse; margin: 12px 0 18px; font-size: 13px; }
+  table.fields th { background: #f0ebe4; text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #555; }
+  table.fields td { padding: 8px 12px; border-bottom: 1px solid #f0ebe4; vertical-align: top; }
+  table.fields tr:last-child td { border-bottom: none; }
+  table.fields td:first-child { font-weight: 600; white-space: nowrap; color: #1a1a1a; }
+  table.fields td code { font-size: 12px; }
+
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; }
+  .pill.add { background: #e8f5e9; color: #1b5e20; }
+  .pill.edit { background: #e3f2fd; color: #0d47a1; }
+  .pill.delete { background: #fce4ec; color: #ad1457; }
+  .pill.bulk { background: #fff3e0; color: #bf360c; }
+
+  .flow-card { background: #fff; border: 1px solid #e8e4df; border-radius: 12px; padding: 22px 24px; margin: 18px 0; }
+  .flow-card h3 { margin-top: 0; display: flex; align-items: center; gap: 10px; }
+
+  .open-btn { display: inline-block; background: #1a1a1a; color: #fff; padding: 10px 18px; border-radius: 6px; font-size: 13px; font-weight: 600; text-decoration: none; margin: 6px 0; }
+  .open-btn:hover { background: #444; }
+
+  .footer-note { font-size: 12px; color: #888; text-align: center; margin-top: 60px; padding-top: 24px; border-top: 1px solid #e8e4df; }
+
+  @media (max-width: 600px) {
+    .wrap { padding: 40px 20px 60px; }
+    h1 { font-size: 24px; }
+    h2 { font-size: 18px; }
+    ol.steps li { padding-left: 38px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="page-header">
+  <div class="eyebrow">Operations · Retail</div>
+  <h1>Updating Retail Comp Sales</h1>
+  <p class="subtitle">How to keep the JRB Retail Benchmarks dashboard current — adding, editing, deleting, and bulk-updating from a PDF/CSV/screenshot.</p>
+  <span class="owner-badge">Owner: Juliette · Backup: Cody</span>
+</header>
+
+<a class="open-btn" href="https://jrb-retail-benchmarks.vercel.app" target="_blank">Open the dashboard ↗</a>
+
+<nav class="toc">
+  <div class="toc-title">In this guide</div>
+  <ol>
+    <li><a href="#what">What this dashboard is and where data comes from</a></li>
+    <li><a href="#flow-add">Flow A — Adding a new comp</a></li>
+    <li><a href="#flow-edit">Flow B — Editing an existing comp</a></li>
+    <li><a href="#flow-delete">Flow C — Deleting a bad row</a></li>
+    <li><a href="#flow-bulk">Flow D — Bulk update from a PDF, CSV, or screenshot</a></li>
+    <li><a href="#sanity">Sanity checks before saving</a></li>
+    <li><a href="#troubleshoot">Troubleshooting & who to ping</a></li>
+  </ol>
+</nav>
+
+<h2 id="what">What this is</h2>
+<p class="lede">The Retail Benchmarks dashboard tracks <strong>sales per square foot</strong> for tenants at shopping centers JRB is evaluating for physical retail. It's how we score locations and compare JRB's expected PSF to beauty and activewear comps.</p>
+<p>Every row is one tenant at one center: <code>{retailer, location, city, state, annual_sales, size_sf, sales_psf, category}</code>. The data lives in Supabase and updates show up immediately on the live URL.</p>
+
+<h3>Where data comes from</h3>
+<ul class="bullets">
+  <li><strong>Landlord disclosures</strong> — emailed PDFs, broker decks, leasing one-pagers</li>
+  <li><strong>Broker conversations</strong> — directly transcribed numbers</li>
+  <li><strong>Public filings & press</strong> — quarterly earnings, retail analyst notes</li>
+</ul>
+<div class="callout warn">
+  <strong>Don't use:</strong> guesses, scraped retail data without source, or numbers from competitors' press releases without a credible second source. If you can't say where a number came from, don't enter it.
+</div>
+
+<h2 id="flow-add">Flow A — Adding a new comp <span class="pill add">ADD</span></h2>
+<p>Use this when a brand-new tenant or a new shopping center comes into the dataset.</p>
+<ol class="steps">
+  <li>Open <a href="https://jrb-retail-benchmarks.vercel.app" target="_blank">jrb-retail-benchmarks.vercel.app</a>.</li>
+  <li>Click the black <strong>+ Add Tenant</strong> button in the top-right.</li>
+  <li>Fill in the modal. Required fields: Retailer, Location, City, State, Category. Optional: Sales PSF, Annual Sales, Store Size.</li>
+  <li>If the retailer or location already exists in the data, start typing — the autocomplete will show matches. Picking an existing retailer auto-fills its Category. Picking an existing location auto-fills City and State.</li>
+  <li>Click <strong>Save Tenant</strong>. The page refreshes and the new row appears in the table.</li>
+</ol>
+
+<h3>Field reference</h3>
+<table class="fields">
+  <thead><tr><th>Field</th><th>What it means</th><th>Format</th></tr></thead>
+  <tbody>
+    <tr><td>Retailer</td><td>The brand name as it appears on the storefront</td><td><code>Bluemercury</code></td></tr>
+    <tr><td>Location</td><td>The shopping center / address (NOT the city)</td><td><code>Hyde Park Village</code></td></tr>
+    <tr><td>City / State</td><td>Where the center is</td><td><code>Tampa</code> / <code>FL</code></td></tr>
+    <tr><td>Category</td><td>Pick from the dropdown — Beauty, Activewear, Apparel, etc.</td><td>Beauty</td></tr>
+    <tr><td>Sales PSF</td><td>Annual sales per square foot, in dollars</td><td><code>1500</code> (= $1,500)</td></tr>
+    <tr><td>Annual Sales</td><td>Total annual sales in dollars</td><td><code>2500000</code> (= $2.5M)</td></tr>
+    <tr><td>Store Size</td><td>Square feet</td><td><code>2113</code></td></tr>
+  </tbody>
+</table>
+<div class="callout tip">
+  <strong>Tip:</strong> If you have any two of {Annual Sales, Store Size, Sales PSF}, the third is implied. If a disclosure gives you sales and size but no PSF, you can compute it: <code>annual_sales ÷ size_sf</code>, rounded.
+</div>
+
+<h2 id="flow-edit">Flow B — Editing an existing comp <span class="pill edit">EDIT</span></h2>
+<p>Use this when new numbers come in for a tenant we already track (e.g., updated annual sales for a new year).</p>
+<ol class="steps">
+  <li>Find the tenant in the All Tenants table. Filter by city, retailer, or category if needed.</li>
+  <li>Hover the row — a <strong>pencil icon</strong> appears on the right side.</li>
+  <li>Click the pencil. The modal opens pre-filled with the current values, titled "Edit Tenant".</li>
+  <li>Change only the fields that need updating. Leave the rest alone.</li>
+  <li>Click <strong>Save Changes</strong>. The row updates in place.</li>
+</ol>
+<div class="callout warn">
+  <strong>Important:</strong> Don't use <em>+ Add Tenant</em> to "update" an existing row — that creates a duplicate. Always edit via the pencil.
+</div>
+
+<h2 id="flow-delete">Flow C — Deleting a bad row <span class="pill delete">DELETE</span></h2>
+<p>Use this when a row is wrong, duplicated, or the source turned out to be unreliable.</p>
+<ol class="steps">
+  <li>Find the row in the table.</li>
+  <li>Hover the row — a <strong>trash icon</strong> appears next to the pencil.</li>
+  <li>Click the trash. A confirmation popup asks you to confirm.</li>
+  <li>Click <strong>OK</strong>. The row is gone from Supabase. (This cannot be undone — if you delete by mistake, re-add the row from Flow A.)</li>
+</ol>
+
+<h2 id="flow-bulk">Flow D — Bulk update from a PDF, CSV, or screenshot <span class="pill bulk">BULK</span></h2>
+<p>Use this when you have a stack of new numbers — a landlord disclosure PDF, an exported spreadsheet, or a screenshot of a table from a deck. Instead of typing each row, hand the file to Claude.</p>
+
+<div class="flow-card">
+  <h3>Inside Claude (Cowork or Claude Code)</h3>
+  <ol class="steps">
+    <li>Drag the file (PDF, CSV, or screenshot) into the chat. Or paste a path if you have one.</li>
+    <li>Type <code>/update-comps</code> and reference the file. Example: <code>/update-comps the disclosure I just dropped</code>.</li>
+    <li>Claude parses the file, fetches existing data from Supabase, and shows you a <strong>diff</strong>:
+      <ul class="bullets" style="margin-top:6px">
+        <li><strong>NEW</strong> — rows that don't exist yet (will be added)</li>
+        <li><strong>UPDATE</strong> — rows that already exist with different numbers (only changed fields shown)</li>
+        <li><strong>SKIP</strong> — rows that match exactly, no change needed</li>
+        <li><strong>AMBIGUOUS</strong> — Claude can't tell which existing row to match (you'll be asked)</li>
+      </ul>
+    </li>
+    <li>Review the diff carefully. If anything looks wrong, type <code>edit</code> and tell Claude what to fix.</li>
+    <li>When the diff is right, type <strong>yes</strong>. Claude writes the changes to Supabase.</li>
+    <li>Refresh the dashboard to verify the new numbers are live.</li>
+  </ol>
+</div>
+
+<div class="callout">
+  <strong>Source tips:</strong> PDFs work best when they're text-based (not scanned images). For screenshots, frame the table tightly and make sure the retailer + center name are both readable. For CSVs, include a header row with column names so Claude can map fields.
+</div>
+
+<h2 id="sanity">Sanity checks before saving</h2>
+<p>A few quick gut-checks to catch bad numbers before they go in:</p>
+<ul class="bullets">
+  <li><strong>PSF range:</strong> Most comps land between $400 and $5,000 PSF. Above $7,000 means luxury/jewelry/Apple — make sure that fits the retailer.</li>
+  <li><strong>Sales ÷ size = PSF:</strong> If all three are given, the math should match within ~5%. If it doesn't, one of them is wrong.</li>
+  <li><strong>Annual sales:</strong> Almost always between $1M and $50M for specialty retail. Below $500K = probably wrong unit (was it monthly?). Above $100M = probably the entire chain, not one store.</li>
+  <li><strong>Store size:</strong> Beauty is usually 1,000–4,000 SF. Apparel is 2,000–10,000 SF. Department stores are 30,000+. Restaurants vary.</li>
+  <li><strong>Category:</strong> Pick from the existing list. If a retailer doesn't fit any (e.g., a museum gift shop), ping Cody before adding a new category.</li>
+</ul>
+
+<h2 id="troubleshoot">Troubleshooting</h2>
+
+<h3>"Save failed: HTTP 401"</h3>
+<p>The Supabase row-level security policies aren't set up for this action. Ping Cody — he'll add the missing policy.</p>
+
+<h3>The row doesn't update / disappear after saving</h3>
+<p>Hard-refresh the page (<kbd>⌘ + Shift + R</kbd>). If it still doesn't show, the write might have silently failed. Open the browser dev tools (<kbd>⌘ + Option + I</kbd>), check the Console tab for red errors, and screenshot to Cody.</p>
+
+<h3>I edited the wrong row</h3>
+<p>If you remember the original values, edit again and put them back. If not, ping Cody — Supabase keeps point-in-time recovery for the recent past.</p>
+
+<h3>The PDF parser missed rows</h3>
+<p>It happens with messy layouts. Either (a) crop a screenshot of just the missed rows and run <code>/update-comps</code> on that, or (b) add the missing rows manually via Flow A.</p>
+
+<div class="callout">
+  <strong>When to ping Cody:</strong> a) the dashboard is fully broken (empty or 500 errors), b) you need a new category added, c) you're not sure if a number is real, d) Save fails with 401/403, e) you accidentally deleted something important.
+</div>
+
+<p class="footer-note">Last updated: April 27, 2026 · Dashboard: <a href="https://jrb-retail-benchmarks.vercel.app">jrb-retail-benchmarks.vercel.app</a></p>
+
+</div>
+
+</body>
+</html>
