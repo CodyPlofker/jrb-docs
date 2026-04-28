@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Field Notes — 2026-04-27</title>
+  <style>
+    @font-face { font-family: "Canela"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf") format("opentype"); font-weight: 300; font-display: swap; }
+    @font-face { font-family: "Canela"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/Canela-LightItalic.otf") format("opentype"); font-weight: 300; font-style: italic; font-display: swap; }
+    @font-face { font-family: "Geogrotesque"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf") format("truetype"); font-display: swap; }
+    @font-face { font-family: "ArticulatCF"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf") format("opentype"); font-weight: 700; font-display: swap; }
+
+    :root {
+      --black: #000;
+      --white: #fff;
+      --gray: #f8f8f8;
+      --beige: #f6f2eb;
+      --pink: #ff2e92;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      color: var(--black);
+      background: var(--white);
+      line-height: 1.55;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+    .prose { max-width: 720px; }
+
+    h1 {
+      font-family: "Canela", "Times New Roman", serif;
+      font-weight: 300;
+      font-size: clamp(48px, 7vw, 88px);
+      line-height: 1.02;
+      letter-spacing: -0.01em;
+      text-wrap: balance;
+    }
+    h2 {
+      font-family: "Canela", "Times New Roman", serif;
+      font-weight: 300;
+      font-size: clamp(32px, 4.5vw, 56px);
+      line-height: 1.08;
+      letter-spacing: -0.005em;
+      text-wrap: balance;
+    }
+    h3 {
+      font-family: "ArticulatCF", "Geogrotesque", sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.3px;
+      line-height: 1.3;
+    }
+    p { font-size: 16px; line-height: 1.6; }
+
+    .eyebrow {
+      font-family: "Geogrotesque", "Helvetica Neue", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    section { padding-block: clamp(72px, 10vw, 128px); }
+    .bg-gray { background: var(--gray); }
+    .bg-beige { background: var(--beige); }
+
+    /* Utility bar */
+    .utility {
+      background: var(--beige);
+      padding: 14px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .utility .eyebrow { font-size: 11px; }
+
+    /* Title block */
+    .title-block { padding-top: clamp(56px, 9vw, 120px); padding-bottom: clamp(56px, 9vw, 120px); }
+    .title-block .eyebrow { margin-bottom: 24px; display: block; }
+    .title-block h1 { max-width: 16ch; }
+    .title-block .lede { margin-top: 32px; max-width: 56ch; font-size: 18px; line-height: 1.55; }
+
+    /* Stats grid */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 32px;
+    }
+    .stat .num {
+      font-family: "Canela", "Times New Roman", serif;
+      font-weight: 300;
+      font-size: clamp(48px, 6vw, 72px);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .stat .label {
+      margin-top: 12px;
+      font-family: "Geogrotesque", "Helvetica Neue", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* Theme cards */
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .theme-card {
+      padding: 36px 32px;
+      background: var(--white);
+      border: 1px solid var(--black);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .theme-card .rank {
+      font-family: "Canela", "Times New Roman", serif;
+      font-weight: 300;
+      font-size: 48px;
+      line-height: 1;
+      color: var(--black);
+    }
+    .theme-card h3 { font-size: 22px; }
+    .theme-card .what { font-size: 16px; line-height: 1.55; }
+    .theme-card .so-what {
+      font-size: 14px;
+      line-height: 1.55;
+      padding-top: 16px;
+      border-top: 1px solid var(--black);
+      margin-top: auto;
+    }
+    .theme-card .so-what strong { font-family: "Geogrotesque", sans-serif; text-transform: uppercase; letter-spacing: 1.5px; font-size: 11px; font-weight: 500; display: block; margin-bottom: 6px; }
+    .theme-card .meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-family: "Geogrotesque", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .severity-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .severity-dot::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--black);
+      display: inline-block;
+    }
+
+    /* Action items */
+    .action-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 40px;
+    }
+    .action-table th, .action-table td {
+      text-align: left;
+      padding: 20px 16px;
+      border-top: 1px solid var(--black);
+      vertical-align: top;
+    }
+    .action-table tr:last-child td { border-bottom: 1px solid var(--black); }
+    .action-table th {
+      font-family: "Geogrotesque", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 11px;
+      font-weight: 500;
+      padding-bottom: 16px;
+    }
+    .action-table td.owner {
+      font-family: "ArticulatCF", "Geogrotesque", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      width: 140px;
+    }
+
+    /* Signal cards */
+    .signal-section { margin-top: 56px; }
+    .signal-section:first-of-type { margin-top: 48px; }
+    .signal-section h3 {
+      font-family: "Geogrotesque", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 13px;
+      font-weight: 500;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--black);
+      margin-bottom: 28px;
+    }
+    .signal-card {
+      padding: 32px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .signal-card:last-child { border-bottom: none; }
+    .quote {
+      font-family: "Canela", "Times New Roman", serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(20px, 2.2vw, 26px);
+      line-height: 1.45;
+      max-width: 720px;
+      text-wrap: pretty;
+    }
+    .quote::before { content: "\201C"; }
+    .quote::after { content: "\201D"; }
+    .attribution {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-family: "Geogrotesque", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .attribution span { display: inline-flex; align-items: center; gap: 8px; }
+    .attribution span + span::before { content: "\b7"; margin-right: 12px; opacity: 0.5; }
+    .pills { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border: 1px solid var(--black);
+      border-radius: 999px;
+      font-family: "Geogrotesque", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    /* Store activity */
+    .store-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0;
+      margin-top: 40px;
+      border-top: 1px solid var(--black);
+    }
+    .store-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 16px;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 14px;
+    }
+    .store-row.active { background: var(--white); }
+    .store-row .name {
+      font-family: "ArticulatCF", "Geogrotesque", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .store-row .count {
+      font-family: "Geogrotesque", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .store-row.silent { opacity: 0.55; }
+
+    /* Raw entries table */
+    .raw-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 40px;
+      font-size: 14px;
+    }
+    .raw-table th, .raw-table td {
+      text-align: left;
+      padding: 16px 12px;
+      border-top: 1px solid var(--black);
+      vertical-align: top;
+    }
+    .raw-table tr:last-child td { border-bottom: 1px solid var(--black); }
+    .raw-table th {
+      font-family: "Geogrotesque", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .raw-table td.date { white-space: nowrap; font-family: "Geogrotesque", sans-serif; font-size: 12px; }
+    .raw-table td.who { font-family: "ArticulatCF", "Geogrotesque", sans-serif; font-weight: 700; letter-spacing: 0.3px; white-space: nowrap; }
+    .raw-table td.cat {
+      font-family: "Geogrotesque", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--beige);
+      padding: 40px 32px;
+      text-align: center;
+    }
+    footer .eyebrow { font-size: 11px; line-height: 1.8; }
+    footer a { color: var(--black); }
+
+    /* Section header rhythm */
+    .section-header { max-width: 720px; margin-bottom: 24px; }
+    .section-header .eyebrow { display: block; margin-bottom: 16px; }
+    .section-header p { margin-top: 16px; font-size: 17px; }
+
+    .caveat {
+      margin-top: 24px;
+      padding: 16px 20px;
+      background: var(--gray);
+      border-left: 3px solid var(--black);
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 720px;
+    }
+    .bg-gray .caveat { background: var(--white); }
+    .caveat strong { font-family: "Geogrotesque", sans-serif; text-transform: uppercase; letter-spacing: 1.5px; font-size: 11px; font-weight: 500; display: block; margin-bottom: 4px; }
+
+    @media (max-width: 640px) {
+      .container { padding: 0 20px; }
+      .signal-card { padding: 24px 0; }
+      .attribution span + span::before { display: none; }
+      .attribution span + span { margin-top: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Utility bar -->
+  <div class="utility">
+    <span class="eyebrow">JRB Field Notes</span>
+    <span class="eyebrow">Last updated 2026-04-27</span>
+  </div>
+
+  <!-- 2. Title -->
+  <section class="title-block">
+    <div class="container">
+      <span class="eyebrow">Retail Staff Intelligence — Report 01</span>
+      <h1>What our stores are seeing.</h1>
+      <p class="lede">A live read on what JRB retail associates and managers are hearing in person — what customers ask for, what's not working in their hands, and where the floor sees opportunity. Updated each time the brief is regenerated.</p>
+    </div>
+  </section>
+
+  <!-- 3. At-a-glance stats -->
+  <section class="bg-gray">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">At a glance</span>
+      </div>
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="num">3</div>
+          <div class="label">Real Entries</div>
+        </div>
+        <div class="stat">
+          <div class="num">3 / 17</div>
+          <div class="label">Stores Reporting</div>
+        </div>
+        <div class="stat">
+          <div class="num">14</div>
+          <div class="label">Silent Stores</div>
+        </div>
+        <div class="stat">
+          <div class="num">Apr 13&ndash;26</div>
+          <div class="label">Date Range</div>
+        </div>
+      </div>
+      <div class="caveat">
+        <strong>Sample is small</strong>
+        Three real entries across three stores. Patterns below are worth watching, but treat them as directional rather than confirmed until volume builds. The bigger story right now is adoption — 14 of 17 stores haven't submitted anything.
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Executive summary -->
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">What matters</span>
+        <h2>Two patterns and an adoption problem.</h2>
+        <p>Two of the three entries land on the same theme: packaging that's hard for older customers to use. The third is a service idea from one store that could expand the floor's revenue mix.</p>
+      </div>
+
+      <div class="theme-grid">
+        <div class="theme-card">
+          <div class="rank">01</div>
+          <h3>Packaging is failing the 65+ customer.</h3>
+          <p class="what">Two entries, two cities (Bucktown, Dallas). Tinted Moisturizer caps explode in transit; Everyday Sunscreen tubes are too stiff for arthritic hands. One customer already churned to another sunscreen brand.</p>
+          <div class="meta">
+            <span>2 entries</span>
+            <span>2 stores</span>
+            <span class="severity-dot">High severity</span>
+          </div>
+          <div class="so-what">
+            <strong>So what</strong>
+            JRB skews 65+ in the Tracksuit data. Cap and dispense ergonomics are not edge cases for this customer base — they're table stakes. This pattern needs corroboration but the consequence is real: lost repeats.
+          </div>
+        </div>
+
+        <div class="theme-card">
+          <div class="rank">02</div>
+          <h3>Stores want a shorter, lower-priced service tier.</h3>
+          <p class="what">Chestnut Hill is asking for a 20–30 min mini-makeup service at the $35 (Eyes Only) or $75 (Teens) price point — usable as event slots and as a launch-window vehicle for new product education.</p>
+          <div class="meta">
+            <span>1 entry</span>
+            <span>1 store</span>
+            <span class="severity-dot">Medium severity</span>
+          </div>
+          <div class="so-what">
+            <strong>So what</strong>
+            Single source, but a coherent business idea: more bookable inventory, faster cycle, built-in product education moment. Pilotable in one store before scaling.
+          </div>
+        </div>
+
+        <div class="theme-card">
+          <div class="rank">03</div>
+          <h3>14 of 17 stores have submitted nothing.</h3>
+          <p class="what">Bucktown, Chestnut Hill, and Dallas are the only stores using Field Notes. Atlanta, Austin, Charleston, Cobble Hill, East Hampton, Greenwich Village, Montclair, Nashville, Palm Beach, Palo Alto, Santa Monica, Seaport, Upper East Side, and Williamsburg are silent.</p>
+          <div class="meta">
+            <span>14 silent stores</span>
+            <span class="severity-dot">Adoption gap</span>
+          </div>
+          <div class="so-what">
+            <strong>So what</strong>
+            Before we can act on themes, we need volume. The intelligence value scales with submission rate. A retail-ops nudge to GMs to set a per-store weekly target would unlock this.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Action items -->
+  <section class="bg-gray">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Who owns what</span>
+        <h2>Watch list this week.</h2>
+        <p>Sample is too small to commit a roadmap. These are concrete next steps to test or expand the signal.</p>
+      </div>
+
+      <table class="action-table">
+        <thead>
+          <tr>
+            <th style="width: 140px;">Owner</th>
+            <th>Action</th>
+            <th style="width: 120px;">Theme</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="owner">Retail Ops</td>
+            <td>Nudge all 14 silent-store GMs to submit at least 1 field note per week. The intelligence is only as good as the input volume.</td>
+            <td>Adoption</td>
+          </tr>
+          <tr>
+            <td class="owner">Product</td>
+            <td>Audit cap and dispense designs across the line for one-handed and arthritic-grip use. Start with Tinted Moisturizer cap and Everyday Sunscreen tube — the two products explicitly flagged.</td>
+            <td>Packaging</td>
+          </tr>
+          <tr>
+            <td class="owner">Retail Ops</td>
+            <td>Pilot a 20–30 min mini-service at Chestnut Hill at $35 / $75 price points for one event window. Measure attach rate to launch products and rebooking rate.</td>
+            <td>Service</td>
+          </tr>
+          <tr>
+            <td class="owner">Marketing</td>
+            <td>Add a "travel-friendly cap" idea to the next PD bulletin consideration set for Tinted Moisturizer packaging refresh.</td>
+            <td>Packaging</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 6. Signals by category -->
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">All signals</span>
+        <h2>Verbatim from the floor.</h2>
+        <p>Each entry as the associate wrote it. Quotes are unedited — preserve the customer's voice.</p>
+      </div>
+
+      <div class="signal-section">
+        <h3>Customer Feedback</h3>
+        <div class="signal-card">
+          <p class="quote">Customer came in requesting refill on tinted moisturizer but mentioned that the cap explodes when they travel and asked if there could be a new cap.</p>
+          <div class="attribution">
+            <span>Brynne Dorsey</span>
+            <span>Bucktown</span>
+            <span>2026-04-26</span>
+          </div>
+          <div class="pills">
+            <span class="pill">Packaging</span>
+            <span class="pill">Customer-Driven</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="signal-section">
+        <h3>Product Issue</h3>
+        <div class="signal-card">
+          <p class="quote">Customer came in today and mentioned she's had hard time getting product to come out of the Everyday Sunscreen bottle. She said that she has arthritis in her hands and it's almost impossible to squeeze the tube and get any out. She stopped using it and has gone to another brand. Wanted to pass along as it is something that even we have a time to get product out sometimes.</p>
+          <div class="attribution">
+            <span>SP</span>
+            <span>Dallas</span>
+            <span>2026-04-13</span>
+          </div>
+          <div class="pills">
+            <span class="pill">Packaging</span>
+            <span class="pill">Accessibility</span>
+            <span class="pill">Competitive Loss</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="signal-section">
+        <h3>Store Operations</h3>
+        <div class="signal-card">
+          <p class="quote">We would love to see a mini makeup application service that is priced similar to that of Eyes Only $35 or Teens $75. This is something we could use for events, where we could book mini makeup appointments that are only 20–30 min vs 45 min. This could be a way for us to showcase how-tos with new product launches.</p>
+          <div class="attribution">
+            <span>Danielle and Mia</span>
+            <span>Chestnut Hill</span>
+            <span>2026-04-16</span>
+          </div>
+          <div class="pills">
+            <span class="pill">Service Offering</span>
+            <span class="pill">Pricing</span>
+            <span class="pill">Education</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Store activity -->
+  <section class="bg-gray">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Submission activity</span>
+        <h2>3 stores in, 14 to go.</h2>
+        <p>Adoption is the rate-limiter on this whole system. Active stores in solid type; silent stores in muted.</p>
+      </div>
+
+      <div class="store-grid">
+        <div class="store-row active"><span class="name">Bucktown</span><span class="count">1 entry</span></div>
+        <div class="store-row active"><span class="name">Chestnut Hill</span><span class="count">1 entry</span></div>
+        <div class="store-row active"><span class="name">Dallas</span><span class="count">1 entry</span></div>
+        <div class="store-row silent"><span class="name">Atlanta</span><span class="count">&mdash;</span></div>
+        <div class="store-row silent"><span class="name">Austin</span><span class="count">&mdash;</span></div>
+        <div class="store-row silent"><span class="name">Charleston</span><span class="count">&mdash;</span></div>
+        <div class="store-row silent"><span class="name">Cobble Hill</span><span class="count">&mdash;</span></div>
+        <div class="store-row silent"><span class="name">East Hampton</span><span class="count">&mdash;</span></div>
+        <div class="store-row silent"><span class="name">Greenwich Village</span><span class="count">&mdash;</span></div>
+        <div class="store-row silent"><span class="name">Montclair</span><span class="count">&mdash;</span></div>
+        <div class="store-row silent"><span class="name">Nashville</span><span class="count">&mdash;</span></div>
+        <div class="store-row silent"><span class="name">Palm Beach</span><span class="count">&mdash;</span></div>
+        <div class="store-row silent"><span class="name">Palo Alto</span><span class="count">&mdash;</span></div>
+        <div class="store-row silent"><span class="name">Santa Monica</span><span class="count">&mdash;</span></div>
+        <div class="store-row silent"><span class="name">Seaport</span><span class="count">&mdash;</span></div>
+        <div class="store-row silent"><span class="name">Upper East Side</span><span class="count">&mdash;</span></div>
+        <div class="store-row silent"><span class="name">Williamsburg</span><span class="count">&mdash;</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Raw entries -->
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Reference</span>
+        <h2>All entries.</h2>
+      </div>
+
+      <table class="raw-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Submitter</th>
+            <th>Store</th>
+            <th>Category</th>
+            <th>Content</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="date">2026-04-26</td>
+            <td class="who">Brynne Dorsey</td>
+            <td>Bucktown</td>
+            <td class="cat">Customer Feedback</td>
+            <td>Customer came in requesting refill on tinted moisturizer but mentioned that the cap explodes when they travel and asked if there could be a new cap.</td>
+          </tr>
+          <tr>
+            <td class="date">2026-04-16</td>
+            <td class="who">Danielle and Mia</td>
+            <td>Chestnut Hill</td>
+            <td class="cat">Store Operations</td>
+            <td>We would love to see a mini makeup application service that is priced similar to that of Eyes Only $35 or Teens $75. This is something we could use for events, where we could book mini makeup appointments that are only 20–30 min vs 45 min. This could be a way for us to showcase how-tos with new product launches.</td>
+          </tr>
+          <tr>
+            <td class="date">2026-04-13</td>
+            <td class="who">SP</td>
+            <td>Dallas</td>
+            <td class="cat">Product Issue</td>
+            <td>Customer came in today and mentioned she's had hard time getting product to come out of the Everyday Sunscreen bottle. She said that she has arthritis in her hands and it's almost impossible to squeeze the tube and get any out. She stopped using it and has gone to another brand. Wanted to pass along as it is something that even we have a time to get product out sometimes.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 9. Footer -->
+  <footer>
+    <span class="eyebrow">Source: <a href="https://jrb-field-notes.vercel.app">jrb-field-notes.vercel.app</a> &nbsp;&middot;&nbsp; Generated by /jrb-field-notes &nbsp;&middot;&nbsp; 2026-04-27</span>
+  </footer>
+
+</body>
+</html>
