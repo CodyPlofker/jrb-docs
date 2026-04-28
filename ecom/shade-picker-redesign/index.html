@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shade Picker · Variant Toggle · Jones Road</title>
+  <style>
+    @font-face { font-family: "Canela";                  src: url("./assets/fonts/canela-light.static.woff2") format("woff2");           font-weight: 300; font-display: swap; }
+    @font-face { font-family: "GeogrotesqueCondBoldWeb"; src: url("./assets/fonts/geogrotesque-cond-bold.static.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "RingsideWideWeb";         src: url("./assets/fonts/ringside-wide-book.static.woff2") format("woff2");     font-weight: 400; font-display: swap; }
+    @font-face { font-family: "BaseMonoWideWeb";         src: url("./assets/fonts/base-mono-wide-thin.static.woff2") format("woff2");    font-weight: 300; font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; }
+    body { font-family: "RingsideWideWeb"; background: #fff; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+    .toggle-wrap { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #ececec; z-index: 10; }
+    .toggle { padding: 12px 16px 10px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .toggle__brand { font-family: "GeogrotesqueCondBoldWeb"; font-size: 13px; letter-spacing: 1.4px; text-transform: uppercase; margin-right: 12px; color: #000; flex-shrink: 0; }
+    .toggle__brand span { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; color: #757575; margin-left: 8px; }
+
+    .opt-btn { font-family: "GeogrotesqueCondBoldWeb"; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #000; background: #fff; border: 1px solid #d0d0d0; padding: 8px 12px; cursor: pointer; transition: background .15s, color .15s, border-color .15s; white-space: nowrap; display: inline-flex; align-items: baseline; gap: 6px; }
+    .opt-btn:hover { border-color: #000; }
+    .opt-btn[aria-pressed="true"] { background: #000; color: #fff; border-color: #000; }
+    .opt-btn__sub { font-family: "BaseMonoWideWeb", monospace; font-size: 9px; letter-spacing: .8px; opacity: .55; font-weight: 400; }
+    .opt-btn[aria-pressed="true"] .opt-btn__sub { opacity: .8; }
+    .opt-divider { width: 1px; height: 22px; background: #ececec; margin: 0 4px; }
+    .toggle__hint { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; color: #757575; margin-left: auto; flex-shrink: 0; }
+
+    /* Description bar — updates per active variant */
+    .desc { padding: 14px 20px; border-top: 1px solid #ececec; background: #fafafa; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: start; }
+    @media (max-width: 768px) { .desc { grid-template-columns: 1fr; } }
+    .desc__main { min-width: 0; }
+    .desc__name { font-family: "GeogrotesqueCondBoldWeb"; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #000; margin: 0 0 4px 0; }
+    .desc__name code { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; background: #000; color: #fff; padding: 2px 6px; margin-right: 8px; vertical-align: 1px; }
+    .desc__body { font-family: "RingsideWideWeb"; font-size: 13px; line-height: 1.55; color: #000; margin: 0; max-width: 90ch; }
+    .desc__solves { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; color: #757575; margin-top: 6px; }
+    .desc__solves strong { color: #000; font-family: "GeogrotesqueCondBoldWeb"; }
+    .desc__tags { display: flex; gap: 6px; flex-wrap: wrap; align-items: flex-start; }
+    .desc__tag { font-family: "BaseMonoWideWeb", monospace; font-size: 9px; letter-spacing: .8px; text-transform: uppercase; padding: 3px 7px; border: 1px solid #d0d0d0; color: #000; white-space: nowrap; }
+
+    .frame-wrap { flex: 1; overflow: hidden; background: #f8f8f8; }
+    .frame { width: 100%; height: 100%; border: 0; display: block; }
+  </style>
+</head>
+<body>
+  <div class="toggle-wrap">
+    <header class="toggle" role="tablist" aria-label="Shade picker variants">
+      <span class="toggle__brand">Shade Picker <span>10 variants</span></span>
+
+      <button type="button" class="opt-btn" data-opt="option-f.html" aria-pressed="true">F<span class="opt-btn__sub">Full Swap</span></button>
+      <button type="button" class="opt-btn" data-opt="option-g.html">G<span class="opt-btn__sub">Adaptive Count</span></button>
+      <button type="button" class="opt-btn" data-opt="option-h.html">H<span class="opt-btn__sub">Highlight + Swap</span></button>
+
+      <span class="opt-divider"></span>
+
+      <button type="button" class="opt-btn" data-opt="option-j.html">J<span class="opt-btn__sub">Undertone Tagger</span></button>
+      <button type="button" class="opt-btn" data-opt="option-k.html">K<span class="opt-btn__sub">Dual-Axis</span></button>
+      <button type="button" class="opt-btn" data-opt="option-l.html">L<span class="opt-btn__sub">Compare 2</span></button>
+      <button type="button" class="opt-btn" data-opt="option-m.html">M<span class="opt-btn__sub">Skin Twin</span></button>
+      <button type="button" class="opt-btn" data-opt="option-n.html">N<span class="opt-btn__sub">Save Shades</span></button>
+
+      <span class="opt-divider"></span>
+
+      <button type="button" class="opt-btn" data-opt="option-a.html">A<span class="opt-btn__sub">Arm Swatch</span></button>
+      <button type="button" class="opt-btn" data-opt="option-b.html">B<span class="opt-btn__sub">Hero Portrait</span></button>
+
+      <span class="toggle__hint" aria-hidden="true">↑ keys 1-9, 0</span>
+    </header>
+    <div class="desc">
+      <div class="desc__main">
+        <p class="desc__name" data-desc-name></p>
+        <p class="desc__body" data-desc-body></p>
+        <p class="desc__solves" data-desc-solves></p>
+      </div>
+      <div class="desc__tags" data-desc-tags></div>
+    </div>
+  </div>
+
+  <div class="frame-wrap">
+    <iframe class="frame" data-frame src="option-f.html" title="Variant preview"></iframe>
+  </div>
+
+  <script>
+    const variants = {
+      "option-f.html": {
+        name: "Full Swap",
+        kicker: "F",
+        body: "30-grid stays put when you change category — only the swatch row updates. Pick a shade and the grid hard-cuts to a single model wearing it. Closest to Zoe's original spec.",
+        solves: "Validates the spec verbatim",
+        tags: ["Zoe spec", "hard cut", "30-grid"]
+      },
+      "option-g.html": {
+        name: "Adaptive Count",
+        kicker: "G",
+        body: "Click a category and the grid replaces with only those shades' models, sized to the count. 1 fills the frame; 2 splits in half; 3 goes 3-up; 4 becomes 2×2; 5 goes 5-across; 6 goes 3×2. On mobile it reflows automatically.",
+        solves: "Answers Cody's \"what if it's responsive to count?\" question",
+        tags: ["responsive", "category-driven layout"]
+      },
+      "option-h.html": {
+        name: "Highlight + Swap",
+        kicker: "H",
+        body: "30-grid stays visible. Click a category and matching cards keep full color while non-matching cards dim to 25%. Click a shade and it then full-swaps to a single model. Combo of category emphasis + shade reveal.",
+        solves: "Whitney's \"highlight 6 while showing everything\" idea",
+        tags: ["highlight in place", "shade swap"]
+      },
+      "option-j.html": {
+        name: "Undertone Tagger",
+        kicker: "J",
+        body: "Every model card and swatch carries a W/C/N pill (Warm/Cool/Neutral). Picked shade card calls out the undertone explicitly. Forces shoppers to match skin, not hair color.",
+        solves: "\"I picked the model with the same hair color, not skin tone\" · 64.8% want undertone guidance",
+        tags: ["undertone visible", "anti-hair-color trap"]
+      },
+      "option-k.html": {
+        name: "Dual-Axis Filter",
+        kicker: "K",
+        body: "Two filter rows: Depth (Pale–Deep) and Undertone (Warm/Cool/Neutral). Combination narrows the swatch row to 1–4 shades and dims non-matching cards in the grid. NARS pattern done right.",
+        solves: "Decision overload from 30 SKUs · 78% want depth + undertone separated",
+        tags: ["NARS pattern", "depth × undertone"]
+      },
+      "option-l.html": {
+        name: "Compare 2",
+        kicker: "L",
+        body: "Pick a first shade — it locks into Slot 1. Pick a second — stage splits 50/50 with both models side-by-side, plus a one-line diff (\"Bisque vs Linen — same neutral undertone, same Pale depth. Bisque is the lighter of the two.\"). White space — no competitor in our audit does this.",
+        solves: "\"I'm in between colors so I need to mix two\" — direct customer quote",
+        tags: ["white space", "side-by-side"]
+      },
+      "option-m.html": {
+        name: "Skin Twin Finder",
+        kicker: "M",
+        body: "Flip the mental model: don't browse shades, browse faces. \"Tap the model whose skin looks like yours\" — that face zooms in and the matching shade is revealed in a recommendation card on the right. The 30-grid becomes a sorter, not just a flex.",
+        solves: "Defends against the \"I picked by hair color\" trap by making the model the input",
+        tags: ["face-first", "behaviorally interesting"]
+      },
+      "option-n.html": {
+        name: "Save Shades",
+        kicker: "N",
+        body: "Heart icon on every swatch. Click to save (persists in localStorage). A \"Saved\" strip shows hearted shades with a counter so shoppers can return to candidates without re-finding them. Heart also lives on the single-model card top-right.",
+        solves: "59.3% specifically want to save shades during decision-making",
+        tags: ["wishlist", "persists across sessions"]
+      },
+      "option-a.html": {
+        name: "Arm Swatch Detail",
+        kicker: "A",
+        body: "Original 30-grid (gradient placeholders) on left. Detail panel pulls the real per-category arm swatch from Air. Most minimal change to the existing section.",
+        solves: "76.4% say swatches on real skin are missing",
+        tags: ["legacy", "real arm swatch"]
+      },
+      "option-b.html": {
+        name: "Hero Portrait",
+        kicker: "B",
+        body: "One large editorial portrait of a model from the active category fills the left half. Swaps when category changes. Cinematic, magazine-cover feel. Less busy than the 30-grid.",
+        solves: "Editorial polish; lets one face do the work",
+        tags: ["editorial", "1 hero per category"]
+      }
+    };
+
+    (function () {
+      const buttons = Array.from(document.querySelectorAll(".opt-btn"));
+      const frame = document.querySelector("[data-frame]");
+      const descName = document.querySelector("[data-desc-name]");
+      const descBody = document.querySelector("[data-desc-body]");
+      const descSolves = document.querySelector("[data-desc-solves]");
+      const descTags = document.querySelector("[data-desc-tags]");
+
+      function activate(file, push = true) {
+        buttons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.opt === file)));
+        if (frame.getAttribute("src") !== file) frame.setAttribute("src", file);
+        const v = variants[file];
+        if (v) {
+          descName.innerHTML = `<code>${v.kicker}</code>${v.name}`;
+          descBody.textContent = v.body;
+          descSolves.innerHTML = v.solves ? `<strong>Solves:</strong> ${v.solves}` : "";
+          descTags.innerHTML = (v.tags || []).map(t => `<span class="desc__tag">${t}</span>`).join("");
+        }
+        if (push) {
+          const hash = "#" + file.replace(".html", "").replace("option-", "");
+          if (location.hash !== hash) history.replaceState(null, "", hash);
+        }
+      }
+
+      buttons.forEach(b => b.addEventListener("click", () => activate(b.dataset.opt)));
+
+      const keymap = { "1": "option-f.html", "2": "option-g.html", "3": "option-h.html", "4": "option-j.html", "5": "option-k.html", "6": "option-l.html", "7": "option-m.html", "8": "option-n.html", "9": "option-a.html", "0": "option-b.html" };
+      window.addEventListener("keydown", e => {
+        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+        const file = keymap[e.key];
+        if (file) activate(file);
+      });
+
+      const hash = location.hash.replace("#", "");
+      if (hash) {
+        const candidate = "option-" + hash + ".html";
+        if (buttons.some(b => b.dataset.opt === candidate)) activate(candidate, false);
+      } else {
+        activate("option-f.html", false);
+      }
+    })();
+  </script>
+</body>
+</html>

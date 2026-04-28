@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Option B · Hero Portrait · Jones Road</title>
+  <style>
+    @font-face { font-family: "Canela";                  src: url("./assets/fonts/canela-light.static.woff2") format("woff2");           font-weight: 300; font-display: swap; }
+    @font-face { font-family: "GeogrotesqueCondBoldWeb"; src: url("./assets/fonts/geogrotesque-cond-bold.static.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "RingsideWideWeb";         src: url("./assets/fonts/ringside-wide-book.static.woff2") format("woff2");     font-weight: 400; font-display: swap; }
+    @font-face { font-family: "ArticulatCF";             src: url("./assets/fonts/articulatcf-bold.static.woff2") format("woff2");       font-weight: 700; font-display: swap; }
+    @font-face { font-family: "BaseMonoWideWeb";         src: url("./assets/fonts/base-mono-wide-thin.static.woff2") format("woff2");    font-weight: 300; font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: "RingsideWideWeb", "Helvetica", "Arial", sans-serif; color: #000; background: #fff; -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    button { font-family: inherit; }
+
+    .page-header { padding: 16px 20px; border-bottom: 1px solid #ececec; text-align: center; }
+    .page-header__brand { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; letter-spacing: 1.5px; color: #000; }
+    .stub-section { padding: 28px 20px; border-bottom: 1px solid #ececec; }
+    .stub-section__title { font-family: "GeogrotesqueCondBoldWeb"; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
+    .stub-section__hint { font-family: "BaseMonoWideWeb", monospace; font-size: 11px; letter-spacing: .8px; color: #757575; margin-top: 6px; }
+    .annotation { max-width: 1280px; margin: 24px auto 12px; font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; color: #757575; padding: 0 20px; }
+
+    /* ---------- Section ---------- */
+    .picker { background: #f8f8f8; padding: 0; }
+    .picker__inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 769px) {
+      .picker__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; }
+    }
+
+    /* Hero portrait (left) */
+    .hero { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: #ddd; }
+    @media (min-width: 769px) { .hero { aspect-ratio: auto; min-height: 720px; } }
+    .hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .5s ease; }
+    .hero__chip { position: absolute; left: 24px; bottom: 24px; right: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; background: rgba(255,255,255,.92); padding: 14px 18px; backdrop-filter: blur(8px); }
+    .hero__chip-label { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; }
+    .hero__chip-cat { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; color: #757575; }
+
+    /* Right panel */
+    .panel { padding: 56px 24px 64px; display: flex; flex-direction: column; gap: 28px; }
+    @media (min-width: 769px) { .panel { padding: 80px 56px; gap: 32px; justify-content: center; } }
+
+    .eyebrow { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0; }
+    .headline { font-family: "Canela", serif; font-weight: 300; font-size: 32px; line-height: 1.18; letter-spacing: -.2px; margin: 0; text-wrap: balance; }
+    @media (min-width: 769px) { .headline { font-size: 44px; } }
+    .sub { font-family: "RingsideWideWeb"; font-size: 14px; line-height: 1.55; margin: 14px 0 0; max-width: 38ch; }
+
+    .filter { display: flex; flex-direction: column; gap: 12px; }
+    .filter-label { font-family: "ArticulatCF"; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .3px; margin: 0; }
+
+    .cats { display: flex; flex-wrap: wrap; gap: 8px; }
+    .cat-btn { font-family: "GeogrotesqueCondBoldWeb"; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #000; background: #fff; border: 1px solid #d0d0d0; border-radius: 0; padding: 11px 16px; cursor: pointer; transition: background .18s, color .18s, border-color .18s; min-height: 40px; }
+    .cat-btn:hover { border-color: #000; }
+    .cat-btn[aria-pressed="true"] { background: #000; color: #fff; border-color: #000; }
+
+    .swatch-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; min-height: 44px; }
+    .swatch { width: 44px; height: 44px; border-radius: 100%; border: 1px solid #d0d0d0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: transparent; padding: 0; cursor: pointer; transition: transform .18s, box-shadow .18s; }
+    .swatch i { display: block; width: 38px; height: 38px; border-radius: 100%; background: var(--swatch); }
+    .swatch:hover { transform: scale(1.06); }
+    .swatch[aria-pressed="true"] { border-color: #000; box-shadow: 0 0 0 2px #fff inset, 0 0 0 3px #000; }
+
+    .detail { background: #fff; border: 1px solid #ececec; padding: 20px; display: grid; grid-template-columns: 96px 1fr; gap: 18px; align-items: center; min-height: 116px; }
+    @media (min-width: 769px) { .detail { grid-template-columns: 120px 1fr; padding: 24px; } }
+    .detail__preview { width: 100%; aspect-ratio: 1 / 1; border-radius: 4px; overflow: hidden; background: #f0e6da; position: relative; }
+    .detail__preview img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .detail__name { font-family: "GeogrotesqueCondBoldWeb"; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 0; }
+    .detail__desc { font-family: "RingsideWideWeb"; font-size: 13px; line-height: 1.55; margin: 6px 0 0; text-wrap: balance; }
+    .detail__cap { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; color: #757575; margin: 8px 0 0; }
+
+    .add-to-cart { font-family: "RingsideWideWeb"; font-size: 14px; line-height: 1.5; color: #000; text-decoration: underline; text-underline-offset: 3px; align-self: flex-start; cursor: pointer; transition: opacity .18s; }
+    .add-to-cart:hover { opacity: .65; }
+    .button { display: inline-block; font-family: "GeogrotesqueCondBoldWeb"; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; color: #fff; background: #000; border: 1px solid #000; padding: 16px 28px; text-decoration: none; cursor: pointer; transition: background .2s, color .2s; align-self: flex-start; }
+    .button:hover { background: #fff; color: #000; }
+
+    @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+  </style>
+</head>
+<body>
+  <header class="page-header"><div class="page-header__brand">JONES ROAD</div></header>
+  <div class="stub-section"><div class="stub-section__title">Ingredients <span style="float:right;">+</span></div><div class="stub-section__hint">PDP context above the section</div></div>
+  <p class="annotation">Option B · Single hero portrait per category — portrait swaps when you change the category.</p>
+
+  <section class="picker">
+    <div class="picker__inner">
+      <div class="hero">
+        <img class="hero__img" data-hero-img alt="">
+        <div class="hero__chip">
+          <span class="hero__chip-label" data-hero-name>—</span>
+          <span class="hero__chip-cat" data-hero-cat>—</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div>
+          <p class="eyebrow">30 Shades</p>
+          <h2 class="headline">30 Shades. One stick. The right shade for every you.</h2>
+          <p class="sub">Take the complexion quiz to find the right shade for your skin.</p>
+        </div>
+        <div class="filter">
+          <p class="filter-label">Category</p>
+          <div class="cats" data-categories role="tablist"></div>
+        </div>
+        <div class="filter">
+          <p class="filter-label">Shades</p>
+          <div class="swatch-row" data-shades></div>
+        </div>
+        <div class="detail" aria-live="polite">
+          <div class="detail__preview"><img data-detail-img alt=""></div>
+          <div>
+            <p class="detail__name" data-detail-name>—</p>
+            <p class="detail__desc" data-detail-desc>—</p>
+            <p class="detail__cap">Hover a shade to preview · Tap on mobile</p>
+          </div>
+        </div>
+        <a href="#" class="add-to-cart" data-add-to-cart>Add to Cart</a>
+        <a href="#" class="button">Take the complexion quiz</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="stub-section"><div class="stub-section__title">Reviews <span style="float:right;">+</span></div></div>
+
+  <script>
+    (async function () {
+      const data = await fetch("./shades.json").then(r => r.json());
+      const { categories, shades } = data;
+      const catMap = Object.fromEntries(categories.map(c => [c.id, c]));
+
+      const heroImg = document.querySelector("[data-hero-img]");
+      const heroName = document.querySelector("[data-hero-name]");
+      const heroCat = document.querySelector("[data-hero-cat]");
+      const catsEl = document.querySelector("[data-categories]");
+      const shadesEl = document.querySelector("[data-shades]");
+      const detail = {
+        img:  document.querySelector("[data-detail-img]"),
+        name: document.querySelector("[data-detail-name]"),
+        desc: document.querySelector("[data-detail-desc]"),
+      };
+
+      const isFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+      catsEl.innerHTML = categories.map((c, i) => `<button type="button" class="cat-btn" data-category="${c.id}" aria-pressed="${i === 0}">${c.label}</button>`).join("");
+
+      let activeCategory = categories[0].id;
+      let activeShadeIdx = shades.findIndex(s => s.category === activeCategory);
+      let lockedShadeIdx = activeShadeIdx;
+
+      function shadesIn(catId) { return shades.map((s, i) => ({ ...s, idx: i })).filter(s => s.category === catId); }
+
+      function renderHero() {
+        const cat = catMap[activeCategory];
+        heroImg.src = cat.portrait + "?w=900&fit=crop&auto=format";
+        heroImg.alt = `${cat.label} category model`;
+        heroName.textContent = cat.label;
+        heroCat.textContent = `${shadesIn(activeCategory).length} shades`;
+      }
+      function renderSwatches() {
+        const list = shadesIn(activeCategory);
+        shadesEl.innerHTML = list.map(s => `<button type="button" class="swatch" data-shade-idx="${s.idx}" style="--swatch: ${s.hex};" aria-label="${s.name}" aria-pressed="${s.idx === activeShadeIdx}"><i></i></button>`).join("");
+      }
+      function renderDetail() {
+        const s = shades[activeShadeIdx];
+        const cat = catMap[s.category];
+        detail.img.src = cat.armSwatch + "?w=600&fit=crop&auto=format";
+        detail.img.alt = `${cat.label} arm swatch`;
+        detail.name.textContent = s.name;
+        detail.desc.textContent = s.description;
+      }
+      function setShade(idx, opts) {
+        opts = opts || {};
+        activeShadeIdx = idx;
+        if (opts.lock) lockedShadeIdx = idx;
+        shadesEl.querySelectorAll(".swatch").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.shadeIdx) === activeShadeIdx)));
+        renderDetail();
+      }
+      function setCategory(catId) {
+        activeCategory = catId;
+        const first = shades.findIndex(s => s.category === catId);
+        activeShadeIdx = first; lockedShadeIdx = first;
+        catsEl.querySelectorAll(".cat-btn").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.category === catId)));
+        renderHero(); renderSwatches(); renderDetail();
+      }
+
+      catsEl.addEventListener("click", e => { const b = e.target.closest(".cat-btn"); if (b) setCategory(b.dataset.category); });
+      shadesEl.addEventListener("click", e => { const b = e.target.closest(".swatch"); if (b) setShade(Number(b.dataset.shadeIdx), { lock: true }); });
+      shadesEl.addEventListener("pointerover", e => { if (!isFinePointer) return; const b = e.target.closest(".swatch"); if (b) setShade(Number(b.dataset.shadeIdx)); });
+      shadesEl.addEventListener("pointerleave", () => { if (!isFinePointer) return; if (activeShadeIdx !== lockedShadeIdx) setShade(lockedShadeIdx); });
+
+      renderHero(); renderSwatches(); renderDetail();
+    })();
+  </script>
+</body>
+</html>

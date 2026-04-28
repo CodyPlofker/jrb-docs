@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Option M · Skin Twin Finder · Jones Road</title>
+  <style>
+    @font-face { font-family: "Canela";                  src: url("./assets/fonts/canela-light.static.woff2") format("woff2");           font-weight: 300; font-display: swap; }
+    @font-face { font-family: "GeogrotesqueCondBoldWeb"; src: url("./assets/fonts/geogrotesque-cond-bold.static.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "RingsideWideWeb";         src: url("./assets/fonts/ringside-wide-book.static.woff2") format("woff2");     font-weight: 400; font-display: swap; }
+    @font-face { font-family: "ArticulatCF";             src: url("./assets/fonts/articulatcf-bold.static.woff2") format("woff2");       font-weight: 700; font-display: swap; }
+    @font-face { font-family: "BaseMonoWideWeb";         src: url("./assets/fonts/base-mono-wide-thin.static.woff2") format("woff2");    font-weight: 300; font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: "RingsideWideWeb"; color: #000; background: #fff; -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    button { font-family: inherit; }
+
+    .page-header { padding: 16px 20px; border-bottom: 1px solid #ececec; text-align: center; }
+    .page-header__brand { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; letter-spacing: 1.5px; }
+    .stub-section { padding: 28px 20px; border-bottom: 1px solid #ececec; }
+    .stub-section__title { font-family: "GeogrotesqueCondBoldWeb"; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
+    .stub-section__hint { font-family: "BaseMonoWideWeb", monospace; font-size: 11px; letter-spacing: .8px; color: #757575; margin-top: 6px; }
+    .annotation { max-width: 1280px; margin: 24px auto 12px; font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; color: #757575; padding: 0 20px; }
+
+    .picker { background: #f8f8f8; padding: 56px 20px; }
+    @media (min-width: 769px) { .picker { padding: 80px 48px; } }
+    .picker__inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 40px; }
+    @media (min-width: 769px) { .picker__inner { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 64px; align-items: start; } }
+
+    .stage { position: relative; aspect-ratio: 6 / 5; overflow: hidden; background: #fff; }
+    .grid { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(5, 1fr); gap: 4px; padding: 4px; }
+    @media (max-width: 600px) { .grid { grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(6, 1fr); } }
+    .grid-cell { position: relative; overflow: hidden; background: var(--tone, #ddd); cursor: pointer; transition: opacity .35s ease, transform .55s cubic-bezier(.39, .575, .565, 1), box-shadow .25s ease, z-index 0s linear .15s; }
+    .grid-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; transition: transform .6s cubic-bezier(.39, .575, .565, 1); }
+    .grid-cell:hover img { transform: scale(1.04); }
+    .grid-cell::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0); transition: background .25s ease; pointer-events: none; }
+    .grid-cell:hover::after { background: rgba(0,0,0,.08); }
+    .stage[data-mode="picked"] .grid-cell { opacity: .15; cursor: default; }
+    .stage[data-mode="picked"] .grid-cell:hover img { transform: none; }
+    .stage[data-mode="picked"] .grid-cell:hover::after { background: rgba(0,0,0,0); }
+    .stage[data-mode="picked"] .grid-cell[data-active="true"] {
+      opacity: 1;
+      transform: scale(1.85);
+      z-index: 5;
+      box-shadow: 0 24px 48px rgba(0,0,0,.32);
+      transition: opacity .35s ease, transform .55s cubic-bezier(.39, .575, .565, 1), box-shadow .35s ease, z-index 0s linear 0s;
+    }
+
+    .stage__back { position: absolute; top: 16px; left: 16px; font-family: "GeogrotesqueCondBoldWeb"; font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: #000; background: rgba(255,255,255,.92); border: 0; padding: 8px 12px; cursor: pointer; backdrop-filter: blur(8px); z-index: 6; opacity: 0; transition: opacity .3s ease; pointer-events: none; }
+    .stage[data-mode="picked"] .stage__back { opacity: 1; pointer-events: auto; }
+    .stage__back::before { content: "← "; }
+
+    .invite-banner { position: absolute; left: 16px; right: 16px; bottom: 16px; background: rgba(0,0,0,.84); color: #fff; padding: 14px 18px; backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: space-between; gap: 16px; z-index: 4; }
+    .invite-banner__title { font-family: "GeogrotesqueCondBoldWeb"; font-size: 13px; letter-spacing: 1.2px; text-transform: uppercase; }
+    .invite-banner__sub { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; opacity: .7; }
+    .stage[data-mode="picked"] .invite-banner { display: none; }
+
+    .panel { display: flex; flex-direction: column; gap: 28px; }
+    .eyebrow { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 8px 0; }
+    .headline { font-family: "Canela", serif; font-weight: 300; font-size: 32px; line-height: 1.18; letter-spacing: -.2px; margin: 0; text-wrap: balance; }
+    @media (min-width: 769px) { .headline { font-size: 44px; } }
+    .sub { font-family: "RingsideWideWeb"; font-size: 14px; line-height: 1.55; margin: 14px 0 0; max-width: 38ch; }
+
+    .recommendation {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      background: #fff;
+      border: 1px solid #ececec;
+      padding: 16px;
+      min-height: 100px;
+    }
+    .recommendation--empty { background: transparent; border-style: dashed; }
+    .rec-swatch { width: 64px; height: 64px; border-radius: 100%; border: 1px solid #d0d0d0; flex-shrink: 0; background: var(--rec-tone, #f0e6da); }
+    .rec-text { flex: 1; min-width: 0; }
+    .rec-text__label { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; color: #757575; margin: 0; }
+    .rec-text__name { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; margin: 4px 0 0; }
+    .rec-text__desc { font-family: "RingsideWideWeb"; font-size: 13px; line-height: 1.5; margin: 4px 0 0; }
+
+    .filter { display: flex; flex-direction: column; gap: 12px; }
+    .filter-label { font-family: "ArticulatCF"; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .3px; margin: 0; }
+    .swatches { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; min-height: 44px; }
+    .swatch { width: 44px; height: 44px; border-radius: 100%; border: 1px solid #d0d0d0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: transparent; padding: 0; cursor: pointer; transition: transform .18s, box-shadow .18s; }
+    .swatch i { display: block; width: 38px; height: 38px; border-radius: 100%; background: var(--swatch); }
+    .swatch:hover { transform: scale(1.06); }
+    .swatch[aria-pressed="true"] { border-color: #000; box-shadow: 0 0 0 2px #fff inset, 0 0 0 3px #000; }
+
+    .add-to-cart { font-family: "RingsideWideWeb"; font-size: 14px; line-height: 1.5; color: #000; text-decoration: underline; text-underline-offset: 3px; align-self: flex-start; cursor: pointer; }
+    .add-to-cart:hover { opacity: .65; }
+    .button { display: inline-block; align-self: flex-start; font-family: "GeogrotesqueCondBoldWeb"; font-size: 14px; letter-spacing: 1.4px; text-transform: uppercase; color: #fff; background: #000; border: 1px solid #000; padding: 16px 28px; text-decoration: none; cursor: pointer; }
+    .button:hover { background: #fff; color: #000; }
+
+    @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+  </style>
+</head>
+<body>
+  <header class="page-header"><div class="page-header__brand">JONES ROAD</div></header>
+  <div class="stub-section"><div class="stub-section__title">Ingredients <span style="float:right;">+</span></div><div class="stub-section__hint">PDP context above the section</div></div>
+  <p class="annotation">Option M · Skin Twin Finder — flip the flow. Tap the model whose skin looks like yours, and we'll tell you what shade she's wearing. Counters "I picked by hair color, not skin tone."</p>
+
+  <section class="picker">
+    <div class="picker__inner">
+      <div class="stage" data-stage data-mode="grid">
+        <div class="grid" data-grid></div>
+        <button type="button" class="stage__back" data-back>Back to all 30</button>
+        <div class="invite-banner">
+          <span>
+            <span class="invite-banner__title">Tap the model whose skin looks like yours</span><br>
+            <span class="invite-banner__sub">We'll tell you what shade she's wearing</span>
+          </span>
+        </div>
+      </div>
+      <div class="panel">
+        <div>
+          <p class="eyebrow">Find your skin twin</p>
+          <h2 class="headline">Match a face. We'll match the shade.</h2>
+          <p class="sub">Skip the swatches. Tap a model whose skin looks like yours, and we'll tell you what shade she's wearing — pulled from her actual photo.</p>
+        </div>
+        <div class="recommendation recommendation--empty" data-rec>
+          <div class="rec-swatch" style="--rec-tone: transparent; border-style: dashed;"></div>
+          <div class="rec-text">
+            <p class="rec-text__label">Your shade</p>
+            <p class="rec-text__name" data-rec-name>—</p>
+            <p class="rec-text__desc" data-rec-desc>Tap a model in the grid to start.</p>
+          </div>
+        </div>
+        <div class="filter">
+          <p class="filter-label">Or browse by shade</p>
+          <div class="swatches" data-shades></div>
+        </div>
+        <a href="#" class="add-to-cart" data-add-to-cart>Add to Cart</a>
+        <a href="#" class="button">Take the complexion quiz</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="stub-section"><div class="stub-section__title">Reviews <span style="float:right;">+</span></div></div>
+
+  <script>
+    (async function () {
+      const data = await fetch("./shades.json").then(r => r.json());
+      const { categories, shades, modelPool } = data;
+      const catMap = Object.fromEntries(categories.map(c => [c.id, c]));
+
+      const stage = document.querySelector("[data-stage]");
+      const gridEl = document.querySelector("[data-grid]");
+      const backBtn = document.querySelector("[data-back]");
+      const recBox = document.querySelector("[data-rec]");
+      const recName = document.querySelector("[data-rec-name]");
+      const recDesc = document.querySelector("[data-rec-desc]");
+      const shadesEl = document.querySelector("[data-shades]");
+      const isFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+      gridEl.innerHTML = shades.map((s, i) => `<button class="grid-cell" data-cell-idx="${i}" data-shade-idx="${i}" style="--tone:${s.hex};border:0;padding:0;"><img src="${modelPool[i % modelPool.length]}?w=600&h=600&fit=crop&crop=faces&auto=format" alt="${s.name}"></button>`).join("");
+      shadesEl.innerHTML = shades.map((s, i) => `<button type="button" class="swatch" data-shade-idx="${i}" style="--swatch: ${s.hex};" aria-label="${s.name}"><i></i></button>`).join("");
+
+      let activeShadeIdx = -1;
+
+      function showGrid() {
+        stage.dataset.mode = "grid";
+        activeShadeIdx = -1;
+        gridEl.querySelectorAll(".grid-cell").forEach(c => c.dataset.active = "false");
+        shadesEl.querySelectorAll(".swatch").forEach(b => b.setAttribute("aria-pressed", "false"));
+        recBox.classList.add("recommendation--empty");
+        recBox.querySelector(".rec-swatch").style.setProperty("--rec-tone", "transparent");
+        recBox.querySelector(".rec-swatch").style.borderStyle = "dashed";
+        recName.textContent = "—";
+        recDesc.textContent = "Tap a model in the grid to start.";
+      }
+      function showShade(idx) {
+        const s = shades[idx]; activeShadeIdx = idx;
+        stage.dataset.mode = "picked";
+        gridEl.querySelectorAll(".grid-cell").forEach(c => c.dataset.active = String(Number(c.dataset.cellIdx) === idx));
+        recBox.classList.remove("recommendation--empty");
+        recBox.querySelector(".rec-swatch").style.setProperty("--rec-tone", s.hex);
+        recBox.querySelector(".rec-swatch").style.borderStyle = "solid";
+        recName.textContent = s.name;
+        recDesc.textContent = `${s.description} — ${catMap[s.category].label} · ${s.undertone} undertone.`;
+        shadesEl.querySelectorAll(".swatch").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.shadeIdx) === idx)));
+      }
+
+      gridEl.addEventListener("click", e => { const c = e.target.closest(".grid-cell"); if (c) showShade(Number(c.dataset.cellIdx)); });
+      shadesEl.addEventListener("click", e => { const b = e.target.closest(".swatch"); if (b) showShade(Number(b.dataset.shadeIdx)); });
+      shadesEl.addEventListener("pointerover", e => { if (!isFinePointer) return; const b = e.target.closest(".swatch"); if (b) showShade(Number(b.dataset.shadeIdx)); });
+      backBtn.addEventListener("click", showGrid);
+    })();
+  </script>
+</body>
+</html>

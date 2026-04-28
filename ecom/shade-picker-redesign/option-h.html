@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Option H · Highlight + Swap · Jones Road</title>
+  <style>
+    @font-face { font-family: "Canela";                  src: url("./assets/fonts/canela-light.static.woff2") format("woff2");           font-weight: 300; font-display: swap; }
+    @font-face { font-family: "GeogrotesqueCondBoldWeb"; src: url("./assets/fonts/geogrotesque-cond-bold.static.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "RingsideWideWeb";         src: url("./assets/fonts/ringside-wide-book.static.woff2") format("woff2");     font-weight: 400; font-display: swap; }
+    @font-face { font-family: "ArticulatCF";             src: url("./assets/fonts/articulatcf-bold.static.woff2") format("woff2");       font-weight: 700; font-display: swap; }
+    @font-face { font-family: "BaseMonoWideWeb";         src: url("./assets/fonts/base-mono-wide-thin.static.woff2") format("woff2");    font-weight: 300; font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: "RingsideWideWeb"; color: #000; background: #fff; -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    button { font-family: inherit; }
+
+    .page-header { padding: 16px 20px; border-bottom: 1px solid #ececec; text-align: center; }
+    .page-header__brand { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; letter-spacing: 1.5px; }
+    .stub-section { padding: 28px 20px; border-bottom: 1px solid #ececec; }
+    .stub-section__title { font-family: "GeogrotesqueCondBoldWeb"; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
+    .stub-section__hint { font-family: "BaseMonoWideWeb", monospace; font-size: 11px; letter-spacing: .8px; color: #757575; margin-top: 6px; }
+    .annotation { max-width: 1280px; margin: 24px auto 12px; font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; color: #757575; padding: 0 20px; }
+
+    .picker { background: #f8f8f8; padding: 56px 20px; }
+    @media (min-width: 769px) { .picker { padding: 80px 48px; } }
+    .picker__inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 40px; }
+    @media (min-width: 769px) { .picker__inner { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 64px; align-items: start; } }
+
+    /* Stage swaps between grid view and single view */
+    .stage { position: relative; aspect-ratio: 6 / 5; overflow: hidden; background: #fff; }
+    .stage__view { position: absolute; inset: 0; transition: opacity .35s ease; }
+    .stage[data-mode="grid"]   .stage__view--single { opacity: 0; pointer-events: none; }
+    .stage[data-mode="single"] .stage__view--grid   { opacity: 0; pointer-events: none; }
+
+    .grid { display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(5, 1fr); gap: 4px; width: 100%; height: 100%; padding: 4px; }
+    @media (max-width: 600px) { .grid { grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(6, 1fr); } }
+    .grid-cell { position: relative; overflow: hidden; background: var(--tone, #ddd); transition: opacity .35s ease, box-shadow .25s ease, transform .35s cubic-bezier(.39, .575, .565, 1); }
+    .grid-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+
+    /* Highlight in place: when a category is active, non-matching dim, matching cells get a border */
+    .grid[data-active-cat] .grid-cell[data-in-cat="false"] { opacity: .25; }
+    .grid[data-active-cat] .grid-cell[data-in-cat="true"]  { box-shadow: 0 0 0 2px #000 inset; }
+
+    /* Single model view */
+    .single { position: relative; width: 100%; height: 100%; background: #ddd; }
+    .single__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+    .single__chip { position: absolute; left: 24px; bottom: 24px; right: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; background: rgba(255,255,255,.92); padding: 14px 18px; backdrop-filter: blur(8px); }
+    .single__chip-name { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; }
+    .single__chip-cat { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; color: #757575; }
+    .stage__back { position: absolute; top: 16px; left: 16px; font-family: "GeogrotesqueCondBoldWeb"; font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: #000; background: rgba(255,255,255,.92); border: 0; padding: 8px 12px; cursor: pointer; backdrop-filter: blur(8px); z-index: 5; }
+    .stage__back::before { content: "← "; }
+
+    /* Right panel */
+    .panel { display: flex; flex-direction: column; gap: 28px; }
+    .eyebrow { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 8px 0; }
+    .headline { font-family: "Canela", serif; font-weight: 300; font-size: 32px; line-height: 1.18; letter-spacing: -.2px; margin: 0; text-wrap: balance; }
+    @media (min-width: 769px) { .headline { font-size: 44px; } }
+    .sub { font-family: "RingsideWideWeb"; font-size: 14px; line-height: 1.55; margin: 14px 0 0; max-width: 38ch; }
+
+    .filter { display: flex; flex-direction: column; gap: 12px; }
+    .filter-label { font-family: "ArticulatCF"; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .3px; margin: 0; }
+    .cats { display: flex; flex-wrap: wrap; gap: 8px; }
+    .cat-btn { font-family: "GeogrotesqueCondBoldWeb"; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: #000; background: #fff; border: 1px solid #d0d0d0; padding: 11px 16px; cursor: pointer; transition: background .18s, color .18s, border-color .18s; min-height: 40px; }
+    .cat-btn:hover { border-color: #000; }
+    .cat-btn[aria-pressed="true"] { background: #000; color: #fff; border-color: #000; }
+
+    .swatches { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; min-height: 44px; }
+    .swatch { width: 44px; height: 44px; border-radius: 100%; border: 1px solid #d0d0d0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: transparent; padding: 0; cursor: pointer; transition: transform .18s, box-shadow .18s; }
+    .swatch i { display: block; width: 38px; height: 38px; border-radius: 100%; background: var(--swatch); }
+    .swatch:hover { transform: scale(1.06); }
+    .swatch[aria-pressed="true"] { border-color: #000; box-shadow: 0 0 0 2px #fff inset, 0 0 0 3px #000; }
+
+    .readout { padding-top: 4px; min-height: 80px; }
+    .readout__name { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; margin: 0; }
+    .readout__desc { font-family: "RingsideWideWeb"; font-size: 14px; line-height: 1.55; margin: 6px 0 0; max-width: 42ch; }
+
+    .add-to-cart { font-family: "RingsideWideWeb"; font-size: 14px; line-height: 1.5; color: #000; text-decoration: underline; text-underline-offset: 3px; align-self: flex-start; cursor: pointer; transition: opacity .18s; }
+    .add-to-cart:hover { opacity: .65; }
+    .button { display: inline-block; align-self: flex-start; font-family: "GeogrotesqueCondBoldWeb"; font-size: 14px; letter-spacing: 1.4px; text-transform: uppercase; color: #fff; background: #000; border: 1px solid #000; padding: 16px 28px; text-decoration: none; cursor: pointer; }
+    .button:hover { background: #fff; color: #000; }
+
+    @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+  </style>
+</head>
+<body>
+  <header class="page-header"><div class="page-header__brand">JONES ROAD</div></header>
+  <div class="stub-section"><div class="stub-section__title">Ingredients <span style="float:right;">+</span></div><div class="stub-section__hint">PDP context above the section</div></div>
+  <p class="annotation">Option H · Highlight + Swap — click a category and matching cards keep full color while non-matching dim to 25%. Click a shade and the grid swaps to a single model.</p>
+
+  <section class="picker">
+    <div class="picker__inner">
+      <div class="stage" data-stage data-mode="grid">
+        <div class="stage__view stage__view--grid"><div class="grid" data-grid></div></div>
+        <div class="stage__view stage__view--single">
+          <div class="single">
+            <button type="button" class="stage__back" data-back>Show all 30</button>
+            <img class="single__img" data-single-img alt="">
+            <div class="single__chip">
+              <span class="single__chip-name" data-single-name>—</span>
+              <span class="single__chip-cat" data-single-cat>—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div>
+          <p class="eyebrow">30 Shades</p>
+          <h2 class="headline">30 Shades. One stick. The right shade for every you.</h2>
+          <p class="sub">Take the complexion quiz to find the right shade for your skin.</p>
+        </div>
+        <div class="filter"><p class="filter-label">Category</p><div class="cats" data-categories role="tablist"></div></div>
+        <div class="filter"><p class="filter-label">Shades</p><div class="swatches" data-shades></div></div>
+        <div class="readout" aria-live="polite">
+          <p class="readout__name" data-readout-name>—</p>
+          <p class="readout__desc" data-readout-desc>Pick a category to highlight those models. Pick a shade to see one wearing it.</p>
+        </div>
+        <a href="#" class="add-to-cart" data-add-to-cart>Add to Cart</a>
+        <a href="#" class="button">Take the complexion quiz</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="stub-section"><div class="stub-section__title">Reviews <span style="float:right;">+</span></div></div>
+
+  <script>
+    (async function () {
+      const data = await fetch("./shades.json").then(r => r.json());
+      const { categories, shades, modelPool } = data;
+      const catMap = Object.fromEntries(categories.map(c => [c.id, c]));
+
+      const stage = document.querySelector("[data-stage]");
+      const gridEl = document.querySelector("[data-grid]");
+      const singleImg = document.querySelector("[data-single-img]");
+      const singleName = document.querySelector("[data-single-name]");
+      const singleCat = document.querySelector("[data-single-cat]");
+      const backBtn = document.querySelector("[data-back]");
+      const catsEl = document.querySelector("[data-categories]");
+      const shadesEl = document.querySelector("[data-shades]");
+      const readoutName = document.querySelector("[data-readout-name]");
+      const readoutDesc = document.querySelector("[data-readout-desc]");
+      const isFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+      const cells = [];
+      for (let i = 0; i < 30; i++) cells.push(`<div class="grid-cell" data-cell-idx="${i}" data-cat="${shades[i].category}" style="--tone:${shades[i].hex};"><img src="${modelPool[i % modelPool.length]}?w=300&h=300&fit=crop&crop=faces&auto=format" alt=""></div>`);
+      gridEl.innerHTML = cells.join("");
+      catsEl.innerHTML = categories.map(c => `<button type="button" class="cat-btn" data-category="${c.id}" aria-pressed="false">${c.label}</button>`).join("");
+
+      let activeCategory = null;
+      let activeShadeIdx = -1;
+
+      function shadesIn(catId) { return shades.map((s, i) => ({ ...s, idx: i })).filter(s => s.category === catId); }
+      function applyHighlight() {
+        if (activeCategory) {
+          gridEl.dataset.activeCat = activeCategory;
+          gridEl.querySelectorAll(".grid-cell").forEach(c => c.dataset.inCat = String(c.dataset.cat === activeCategory));
+        } else {
+          delete gridEl.dataset.activeCat;
+          gridEl.querySelectorAll(".grid-cell").forEach(c => { delete c.dataset.inCat; });
+        }
+      }
+      function renderSwatches() {
+        if (!activeCategory) { shadesEl.innerHTML = ''; return; }
+        const list = shadesIn(activeCategory);
+        shadesEl.innerHTML = list.map(s => `<button type="button" class="swatch" data-shade-idx="${s.idx}" style="--swatch: ${s.hex};" aria-label="${s.name}" aria-pressed="${s.idx === activeShadeIdx}"><i></i></button>`).join("");
+      }
+      function showGrid() {
+        stage.dataset.mode = "grid";
+        activeShadeIdx = -1;
+        shadesEl.querySelectorAll(".swatch").forEach(b => b.setAttribute("aria-pressed", "false"));
+        if (!activeCategory) {
+          readoutName.textContent = "—";
+          readoutDesc.textContent = "Pick a category to highlight those models. Pick a shade to see one wearing it.";
+        }
+      }
+      function showShade(idx) {
+        const s = shades[idx];
+        activeShadeIdx = idx;
+        singleImg.src = modelPool[s.modelIdx % modelPool.length] + "?w=1200&fit=crop&crop=faces&auto=format";
+        singleImg.alt = `Model wearing ${s.name}`;
+        singleName.textContent = s.name;
+        singleCat.textContent = catMap[s.category].label;
+        readoutName.textContent = s.name;
+        readoutDesc.textContent = s.description;
+        shadesEl.querySelectorAll(".swatch").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.shadeIdx) === idx)));
+        stage.dataset.mode = "single";
+      }
+      function setCategory(catId) {
+        activeCategory = catId;
+        catsEl.querySelectorAll(".cat-btn").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.category === catId)));
+        applyHighlight();
+        renderSwatches();
+        const list = shadesIn(catId);
+        readoutName.textContent = catMap[catId].label;
+        readoutDesc.textContent = `${list.length} shade${list.length === 1 ? '' : 's'} in this range — hover or tap one to see a model wearing it.`;
+      }
+
+      catsEl.addEventListener("click", e => { const b = e.target.closest(".cat-btn"); if (b) setCategory(b.dataset.category); });
+      shadesEl.addEventListener("click", e => { const b = e.target.closest(".swatch"); if (b) showShade(Number(b.dataset.shadeIdx)); });
+      shadesEl.addEventListener("pointerover", e => { if (!isFinePointer) return; const b = e.target.closest(".swatch"); if (b) showShade(Number(b.dataset.shadeIdx)); });
+      backBtn.addEventListener("click", showGrid);
+    })();
+  </script>
+</body>
+</html>
