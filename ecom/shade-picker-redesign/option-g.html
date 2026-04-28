@@ -41,21 +41,33 @@
     .grid30-cell { position: relative; overflow: hidden; background: var(--tone, #ddd); }
     .grid30-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
 
-    /* Adaptive grid — count drives layout */
-    .adaptive { display: grid; gap: 6px; width: 100%; height: 100%; padding: 4px; }
-    .adaptive[data-count="1"] { grid-template-columns: 1fr; grid-template-rows: 1fr; }
-    .adaptive[data-count="2"] { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
-    .adaptive[data-count="3"] { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr; }
-    .adaptive[data-count="4"] { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-    .adaptive[data-count="5"] { grid-template-columns: repeat(5, 1fr); grid-template-rows: 1fr; }
-    .adaptive[data-count="6"] { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; }
-    @media (max-width: 600px) {
-      .adaptive[data-count="3"] { grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr); }
-      .adaptive[data-count="5"] { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 1fr); }
-      .adaptive[data-count="5"] > .adaptive-cell:nth-child(5) { grid-column: 1 / -1; }
-      .adaptive[data-count="6"] { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 1fr); }
+    /* Adaptive grid — square cells; min(widthFit, heightFit) keeps every cell a true square */
+    .adaptive { container-type: size; container-name: adaptive; display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; width: 100%; height: 100%; box-sizing: border-box; align-items: center; justify-content: center; align-content: center; }
+    /* Each cell = a square sized to the smaller of (column-fit, row-fit) using container query units (cqw/cqh) */
+    .adaptive-cell {
+      position: relative;
+      overflow: hidden;
+      background: var(--tone, #ddd);
+      cursor: pointer;
+      flex: 0 0 auto;
+      transition: transform .35s cubic-bezier(.39, .575, .565, 1), box-shadow .25s;
+      --side: min(var(--col-fit, 100cqw), var(--row-fit, 100cqh));
+      width: var(--side);
+      height: var(--side);
     }
-    .adaptive-cell { position: relative; overflow: hidden; background: var(--tone, #ddd); cursor: pointer; transition: transform .35s cubic-bezier(.39, .575, .565, 1), box-shadow .25s; }
+    /* Desktop layouts — col-fit & row-fit drive the cell side */
+    .adaptive[data-count="1"] .adaptive-cell { --col-fit: calc(100cqw - 16px); --row-fit: calc(100cqh - 16px); }
+    .adaptive[data-count="2"] .adaptive-cell { --col-fit: calc((100cqw - 24px) / 2); --row-fit: calc(100cqh - 16px); }
+    .adaptive[data-count="3"] .adaptive-cell { --col-fit: calc((100cqw - 32px) / 3); --row-fit: calc(100cqh - 16px); }
+    .adaptive[data-count="4"] .adaptive-cell { --col-fit: calc((100cqw - 24px) / 2); --row-fit: calc((100cqh - 24px) / 2); }
+    .adaptive[data-count="5"] .adaptive-cell { --col-fit: calc((100cqw - 32px) / 3); --row-fit: calc((100cqh - 24px) / 2); }
+    .adaptive[data-count="6"] .adaptive-cell { --col-fit: calc((100cqw - 32px) / 3); --row-fit: calc((100cqh - 24px) / 2); }
+    /* Mobile: tighter layouts so squares stay readable */
+    @media (max-width: 600px) {
+      .adaptive[data-count="3"] .adaptive-cell { --col-fit: calc(100cqw - 16px); --row-fit: calc((100cqh - 32px) / 3); }
+      .adaptive[data-count="5"] .adaptive-cell { --col-fit: calc((100cqw - 24px) / 2); --row-fit: calc((100cqh - 32px) / 3); }
+      .adaptive[data-count="6"] .adaptive-cell { --col-fit: calc((100cqw - 24px) / 2); --row-fit: calc((100cqh - 32px) / 3); }
+    }
     .adaptive-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
     .adaptive-cell::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,.55) 100%); pointer-events: none; }
     .adaptive-cell__label { position: absolute; left: 12px; bottom: 12px; right: 12px; font-family: "GeogrotesqueCondBoldWeb"; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #fff; z-index: 1; text-shadow: 0 1px 2px rgba(0,0,0,.5); }
