@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Option M · Skin Twin Finder · Jones Road</title>
+  <title>Option M · Skin Twin · Jones Road</title>
   <style>
     @font-face { font-family: "Canela";                  src: url("./assets/fonts/canela-light.static.woff2") format("woff2");           font-weight: 300; font-display: swap; }
     @font-face { font-family: "GeogrotesqueCondBoldWeb"; src: url("./assets/fonts/geogrotesque-cond-bold.static.woff2") format("woff2"); font-weight: 700; font-display: swap; }
@@ -26,68 +26,80 @@
 
     .picker { background: #f8f8f8; padding: 56px 20px; }
     @media (min-width: 769px) { .picker { padding: 80px 48px; } }
-    .picker__inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 40px; }
-    @media (min-width: 769px) { .picker__inner { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 64px; align-items: start; } }
+    .picker__inner { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
 
-    .stage { position: relative; aspect-ratio: 6 / 5; overflow: hidden; background: #fff; }
-    .grid { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(5, 1fr); gap: 4px; padding: 4px; }
-    @media (max-width: 600px) { .grid { grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(6, 1fr); } }
-    .grid-cell { position: relative; overflow: hidden; background: var(--tone, #ddd); cursor: pointer; transition: opacity .35s ease, transform .55s cubic-bezier(.39, .575, .565, 1), box-shadow .25s ease, z-index 0s linear .15s; }
-    .grid-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; transition: transform .6s cubic-bezier(.39, .575, .565, 1); }
-    .grid-cell:hover img { transform: scale(1.04); }
-    .grid-cell::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0); transition: background .25s ease; pointer-events: none; }
-    .grid-cell:hover::after { background: rgba(0,0,0,.08); }
-    .stage[data-mode="picked"] .grid-cell { opacity: .15; cursor: default; }
-    .stage[data-mode="picked"] .grid-cell:hover img { transform: none; }
-    .stage[data-mode="picked"] .grid-cell:hover::after { background: rgba(0,0,0,0); }
-    .stage[data-mode="picked"] .grid-cell[data-active="true"] {
-      opacity: 1;
-      transform: scale(1.85);
-      z-index: 5;
-      box-shadow: 0 24px 48px rgba(0,0,0,.32);
-      transition: opacity .35s ease, transform .55s cubic-bezier(.39, .575, .565, 1), box-shadow .35s ease, z-index 0s linear 0s;
-    }
-
-    .stage__back { position: absolute; top: 16px; left: 16px; font-family: "GeogrotesqueCondBoldWeb"; font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: #000; background: rgba(255,255,255,.92); border: 0; padding: 8px 12px; cursor: pointer; backdrop-filter: blur(8px); z-index: 6; opacity: 0; transition: opacity .3s ease; pointer-events: none; }
-    .stage[data-mode="picked"] .stage__back { opacity: 1; pointer-events: auto; }
-    .stage__back::before { content: "← "; }
-
-    .invite-banner { position: absolute; left: 16px; right: 16px; bottom: 16px; background: rgba(0,0,0,.84); color: #fff; padding: 14px 18px; backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: space-between; gap: 16px; z-index: 4; }
-    .invite-banner__title { font-family: "GeogrotesqueCondBoldWeb"; font-size: 13px; letter-spacing: 1.2px; text-transform: uppercase; }
-    .invite-banner__sub { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; opacity: .7; }
-    .stage[data-mode="picked"] .invite-banner { display: none; }
-
-    .panel { display: flex; flex-direction: column; gap: 28px; }
-    .eyebrow { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 8px 0; }
+    /* Top header */
+    .head { display: flex; flex-direction: column; gap: 12px; }
+    .eyebrow { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; margin: 0; }
     .headline { font-family: "Canela", serif; font-weight: 300; font-size: 32px; line-height: 1.18; letter-spacing: -.2px; margin: 0; text-wrap: balance; }
     @media (min-width: 769px) { .headline { font-size: 44px; } }
-    .sub { font-family: "RingsideWideWeb"; font-size: 14px; line-height: 1.55; margin: 14px 0 0; max-width: 38ch; }
+    .sub { font-family: "RingsideWideWeb"; font-size: 14px; line-height: 1.55; margin: 0; max-width: 56ch; }
 
-    .recommendation {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      background: #fff;
-      border: 1px solid #ececec;
-      padding: 16px;
-      min-height: 100px;
-    }
-    .recommendation--empty { background: transparent; border-style: dashed; }
-    .rec-swatch { width: 64px; height: 64px; border-radius: 100%; border: 1px solid #d0d0d0; flex-shrink: 0; background: var(--rec-tone, #f0e6da); }
-    .rec-text { flex: 1; min-width: 0; }
-    .rec-text__label { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; color: #757575; margin: 0; }
-    .rec-text__name { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; margin: 4px 0 0; }
-    .rec-text__desc { font-family: "RingsideWideWeb"; font-size: 13px; line-height: 1.5; margin: 4px 0 0; }
+    /* Inline banner above the grid (not over) */
+    .invite { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 18px; background: #000; color: #fff; flex-wrap: wrap; }
+    .invite__title { font-family: "GeogrotesqueCondBoldWeb"; font-size: 14px; letter-spacing: 1.2px; text-transform: uppercase; }
+    .invite__sub { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; opacity: .7; }
 
-    .filter { display: flex; flex-direction: column; gap: 12px; }
-    .filter-label { font-family: "ArticulatCF"; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .3px; margin: 0; }
-    .swatches { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; min-height: 44px; }
-    .swatch { width: 44px; height: 44px; border-radius: 100%; border: 1px solid #d0d0d0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: transparent; padding: 0; cursor: pointer; transition: transform .18s, box-shadow .18s; }
-    .swatch i { display: block; width: 38px; height: 38px; border-radius: 100%; background: var(--swatch); }
-    .swatch:hover { transform: scale(1.06); }
-    .swatch[aria-pressed="true"] { border-color: #000; box-shadow: 0 0 0 2px #fff inset, 0 0 0 3px #000; }
+    /* Category filter for skin tones */
+    .filter-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .filter-row__label { font-family: "ArticulatCF"; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .3px; margin-right: 8px; }
+    .filter-btn { font-family: "GeogrotesqueCondBoldWeb"; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #000; background: #fff; border: 1px solid #d0d0d0; padding: 8px 12px; cursor: pointer; min-height: 36px; }
+    .filter-btn:hover { border-color: #000; }
+    .filter-btn[aria-pressed="true"] { background: #000; color: #fff; border-color: #000; }
 
-    .add-to-cart { font-family: "RingsideWideWeb"; font-size: 14px; line-height: 1.5; color: #000; text-decoration: underline; text-underline-offset: 3px; align-self: flex-start; cursor: pointer; }
+    /* Layout: grid (left) + side-panel readout (right) */
+    .layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
+    @media (min-width: 900px) { .layout { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 40px; align-items: start; } }
+
+    /* Grid (left) */
+    .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; background: #fff; padding: 4px; }
+    @media (min-width: 600px) { .grid { grid-template-columns: repeat(6, 1fr); } }
+    .grid-cell { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: var(--tone, #ddd); cursor: pointer; border: 0; padding: 0; transition: opacity .25s ease, box-shadow .2s ease, transform .25s cubic-bezier(.39, .575, .565, 1); }
+    .grid-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; transition: transform .35s cubic-bezier(.39, .575, .565, 1); }
+    .grid-cell:hover img { transform: scale(1.04); }
+    .grid-cell::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0); transition: background .25s ease; pointer-events: none; }
+    .grid-cell:hover::after { background: rgba(0,0,0,.06); }
+    .grid-cell[data-filtered="false"] { opacity: .15; cursor: default; pointer-events: none; }
+    .grid-cell[aria-pressed="true"] { box-shadow: 0 0 0 3px #000 inset; transform: scale(1.02); z-index: 2; }
+    .grid-cell[aria-pressed="true"]::after { background: linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,.4) 100%); }
+    .grid-cell__name { position: absolute; left: 6px; right: 6px; bottom: 6px; font-family: "GeogrotesqueCondBoldWeb"; font-size: 9px; letter-spacing: .8px; text-transform: uppercase; color: #fff; z-index: 1; text-shadow: 0 1px 2px rgba(0,0,0,.5); opacity: 0; transition: opacity .2s ease; }
+    .grid-cell[aria-pressed="true"] .grid-cell__name { opacity: 1; }
+
+    /* Side readout panel — sticky on desktop */
+    .readout { background: #fff; border: 1px solid #ececec; padding: 20px; display: flex; flex-direction: column; gap: 18px; min-height: 300px; }
+    @media (min-width: 900px) { .readout { padding: 28px; position: sticky; top: 24px; } }
+    .readout--empty .readout__main { opacity: .5; }
+    .readout__label { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; color: #757575; margin: 0; }
+    .readout__main { display: flex; gap: 16px; align-items: flex-start; }
+    .readout__swatch { width: 64px; height: 64px; border-radius: 100%; border: 1px solid #d0d0d0; flex-shrink: 0; background: var(--rec-tone, #f0e6da); }
+    .readout--empty .readout__swatch { border-style: dashed; background: transparent; }
+    .readout__head { flex: 1; min-width: 0; }
+    .readout__name { font-family: "GeogrotesqueCondBoldWeb"; font-size: 22px; letter-spacing: .8px; text-transform: uppercase; margin: 0; }
+    .readout__desc { font-family: "RingsideWideWeb"; font-size: 13px; line-height: 1.55; margin: 6px 0 0; }
+
+    /* Get her look mini products */
+    .look-section { display: flex; flex-direction: column; gap: 12px; padding-top: 4px; border-top: 1px solid #ececec; }
+    .look-section__title { font-family: "GeogrotesqueCondBoldWeb"; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; margin: 14px 0 0; display: flex; align-items: center; gap: 8px; }
+    .look-section__hint { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; color: #757575; font-weight: 400; }
+    .look-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .look-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #fafafa; border: 1px solid #ececec; }
+    .look-item__chip { width: 36px; height: 36px; border-radius: 100%; border: 1px solid #d0d0d0; flex-shrink: 0; background: var(--lc, #ddd); }
+    .look-item__body { flex: 1; min-width: 0; }
+    .look-item__product { font-family: "GeogrotesqueCondBoldWeb"; font-size: 12px; letter-spacing: .9px; text-transform: uppercase; margin: 0; }
+    .look-item__shade { font-family: "RingsideWideWeb"; font-size: 12px; line-height: 1.4; margin: 2px 0 0; color: #757575; }
+    .look-item__add { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; padding: 6px 10px; border: 1px solid #d0d0d0; background: #fff; cursor: pointer; }
+    .look-item__add:hover { background: #000; color: #fff; border-color: #000; }
+
+    /* Arm swatch chip in readout */
+    .arm-chip { display: flex; gap: 12px; align-items: center; padding: 10px 12px; background: #f0e6da; border: 1px solid #ececec; }
+    .arm-chip__img { width: 80px; height: 56px; overflow: hidden; flex-shrink: 0; }
+    .arm-chip__img img { width: 100%; height: 100%; object-fit: cover; }
+    .arm-chip__body { flex: 1; min-width: 0; }
+    .arm-chip__title { font-family: "GeogrotesqueCondBoldWeb"; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin: 0; }
+    .arm-chip__sub { font-family: "RingsideWideWeb"; font-size: 12px; margin: 2px 0 0; }
+
+    .actions { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
+    .add-to-cart { font-family: "RingsideWideWeb"; font-size: 14px; line-height: 1.5; color: #000; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
     .add-to-cart:hover { opacity: .65; }
     .button { display: inline-block; align-self: flex-start; font-family: "GeogrotesqueCondBoldWeb"; font-size: 14px; letter-spacing: 1.4px; text-transform: uppercase; color: #fff; background: #000; border: 1px solid #000; padding: 16px 28px; text-decoration: none; cursor: pointer; }
     .button:hover { background: #fff; color: #000; }
@@ -98,40 +110,59 @@
 <body>
   <header class="page-header"><div class="page-header__brand">JONES ROAD</div></header>
   <div class="stub-section"><div class="stub-section__title">Ingredients <span style="float:right;">+</span></div><div class="stub-section__hint">PDP context above the section</div></div>
-  <p class="annotation">Option M · Skin Twin Finder — flip the flow. Tap the model whose skin looks like yours, and we'll tell you what shade she's wearing. Counters "I picked by hair color, not skin tone."</p>
+  <p class="annotation">Option M (v2) · Skin Twin — banner above the grid, no popups. Click any model anytime; her shade + full "get her look" updates on the right. Filter the grid by skin-tone range.</p>
 
   <section class="picker">
     <div class="picker__inner">
-      <div class="stage" data-stage data-mode="grid">
-        <div class="grid" data-grid></div>
-        <button type="button" class="stage__back" data-back>Back to all 30</button>
-        <div class="invite-banner">
-          <span>
-            <span class="invite-banner__title">Tap the model whose skin looks like yours</span><br>
-            <span class="invite-banner__sub">We'll tell you what shade she's wearing</span>
-          </span>
-        </div>
+      <div class="head">
+        <p class="eyebrow">Find your skin twin</p>
+        <h2 class="headline">Match a face. We'll match the shade — and her whole look.</h2>
+        <p class="sub">Tap any model whose skin looks like yours. We'll tell you what Complexion Stick shade she's wearing, plus the rest of her face — Miracle Balm, Lip Recharge, Face Pencil.</p>
       </div>
-      <div class="panel">
-        <div>
-          <p class="eyebrow">Find your skin twin</p>
-          <h2 class="headline">Match a face. We'll match the shade.</h2>
-          <p class="sub">Skip the swatches. Tap a model whose skin looks like yours, and we'll tell you what shade she's wearing — pulled from her actual photo.</p>
-        </div>
-        <div class="recommendation recommendation--empty" data-rec>
-          <div class="rec-swatch" style="--rec-tone: transparent; border-style: dashed;"></div>
-          <div class="rec-text">
-            <p class="rec-text__label">Your shade</p>
-            <p class="rec-text__name" data-rec-name>—</p>
-            <p class="rec-text__desc" data-rec-desc>Tap a model in the grid to start.</p>
+
+      <div class="invite">
+        <span>
+          <span class="invite__title">Tap the model whose skin looks like yours</span>
+          <br>
+          <span class="invite__sub">All 30 stay clickable — explore freely</span>
+        </span>
+      </div>
+
+      <div class="filter-row" data-categories>
+        <span class="filter-row__label">Narrow it down:</span>
+        <button type="button" class="filter-btn" data-category="" aria-pressed="true">All 30</button>
+      </div>
+
+      <div class="layout">
+        <div class="grid" data-grid></div>
+        <aside class="readout readout--empty" data-readout>
+          <p class="readout__label">Your shade</p>
+          <div class="readout__main">
+            <div class="readout__swatch" data-rec-swatch></div>
+            <div class="readout__head">
+              <p class="readout__name" data-rec-name>—</p>
+              <p class="readout__desc" data-rec-desc>Tap any model in the grid to see her shade + full look.</p>
+            </div>
           </div>
-        </div>
-        <div class="filter">
-          <p class="filter-label">Or browse by shade</p>
-          <div class="swatches" data-shades></div>
-        </div>
-        <a href="#" class="add-to-cart" data-add-to-cart>Add to Cart</a>
-        <a href="#" class="button">Take the complexion quiz</a>
+
+          <div class="arm-chip" data-arm-chip hidden>
+            <div class="arm-chip__img"><img data-arm-img alt=""></div>
+            <div class="arm-chip__body">
+              <p class="arm-chip__title" data-arm-title>—</p>
+              <p class="arm-chip__sub" data-arm-sub>Arm swatch for this category</p>
+            </div>
+          </div>
+
+          <div class="look-section" data-look-section hidden>
+            <h3 class="look-section__title">Get her look <span class="look-section__hint" data-look-count></span></h3>
+            <div class="look-grid" data-look-grid></div>
+          </div>
+
+          <div class="actions">
+            <a href="#" class="add-to-cart">Add Complexion Stick to Cart</a>
+            <a href="#" class="button">Take the complexion quiz</a>
+          </div>
+        </aside>
       </div>
     </div>
   </section>
@@ -144,47 +175,84 @@
       const { categories, shades, modelPool } = data;
       const catMap = Object.fromEntries(categories.map(c => [c.id, c]));
 
-      const stage = document.querySelector("[data-stage]");
       const gridEl = document.querySelector("[data-grid]");
-      const backBtn = document.querySelector("[data-back]");
-      const recBox = document.querySelector("[data-rec]");
+      const catsEl = document.querySelector("[data-categories]");
+      const readoutEl = document.querySelector("[data-readout]");
+      const recSwatch = document.querySelector("[data-rec-swatch]");
       const recName = document.querySelector("[data-rec-name]");
       const recDesc = document.querySelector("[data-rec-desc]");
-      const shadesEl = document.querySelector("[data-shades]");
-      const isFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+      const armChip = document.querySelector("[data-arm-chip]");
+      const armImg = document.querySelector("[data-arm-img]");
+      const armTitle = document.querySelector("[data-arm-title]");
+      const lookSection = document.querySelector("[data-look-section]");
+      const lookGrid = document.querySelector("[data-look-grid]");
+      const lookCount = document.querySelector("[data-look-count]");
 
-      gridEl.innerHTML = shades.map((s, i) => `<button class="grid-cell" data-cell-idx="${i}" data-shade-idx="${i}" style="--tone:${s.hex};border:0;padding:0;"><img src="${modelPool[i % modelPool.length]}?w=600&h=600&fit=crop&crop=faces&auto=format" alt="${s.name}"></button>`).join("");
-      shadesEl.innerHTML = shades.map((s, i) => `<button type="button" class="swatch" data-shade-idx="${i}" style="--swatch: ${s.hex};" aria-label="${s.name}"><i></i></button>`).join("");
+      // Build category filter buttons (after the "All 30" button)
+      const catFrag = categories.map(c => `<button type="button" class="filter-btn" data-category="${c.id}" aria-pressed="false">${c.label}</button>`).join("");
+      catsEl.insertAdjacentHTML("beforeend", catFrag);
 
-      let activeShadeIdx = -1;
+      gridEl.innerHTML = shades.map((s, i) => `
+        <button type="button" class="grid-cell" data-cell-idx="${i}" data-cat="${s.category}" style="--tone:${s.hex};" aria-pressed="false" aria-label="${s.name}">
+          <img src="${modelPool[i % modelPool.length]}?w=400&h=400&fit=crop&crop=faces&auto=format" alt="">
+          <span class="grid-cell__name">${s.name}</span>
+        </button>
+      `).join("");
 
-      function showGrid() {
-        stage.dataset.mode = "grid";
-        activeShadeIdx = -1;
-        gridEl.querySelectorAll(".grid-cell").forEach(c => c.dataset.active = "false");
-        shadesEl.querySelectorAll(".swatch").forEach(b => b.setAttribute("aria-pressed", "false"));
-        recBox.classList.add("recommendation--empty");
-        recBox.querySelector(".rec-swatch").style.setProperty("--rec-tone", "transparent");
-        recBox.querySelector(".rec-swatch").style.borderStyle = "dashed";
-        recName.textContent = "—";
-        recDesc.textContent = "Tap a model in the grid to start.";
+      let activeFilter = "";
+      let activeIdx = -1;
+
+      function applyFilter() {
+        gridEl.querySelectorAll(".grid-cell").forEach(c => {
+          c.dataset.filtered = String(!activeFilter || c.dataset.cat === activeFilter);
+        });
       }
-      function showShade(idx) {
-        const s = shades[idx]; activeShadeIdx = idx;
-        stage.dataset.mode = "picked";
-        gridEl.querySelectorAll(".grid-cell").forEach(c => c.dataset.active = String(Number(c.dataset.cellIdx) === idx));
-        recBox.classList.remove("recommendation--empty");
-        recBox.querySelector(".rec-swatch").style.setProperty("--rec-tone", s.hex);
-        recBox.querySelector(".rec-swatch").style.borderStyle = "solid";
+      function setFilter(catId) {
+        activeFilter = catId;
+        catsEl.querySelectorAll(".filter-btn").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.category === activeFilter)));
+        applyFilter();
+      }
+      function selectModel(idx) {
+        const s = shades[idx];
+        const cat = catMap[s.category];
+        activeIdx = idx;
+        gridEl.querySelectorAll(".grid-cell").forEach(c => c.setAttribute("aria-pressed", String(Number(c.dataset.cellIdx) === idx)));
+        readoutEl.classList.remove("readout--empty");
+        recSwatch.style.setProperty("--rec-tone", s.hex);
+        recSwatch.style.borderStyle = "solid";
         recName.textContent = s.name;
-        recDesc.textContent = `${s.description} — ${catMap[s.category].label} · ${s.undertone} undertone.`;
-        shadesEl.querySelectorAll(".swatch").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.shadeIdx) === idx)));
+        recDesc.textContent = `${s.description} ${cat.label} range.`;
+
+        // Arm swatch
+        armChip.hidden = false;
+        armImg.src = cat.armSwatch + "?w=400&fit=crop&auto=format";
+        armImg.alt = `${cat.label} arm swatch`;
+        armTitle.textContent = `${cat.label} arm swatch`;
+
+        // Get her look
+        const look = cat.look || [];
+        if (look.length) {
+          lookSection.hidden = false;
+          lookCount.textContent = `${look.length} more products`;
+          lookGrid.innerHTML = look.map(item => `
+            <div class="look-item">
+              <div class="look-item__chip" style="--lc: ${item.hex};"></div>
+              <div class="look-item__body">
+                <p class="look-item__product">${item.product}</p>
+                <p class="look-item__shade">${item.shade}</p>
+              </div>
+              <button type="button" class="look-item__add">Add</button>
+            </div>
+          `).join("");
+        } else {
+          lookSection.hidden = true;
+        }
       }
 
-      gridEl.addEventListener("click", e => { const c = e.target.closest(".grid-cell"); if (c) showShade(Number(c.dataset.cellIdx)); });
-      shadesEl.addEventListener("click", e => { const b = e.target.closest(".swatch"); if (b) showShade(Number(b.dataset.shadeIdx)); });
-      shadesEl.addEventListener("pointerover", e => { if (!isFinePointer) return; const b = e.target.closest(".swatch"); if (b) showShade(Number(b.dataset.shadeIdx)); });
-      backBtn.addEventListener("click", showGrid);
+      catsEl.addEventListener("click", e => { const b = e.target.closest(".filter-btn"); if (b) setFilter(b.dataset.category); });
+      gridEl.addEventListener("click", e => { const c = e.target.closest(".grid-cell"); if (c && c.dataset.filtered !== "false") selectModel(Number(c.dataset.cellIdx)); });
+
+      applyFilter();
     })();
   </script>
 </body>

@@ -41,9 +41,8 @@
     .grid30-cell { position: relative; overflow: hidden; background: var(--tone, #ddd); }
     .grid30-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
 
-    /* Adaptive grid — square cells; min(widthFit, heightFit) keeps every cell a true square */
+    /* Adaptive grid — square cells; consistent single-row layout for cohesion */
     .adaptive { container-type: size; container-name: adaptive; display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; width: 100%; height: 100%; box-sizing: border-box; align-items: center; justify-content: center; align-content: center; }
-    /* Each cell = a square sized to the smaller of (column-fit, row-fit) using container query units (cqw/cqh) */
     .adaptive-cell {
       position: relative;
       overflow: hidden;
@@ -55,18 +54,18 @@
       width: var(--side);
       height: var(--side);
     }
-    /* Desktop layouts — col-fit & row-fit drive the cell side */
+    /* Desktop: every count uses a single row — keeps the section visually consistent */
     .adaptive[data-count="1"] .adaptive-cell { --col-fit: calc(100cqw - 16px); --row-fit: calc(100cqh - 16px); }
     .adaptive[data-count="2"] .adaptive-cell { --col-fit: calc((100cqw - 24px) / 2); --row-fit: calc(100cqh - 16px); }
     .adaptive[data-count="3"] .adaptive-cell { --col-fit: calc((100cqw - 32px) / 3); --row-fit: calc(100cqh - 16px); }
-    .adaptive[data-count="4"] .adaptive-cell { --col-fit: calc((100cqw - 24px) / 2); --row-fit: calc((100cqh - 24px) / 2); }
-    .adaptive[data-count="5"] .adaptive-cell { --col-fit: calc((100cqw - 32px) / 3); --row-fit: calc((100cqh - 24px) / 2); }
-    .adaptive[data-count="6"] .adaptive-cell { --col-fit: calc((100cqw - 32px) / 3); --row-fit: calc((100cqh - 24px) / 2); }
-    /* Mobile: tighter layouts so squares stay readable */
+    .adaptive[data-count="4"] .adaptive-cell { --col-fit: calc((100cqw - 40px) / 4); --row-fit: calc(100cqh - 16px); }
+    .adaptive[data-count="5"] .adaptive-cell { --col-fit: calc((100cqw - 48px) / 5); --row-fit: calc(100cqh - 16px); }
+    .adaptive[data-count="6"] .adaptive-cell { --col-fit: calc((100cqw - 56px) / 6); --row-fit: calc(100cqh - 16px); }
+    /* Mobile: scale down rather than wrapping, keeps "single row" cohesion */
     @media (max-width: 600px) {
-      .adaptive[data-count="3"] .adaptive-cell { --col-fit: calc(100cqw - 16px); --row-fit: calc((100cqh - 32px) / 3); }
-      .adaptive[data-count="5"] .adaptive-cell { --col-fit: calc((100cqw - 24px) / 2); --row-fit: calc((100cqh - 32px) / 3); }
-      .adaptive[data-count="6"] .adaptive-cell { --col-fit: calc((100cqw - 24px) / 2); --row-fit: calc((100cqh - 32px) / 3); }
+      .adaptive[data-count="4"] .adaptive-cell { --col-fit: calc((100cqw - 24px) / 2); --row-fit: calc((100cqh - 24px) / 2); }
+      .adaptive[data-count="5"] .adaptive-cell { --col-fit: calc((100cqw - 32px) / 3); --row-fit: calc((100cqh - 24px) / 2); }
+      .adaptive[data-count="6"] .adaptive-cell { --col-fit: calc((100cqw - 32px) / 3); --row-fit: calc((100cqh - 24px) / 2); }
     }
     .adaptive-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
     .adaptive-cell::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,.55) 100%); pointer-events: none; }
@@ -78,6 +77,11 @@
     .stage__back { position: absolute; top: 16px; left: 16px; font-family: "GeogrotesqueCondBoldWeb"; font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: #000; background: rgba(255,255,255,.92); border: 0; padding: 8px 12px; cursor: pointer; backdrop-filter: blur(8px); z-index: 5; opacity: 0; transition: opacity .3s ease; pointer-events: none; }
     .stage[data-mode="adaptive"] .stage__back { opacity: 1; pointer-events: auto; }
     .stage__back::before { content: "← "; }
+    .stage__back--secondary { top: 56px; }
+    .stage[data-sub="single"] .stage__back--secondary { opacity: 1; pointer-events: auto; }
+    .stage__back--secondary { opacity: 0; pointer-events: none; }
+    /* In single-from-adaptive mode, force the cell to fill the frame */
+    .adaptive[data-count="1"][data-single="true"] .adaptive-cell__label { font-size: 16px; left: 24px; bottom: 24px; }
 
     /* Right panel */
     .panel { display: flex; flex-direction: column; gap: 28px; }
@@ -122,6 +126,7 @@
         <div class="stage__view stage__view--grid"><div class="grid30" data-grid30></div></div>
         <div class="stage__view stage__view--adaptive"><div class="adaptive" data-adaptive></div></div>
         <button type="button" class="stage__back" data-back>Show all 30</button>
+        <button type="button" class="stage__back stage__back--secondary" data-back-cat>Back to category</button>
       </div>
       <div class="panel">
         <div>
@@ -172,12 +177,26 @@
       function renderAdaptive() {
         const list = shadesIn(activeCategory);
         adaptiveEl.dataset.count = String(list.length);
+        adaptiveEl.dataset.single = "false";
+        stage.dataset.sub = "category";
         adaptiveEl.innerHTML = list.map(s => `
           <button type="button" class="adaptive-cell" data-shade-idx="${s.idx}" style="--tone:${s.hex};" aria-pressed="${s.idx === activeShadeIdx}" aria-label="${s.name}">
             <img src="${modelPool[s.modelIdx % modelPool.length]}?w=900&fit=crop&crop=faces&auto=format" alt="">
             <span class="adaptive-cell__label">${s.name}</span>
           </button>
         `).join("");
+      }
+      function renderAdaptiveSingle(idx) {
+        const s = shades[idx];
+        adaptiveEl.dataset.count = "1";
+        adaptiveEl.dataset.single = "true";
+        stage.dataset.sub = "single";
+        adaptiveEl.innerHTML = `
+          <button type="button" class="adaptive-cell" data-shade-idx="${s.idx}" style="--tone:${s.hex};" aria-pressed="true" aria-label="${s.name}">
+            <img src="${modelPool[s.modelIdx % modelPool.length]}?w=1200&fit=crop&crop=faces&auto=format" alt="">
+            <span class="adaptive-cell__label">${s.name}</span>
+          </button>
+        `;
       }
       function renderSwatches() {
         if (!activeCategory) { shadesEl.innerHTML = ''; return; }
@@ -198,8 +217,17 @@
         activeShadeIdx = idx;
         readoutName.textContent = s.name;
         readoutDesc.textContent = s.description;
-        adaptiveEl.querySelectorAll(".adaptive-cell").forEach(c => c.setAttribute("aria-pressed", String(Number(c.dataset.shadeIdx) === idx)));
+        renderAdaptiveSingle(idx);
         shadesEl.querySelectorAll(".swatch").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.shadeIdx) === idx)));
+      }
+      function backToCategory() {
+        if (!activeCategory) return;
+        const list = shadesIn(activeCategory);
+        activeShadeIdx = list[0].idx;
+        renderAdaptive();
+        readoutName.textContent = list[0].name;
+        readoutDesc.textContent = list[0].description;
+        shadesEl.querySelectorAll(".swatch").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.shadeIdx) === activeShadeIdx)));
       }
       function setCategory(catId) {
         activeCategory = catId;
@@ -219,6 +247,7 @@
       adaptiveEl.addEventListener("click", e => { const c = e.target.closest(".adaptive-cell"); if (c) setShade(Number(c.dataset.shadeIdx)); });
       adaptiveEl.addEventListener("pointerover", e => { if (!isFinePointer) return; const c = e.target.closest(".adaptive-cell"); if (c) setShade(Number(c.dataset.shadeIdx)); });
       backBtn.addEventListener("click", showGrid);
+      document.querySelector("[data-back-cat]").addEventListener("click", backToCategory);
     })();
   </script>
 </body>
