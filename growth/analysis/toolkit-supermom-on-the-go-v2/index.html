@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Toolkit v2 — Suburban Super-Mom × On-the-go · b_moi0zigc_g7ww9a</title>
+<style>
+@font-face { font-family: "Canela"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf") format("opentype"); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: "Geogrotesque"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf") format("truetype"); font-weight: 700; font-style: normal; font-display: swap; }
+
+:root {
+  --ink: #000;
+  --soft: #555;
+  --line: #e7e3db;
+  --paper: #faf8f3;
+  --card: #fff;
+  --green: #00875a;
+  --yellow: #b87800;
+  --pink: #ff2e92;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--paper); color: var(--ink); }
+body {
+  font-family: "Geogrotesque", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 24px 16px 80px;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header.page-header {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 20px;
+  margin-bottom: 32px;
+}
+header.page-header .meta {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--soft);
+  margin-bottom: 10px;
+}
+header.page-header h1 {
+  font-family: "Canela", Georgia, serif;
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  margin: 0 0 12px;
+}
+header.page-header .stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+.stat {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.stat .num {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.stat .lbl {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--soft);
+}
+.briefid {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  color: var(--soft);
+  margin-top: 8px;
+}
+
+.note {
+  background: #f1ede2;
+  border-left: 3px solid var(--ink);
+  padding: 12px 16px;
+  margin: 0 0 32px;
+  font-size: 13px;
+  border-radius: 0 6px 6px 0;
+}
+.note strong { font-weight: 700; }
+
+section.concept {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.concept-header {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+}
+.concept-num {
+  font-family: "Canela", Georgia, serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--ink);
+  line-height: 1;
+  padding-top: 4px;
+}
+.concept-archetype {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--soft);
+  margin-bottom: 4px;
+}
+.concept-headline {
+  font-family: "Canela", Georgia, serif;
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: 300;
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+.concept-persona {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--soft);
+  margin: 0;
+}
+
+.cell-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px;
+}
+@media (max-width: 600px) {
+  .cell-grid { grid-template-columns: 1fr; }
+}
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cell-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--soft);
+}
+.cost {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--soft);
+}
+.cell-img {
+  display: block;
+  background: #f3efe6;
+  border-radius: 6px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+}
+.cell-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.cell-img.placeholder {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--soft);
+}
+
+footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--soft);
+  text-align: center;
+  line-height: 1.6;
+}
+footer code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  background: var(--card);
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid var(--line);
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header class="page-header">
+  <div class="meta">JRB Static Ads · Toolkit v2 · 2026-04-27</div>
+  <h1>Suburban Super-Mom × On-the-go</h1>
+  <p style="font-size: 14px; color: var(--soft); margin: 0; max-width: 640px;">
+    On-the-go / easy makeup — Mini MB as the one-jar solution for moms who don't have time, drawer space, or patience for a multi-step routine.
+  </p>
+  <div class="stats">
+    <div class="stat"><div class="num">24/24</div><div class="lbl">Cells ready</div></div>
+    <div class="stat"><div class="num">$7.89</div><div class="lbl">Total cost</div></div>
+    <div class="stat"><div class="num">6</div><div class="lbl">Templates</div></div>
+    <div class="stat"><div class="num">2</div><div class="lbl">Models</div></div>
+  </div>
+  <div class="briefid">brief: b_moi0zigc_g7ww9a</div>
+</header>
+
+<div class="note">
+  <strong>What you're looking at:</strong> 6 ad concepts, each modeled on a different reference template (Hero+Social Proof, 5 Reasons Why, 6 Benefits List, IG Story Q&amp;A, Lo-fi Post-It, Us vs Them). Each rendered at 1×1 + 9×16 across NB Pro + GPT 2 = 4 cells per concept. Typography is rendered <strong>by the image model directly</strong> (new <code>allowTextInImage</code> flag) — no JRB compositor overlay. Tap any cell to see the full-resolution image.
+</div>
+
+
+<section class="concept" id="c1">
+  <header class="concept-header">
+    <div class="concept-num">C1</div>
+    <div class="concept-meta">
+      <div class="concept-archetype">Hero product</div>
+      <h2 class="concept-headline">The no-makeup makeup for moms in motion.</h2>
+      <p class="concept-persona">76% never heard of Miracle Balm; social proof is the #1 conversion bridge for the 'older brand' perception barrier. The italic-serif editorial headline + star-bar pattern is JRB's own proven self-ad format.</p>
+    </div>
+  </header>
+  <div class="cell-grid">
+    <div class="cell">  <div class="cell-meta"><span>1x1 · Nano Banana Pro</span><span class="cost">$0.15</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c1-1x1-gemini-nano-banana-pro.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c1-1x1-gemini-nano-banana-pro.png" alt="c1 1x1 Nano Banana Pro" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>1x1 · GPT Image 2</span><span class="cost">$0.21</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c1-1x1-gpt-image-2.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c1-1x1-gpt-image-2.png" alt="c1 1x1 GPT Image 2" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>9x16 · Nano Banana Pro</span><span class="cost">$0.15</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c1-9x16-gemini-nano-banana-pro.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c1-9x16-gemini-nano-banana-pro.png" alt="c1 9x16 Nano Banana Pro" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>9x16 · GPT Image 2</span><span class="cost">$0.80</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c1-9x16-gpt-image-2.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c1-9x16-gpt-image-2.png" alt="c1 9x16 GPT Image 2" loading="lazy">  </a></div>
+  </div>
+</section>
+
+
+<section class="concept" id="c2">
+  <header class="concept-header">
+    <div class="concept-num">C2</div>
+    <div class="concept-meta">
+      <div class="concept-archetype">Editorial / press</div>
+      <h2 class="concept-headline">5 reasons moms keep Mini Miracle Balm in their bag.</h2>
+      <p class="concept-persona">'I replaced 3 products with this one thing' — multi-use affinity for Mini MB is 108-115 across personas. The numbered-listicle format scrolls past as an instant scannable value-stack — perfect for Cold prospecting Sup…</p>
+    </div>
+  </header>
+  <div class="cell-grid">
+    <div class="cell">  <div class="cell-meta"><span>1x1 · Nano Banana Pro</span><span class="cost">$0.15</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c2-1x1-gemini-nano-banana-pro.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c2-1x1-gemini-nano-banana-pro.png" alt="c2 1x1 Nano Banana Pro" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>1x1 · GPT Image 2</span><span class="cost">$0.21</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c2-1x1-gpt-image-2.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c2-1x1-gpt-image-2.png" alt="c2 1x1 GPT Image 2" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>9x16 · Nano Banana Pro</span><span class="cost">$0.15</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c2-9x16-gemini-nano-banana-pro.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c2-9x16-gemini-nano-banana-pro.png" alt="c2 9x16 Nano Banana Pro" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>9x16 · GPT Image 2</span><span class="cost">$0.80</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c2-9x16-gpt-image-2.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c2-9x16-gpt-image-2.png" alt="c2 9x16 GPT Image 2" loading="lazy">  </a></div>
+  </div>
+</section>
+
+
+<section class="concept" id="c3">
+  <header class="concept-header">
+    <div class="concept-num">C3</div>
+    <div class="concept-meta">
+      <div class="concept-archetype">Editorial / press</div>
+      <h2 class="concept-headline">6 benefits of Mini Miracle Balm.</h2>
+      <p class="concept-persona">Education-driven benefit list speaks to ingredient-conscious + skincare-first prospects (33 of 52 prefer skincare > color; 'Hydrates + evens in one step' = #1 phrasing). The 6-benefit format gives a complete value-pro…</p>
+    </div>
+  </header>
+  <div class="cell-grid">
+    <div class="cell">  <div class="cell-meta"><span>1x1 · Nano Banana Pro</span><span class="cost">$0.15</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c3-1x1-gemini-nano-banana-pro.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c3-1x1-gemini-nano-banana-pro.png" alt="c3 1x1 Nano Banana Pro" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>1x1 · GPT Image 2</span><span class="cost">$0.21</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c3-1x1-gpt-image-2.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c3-1x1-gpt-image-2.png" alt="c3 1x1 GPT Image 2" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>9x16 · Nano Banana Pro</span><span class="cost">$0.15</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c3-9x16-gemini-nano-banana-pro.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c3-9x16-gemini-nano-banana-pro.png" alt="c3 9x16 Nano Banana Pro" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>9x16 · GPT Image 2</span><span class="cost">$0.80</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c3-9x16-gpt-image-2.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c3-9x16-gpt-image-2.png" alt="c3 9x16 GPT Image 2" loading="lazy">  </a></div>
+  </div>
+</section>
+
+
+<section class="concept" id="c4">
+  <header class="concept-header">
+    <div class="concept-num">C4</div>
+    <div class="concept-meta">
+      <div class="concept-archetype">UGC-style</div>
+      <h2 class="concept-headline">How do you do makeup in the carpool line?</h2>
+      <p class="concept-persona">Native-feeling content blends in to the IG feed — wins on Andromeda's 'doesn't look like an ad' signal. Real customer-question framing for an unaware prospect (76% never heard of MB) lowers the skepticism floor. Q&A s…</p>
+    </div>
+  </header>
+  <div class="cell-grid">
+    <div class="cell">  <div class="cell-meta"><span>1x1 · Nano Banana Pro</span><span class="cost">$0.15</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c4-1x1-gemini-nano-banana-pro.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c4-1x1-gemini-nano-banana-pro.png" alt="c4 1x1 Nano Banana Pro" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>1x1 · GPT Image 2</span><span class="cost">$0.21</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c4-1x1-gpt-image-2.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c4-1x1-gpt-image-2.png" alt="c4 1x1 GPT Image 2" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>9x16 · Nano Banana Pro</span><span class="cost">$0.15</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c4-9x16-gemini-nano-banana-pro.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c4-9x16-gemini-nano-banana-pro.png" alt="c4 9x16 Nano Banana Pro" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>9x16 · GPT Image 2</span><span class="cost">$0.80</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c4-9x16-gpt-image-2.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c4-9x16-gpt-image-2.png" alt="c4 9x16 GPT Image 2" loading="lazy">  </a></div>
+  </div>
+</section>
+
+
+<section class="concept" id="c5">
+  <header class="concept-header">
+    <div class="concept-num">C5</div>
+    <div class="concept-meta">
+      <div class="concept-archetype">UGC-style</div>
+      <h2 class="concept-headline">the only mom-approved makeup</h2>
+      <p class="concept-persona">'Miracle worker! I need one in every bag, pocket, desk drawer.' UGC-style with a handwritten Post-It defeats the 'older brand' perception (3 of 7) by lowering the gloss-floor of the ad. Authentic > polished for Super-…</p>
+    </div>
+  </header>
+  <div class="cell-grid">
+    <div class="cell">  <div class="cell-meta"><span>1x1 · Nano Banana Pro</span><span class="cost">$0.15</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c5-1x1-gemini-nano-banana-pro.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c5-1x1-gemini-nano-banana-pro.png" alt="c5 1x1 Nano Banana Pro" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>1x1 · GPT Image 2</span><span class="cost">$0.21</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c5-1x1-gpt-image-2.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c5-1x1-gpt-image-2.png" alt="c5 1x1 GPT Image 2" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>9x16 · Nano Banana Pro</span><span class="cost">$0.15</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c5-9x16-gemini-nano-banana-pro.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c5-9x16-gemini-nano-banana-pro.png" alt="c5 9x16 Nano Banana Pro" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>9x16 · GPT Image 2</span><span class="cost">$0.80</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c5-9x16-gpt-image-2.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c5-9x16-gpt-image-2.png" alt="c5 9x16 GPT Image 2" loading="lazy">  </a></div>
+  </div>
+</section>
+
+
+<section class="concept" id="c6">
+  <header class="concept-header">
+    <div class="concept-num">C6</div>
+    <div class="concept-meta">
+      <div class="concept-archetype">Category-Callout</div>
+      <h2 class="concept-headline">Jones Road vs traditional foundation</h2>
+      <p class="concept-persona">76% don't use face balms (category unfamiliarity). The Us-vs-Them format positions Mini MB AGAINST the multi-product foundation routine she's been told to use — direct, scannable comparison wins on Disagreeable hook +…</p>
+    </div>
+  </header>
+  <div class="cell-grid">
+    <div class="cell">  <div class="cell-meta"><span>1x1 · Nano Banana Pro</span><span class="cost">$0.15</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c6-1x1-gemini-nano-banana-pro.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c6-1x1-gemini-nano-banana-pro.png" alt="c6 1x1 Nano Banana Pro" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>1x1 · GPT Image 2</span><span class="cost">$0.21</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c6-1x1-gpt-image-2.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c6-1x1-gpt-image-2.png" alt="c6 1x1 GPT Image 2" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>9x16 · Nano Banana Pro</span><span class="cost">$0.15</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c6-9x16-gemini-nano-banana-pro.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c6-9x16-gemini-nano-banana-pro.png" alt="c6 9x16 Nano Banana Pro" loading="lazy">  </a></div><div class="cell">  <div class="cell-meta"><span>9x16 · GPT Image 2</span><span class="cost">$0.80</span></div>  <a class="cell-img" href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c6-9x16-gpt-image-2.png" target="_blank" rel="noopener">    <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moi0zigc_g7ww9a/c6-9x16-gpt-image-2.png" alt="c6 9x16 GPT Image 2" loading="lazy">  </a></div>
+  </div>
+</section>
+
+
+<footer>
+  Generated by <code>jrb-static-ads</code> · Toolkit v2 fixture <code>fixtures/toolkit-supermom-on-the-go-v2.json</code><br>
+  Reviewer: <code>http://localhost:3000/briefs/b_moi0zigc_g7ww9a</code> · GitHub: <code>CodyPlofker/jrb-static-ads</code>
+</footer>
+
+</div>
+</body>
+</html>
+
