@@ -63,6 +63,7 @@
     .stage__nav--next { right: 12px; }
 
     .hero { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: #f0e6da; }
+    @media (min-width: 900px) { .hero { aspect-ratio: 5 / 4; max-height: 460px; } }
     .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
 
     /* No swatch — copy-forward shade card */
@@ -86,7 +87,7 @@
     .shade-card__copy { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; margin: 0; color: #000; }
     .shade-card__copy em { font-family: "Canela", serif; font-style: italic; font-size: 16px; }
 
-    .stage__cta { padding: 20px 28px 24px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .stage__cta { padding: 16px 24px 22px; display: flex; flex-direction: column; gap: 10px; }
     .button-atc {
       display: flex;
       align-items: center;
@@ -94,24 +95,45 @@
       width: 100%;
       font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif;
       font-size: 16px;
-      font-weight: 550;
-      letter-spacing: 1px;
+      font-weight: 400;
+      letter-spacing: 0.4px;
       text-transform: uppercase;
       color: #fff;
       background: #000;
       border: 1px solid #000;
       border-radius: 3px;
-      height: 56px;
-      padding: 0 24px;
+      height: 44px;
+      padding: 0 20px;
       text-decoration: none;
       cursor: pointer;
       transition: all .4s cubic-bezier(.39, .575, .565, 1);
     }
     .has-mouse .button-atc:hover { background: #fff; color: #000; border-color: #d0d0d0; }
-    .button-atc__price { margin-left: auto; padding-left: 16px; border-left: 1px solid rgba(255,255,255,.4); }
+    .button-atc__price { margin-left: auto; padding-left: 14px; border-left: 1px solid rgba(255,255,255,.4); }
     .has-mouse .button-atc:hover .button-atc__price { border-left-color: #d0d0d0; }
-    .quiz-link { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 14px; color: #000; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; transition: opacity .4s cubic-bezier(.39, .575, .565, 1); }
-    .has-mouse .quiz-link:hover { opacity: .65; }
+    .button-quiz {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif;
+      font-size: 13px;
+      font-weight: 550;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: #000;
+      background: #fff;
+      border: 1px solid #000;
+      border-radius: 2px;
+      height: 40px;
+      padding: 0 36px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all .4s cubic-bezier(.39, .575, .565, 1);
+    }
+    .has-mouse .button-quiz:hover { background: #000; color: #fff; }
+    .grid-cta { padding: 8px 0 0; text-align: center; }
+    .grid-cta .button-quiz { display: inline-flex; width: auto; min-width: 280px; }
 
     /* Horizontal Get-the-Look strip — full width */
     .look-strip { background: #fff; border-radius: 3px; box-shadow: 0 1px 2px rgba(16,24,40,.04); padding: 28px; margin-top: 8px; }
@@ -174,7 +196,10 @@
       </div>
 
       <div class="layout">
-        <div class="grid" data-grid></div>
+        <div>
+          <div class="grid" data-grid></div>
+          <div class="grid-cta"><a href="#" class="button-quiz">Take the Quiz Instead</a></div>
+        </div>
         <aside class="stage" data-stage>
           <button type="button" class="stage__nav stage__nav--prev" data-prev aria-label="Previous shade"><svg viewBox="0 0 14 14" fill="none"><path d="M9 1L3 7l6 6" stroke="#000" stroke-width="1.5"/></svg></button>
           <button type="button" class="stage__nav stage__nav--next" data-next aria-label="Next shade"><svg viewBox="0 0 14 14" fill="none"><path d="M5 1l6 6-6 6" stroke="#000" stroke-width="1.5"/></svg></button>
@@ -185,8 +210,8 @@
             <p class="shade-card__copy" data-copy>—</p>
           </div>
           <div class="stage__cta">
-            <a href="#" class="button-atc">Add Foundation Stick to Cart<span class="button-atc__price">$45</span></a>
-            <a href="#" class="quiz-link">Take the Quiz</a>
+            <a href="#" class="button-atc">Add to Cart<span class="button-atc__price">$45</span></a>
+            <a href="#" class="button-quiz">Take the Quiz</a>
           </div>
         </aside>
       </div>

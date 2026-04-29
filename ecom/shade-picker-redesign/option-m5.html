@@ -65,98 +65,92 @@
 
     /* Hero with shoppable hotspots */
     .hero { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: #f0e6da; }
+    @media (min-width: 900px) { .hero { aspect-ratio: 5 / 4; max-height: 460px; } }
     .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
 
-    /* Hotspot dots — positioned over face features */
+    /* Hotspot dots — small, static (no animation) */
     .hotspot {
       position: absolute;
-      width: 32px;
-      height: 32px;
+      width: 18px;
+      height: 18px;
       border-radius: 100%;
       border: 2px solid #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,.3);
+      box-shadow: 0 1px 4px rgba(0,0,0,.4);
       cursor: pointer;
       padding: 0;
-      transition: transform .4s cubic-bezier(.39, .575, .565, 1), box-shadow .25s;
+      transition: transform .4s cubic-bezier(.39, .575, .565, 1);
       z-index: 4;
-      animation: pulse 2.4s cubic-bezier(.39, .575, .565, 1) infinite;
+      background: #fff;
     }
-    .hotspot::before {
-      content: "";
-      position: absolute;
-      inset: -8px;
-      border-radius: 100%;
-      border: 2px solid rgba(255,255,255,.5);
-      animation: ripple 2.4s cubic-bezier(.39, .575, .565, 1) infinite;
-      pointer-events: none;
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.08); }
-    }
-    @keyframes ripple {
-      0% { transform: scale(.8); opacity: 0; }
-      30% { opacity: 1; }
-      100% { transform: scale(1.4); opacity: 0; }
-    }
-    .has-mouse .hotspot:hover { transform: scale(1.2); }
+    .has-mouse .hotspot:hover { transform: scale(1.25); }
     .hotspot i { display: block; width: 100%; height: 100%; border-radius: 100%; background: var(--lc); }
+    .hotspot[data-active="true"] { transform: scale(1.35); box-shadow: 0 0 0 3px rgba(0,0,0,.85); }
 
     /* Hotspot positions — relative to a portrait face roughly centered */
-    .hotspot--foundation { top: 64%; left: 32%; }   /* cheek */
-    .hotspot--blush      { top: 56%; left: 68%; }   /* opposite cheek */
+    .hotspot--foundation { top: 66%; left: 34%; }   /* cheek */
+    .hotspot--blush      { top: 58%; left: 66%; }   /* opposite cheek */
     .hotspot--lip        { top: 75%; left: 50%; }   /* lip area */
-    .hotspot--eye        { top: 38%; left: 40%; }   /* eye */
+    .hotspot--eye        { top: 38%; left: 42%; }   /* eye */
 
-    /* Hotspot tooltip */
+    /* Hotspot card — beefier, with swatch + review stars + ATC */
     .hotspot-card {
       position: absolute;
       z-index: 6;
       background: #fff;
-      border: 1px solid #d0d0d0;
+      border: 1px solid #000;
       border-radius: 3px;
-      box-shadow: 0 4px 19px rgba(0,0,0,.18);
-      padding: 14px 16px;
-      width: 200px;
-      pointer-events: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      opacity: 0;
+      box-shadow: 0 5px 40px rgba(0,0,0,.22);
+      padding: 16px;
+      width: 260px;
       pointer-events: none;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px 14px;
+      opacity: 0;
       transition: opacity .25s ease;
     }
     .hotspot-card[data-open="true"] { opacity: 1; pointer-events: auto; }
-    .hotspot-card__product { font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin: 0; }
+    .hotspot-card__swatch { width: 48px; height: 48px; border-radius: 100%; border: 1px solid #d4d4d4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; grid-row: span 2; }
+    .hotspot-card__swatch i { display: block; width: 40px; height: 40px; border-radius: 100%; background: var(--card-tone); }
+    .hotspot-card__head { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .hotspot-card__product { font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1.18px; text-transform: uppercase; margin: 0; color: #000; }
     .hotspot-card__shade { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.4; margin: 0; color: #333; }
+    .hotspot-card__stars { display: flex; align-items: center; gap: 6px; }
+    .hotspot-card__stars-svg { display: flex; align-items: center; height: 14px; }
+    .hotspot-card__stars-svg svg { width: 14px; height: 14px; }
+    .hotspot-card__count { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 325; color: #000; }
     .hotspot-card__add {
+      grid-column: 1 / -1;
       font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif;
-      font-size: 12px;
-      font-weight: 550;
+      font-size: 13px;
+      font-weight: 400;
       letter-spacing: 0.4px;
       text-transform: uppercase;
-      padding: 0 14px;
-      height: 36px;
+      height: 40px;
       border: 1px solid #000;
-      border-radius: 2px;
+      border-radius: 3px;
       background: #000;
       color: #fff;
       cursor: pointer;
       transition: all .4s cubic-bezier(.39, .575, .565, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
-    .has-mouse .hotspot-card__add:hover { background: #fff; color: #000; }
+    .hotspot-card__add-price { padding-left: 12px; border-left: 1px solid rgba(255,255,255,.4); }
+    .has-mouse .hotspot-card__add:hover { background: #fff; color: #000; border-color: #d0d0d0; }
+    .has-mouse .hotspot-card__add:hover .hotspot-card__add-price { border-left-color: #d0d0d0; }
 
-    .shade-card { padding: 24px 28px; display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; border-bottom: 1px solid #ececec; }
-    .shade-card__swatch { width: 56px; height: 56px; border-radius: 100%; border: 1px solid #d4d4d4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .shade-card__swatch i { display: block; width: 48px; height: 48px; border-radius: 100%; background: var(--tone); }
-    .shade-card__name { font-family: "Canela", serif; font-weight: 300; font-size: 30px; line-height: 1.05; letter-spacing: 0.5px; margin: 0 0 4px 0; color: #000; }
-    .shade-card__und { font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #000; margin: 0; }
+    .shade-card { padding: 22px 28px 18px; border-bottom: 1px solid #ececec; }
+    .shade-card__und { display: inline-block; font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; background: #f8f8f8; border: 1px solid #ececec; border-radius: 2px; color: #000; margin-bottom: 10px; }
+    .shade-card__name { font-family: "Canela", serif; font-weight: 300; font-size: 30px; line-height: 1.05; letter-spacing: 0.5px; margin: 0; color: #000; }
 
-    .legend { padding: 16px 28px; background: #f8f8f8; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; border-bottom: 1px solid #ececec; }
+    .legend { padding: 14px 28px; background: #f8f8f8; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; border-bottom: 1px solid #ececec; }
     .legend__title { font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif; font-size: 11px; letter-spacing: .9px; color: #757575; text-transform: uppercase; flex: 1; }
     .legend__hint { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.4; color: #000; }
 
-    .stage__cta { padding: 20px 28px 24px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .stage__cta { padding: 16px 24px 22px; display: flex; flex-direction: column; gap: 10px; }
     .button-atc {
       display: flex;
       align-items: center;
@@ -164,23 +158,45 @@
       width: 100%;
       font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif;
       font-size: 16px;
-      font-weight: 550;
-      letter-spacing: 1px;
+      font-weight: 400;
+      letter-spacing: 0.4px;
       text-transform: uppercase;
       color: #fff;
       background: #000;
       border: 1px solid #000;
       border-radius: 3px;
-      height: 56px;
-      padding: 0 24px;
+      height: 44px;
+      padding: 0 20px;
       text-decoration: none;
       cursor: pointer;
       transition: all .4s cubic-bezier(.39, .575, .565, 1);
     }
     .has-mouse .button-atc:hover { background: #fff; color: #000; border-color: #d0d0d0; }
-    .button-atc__price { margin-left: auto; padding-left: 16px; border-left: 1px solid rgba(255,255,255,.4); }
+    .button-atc__price { margin-left: auto; padding-left: 14px; border-left: 1px solid rgba(255,255,255,.4); }
     .has-mouse .button-atc:hover .button-atc__price { border-left-color: #d0d0d0; }
-    .quiz-link { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 14px; color: #000; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+    .button-quiz {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif;
+      font-size: 13px;
+      font-weight: 550;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: #000;
+      background: #fff;
+      border: 1px solid #000;
+      border-radius: 2px;
+      height: 40px;
+      padding: 0 36px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all .4s cubic-bezier(.39, .575, .565, 1);
+    }
+    .has-mouse .button-quiz:hover { background: #000; color: #fff; }
+    .grid-cta { padding: 8px 0 0; text-align: center; }
+    .grid-cta .button-quiz { display: inline-flex; width: auto; min-width: 280px; }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
@@ -190,7 +206,7 @@
 <body>
   <header class="page-header"><div class="page-header__brand">JONES ROAD</div></header>
   <div class="stub-section"><div class="stub-section__title">Ingredients <span style="float:right;">+</span></div><div class="stub-section__hint">PDP context above the section</div></div>
-  <p class="annotation">M5 · Shoppable hotspots — pulsing dots on her face mark the products she's wearing. Tap a dot to open the product card with shade + Add. Most "build her look" feel.</p>
+  <p class="annotation">M5 · Shoppable hotspots (revised) — small static dots (18px, no animation) on her face. Tap to open a card with swatch + product name + shade + review stars + ATC.</p>
 
   <section class="picker">
     <div class="picker__inner">
@@ -205,7 +221,10 @@
       </div>
 
       <div class="layout">
-        <div class="grid" data-grid></div>
+        <div>
+          <div class="grid" data-grid></div>
+          <div class="grid-cta"><a href="#" class="button-quiz">Take the Quiz Instead</a></div>
+        </div>
         <aside class="stage" data-stage>
           <button type="button" class="stage__nav stage__nav--prev" data-prev aria-label="Previous shade"><svg viewBox="0 0 14 14" fill="none"><path d="M9 1L3 7l6 6" stroke="#000" stroke-width="1.5"/></svg></button>
           <button type="button" class="stage__nav stage__nav--next" data-next aria-label="Next shade"><svg viewBox="0 0 14 14" fill="none"><path d="M5 1l6 6-6 6" stroke="#000" stroke-width="1.5"/></svg></button>
@@ -216,25 +235,29 @@
             <button type="button" class="hotspot hotspot--lip" data-hotspot="2" aria-label="Lip Recharge"><i></i></button>
             <button type="button" class="hotspot hotspot--eye" data-hotspot="3" aria-label="Face Pencil"><i></i></button>
             <div class="hotspot-card" data-hotspot-card>
-              <p class="hotspot-card__product" data-hotspot-product>—</p>
-              <p class="hotspot-card__shade" data-hotspot-shade>—</p>
-              <button type="button" class="hotspot-card__add">Add to Cart</button>
+              <div class="hotspot-card__swatch"><i data-card-swatch></i></div>
+              <div class="hotspot-card__head">
+                <p class="hotspot-card__product" data-hotspot-product>—</p>
+                <p class="hotspot-card__shade" data-hotspot-shade>—</p>
+                <div class="hotspot-card__stars">
+                  <span class="hotspot-card__stars-svg" data-card-stars></span>
+                  <span class="hotspot-card__count" data-card-count>—</span>
+                </div>
+              </div>
+              <button type="button" class="hotspot-card__add">Add to Cart<span class="hotspot-card__add-price" data-card-price>$45</span></button>
             </div>
           </div>
           <div class="shade-card">
-            <div class="shade-card__swatch"><i data-swatch></i></div>
-            <div>
-              <h3 class="shade-card__name" data-name>—</h3>
-              <p class="shade-card__und" data-und>—</p>
-            </div>
+            <span class="shade-card__und" data-und>—</span>
+            <h3 class="shade-card__name" data-name>—</h3>
           </div>
           <div class="legend">
             <span class="legend__title">Tap any dot</span>
-            <span class="legend__hint">She's wearing 4 products. Add them individually or as a set.</span>
+            <span class="legend__hint">She's wearing 4 products. Tap a dot to see it.</span>
           </div>
           <div class="stage__cta">
-            <a href="#" class="button-atc">Add Foundation Stick to Cart<span class="button-atc__price">$45</span></a>
-            <a href="#" class="quiz-link">Add the whole look · $138</a>
+            <a href="#" class="button-atc">Add to Cart<span class="button-atc__price">$45</span></a>
+            <a href="#" class="button-quiz">Add the Whole Look · $138</a>
           </div>
         </aside>
       </div>
@@ -253,7 +276,6 @@
       const catsEl = document.querySelector("[data-categories]");
       const heroEl = document.querySelector("[data-hero]");
       const heroWrap = document.querySelector("[data-hero-wrap]");
-      const swatchEl = document.querySelector("[data-swatch]");
       const nameEl = document.querySelector("[data-name]");
       const undEl = document.querySelector("[data-und]");
       const prevBtn = document.querySelector("[data-prev]");
@@ -261,7 +283,26 @@
       const hotspotCard = document.querySelector("[data-hotspot-card]");
       const hotspotProduct = document.querySelector("[data-hotspot-product]");
       const hotspotShade = document.querySelector("[data-hotspot-shade]");
+      const cardSwatch = document.querySelector("[data-card-swatch]");
+      const cardStars = document.querySelector("[data-card-stars]");
+      const cardCount = document.querySelector("[data-card-count]");
+      const cardPrice = document.querySelector("[data-card-price]");
       const hotspots = Array.from(document.querySelectorAll(".hotspot"));
+
+      // Junip stars — exact theme SVG paths (viewBox 0 0 18 17)
+      const STAR_OUTLINE = `<svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="#000"/></svg>`;
+      const STAR_FILLED = `<svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="#000"/></svg>`;
+      function renderStars(rating) {
+        const w = Math.max(0, Math.min(rating, 5)) * 20;
+        return `<span style="position:relative;display:inline-flex;height:14px;"><span style="display:flex;">${STAR_OUTLINE.repeat(5)}</span><span style="display:flex;position:absolute;top:0;left:0;overflow:hidden;width:${w}%;">${STAR_FILLED.repeat(5)}</span></span>`;
+      }
+      // Per-product mock review data for hotspot card
+      const PRODUCT_META = {
+        "Your Skin Foundation Stick": { rating: 4.6, count: "2,847", price: "$45" },
+        "Miracle Balm": { rating: 4.7, count: "10,512", price: "$38" },
+        "Lip Recharge": { rating: 4.5, count: "1,389", price: "$24" },
+        "Face Pencil": { rating: 4.8, count: "5,624", price: "$42" }
+      };
 
       catsEl.insertAdjacentHTML("beforeend", categories.map(c => `<button type="button" class="filter-btn" data-category="${c.id}" aria-pressed="false">${c.label}</button>`).join(""));
 
@@ -292,9 +333,8 @@
         gridEl.querySelectorAll(".grid-cell").forEach(c => c.setAttribute("aria-pressed", String(Number(c.dataset.cellIdx) === idx)));
         heroEl.src = modelPool[s.modelIdx] + "?w=900&fit=crop&crop=faces&auto=format";
         heroEl.alt = `Model wearing ${s.name}`;
-        swatchEl.style.background = s.hex;
         nameEl.textContent = s.name;
-        undEl.textContent = `${cat.label} · ${s.undertone} undertone · in your bag`;
+        undEl.textContent = `${cat.label} · ${s.undertone} undertone`;
         prevBtn.disabled = idx === 0;
         nextBtn.disabled = idx === shades.length - 1;
 
@@ -309,6 +349,7 @@
           if (item) {
             h.querySelector("i").style.background = item.hex;
             h.style.display = "block";
+            h.dataset.active = "false";
           } else {
             h.style.display = "none";
           }
@@ -318,19 +359,32 @@
       function openHotspot(hotspotIdx, sourceEl) {
         const item = lookData[hotspotIdx];
         if (!item) return;
+        hotspots.forEach(h => h.dataset.active = "false");
+        sourceEl.dataset.active = "true";
+        const meta = PRODUCT_META[item.product] || { rating: 4.5, count: "1,000", price: "$45" };
         hotspotProduct.textContent = item.product;
         hotspotShade.textContent = item.shade;
-        // Position card near hotspot
+        cardSwatch.style.setProperty("--card-tone", item.hex);
+        cardStars.innerHTML = renderStars(meta.rating);
+        cardCount.textContent = `${meta.rating} (${meta.count})`;
+        cardPrice.textContent = meta.price;
+        // Position card near hotspot — keep within hero bounds
         const wrapRect = heroWrap.getBoundingClientRect();
         const dotRect = sourceEl.getBoundingClientRect();
-        const top = dotRect.top - wrapRect.top + 40;
-        const left = Math.min(dotRect.left - wrapRect.left - 80, wrapRect.width - 220);
-        hotspotCard.style.top = `${Math.max(8, top)}px`;
-        hotspotCard.style.left = `${Math.max(8, left)}px`;
+        const cardW = 260;
+        const cardH = 160;
+        let top = dotRect.top - wrapRect.top + 28;
+        let left = dotRect.left - wrapRect.left - cardW / 2 + 9;
+        if (top + cardH > wrapRect.height - 8) top = dotRect.top - wrapRect.top - cardH - 16;
+        left = Math.max(8, Math.min(left, wrapRect.width - cardW - 8));
+        top = Math.max(8, top);
+        hotspotCard.style.top = `${top}px`;
+        hotspotCard.style.left = `${left}px`;
         hotspotCard.dataset.open = "true";
       }
       function closeHotspot() {
         hotspotCard.dataset.open = "false";
+        hotspots.forEach(h => h.dataset.active = "false");
       }
 
       catsEl.addEventListener("click", e => { const b = e.target.closest(".filter-btn"); if (b) setFilter(b.dataset.category); });
