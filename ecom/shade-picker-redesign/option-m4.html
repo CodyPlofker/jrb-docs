@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>M4 · Skin Twin · Big Swatch · Jones Road</title>
+  <style>
+    @font-face { font-family: "Canela";                  src: url("./assets/fonts/canela-light.static.woff2") format("woff2");           font-weight: 300; font-display: swap; }
+    @font-face { font-family: "GeogrotesqueCondBoldWeb"; src: url("./assets/fonts/geogrotesque-cond-bold.static.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "RingsideWideWeb";         src: url("./assets/fonts/ringside-wide-book.static.woff2") format("woff2");     font-weight: 400; font-display: swap; }
+    @font-face { font-family: "ArticulatCF";             src: url("./assets/fonts/articulatcf-bold.static.woff2") format("woff2");       font-weight: 700; font-display: swap; }
+    @font-face { font-family: "BaseMonoWideWeb";         src: url("./assets/fonts/base-mono-wide-thin.static.woff2") format("woff2");    font-weight: 550; font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 16px; color: #000; background: #fff; -webkit-font-smoothing: antialiased; letter-spacing: .025em; }
+    img { display: block; max-width: 100%; }
+    button { font-family: inherit; }
+
+    .page-header { padding: 16px 20px; border-bottom: 1px solid #ececec; text-align: center; }
+    .page-header__brand { font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 1.5px; color: #000; }
+    .stub-section { padding: 28px 20px; border-bottom: 1px solid #ececec; }
+    .stub-section__title { font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #000; }
+    .stub-section__hint { font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif; font-size: 11px; letter-spacing: .8px; color: #757575; margin-top: 6px; }
+    .annotation { max-width: 1280px; margin: 24px auto 12px; font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif; font-size: 11px; letter-spacing: .9px; text-transform: uppercase; color: #757575; padding: 0 20px; }
+
+    .picker { background: #f8f8f8; padding: 56px 20px; }
+    @media (min-width: 769px) { .picker { padding: 72px 48px; } }
+    .picker__inner { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+
+    .head { display: flex; flex-direction: column; gap: 12px; max-width: 720px; }
+    .eyebrow { font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin: 0; color: #000; }
+    .headline { font-family: "Canela", serif; font-weight: 300; font-size: 26px; line-height: 37px; letter-spacing: 0.5px; margin: 0; text-wrap: balance; color: #000; }
+    @media (min-width: 769px) { .headline { font-size: 38px; line-height: 54px; } }
+    .sub { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 325; line-height: 1.5; margin: 0; max-width: 56ch; color: #000; }
+
+    .filter-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .filter-btn { font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif; font-size: 13px; font-weight: 550; letter-spacing: 0.4px; text-transform: uppercase; color: #000; background: #fff; border: 1px solid #d0d0d0; border-radius: 2px; padding: 0 16px; cursor: pointer; height: 36px; transition: all .4s cubic-bezier(.39, .575, .565, 1); }
+    .has-mouse .filter-btn:hover { border-color: #000; }
+    .filter-btn[aria-pressed="true"] { background: #000; color: #fff; border-color: #000; }
+
+    .layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
+    @media (min-width: 900px) { .layout { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 40px; align-items: start; } }
+
+    .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; background: #fff; padding: 4px; border-radius: 3px; box-shadow: 0 1px 2px rgba(16,24,40,.04); }
+    @media (min-width: 600px) { .grid { grid-template-columns: repeat(6, 1fr); } }
+    .grid-cell { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: var(--tone, #ddd); cursor: pointer; border: 0; padding: 0; transition: opacity .25s ease, box-shadow .2s ease; }
+    .grid-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; transition: transform .35s cubic-bezier(.39, .575, .565, 1); }
+    .has-mouse .grid-cell:hover img { transform: scale(1.04); }
+    .grid-cell::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0); transition: background .25s ease; pointer-events: none; }
+    .has-mouse .grid-cell:hover::after { background: rgba(0,0,0,.06); }
+    .grid-cell[data-filtered="false"] { opacity: .15; cursor: default; pointer-events: none; }
+    .grid-cell[aria-pressed="true"] { box-shadow: 0 0 0 3px #000 inset; z-index: 2; }
+
+    .stage { position: relative; background: #fff; border-radius: 3px; box-shadow: 0 1px 2px rgba(16,24,40,.04); overflow: hidden; }
+    @media (min-width: 900px) { .stage { position: sticky; top: 24px; max-height: calc(100vh - 48px); overflow-y: auto; } }
+    .stage__nav { position: absolute; top: 240px; transform: translateY(-50%); width: 36px; height: 36px; background: rgba(255,255,255,.92); border: 1px solid #d0d0d0; border-radius: 100%; cursor: pointer; padding: 0; z-index: 5; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(6px); transition: all .4s cubic-bezier(.39, .575, .565, 1); }
+    .has-mouse .stage__nav:hover { background: #000; border-color: #000; }
+    .stage__nav svg { width: 12px; height: 12px; }
+    .has-mouse .stage__nav:hover svg path { stroke: #fff; }
+    .stage__nav:disabled { opacity: .35; cursor: not-allowed; }
+    .stage__nav--prev { left: 12px; }
+    .stage__nav--next { right: 12px; }
+
+    /* Hero with swatch overlap — swatch breaks the bottom edge of the photo */
+    .hero-wrap { position: relative; padding-bottom: 70px; }
+    .hero { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: #f0e6da; }
+    .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+
+    /* THE BIG SWATCH — 140px, overlaps the bottom of the hero */
+    .big-swatch {
+      position: absolute;
+      left: 28px;
+      bottom: 0;
+      width: 140px;
+      height: 140px;
+      border-radius: 100%;
+      border: 4px solid #fff;
+      background: #fff;
+      box-shadow: 0 4px 16px rgba(0,0,0,.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .big-swatch i { display: block; width: 124px; height: 124px; border-radius: 100%; background: var(--tone); }
+    @media (max-width: 600px) {
+      .big-swatch { width: 110px; height: 110px; left: 20px; }
+      .big-swatch i { width: 96px; height: 96px; }
+      .hero-wrap { padding-bottom: 55px; }
+    }
+
+    .shade-card { padding: 0 28px 24px; border-bottom: 1px solid #ececec; }
+    .shade-card__und { display: inline-block; font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; background: #f8f8f8; border: 1px solid #ececec; border-radius: 2px; color: #000; margin-bottom: 12px; }
+    .shade-card__name { font-family: "Canela", serif; font-weight: 300; font-size: 36px; line-height: 1.05; letter-spacing: 0.5px; margin: 0 0 12px 0; color: #000; }
+    .shade-card__copy { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.55; margin: 0; color: #000; }
+    .shade-card__copy em { font-family: "Canela", serif; font-style: italic; font-size: 15px; }
+
+    .look { padding: 20px 28px; border-bottom: 1px solid #ececec; }
+    .look__title { font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1.18px; text-transform: uppercase; margin: 0 0 14px 0; color: #000; }
+    .look__list { display: flex; flex-direction: column; gap: 8px; }
+    .look-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #f7f7f7; border-radius: 3px; }
+    .look-item__chip { width: 36px; height: 36px; border-radius: 100%; border: 1px solid #d4d4d4; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .look-item__chip i { display: block; width: 30px; height: 30px; border-radius: 100%; background: var(--lc); }
+    .look-item__body { flex: 1; min-width: 0; }
+    .look-item__product { font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.98px; text-transform: uppercase; margin: 0; color: #000; }
+    .look-item__shade { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 400; line-height: 1.4; margin: 2px 0 0; color: #333; }
+    .look-item__add { font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif; font-size: 12px; font-weight: 550; letter-spacing: 0.4px; text-transform: uppercase; padding: 0 14px; height: 30px; border: 1px solid #000; border-radius: 2px; background: #000; color: #f8f8f8; cursor: pointer; transition: all .4s cubic-bezier(.39, .575, .565, 1); }
+    .has-mouse .look-item__add:hover { background: #fff; color: #000; }
+
+    .stage__cta { padding: 20px 28px 24px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .button-atc {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif;
+      font-size: 16px;
+      font-weight: 550;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #fff;
+      background: #000;
+      border: 1px solid #000;
+      border-radius: 3px;
+      height: 56px;
+      padding: 0 24px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all .4s cubic-bezier(.39, .575, .565, 1);
+    }
+    .has-mouse .button-atc:hover { background: #fff; color: #000; border-color: #d0d0d0; }
+    .button-atc__price { margin-left: auto; padding-left: 16px; border-left: 1px solid rgba(255,255,255,.4); }
+    .has-mouse .button-atc:hover .button-atc__price { border-left-color: #d0d0d0; }
+    .quiz-link { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 14px; color: #000; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header"><div class="page-header__brand">JONES ROAD</div></header>
+  <div class="stub-section"><div class="stub-section__title">Ingredients <span style="float:right;">+</span></div><div class="stub-section__hint">PDP context above the section</div></div>
+  <p class="annotation">M4 · Big swatch (140px) overlapping the hero image bottom — swatch is the visual centerpiece. Plus vertical Get-the-Look + BIG ATC.</p>
+
+  <section class="picker">
+    <div class="picker__inner">
+      <div class="head">
+        <p class="eyebrow">Find Your Skin Twin</p>
+        <h2 class="headline">See the shade. See it on her.</h2>
+        <p class="sub">Tap any model whose skin looks like yours. The shade chip on her photo is exactly what you'll see in the stick.</p>
+      </div>
+
+      <div class="filter-row" data-categories>
+        <button type="button" class="filter-btn" data-category="" aria-pressed="true">All 30</button>
+      </div>
+
+      <div class="layout">
+        <div class="grid" data-grid></div>
+        <aside class="stage" data-stage>
+          <button type="button" class="stage__nav stage__nav--prev" data-prev aria-label="Previous shade"><svg viewBox="0 0 14 14" fill="none"><path d="M9 1L3 7l6 6" stroke="#000" stroke-width="1.5"/></svg></button>
+          <button type="button" class="stage__nav stage__nav--next" data-next aria-label="Next shade"><svg viewBox="0 0 14 14" fill="none"><path d="M5 1l6 6-6 6" stroke="#000" stroke-width="1.5"/></svg></button>
+          <div class="hero-wrap">
+            <div class="hero"><img data-hero alt=""></div>
+            <div class="big-swatch" data-big-swatch><i></i></div>
+          </div>
+          <div class="shade-card">
+            <span class="shade-card__und" data-und>—</span>
+            <h3 class="shade-card__name" data-name>—</h3>
+            <p class="shade-card__copy" data-copy>—</p>
+          </div>
+          <div class="look">
+            <h4 class="look__title">Get her look</h4>
+            <div class="look__list" data-look></div>
+          </div>
+          <div class="stage__cta">
+            <a href="#" class="button-atc">Add Foundation Stick to Cart<span class="button-atc__price">$45</span></a>
+            <a href="#" class="quiz-link">Take the Quiz</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <div class="stub-section"><div class="stub-section__title">Reviews <span style="float:right;">+</span></div></div>
+
+  <script>
+    const COPY = {
+      pale: "The lightest in the lineup. <em>Sheer, undetectable</em> on porcelain skin.",
+      fair: "Fair with the warmth of late afternoon light. <em>Soft, balanced</em>.",
+      light: "Light, golden, lit-from-within. <em>Like skin, but better</em>.",
+      "light-medium": "Medium with a kiss of warmth. <em>Versatile</em>.",
+      "medium-dark": "Honey, gold, sun-soaked. <em>Rich and dimensional</em>.",
+      dark: "Deep with quiet warmth. <em>Hazelnut, pecan, almond</em>.",
+      deep: "The deepest, most resonant tones. <em>True espresso, true chestnut</em>."
+    };
+
+    (async function () {
+      const data = await fetch("./shades.json").then(r => r.json());
+      const { categories, shades, modelPool } = data;
+      const catMap = Object.fromEntries(categories.map(c => [c.id, c]));
+
+      const gridEl = document.querySelector("[data-grid]");
+      const catsEl = document.querySelector("[data-categories]");
+      const heroEl = document.querySelector("[data-hero]");
+      const bigSwatch = document.querySelector("[data-big-swatch]");
+      const nameEl = document.querySelector("[data-name]");
+      const undEl = document.querySelector("[data-und]");
+      const copyEl = document.querySelector("[data-copy]");
+      const lookEl = document.querySelector("[data-look]");
+      const prevBtn = document.querySelector("[data-prev]");
+      const nextBtn = document.querySelector("[data-next]");
+
+      catsEl.insertAdjacentHTML("beforeend", categories.map(c => `<button type="button" class="filter-btn" data-category="${c.id}" aria-pressed="false">${c.label}</button>`).join(""));
+
+      gridEl.innerHTML = shades.map((s, i) => `
+        <button type="button" class="grid-cell" data-cell-idx="${i}" data-cat="${s.category}" style="--tone:${s.hex};" aria-pressed="${i === 0}" aria-label="${s.name}">
+          <img src="${modelPool[s.modelIdx]}?w=400&h=400&fit=crop&crop=faces&auto=format" alt="">
+        </button>
+      `).join("");
+
+      let activeFilter = "";
+      let activeIdx = 0;
+
+      function applyFilter() {
+        gridEl.querySelectorAll(".grid-cell").forEach(c => {
+          c.dataset.filtered = String(!activeFilter || c.dataset.cat === activeFilter);
+        });
+      }
+      function setFilter(catId) {
+        activeFilter = catId;
+        catsEl.querySelectorAll(".filter-btn").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.category === activeFilter)));
+        applyFilter();
+      }
+      function selectModel(idx) {
+        const s = shades[idx];
+        const cat = catMap[s.category];
+        activeIdx = idx;
+        gridEl.querySelectorAll(".grid-cell").forEach(c => c.setAttribute("aria-pressed", String(Number(c.dataset.cellIdx) === idx)));
+        heroEl.src = modelPool[s.modelIdx] + "?w=900&fit=crop&crop=faces&auto=format";
+        heroEl.alt = `Model wearing ${s.name}`;
+        bigSwatch.style.setProperty("--tone", s.hex);
+        nameEl.textContent = s.name;
+        undEl.textContent = `${cat.label} · ${s.undertone} undertone`;
+        copyEl.innerHTML = COPY[s.category] || s.description;
+        const look = cat.look || [];
+        lookEl.innerHTML = look.map(item => `
+          <div class="look-item">
+            <div class="look-item__chip"><i style="--lc:${item.hex};"></i></div>
+            <div class="look-item__body">
+              <p class="look-item__product">${item.product}</p>
+              <p class="look-item__shade">${item.shade}</p>
+            </div>
+            <button type="button" class="look-item__add">Add</button>
+          </div>
+        `).join("");
+        prevBtn.disabled = idx === 0;
+        nextBtn.disabled = idx === shades.length - 1;
+      }
+
+      catsEl.addEventListener("click", e => { const b = e.target.closest(".filter-btn"); if (b) setFilter(b.dataset.category); });
+      gridEl.addEventListener("click", e => { const c = e.target.closest(".grid-cell"); if (c && c.dataset.filtered !== "false") selectModel(Number(c.dataset.cellIdx)); });
+      prevBtn.addEventListener("click", () => { if (activeIdx > 0) selectModel(activeIdx - 1); });
+      nextBtn.addEventListener("click", () => { if (activeIdx < shades.length - 1) selectModel(activeIdx + 1); });
+
+      applyFilter();
+      selectModel(0);
+    })();
+
+    document.addEventListener('mousemove', function addMouse() {
+      document.body.classList.add('has-mouse');
+      document.removeEventListener('mousemove', addMouse);
+    });
+  </script>
+</body>
+</html>

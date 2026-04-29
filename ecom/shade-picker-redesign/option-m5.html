@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>M5 · Skin Twin · Shoppable Look · Jones Road</title>
+  <style>
+    @font-face { font-family: "Canela";                  src: url("./assets/fonts/canela-light.static.woff2") format("woff2");           font-weight: 300; font-display: swap; }
+    @font-face { font-family: "GeogrotesqueCondBoldWeb"; src: url("./assets/fonts/geogrotesque-cond-bold.static.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "RingsideWideWeb";         src: url("./assets/fonts/ringside-wide-book.static.woff2") format("woff2");     font-weight: 400; font-display: swap; }
+    @font-face { font-family: "ArticulatCF";             src: url("./assets/fonts/articulatcf-bold.static.woff2") format("woff2");       font-weight: 700; font-display: swap; }
+    @font-face { font-family: "BaseMonoWideWeb";         src: url("./assets/fonts/base-mono-wide-thin.static.woff2") format("woff2");    font-weight: 550; font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 16px; color: #000; background: #fff; -webkit-font-smoothing: antialiased; letter-spacing: .025em; }
+    img { display: block; max-width: 100%; }
+    button { font-family: inherit; }
+
+    .page-header { padding: 16px 20px; border-bottom: 1px solid #ececec; text-align: center; }
+    .page-header__brand { font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 1.5px; color: #000; }
+    .stub-section { padding: 28px 20px; border-bottom: 1px solid #ececec; }
+    .stub-section__title { font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #000; }
+    .stub-section__hint { font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif; font-size: 11px; letter-spacing: .8px; color: #757575; margin-top: 6px; }
+    .annotation { max-width: 1280px; margin: 24px auto 12px; font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif; font-size: 11px; letter-spacing: .9px; text-transform: uppercase; color: #757575; padding: 0 20px; }
+
+    .picker { background: #f8f8f8; padding: 56px 20px; }
+    @media (min-width: 769px) { .picker { padding: 72px 48px; } }
+    .picker__inner { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+
+    .head { display: flex; flex-direction: column; gap: 12px; max-width: 720px; }
+    .eyebrow { font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin: 0; color: #000; }
+    .headline { font-family: "Canela", serif; font-weight: 300; font-size: 26px; line-height: 37px; letter-spacing: 0.5px; margin: 0; text-wrap: balance; color: #000; }
+    @media (min-width: 769px) { .headline { font-size: 38px; line-height: 54px; } }
+    .sub { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 325; line-height: 1.5; margin: 0; max-width: 56ch; color: #000; }
+
+    .filter-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .filter-btn { font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif; font-size: 13px; font-weight: 550; letter-spacing: 0.4px; text-transform: uppercase; color: #000; background: #fff; border: 1px solid #d0d0d0; border-radius: 2px; padding: 0 16px; cursor: pointer; height: 36px; transition: all .4s cubic-bezier(.39, .575, .565, 1); }
+    .has-mouse .filter-btn:hover { border-color: #000; }
+    .filter-btn[aria-pressed="true"] { background: #000; color: #fff; border-color: #000; }
+
+    .layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
+    @media (min-width: 900px) { .layout { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 40px; align-items: start; } }
+
+    .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; background: #fff; padding: 4px; border-radius: 3px; box-shadow: 0 1px 2px rgba(16,24,40,.04); }
+    @media (min-width: 600px) { .grid { grid-template-columns: repeat(6, 1fr); } }
+    .grid-cell { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: var(--tone, #ddd); cursor: pointer; border: 0; padding: 0; transition: opacity .25s ease, box-shadow .2s ease; }
+    .grid-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; transition: transform .35s cubic-bezier(.39, .575, .565, 1); }
+    .has-mouse .grid-cell:hover img { transform: scale(1.04); }
+    .grid-cell::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0); transition: background .25s ease; pointer-events: none; }
+    .has-mouse .grid-cell:hover::after { background: rgba(0,0,0,.06); }
+    .grid-cell[data-filtered="false"] { opacity: .15; cursor: default; pointer-events: none; }
+    .grid-cell[aria-pressed="true"] { box-shadow: 0 0 0 3px #000 inset; z-index: 2; }
+
+    .stage { position: relative; background: #fff; border-radius: 3px; box-shadow: 0 1px 2px rgba(16,24,40,.04); overflow: hidden; }
+    @media (min-width: 900px) { .stage { position: sticky; top: 24px; max-height: calc(100vh - 48px); overflow-y: auto; } }
+
+    .stage__nav { position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; background: rgba(255,255,255,.92); border: 1px solid #d0d0d0; border-radius: 100%; cursor: pointer; padding: 0; z-index: 10; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(6px); transition: all .4s cubic-bezier(.39, .575, .565, 1); }
+    .has-mouse .stage__nav:hover { background: #000; border-color: #000; }
+    .stage__nav svg { width: 12px; height: 12px; }
+    .has-mouse .stage__nav:hover svg path { stroke: #fff; }
+    .stage__nav:disabled { opacity: .35; cursor: not-allowed; }
+    .stage__nav--prev { left: 12px; }
+    .stage__nav--next { right: 12px; }
+
+    /* Hero with shoppable hotspots */
+    .hero { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: #f0e6da; }
+    .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+
+    /* Hotspot dots — positioned over face features */
+    .hotspot {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      border-radius: 100%;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.3);
+      cursor: pointer;
+      padding: 0;
+      transition: transform .4s cubic-bezier(.39, .575, .565, 1), box-shadow .25s;
+      z-index: 4;
+      animation: pulse 2.4s cubic-bezier(.39, .575, .565, 1) infinite;
+    }
+    .hotspot::before {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      border-radius: 100%;
+      border: 2px solid rgba(255,255,255,.5);
+      animation: ripple 2.4s cubic-bezier(.39, .575, .565, 1) infinite;
+      pointer-events: none;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    @keyframes ripple {
+      0% { transform: scale(.8); opacity: 0; }
+      30% { opacity: 1; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+    .has-mouse .hotspot:hover { transform: scale(1.2); }
+    .hotspot i { display: block; width: 100%; height: 100%; border-radius: 100%; background: var(--lc); }
+
+    /* Hotspot positions — relative to a portrait face roughly centered */
+    .hotspot--foundation { top: 64%; left: 32%; }   /* cheek */
+    .hotspot--blush      { top: 56%; left: 68%; }   /* opposite cheek */
+    .hotspot--lip        { top: 75%; left: 50%; }   /* lip area */
+    .hotspot--eye        { top: 38%; left: 40%; }   /* eye */
+
+    /* Hotspot tooltip */
+    .hotspot-card {
+      position: absolute;
+      z-index: 6;
+      background: #fff;
+      border: 1px solid #d0d0d0;
+      border-radius: 3px;
+      box-shadow: 0 4px 19px rgba(0,0,0,.18);
+      padding: 14px 16px;
+      width: 200px;
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease;
+    }
+    .hotspot-card[data-open="true"] { opacity: 1; pointer-events: auto; }
+    .hotspot-card__product { font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin: 0; }
+    .hotspot-card__shade { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.4; margin: 0; color: #333; }
+    .hotspot-card__add {
+      font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif;
+      font-size: 12px;
+      font-weight: 550;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      padding: 0 14px;
+      height: 36px;
+      border: 1px solid #000;
+      border-radius: 2px;
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+      transition: all .4s cubic-bezier(.39, .575, .565, 1);
+    }
+    .has-mouse .hotspot-card__add:hover { background: #fff; color: #000; }
+
+    .shade-card { padding: 24px 28px; display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; border-bottom: 1px solid #ececec; }
+    .shade-card__swatch { width: 56px; height: 56px; border-radius: 100%; border: 1px solid #d4d4d4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .shade-card__swatch i { display: block; width: 48px; height: 48px; border-radius: 100%; background: var(--tone); }
+    .shade-card__name { font-family: "Canela", serif; font-weight: 300; font-size: 30px; line-height: 1.05; letter-spacing: 0.5px; margin: 0 0 4px 0; color: #000; }
+    .shade-card__und { font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #000; margin: 0; }
+
+    .legend { padding: 16px 28px; background: #f8f8f8; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; border-bottom: 1px solid #ececec; }
+    .legend__title { font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif; font-size: 11px; letter-spacing: .9px; color: #757575; text-transform: uppercase; flex: 1; }
+    .legend__hint { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.4; color: #000; }
+
+    .stage__cta { padding: 20px 28px 24px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .button-atc {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif;
+      font-size: 16px;
+      font-weight: 550;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #fff;
+      background: #000;
+      border: 1px solid #000;
+      border-radius: 3px;
+      height: 56px;
+      padding: 0 24px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all .4s cubic-bezier(.39, .575, .565, 1);
+    }
+    .has-mouse .button-atc:hover { background: #fff; color: #000; border-color: #d0d0d0; }
+    .button-atc__price { margin-left: auto; padding-left: 16px; border-left: 1px solid rgba(255,255,255,.4); }
+    .has-mouse .button-atc:hover .button-atc__price { border-left-color: #d0d0d0; }
+    .quiz-link { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; font-size: 14px; color: #000; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header"><div class="page-header__brand">JONES ROAD</div></header>
+  <div class="stub-section"><div class="stub-section__title">Ingredients <span style="float:right;">+</span></div><div class="stub-section__hint">PDP context above the section</div></div>
+  <p class="annotation">M5 · Shoppable hotspots — pulsing dots on her face mark the products she's wearing. Tap a dot to open the product card with shade + Add. Most "build her look" feel.</p>
+
+  <section class="picker">
+    <div class="picker__inner">
+      <div class="head">
+        <p class="eyebrow">Find Your Skin Twin</p>
+        <h2 class="headline">Tap the dots. Get her whole face.</h2>
+        <p class="sub">Pick the model whose skin matches yours — every product on her face is one tap from your bag.</p>
+      </div>
+
+      <div class="filter-row" data-categories>
+        <button type="button" class="filter-btn" data-category="" aria-pressed="true">All 30</button>
+      </div>
+
+      <div class="layout">
+        <div class="grid" data-grid></div>
+        <aside class="stage" data-stage>
+          <button type="button" class="stage__nav stage__nav--prev" data-prev aria-label="Previous shade"><svg viewBox="0 0 14 14" fill="none"><path d="M9 1L3 7l6 6" stroke="#000" stroke-width="1.5"/></svg></button>
+          <button type="button" class="stage__nav stage__nav--next" data-next aria-label="Next shade"><svg viewBox="0 0 14 14" fill="none"><path d="M5 1l6 6-6 6" stroke="#000" stroke-width="1.5"/></svg></button>
+          <div class="hero" data-hero-wrap>
+            <img data-hero alt="">
+            <button type="button" class="hotspot hotspot--foundation" data-hotspot="0" aria-label="Foundation Stick"><i></i></button>
+            <button type="button" class="hotspot hotspot--blush" data-hotspot="1" aria-label="Miracle Balm"><i></i></button>
+            <button type="button" class="hotspot hotspot--lip" data-hotspot="2" aria-label="Lip Recharge"><i></i></button>
+            <button type="button" class="hotspot hotspot--eye" data-hotspot="3" aria-label="Face Pencil"><i></i></button>
+            <div class="hotspot-card" data-hotspot-card>
+              <p class="hotspot-card__product" data-hotspot-product>—</p>
+              <p class="hotspot-card__shade" data-hotspot-shade>—</p>
+              <button type="button" class="hotspot-card__add">Add to Cart</button>
+            </div>
+          </div>
+          <div class="shade-card">
+            <div class="shade-card__swatch"><i data-swatch></i></div>
+            <div>
+              <h3 class="shade-card__name" data-name>—</h3>
+              <p class="shade-card__und" data-und>—</p>
+            </div>
+          </div>
+          <div class="legend">
+            <span class="legend__title">Tap any dot</span>
+            <span class="legend__hint">She's wearing 4 products. Add them individually or as a set.</span>
+          </div>
+          <div class="stage__cta">
+            <a href="#" class="button-atc">Add Foundation Stick to Cart<span class="button-atc__price">$45</span></a>
+            <a href="#" class="quiz-link">Add the whole look · $138</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <div class="stub-section"><div class="stub-section__title">Reviews <span style="float:right;">+</span></div></div>
+
+  <script>
+    (async function () {
+      const data = await fetch("./shades.json").then(r => r.json());
+      const { categories, shades, modelPool } = data;
+      const catMap = Object.fromEntries(categories.map(c => [c.id, c]));
+
+      const gridEl = document.querySelector("[data-grid]");
+      const catsEl = document.querySelector("[data-categories]");
+      const heroEl = document.querySelector("[data-hero]");
+      const heroWrap = document.querySelector("[data-hero-wrap]");
+      const swatchEl = document.querySelector("[data-swatch]");
+      const nameEl = document.querySelector("[data-name]");
+      const undEl = document.querySelector("[data-und]");
+      const prevBtn = document.querySelector("[data-prev]");
+      const nextBtn = document.querySelector("[data-next]");
+      const hotspotCard = document.querySelector("[data-hotspot-card]");
+      const hotspotProduct = document.querySelector("[data-hotspot-product]");
+      const hotspotShade = document.querySelector("[data-hotspot-shade]");
+      const hotspots = Array.from(document.querySelectorAll(".hotspot"));
+
+      catsEl.insertAdjacentHTML("beforeend", categories.map(c => `<button type="button" class="filter-btn" data-category="${c.id}" aria-pressed="false">${c.label}</button>`).join(""));
+
+      gridEl.innerHTML = shades.map((s, i) => `
+        <button type="button" class="grid-cell" data-cell-idx="${i}" data-cat="${s.category}" style="--tone:${s.hex};" aria-pressed="${i === 0}" aria-label="${s.name}">
+          <img src="${modelPool[s.modelIdx]}?w=400&h=400&fit=crop&crop=faces&auto=format" alt="">
+        </button>
+      `).join("");
+
+      let activeFilter = "";
+      let activeIdx = 0;
+      let lookData = [];
+
+      function applyFilter() {
+        gridEl.querySelectorAll(".grid-cell").forEach(c => {
+          c.dataset.filtered = String(!activeFilter || c.dataset.cat === activeFilter);
+        });
+      }
+      function setFilter(catId) {
+        activeFilter = catId;
+        catsEl.querySelectorAll(".filter-btn").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.category === activeFilter)));
+        applyFilter();
+      }
+      function selectModel(idx) {
+        const s = shades[idx];
+        const cat = catMap[s.category];
+        activeIdx = idx;
+        gridEl.querySelectorAll(".grid-cell").forEach(c => c.setAttribute("aria-pressed", String(Number(c.dataset.cellIdx) === idx)));
+        heroEl.src = modelPool[s.modelIdx] + "?w=900&fit=crop&crop=faces&auto=format";
+        heroEl.alt = `Model wearing ${s.name}`;
+        swatchEl.style.background = s.hex;
+        nameEl.textContent = s.name;
+        undEl.textContent = `${cat.label} · ${s.undertone} undertone · in your bag`;
+        prevBtn.disabled = idx === 0;
+        nextBtn.disabled = idx === shades.length - 1;
+
+        // Build full 4-product look — Foundation Stick first
+        lookData = [
+          { product: "Your Skin Foundation Stick", shade: s.name, hex: s.hex },
+          ...(cat.look || [])
+        ];
+        // Color the hotspots
+        hotspots.forEach((h, i) => {
+          const item = lookData[i];
+          if (item) {
+            h.querySelector("i").style.background = item.hex;
+            h.style.display = "block";
+          } else {
+            h.style.display = "none";
+          }
+        });
+        closeHotspot();
+      }
+      function openHotspot(hotspotIdx, sourceEl) {
+        const item = lookData[hotspotIdx];
+        if (!item) return;
+        hotspotProduct.textContent = item.product;
+        hotspotShade.textContent = item.shade;
+        // Position card near hotspot
+        const wrapRect = heroWrap.getBoundingClientRect();
+        const dotRect = sourceEl.getBoundingClientRect();
+        const top = dotRect.top - wrapRect.top + 40;
+        const left = Math.min(dotRect.left - wrapRect.left - 80, wrapRect.width - 220);
+        hotspotCard.style.top = `${Math.max(8, top)}px`;
+        hotspotCard.style.left = `${Math.max(8, left)}px`;
+        hotspotCard.dataset.open = "true";
+      }
+      function closeHotspot() {
+        hotspotCard.dataset.open = "false";
+      }
+
+      catsEl.addEventListener("click", e => { const b = e.target.closest(".filter-btn"); if (b) setFilter(b.dataset.category); });
+      gridEl.addEventListener("click", e => { const c = e.target.closest(".grid-cell"); if (c && c.dataset.filtered !== "false") selectModel(Number(c.dataset.cellIdx)); });
+      prevBtn.addEventListener("click", () => { if (activeIdx > 0) selectModel(activeIdx - 1); });
+      nextBtn.addEventListener("click", () => { if (activeIdx < shades.length - 1) selectModel(activeIdx + 1); });
+
+      hotspots.forEach(h => h.addEventListener("click", e => {
+        e.stopPropagation();
+        openHotspot(Number(h.dataset.hotspot), h);
+      }));
+      heroWrap.addEventListener("click", e => {
+        if (!e.target.closest(".hotspot, .hotspot-card")) closeHotspot();
+      });
+
+      applyFilter();
+      selectModel(0);
+    })();
+
+    document.addEventListener('mousemove', function addMouse() {
+      document.body.classList.add('has-mouse');
+      document.removeEventListener('mousemove', addMouse);
+    });
+  </script>
+</body>
+</html>
