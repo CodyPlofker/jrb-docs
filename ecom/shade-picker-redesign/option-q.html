@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Option Q · On-Skin Reel · Jones Road</title>
+  <style>
+    @font-face { font-family: "Canela";                  src: url("./assets/fonts/canela-light.static.woff2") format("woff2");           font-weight: 300; font-display: swap; }
+    @font-face { font-family: "GeogrotesqueCondBoldWeb"; src: url("./assets/fonts/geogrotesque-cond-bold.static.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "RingsideWideWeb";         src: url("./assets/fonts/ringside-wide-book.static.woff2") format("woff2");     font-weight: 400; font-display: swap; }
+    @font-face { font-family: "ArticulatCF";             src: url("./assets/fonts/articulatcf-bold.static.woff2") format("woff2");       font-weight: 700; font-display: swap; }
+    @font-face { font-family: "BaseMonoWideWeb";         src: url("./assets/fonts/base-mono-wide-thin.static.woff2") format("woff2");    font-weight: 300; font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: "RingsideWideWeb"; color: #000; background: #fff; -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    button { font-family: inherit; }
+
+    .page-header { padding: 16px 20px; border-bottom: 1px solid #ececec; text-align: center; }
+    .page-header__brand { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; letter-spacing: 1.5px; }
+    .stub-section { padding: 28px 20px; border-bottom: 1px solid #ececec; }
+    .stub-section__title { font-family: "GeogrotesqueCondBoldWeb"; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
+    .stub-section__hint { font-family: "BaseMonoWideWeb", monospace; font-size: 11px; letter-spacing: .8px; color: #757575; margin-top: 6px; }
+    .annotation { max-width: 1280px; margin: 24px auto 12px; font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; color: #757575; padding: 0 20px; }
+
+    .picker { background: #f8f8f8; padding: 56px 20px; }
+    @media (min-width: 769px) { .picker { padding: 80px 48px; } }
+    .picker__inner { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px; }
+
+    .head { text-align: center; max-width: 720px; margin: 0 auto; }
+    .eyebrow { font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 12px 0; }
+    .headline { font-family: "Canela", serif; font-weight: 300; font-size: 32px; line-height: 1.18; letter-spacing: -.2px; margin: 0; text-wrap: balance; }
+    @media (min-width: 769px) { .headline { font-size: 48px; } }
+    .sub { font-family: "RingsideWideWeb"; font-size: 14px; line-height: 1.6; margin: 18px auto 0; max-width: 56ch; }
+
+    .filter-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: center; }
+    .filter-row__label { font-family: "ArticulatCF"; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .3px; margin-right: 8px; }
+    .filter-btn { font-family: "GeogrotesqueCondBoldWeb"; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #000; background: #fff; border: 1px solid #d0d0d0; padding: 8px 12px; cursor: pointer; min-height: 36px; }
+    .filter-btn:hover { border-color: #000; }
+    .filter-btn[aria-pressed="true"] { background: #000; color: #fff; border-color: #000; }
+
+    /* Reel grid — model cards with animated "applying" effect on hover */
+    .reel-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    @media (min-width: 600px) { .reel-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 900px) { .reel-grid { grid-template-columns: repeat(5, 1fr); gap: 12px; } }
+
+    .reel-card { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--tone, #ddd); border: 0; padding: 0; cursor: pointer; transition: opacity .25s ease, box-shadow .2s ease; }
+    .reel-card[data-filtered="false"] { opacity: .15; cursor: default; pointer-events: none; }
+    .reel-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; transition: transform .8s cubic-bezier(.39, .575, .565, 1); }
+    .reel-card:hover img { transform: scale(1.05); }
+
+    /* The animated "swatch sweep" overlay — fakes an application reel */
+    .reel-card::after {
+      content: "";
+      position: absolute;
+      left: 30%;
+      top: 55%;
+      width: 40%;
+      height: 14%;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--tone) 88%, #000), color-mix(in srgb, var(--tone) 70%, #000));
+      mix-blend-mode: multiply;
+      opacity: 0;
+      border-radius: 18% 22% 20% 24% / 50%;
+      transform: translateX(-150%) rotate(-8deg);
+      filter: blur(2px);
+      pointer-events: none;
+    }
+    .reel-card:hover::after { animation: swipe 2.4s cubic-bezier(.45, .05, .55, .95) infinite; }
+    @keyframes swipe {
+      0%   { transform: translateX(-150%) rotate(-8deg); opacity: 0; }
+      15%  { opacity: .85; }
+      55%  { transform: translateX(120%) rotate(-8deg); opacity: .8; }
+      75%  { opacity: 0; }
+      100% { transform: translateX(120%) rotate(-8deg); opacity: 0; }
+    }
+
+    .reel-card__chip { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 14px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.55) 100%); color: #fff; display: flex; flex-direction: column; gap: 2px; }
+    .reel-card__name { font-family: "GeogrotesqueCondBoldWeb"; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
+    .reel-card__sub { font-family: "BaseMonoWideWeb", monospace; font-size: 9px; letter-spacing: .8px; text-transform: uppercase; opacity: .85; }
+
+    .reel-card__play { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; background: rgba(255,255,255,.92); border-radius: 100%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(6px); transition: transform .2s ease, background .2s; pointer-events: none; }
+    .reel-card:hover .reel-card__play { background: #000; }
+    .reel-card__play svg { width: 12px; height: 12px; transition: fill .2s; }
+    .reel-card:hover .reel-card__play svg { fill: #fff; }
+
+    /* Modal — full-bleed application detail */
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,.65); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50; opacity: 0; pointer-events: none; transition: opacity .25s ease; backdrop-filter: blur(4px); }
+    .modal[data-open="true"] { opacity: 1; pointer-events: auto; }
+    .modal__inner { background: #fff; max-width: 1080px; width: 100%; max-height: 92vh; overflow: auto; display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 769px) { .modal__inner { grid-template-columns: 1.1fr 1fr; max-height: 86vh; } }
+
+    .modal__close { position: absolute; top: 16px; right: 16px; width: 40px; height: 40px; border-radius: 100%; background: rgba(255,255,255,.92); border: 0; cursor: pointer; backdrop-filter: blur(6px); font-family: "GeogrotesqueCondBoldWeb"; font-size: 18px; line-height: 1; padding: 0; z-index: 60; }
+    .modal__close:hover { background: #000; color: #fff; }
+
+    .modal__media { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: #ddd; }
+    @media (min-width: 769px) { .modal__media { aspect-ratio: auto; min-height: 100%; } }
+    .modal__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+    .modal__media::after {
+      content: "";
+      position: absolute;
+      left: 28%; top: 56%;
+      width: 44%; height: 12%;
+      background: var(--tone);
+      mix-blend-mode: multiply;
+      opacity: .8;
+      border-radius: 18% 22% 20% 24% / 50%;
+      filter: blur(2px);
+      animation: swipe 2.6s cubic-bezier(.45, .05, .55, .95) infinite;
+      transform: translateX(-150%) rotate(-8deg);
+    }
+
+    .modal__body { padding: 32px 28px; display: flex; flex-direction: column; gap: 20px; }
+    .modal__cat-pill { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; padding: 4px 10px; background: #f8f8f8; color: #000; align-self: flex-start; border: 1px solid #ececec; }
+    .modal__name { font-family: "Canela", serif; font-weight: 300; font-size: 38px; line-height: 1.05; letter-spacing: -.4px; margin: 0; }
+    .modal__copy { font-family: "RingsideWideWeb"; font-size: 15px; line-height: 1.6; margin: 0; }
+    .modal__copy em { font-family: "Canela", serif; font-style: italic; font-size: 16px; }
+    .modal__row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-top: 1px solid #ececec; border-bottom: 1px solid #ececec; }
+    .modal__row-swatch { width: 44px; height: 44px; border-radius: 100%; border: 1px solid #d0d0d0; background: var(--tone); flex-shrink: 0; }
+    .modal__row-text { font-family: "BaseMonoWideWeb", monospace; font-size: 11px; letter-spacing: .9px; text-transform: uppercase; color: #757575; line-height: 1.4; }
+    .modal__row-text strong { color: #000; font-family: "GeogrotesqueCondBoldWeb"; }
+
+    .modal__nav { display: flex; gap: 8px; align-items: center; }
+    .modal__nav-btn { font-family: "GeogrotesqueCondBoldWeb"; font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: #000; background: #fff; border: 1px solid #d0d0d0; padding: 10px 14px; cursor: pointer; flex: 1; }
+    .modal__nav-btn:hover { border-color: #000; }
+    .modal__nav-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+    .modal__actions { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+    .add-to-cart { font-family: "RingsideWideWeb"; font-size: 14px; line-height: 1.5; color: #000; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; align-self: flex-start; }
+    .add-to-cart:hover { opacity: .65; }
+    .button { display: inline-block; align-self: stretch; text-align: center; font-family: "GeogrotesqueCondBoldWeb"; font-size: 14px; letter-spacing: 1.4px; text-transform: uppercase; color: #fff; background: #000; border: 1px solid #000; padding: 16px 28px; text-decoration: none; cursor: pointer; }
+    .button:hover { background: #fff; color: #000; }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      .reel-card:hover::after, .modal__media::after { animation: none; opacity: .5; transform: translateX(0) rotate(-8deg); }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header"><div class="page-header__brand">JONES ROAD</div></header>
+  <div class="stub-section"><div class="stub-section__title">Ingredients <span style="float:right;">+</span></div><div class="stub-section__hint">PDP context above the section</div></div>
+  <p class="annotation">Option Q · On-Skin Reel — Merit pattern. Hover any model to see the shade swept across her skin in real time. Click for the full reel + editorial copy + shade detail. (Prototype uses CSS-animated swatch sweep; production swaps in real :05 application clips.)</p>
+
+  <section class="picker">
+    <div class="picker__inner">
+      <div class="head">
+        <p class="eyebrow">30 Shades · On Skin</p>
+        <h2 class="headline">See it on her. Then see it on you.</h2>
+        <p class="sub">No guessing how it'll look. Hover any of our 30 to watch the shade swept on bare skin — same shoot, same lighting, every time. Tap for the full clip.</p>
+      </div>
+
+      <div class="filter-row" data-categories>
+        <span class="filter-row__label">Filter:</span>
+        <button type="button" class="filter-btn" data-category="" aria-pressed="true">All 30</button>
+      </div>
+
+      <div class="reel-grid" data-grid></div>
+
+      <a href="#" class="button" style="align-self: center;">Take the complexion quiz</a>
+    </div>
+  </section>
+
+  <div class="stub-section"><div class="stub-section__title">Reviews <span style="float:right;">+</span></div></div>
+
+  <div class="modal" data-modal aria-hidden="true">
+    <div class="modal__inner" data-modal-inner>
+      <button type="button" class="modal__close" data-modal-close aria-label="Close">×</button>
+      <div class="modal__media" data-modal-media>
+        <img data-modal-img alt="">
+      </div>
+      <div class="modal__body">
+        <span class="modal__cat-pill" data-modal-cat>—</span>
+        <h3 class="modal__name" data-modal-name>—</h3>
+        <p class="modal__copy" data-modal-copy>—</p>
+        <div class="modal__row">
+          <div class="modal__row-swatch" data-modal-swatch></div>
+          <p class="modal__row-text"><strong data-modal-shade>—</strong><br><span data-modal-und>—</span></p>
+        </div>
+        <div class="modal__nav">
+          <button type="button" class="modal__nav-btn" data-modal-prev>← Previous shade</button>
+          <button type="button" class="modal__nav-btn" data-modal-next>Next shade →</button>
+        </div>
+        <div class="modal__actions">
+          <a href="#" class="button" data-modal-add>Add to Cart</a>
+          <a href="#" class="add-to-cart">Compare with another shade</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Editorial copy bank — narrative descriptions per shade depth.
+    // Real launch: each shade gets its own editorial line written by JRB copy.
+    const COPY = {
+      pale:         "The lightest in the lineup. <em>Sheer, undetectable</em> on porcelain skin — the shade you can't see, only feel.",
+      fair:         "Fair with the warmth of late afternoon light. <em>Soft, balanced</em> — built to disappear into your face, not sit on it.",
+      light:        "Light, golden, lit-from-within. <em>Like skin, but better</em> — the shade Bobbi reaches for when she wants you to look like you slept.",
+      "light-medium": "Medium with a kiss of warmth. <em>Versatile</em> — shifts subtly between seasons without ever being wrong.",
+      "medium-dark":  "Honey, gold, sun-soaked. <em>Rich and dimensional</em> — built to layer, blend, and never look flat.",
+      dark:         "Deep with quiet warmth. <em>Hazelnut, pecan, almond</em> — the shades that read soft and hand-applied, never opaque.",
+      deep:         "The deepest, most resonant tones. <em>True espresso, true chestnut</em> — shot in the same light as every other shade so you see exactly what you'd get."
+    };
+
+    (async function () {
+      const data = await fetch("./shades.json").then(r => r.json());
+      const { categories, shades, modelPool } = data;
+      const catMap = Object.fromEntries(categories.map(c => [c.id, c]));
+
+      const gridEl = document.querySelector("[data-grid]");
+      const catsEl = document.querySelector("[data-categories]");
+      const modal = document.querySelector("[data-modal]");
+      const modalImg = document.querySelector("[data-modal-img]");
+      const modalMedia = document.querySelector("[data-modal-media]");
+      const modalCat = document.querySelector("[data-modal-cat]");
+      const modalName = document.querySelector("[data-modal-name]");
+      const modalCopy = document.querySelector("[data-modal-copy]");
+      const modalSwatch = document.querySelector("[data-modal-swatch]");
+      const modalShade = document.querySelector("[data-modal-shade]");
+      const modalUnd = document.querySelector("[data-modal-und]");
+      const modalPrev = document.querySelector("[data-modal-prev]");
+      const modalNext = document.querySelector("[data-modal-next]");
+
+      // Build category filter buttons
+      catsEl.insertAdjacentHTML("beforeend", categories.map(c => `<button type="button" class="filter-btn" data-category="${c.id}" aria-pressed="false">${c.label}</button>`).join(""));
+
+      // Render reel grid
+      gridEl.innerHTML = shades.map((s, i) => `
+        <button type="button" class="reel-card" data-shade-idx="${i}" data-cat="${s.category}" style="--tone:${s.hex};" aria-label="${s.name}">
+          <img src="${modelPool[i % modelPool.length]}?w=500&h=625&fit=crop&crop=faces&auto=format" alt="">
+          <span class="reel-card__play"><svg viewBox="0 0 12 12" fill="#000"><path d="M3 1.5v9l8-4.5z"/></svg></span>
+          <div class="reel-card__chip">
+            <span class="reel-card__name">${s.name}</span>
+            <span class="reel-card__sub">${catMap[s.category].label} · ${s.undertone}</span>
+          </div>
+        </button>
+      `).join("");
+
+      let activeFilter = "";
+      let openIdx = -1;
+
+      function applyFilter() {
+        gridEl.querySelectorAll(".reel-card").forEach(c => {
+          c.dataset.filtered = String(!activeFilter || c.dataset.cat === activeFilter);
+        });
+      }
+      function setFilter(catId) {
+        activeFilter = catId;
+        catsEl.querySelectorAll(".filter-btn").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.category === activeFilter)));
+        applyFilter();
+      }
+      function openModal(idx) {
+        const s = shades[idx];
+        const cat = catMap[s.category];
+        openIdx = idx;
+        modalImg.src = modelPool[idx % modelPool.length] + "?w=1200&fit=crop&crop=faces&auto=format";
+        modalImg.alt = `Model wearing ${s.name}`;
+        modalMedia.style.setProperty("--tone", s.hex);
+        modalCat.textContent = `${cat.label} · ${s.undertone} undertone`;
+        modalName.textContent = s.name;
+        modalCopy.innerHTML = COPY[s.category] || s.description;
+        modalSwatch.style.setProperty("--tone", s.hex);
+        modalShade.textContent = s.name;
+        modalUnd.textContent = s.description;
+        modal.dataset.open = "true";
+        modal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        modalPrev.disabled = idx === 0;
+        modalNext.disabled = idx === shades.length - 1;
+      }
+      function closeModal() {
+        modal.dataset.open = "false";
+        modal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+      }
+
+      catsEl.addEventListener("click", e => { const b = e.target.closest(".filter-btn"); if (b) setFilter(b.dataset.category); });
+      gridEl.addEventListener("click", e => { const c = e.target.closest(".reel-card"); if (c && c.dataset.filtered !== "false") openModal(Number(c.dataset.shadeIdx)); });
+      document.querySelector("[data-modal-close]").addEventListener("click", closeModal);
+      modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+      modalPrev.addEventListener("click", () => { if (openIdx > 0) openModal(openIdx - 1); });
+      modalNext.addEventListener("click", () => { if (openIdx < shades.length - 1) openModal(openIdx + 1); });
+      window.addEventListener("keydown", e => {
+        if (modal.dataset.open !== "true") return;
+        if (e.key === "Escape") closeModal();
+        if (e.key === "ArrowLeft" && openIdx > 0) openModal(openIdx - 1);
+        if (e.key === "ArrowRight" && openIdx < shades.length - 1) openModal(openIdx + 1);
+      });
+
+      applyFilter();
+    })();
+  </script>
+</body>
+</html>

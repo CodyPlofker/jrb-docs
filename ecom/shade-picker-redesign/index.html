@@ -24,6 +24,7 @@
     .opt-btn[aria-pressed="true"] { background: #000; color: #fff; border-color: #000; }
     .opt-btn__sub { font-family: "BaseMonoWideWeb", monospace; font-size: 9px; letter-spacing: .8px; opacity: .55; font-weight: 400; }
     .opt-btn[aria-pressed="true"] .opt-btn__sub { opacity: .8; }
+    .opt-divider { width: 1px; height: 22px; background: #ececec; margin: 0 4px; }
     .toggle__hint { font-family: "BaseMonoWideWeb", monospace; font-size: 10px; letter-spacing: .9px; color: #757575; margin-left: auto; flex-shrink: 0; }
 
     .desc { padding: 14px 20px; border-top: 1px solid #ececec; background: #fafafa; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: start; }
@@ -44,14 +45,19 @@
 <body>
   <div class="toggle-wrap">
     <header class="toggle" role="tablist" aria-label="Shade picker variants">
-      <span class="toggle__brand">Shade Picker <span>4 variants</span></span>
+      <span class="toggle__brand">Shade Picker <span>6 variants</span></span>
 
       <button type="button" class="opt-btn" data-opt="option-f.html" aria-pressed="true">F<span class="opt-btn__sub">Full Swap</span></button>
       <button type="button" class="opt-btn" data-opt="option-g.html">G<span class="opt-btn__sub">Adaptive Count</span></button>
       <button type="button" class="opt-btn" data-opt="option-l.html">L<span class="opt-btn__sub">Compare 2</span></button>
       <button type="button" class="opt-btn" data-opt="option-m.html">M<span class="opt-btn__sub">Skin Twin</span></button>
 
-      <span class="toggle__hint" aria-hidden="true">↑ keys 1-4</span>
+      <span class="opt-divider"></span>
+
+      <button type="button" class="opt-btn" data-opt="option-o.html">O<span class="opt-btn__sub">"I Wear ___"</span></button>
+      <button type="button" class="opt-btn" data-opt="option-q.html">Q<span class="opt-btn__sub">On-Skin Reel · Merit</span></button>
+
+      <span class="toggle__hint" aria-hidden="true">↑ keys 1-6</span>
     </header>
     <div class="desc">
       <div class="desc__main">
@@ -79,23 +85,37 @@
       "option-g.html": {
         name: "Adaptive Count",
         kicker: "G",
-        body: "Click a category and the grid replaces with only those shades' models, sized to the count as squares (1 fills the frame; 2/3/4/5/6 fan out). Click a shade and the adaptive grid hard-cuts to a single model wearing it.",
+        body: "Click a category and the grid replaces with only those shades' models, sized to the count as squares (1 fills the frame; 2/3/4/5/6 fan out). Click a shade and the adaptive grid hard-cuts to a single full-bleed model wearing it.",
         solves: "Cody's \"responsive to count\" idea + per-shade reveal",
         tags: ["adaptive", "square cells", "shade swap"]
       },
       "option-l.html": {
         name: "Compare 2",
         kicker: "L",
-        body: "Pick a first shade — it locks into Slot 1. Pick a second — stage splits 50/50 with both models side-by-side, plus a one-line diff and arm-swatch chips beneath each. White space — no competitor in our audit does this.",
+        body: "Pick a first shade — it locks into Slot 1. Pick a second — stage splits 50/50 with both models side-by-side, plus a one-line diff and the matching arm swatch beneath each panel. White space — no competitor in our audit does this.",
         solves: "\"I'm in between colors so I need to mix two\" — direct customer quote",
         tags: ["white space", "side-by-side"]
       },
       "option-m.html": {
         name: "Skin Twin",
         kicker: "M",
-        body: "Tap the model whose skin looks like yours. Instead of a popup, her shade and her full \"get the look\" — Complexion Stick, Miracle Balm, Lip Recharge — show on the right. The 30-grid stays clickable so you can keep exploring.",
+        body: "Tap the model whose skin looks like yours. No popup, no zoom — her shade and her full \"get the look\" (Miracle Balm, Lip Recharge, Face Pencil) appear on the right. The 30-grid stays clickable. Filter the grid by skin-tone range to narrow.",
         solves: "\"I picked by hair color, not skin tone\" + cross-product discovery",
         tags: ["face-first", "get-the-look"]
+      },
+      "option-o.html": {
+        name: "Cross-Brand Match",
+        kicker: "O",
+        body: "Pick the brand and shade you currently wear (MAC, Bobbi Brown, Charlotte Tilbury, NARS, Fenty, Estée Lauder). Get an instant Complexion Stick match — model image, arm swatch, undertone, all of it. ~10 seconds. Findation pattern.",
+        solves: "JRB's older makeup-experienced customer wears something already — anchor on a shade they trust",
+        tags: ["Findation", "no quiz, no camera", "audit pick"]
+      },
+      "option-q.html": {
+        name: "On-Skin Reel",
+        kicker: "Q",
+        body: "Merit pattern. Hover any model card to see the shade swept across her cheek in real time (CSS-animated swatch sweep — production swaps in :05 application clips). Click for a full reel modal: editorial copy, prev/next nav, arrow keys, ESC to close.",
+        solves: "\"Show me what it actually looks like applied\" — sells texture, finish, and skin-on-skin honesty",
+        tags: ["Merit pattern", "video-first", "modal viewer"]
       }
     };
 
@@ -125,7 +145,7 @@
 
       buttons.forEach(b => b.addEventListener("click", () => activate(b.dataset.opt)));
 
-      const keymap = { "1": "option-f.html", "2": "option-g.html", "3": "option-l.html", "4": "option-m.html" };
+      const keymap = { "1": "option-f.html", "2": "option-g.html", "3": "option-l.html", "4": "option-m.html", "5": "option-o.html", "6": "option-q.html" };
       window.addEventListener("keydown", e => {
         if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
         const file = keymap[e.key];
