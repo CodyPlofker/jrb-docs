@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Static Ad Training — Smoke Test</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 14px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      color: #111;
+      background: #f8f8f8;
+      padding: 20px;
+    }
+    @media (min-width: 720px) {
+      body { padding: 36px; }
+    }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: -0.01em; }
+    h2 { margin: 0 0 12px; font-size: 20px; letter-spacing: -0.01em; }
+    h3 { margin: 6px 0 4px; font-size: 16px; font-weight: 600; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .summary {
+      background: #000; color: #fff; padding: 20px; border-radius: 12px;
+      margin-bottom: 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+    }
+    @media (min-width: 720px) { .summary { grid-template-columns: repeat(4, 1fr); } }
+    .summary div { display: flex; flex-direction: column; gap: 4px; }
+    .summary .k { font-size: 11px; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.06em; }
+    .summary .v { font-size: 22px; font-weight: 600; }
+    .brief { background: #fff; border-radius: 12px; padding: 18px; margin-bottom: 18px; }
+    .brief-header { border-bottom: 1px solid #eee; padding-bottom: 12px; margin-bottom: 12px; }
+    .brief-meta { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: #666; margin-top: 4px; }
+    .brief-meta strong { color: #111; }
+    .angle { font-size: 12px; color: #666; margin: 8px 0 0; font-style: italic; }
+    .concept { padding: 14px 0; border-top: 1px solid #f0f0f0; }
+    .concept:first-of-type { border-top: none; padding-top: 0; }
+    .concept-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 4px; }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 999px;
+      background: #f0f0f0; color: #333; font-size: 10px; font-weight: 600; letter-spacing: 0.04em;
+    }
+    .badge.problem { background: #ffe4e4; color: #b00020; }
+    .badge.text-ok { background: #e0f5d8; color: #2c5d1d; }
+    .archetype { font-size: 11px; color: #666; font-weight: 600; }
+    .subhead { color: #555; margin: 0; font-size: 13px; }
+    .cta-pill { font-size: 11px; color: #666; margin: 4px 0 0; }
+    .scene { font-size: 12px; color: #555; margin: 8px 0; line-height: 1.45; }
+    .cells {
+      display: grid; gap: 10px; margin-top: 10px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 600px) { .cells { grid-template-columns: 1fr 1fr; } }
+    .cell { margin: 0; }
+    .cell img {
+      width: 100%; height: auto; border-radius: 8px; display: block;
+      background: #eee;
+    }
+    .cell figcaption { font-size: 10px; color: #888; margin-top: 4px; text-align: center; }
+    .cell.empty, .cell.failed, .cell.queued, .cell.generating {
+      background: #fafafa; border: 1px dashed #ddd; border-radius: 8px; padding: 30px;
+      text-align: center; font-size: 11px; color: #888;
+    }
+    .probes {
+      display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px;
+      padding-top: 10px; border-top: 1px dashed #f0f0f0;
+    }
+    .probe {
+      display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 9px; font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+    .probe.on { background: #e0f5d8; color: #2c5d1d; }
+    .probe.off { background: #f5f5f5; color: #999; }
+    footer { text-align: center; font-size: 11px; color: #999; padding: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>JRB Static Ads — Smoke Test</h1>
+    <p style="color:#666;margin:0 0 18px;">
+      Validates the Static Ad Training stack end-to-end. Each brief exercises a different
+      slice of the new pipeline. Probes show which prompt blocks were injected per cell.
+    </p>
+
+    <div class="summary">
+      <div><span class="k">Briefs</span><span class="v">4</span></div>
+      <div><span class="k">Cells</span><span class="v">14</span></div>
+      <div><span class="k">Cost</span><span class="v">$7.08</span></div>
+      <div><span class="k">Failed</span><span class="v">0</span></div>
+    </div>
+
+    
+    <section class="brief">
+      <header class="brief-header">
+        <h2>Brief 1 — Branded · 4 PDF archetypes (Mini MB)</h2>
+        <div class="brief-meta">
+          <span>mode: <strong>branded</strong></span>
+          <span>product: <strong>Mini Miracle Balm</strong></span>
+          <span>status: <strong>ready</strong></span>
+          <span>cells: <strong>8</strong></span>
+          <span>cost: <strong>$4.04</strong></span>
+        </div>
+        <p class="angle">Smoke test — exercise the 4 new PDF-derived archetypes through the new BRAND_DIRECTION + SAFE_ZONES + buildHumansBlock pipeline</p>
+      </header>
+      
+        <article class="concept">
+          <header>
+            <div class="concept-meta">
+              <span class="badge">c1</span>
+              <span class="archetype">Top Performer Hero</span>
+              
+              
+            </div>
+            <h3>The makeup that started a movement</h3>
+            <p class="subhead">29,931 5-star reviews</p>
+            <p class="cta-pill">CTA: Shop Mini</p>
+          </header>
+          <p class="scene">Single Mini Miracle Balm jar on a bone-tone ground, soft natural daylight, generous empty space above for the headline. No props. Hero anchored bottom-third.</p>
+          <div class="cells">
+            
+    <figure class="cell">
+      <a href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c1-1x1-gpt-image-2.png" target="_blank" rel="noopener">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c1-1x1-gpt-image-2.png" alt="c1-1x1-gpt-image-2" loading="lazy" />
+      </a>
+      <figcaption>1×1 · $0.21</figcaption>
+    </figure>
+            
+    <figure class="cell">
+      <a href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c1-9x16-gpt-image-2.png" target="_blank" rel="noopener">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c1-9x16-gpt-image-2.png" alt="c1-9x16-gpt-image-2" loading="lazy" />
+      </a>
+      <figcaption>9×16 · $0.80</figcaption>
+    </figure>
+          </div>
+          <div class="probes"><span class="probe on">brand direction ✓</span> <span class="probe off">product training —</span> <span class="probe on">safe zones ✓</span> <span class="probe on">cta button ✓</span> <span class="probe off">brand baseline refs —</span> <span class="probe off">hands pack refs —</span> <span class="probe off">anti refs —</span> <span class="probe off">ai faces relaxed —</span> <span class="probe on">ai faces strict ✓</span></div>
+        </article>
+
+        <article class="concept">
+          <header>
+            <div class="concept-meta">
+              <span class="badge">c2</span>
+              <span class="archetype">Before/After</span>
+              <span class="badge problem">problem visual</span>
+              
+            </div>
+            <h3>Your skin, but better</h3>
+            
+            <p class="cta-pill">CTA: Shop Mini</p>
+          </header>
+          <p class="scene">Side-by-side before/after split. Same crop both halves. Left: dry, dull skin texture (problemVisual). Right: same skin with Mini balm applied — fresh, dewy, natural. Identical lighting. Pink-tape headline anchored above.</p>
+          <div class="cells">
+            
+    <figure class="cell">
+      <a href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c2-1x1-gpt-image-2.png" target="_blank" rel="noopener">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c2-1x1-gpt-image-2.png" alt="c2-1x1-gpt-image-2" loading="lazy" />
+      </a>
+      <figcaption>1×1 · $0.21</figcaption>
+    </figure>
+            
+    <figure class="cell">
+      <a href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c2-9x16-gpt-image-2.png" target="_blank" rel="noopener">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c2-9x16-gpt-image-2.png" alt="c2-9x16-gpt-image-2" loading="lazy" />
+      </a>
+      <figcaption>9×16 · $0.80</figcaption>
+    </figure>
+          </div>
+          <div class="probes"><span class="probe on">brand direction ✓</span> <span class="probe off">product training —</span> <span class="probe on">safe zones ✓</span> <span class="probe on">cta button ✓</span> <span class="probe off">brand baseline refs —</span> <span class="probe off">hands pack refs —</span> <span class="probe off">anti refs —</span> <span class="probe on">ai faces relaxed ✓</span> <span class="probe off">ai faces strict —</span></div>
+        </article>
+
+        <article class="concept">
+          <header>
+            <div class="concept-meta">
+              <span class="badge">c3</span>
+              <span class="archetype">5-Star Review Spotlight</span>
+              
+              <span class="badge text-ok">text-in-image</span>
+            </div>
+            <h3>I have never gotten this many compliments in my life</h3>
+            <p class="subhead">29,931 5-star reviews</p>
+            <p class="cta-pill">CTA: Shop Mini</p>
+          </header>
+          <p class="scene">Pull quote in Canela italic over light-pink ground. Mini Miracle Balm hero anchored in the lower band. Five solid black stars below the quote with tracked-out 29,931 review count in BaseMono ALL CAPS.</p>
+          <div class="cells">
+            
+    <figure class="cell">
+      <a href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c3-1x1-gpt-image-2.png" target="_blank" rel="noopener">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c3-1x1-gpt-image-2.png" alt="c3-1x1-gpt-image-2" loading="lazy" />
+      </a>
+      <figcaption>1×1 · $0.21</figcaption>
+    </figure>
+            
+    <figure class="cell">
+      <a href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c3-9x16-gpt-image-2.png" target="_blank" rel="noopener">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c3-9x16-gpt-image-2.png" alt="c3-9x16-gpt-image-2" loading="lazy" />
+      </a>
+      <figcaption>9×16 · $0.80</figcaption>
+    </figure>
+          </div>
+          <div class="probes"><span class="probe on">brand direction ✓</span> <span class="probe off">product training —</span> <span class="probe on">safe zones ✓</span> <span class="probe on">cta button ✓</span> <span class="probe off">brand baseline refs —</span> <span class="probe off">hands pack refs —</span> <span class="probe off">anti refs —</span> <span class="probe off">ai faces relaxed —</span> <span class="probe on">ai faces strict ✓</span></div>
+        </article>
+
+        <article class="concept">
+          <header>
+            <div class="concept-meta">
+              <span class="badge">c4</span>
+              <span class="archetype">Split Screen</span>
+              
+              <span class="badge text-ok">text-in-image</span>
+            </div>
+            <h3>Compliments in a jar</h3>
+            <p class="subhead">It is the best way we can</p>
+            <p class="cta-pill">CTA: Shop Mini</p>
+          </header>
+          <p class="scene">50/50 vertical split. Left half: pull quote in Canela italic on cream ground. Right half: open Mini Miracle Balm jar with balm texture macro, shot on bone ground. Both halves share the same warm neutral palette.</p>
+          <div class="cells">
+            
+    <figure class="cell">
+      <a href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c4-1x1-gpt-image-2.png" target="_blank" rel="noopener">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c4-1x1-gpt-image-2.png" alt="c4-1x1-gpt-image-2" loading="lazy" />
+      </a>
+      <figcaption>1×1 · $0.21</figcaption>
+    </figure>
+            
+    <figure class="cell">
+      <a href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c4-9x16-gpt-image-2.png" target="_blank" rel="noopener">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyemb_gp5nir/c4-9x16-gpt-image-2.png" alt="c4-9x16-gpt-image-2" loading="lazy" />
+      </a>
+      <figcaption>9×16 · $0.80</figcaption>
+    </figure>
+          </div>
+          <div class="probes"><span class="probe on">brand direction ✓</span> <span class="probe off">product training —</span> <span class="probe on">safe zones ✓</span> <span class="probe on">cta button ✓</span> <span class="probe off">brand baseline refs —</span> <span class="probe off">hands pack refs —</span> <span class="probe off">anti refs —</span> <span class="probe off">ai faces relaxed —</span> <span class="probe on">ai faces strict ✓</span></div>
+        </article>
+    </section>
+
+    <section class="brief">
+      <header class="brief-header">
+        <h2>Brief 2 — Native UGC mode (Mini MB)</h2>
+        <div class="brief-meta">
+          <span>mode: <strong>native-ugc</strong></span>
+          <span>product: <strong>Mini Miracle Balm</strong></span>
+          <span>status: <strong>ready</strong></span>
+          <span>cells: <strong>2</strong></span>
+          <span>cost: <strong>$1.01</strong></span>
+        </div>
+        <p class="angle">Smoke test — native-UGC mode. Verify baseline pack NOT attached and AI faces allowed.</p>
+      </header>
+      
+        <article class="concept">
+          <header>
+            <div class="concept-meta">
+              <span class="badge">c1</span>
+              <span class="archetype">UGC-style</span>
+              
+              
+            </div>
+            
+            
+            
+          </header>
+          <p class="scene">First-person creator-handheld feel. A real-looking woman (mid-30s, mom-vibe) in her bathroom mirror, applying Mini Miracle Balm with her fingertip. Phone-camera quality, natural ceiling light, slight imperfection in framing — feels organic, not staged. Casual t-shirt or sweatshirt visible.</p>
+          <div class="cells">
+            
+    <figure class="cell">
+      <a href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfymsj_nyjh37/c1-1x1-gpt-image-2.png" target="_blank" rel="noopener">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfymsj_nyjh37/c1-1x1-gpt-image-2.png" alt="c1-1x1-gpt-image-2" loading="lazy" />
+      </a>
+      <figcaption>1×1 · $0.21</figcaption>
+    </figure>
+            
+    <figure class="cell">
+      <a href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfymsj_nyjh37/c1-9x16-gpt-image-2.png" target="_blank" rel="noopener">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfymsj_nyjh37/c1-9x16-gpt-image-2.png" alt="c1-9x16-gpt-image-2" loading="lazy" />
+      </a>
+      <figcaption>9×16 · $0.80</figcaption>
+    </figure>
+          </div>
+          <div class="probes"><span class="probe off">brand direction —</span> <span class="probe off">product training —</span> <span class="probe on">safe zones ✓</span> <span class="probe off">cta button —</span> <span class="probe off">brand baseline refs —</span> <span class="probe on">hands pack refs ✓</span> <span class="probe off">anti refs —</span> <span class="probe on">ai faces relaxed ✓</span> <span class="probe off">ai faces strict —</span></div>
+        </article>
+    </section>
+
+    <section class="brief">
+      <header class="brief-header">
+        <h2>Brief 3 — Branded · Hands archetype (Mini MB)</h2>
+        <div class="brief-meta">
+          <span>mode: <strong>branded</strong></span>
+          <span>product: <strong>Mini Miracle Balm</strong></span>
+          <span>status: <strong>ready</strong></span>
+          <span>cells: <strong>2</strong></span>
+          <span>cost: <strong>$1.01</strong></span>
+        </div>
+        <p class="angle">Smoke test — hands archetype. Verify the 3 swatch-arm refs auto-attach to this concept.</p>
+      </header>
+      
+        <article class="concept">
+          <header>
+            <div class="concept-meta">
+              <span class="badge">c1</span>
+              <span class="archetype">UGC Demo</span>
+              
+              
+            </div>
+            <h3>One swipe.</h3>
+            <p class="subhead">Real skin, real balm.</p>
+            <p class="cta-pill">CTA: Shop Mini</p>
+          </header>
+          <p class="scene">Real hand entering frame from the right edge, fingertip dipped into an open Mini Miracle Balm jar, balm texture visible on the fingertip. Soft natural daylight. Bone or beige ground. Hand only — no face, no body. Short clean nails, neutral or natural-tone polish.</p>
+          <div class="cells">
+            
+    <figure class="cell">
+      <a href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyr6c_r2zgq0/c1-1x1-gpt-image-2.png" target="_blank" rel="noopener">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyr6c_r2zgq0/c1-1x1-gpt-image-2.png" alt="c1-1x1-gpt-image-2" loading="lazy" />
+      </a>
+      <figcaption>1×1 · $0.21</figcaption>
+    </figure>
+            
+    <figure class="cell">
+      <a href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyr6c_r2zgq0/c1-9x16-gpt-image-2.png" target="_blank" rel="noopener">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojfyr6c_r2zgq0/c1-9x16-gpt-image-2.png" alt="c1-9x16-gpt-image-2" loading="lazy" />
+      </a>
+      <figcaption>9×16 · $0.80</figcaption>
+    </figure>
+          </div>
+          <div class="probes"><span class="probe on">brand direction ✓</span> <span class="probe off">product training —</span> <span class="probe on">safe zones ✓</span> <span class="probe on">cta button ✓</span> <span class="probe off">brand baseline refs —</span> <span class="probe on">hands pack refs ✓</span> <span class="probe off">anti refs —</span> <span class="probe off">ai faces relaxed —</span> <span class="probe on">ai faces strict ✓</span></div>
+        </article>
+    </section>
+
+    <section class="brief">
+      <header class="brief-header">
+        <h2>Brief 4 — Refactor verification (post-Mini-MB-extraction)</h2>
+        <div class="brief-meta">
+          <span>mode: <strong>branded</strong></span>
+          <span>product: <strong>Mini Miracle Balm</strong></span>
+          <span>status: <strong>ready</strong></span>
+          <span>cells: <strong>2</strong></span>
+          <span>cost: <strong>$1.01</strong></span>
+        </div>
+        <p class="angle">Refactor verification — confirm PRODUCT-SPECIFIC TRAINING block injects from data/products/mini-miracle-balm/training.md after Mini MB rules were refactored out of JRB_GUARDRAILS.</p>
+      </header>
+      
+        <article class="concept">
+          <header>
+            <div class="concept-meta">
+              <span class="badge">c1</span>
+              <span class="archetype">Top Performer Hero</span>
+              
+              
+            </div>
+            <h3>Same magic, smaller jar</h3>
+            <p class="subhead">8.5g of Miracle</p>
+            <p class="cta-pill">CTA: Shop Mini</p>
+          </header>
+          <p class="scene">Single Mini Miracle Balm jar on bone-tone ground, soft natural daylight, generous empty band above for headline. Lower-third hero placement. No props. Refactor verification brief.</p>
+          <div class="cells">
+            
+    <figure class="cell">
+      <a href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojg4yu7_sov3m0/c1-1x1-gpt-image-2.png" target="_blank" rel="noopener">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojg4yu7_sov3m0/c1-1x1-gpt-image-2.png" alt="c1-1x1-gpt-image-2" loading="lazy" />
+      </a>
+      <figcaption>1×1 · $0.21</figcaption>
+    </figure>
+            
+    <figure class="cell">
+      <a href="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojg4yu7_sov3m0/c1-9x16-gpt-image-2.png" target="_blank" rel="noopener">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mojg4yu7_sov3m0/c1-9x16-gpt-image-2.png" alt="c1-9x16-gpt-image-2" loading="lazy" />
+      </a>
+      <figcaption>9×16 · $0.80</figcaption>
+    </figure>
+          </div>
+          <div class="probes"><span class="probe on">brand direction ✓</span> <span class="probe on">product training ✓</span> <span class="probe on">safe zones ✓</span> <span class="probe on">cta button ✓</span> <span class="probe off">brand baseline refs —</span> <span class="probe off">hands pack refs —</span> <span class="probe off">anti refs —</span> <span class="probe off">ai faces relaxed —</span> <span class="probe on">ai faces strict ✓</span></div>
+        </article>
+    </section>
+
+    <footer>
+      Generated 4/28/2026, 10:41:38 PM.
+      Tap any image to open full-size.
+    </footer>
+  </div>
+</body>
+</html>
