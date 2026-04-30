@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JRB Static Ads — Shade Variance (Flushed × low+portrait)</title>
+<style>
+  :root { --bg: #f8f8f8; --card: #fff; --ink: #000; --muted: #555; --border: #e5e5e5; --green: #0a7c3e; --amber: #b66600; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  header { padding: 28px 20px 12px; max-width: 1100px; margin: 0 auto; }
+  header h1 { margin: 0 0 4px; font-size: 22px; }
+  header p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+  .summary { margin: 14px 0; padding: 12px 16px; background: #fff; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; line-height: 1.6; }
+  .summary strong.ok { color: var(--green); }
+  .summary strong.warn { color: var(--amber); }
+  .grid { display: grid; gap: 14px; padding: 8px 20px 36px; max-width: 1100px; margin: 0 auto; grid-template-columns: 1fr; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .card.status-ok { border-color: var(--green); }
+  .card.status-partial { border-color: var(--amber); border-style: dashed; }
+  .card-head { padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  .card-title { font-size: 14px; font-weight: 600; }
+  .pill { display: inline-block; font-size: 10px; padding: 1px 6px; margin-left: 6px; border-radius: 3px; background: #f0f0f0; color: var(--muted); text-transform: uppercase; }
+  .card-sub { font-size: 11px; color: var(--muted); margin-top: 2px; font-family: monospace; }
+  .img-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px; }
+  .img-col h4 { margin: 0 0 6px; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .img-col img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border-radius: 4px; background: #f0f0f0; }
+  .img-col img.vert { aspect-ratio: 9 / 16; }
+  .placeholder { aspect-ratio: 1 / 1; background: #fef0f0; display: flex; align-items: center; justify-content: center; color: var(--amber); font-size: 11px; border-radius: 4px; font-weight: 600; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Shade-Lock Variance — Flushed × low + portrait</h1>
+  <p>6 identical briefs at the recommended cost-A/B winner settings. Same scene, same headline, same shade lock, same low quality, same 1024×1536 portrait. Only the random seed varies. Tests how reliably the lock holds at scale.</p>
+
+  <div class="summary">
+    <strong class="ok">Lock fidelity: 5/5 successful 1×1 cells render Flushed pink</strong> (4 vivid magenta-pink, 1 slightly muted but in shade family). Compositional variance is acceptable — different bag tones, angles, lighting (model has freedom on scene details).<br><br>
+    <strong class="warn">Connection-flake rate: 50% (3/6 briefs partial)</strong>. Cause: transient ConnectionError from OpenAI under parallel low-quality load. <strong>Fix applied:</strong> withRetries wrapper in lib/models/openai.ts (default OPENAI_MAX_RETRIES=2, 2s/4s/8s backoff). Should drop to &lt;5% in next run.<br><br>
+    Total spend on this variance run: <strong>$0.159</strong>.
+  </div>
+</header>
+
+<div class="grid">
+
+      <div class="card status-ok">
+        <div class="card-head">
+          <div class="card-title">Brief 1 <span class="pill">ready</span></div>
+          <div class="card-sub">b_mokxsndv_qjxqg7</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mokxsndv_qjxqg7/c1-1x1-gpt-image-2.png" alt="">
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <img class="vert" src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mokxsndv_qjxqg7/c1-9x16-gpt-image-2.png" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="card status-partial">
+        <div class="card-head">
+          <div class="card-title">Brief 2 <span class="pill">partial</span></div>
+          <div class="card-sub">b_mokxsnbk_12dsfn</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="placeholder">FAILED</div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <img class="vert" src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mokxsnbk_12dsfn/c1-9x16-gpt-image-2.png" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="card status-ok">
+        <div class="card-head">
+          <div class="card-title">Brief 3 <span class="pill">ready</span></div>
+          <div class="card-sub">b_mokxsneo_r9t6u4</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mokxsneo_r9t6u4/c1-1x1-gpt-image-2.png" alt="">
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <img class="vert" src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mokxsneo_r9t6u4/c1-9x16-gpt-image-2.png" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="card status-partial">
+        <div class="card-head">
+          <div class="card-title">Brief 4 <span class="pill">partial</span></div>
+          <div class="card-sub">b_mokxsnf6_ldhhrg</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mokxsnf6_ldhhrg/c1-1x1-gpt-image-2.png" alt="">
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="placeholder">FAILED</div>
+          </div>
+        </div>
+      </div>
+      <div class="card status-partial">
+        <div class="card-head">
+          <div class="card-title">Brief 5 <span class="pill">partial</span></div>
+          <div class="card-sub">b_mokxsnhq_4i96kc</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mokxsnhq_4i96kc/c1-1x1-gpt-image-2.png" alt="">
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="placeholder">FAILED</div>
+          </div>
+        </div>
+      </div>
+      <div class="card status-ok">
+        <div class="card-head">
+          <div class="card-title">Brief 6 <span class="pill">ready</span></div>
+          <div class="card-sub">b_mokxsnhf_975r30</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mokxsnhf_975r30/c1-1x1-gpt-image-2.png" alt="">
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <img class="vert" src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mokxsnhf_975r30/c1-9x16-gpt-image-2.png" alt="">
+          </div>
+        </div>
+      </div>
+</div>
+</body>
+</html>
