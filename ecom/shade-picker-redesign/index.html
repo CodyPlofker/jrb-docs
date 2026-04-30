@@ -14,7 +14,7 @@
     html, body { margin: 0; padding: 0; height: 100%; }
     body { font-family: "RingsideWideWeb", Helvetica, Arial, sans-serif; background: #fff; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-    .toggle-wrap { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #ececec; z-index: 10; }
+    .toggle-wrap { background: #fff; border-bottom: 1px solid #ececec; z-index: 10; }
     .toggle { padding: 12px 16px 10px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
     .toggle__brand { font-family: "GeogrotesqueCondBoldWeb", "Arial Black", Impact, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; margin-right: 12px; color: #000; flex-shrink: 0; }
     .toggle__brand span { font-family: "BaseMonoWideWeb", Courier, "Courier New", sans-serif; font-size: 11px; letter-spacing: .9px; color: #757575; margin-left: 8px; font-weight: 400; }
@@ -44,12 +44,16 @@
 <body>
   <div class="toggle-wrap">
     <header class="toggle" role="tablist" aria-label="Shade picker variants">
-      <span class="toggle__brand">Skin Twin <span>5 variations</span></span>
+      <span class="toggle__brand">Skin Twin <span>final 3 + alts</span></span>
 
-      <button type="button" class="opt-btn" data-opt="option-m1.html" aria-pressed="true">M1<span class="opt-btn__sub">Baseline (no swatch)</span></button>
-      <button type="button" class="opt-btn" data-opt="option-m2.html">M2<span class="opt-btn__sub">+ Get-the-Look</span></button>
+      <button type="button" class="opt-btn" data-opt="option-m1.html" aria-pressed="true">M1<span class="opt-btn__sub">Baseline</span></button>
+      <button type="button" class="opt-btn" data-opt="option-m2.html">M2<span class="opt-btn__sub">+ Look open</span></button>
+      <button type="button" class="opt-btn" data-opt="option-m7.html">M7<span class="opt-btn__sub">+ Look accordion</span></button>
+
+      <span class="opt-divider"></span>
+
       <button type="button" class="opt-btn" data-opt="option-m3.html">M3<span class="opt-btn__sub">Horizontal Look</span></button>
-      <button type="button" class="opt-btn" data-opt="option-m5.html">M5<span class="opt-btn__sub">Shoppable hotspots</span></button>
+      <button type="button" class="opt-btn" data-opt="option-m5.html">M5<span class="opt-btn__sub">Hotspots</span></button>
       <button type="button" class="opt-btn" data-opt="option-m6.html">M6<span class="opt-btn__sub">Before / After</span></button>
 
       <span class="opt-divider"></span>
@@ -78,18 +82,25 @@
   <script>
     const variants = {
       "option-m1.html": {
-        name: "Skin Twin — Baseline",
+        name: "Skin Twin — Baseline (final)",
         kicker: "M1",
-        body: "Cody's preferred direction. NO swatch, undertone pill above the Canela shade name. JRB-spec ATC (44px, BaseMono 16, 'Add to Cart'). Outlined Take-the-Quiz button in the right panel AND under the 30-grid. Hero capped at 460px so the ATC stays in view.",
-        solves: "Clean, no-swatch baseline · ATC stays in view · quiz access from both columns",
-        tags: ["no swatch", "JRB ATC spec", "quiz under grid"]
+        body: "All Wave 1+2+3 fixes applied. No sticky on the right column, hero sized so right panel matches grid height, shade name above undertone pill, JRB-spec .button (40px, content-width — not stretched), subtle hover preview on grid cells (shade name in the corner).",
+        solves: "Cody's preferred direction · clean baseline · everything from Whitney's notes",
+        tags: ["no swatch", "JRB .button spec", "hover preview", "heights match"]
       },
       "option-m2.html": {
-        name: "Skin Twin — + Get-the-Look",
+        name: "Skin Twin — Look OPEN",
         kicker: "M2",
-        body: "M1 baseline + vertical Get-the-Look section (Miracle Balm, Lip Recharge, Face Pencil). Get-the-Look now sits BELOW the ATC so the primary CTA is always in view.",
-        solves: "Cross-product discovery without burying the ATC",
-        tags: ["no swatch", "look below ATC", "cross-product"]
+        body: "Same M1 baseline + 'See what else she's wearing' section visible by default — Miracle Balm, Lip Recharge, Face Pencil with their matching shades. Each item has its own Add button.",
+        solves: "AOV booster + cross-product discovery, no extra clicks",
+        tags: ["look visible", "AOV", "cross-product"]
+      },
+      "option-m7.html": {
+        name: "Skin Twin — Look ACCORDION",
+        kicker: "M7",
+        body: "Same M1 baseline + 'See what else she's wearing' as a collapsed accordion — click to expand, click to close. Whitney's idea: keeps the right column tight (heights match grid) until shopper opts in.",
+        solves: "Cross-product discovery without taking up space by default",
+        tags: ["accordion", "Whitney's idea", "compact"]
       },
       "option-m3.html": {
         name: "Skin Twin — Horizontal Look",
