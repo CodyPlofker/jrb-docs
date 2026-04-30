@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>FS Batch 2 — Review</title>
+<style>
+  :root {
+    --bg: #0e0e10;
+    --card: #18181b;
+    --card-hover: #1e1e22;
+    --ink: #fafafa;
+    --muted: #8b8b94;
+    --border: #2a2a30;
+    --accent: #ff2e92;
+    --love: #38b53e;
+    --iterate: #d39527;
+    --kill: #d33d3d;
+    --record: #ff2e92;
+    --shadow: 0 4px 16px rgba(0,0,0,0.35);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; overscroll-behavior: contain; }
+  body { padding-bottom: env(safe-area-inset-bottom, 0); }
+  header {
+    position: sticky; top: 0; z-index: 100;
+    padding: 14px 16px 12px;
+    background: rgba(14,14,16,0.85);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+  }
+  .head-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  h1 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  .progress {
+    height: 3px; background: var(--border); border-radius: 999px; overflow: hidden;
+    margin-top: 10px;
+  }
+  .progress > div { height: 100%; background: var(--accent); transition: width .25s ease; }
+  .progress-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .head-actions { display: flex; gap: 6px; }
+  .btn {
+    appearance: none; border: 1px solid var(--border); background: var(--card);
+    color: var(--ink); padding: 7px 12px; border-radius: 8px;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    -webkit-touch-callout: none; user-select: none;
+  }
+  .btn:hover { background: var(--card-hover); }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  .btn-primary:disabled { background: var(--border); border-color: var(--border); color: var(--muted); cursor: not-allowed; }
+  .btn-ghost { background: transparent; border-color: transparent; color: var(--muted); padding: 7px 8px; }
+
+  .filter-bar {
+    display: flex; gap: 6px; overflow-x: auto;
+    padding: 10px 16px 4px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    -webkit-overflow-scrolling: touch;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 6px 12px; border-radius: 999px;
+    background: var(--card); border: 1px solid var(--border);
+    font-size: 12px; white-space: nowrap; cursor: pointer;
+    color: var(--muted);
+  }
+  .pill.active { background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 600; }
+  .pill em { font-style: normal; opacity: 0.6; font-size: 10px; }
+
+  main { max-width: 720px; margin: 0 auto; padding: 14px 12px 100px; }
+
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    margin-bottom: 14px; overflow: hidden;
+    transition: border-color .15s;
+  }
+  .card.rated-love { border-color: var(--love); }
+  .card.rated-iterate { border-color: var(--iterate); }
+  .card.rated-kill { border-color: var(--kill); opacity: 0.55; }
+
+  .card-head {
+    padding: 10px 14px; display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-num { font-family: ui-monospace, "SF Mono", monospace; font-size: 12px; color: var(--accent); font-weight: 700; }
+  .card-meta { flex: 1; min-width: 0; }
+  .card-arch { font-size: 12px; font-weight: 500; }
+  .card-extras { display: flex; gap: 6px; margin-top: 2px; flex-wrap: wrap; }
+  .chip { font-size: 9px; padding: 1px 6px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.04em; background: var(--border); color: var(--muted); }
+  .chip.shade { background: #2a2515; color: #d3a960; }
+  .chip.persona { background: #18222e; color: #6da9d4; }
+
+  .card-copy { padding: 10px 14px; background: rgba(0,0,0,0.2); }
+  .copy-headline { font-size: 14px; font-weight: 600; line-height: 1.4; }
+  .copy-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .copy-cta { font-size: 11px; color: var(--muted); margin-top: 6px; font-family: ui-monospace, "SF Mono", monospace; }
+
+  .img-grid { display: grid; grid-template-columns: 1fr 9fr; gap: 0; padding: 10px; }
+  .img-grid { grid-template-columns: 1fr 1fr; }
+  .img-cell { position: relative; }
+  .img-cell h4 { margin: 0 0 6px; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .img-cell.sq img { aspect-ratio: 1/1; }
+  .img-cell.vert img { aspect-ratio: 9/16; }
+  .img-cell img { width: 100%; height: auto; object-fit: cover; display: block; border-radius: 6px; background: #000; cursor: zoom-in; }
+
+  .actions { padding: 10px 14px; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--border); }
+  .ratings { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .rating-btn {
+    appearance: none; border: 1px solid var(--border); background: var(--card);
+    color: var(--ink); padding: 10px 6px; border-radius: 8px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: all .12s;
+  }
+  .rating-btn:active { transform: scale(0.97); }
+  .rating-btn.r-love.active { background: var(--love); border-color: var(--love); color: #fff; }
+  .rating-btn.r-iterate.active { background: var(--iterate); border-color: var(--iterate); color: #000; }
+  .rating-btn.r-kill.active { background: var(--kill); border-color: var(--kill); color: #fff; }
+  .rating-btn .label { font-size: 10px; font-weight: 500; opacity: 0.7; display: block; margin-top: 2px; }
+
+  .voice {
+    display: flex; align-items: center; gap: 8px;
+    padding: 4px;
+    background: var(--card-hover); border-radius: 8px;
+  }
+  .rec-btn {
+    appearance: none; border: 0;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--record); color: #fff;
+    cursor: pointer; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .rec-btn.recording {
+    background: #fff; color: var(--record);
+    animation: pulse 1s ease-in-out infinite alternate;
+  }
+  @keyframes pulse {
+    from { box-shadow: 0 0 0 0 rgba(255,46,146,0.6); }
+    to { box-shadow: 0 0 0 14px rgba(255,46,146,0); }
+  }
+  .rec-status { flex: 1; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .rec-time { font-family: ui-monospace, "SF Mono", monospace; font-size: 13px; color: var(--ink); }
+  .rec-actions { display: flex; gap: 4px; }
+  .rec-actions .btn { padding: 5px 10px; font-size: 11px; }
+  .rec-audio { width: 100%; margin-top: 6px; }
+  .rec-audio audio { width: 100%; height: 32px; }
+
+  .lightbox {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.95);
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .lightbox-close { position: absolute; top: 20px; right: 20px; }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: var(--bg); padding: 10px 18px;
+    border-radius: 999px; font-size: 13px; font-weight: 500;
+    box-shadow: var(--shadow);
+    opacity: 0; transition: opacity .25s;
+    z-index: 200; pointer-events: none;
+    max-width: calc(100vw - 32px);
+  }
+  .toast.show { opacity: 1; }
+
+  .empty-state {
+    text-align: center; color: var(--muted); padding: 40px 20px;
+    font-size: 13px;
+  }
+
+  @media (min-width: 700px) {
+    .img-grid { grid-template-columns: 1fr 9fr; padding: 12px; gap: 12px; }
+    .ratings { grid-template-columns: repeat(3, 140px); justify-content: start; }
+    .voice { padding: 6px; }
+    .actions { padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-row">
+    <h1>FS Batch 2 — Review</h1>
+    <div class="head-actions">
+      <button class="btn-ghost btn" id="btn-refilter">Filter</button>
+      <button class="btn btn-primary" id="btn-export" disabled>Export</button>
+    </div>
+  </div>
+  <div class="progress"><div id="progress-bar" style="width:0%"></div></div>
+  <div class="progress-meta">
+    <span id="progress-text">0 / 100 reviewed</span>
+    <span id="progress-counts"></span>
+  </div>
+</header>
+
+<div class="filter-bar" id="filter-bar"></div>
+
+<main id="cards"></main>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="btn btn-ghost lightbox-close" onclick="closeLightbox()">✕ Close</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Embedded slim manifest. Generated 2026-04-30 from preview/fs-batch-2-100.manifest.json.
+const MANIFEST = [{"id":"c001","archetype":"Top Performer Hero","headline":"Calling all foundation stick haters","subhead":null,"cta":"Shop Your Skin","persona":"Foundation skeptic","shade":null,"note":"Hero lineup \u2014 the campaign provocation","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c001-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c001-9x16-gpt-image-2.png"}},{"id":"c002","archetype":"Top Performer Hero","headline":"Available in 30 shades","subhead":"Every undertone, every depth","cta":"Find your match","persona":"Shade-conscious customer","shade":null,"note":"Shade range showcase","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c002-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c002-9x16-gpt-image-2.png"}},{"id":"c003","archetype":"Top Performer Hero","headline":"Forget everything you know about foundation sticks","subhead":null,"cta":"Shop Your Skin","persona":"Skincare-first buyer","shade":"honey","note":"Single hero macro \u2014 Honey","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c003-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c003-9x16-gpt-image-2.png"}},{"id":"c004","archetype":"Hero product","headline":"The first foundation stick foundation stick haters will love","subhead":null,"cta":"Shop now","persona":"Foundation skeptic","shade":"caramel","note":"Pure hero \u2014 Caramel","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c004-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c004-9x16-gpt-image-2.png"}},{"id":"c005","archetype":"Top Performer Hero","headline":"Skincare you can wear","subhead":null,"cta":"Shop Your Skin","persona":"Deep skin tone, premium beauty buyer","shade":"espresso","note":"Deepest shade hero","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c005-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c005-9x16-gpt-image-2.png"}},{"id":"c006","archetype":"Hero product","headline":"Light coverage. Heavy hydration.","subhead":null,"cta":"Shop Ivory","persona":"Light skin tone, dry skin","shade":"ivory","note":"Coverage paradox headline","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c006-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c006-9x16-gpt-image-2.png"}},{"id":"c007","archetype":"Top Performer Hero","headline":"30 shades. One feel.","subhead":null,"cta":"Shop Your Skin","persona":"Shade-curious buyer","shade":null,"note":"Grid lay-down","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c007-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c007-9x16-gpt-image-2.png"}},{"id":"c008","archetype":"Hero product","headline":"Bobbi-approved. Skincare-grade.","subhead":null,"cta":"Shop Your Skin","persona":"Bobbi loyalist","shade":"pecan","note":"Brand authority appeal","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf33_xgr12w/c008-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c008-9x16-gpt-image-2.png"}},{"id":"c009","archetype":"Top Performer Hero","headline":"Find your shade. Forget the cake.","subhead":null,"cta":"Find your match","persona":"Shade-curious","shade":null,"note":"Inclusive shade gradient","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c009-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c009-9x16-gpt-image-2.png"}},{"id":"c010","archetype":"Hero product","headline":"Coverage that wears with you","subhead":null,"cta":"Shop Your Skin","persona":"Mature skin, fine-line concern","shade":"cinnamon","note":"All-day wear angle","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c010-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c010-9x16-gpt-image-2.png"}},{"id":"c011","archetype":"Before-After","headline":"It's your foundation that needs to change. Not you.","subhead":null,"cta":"See the difference","persona":"Foundation hater, mid-40s","shade":null,"note":"Hero before/after \u2014 provocation","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c011-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c011-9x16-gpt-image-2.png"}},{"id":"c012","archetype":"Before-After","headline":"Foundation feeling like this? Your skin feels like this.","subhead":null,"cta":"Try Your Skin","persona":"Dry-skin sufferer","shade":null,"note":"Texture-driven before/after","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c012-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c012-9x16-gpt-image-2.png"}},{"id":"c013","archetype":"Before-After","headline":"The swipe that will change your mind","subhead":null,"cta":"Shop Your Skin","persona":"Foundation skeptic","shade":"almond","note":"One-cheek before/after","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c013-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c013-9x16-gpt-image-2.png"}},{"id":"c014","archetype":"Before-After","headline":"Stop putting up with bad foundation.","subhead":null,"cta":"Try Your Skin","persona":"Foundation skeptic","shade":null,"note":"Old way vs new way","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c014-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c014-9x16-gpt-image-2.png"}},{"id":"c015","archetype":"Before-After","headline":"Hour 1 vs hour 8.","subhead":null,"cta":"Shop Your Skin","persona":"Long-day wearer","shade":null,"note":"Wear test","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c015-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c015-9x16-gpt-image-2.png"}},{"id":"c016","archetype":"Split Screen","headline":"Old way vs Your Skin","subhead":null,"cta":"Try Your Skin","persona":"Foundation skeptic","shade":"sand","note":"Hand-to-hand product comparison","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c016-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c016-9x16-gpt-image-2.png"}},{"id":"c017","archetype":"Before-After","headline":"Real skin doesn't look like makeup","subhead":null,"cta":"See the swatch","persona":"Texture-sensitive buyer","shade":"bisque","note":"Swatch comparison","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c017-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c017-9x16-gpt-image-2.png"}},{"id":"c018","archetype":"Split Screen","headline":"Foundation sticks are overpromising. We're over it.","subhead":null,"cta":"Try Your Skin","persona":"Foundation skeptic","shade":null,"note":"Visual catharsis","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c018-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c018-9x16-gpt-image-2.png"}},{"id":"c019","archetype":"Before-After","headline":"Why wear makeup that doesn't work for you?","subhead":null,"cta":"Shop Your Skin","persona":"Skincare-first buyer","shade":null,"note":"Emotional before/after","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c019-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c019-9x16-gpt-image-2.png"}},{"id":"c020","archetype":"Before-After","headline":"Streak-free since the first swipe","subhead":null,"cta":"Shop Your Skin","persona":"Application-quality seeker","shade":null,"note":"Streak-free angle","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c020-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c020-9x16-gpt-image-2.png"}},{"id":"c021","archetype":"UGC-style","headline":"The swipe that will change your mind","subhead":null,"cta":"Shop now","persona":"Skeptical 30s","shade":null,"note":"Bathroom morning UGC","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c021-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c021-9x16-gpt-image-2.png"}},{"id":"c022","archetype":"UGC-style","headline":"Skeptical? Just swipe it on.","subhead":null,"cta":"Try Your Skin","persona":"Foundation skeptic","shade":"wheat","note":"First-person hand swipe","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c022-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c022-9x16-gpt-image-2.png"}},{"id":"c023","archetype":"UGC-style","headline":"Finally, a foundation that doesn't make me look older.","subhead":null,"cta":"Shop Your Skin","persona":"Mature skin, fine-line concern","shade":null,"note":"Mature persona testimonial vibe","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c023-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c023-9x16-gpt-image-2.png"}},{"id":"c024","archetype":"UGC-style","headline":"Game-changer.","subhead":"Said every foundation skeptic, ever.","cta":"Shop Your Skin","persona":"Convert testimonial","shade":null,"note":"Sticky-note vibe","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c024-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c024-9x16-gpt-image-2.png"}},{"id":"c025","archetype":"UGC-style","headline":"It just works.","subhead":null,"cta":"Shop Your Skin","persona":"On-the-go mom","shade":null,"note":"Outdoor UGC","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c025-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c025-9x16-gpt-image-2.png"}},{"id":"c026","archetype":"UGC Demo","headline":"Skincare that wears like makeup","subhead":null,"cta":"Try Your Skin","persona":"Skincare-first buyer","shade":"linen","note":"Mechanism demo","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c026-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c026-9x16-gpt-image-2.png"}},{"id":"c027","archetype":"UGC-style","headline":"Match made the first try","subhead":null,"cta":"Find your shade","persona":"Diverse skin tone customer","shade":"pecan","note":"Shade-match moment","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c027-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf33_xgr12w/c027-9x16-gpt-image-2.png"}},{"id":"c028","archetype":"UGC-style","headline":"I don't even feel it on my skin.","subhead":null,"cta":"Try Your Skin","persona":"Working professional","shade":null,"note":"Weightless feel","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c028-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c028-9x16-gpt-image-2.png"}},{"id":"c029","archetype":"UGC Demo","headline":"Glides on like a balm.","subhead":"Builds like a cream.","cta":"Shop Your Skin","persona":"Texture-sensitive","shade":null,"note":"Texture-on-hand demo","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c029-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c029-9x16-gpt-image-2.png"}},{"id":"c030","archetype":"UGC-style","headline":"It's the depth that got me.","subhead":null,"cta":"Shop Cocoa","persona":"Deep skin tone customer","shade":"cocoa","note":"Deep-shade testimonial","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c030-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c030-9x16-gpt-image-2.png"}},{"id":"c031","archetype":"5-Star Review Spotlight","headline":"Looks like skin, not makeup.","subhead":"100% AGREE","cta":"Read the reviews","persona":"Social proof seeker","shade":"hazel","note":"100% agree spotlight","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c031-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c031-9x16-gpt-image-2.png"}},{"id":"c032","archetype":"5-Star Review Spotlight","headline":"+51% hydration in 30 minutes","subhead":"100% SAID IT FELT HYDRATING","cta":"Shop Your Skin","persona":"Dry-skin sufferer","shade":"caramel","note":"Clinical claim ad","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c032-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c032-9x16-gpt-image-2.png"}},{"id":"c033","archetype":"5-Star Review Spotlight","headline":"8 hours. No transfer.","subhead":"DERMATOLOGIST TESTED","cta":"Shop Your Skin","persona":"Long-wear demand","shade":"sand","note":"8-hour claim","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c033-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c033-9x16-gpt-image-2.png"}},{"id":"c034","archetype":"5-Star Review Spotlight","headline":"97% said it felt hydrating","subhead":null,"cta":"Read more","persona":"Mature deep-tone customer","shade":"mahogany","note":"Hydration claim deep-tone","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf33_xgr12w/c034-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c034-9x16-gpt-image-2.png"}},{"id":"c035","archetype":"5-Star Review Spotlight","headline":"Looks like skin at one swipe.","subhead":"BETTER SKIN AT THREE.","cta":"Shop Your Skin","persona":"Coverage-curious","shade":"bisque","note":"Buildable coverage angle","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c035-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c035-9x16-gpt-image-2.png"}},{"id":"c036","archetype":"5-Star Review Spotlight","headline":"Up to 8-hour wear.","subhead":"94% DIDN'T FEEL ANY PRODUCT WEIGHT","cta":"Try Your Skin","persona":"Weightless seekers","shade":"toffee","note":"Weight claim","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c036-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c036-9x16-gpt-image-2.png"}},{"id":"c037","archetype":"Editorial / press","headline":"The first foundation stick foundation stick haters will love","subhead":null,"cta":"Shop now","persona":"Editorial press audience","shade":"chestnut","note":"Magazine flatlay","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c037-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf33_xgr12w/c037-9x16-gpt-image-2.png"}},{"id":"c038","archetype":"Editorial / press","headline":"Skincare-grade foundation","subhead":null,"cta":"Shop Your Skin","persona":"Ingredient-savvy","shade":"walnut","note":"Ingredient-led editorial","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c038-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c038-9x16-gpt-image-2.png"}},{"id":"c039","archetype":"5-Star Review Spotlight","headline":"Available in 30 shades. Loved by all 30.","subhead":null,"cta":"Find yours","persona":"Inclusivity-focused","shade":"almond","note":"Inclusion claim","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c039-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c039-9x16-gpt-image-2.png"}},{"id":"c040","archetype":"Editorial / press","headline":"Coverage that doesn't compromise.","subhead":null,"cta":"Shop Your Skin","persona":"Inclusivity-focused","shade":null,"note":"Multi-shade editorial","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c040-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c040-9x16-gpt-image-2.png"}},{"id":"c041","archetype":"Lifestyle in-use","headline":"Skincare that wears like makeup","subhead":null,"cta":"Shop Your Skin","persona":"AM-routine optimizer","shade":null,"note":"Morning vanity ritual","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c041-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c041-9x16-gpt-image-2.png"}},{"id":"c042","archetype":"Lifestyle in-use","headline":"On-the-go coverage","subhead":null,"cta":"Shop Buff","persona":"Working professional","shade":"buff","note":"Cafe lifestyle","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c042-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c042-9x16-gpt-image-2.png"}},{"id":"c043","archetype":"Lifestyle in-use","headline":"Quietly luxurious. Loudly effective.","subhead":null,"cta":"Shop Your Skin","persona":"Luxury beauty buyer","shade":"oat","note":"Quiet luxury","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c043-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf33_xgr12w/c043-9x16-gpt-image-2.png"}},{"id":"c044","archetype":"Lifestyle in-use","headline":"Eight hours. Then twelve more.","subhead":null,"cta":"Shop Your Skin","persona":"Night-shift wearer","shade":null,"note":"All-day-into-night","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c044-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c044-9x16-gpt-image-2.png"}},{"id":"c045","archetype":"Lifestyle in-use","headline":"Real ritual. Real coverage.","subhead":null,"cta":"Shop Cream","persona":"AM-routine optimizer","shade":"cream","note":"Lived-in counter","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c045-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c045-9x16-gpt-image-2.png"}},{"id":"c046","archetype":"Open purse spill","headline":"Always within reach.","subhead":null,"cta":"Shop Your Skin","persona":"On-the-go customer","shade":"honey","note":"Purse spill \u2014 hero stick in context","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c046-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c046-9x16-gpt-image-2.png"}},{"id":"c047","archetype":"Open purse spill","headline":"Travel-sized. Coverage maxed.","subhead":null,"cta":"Shop Your Skin","persona":"Travel customer","shade":"ivory","note":"Travel context","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c047-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c047-9x16-gpt-image-2.png"}},{"id":"c048","archetype":"Lifestyle in-use","headline":"Foundation that disappears into your skin.","subhead":null,"cta":"Shop Your Skin","persona":"Quiet-luxury millennial","shade":null,"note":"Disappearing finish","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c048-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c048-9x16-gpt-image-2.png"}},{"id":"c049","archetype":"Lifestyle in-use","headline":"Buildable in a swipe and a buff","subhead":null,"cta":"Shop the kit","persona":"Application-perfectionist","shade":"pecan","note":"Stick + brush kit","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c049-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c049-9x16-gpt-image-2.png"}},{"id":"c050","archetype":"Lifestyle in-use","headline":"Coverage you can layer like paint","subhead":null,"cta":"Shop Your Skin","persona":"Creative class customer","shade":null,"note":"Creative environment","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c050-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c050-9x16-gpt-image-2.png"}},{"id":"c051","archetype":"Problem-Solution","headline":"Foundation stick problems \u2192 Solved.","subhead":null,"cta":"Try Your Skin","persona":"Foundation skeptic","shade":null,"note":"Anti-pill compression","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c051-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c051-9x16-gpt-image-2.png"}},{"id":"c052","archetype":"Problem-Solution","headline":"Changing the face of foundation sticks.","subhead":null,"cta":"Shop Your Skin","persona":"Convert audience","shade":"toffee","note":"Wall-of-shame vs hero","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c052-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c052-9x16-gpt-image-2.png"}},{"id":"c053","archetype":"Category-Callout","headline":"We don't make foundation sticks like this.","subhead":null,"cta":"Shop Your Skin","persona":"Category-skeptic","shade":null,"note":"Museum specimen comparison","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c053-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf33_xgr12w/c053-9x16-gpt-image-2.png"}},{"id":"c054","archetype":"Problem-Solution","headline":"From dry desert to dewy skin.","subhead":null,"cta":"Shop Your Skin","persona":"Dry-skin sufferer","shade":"bisque","note":"Texture metaphor","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c054-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf33_xgr12w/c054-9x16-gpt-image-2.png"}},{"id":"c055","archetype":"Problem-Solution","headline":"Stop dusting. Start glowing.","subhead":null,"cta":"Try Your Skin","persona":"Powder-fatigued","shade":null,"note":"Powder-vs-cream contrast","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c055-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c055-9x16-gpt-image-2.png"}},{"id":"c056","archetype":"Problem-Solution","headline":"Powdered skin is over.","subhead":null,"cta":"Try Your Skin","persona":"Modern beauty buyer","shade":"cream","note":"Old-way-vs-new typography","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c056-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c056-9x16-gpt-image-2.png"}},{"id":"c057","archetype":"Problem-Solution","headline":"Anti-cakey. Anti-streaky. Pro-skin.","subhead":null,"cta":"Shop Your Skin","persona":"Texture-sensitive buyer","shade":null,"note":"Anti-pill swatch comparison","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c057-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c057-9x16-gpt-image-2.png"}},{"id":"c058","archetype":"Category-Callout","headline":"The category just got upgraded.","subhead":null,"cta":"Shop Your Skin","persona":"Beauty trend-watcher","shade":null,"note":"Multi-shade victory","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf33_xgr12w/c058-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c058-9x16-gpt-image-2.png"}},{"id":"c059","archetype":"Problem-Solution","headline":"Past attempts. Present perfection.","subhead":null,"cta":"Shop Your Skin","persona":"Past-disappointed customer","shade":"linen","note":"Three-step transformation","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c059-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c059-9x16-gpt-image-2.png"}},{"id":"c060","archetype":"Problem-Solution","headline":"It's not you. It's old foundation.","subhead":null,"cta":"Try Your Skin","persona":"Foundation skeptic","shade":"pecan","note":"Witty break-up letter","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c060-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c060-9x16-gpt-image-2.png"}},{"id":"c061","archetype":"Apothecary","headline":"Ceramide. Squalane. Shea. Skin.","subhead":null,"cta":"Shop Your Skin","persona":"Ingredient-savvy","shade":"buff","note":"Hero ingredients flat lay","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c061-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c061-9x16-gpt-image-2.png"}},{"id":"c062","archetype":"Apothecary","headline":"Skincare-grade formula. Foundation-grade coverage.","subhead":null,"cta":"Shop Your Skin","persona":"Ingredient-driven","shade":"wheat","note":"Apothecary herbal","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c062-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf33_xgr12w/c062-9x16-gpt-image-2.png"}},{"id":"c063","archetype":"Ingredient-Story","headline":"Skin-identical squalane. Luminosity, not shine.","subhead":null,"cta":"Shop Your Skin","persona":"Skincare nerd","shade":"almond","note":"Squalane macro","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c063-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c063-9x16-gpt-image-2.png"}},{"id":"c064","archetype":"Ingredient-Story","headline":"Glides on like a balm.","subhead":"Powered by shea butter.","cta":"Shop Your Skin","persona":"Texture-sensitive","shade":"hazel","note":"Shea butter macro","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c064-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c064-9x16-gpt-image-2.png"}},{"id":"c065","archetype":"Apothecary","headline":"Deep coverage. Deeper care.","subhead":null,"cta":"Shop Espresso","persona":"Deep-tone luxury buyer","shade":"espresso","note":"Cocoa-themed for Espresso","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c065-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c065-9x16-gpt-image-2.png"}},{"id":"c066","archetype":"Ingredient-Story","headline":"Hydrates. Plumps. Disappears.","subhead":null,"cta":"Shop Your Skin","persona":"Hydration-focused","shade":"linen","note":"HA macro","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c066-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c066-9x16-gpt-image-2.png"}},{"id":"c067","archetype":"Apothecary","headline":"Real ingredients. Real results.","subhead":null,"cta":"Shop Your Skin","persona":"Real-ingredient buyer","shade":"cinnamon","note":"Painterly real-food editorial","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c067-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c067-9x16-gpt-image-2.png"}},{"id":"c068","archetype":"Ingredient-Story","headline":"Ceramide-powered. Skin-barrier built.","subhead":null,"cta":"Shop Your Skin","persona":"Skin-barrier-aware","shade":"cocoa","note":"Ceramide macro","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c068-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c068-9x16-gpt-image-2.png"}},{"id":"c069","archetype":"Editorial / press","headline":"This is the foundation stick I wish I'd had my whole career.","subhead":"\u2014Bobbi","cta":"Shop Your Skin","persona":"Bobbi loyalist","shade":"honey","note":"Bobbi quote \u2014 verbatim","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c069-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c069-9x16-gpt-image-2.png"}},{"id":"c070","archetype":"Editorial / press","headline":"It doesn't cover skin \u2014 it wears with it.","subhead":"\u2014Bobbi Brown","cta":"Shop Your Skin","persona":"Bobbi loyalist","shade":"shell","note":"Bobbi quote second variant","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c070-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c070-9x16-gpt-image-2.png"}},{"id":"c071","archetype":"Editorial / press","headline":"Changing the face of foundation sticks.","subhead":null,"cta":"Shop Your Skin","persona":"Press / PR audience","shade":null,"note":"B&W editorial","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c071-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c071-9x16-gpt-image-2.png"}},{"id":"c072","archetype":"Editorial / press","headline":"Foundation sticks deserve a fresh start.","subhead":null,"cta":"Shop Your Skin","persona":"Convert audience","shade":null,"note":"Magazine spread","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c072-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c072-9x16-gpt-image-2.png"}},{"id":"c073","archetype":"Editorial / press","headline":"It's all in the formula.","subhead":null,"cta":"Shop Your Skin","persona":"Detail-obsessed","shade":"sand","note":"Macro on label","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c073-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c073-9x16-gpt-image-2.png"}},{"id":"c074","archetype":"Editorial / press","headline":"Available in 30 shades. Every undertone, every depth.","subhead":null,"cta":"Find your match","persona":"Inclusivity-focused","shade":"mahogany","note":"Inclusion editorial","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c074-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c074-9x16-gpt-image-2.png"}},{"id":"c075","archetype":"Aspirational","headline":"Foundation for the woman who's done settling.","subhead":null,"cta":"Shop Your Skin","persona":"Premium-beauty buyer","shade":"cream","note":"Quiet luxury bathroom","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c075-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf33_xgr12w/c075-9x16-gpt-image-2.png"}},{"id":"c076","archetype":"Aspirational","headline":"Wherever you wake up.","subhead":null,"cta":"Shop Your Skin","persona":"Travel-luxury buyer","shade":null,"note":"Hotel balcony","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c076-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c076-9x16-gpt-image-2.png"}},{"id":"c077","archetype":"Aspirational","headline":"Skincare for the modern minimalist","subhead":null,"cta":"Shop Your Skin","persona":"Minimalist","shade":"toffee","note":"Writer's desk","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c077-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c077-9x16-gpt-image-2.png"}},{"id":"c078","archetype":"Aspirational","headline":"Foundation that fits real life.","subhead":null,"cta":"Shop Your Skin","persona":"Wellness-aware","shade":null,"note":"Brunch tablescape","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c078-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c078-9x16-gpt-image-2.png"}},{"id":"c079","archetype":"Aspirational","headline":"Quietly radiant","subhead":null,"cta":"Shop Your Skin","persona":"Quiet-luxury seeker","shade":null,"note":"Calming aspirational","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf9j_4zep8j/c079-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c079-9x16-gpt-image-2.png"}},{"id":"c080","archetype":"Aspirational","headline":"Coverage that travels with you.","subhead":null,"cta":"Shop Your Skin","persona":"On-the-go luxury","shade":"buff","note":"Luxury car dash","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c080-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf9j_4zep8j/c080-9x16-gpt-image-2.png"}},{"id":"c081","archetype":"Aspirational","headline":"The new beauty essential.","subhead":null,"cta":"Shop Your Skin","persona":"Beauty insider","shade":"wheat","note":"Magazine stack","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c081-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c081-9x16-gpt-image-2.png"}},{"id":"c082","archetype":"Aspirational","headline":"Travel-ready glow.","subhead":null,"cta":"Shop Your Skin","persona":"Frequent-flyer","shade":"honey","note":"Travel ready","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c082-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c082-9x16-gpt-image-2.png"}},{"id":"c083","archetype":"UGC Demo","headline":"Three swipes. Done.","subhead":null,"cta":"Try Your Skin","persona":"Time-poor customer","shade":"bisque","note":"Three-swipe motion","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c083-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf9j_4zep8j/c083-9x16-gpt-image-2.png"}},{"id":"c084","archetype":"UGC-style","headline":"Even my mom won't share hers.","subhead":null,"cta":"Shop Your Skin","persona":"Younger Gen Z customer","shade":"linen","note":"Gen Z humor","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c084-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c084-9x16-gpt-image-2.png"}},{"id":"c085","archetype":"UGC Demo","headline":"Buildable. Blendable. Believable.","subhead":null,"cta":"Shop Your Skin","persona":"Coverage-curious","shade":"hazel","note":"Forehead application","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c085-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf9j_4zep8j/c085-9x16-gpt-image-2.png"}},{"id":"c086","archetype":"UGC-style","headline":"Foundation that doesn't fight my skin.","subhead":null,"cta":"Shop Your Skin","persona":"Mature skin","shade":"sand","note":"60s persona","urls":{"1x1":null,"9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c086-9x16-gpt-image-2.png"}},{"id":"c087","archetype":"UGC-style","headline":"Skin-first. All day. Always.","subhead":null,"cta":"Shop Your Skin","persona":"Diverse millennial","shade":"caramel","note":"Kitchen Latinx scene","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c087-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf9j_4zep8j/c087-9x16-gpt-image-2.png"}},{"id":"c088","archetype":"UGC-style","headline":"I came in skeptical.","subhead":"I left a customer.","cta":"Shop Your Skin","persona":"Convert testimonial","shade":"walnut","note":"Skeptic-converted","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf9j_4zep8j/c088-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c088-9x16-gpt-image-2.png"}},{"id":"c089","archetype":"UGC Demo","headline":"Match it. Try it. Wear it.","subhead":null,"cta":"Shop Your Skin","persona":"Shade-curious","shade":"onyx","note":"Forearm swatch test","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf9j_4zep8j/c089-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c089-9x16-gpt-image-2.png"}},{"id":"c090","archetype":"UGC-style","headline":"It's the depth that got me.","subhead":null,"cta":"Shop Chestnut","persona":"Deep skin tone customer","shade":"chestnut","note":"Deep-tone testimonial","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf9j_4zep8j/c090-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c090-9x16-gpt-image-2.png"}},{"id":"c091","archetype":"UGC Demo","headline":"Ebony for the deepest depths.","subhead":null,"cta":"Shop Ebony","persona":"Deepest skin tone","shade":"ebony","note":"Ebony swatch","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c091-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c091-9x16-gpt-image-2.png"}},{"id":"c092","archetype":"UGC Demo","headline":"Skincare in a stick.","subhead":null,"cta":"Try Your Skin","persona":"Mechanism-curious","shade":"pecan","note":"Twist mechanism close-up","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c092-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c092-9x16-gpt-image-2.png"}},{"id":"c093","archetype":"UGC-style","headline":"Glow. Not shine.","subhead":null,"cta":"Shop Your Skin","persona":"East Asian customer","shade":"shell","note":"Glow vs shine demo","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c093-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c093-9x16-gpt-image-2.png"}},{"id":"c094","archetype":"UGC-style","headline":"Hour 1, hour 8 \u2014 same face.","subhead":null,"cta":"Shop Your Skin","persona":"Long-day wearer","shade":null,"note":"Long-wear claim","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c094-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c094-9x16-gpt-image-2.png"}},{"id":"c095","archetype":"Top Performer Hero","headline":"Made for every shade. Including yours.","subhead":null,"cta":"Find your match","persona":"Inclusivity-focused","shade":"sable","note":"Sable hero","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c095-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol2bf9j_4zep8j/c095-9x16-gpt-image-2.png"}},{"id":"c096","archetype":"Top Performer Hero","headline":"Deepest coverage. Lightest feel.","subhead":null,"cta":"Shop Obsidian","persona":"Deepest skin tone","shade":"obsidian","note":"Obsidian dramatic hero","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c096-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c096-9x16-gpt-image-2.png"}},{"id":"c097","archetype":"Top Performer Hero","headline":"Up to 8 hours. Every depth.","subhead":null,"cta":"Shop Midnight","persona":"Premium deep-tone","shade":"midnight","note":"Midnight hero","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c097-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c097-9x16-gpt-image-2.png"}},{"id":"c098","archetype":"Hero product","headline":"Skin-first. Always.","subhead":null,"cta":"Shop Porcelain","persona":"Light skin tone, dry","shade":"porcelain","note":"Macro abstract Porcelain","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c098-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c098-9x16-gpt-image-2.png"}},{"id":"c099","archetype":"Hero product","headline":"The lightest light. Done right.","subhead":null,"cta":"Shop Pale Alabaster","persona":"Lightest skin tone","shade":"pale-alabaster","note":"Lightest shade hero","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c099-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c099-9x16-gpt-image-2.png"}},{"id":"c100","archetype":"Top Performer Hero","headline":"Skin in 30 shades.","subhead":"Available May 12.","cta":"Sign up for launch","persona":"Pre-launch waitlist","shade":null,"note":"Launch teaser final concept","urls":{"1x1":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c100-1x1-gpt-image-2.png","9x16":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c100-9x16-gpt-image-2.png"}}];
+
+// ===== IndexedDB layer (stores ratings + audio blobs per concept) =====
+const DB_NAME = 'fs-review';
+const DB_VERSION = 1;
+const STORE = 'reviews';
+
+function openDb() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(STORE)) {
+        db.createObjectStore(STORE, { keyPath: 'id' });
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+async function dbGet(id) {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readonly');
+    const req = tx.objectStore(STORE).get(id);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+async function dbPut(record) {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    tx.objectStore(STORE).put(record);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+async function dbAll() {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readonly');
+    const req = tx.objectStore(STORE).getAll();
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+// ===== Render =====
+const archetypes = [...new Set(MANIFEST.map(c => c.archetype))].sort();
+let activeFilter = 'all';
+let activeCardId = null;
+
+function chipColor(label) {
+  return `<span class="chip">${label}</span>`;
+}
+
+async function renderCards() {
+  const target = document.getElementById('cards');
+  target.innerHTML = '';
+  const reviews = Object.fromEntries((await dbAll()).map(r => [r.id, r]));
+  const filtered = activeFilter === 'all' ? MANIFEST : MANIFEST.filter(c => c.archetype === activeFilter);
+  if (filtered.length === 0) {
+    target.innerHTML = '<div class="empty-state">No cards in this filter.</div>';
+    return;
+  }
+  for (const c of filtered) {
+    const r = reviews[c.id] || { id: c.id, rating: null, audioBlob: null };
+    const div = document.createElement('div');
+    div.className = 'card' + (r.rating ? ' rated-' + r.rating : '');
+    div.dataset.id = c.id;
+
+    const subhead = c.subhead ? `<div class="copy-sub">"${escapeHtml(c.subhead)}"</div>` : '';
+    const shadeChip = c.shade ? `<span class="chip shade">${escapeHtml(c.shade)}</span>` : '';
+
+    div.innerHTML = `
+      <div class="card-head">
+        <span class="card-num">${c.id.toUpperCase()}</span>
+        <div class="card-meta">
+          <div class="card-arch">${escapeHtml(c.archetype)}</div>
+          <div class="card-extras">
+            ${shadeChip}
+            <span class="chip persona">${escapeHtml(c.persona)}</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-copy">
+        <div class="copy-headline">"${escapeHtml(c.headline)}"</div>
+        ${subhead}
+        <div class="copy-cta">CTA: ${escapeHtml(c.cta)}</div>
+      </div>
+      <div class="img-grid">
+        <div class="img-cell sq">
+          <h4>1×1</h4>
+          ${c.urls['1x1'] ? `<img src="${c.urls['1x1']}" loading="lazy" onclick="openLightbox('${c.urls['1x1']}')">` : '<div class="empty-state" style="padding:20px">FAILED</div>'}
+        </div>
+        <div class="img-cell vert">
+          <h4>9×16</h4>
+          ${c.urls['9x16'] ? `<img src="${c.urls['9x16']}" loading="lazy" onclick="openLightbox('${c.urls['9x16']}')">` : '<div class="empty-state" style="padding:20px">FAILED</div>'}
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ratings">
+          <button class="rating-btn r-love ${r.rating === 'love' ? 'active' : ''}" data-rate="love" data-id="${c.id}">♥<span class="label">Love</span></button>
+          <button class="rating-btn r-iterate ${r.rating === 'iterate' ? 'active' : ''}" data-rate="iterate" data-id="${c.id}">↻<span class="label">Iterate</span></button>
+          <button class="rating-btn r-kill ${r.rating === 'kill' ? 'active' : ''}" data-rate="kill" data-id="${c.id}">✕<span class="label">Kill</span></button>
+        </div>
+        <div class="voice">
+          <button class="rec-btn" data-id="${c.id}" title="Hold to record" aria-label="Record voice note">●</button>
+          <div class="rec-status">
+            <span class="rec-time" data-id="${c.id}">${r.audioBlob ? formatDuration(r.audioDuration || 0) : 'Tap to record'}</span>
+          </div>
+          <div class="rec-actions">
+            ${r.audioBlob ? `<button class="btn" data-action="delete-audio" data-id="${c.id}">Delete</button>` : ''}
+          </div>
+        </div>
+        ${r.audioBlob ? `<div class="rec-audio"><audio controls preload="metadata" data-id="${c.id}"></audio></div>` : ''}
+      </div>`;
+    target.appendChild(div);
+
+    // wire audio playback (URL.createObjectURL needs the blob)
+    if (r.audioBlob) {
+      const audio = div.querySelector(`audio[data-id="${c.id}"]`);
+      if (audio) audio.src = URL.createObjectURL(r.audioBlob);
+    }
+  }
+  await refreshProgress();
+}
+
+function escapeHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+async function refreshProgress() {
+  const all = await dbAll();
+  const rated = all.filter(r => r.rating).length;
+  const counts = { love: 0, iterate: 0, kill: 0 };
+  for (const r of all) {
+    if (r.rating) counts[r.rating]++;
+  }
+  document.getElementById('progress-bar').style.width = (rated / MANIFEST.length * 100).toFixed(1) + '%';
+  document.getElementById('progress-text').textContent = `${rated} / ${MANIFEST.length} reviewed`;
+  document.getElementById('progress-counts').innerHTML =
+    `<span style="color:var(--love)">♥ ${counts.love}</span> · ` +
+    `<span style="color:var(--iterate)">↻ ${counts.iterate}</span> · ` +
+    `<span style="color:var(--kill)">✕ ${counts.kill}</span>`;
+  document.getElementById('btn-export').disabled = rated === 0 && all.every(r => !r.audioBlob);
+}
+
+function renderFilters() {
+  const bar = document.getElementById('filter-bar');
+  const counts = {};
+  MANIFEST.forEach(c => { counts[c.archetype] = (counts[c.archetype] || 0) + 1; });
+  bar.innerHTML = `<button class="pill ${activeFilter === 'all' ? 'active' : ''}" data-filter="all">All <em>${MANIFEST.length}</em></button>` +
+    archetypes.map(a => `<button class="pill ${activeFilter === a ? 'active' : ''}" data-filter="${escapeHtml(a)}">${escapeHtml(a)} <em>${counts[a]}</em></button>`).join('');
+}
+
+// ===== Click handlers =====
+document.addEventListener('click', async (e) => {
+  // Filter pill
+  const pill = e.target.closest('[data-filter]');
+  if (pill) {
+    activeFilter = pill.dataset.filter;
+    renderFilters();
+    renderCards();
+    return;
+  }
+  // Rating button
+  const rate = e.target.closest('[data-rate]');
+  if (rate) {
+    const id = rate.dataset.id;
+    const rating = rate.dataset.rate;
+    const existing = (await dbGet(id)) || { id };
+    existing.rating = existing.rating === rating ? null : rating; // toggle
+    existing.ratedAt = Date.now();
+    await dbPut(existing);
+    // update card class
+    const card = document.querySelector(`.card[data-id="${id}"]`);
+    if (card) {
+      card.classList.remove('rated-love', 'rated-iterate', 'rated-kill');
+      if (existing.rating) card.classList.add('rated-' + existing.rating);
+      // update buttons
+      card.querySelectorAll('.rating-btn').forEach(b => b.classList.toggle('active', b.dataset.rate === existing.rating));
+    }
+    refreshProgress();
+    showToast(existing.rating ? `Rated ${id.toUpperCase()}: ${rating}` : `Rating cleared`);
+    return;
+  }
+  // Delete audio
+  const del = e.target.closest('[data-action="delete-audio"]');
+  if (del) {
+    const id = del.dataset.id;
+    const existing = (await dbGet(id)) || { id };
+    delete existing.audioBlob;
+    delete existing.audioDuration;
+    await dbPut(existing);
+    showToast(`Audio deleted`);
+    renderCards();
+    return;
+  }
+  // Export
+  if (e.target.id === 'btn-export') exportAll();
+});
+
+// ===== Voice recording (tap to start, tap to stop) =====
+let activeRecorder = null;
+let activeChunks = [];
+let activeStartedAt = 0;
+let activeId = null;
+let activeTimer = null;
+
+document.addEventListener('click', async (e) => {
+  const btn = e.target.closest('.rec-btn');
+  if (!btn) return;
+  const id = btn.dataset.id;
+
+  if (activeId === id) {
+    // stop
+    activeRecorder.stop();
+    return;
+  }
+  if (activeId) {
+    // stop another in flight
+    activeRecorder.stop();
+    await new Promise(r => setTimeout(r, 100));
+  }
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' :
+                     MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '';
+    activeRecorder = mimeType ? new MediaRecorder(stream, { mimeType, audioBitsPerSecond: 64000 }) : new MediaRecorder(stream);
+    activeChunks = [];
+    activeStartedAt = Date.now();
+    activeId = id;
+    activeRecorder.ondataavailable = (e) => { if (e.data.size > 0) activeChunks.push(e.data); };
+    activeRecorder.onstop = async () => {
+      const duration = Math.round((Date.now() - activeStartedAt) / 1000);
+      const blob = new Blob(activeChunks, { type: activeRecorder.mimeType || 'audio/webm' });
+      const existing = (await dbGet(id)) || { id };
+      existing.audioBlob = blob;
+      existing.audioDuration = duration;
+      existing.recordedAt = Date.now();
+      await dbPut(existing);
+      stream.getTracks().forEach(t => t.stop());
+      activeRecorder = null; activeId = null;
+      clearInterval(activeTimer);
+      btn.classList.remove('recording');
+      const t = document.querySelector(`.rec-time[data-id="${id}"]`);
+      if (t) t.textContent = formatDuration(duration);
+      showToast(`Saved ${duration}s for ${id.toUpperCase()}`);
+      renderCards();
+    };
+    activeRecorder.start();
+    btn.classList.add('recording');
+    activeTimer = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - activeStartedAt) / 1000);
+      const t = document.querySelector(`.rec-time[data-id="${id}"]`);
+      if (t) t.textContent = formatDuration(elapsed) + ' · recording…';
+    }, 250);
+  } catch (err) {
+    showToast('Mic access denied — check browser permissions');
+    console.error(err);
+  }
+});
+
+function formatDuration(s) {
+  const m = Math.floor(s / 60);
+  const sec = String(s % 60).padStart(2, '0');
+  return `${m}:${sec}`;
+}
+
+// ===== Lightbox =====
+function openLightbox(url) {
+  document.getElementById('lightbox-img').src = url;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lightbox-img').src = '';
+}
+window.openLightbox = openLightbox;
+window.closeLightbox = closeLightbox;
+
+// ===== Export =====
+async function exportAll() {
+  const reviews = await dbAll();
+  const concepts = MANIFEST.map(c => {
+    const r = reviews.find(x => x.id === c.id) || {};
+    return {
+      id: c.id,
+      archetype: c.archetype,
+      headline: c.headline,
+      subhead: c.subhead,
+      cta: c.cta,
+      persona: c.persona,
+      shade: c.shade,
+      urls: c.urls,
+      rating: r.rating || null,
+      ratedAt: r.ratedAt || null,
+      audioDuration: r.audioDuration || null,
+      audioBase64: null,
+      audioMime: null,
+      recordedAt: r.recordedAt || null,
+    };
+  });
+
+  // Convert audio blobs to base64
+  for (const c of concepts) {
+    const r = reviews.find(x => x.id === c.id);
+    if (r?.audioBlob) {
+      c.audioBase64 = await blobToBase64(r.audioBlob);
+      c.audioMime = r.audioBlob.type;
+    }
+  }
+
+  const summary = {
+    exportedAt: new Date().toISOString(),
+    totalConcepts: MANIFEST.length,
+    rated: concepts.filter(c => c.rating).length,
+    counts: {
+      love: concepts.filter(c => c.rating === 'love').length,
+      iterate: concepts.filter(c => c.rating === 'iterate').length,
+      kill: concepts.filter(c => c.rating === 'kill').length,
+    },
+    voiceNotes: concepts.filter(c => c.audioBase64).length,
+    concepts,
+  };
+
+  const json = JSON.stringify(summary, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `fs-batch-2-review-${new Date().toISOString().slice(0,19).replace(/[:T]/g, '-')}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  showToast(`Exported ${summary.rated} ratings · ${summary.voiceNotes} voice notes`);
+}
+
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const dataUrl = reader.result;
+      const base64 = dataUrl.split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// ===== Keyboard shortcuts (desktop) =====
+document.addEventListener('keydown', async (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (['1','2','3','r','R'].includes(e.key)) {
+    // find the card most centered in viewport
+    const cards = [...document.querySelectorAll('.card')];
+    if (!cards.length) return;
+    const center = window.innerHeight / 2;
+    const closest = cards
+      .map(c => ({ c, dist: Math.abs(c.getBoundingClientRect().top + c.offsetHeight / 2 - center) }))
+      .sort((a, b) => a.dist - b.dist)[0]?.c;
+    if (!closest) return;
+    if (e.key === '1') closest.querySelector('.rating-btn.r-love')?.click();
+    if (e.key === '2') closest.querySelector('.rating-btn.r-iterate')?.click();
+    if (e.key === '3') closest.querySelector('.rating-btn.r-kill')?.click();
+    if (e.key === 'r' || e.key === 'R') closest.querySelector('.rec-btn')?.click();
+  }
+});
+
+// init
+renderFilters();
+renderCards();
+</script>
+
+</body>
+</html>
