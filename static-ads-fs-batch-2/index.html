@@ -1,0 +1,2701 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FS Batch 2 — 100 ads</title>
+<style>
+  :root { --bg: #f8f8f8; --card: #fff; --ink: #000; --muted: #555; --border: #e5e5e5; --accent: #ff2e92; --green: #0a7c3e; --amber: #b66600; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  header { padding: 28px 20px 12px; max-width: 1100px; margin: 0 auto; }
+  h1 { margin: 0 0 4px; font-size: 22px; letter-spacing: -0.01em; }
+  p { margin: 6px 0; color: #222; line-height: 1.5; font-size: 13px; }
+  code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 11px; }
+  .verdict { padding: 14px 18px; background: #e6fff0; border: 1px solid #b8e6c8; border-radius: 8px; margin: 12px 0; }
+  .verdict-title { font-size: 12px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.06em; }
+  .verdict-body { margin-top: 6px; color: #064d27; font-size: 13px; line-height: 1.5; }
+  .stats { padding: 12px 16px; background: #fff; border: 1px solid var(--border); border-radius: 8px; margin: 12px 0; font-size: 12px; line-height: 1.6; }
+  .stats .label { font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 6px 0 4px; }
+  .stat-chip { display: inline-block; background: #f0f0f0; padding: 2px 8px; margin: 2px; border-radius: 999px; font-size: 11px; }
+  .stat-chip em { font-style: normal; font-weight: 600; color: var(--accent); }
+  .controls { padding: 8px 20px; max-width: 1100px; margin: 0 auto; }
+  .filter-bar { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0; }
+  .filter-btn { background: #fff; border: 1px solid var(--border); padding: 4px 10px; border-radius: 999px; font-size: 11px; cursor: pointer; white-space: nowrap; }
+  .filter-btn.active { background: #000; color: #fff; border-color: #000; }
+  .grid { display: grid; gap: 16px; padding: 8px 20px 36px; max-width: 1100px; margin: 0 auto; grid-template-columns: 1fr; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .card-head { display: grid; grid-template-columns: 56px 1fr; gap: 10px; align-items: start; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  .card-num { font-size: 13px; font-weight: 700; color: var(--accent); font-family: monospace; }
+  .card-meta { display: flex; flex-direction: column; gap: 6px; }
+  .card-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+  .chip { display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .chip.arch { background: #ffe6f3; color: #b30068; }
+  .chip.shade { background: #f3edd9; color: #6a4a00; }
+  .chip.persona { background: #e8eef8; color: #1d3a6e; }
+  .card-cost { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .card-copy { padding: 10px 14px; border-bottom: 1px solid var(--border); background: #fafafa; }
+  .copy-headline { font-size: 13px; font-weight: 600; line-height: 1.4; }
+  .copy-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .copy-cta { font-size: 11px; color: var(--muted); margin-top: 6px; }
+  .copy-note { font-size: 10px; color: #999; margin-top: 6px; font-style: italic; }
+  .img-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px; }
+  .img-col h4 { margin: 0 0 6px; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .img-wrap { position: relative; aspect-ratio: 1 / 1; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
+  .img-wrap.vert { aspect-ratio: 9 / 16; }
+  .img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .placeholder { display: flex; align-items: center; justify-content: center; height: 100%; color: #999; font-size: 11px; }
+  .fail-overlay { position: absolute; inset: 0; background: rgba(255,200,200,0.6); display: flex; align-items: center; justify-content: center; color: #b91414; font-size: 11px; font-weight: 700; }
+  @media (max-width: 600px) {
+    .img-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Foundation Stick — Batch 2 (100 ads)</h1>
+  <p>2026-04-30T05:46:22.077Z · 10 briefs · <strong>180/200 cells succeeded</strong> (90.0%) · Total spend <strong>$3.228</strong></p>
+  <div class="verdict">
+    <div class="verdict-title">100 unique concepts spanning the launch campaign</div>
+    <div class="verdict-body">11 archetypes · 30 shades · 100+ unique headlines, scenes, and personas. Every cell is a distinct ad. Sorted by concept ID.</div>
+  </div>
+  <div class="stats">
+    <div class="label">Archetypes</div>
+    <span class="stat-chip" data-arch="UGC-style">UGC-style <em>15</em></span><span class="stat-chip" data-arch="Top Performer Hero">Top Performer Hero <em>10</em></span><span class="stat-chip" data-arch="Editorial / press">Editorial / press <em>9</em></span><span class="stat-chip" data-arch="Before-After">Before-After <em>8</em></span><span class="stat-chip" data-arch="Lifestyle in-use">Lifestyle in-use <em>8</em></span><span class="stat-chip" data-arch="Problem-Solution">Problem-Solution <em>8</em></span><span class="stat-chip" data-arch="Aspirational">Aspirational <em>8</em></span><span class="stat-chip" data-arch="UGC Demo">UGC Demo <em>7</em></span><span class="stat-chip" data-arch="5-Star Review Spotlight">5-Star Review Spotlight <em>7</em></span><span class="stat-chip" data-arch="Hero product">Hero product <em>6</em></span><span class="stat-chip" data-arch="Apothecary">Apothecary <em>4</em></span><span class="stat-chip" data-arch="Ingredient-Story">Ingredient-Story <em>4</em></span><span class="stat-chip" data-arch="Split Screen">Split Screen <em>2</em></span><span class="stat-chip" data-arch="Open purse spill">Open purse spill <em>2</em></span><span class="stat-chip" data-arch="Category-Callout">Category-Callout <em>2</em></span>
+    <div class="label" style="margin-top:8px;">Shades</div>
+    <span class="stat-chip">pecan <em>5</em></span><span class="stat-chip">honey <em>4</em></span><span class="stat-chip">sand <em>4</em></span><span class="stat-chip">bisque <em>4</em></span><span class="stat-chip">linen <em>4</em></span><span class="stat-chip">caramel <em>3</em></span><span class="stat-chip">almond <em>3</em></span><span class="stat-chip">wheat <em>3</em></span><span class="stat-chip">hazel <em>3</em></span><span class="stat-chip">toffee <em>3</em></span><span class="stat-chip">buff <em>3</em></span><span class="stat-chip">cream <em>3</em></span><span class="stat-chip">espresso <em>2</em></span><span class="stat-chip">ivory <em>2</em></span><span class="stat-chip">cinnamon <em>2</em></span><span class="stat-chip">cocoa <em>2</em></span><span class="stat-chip">mahogany <em>2</em></span><span class="stat-chip">chestnut <em>2</em></span><span class="stat-chip">walnut <em>2</em></span><span class="stat-chip">shell <em>2</em></span><span class="stat-chip">oat <em>1</em></span><span class="stat-chip">onyx <em>1</em></span><span class="stat-chip">ebony <em>1</em></span><span class="stat-chip">sable <em>1</em></span><span class="stat-chip">obsidian <em>1</em></span><span class="stat-chip">midnight <em>1</em></span><span class="stat-chip">porcelain <em>1</em></span><span class="stat-chip">pale-alabaster <em>1</em></span>
+  </div>
+</header>
+<div class="controls">
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterArch(this, 'all')">All</button>
+    <button class="filter-btn" onclick="filterArch(this, '5-Star Review Spotlight')">5-Star Review Spotlight</button>
+    <button class="filter-btn" onclick="filterArch(this, 'Apothecary')">Apothecary</button>
+    <button class="filter-btn" onclick="filterArch(this, 'Aspirational')">Aspirational</button>
+    <button class="filter-btn" onclick="filterArch(this, 'Before-After')">Before-After</button>
+    <button class="filter-btn" onclick="filterArch(this, 'Category-Callout')">Category-Callout</button>
+    <button class="filter-btn" onclick="filterArch(this, 'Editorial / press')">Editorial / press</button>
+    <button class="filter-btn" onclick="filterArch(this, 'Hero product')">Hero product</button>
+    <button class="filter-btn" onclick="filterArch(this, 'Ingredient-Story')">Ingredient-Story</button>
+    <button class="filter-btn" onclick="filterArch(this, 'Lifestyle in-use')">Lifestyle in-use</button>
+    <button class="filter-btn" onclick="filterArch(this, 'Open purse spill')">Open purse spill</button>
+    <button class="filter-btn" onclick="filterArch(this, 'Problem-Solution')">Problem-Solution</button>
+    <button class="filter-btn" onclick="filterArch(this, 'Split Screen')">Split Screen</button>
+    <button class="filter-btn" onclick="filterArch(this, 'Top Performer Hero')">Top Performer Hero</button>
+    <button class="filter-btn" onclick="filterArch(this, 'UGC Demo')">UGC Demo</button>
+    <button class="filter-btn" onclick="filterArch(this, 'UGC-style')">UGC-style</button>
+  </div>
+</div>
+<div class="grid" id="grid">
+
+      <div class="card" data-archetype="Top Performer Hero">
+        <div class="card-head">
+          <div class="card-num">C001</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Top Performer Hero</span><span class="chip persona">Foundation skeptic</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Calling all foundation stick haters"</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Hero lineup — the campaign provocation</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c001-1x1-gpt-image-2.png" alt="c001 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c001-9x16-gpt-image-2.png" alt="c001 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Top Performer Hero">
+        <div class="card-head">
+          <div class="card-num">C002</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Top Performer Hero</span><span class="chip persona">Shade-conscious customer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Available in 30 shades"</div>
+          <div class="copy-sub">"Every undertone, every depth"</div>
+          <div class="copy-cta">CTA: "Find your match"</div>
+          <div class="copy-note">Shade range showcase</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c002-1x1-gpt-image-2.png" alt="c002 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c002-9x16-gpt-image-2.png" alt="c002 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Top Performer Hero">
+        <div class="card-head">
+          <div class="card-num">C003</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Top Performer Hero</span><span class="chip shade">honey</span><span class="chip persona">Skincare-first buyer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Forget everything you know about foundation sticks"</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Single hero macro — Honey</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c003-1x1-gpt-image-2.png" alt="c003 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c003-9x16-gpt-image-2.png" alt="c003 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Hero product">
+        <div class="card-head">
+          <div class="card-num">C004</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Hero product</span><span class="chip shade">caramel</span><span class="chip persona">Foundation skeptic</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"The first foundation stick foundation stick haters will love"</div>
+          
+          <div class="copy-cta">CTA: "Shop now"</div>
+          <div class="copy-note">Pure hero — Caramel</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c004-1x1-gpt-image-2.png" alt="c004 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c004-9x16-gpt-image-2.png" alt="c004 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Top Performer Hero">
+        <div class="card-head">
+          <div class="card-num">C005</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Top Performer Hero</span><span class="chip shade">espresso</span><span class="chip persona">Deep skin tone, premium beauty buyer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Skincare you can wear"</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Deepest shade hero</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c005-1x1-gpt-image-2.png" alt="c005 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c005-9x16-gpt-image-2.png" alt="c005 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Hero product">
+        <div class="card-head">
+          <div class="card-num">C006</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Hero product</span><span class="chip shade">ivory</span><span class="chip persona">Light skin tone, dry skin</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Light coverage. Heavy hydration."</div>
+          
+          <div class="copy-cta">CTA: "Shop Ivory"</div>
+          <div class="copy-note">Coverage paradox headline</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c006-1x1-gpt-image-2.png" alt="c006 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c006-9x16-gpt-image-2.png" alt="c006 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Top Performer Hero">
+        <div class="card-head">
+          <div class="card-num">C007</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Top Performer Hero</span><span class="chip persona">Shade-curious buyer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"30 shades. One feel."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Grid lay-down</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c007-1x1-gpt-image-2.png" alt="c007 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c007-9x16-gpt-image-2.png" alt="c007 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Hero product">
+        <div class="card-head">
+          <div class="card-num">C008</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Hero product</span><span class="chip shade">pecan</span><span class="chip persona">Bobbi loyalist</span></div>
+            <div class="card-cost">$0.021</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Bobbi-approved. Skincare-grade."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Brand authority appeal</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c008-9x16-gpt-image-2.png" alt="c008 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Top Performer Hero">
+        <div class="card-head">
+          <div class="card-num">C009</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Top Performer Hero</span><span class="chip persona">Shade-curious</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Find your shade. Forget the cake."</div>
+          
+          <div class="copy-cta">CTA: "Find your match"</div>
+          <div class="copy-note">Inclusive shade gradient</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c009-1x1-gpt-image-2.png" alt="c009 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c009-9x16-gpt-image-2.png" alt="c009 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Hero product">
+        <div class="card-head">
+          <div class="card-num">C010</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Hero product</span><span class="chip shade">cinnamon</span><span class="chip persona">Mature skin, fine-line concern</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Coverage that wears with you"</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">All-day wear angle</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c010-1x1-gpt-image-2.png" alt="c010 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yuvv_5v0182/c010-9x16-gpt-image-2.png" alt="c010 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Before-After">
+        <div class="card-head">
+          <div class="card-num">C011</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Before-After</span><span class="chip persona">Foundation hater, mid-40s</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"It&#39;s your foundation that needs to change. Not you."</div>
+          
+          <div class="copy-cta">CTA: "See the difference"</div>
+          <div class="copy-note">Hero before/after — provocation</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c011-1x1-gpt-image-2.png" alt="c011 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c011-9x16-gpt-image-2.png" alt="c011 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Before-After">
+        <div class="card-head">
+          <div class="card-num">C012</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Before-After</span><span class="chip persona">Dry-skin sufferer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Foundation feeling like this? Your skin feels like this."</div>
+          
+          <div class="copy-cta">CTA: "Try Your Skin"</div>
+          <div class="copy-note">Texture-driven before/after</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c012-1x1-gpt-image-2.png" alt="c012 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c012-9x16-gpt-image-2.png" alt="c012 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Before-After">
+        <div class="card-head">
+          <div class="card-num">C013</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Before-After</span><span class="chip shade">almond</span><span class="chip persona">Foundation skeptic</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"The swipe that will change your mind"</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">One-cheek before/after</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c013-1x1-gpt-image-2.png" alt="c013 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c013-9x16-gpt-image-2.png" alt="c013 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Before-After">
+        <div class="card-head">
+          <div class="card-num">C014</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Before-After</span><span class="chip persona">Foundation skeptic</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Stop putting up with bad foundation."</div>
+          
+          <div class="copy-cta">CTA: "Try Your Skin"</div>
+          <div class="copy-note">Old way vs new way</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c014-1x1-gpt-image-2.png" alt="c014 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c014-9x16-gpt-image-2.png" alt="c014 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Before-After">
+        <div class="card-head">
+          <div class="card-num">C015</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Before-After</span><span class="chip persona">Long-day wearer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Hour 1 vs hour 8."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Wear test</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c015-1x1-gpt-image-2.png" alt="c015 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c015-9x16-gpt-image-2.png" alt="c015 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Split Screen">
+        <div class="card-head">
+          <div class="card-num">C016</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Split Screen</span><span class="chip shade">sand</span><span class="chip persona">Foundation skeptic</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Old way vs Your Skin"</div>
+          
+          <div class="copy-cta">CTA: "Try Your Skin"</div>
+          <div class="copy-note">Hand-to-hand product comparison</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c016-1x1-gpt-image-2.png" alt="c016 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c016-9x16-gpt-image-2.png" alt="c016 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Before-After">
+        <div class="card-head">
+          <div class="card-num">C017</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Before-After</span><span class="chip shade">bisque</span><span class="chip persona">Texture-sensitive buyer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Real skin doesn&#39;t look like makeup"</div>
+          
+          <div class="copy-cta">CTA: "See the swatch"</div>
+          <div class="copy-note">Swatch comparison</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c017-1x1-gpt-image-2.png" alt="c017 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c017-9x16-gpt-image-2.png" alt="c017 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Split Screen">
+        <div class="card-head">
+          <div class="card-num">C018</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Split Screen</span><span class="chip persona">Foundation skeptic</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Foundation sticks are overpromising. We&#39;re over it."</div>
+          
+          <div class="copy-cta">CTA: "Try Your Skin"</div>
+          <div class="copy-note">Visual catharsis</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c018-1x1-gpt-image-2.png" alt="c018 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c018-9x16-gpt-image-2.png" alt="c018 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Before-After">
+        <div class="card-head">
+          <div class="card-num">C019</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Before-After</span><span class="chip persona">Skincare-first buyer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Why wear makeup that doesn&#39;t work for you?"</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Emotional before/after</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c019-1x1-gpt-image-2.png" alt="c019 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c019-9x16-gpt-image-2.png" alt="c019 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Before-After">
+        <div class="card-head">
+          <div class="card-num">C020</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Before-After</span><span class="chip persona">Application-quality seeker</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Streak-free since the first swipe"</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Streak-free angle</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c020-1x1-gpt-image-2.png" alt="c020 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv23_bxrp2n/c020-9x16-gpt-image-2.png" alt="c020 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C021</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip persona">Skeptical 30s</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"The swipe that will change your mind"</div>
+          
+          <div class="copy-cta">CTA: "Shop now"</div>
+          <div class="copy-note">Bathroom morning UGC</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c021-1x1-gpt-image-2.png" alt="c021 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c021-9x16-gpt-image-2.png" alt="c021 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C022</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip shade">wheat</span><span class="chip persona">Foundation skeptic</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Skeptical? Just swipe it on."</div>
+          
+          <div class="copy-cta">CTA: "Try Your Skin"</div>
+          <div class="copy-note">First-person hand swipe</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c022-1x1-gpt-image-2.png" alt="c022 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c022-9x16-gpt-image-2.png" alt="c022 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C023</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip persona">Mature skin, fine-line concern</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Finally, a foundation that doesn&#39;t make me look older."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Mature persona testimonial vibe</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c023-1x1-gpt-image-2.png" alt="c023 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c023-9x16-gpt-image-2.png" alt="c023 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C024</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip persona">Convert testimonial</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Game-changer."</div>
+          <div class="copy-sub">"Said every foundation skeptic, ever."</div>
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Sticky-note vibe</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c024-1x1-gpt-image-2.png" alt="c024 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c024-9x16-gpt-image-2.png" alt="c024 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C025</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip persona">On-the-go mom</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"It just works."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Outdoor UGC</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c025-1x1-gpt-image-2.png" alt="c025 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c025-9x16-gpt-image-2.png" alt="c025 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC Demo">
+        <div class="card-head">
+          <div class="card-num">C026</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC Demo</span><span class="chip shade">linen</span><span class="chip persona">Skincare-first buyer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Skincare that wears like makeup"</div>
+          
+          <div class="copy-cta">CTA: "Try Your Skin"</div>
+          <div class="copy-note">Mechanism demo</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c026-1x1-gpt-image-2.png" alt="c026 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c026-9x16-gpt-image-2.png" alt="c026 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C027</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip shade">pecan</span><span class="chip persona">Diverse skin tone customer</span></div>
+            <div class="card-cost">$0.015</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Match made the first try"</div>
+          
+          <div class="copy-cta">CTA: "Find your shade"</div>
+          <div class="copy-note">Shade-match moment</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c027-1x1-gpt-image-2.png" alt="c027 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C028</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip persona">Working professional</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"I don&#39;t even feel it on my skin."</div>
+          
+          <div class="copy-cta">CTA: "Try Your Skin"</div>
+          <div class="copy-note">Weightless feel</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c028-1x1-gpt-image-2.png" alt="c028 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c028-9x16-gpt-image-2.png" alt="c028 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC Demo">
+        <div class="card-head">
+          <div class="card-num">C029</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC Demo</span><span class="chip persona">Texture-sensitive</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Glides on like a balm."</div>
+          <div class="copy-sub">"Builds like a cream."</div>
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Texture-on-hand demo</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c029-1x1-gpt-image-2.png" alt="c029 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c029-9x16-gpt-image-2.png" alt="c029 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C030</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip shade">cocoa</span><span class="chip persona">Deep skin tone customer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"It&#39;s the depth that got me."</div>
+          
+          <div class="copy-cta">CTA: "Shop Cocoa"</div>
+          <div class="copy-note">Deep-shade testimonial</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c030-1x1-gpt-image-2.png" alt="c030 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv3w_5kcsqi/c030-9x16-gpt-image-2.png" alt="c030 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="5-Star Review Spotlight">
+        <div class="card-head">
+          <div class="card-num">C031</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">5-Star Review Spotlight</span><span class="chip shade">hazel</span><span class="chip persona">Social proof seeker</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Looks like skin, not makeup."</div>
+          <div class="copy-sub">"100% AGREE"</div>
+          <div class="copy-cta">CTA: "Read the reviews"</div>
+          <div class="copy-note">100% agree spotlight</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c031-1x1-gpt-image-2.png" alt="c031 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c031-9x16-gpt-image-2.png" alt="c031 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="5-Star Review Spotlight">
+        <div class="card-head">
+          <div class="card-num">C032</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">5-Star Review Spotlight</span><span class="chip shade">caramel</span><span class="chip persona">Dry-skin sufferer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"+51% hydration in 30 minutes"</div>
+          <div class="copy-sub">"100% SAID IT FELT HYDRATING"</div>
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Clinical claim ad</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c032-1x1-gpt-image-2.png" alt="c032 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c032-9x16-gpt-image-2.png" alt="c032 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="5-Star Review Spotlight">
+        <div class="card-head">
+          <div class="card-num">C033</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">5-Star Review Spotlight</span><span class="chip shade">sand</span><span class="chip persona">Long-wear demand</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"8 hours. No transfer."</div>
+          <div class="copy-sub">"DERMATOLOGIST TESTED"</div>
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">8-hour claim</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c033-1x1-gpt-image-2.png" alt="c033 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c033-9x16-gpt-image-2.png" alt="c033 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="5-Star Review Spotlight">
+        <div class="card-head">
+          <div class="card-num">C034</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">5-Star Review Spotlight</span><span class="chip shade">mahogany</span><span class="chip persona">Mature deep-tone customer</span></div>
+            <div class="card-cost">$0.021</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"97% said it felt hydrating"</div>
+          
+          <div class="copy-cta">CTA: "Read more"</div>
+          <div class="copy-note">Hydration claim deep-tone</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c034-9x16-gpt-image-2.png" alt="c034 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="5-Star Review Spotlight">
+        <div class="card-head">
+          <div class="card-num">C035</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">5-Star Review Spotlight</span><span class="chip shade">bisque</span><span class="chip persona">Coverage-curious</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Looks like skin at one swipe."</div>
+          <div class="copy-sub">"BETTER SKIN AT THREE."</div>
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Buildable coverage angle</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c035-1x1-gpt-image-2.png" alt="c035 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c035-9x16-gpt-image-2.png" alt="c035 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="5-Star Review Spotlight">
+        <div class="card-head">
+          <div class="card-num">C036</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">5-Star Review Spotlight</span><span class="chip shade">toffee</span><span class="chip persona">Weightless seekers</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Up to 8-hour wear."</div>
+          <div class="copy-sub">"94% DIDN&#39;T FEEL ANY PRODUCT WEIGHT"</div>
+          <div class="copy-cta">CTA: "Try Your Skin"</div>
+          <div class="copy-note">Weight claim</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c036-1x1-gpt-image-2.png" alt="c036 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c036-9x16-gpt-image-2.png" alt="c036 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Editorial / press">
+        <div class="card-head">
+          <div class="card-num">C037</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Editorial / press</span><span class="chip shade">chestnut</span><span class="chip persona">Editorial press audience</span></div>
+            <div class="card-cost">$0.015</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"The first foundation stick foundation stick haters will love"</div>
+          
+          <div class="copy-cta">CTA: "Shop now"</div>
+          <div class="copy-note">Magazine flatlay</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c037-1x1-gpt-image-2.png" alt="c037 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Editorial / press">
+        <div class="card-head">
+          <div class="card-num">C038</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Editorial / press</span><span class="chip shade">walnut</span><span class="chip persona">Ingredient-savvy</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Skincare-grade foundation"</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Ingredient-led editorial</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c038-1x1-gpt-image-2.png" alt="c038 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c038-9x16-gpt-image-2.png" alt="c038 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="5-Star Review Spotlight">
+        <div class="card-head">
+          <div class="card-num">C039</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">5-Star Review Spotlight</span><span class="chip shade">almond</span><span class="chip persona">Inclusivity-focused</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Available in 30 shades. Loved by all 30."</div>
+          
+          <div class="copy-cta">CTA: "Find yours"</div>
+          <div class="copy-note">Inclusion claim</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c039-1x1-gpt-image-2.png" alt="c039 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c039-9x16-gpt-image-2.png" alt="c039 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Editorial / press">
+        <div class="card-head">
+          <div class="card-num">C040</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Editorial / press</span><span class="chip persona">Inclusivity-focused</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Coverage that doesn&#39;t compromise."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Multi-shade editorial</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c040-1x1-gpt-image-2.png" alt="c040 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv5o_rt3q31/c040-9x16-gpt-image-2.png" alt="c040 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Lifestyle in-use">
+        <div class="card-head">
+          <div class="card-num">C041</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Lifestyle in-use</span><span class="chip persona">AM-routine optimizer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Skincare that wears like makeup"</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Morning vanity ritual</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c041-1x1-gpt-image-2.png" alt="c041 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c041-9x16-gpt-image-2.png" alt="c041 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Lifestyle in-use">
+        <div class="card-head">
+          <div class="card-num">C042</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Lifestyle in-use</span><span class="chip shade">buff</span><span class="chip persona">Working professional</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"On-the-go coverage"</div>
+          
+          <div class="copy-cta">CTA: "Shop Buff"</div>
+          <div class="copy-note">Cafe lifestyle</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c042-1x1-gpt-image-2.png" alt="c042 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c042-9x16-gpt-image-2.png" alt="c042 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Lifestyle in-use">
+        <div class="card-head">
+          <div class="card-num">C043</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Lifestyle in-use</span><span class="chip shade">oat</span><span class="chip persona">Luxury beauty buyer</span></div>
+            <div class="card-cost">$0.015</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Quietly luxurious. Loudly effective."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Quiet luxury</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c043-1x1-gpt-image-2.png" alt="c043 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Lifestyle in-use">
+        <div class="card-head">
+          <div class="card-num">C044</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Lifestyle in-use</span><span class="chip persona">Night-shift wearer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Eight hours. Then twelve more."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">All-day-into-night</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c044-1x1-gpt-image-2.png" alt="c044 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c044-9x16-gpt-image-2.png" alt="c044 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Lifestyle in-use">
+        <div class="card-head">
+          <div class="card-num">C045</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Lifestyle in-use</span><span class="chip shade">cream</span><span class="chip persona">AM-routine optimizer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Real ritual. Real coverage."</div>
+          
+          <div class="copy-cta">CTA: "Shop Cream"</div>
+          <div class="copy-note">Lived-in counter</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c045-1x1-gpt-image-2.png" alt="c045 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c045-9x16-gpt-image-2.png" alt="c045 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Open purse spill">
+        <div class="card-head">
+          <div class="card-num">C046</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Open purse spill</span><span class="chip shade">honey</span><span class="chip persona">On-the-go customer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Always within reach."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Purse spill — hero stick in context</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c046-1x1-gpt-image-2.png" alt="c046 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c046-9x16-gpt-image-2.png" alt="c046 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Open purse spill">
+        <div class="card-head">
+          <div class="card-num">C047</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Open purse spill</span><span class="chip shade">ivory</span><span class="chip persona">Travel customer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Travel-sized. Coverage maxed."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Travel context</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c047-1x1-gpt-image-2.png" alt="c047 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c047-9x16-gpt-image-2.png" alt="c047 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Lifestyle in-use">
+        <div class="card-head">
+          <div class="card-num">C048</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Lifestyle in-use</span><span class="chip persona">Quiet-luxury millennial</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Foundation that disappears into your skin."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Disappearing finish</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c048-1x1-gpt-image-2.png" alt="c048 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c048-9x16-gpt-image-2.png" alt="c048 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Lifestyle in-use">
+        <div class="card-head">
+          <div class="card-num">C049</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Lifestyle in-use</span><span class="chip shade">pecan</span><span class="chip persona">Application-perfectionist</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Buildable in a swipe and a buff"</div>
+          
+          <div class="copy-cta">CTA: "Shop the kit"</div>
+          <div class="copy-note">Stick + brush kit</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c049-1x1-gpt-image-2.png" alt="c049 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c049-9x16-gpt-image-2.png" alt="c049 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Lifestyle in-use">
+        <div class="card-head">
+          <div class="card-num">C050</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Lifestyle in-use</span><span class="chip persona">Creative class customer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Coverage you can layer like paint"</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Creative environment</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c050-1x1-gpt-image-2.png" alt="c050 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv79_jrifx9/c050-9x16-gpt-image-2.png" alt="c050 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Problem-Solution">
+        <div class="card-head">
+          <div class="card-num">C051</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Problem-Solution</span><span class="chip persona">Foundation skeptic</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Foundation stick problems → Solved."</div>
+          
+          <div class="copy-cta">CTA: "Try Your Skin"</div>
+          <div class="copy-note">Anti-pill compression</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c051-1x1-gpt-image-2.png" alt="c051 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c051-9x16-gpt-image-2.png" alt="c051 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Problem-Solution">
+        <div class="card-head">
+          <div class="card-num">C052</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Problem-Solution</span><span class="chip shade">toffee</span><span class="chip persona">Convert audience</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Changing the face of foundation sticks."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Wall-of-shame vs hero</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c052-1x1-gpt-image-2.png" alt="c052 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c052-9x16-gpt-image-2.png" alt="c052 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Category-Callout">
+        <div class="card-head">
+          <div class="card-num">C053</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Category-Callout</span><span class="chip persona">Category-skeptic</span></div>
+            <div class="card-cost">$0.015</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"We don&#39;t make foundation sticks like this."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Museum specimen comparison</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c053-1x1-gpt-image-2.png" alt="c053 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Problem-Solution">
+        <div class="card-head">
+          <div class="card-num">C054</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Problem-Solution</span><span class="chip shade">bisque</span><span class="chip persona">Dry-skin sufferer</span></div>
+            <div class="card-cost">$0.015</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"From dry desert to dewy skin."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Texture metaphor</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c054-1x1-gpt-image-2.png" alt="c054 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Problem-Solution">
+        <div class="card-head">
+          <div class="card-num">C055</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Problem-Solution</span><span class="chip persona">Powder-fatigued</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Stop dusting. Start glowing."</div>
+          
+          <div class="copy-cta">CTA: "Try Your Skin"</div>
+          <div class="copy-note">Powder-vs-cream contrast</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c055-1x1-gpt-image-2.png" alt="c055 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c055-9x16-gpt-image-2.png" alt="c055 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Problem-Solution">
+        <div class="card-head">
+          <div class="card-num">C056</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Problem-Solution</span><span class="chip shade">cream</span><span class="chip persona">Modern beauty buyer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Powdered skin is over."</div>
+          
+          <div class="copy-cta">CTA: "Try Your Skin"</div>
+          <div class="copy-note">Old-way-vs-new typography</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c056-1x1-gpt-image-2.png" alt="c056 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c056-9x16-gpt-image-2.png" alt="c056 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Problem-Solution">
+        <div class="card-head">
+          <div class="card-num">C057</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Problem-Solution</span><span class="chip persona">Texture-sensitive buyer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Anti-cakey. Anti-streaky. Pro-skin."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Anti-pill swatch comparison</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c057-1x1-gpt-image-2.png" alt="c057 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c057-9x16-gpt-image-2.png" alt="c057 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Category-Callout">
+        <div class="card-head">
+          <div class="card-num">C058</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Category-Callout</span><span class="chip persona">Beauty trend-watcher</span></div>
+            <div class="card-cost">$0.021</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"The category just got upgraded."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Multi-shade victory</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c058-9x16-gpt-image-2.png" alt="c058 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Problem-Solution">
+        <div class="card-head">
+          <div class="card-num">C059</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Problem-Solution</span><span class="chip shade">linen</span><span class="chip persona">Past-disappointed customer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Past attempts. Present perfection."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Three-step transformation</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c059-1x1-gpt-image-2.png" alt="c059 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c059-9x16-gpt-image-2.png" alt="c059 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Problem-Solution">
+        <div class="card-head">
+          <div class="card-num">C060</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Problem-Solution</span><span class="chip shade">pecan</span><span class="chip persona">Foundation skeptic</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"It&#39;s not you. It&#39;s old foundation."</div>
+          
+          <div class="copy-cta">CTA: "Try Your Skin"</div>
+          <div class="copy-note">Witty break-up letter</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c060-1x1-gpt-image-2.png" alt="c060 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yv8p_fiy5v1/c060-9x16-gpt-image-2.png" alt="c060 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Apothecary">
+        <div class="card-head">
+          <div class="card-num">C061</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Apothecary</span><span class="chip shade">buff</span><span class="chip persona">Ingredient-savvy</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Ceramide. Squalane. Shea. Skin."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Hero ingredients flat lay</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c061-1x1-gpt-image-2.png" alt="c061 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c061-9x16-gpt-image-2.png" alt="c061 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Apothecary">
+        <div class="card-head">
+          <div class="card-num">C062</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Apothecary</span><span class="chip shade">wheat</span><span class="chip persona">Ingredient-driven</span></div>
+            <div class="card-cost">$0.015</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Skincare-grade formula. Foundation-grade coverage."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Apothecary herbal</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c062-1x1-gpt-image-2.png" alt="c062 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Ingredient-Story">
+        <div class="card-head">
+          <div class="card-num">C063</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Ingredient-Story</span><span class="chip shade">almond</span><span class="chip persona">Skincare nerd</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Skin-identical squalane. Luminosity, not shine."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Squalane macro</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c063-1x1-gpt-image-2.png" alt="c063 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c063-9x16-gpt-image-2.png" alt="c063 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Ingredient-Story">
+        <div class="card-head">
+          <div class="card-num">C064</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Ingredient-Story</span><span class="chip shade">hazel</span><span class="chip persona">Texture-sensitive</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Glides on like a balm."</div>
+          <div class="copy-sub">"Powered by shea butter."</div>
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Shea butter macro</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c064-1x1-gpt-image-2.png" alt="c064 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c064-9x16-gpt-image-2.png" alt="c064 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Apothecary">
+        <div class="card-head">
+          <div class="card-num">C065</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Apothecary</span><span class="chip shade">espresso</span><span class="chip persona">Deep-tone luxury buyer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Deep coverage. Deeper care."</div>
+          
+          <div class="copy-cta">CTA: "Shop Espresso"</div>
+          <div class="copy-note">Cocoa-themed for Espresso</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c065-1x1-gpt-image-2.png" alt="c065 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c065-9x16-gpt-image-2.png" alt="c065 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Ingredient-Story">
+        <div class="card-head">
+          <div class="card-num">C066</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Ingredient-Story</span><span class="chip shade">linen</span><span class="chip persona">Hydration-focused</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Hydrates. Plumps. Disappears."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">HA macro</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c066-1x1-gpt-image-2.png" alt="c066 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c066-9x16-gpt-image-2.png" alt="c066 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Apothecary">
+        <div class="card-head">
+          <div class="card-num">C067</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Apothecary</span><span class="chip shade">cinnamon</span><span class="chip persona">Real-ingredient buyer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Real ingredients. Real results."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Painterly real-food editorial</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c067-1x1-gpt-image-2.png" alt="c067 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c067-9x16-gpt-image-2.png" alt="c067 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Ingredient-Story">
+        <div class="card-head">
+          <div class="card-num">C068</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Ingredient-Story</span><span class="chip shade">cocoa</span><span class="chip persona">Skin-barrier-aware</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Ceramide-powered. Skin-barrier built."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Ceramide macro</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c068-1x1-gpt-image-2.png" alt="c068 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c068-9x16-gpt-image-2.png" alt="c068 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Editorial / press">
+        <div class="card-head">
+          <div class="card-num">C069</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Editorial / press</span><span class="chip shade">honey</span><span class="chip persona">Bobbi loyalist</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"This is the foundation stick I wish I&#39;d had my whole career."</div>
+          <div class="copy-sub">"—Bobbi"</div>
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Bobbi quote — verbatim</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c069-1x1-gpt-image-2.png" alt="c069 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c069-9x16-gpt-image-2.png" alt="c069 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Editorial / press">
+        <div class="card-head">
+          <div class="card-num">C070</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Editorial / press</span><span class="chip shade">shell</span><span class="chip persona">Bobbi loyalist</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"It doesn&#39;t cover skin — it wears with it."</div>
+          <div class="copy-sub">"—Bobbi Brown"</div>
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Bobbi quote second variant</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c070-1x1-gpt-image-2.png" alt="c070 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvag_l4jfld/c070-9x16-gpt-image-2.png" alt="c070 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Editorial / press">
+        <div class="card-head">
+          <div class="card-num">C071</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Editorial / press</span><span class="chip persona">Press / PR audience</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Changing the face of foundation sticks."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">B&amp;W editorial</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c071-1x1-gpt-image-2.png" alt="c071 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c071-9x16-gpt-image-2.png" alt="c071 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Editorial / press">
+        <div class="card-head">
+          <div class="card-num">C072</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Editorial / press</span><span class="chip persona">Convert audience</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Foundation sticks deserve a fresh start."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Magazine spread</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c072-1x1-gpt-image-2.png" alt="c072 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c072-9x16-gpt-image-2.png" alt="c072 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Editorial / press">
+        <div class="card-head">
+          <div class="card-num">C073</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Editorial / press</span><span class="chip shade">sand</span><span class="chip persona">Detail-obsessed</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"It&#39;s all in the formula."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Macro on label</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c073-1x1-gpt-image-2.png" alt="c073 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c073-9x16-gpt-image-2.png" alt="c073 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Editorial / press">
+        <div class="card-head">
+          <div class="card-num">C074</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Editorial / press</span><span class="chip shade">mahogany</span><span class="chip persona">Inclusivity-focused</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Available in 30 shades. Every undertone, every depth."</div>
+          
+          <div class="copy-cta">CTA: "Find your match"</div>
+          <div class="copy-note">Inclusion editorial</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c074-1x1-gpt-image-2.png" alt="c074 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c074-9x16-gpt-image-2.png" alt="c074 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Aspirational">
+        <div class="card-head">
+          <div class="card-num">C075</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Aspirational</span><span class="chip shade">cream</span><span class="chip persona">Premium-beauty buyer</span></div>
+            <div class="card-cost">$0.015</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Foundation for the woman who&#39;s done settling."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Quiet luxury bathroom</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c075-1x1-gpt-image-2.png" alt="c075 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Aspirational">
+        <div class="card-head">
+          <div class="card-num">C076</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Aspirational</span><span class="chip persona">Travel-luxury buyer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Wherever you wake up."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Hotel balcony</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c076-1x1-gpt-image-2.png" alt="c076 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c076-9x16-gpt-image-2.png" alt="c076 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Aspirational">
+        <div class="card-head">
+          <div class="card-num">C077</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Aspirational</span><span class="chip shade">toffee</span><span class="chip persona">Minimalist</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Skincare for the modern minimalist"</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Writer&#39;s desk</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c077-1x1-gpt-image-2.png" alt="c077 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c077-9x16-gpt-image-2.png" alt="c077 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Aspirational">
+        <div class="card-head">
+          <div class="card-num">C078</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Aspirational</span><span class="chip persona">Wellness-aware</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Foundation that fits real life."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Brunch tablescape</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c078-1x1-gpt-image-2.png" alt="c078 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c078-9x16-gpt-image-2.png" alt="c078 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Aspirational">
+        <div class="card-head">
+          <div class="card-num">C079</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Aspirational</span><span class="chip persona">Quiet-luxury seeker</span></div>
+            <div class="card-cost">$0.021</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Quietly radiant"</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Calming aspirational</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c079-9x16-gpt-image-2.png" alt="c079 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Aspirational">
+        <div class="card-head">
+          <div class="card-num">C080</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Aspirational</span><span class="chip shade">buff</span><span class="chip persona">On-the-go luxury</span></div>
+            <div class="card-cost">$0.015</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Coverage that travels with you."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Luxury car dash</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvcz_mg6w8k/c080-1x1-gpt-image-2.png" alt="c080 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Aspirational">
+        <div class="card-head">
+          <div class="card-num">C081</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Aspirational</span><span class="chip shade">wheat</span><span class="chip persona">Beauty insider</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"The new beauty essential."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Magazine stack</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c081-1x1-gpt-image-2.png" alt="c081 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c081-9x16-gpt-image-2.png" alt="c081 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Aspirational">
+        <div class="card-head">
+          <div class="card-num">C082</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Aspirational</span><span class="chip shade">honey</span><span class="chip persona">Frequent-flyer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Travel-ready glow."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Travel ready</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c082-1x1-gpt-image-2.png" alt="c082 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c082-9x16-gpt-image-2.png" alt="c082 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC Demo">
+        <div class="card-head">
+          <div class="card-num">C083</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC Demo</span><span class="chip shade">bisque</span><span class="chip persona">Time-poor customer</span></div>
+            <div class="card-cost">$0.015</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Three swipes. Done."</div>
+          
+          <div class="copy-cta">CTA: "Try Your Skin"</div>
+          <div class="copy-note">Three-swipe motion</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c083-1x1-gpt-image-2.png" alt="c083 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C084</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip shade">linen</span><span class="chip persona">Younger Gen Z customer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Even my mom won&#39;t share hers."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Gen Z humor</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c084-1x1-gpt-image-2.png" alt="c084 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c084-9x16-gpt-image-2.png" alt="c084 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC Demo">
+        <div class="card-head">
+          <div class="card-num">C085</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC Demo</span><span class="chip shade">hazel</span><span class="chip persona">Coverage-curious</span></div>
+            <div class="card-cost">$0.015</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Buildable. Blendable. Believable."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Forehead application</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c085-1x1-gpt-image-2.png" alt="c085 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C086</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip shade">sand</span><span class="chip persona">Mature skin</span></div>
+            <div class="card-cost">$0.021</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Foundation that doesn&#39;t fight my skin."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">60s persona</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c086-9x16-gpt-image-2.png" alt="c086 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C087</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip shade">caramel</span><span class="chip persona">Diverse millennial</span></div>
+            <div class="card-cost">$0.015</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Skin-first. All day. Always."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Kitchen Latinx scene</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c087-1x1-gpt-image-2.png" alt="c087 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C088</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip shade">walnut</span><span class="chip persona">Convert testimonial</span></div>
+            <div class="card-cost">$0.021</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"I came in skeptical."</div>
+          <div class="copy-sub">"I left a customer."</div>
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Skeptic-converted</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c088-9x16-gpt-image-2.png" alt="c088 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC Demo">
+        <div class="card-head">
+          <div class="card-num">C089</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC Demo</span><span class="chip shade">onyx</span><span class="chip persona">Shade-curious</span></div>
+            <div class="card-cost">$0.021</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Match it. Try it. Wear it."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Forearm swatch test</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c089-9x16-gpt-image-2.png" alt="c089 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C090</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip shade">chestnut</span><span class="chip persona">Deep skin tone customer</span></div>
+            <div class="card-cost">$0.021</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"It&#39;s the depth that got me."</div>
+          
+          <div class="copy-cta">CTA: "Shop Chestnut"</div>
+          <div class="copy-note">Deep-tone testimonial</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvgh_s5btk8/c090-9x16-gpt-image-2.png" alt="c090 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC Demo">
+        <div class="card-head">
+          <div class="card-num">C091</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC Demo</span><span class="chip shade">ebony</span><span class="chip persona">Deepest skin tone</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Ebony for the deepest depths."</div>
+          
+          <div class="copy-cta">CTA: "Shop Ebony"</div>
+          <div class="copy-note">Ebony swatch</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c091-1x1-gpt-image-2.png" alt="c091 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c091-9x16-gpt-image-2.png" alt="c091 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC Demo">
+        <div class="card-head">
+          <div class="card-num">C092</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC Demo</span><span class="chip shade">pecan</span><span class="chip persona">Mechanism-curious</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Skincare in a stick."</div>
+          
+          <div class="copy-cta">CTA: "Try Your Skin"</div>
+          <div class="copy-note">Twist mechanism close-up</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c092-1x1-gpt-image-2.png" alt="c092 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c092-9x16-gpt-image-2.png" alt="c092 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C093</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip shade">shell</span><span class="chip persona">East Asian customer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Glow. Not shine."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Glow vs shine demo</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c093-1x1-gpt-image-2.png" alt="c093 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c093-9x16-gpt-image-2.png" alt="c093 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="UGC-style">
+        <div class="card-head">
+          <div class="card-num">C094</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">UGC-style</span><span class="chip persona">Long-day wearer</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Hour 1, hour 8 — same face."</div>
+          
+          <div class="copy-cta">CTA: "Shop Your Skin"</div>
+          <div class="copy-note">Long-wear claim</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c094-1x1-gpt-image-2.png" alt="c094 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c094-9x16-gpt-image-2.png" alt="c094 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Top Performer Hero">
+        <div class="card-head">
+          <div class="card-num">C095</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Top Performer Hero</span><span class="chip shade">sable</span><span class="chip persona">Inclusivity-focused</span></div>
+            <div class="card-cost">$0.015</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Made for every shade. Including yours."</div>
+          
+          <div class="copy-cta">CTA: "Find your match"</div>
+          <div class="copy-note">Sable hero</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c095-1x1-gpt-image-2.png" alt="c095 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><div class="placeholder">no url</div><div class="fail-overlay">FAILED</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Top Performer Hero">
+        <div class="card-head">
+          <div class="card-num">C096</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Top Performer Hero</span><span class="chip shade">obsidian</span><span class="chip persona">Deepest skin tone</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Deepest coverage. Lightest feel."</div>
+          
+          <div class="copy-cta">CTA: "Shop Obsidian"</div>
+          <div class="copy-note">Obsidian dramatic hero</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c096-1x1-gpt-image-2.png" alt="c096 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c096-9x16-gpt-image-2.png" alt="c096 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Top Performer Hero">
+        <div class="card-head">
+          <div class="card-num">C097</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Top Performer Hero</span><span class="chip shade">midnight</span><span class="chip persona">Premium deep-tone</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Up to 8 hours. Every depth."</div>
+          
+          <div class="copy-cta">CTA: "Shop Midnight"</div>
+          <div class="copy-note">Midnight hero</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c097-1x1-gpt-image-2.png" alt="c097 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c097-9x16-gpt-image-2.png" alt="c097 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Hero product">
+        <div class="card-head">
+          <div class="card-num">C098</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Hero product</span><span class="chip shade">porcelain</span><span class="chip persona">Light skin tone, dry</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Skin-first. Always."</div>
+          
+          <div class="copy-cta">CTA: "Shop Porcelain"</div>
+          <div class="copy-note">Macro abstract Porcelain</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c098-1x1-gpt-image-2.png" alt="c098 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c098-9x16-gpt-image-2.png" alt="c098 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Hero product">
+        <div class="card-head">
+          <div class="card-num">C099</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Hero product</span><span class="chip shade">pale-alabaster</span><span class="chip persona">Lightest skin tone</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"The lightest light. Done right."</div>
+          
+          <div class="copy-cta">CTA: "Shop Pale Alabaster"</div>
+          <div class="copy-note">Lightest shade hero</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c099-1x1-gpt-image-2.png" alt="c099 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c099-9x16-gpt-image-2.png" alt="c099 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-archetype="Top Performer Hero">
+        <div class="card-head">
+          <div class="card-num">C100</div>
+          <div class="card-meta">
+            <div class="card-chips"><span class="chip arch">Top Performer Hero</span><span class="chip persona">Pre-launch waitlist</span></div>
+            <div class="card-cost">$0.036</div>
+          </div>
+        </div>
+        <div class="card-copy">
+          <div class="copy-headline">"Skin in 30 shades."</div>
+          <div class="copy-sub">"Available May 12."</div>
+          <div class="copy-cta">CTA: "Sign up for launch"</div>
+          <div class="copy-note">Launch teaser final concept</div>
+        </div>
+        <div class="img-row">
+          <div class="img-col">
+            <h4>1×1</h4>
+            <div class="img-wrap"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c100-1x1-gpt-image-2.png" alt="c100 1x1" loading="lazy"></div>
+          </div>
+          <div class="img-col">
+            <h4>9×16</h4>
+            <div class="img-wrap vert"><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mol0yvi1_msxtdr/c100-9x16-gpt-image-2.png" alt="c100 9x16" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+</div>
+<script>
+function filterArch(btn, arch) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.card').forEach(c => {
+    c.style.display = (arch === 'all' || c.dataset.archetype === arch) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
