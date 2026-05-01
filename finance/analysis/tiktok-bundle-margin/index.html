@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok Bundle Margin Calculator | Jones Road Beauty</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --black: #111;
+    --ink: #1a1a1a;
+    --white: #fff;
+    --warm: #faf6f0;
+    --gray: #f7f7f8;
+    --border: #e3e3e6;
+    --border-soft: #ececef;
+    --green: #1a7a3e;
+    --green-bg: #e8f5ec;
+    --warn: #a86d00;
+    --warn-bg: #fff4e0;
+    --red: #b83232;
+    --red-bg: #fce8e8;
+    --pink: #ff2e92;
+    --muted: #6b6b73;
+    --muted-2: #95959c;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); font-size: 15px; color: var(--ink); background: var(--white); -webkit-font-smoothing: antialiased; line-height: 1.5; }
+
+  /* ============================== HEADER ============================== */
+  .header { padding: 20px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .header__title { font-size: 22px; font-weight: 700; letter-spacing: -0.2px; }
+  .header__subtitle { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .header__meta { font-size: 12px; color: var(--muted-2); text-align: right; }
+
+  /* ============================== TABS ============================== */
+  .tabs { display: flex; border-bottom: 1px solid var(--border); padding: 0 28px; background: var(--white); position: sticky; top: 0; z-index: 10; }
+  .tab { font-size: 14px; font-weight: 500; padding: 14px 20px; border-bottom: 2px solid transparent; color: var(--muted); cursor: pointer; background: none; border-top: none; border-left: none; border-right: none; transition: all 0.15s; }
+  .tab.is-active { color: var(--ink); border-bottom-color: var(--ink); font-weight: 600; }
+  .tab:hover { color: var(--ink); }
+  .tab__count { font-size: 11px; color: var(--muted-2); margin-left: 4px; font-weight: 400; }
+
+  /* ============================== PANEL ============================== */
+  .panel { display: none; padding: 28px; max-width: 1500px; margin: 0 auto; }
+  .panel.is-active { display: block; }
+
+  .section-title { font-size: 18px; font-weight: 600; letter-spacing: -0.1px; margin-bottom: 4px; }
+  .section-subtitle { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+
+  /* Eyebrow label — small caps style for column headers, metric tile labels */
+  .eyebrow { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); }
+
+  /* ============================== GLOBAL ASSUMPTIONS ============================== */
+  .assumptions { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; margin-bottom: 28px; padding: 20px; border: 1px solid var(--border); border-radius: 6px; background: var(--gray); }
+  .assumption { display: flex; flex-direction: column; gap: 4px; }
+  .assumption__label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+  .assumption__input-wrap { display: flex; align-items: center; gap: 6px; }
+  .assumption input { font-size: 24px; font-weight: 600; border: none; background: transparent; padding: 0; width: 60px; outline: none; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .assumption input:focus { color: var(--pink); }
+  .assumption__suffix { font-size: 14px; color: var(--muted); }
+  .assumption__hint { font-size: 11px; color: var(--muted-2); }
+
+  /* ============================== SUMMARY MATRIX ============================== */
+  .summary-bar { margin-bottom: 24px; padding: 14px 18px; border: 1px solid var(--border); border-radius: 6px; background: var(--white); }
+  .summary-bar__title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 10px; }
+  .summary-bar__legend { display: flex; gap: 20px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .legend-dot--good { background: var(--green); }
+  .legend-dot--warn { background: var(--warn); }
+  .legend-dot--bad { background: var(--red); }
+
+  /* ============================== BUNDLE CARDS ============================== */
+  .toolbar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .bundle-card { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 18px; background: var(--white); overflow: hidden; }
+  .bundle-card.is-live { border-color: var(--pink); border-width: 2px; }
+
+  .bundle-head { padding: 18px 20px; border-bottom: 1px solid var(--border-soft); display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+  .bundle-head__main { flex: 1; min-width: 240px; }
+  .bundle-head__name { font-size: 18px; font-weight: 600; letter-spacing: -0.1px; border: none; background: transparent; padding: 0; width: 100%; outline: none; color: var(--ink); font-family: inherit; }
+  .bundle-head__name:focus { color: var(--pink); }
+  .bundle-head__scenario { font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+  .bundle-head__right { display: flex; gap: 8px; align-items: center; }
+
+  .pill { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; padding: 5px 10px; border-radius: 3px; cursor: pointer; border: 1px solid transparent; }
+  .pill--live { background: var(--pink); color: var(--white); }
+  .pill--evergreen { background: var(--ink); color: var(--white); }
+
+  .icon-btn { background: none; border: 1px solid transparent; color: var(--muted-2); cursor: pointer; padding: 4px 8px; font-size: 16px; line-height: 1; border-radius: 3px; }
+  .icon-btn:hover { color: var(--red); border-color: var(--red); }
+
+  /* ============================== ITEMS ============================== */
+  .items { padding: 16px 20px; border-bottom: 1px solid var(--border-soft); }
+  .items__title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 10px; }
+  .item-row { display: grid; grid-template-columns: 1fr 90px 130px 28px; gap: 10px; align-items: center; padding: 5px 0; }
+  .item-row input[type="text"], .item-row input[type="number"] {
+    font-family: inherit; font-size: 14px; border: 1px solid var(--border); border-radius: 4px; padding: 8px 10px; width: 100%; color: var(--ink);
+  }
+  .item-row input[type="number"] { text-align: right; font-variant-numeric: tabular-nums; font-size: 13px; }
+  .item-row input:focus { outline: none; border-color: var(--ink); }
+  .item-row__sku { font-family: var(--font-mono); font-size: 11px; color: var(--muted-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .add-item { font-size: 13px; font-weight: 500; padding: 8px 14px; border: 1px dashed var(--border); background: transparent; color: var(--muted); cursor: pointer; border-radius: 4px; margin-top: 10px; width: 100%; font-family: inherit; }
+  .add-item:hover { border-color: var(--ink); border-style: solid; color: var(--ink); }
+
+  /* ============================== PRICE TOGGLE ============================== */
+  .price-toggle { padding: 16px 20px; border-bottom: 1px solid var(--border-soft); display: flex; gap: 14px; align-items: center; flex-wrap: wrap; background: var(--gray); }
+  .price-toggle__label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+  .price-btn { font-size: 12px; font-weight: 500; padding: 8px 14px; border: 1px solid var(--border); border-radius: 4px; background: var(--white); cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 120px; font-family: inherit; color: var(--ink); }
+  .price-btn:hover { border-color: var(--ink); }
+  .price-btn.is-active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+  .price-btn__amt { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .price-btn__off { font-size: 11px; opacity: 0.75; }
+  .price-edit { display: flex; align-items: center; gap: 6px; }
+  .price-edit input { width: 75px; padding: 7px 9px; border: 1px solid var(--border); border-radius: 4px; text-align: right; font-family: inherit; font-size: 13px; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .price-edit input:focus { outline: none; border-color: var(--ink); }
+  .price-edit-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+
+  /* ============================== METRIC GRID ============================== */
+  .metrics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; padding: 18px 20px; background: var(--warm); }
+  .metric { display: flex; flex-direction: column; gap: 4px; padding: 14px; background: var(--white); border-radius: 4px; border: 1px solid transparent; }
+  .metric--good { border-color: var(--green); background: var(--green-bg); }
+  .metric--warn { border-color: var(--warn); background: var(--warn-bg); }
+  .metric--bad { border-color: var(--red); background: var(--red-bg); }
+  .metric__label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+  .metric__value { font-size: 24px; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; letter-spacing: -0.3px; }
+  .metric--good .metric__value { color: var(--green); }
+  .metric--warn .metric__value { color: var(--warn); }
+  .metric--bad .metric__value { color: var(--red); }
+  .metric__sub { font-size: 13px; color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 500; }
+  .metric__detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* ============================== AT-A-GLANCE TABLE ============================== */
+  .glance { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 24px; }
+  .glance th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--border); background: var(--gray); }
+  .glance th.num { text-align: right; }
+  .glance td { padding: 12px 10px; border-bottom: 1px solid var(--border-soft); vertical-align: middle; }
+  .glance td.num { text-align: right; font-variant-numeric: tabular-nums; font-size: 13px; }
+  .glance .pct-cell { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .glance .pct-cell.gm-good { color: var(--green); }
+  .glance .pct-cell.gm-warn { color: var(--warn); }
+  .glance .pct-cell.gm-bad { color: var(--red); }
+  .glance tr.is-live { background: #fef5f9; }
+  .glance .name-cell { font-size: 14px; font-weight: 600; color: var(--ink); }
+
+  /* ============================== LIVE SCENARIO ============================== */
+  .live-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px; }
+  .live-panel { border: 1px solid var(--border); border-radius: 6px; padding: 24px; background: var(--white); }
+  .live-panel__title { font-size: 16px; font-weight: 600; margin-bottom: 16px; letter-spacing: -0.1px; }
+  .live-input-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-soft); gap: 12px; }
+  .live-input-row:last-child { border-bottom: none; }
+  .live-input-row label { font-size: 13px; flex: 1; color: var(--ink); }
+  .live-input-row input { width: 100px; padding: 8px 10px; text-align: right; font-family: inherit; border: 1px solid var(--border); border-radius: 4px; font-variant-numeric: tabular-nums; font-size: 14px; color: var(--ink); }
+  .live-input-row input:focus { outline: none; border-color: var(--ink); }
+  .live-output-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border-soft); font-variant-numeric: tabular-nums; }
+  .live-output-row:last-child { border-bottom: none; }
+  .live-output-row__label { font-family: var(--font-body); font-size: 13px; }
+  .live-output-row__val { font-family: var(--font-mono); font-size: 13px; }
+  .live-output-row.total { border-top: 2px solid var(--black); border-bottom: none; padding-top: 12px; margin-top: 6px; font-weight: 700; }
+  .live-output-row.total .live-output-row__val { font-family: var(--font-display); font-size: 16px; }
+  .gm-good { color: var(--green); }
+  .gm-warn { color: var(--warn); }
+  .gm-bad { color: var(--red); }
+
+  /* ============================== CATALOG ============================== */
+  .catalog-search { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; }
+  .catalog-search input { flex: 1; padding: 10px 14px; font-family: var(--font-body); font-size: 13px; border: 1px solid var(--border); border-radius: 2px; }
+  .catalog-search input:focus { outline: none; border-color: var(--black); }
+  .catalog-count { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px; color: var(--muted); white-space: nowrap; }
+  .catalog-wrap { max-height: 600px; overflow-y: auto; border: 1px solid var(--border); border-radius: 3px; }
+  .catalog-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .catalog-table th { position: sticky; top: 0; background: var(--white); z-index: 1; font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.3px; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--border); font-weight: 550; text-align: left; }
+  .catalog-table th.num { text-align: right; }
+  .catalog-table td { padding: 8px 12px; border-bottom: 1px solid var(--border-soft); }
+  .catalog-table td.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--font-mono); font-size: 11px; }
+  .catalog-table td.mono { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.2px; color: #666; }
+
+  /* ============================== BUTTONS ============================== */
+  .btn { font-family: var(--font-mono); font-size: 11px; font-weight: 550; text-transform: uppercase; letter-spacing: 0.4px; padding: 10px 20px; border: 1px solid var(--black); border-radius: 2px; cursor: pointer; transition: all 0.15s; background: var(--white); color: var(--black); }
+  .btn:hover { background: var(--black); color: var(--white); }
+  .btn--primary { background: var(--black); color: var(--white); }
+  .btn--primary:hover { background: transparent; color: var(--black); }
+  .btn--small { padding: 6px 14px; font-size: 10px; }
+
+  /* ============================== FOOTER ============================== */
+  .foot-note { padding: 24px 28px; border-top: 1px solid var(--border); margin-top: 40px; font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px; color: var(--muted); }
+  .foot-note ul { list-style: none; padding: 0; margin-top: 8px; }
+  .foot-note li { margin-bottom: 4px; line-height: 1.6; }
+
+  /* ============================== RESPONSIVE ============================== */
+  @media (max-width: 900px) {
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .live-grid { grid-template-columns: 1fr; }
+    .item-row { grid-template-columns: 1fr 80px 100px 28px; gap: 6px; }
+  }
+  @media (max-width: 600px) {
+    .metrics { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div>
+    <div class="header__title">TikTok Bundle Margin Calculator</div>
+    <div class="header__subtitle">Pricing · Margins · LIVE Scenario · NetSuite COGS</div>
+  </div>
+  <div class="header__meta">
+    <div>SKUs loaded: <span id="catalogStat">…</span></div>
+    <div>Synced: <span id="catalogTimestamp"></span></div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab is-active" data-tab="bundles">Bundles</button>
+  <button class="tab" data-tab="live">LIVE Scenario</button>
+  <button class="tab" data-tab="catalog">COGS Catalog<span class="tab__count" id="tabCount"></span></button>
+</nav>
+
+<!-- ==================== TAB 1: BUNDLES ==================== -->
+<div class="panel is-active" id="panel-bundles">
+
+  <div class="section-title">Global Assumptions</div>
+  <div class="section-subtitle">All fees and reserves apply across every bundle scenario</div>
+
+  <div class="assumptions">
+    <div class="assumption">
+      <span class="assumption__label">TikTok Fee</span>
+      <div class="assumption__input-wrap">
+        <input type="number" id="tiktokFee" value="6" step="0.5">
+        <span class="assumption__suffix">%</span>
+      </div>
+      <span class="assumption__hint">Includes payment processing</span>
+    </div>
+    <div class="assumption">
+      <span class="assumption__label">Creator Commission</span>
+      <div class="assumption__input-wrap">
+        <input type="number" id="creatorComm" value="12" step="1">
+        <span class="assumption__suffix">%</span>
+      </div>
+      <span class="assumption__hint">Average across affiliates</span>
+    </div>
+    <div class="assumption">
+      <span class="assumption__label">Fulfillment</span>
+      <div class="assumption__input-wrap">
+        <span class="assumption__suffix">$</span>
+        <input type="number" id="fulfillment" value="5" step="0.25">
+      </div>
+      <span class="assumption__hint">Per order</span>
+    </div>
+    <div class="assumption">
+      <span class="assumption__label">Return Rate</span>
+      <div class="assumption__input-wrap">
+        <input type="number" id="returnRate" value="3" step="0.5">
+        <span class="assumption__suffix">%</span>
+      </div>
+      <span class="assumption__hint">Of revenue</span>
+    </div>
+    <div class="assumption">
+      <span class="assumption__label">GM Target</span>
+      <div class="assumption__input-wrap">
+        <input type="number" id="gmTarget" value="80" step="5">
+        <span class="assumption__suffix">%</span>
+      </div>
+      <span class="assumption__hint">Green threshold</span>
+    </div>
+  </div>
+
+  <!-- AT-A-GLANCE TABLE -->
+  <div class="section-title">Bundle Comparison</div>
+  <div class="section-subtitle">All approved bundles · Click pill to set price scenario</div>
+
+  <div class="summary-bar">
+    <div class="summary-bar__title">Color Code (Gross Margin)</div>
+    <div class="summary-bar__legend">
+      <span class="legend-item"><span class="legend-dot legend-dot--good"></span> ≥ <span id="legendGood">80</span>% — On target</span>
+      <span class="legend-item"><span class="legend-dot legend-dot--warn"></span> <span id="legendWarn">60</span>–<span id="legendWarn2">80</span>% — Watch</span>
+      <span class="legend-item"><span class="legend-dot legend-dot--bad"></span> &lt; <span id="legendBad">60</span>% — Below target</span>
+    </div>
+  </div>
+
+  <table class="glance">
+    <thead>
+      <tr>
+        <th>Bundle</th>
+        <th class="num">MSRP</th>
+        <th class="num">Sell Price</th>
+        <th class="num">Discount</th>
+        <th class="num">Gross %</th>
+        <th class="num">Landed %</th>
+        <th class="num">Contribution %</th>
+        <th class="num">Contribution $</th>
+      </tr>
+    </thead>
+    <tbody id="glanceBody"></tbody>
+  </table>
+
+  <!-- BUNDLE CARDS -->
+  <div class="section-title">Bundle Detail</div>
+  <div class="section-subtitle">Edit components, prices, and pricing scenario per bundle</div>
+
+  <div class="toolbar">
+    <button class="btn btn--primary btn--small" id="addBundleBtn">+ New Bundle</button>
+    <button class="btn btn--small" id="resetBtn">Reset to Defaults</button>
+    <button class="btn btn--small" id="exportCsvBtn">Export CSV</button>
+  </div>
+
+  <div id="bundlesWrap"></div>
+</div>
+
+<!-- ==================== TAB 2: LIVE SCENARIO ==================== -->
+<div class="panel" id="panel-live">
+  <div class="section-title">LIVE Scenario — Bobbi 5/12</div>
+  <div class="section-subtitle">2-hour LIVE window · Models giveaway COGS amortization across orders</div>
+
+  <div class="live-grid">
+    <div class="live-panel">
+      <div class="live-panel__title">Inputs</div>
+      <div class="live-input-row">
+        <label>Total LIVE orders</label>
+        <input type="number" id="liveOrders" value="500" step="50">
+      </div>
+      <div class="live-input-row">
+        <label>Mini MB giveaways (4× per LIVE)</label>
+        <input type="number" id="giveawayMiniMB" value="4">
+      </div>
+      <div class="live-input-row">
+        <label>Final-hour bundle giveaways</label>
+        <input type="number" id="giveawayFinal" value="1">
+      </div>
+      <div class="live-input-row">
+        <label>% of LIVE orders = WTF + Mini MB deal</label>
+        <input type="number" id="liveDealMix" value="60" step="5">
+      </div>
+      <div style="margin-top: 16px; padding: 12px; background: var(--gray); border-radius: 2px; font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.2px; line-height: 1.6;">
+        Mini MB COGS: $2.20 ea<br>
+        Final bundle COGS (LR + Mini MB + ES): $6.62
+      </div>
+    </div>
+    <div class="live-panel">
+      <div class="live-panel__title">LIVE-Blended P&amp;L</div>
+      <div id="liveOutput"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TAB 3: COGS CATALOG ==================== -->
+<div class="panel" id="panel-catalog">
+  <div class="section-title">NetSuite COGS Catalog</div>
+  <div class="section-subtitle">All active FG SKUs · Source: NetSuite SuiteQL · Refresh by re-running query</div>
+
+  <div class="catalog-search">
+    <input type="text" id="catalogSearch" placeholder="Search by name, SKU, or category...">
+    <span class="catalog-count" id="catalogCount"></span>
+  </div>
+  <div class="catalog-wrap">
+    <table class="catalog-table" id="catalogTable">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>SKU</th>
+          <th>Category</th>
+          <th class="num">COGS</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="foot-note">
+  <strong>METHODOLOGY</strong>
+  <ul>
+    <li>COGS = NetSuite weighted-average cost (averagecost) on the FG Assembly SKU. Includes raws, fill, packaging, assembly. WIP/test/PROMO SKUs filtered out.</li>
+    <li>Gross Margin = Sell Price − COGS · Landed GM = Gross − TikTok fee − Creator commission · Contribution = Landed − Fulfillment − Returns reserve.</li>
+    <li>Color thresholds (configurable): Green ≥ GM target. Yellow = GM target − 20pts. Red below that.</li>
+    <li>Excludes: ad spend, talent fees, content production, customer service. Add above the line for fully-loaded margin.</li>
+  </ul>
+</div>
+
+<datalist id="productList"></datalist>
+
+<script>
+// ============================================================================
+// 1) STATE
+// ============================================================================
+let CATALOG = [];
+
+const DEFAULT_BUNDLES = [
+  // ---------- LIVE NOW ----------
+  { id: 'b1', name: 'WTF + Mini Miracle Balm', type: 'evergreen',
+    msrp: 66, goPrice: 50, evergreenPrice: 56, activePrice: 'evergreen',
+    scenario: 'Live now · MSRP $66 · GO $50 (25% off) · Evergreen $56 (15% off)',
+    items: [
+      { sku: 'FGWT26836', name: 'What The Foundation, Light', cogs: 4.15 },
+      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.16 },
+    ] },
+  { id: 'b2', name: 'Mini MB + Eyeshadow Stick + Lip Recharge', type: 'evergreen',
+    msrp: 76, goPrice: 60, evergreenPrice: 66, activePrice: 'evergreen',
+    scenario: 'Live now · MSRP $76 · GO $60 (21% off) · Evergreen $66 (14% off)',
+    items: [
+      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.16 },
+      { sku: 'FGSS45769', name: 'JRB Eyeshadow Stick in Cream', cogs: 2.72 },
+      { sku: 'FGLR79972', name: 'JRB Lip Recharge Champagne', cogs: 1.74 },
+    ] },
+  { id: 'b3', name: 'Lip Recharge + Mini Miracle Balm', type: 'evergreen',
+    msrp: 44, goPrice: 34, evergreenPrice: 38, activePrice: 'evergreen',
+    scenario: 'Live now · MSRP $44 · GO $34 (23% off) · Evergreen $38 (14% off)',
+    items: [
+      { sku: 'FGLR79972', name: 'JRB Lip Recharge Champagne', cogs: 1.74 },
+      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.16 },
+    ] },
+  { id: 'b4', name: 'Lip Recharge + Full Size Miracle Balm', type: 'evergreen',
+    msrp: 62, goPrice: 46, evergreenPrice: 52, activePrice: 'evergreen',
+    scenario: 'Live now · MSRP $62 · GO $46 (26% off) · Evergreen $52 (16% off)',
+    items: [
+      { sku: 'FGLR79972', name: 'JRB Lip Recharge Champagne', cogs: 1.74 },
+      { sku: 'FGMB01416', name: 'Miracle Balm, Large - Flushed', cogs: 3.76 },
+    ] },
+  // ---------- LAUNCHING 5/12 ----------
+  { id: 'b5', name: 'Foundation Stick + Brush', type: 'evergreen',
+    msrp: 82, goPrice: 62, evergreenPrice: 70, activePrice: 'evergreen',
+    scenario: 'Launching 5/12 · MSRP $82 · GO $62 (25% off) · Evergreen $70 (15% off)',
+    items: [
+      { sku: 'FGFS78436', name: 'JRB Your Skin Foundation Stick Light', cogs: 3.76 },
+      { sku: 'FGFB17757', name: 'JRB FACE BLENDING BRUSH', cogs: 4.62 },
+    ] },
+  { id: 'b6', name: 'Foundation Stick + Mini Miracle Balm', type: 'evergreen',
+    msrp: 58, goPrice: null, evergreenPrice: 50, activePrice: 'evergreen',
+    scenario: 'Launching 5/12 · MSRP $58 · Evergreen $50 (14% off)',
+    items: [
+      { sku: 'FGFS78436', name: 'JRB Your Skin Foundation Stick Light', cogs: 3.76 },
+      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.16 },
+    ] },
+  // ---------- LIVE-ONLY DEAL ----------
+  { id: 'b7', name: 'WTF + Mini MB · LIVE Deal', type: 'live',
+    msrp: 66, goPrice: 50, evergreenPrice: 50, activePrice: 'goPrice',
+    scenario: 'LIVE 5/12 (2-hr window) · MSRP $66 · LIVE deal $50 (25% off) · #2 GMV driver',
+    items: [
+      { sku: 'FGWT26836', name: 'What The Foundation, Light', cogs: 4.15 },
+      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.16 },
+    ] },
+];
+
+let bundles = JSON.parse(JSON.stringify(DEFAULT_BUNDLES));
+let nextBundleId = bundles.length + 1;
+
+// ============================================================================
+// 2) HELPERS
+// ============================================================================
+const fmt = (n, d = 2) => '$' + Number(n).toFixed(d).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const fmtPct = n => Number(n).toFixed(1) + '%';
+
+function getActivePrice(b) {
+  if (b.activePrice === 'goPrice' && b.goPrice != null) return b.goPrice;
+  if (b.activePrice === 'evergreen' && b.evergreenPrice != null) return b.evergreenPrice;
+  if (b.evergreenPrice != null) return b.evergreenPrice;
+  return b.price || 0;
+}
+
+function getGlobals() {
+  return {
+    tiktokFee: parseFloat(document.getElementById('tiktokFee').value) / 100 || 0,
+    creatorComm: parseFloat(document.getElementById('creatorComm').value) / 100 || 0,
+    fulfillment: parseFloat(document.getElementById('fulfillment').value) || 0,
+    returnRate: parseFloat(document.getElementById('returnRate').value) / 100 || 0,
+    gmTarget: parseFloat(document.getElementById('gmTarget').value) || 80,
+  };
+}
+
+function calcBundle(b, g, extraCogsPerOrder = 0) {
+  const itemsCogs = b.items.reduce((s, i) => s + (parseFloat(i.cogs) || 0), 0);
+  const totalCogs = itemsCogs + extraCogsPerOrder;
+  const price = getActivePrice(b);
+
+  const tiktokFeeAmt = price * g.tiktokFee;
+  const creatorCommAmt = price * g.creatorComm;
+  const returnsAmt = price * g.returnRate;
+
+  const grossMargin = price - totalCogs;
+  const grossMarginPct = price > 0 ? (grossMargin / price) * 100 : 0;
+
+  const landedGrossMargin = grossMargin - tiktokFeeAmt - creatorCommAmt;
+  const landedGrossMarginPct = price > 0 ? (landedGrossMargin / price) * 100 : 0;
+
+  const contribution = landedGrossMargin - g.fulfillment - returnsAmt;
+  const contributionPct = price > 0 ? (contribution / price) * 100 : 0;
+
+  const discountPct = b.msrp > 0 ? ((b.msrp - price) / b.msrp) * 100 : 0;
+
+  return {
+    price, totalCogs, itemsCogs,
+    tiktokFeeAmt, creatorCommAmt, returnsAmt, fulfillment: g.fulfillment,
+    grossMargin, grossMarginPct,
+    landedGrossMargin, landedGrossMarginPct,
+    contribution, contributionPct,
+    discountPct,
+  };
+}
+
+// Color thresholds — tied to GM target, scaled for landed/contribution
+function gmClass(pct, type, gmTarget) {
+  let green, yellow;
+  if (type === 'gross') {
+    green = gmTarget;
+    yellow = gmTarget - 20;
+  } else if (type === 'landed') {
+    green = gmTarget - 20;
+    yellow = gmTarget - 40;
+  } else { // contribution
+    green = gmTarget - 30;
+    yellow = gmTarget - 50;
+  }
+  if (pct >= green) return 'gm-good';
+  if (pct >= yellow) return 'gm-warn';
+  return 'gm-bad';
+}
+function metricClass(pct, type, gmTarget) {
+  return 'metric--' + gmClass(pct, type, gmTarget).replace('gm-', '').replace('good', 'good').replace('warn', 'warn').replace('bad', 'bad');
+}
+
+function escapeHtml(s) {
+  if (typeof s !== 'string') return s;
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ============================================================================
+// 3) CATALOG
+// ============================================================================
+async function loadCatalog() {
+  try {
+    const r = await fetch('cogs.json');
+    CATALOG = await r.json();
+  } catch (e) {
+    console.error('Could not load cogs.json', e);
+    CATALOG = [];
+  }
+  document.getElementById('catalogStat').textContent = CATALOG.length.toLocaleString();
+  document.getElementById('tabCount').textContent = `(${CATALOG.length})`;
+  document.getElementById('catalogTimestamp').textContent = new Date().toLocaleString();
+  buildDatalist();
+  renderCatalog();
+  renderAll();
+}
+
+function buildDatalist() {
+  const dl = document.getElementById('productList');
+  dl.innerHTML = '';
+  CATALOG.forEach(item => {
+    const opt = document.createElement('option');
+    opt.value = `${item.name} — ${item.sku} — $${item.cogs.toFixed(2)}`;
+    dl.appendChild(opt);
+  });
+}
+
+function lookupBySearch(value) {
+  let hit = CATALOG.find(i => `${i.name} — ${i.sku} — $${i.cogs.toFixed(2)}` === value);
+  if (hit) return hit;
+  hit = CATALOG.find(i => i.sku.toUpperCase() === value.toUpperCase());
+  if (hit) return hit;
+  hit = CATALOG.find(i => i.name.toLowerCase() === value.toLowerCase());
+  return hit;
+}
+
+function renderCatalog(filter = '') {
+  const tbody = document.querySelector('#catalogTable tbody');
+  const f = filter.toLowerCase().trim();
+  const matches = f ? CATALOG.filter(i =>
+    i.name.toLowerCase().includes(f) || i.sku.toLowerCase().includes(f) || i.category.toLowerCase().includes(f)
+  ) : CATALOG;
+  document.getElementById('catalogCount').textContent = `${matches.length} of ${CATALOG.length}`;
+  tbody.innerHTML = matches.slice(0, 500).map(i => `
+    <tr>
+      <td>${escapeHtml(i.name)}</td>
+      <td class="mono">${escapeHtml(i.sku)}</td>
+      <td class="mono">${escapeHtml(i.category.replace(/^\d+\s—\s/, ''))}</td>
+      <td class="num">${fmt(i.cogs)}</td>
+    </tr>
+  `).join('');
+  if (matches.length > 500) {
+    tbody.innerHTML += `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:12px;font-family:var(--font-mono);font-size:10px;text-transform:uppercase;">First 500 shown — refine search</td></tr>`;
+  }
+}
+
+// ============================================================================
+// 4) RENDER GLANCE TABLE
+// ============================================================================
+function renderGlance() {
+  const g = getGlobals();
+  const tbody = document.getElementById('glanceBody');
+  tbody.innerHTML = bundles.map((b, idx) => {
+    const r = calcBundle(b, g);
+    const grossClass = gmClass(r.grossMarginPct, 'gross', g.gmTarget);
+    const landedClass = gmClass(r.landedGrossMarginPct, 'landed', g.gmTarget);
+    const contribClass = gmClass(r.contributionPct, 'contribution', g.gmTarget);
+    const liveClass = b.type === 'live' ? 'is-live' : '';
+    return `
+      <tr class="${liveClass}">
+        <td><span class="name-cell">${escapeHtml(b.name)}</span></td>
+        <td class="num">${fmt(b.msrp)}</td>
+        <td class="num">${fmt(r.price)}</td>
+        <td class="num">${fmtPct(r.discountPct)}</td>
+        <td class="num pct-cell ${grossClass}">${fmtPct(r.grossMarginPct)}</td>
+        <td class="num pct-cell ${landedClass}">${fmtPct(r.landedGrossMarginPct)}</td>
+        <td class="num pct-cell ${contribClass}">${fmtPct(r.contributionPct)}</td>
+        <td class="num">${fmt(r.contribution)}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// ============================================================================
+// 5) RENDER BUNDLES
+// ============================================================================
+function renderBundles() {
+  const g = getGlobals();
+  const wrap = document.getElementById('bundlesWrap');
+  wrap.innerHTML = '';
+
+  // Update legend numbers based on GM target
+  document.getElementById('legendGood').textContent = g.gmTarget;
+  document.getElementById('legendWarn').textContent = g.gmTarget - 20;
+  document.getElementById('legendWarn2').textContent = g.gmTarget;
+  document.getElementById('legendBad').textContent = g.gmTarget - 20;
+
+  bundles.forEach((b, bIdx) => {
+    const r = calcBundle(b, g);
+    const liveClass = b.type === 'live' ? 'is-live' : '';
+    const pillClass = b.type === 'live' ? 'pill--live' : 'pill--evergreen';
+    const pillText = b.type === 'live' ? 'LIVE' : 'EVERGREEN';
+
+    const goActive = b.activePrice === 'goPrice' ? 'is-active' : '';
+    const egActive = b.activePrice === 'evergreen' ? 'is-active' : '';
+    const goDisabled = b.goPrice == null;
+    const goDiscount = b.msrp > 0 && b.goPrice ? Math.round(((b.msrp - b.goPrice) / b.msrp) * 100) : 0;
+    const egDiscount = b.msrp > 0 && b.evergreenPrice ? Math.round(((b.msrp - b.evergreenPrice) / b.msrp) * 100) : 0;
+
+    const card = document.createElement('div');
+    card.className = `bundle-card ${liveClass}`;
+    card.innerHTML = `
+      <div class="bundle-head">
+        <div class="bundle-head__main">
+          <input class="bundle-head__name" data-bundle="${bIdx}" data-field="name" value="${escapeHtml(b.name)}">
+          <div class="bundle-head__scenario">${escapeHtml(b.scenario || '')}</div>
+        </div>
+        <div class="bundle-head__right">
+          <span class="pill ${pillClass}" data-action="toggleType" data-bundle="${bIdx}">${pillText}</span>
+          <button class="icon-btn" data-action="deleteBundle" data-bundle="${bIdx}" title="Delete bundle">×</button>
+        </div>
+      </div>
+
+      <div class="items">
+        <div class="items__title">Components</div>
+        ${b.items.map((item, iIdx) => `
+          <div class="item-row">
+            <input type="text" list="productList" placeholder="Search product or SKU…"
+              data-bundle="${bIdx}" data-item="${iIdx}" data-field="product"
+              value="${escapeHtml(item.name)}${item.sku ? ' — ' + item.sku + ' — $' + Number(item.cogs).toFixed(2) : ''}">
+            <input type="number" step="0.01"
+              data-bundle="${bIdx}" data-item="${iIdx}" data-field="cogs"
+              value="${Number(item.cogs).toFixed(2)}" title="Override COGS">
+            <span class="item-row__sku">${escapeHtml(item.sku || '')}</span>
+            <button class="icon-btn" data-action="deleteItem" data-bundle="${bIdx}" data-item="${iIdx}">×</button>
+          </div>
+        `).join('')}
+        <button class="add-item" data-action="addItem" data-bundle="${bIdx}">+ Add product</button>
+      </div>
+
+      <div class="price-toggle">
+        <span class="price-toggle__label">Pricing scenario</span>
+        ${!goDisabled ? `
+        <button class="price-btn ${goActive}" data-action="setPrice" data-bundle="${bIdx}" data-which="goPrice">
+          <span>GO Price</span>
+          <span class="price-btn__amt">${fmt(b.goPrice, 0)}</span>
+          <span class="price-btn__off">${goDiscount}% off MSRP</span>
+        </button>` : ''}
+        <button class="price-btn ${egActive}" data-action="setPrice" data-bundle="${bIdx}" data-which="evergreen">
+          <span>Evergreen</span>
+          <span class="price-btn__amt">${fmt(b.evergreenPrice, 0)}</span>
+          <span class="price-btn__off">${egDiscount}% off MSRP</span>
+        </button>
+        <div class="price-edit">
+          <span class="assumption__label">MSRP</span>
+          <input type="number" data-bundle="${bIdx}" data-field="msrp" value="${b.msrp}" step="1">
+        </div>
+        <div class="price-edit">
+          <span class="assumption__label">GO $</span>
+          <input type="number" data-bundle="${bIdx}" data-field="goPrice" value="${b.goPrice ?? ''}" step="1" placeholder="—">
+        </div>
+        <div class="price-edit">
+          <span class="assumption__label">Evergreen $</span>
+          <input type="number" data-bundle="${bIdx}" data-field="evergreenPrice" value="${b.evergreenPrice ?? ''}" step="1">
+        </div>
+      </div>
+
+      <div class="metrics">
+        <div class="metric">
+          <span class="metric__label">MSRP</span>
+          <span class="metric__value">${fmt(b.msrp, 0)}</span>
+          <span class="metric__sub">Bundle value</span>
+        </div>
+        <div class="metric">
+          <span class="metric__label">Selling Price</span>
+          <span class="metric__value">${fmt(r.price, 0)}</span>
+          <span class="metric__sub">${fmtPct(r.discountPct)} off MSRP</span>
+        </div>
+        <div class="metric ${metricClass(r.grossMarginPct, 'gross', g.gmTarget)}">
+          <span class="metric__label">Gross Margin</span>
+          <span class="metric__value">${fmtPct(r.grossMarginPct)}</span>
+          <span class="metric__sub">${fmt(r.grossMargin)}</span>
+          <span class="metric__detail">After COGS</span>
+        </div>
+        <div class="metric ${metricClass(r.landedGrossMarginPct, 'landed', g.gmTarget)}">
+          <span class="metric__label">Landed GM</span>
+          <span class="metric__value">${fmtPct(r.landedGrossMarginPct)}</span>
+          <span class="metric__sub">${fmt(r.landedGrossMargin)}</span>
+          <span class="metric__detail">After fees + comm</span>
+        </div>
+        <div class="metric ${metricClass(r.contributionPct, 'contribution', g.gmTarget)}">
+          <span class="metric__label">Contribution</span>
+          <span class="metric__value">${fmtPct(r.contributionPct)}</span>
+          <span class="metric__sub">${fmt(r.contribution)}</span>
+          <span class="metric__detail">After fulfillment + returns</span>
+        </div>
+      </div>
+    `;
+    wrap.appendChild(card);
+  });
+
+  attachBundleListeners();
+}
+
+function attachBundleListeners() {
+  document.querySelectorAll('#bundlesWrap input').forEach(inp => {
+    inp.addEventListener('input', e => {
+      const bIdx = parseInt(e.target.dataset.bundle);
+      const iIdx = e.target.dataset.item !== undefined ? parseInt(e.target.dataset.item) : null;
+      const field = e.target.dataset.field;
+      const val = e.target.value;
+
+      if (iIdx !== null) {
+        if (field === 'product') {
+          const hit = lookupBySearch(val);
+          if (hit) {
+            bundles[bIdx].items[iIdx] = { sku: hit.sku, name: hit.name, cogs: hit.cogs };
+            renderAll();
+          } else {
+            bundles[bIdx].items[iIdx].name = val.split(' — ')[0] || val;
+          }
+        } else if (field === 'cogs') {
+          bundles[bIdx].items[iIdx].cogs = parseFloat(val) || 0;
+          renderAll();
+        }
+      } else {
+        if (field === 'msrp' || field === 'goPrice' || field === 'evergreenPrice') {
+          bundles[bIdx][field] = val === '' ? null : parseFloat(val) || 0;
+        } else {
+          bundles[bIdx][field] = val;
+        }
+        renderAll();
+      }
+    });
+  });
+
+  document.querySelectorAll('#bundlesWrap [data-action]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const action = e.currentTarget.dataset.action;
+      const bIdx = parseInt(e.currentTarget.dataset.bundle);
+      const iIdx = e.currentTarget.dataset.item !== undefined ? parseInt(e.currentTarget.dataset.item) : null;
+
+      if (action === 'addItem') {
+        bundles[bIdx].items.push({ sku: '', name: '', cogs: 0 });
+        renderAll();
+      } else if (action === 'deleteItem') {
+        bundles[bIdx].items.splice(iIdx, 1);
+        renderAll();
+      } else if (action === 'deleteBundle') {
+        if (confirm(`Delete bundle "${bundles[bIdx].name}"?`)) {
+          bundles.splice(bIdx, 1);
+          renderAll();
+        }
+      } else if (action === 'toggleType') {
+        bundles[bIdx].type = bundles[bIdx].type === 'live' ? 'evergreen' : 'live';
+        renderAll();
+      } else if (action === 'setPrice') {
+        bundles[bIdx].activePrice = e.currentTarget.dataset.which;
+        renderAll();
+      }
+    });
+  });
+}
+
+// ============================================================================
+// 6) LIVE SCENARIO
+// ============================================================================
+function renderLive() {
+  const g = getGlobals();
+  const orders = parseFloat(document.getElementById('liveOrders').value) || 1;
+  const giveMiniMB = parseFloat(document.getElementById('giveawayMiniMB').value) || 0;
+  const giveFinal = parseFloat(document.getElementById('giveawayFinal').value) || 0;
+  const dealMix = (parseFloat(document.getElementById('liveDealMix').value) || 0) / 100;
+
+  const giveawayMiniMBCost = giveMiniMB * 2.20;
+  const giveawayFinalCost = giveFinal * 6.62;
+  const totalGiveawayCogs = giveawayMiniMBCost + giveawayFinalCost;
+  const totalGiveawayShipping = (giveMiniMB + giveFinal) * g.fulfillment;
+  const totalGiveawayCost = totalGiveawayCogs + totalGiveawayShipping;
+  const perOrderGiveaway = totalGiveawayCost / orders;
+
+  const liveBundle = bundles.find(b => b.type === 'live') || bundles[0];
+  const otherBundle = bundles.find(b => b !== liveBundle && b.type === 'evergreen') || bundles[1] || liveBundle;
+
+  const liveDealMargin = calcBundle(liveBundle, g, perOrderGiveaway);
+  const otherMargin = calcBundle(otherBundle, g, perOrderGiveaway);
+
+  const livePriceUsed = getActivePrice(liveBundle);
+  const otherPriceUsed = getActivePrice(otherBundle);
+  const blendedContribution = liveDealMargin.contribution * dealMix + otherMargin.contribution * (1 - dealMix);
+  const blendedPrice = livePriceUsed * dealMix + otherPriceUsed * (1 - dealMix);
+  const blendedPct = blendedPrice > 0 ? (blendedContribution / blendedPrice) * 100 : 0;
+  const blendedClass = gmClass(blendedPct, 'contribution', g.gmTarget);
+
+  const totalRevenue = orders * blendedPrice;
+  const totalContribution = orders * blendedContribution;
+
+  const liveClass = gmClass(liveDealMargin.contributionPct, 'contribution', g.gmTarget);
+  const otherClass = gmClass(otherMargin.contributionPct, 'contribution', g.gmTarget);
+
+  document.getElementById('liveOutput').innerHTML = `
+    <div class="live-output-row"><span class="live-output-row__label">Free product COGS</span><span class="live-output-row__val">${fmt(totalGiveawayCogs)}</span></div>
+    <div class="live-output-row"><span class="live-output-row__label">Giveaway shipping</span><span class="live-output-row__val">${fmt(totalGiveawayShipping)}</span></div>
+    <div class="live-output-row"><span class="live-output-row__label">Total giveaway cost</span><span class="live-output-row__val">${fmt(totalGiveawayCost)}</span></div>
+    <div class="live-output-row"><span class="live-output-row__label">Per-order amortization</span><span class="live-output-row__val">${fmt(perOrderGiveaway)}</span></div>
+    <div class="live-output-row" style="padding-top:14px"><span class="live-output-row__label">${escapeHtml(liveBundle.name)} (post-giveaway)</span><span class="live-output-row__val ${liveClass}">${fmt(liveDealMargin.contribution)} · ${fmtPct(liveDealMargin.contributionPct)}</span></div>
+    <div class="live-output-row"><span class="live-output-row__label">${escapeHtml(otherBundle.name)} (post-giveaway)</span><span class="live-output-row__val ${otherClass}">${fmt(otherMargin.contribution)} · ${fmtPct(otherMargin.contributionPct)}</span></div>
+    <div class="live-output-row total"><span class="live-output-row__label">Blended LIVE contribution / order</span><span class="live-output-row__val ${blendedClass}">${fmt(blendedContribution)} · ${fmtPct(blendedPct)}</span></div>
+    <div class="live-output-row total"><span class="live-output-row__label">Total LIVE revenue (${orders} orders)</span><span class="live-output-row__val">${fmt(totalRevenue)}</span></div>
+    <div class="live-output-row total"><span class="live-output-row__label">Total LIVE contribution</span><span class="live-output-row__val ${blendedClass}">${fmt(totalContribution)}</span></div>
+  `;
+}
+
+// ============================================================================
+// 7) CSV EXPORT
+// ============================================================================
+function exportCsv() {
+  const g = getGlobals();
+  const rows = [
+    ['Bundle', 'Type', 'MSRP', 'Sell Price', 'Discount %', 'Total COGS', 'Gross Margin $', 'Gross Margin %', 'Landed GM $', 'Landed GM %', 'Contribution $', 'Contribution %', 'Components']
+  ];
+  bundles.forEach(b => {
+    const r = calcBundle(b, g);
+    rows.push([
+      b.name, b.type, b.msrp, r.price.toFixed(2), r.discountPct.toFixed(1),
+      r.totalCogs.toFixed(2), r.grossMargin.toFixed(2), r.grossMarginPct.toFixed(1),
+      r.landedGrossMargin.toFixed(2), r.landedGrossMarginPct.toFixed(1),
+      r.contribution.toFixed(2), r.contributionPct.toFixed(1),
+      b.items.map(i => `${i.name} ($${i.cogs.toFixed(2)})`).join(' + ')
+    ]);
+  });
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `tiktok-bundles-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ============================================================================
+// 8) WIRING
+// ============================================================================
+function renderAll() {
+  renderGlance();
+  renderBundles();
+  renderLive();
+}
+
+// Tabs
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('is-active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('is-active'));
+    tab.classList.add('is-active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('is-active');
+  });
+});
+
+// Globals
+document.querySelectorAll('.assumption input, #liveOrders, #giveawayMiniMB, #giveawayFinal, #liveDealMix').forEach(input => {
+  input.addEventListener('input', renderAll);
+});
+
+// Buttons
+document.getElementById('addBundleBtn').addEventListener('click', () => {
+  bundles.push({
+    id: 'b' + (nextBundleId++),
+    name: 'New Bundle',
+    type: 'evergreen',
+    msrp: 60, goPrice: null, evergreenPrice: 50, activePrice: 'evergreen',
+    scenario: 'Custom bundle',
+    items: [{ sku: '', name: '', cogs: 0 }],
+  });
+  renderAll();
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  if (confirm('Reset to defaults? Custom bundles will be lost.')) {
+    bundles = JSON.parse(JSON.stringify(DEFAULT_BUNDLES));
+    renderAll();
+  }
+});
+
+document.getElementById('exportCsvBtn').addEventListener('click', exportCsv);
+
+document.getElementById('catalogSearch').addEventListener('input', e => {
+  renderCatalog(e.target.value);
+});
+
+// Boot
+loadCatalog();
+</script>
+</body>
+</html>
