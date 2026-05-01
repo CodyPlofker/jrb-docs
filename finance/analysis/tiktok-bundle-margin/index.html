@@ -408,8 +408,12 @@
 
   <div class="toolbar">
     <button class="btn btn--primary btn--small" id="addBundleBtn">+ New Bundle</button>
+    <button class="btn btn--primary btn--small" id="shareBtn" style="background:var(--pink);border-color:var(--pink);color:var(--white);">↗ Copy Share Link</button>
     <button class="btn btn--small" id="resetBtn">Reset to Defaults</button>
     <button class="btn btn--small" id="exportCsvBtn">Export CSV</button>
+  </div>
+  <div id="sharedBanner" style="display:none;background:var(--warm);border:1px solid var(--border);border-radius:6px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:var(--ink);">
+    <strong>📨 Viewing a shared scenario.</strong> Edit anything, then click <em>Copy Share Link</em> to send the updated proposal back. Or click <em>Reset to Defaults</em> to start fresh.
   </div>
 
   <div id="bundlesWrap"></div>
@@ -688,6 +692,8 @@ async function loadCatalog() {
   document.getElementById('catalogTimestamp').textContent = new Date().toLocaleString();
   buildDatalist();
   renderCatalog();
+  // Restore shared scenario from URL hash if present (must run after CATALOG loads)
+  checkUrlHash();
   renderAll();
 }
 
@@ -1016,6 +1022,114 @@ function exportCsv() {
 }
 
 // ============================================================================
+// 7B) SHAREABLE URL STATE
+// ============================================================================
+function serializeState() {
+  const state = {
+    g: {
+      tt: parseFloat(document.getElementById('tiktokFee').value),
+      cr: parseFloat(document.getElementById('creatorComm').value),
+      ff: parseFloat(document.getElementById('fulfillment').value),
+      rr: parseFloat(document.getElementById('returnRate').value),
+      gt: parseFloat(document.getElementById('gmTarget').value),
+    },
+    l: {
+      o: parseFloat(document.getElementById('liveOrders').value),
+      gm: parseFloat(document.getElementById('giveawayMiniMB').value),
+      gf: parseFloat(document.getElementById('giveawayFinal').value),
+      dm: parseFloat(document.getElementById('liveDealMix').value),
+    },
+    b: bundles.map(b => ({
+      n: b.name,
+      t: b.type,
+      m: b.msrp,
+      g: b.goPrice,
+      e: b.evergreenPrice,
+      a: b.activePrice,
+      s: b.scenario,
+      i: b.items.map(i => [i.sku || '', i.name || '', i.cogs || 0]),
+    })),
+  };
+  return btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+}
+
+function deserializeState(encoded) {
+  try {
+    const state = JSON.parse(decodeURIComponent(escape(atob(encoded))));
+    if (state.g) {
+      if (state.g.tt != null) document.getElementById('tiktokFee').value = state.g.tt;
+      if (state.g.cr != null) document.getElementById('creatorComm').value = state.g.cr;
+      if (state.g.ff != null) document.getElementById('fulfillment').value = state.g.ff;
+      if (state.g.rr != null) document.getElementById('returnRate').value = state.g.rr;
+      if (state.g.gt != null) document.getElementById('gmTarget').value = state.g.gt;
+    }
+    if (state.l) {
+      if (state.l.o != null) document.getElementById('liveOrders').value = state.l.o;
+      if (state.l.gm != null) document.getElementById('giveawayMiniMB').value = state.l.gm;
+      if (state.l.gf != null) document.getElementById('giveawayFinal').value = state.l.gf;
+      if (state.l.dm != null) document.getElementById('liveDealMix').value = state.l.dm;
+    }
+    if (state.b && Array.isArray(state.b)) {
+      bundles = state.b.map((b, idx) => ({
+        id: 'b' + (idx + 1),
+        name: b.n || 'Bundle',
+        type: b.t || 'evergreen',
+        msrp: b.m || 0,
+        goPrice: b.g,
+        evergreenPrice: b.e,
+        activePrice: b.a || 'evergreen',
+        scenario: b.s || '',
+        items: (b.i || []).map(i => ({ sku: i[0] || '', name: i[1] || '', cogs: i[2] || 0 })),
+      }));
+      nextBundleId = bundles.length + 1;
+    }
+    return true;
+  } catch (e) {
+    console.error('Failed to load shared scenario:', e);
+    return false;
+  }
+}
+
+function copyShareLink() {
+  const encoded = serializeState();
+  const url = window.location.origin + window.location.pathname + '#s=' + encoded;
+  const fallback = () => prompt('Copy this link to share:', url);
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(url)
+      .then(() => showToast(`✓ Share link copied (${url.length} chars). Paste anywhere to share this scenario.`))
+      .catch(fallback);
+  } else {
+    fallback();
+  }
+}
+
+function showToast(msg) {
+  let toast = document.getElementById('toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toast';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--white);padding:14px 20px;border-radius:6px;font-size:13px;z-index:1000;box-shadow:0 4px 16px rgba(0,0,0,0.2);transition:opacity 0.3s;font-weight:500;max-width:90vw;text-align:center;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 3500);
+}
+
+function checkUrlHash() {
+  const hash = window.location.hash;
+  if (hash.startsWith('#s=')) {
+    const encoded = hash.substring(3);
+    if (deserializeState(encoded)) {
+      document.getElementById('sharedBanner').style.display = 'block';
+      return true;
+    }
+  }
+  return false;
+}
+
+// ============================================================================
 // 8) WIRING
 // ============================================================================
 // ============================================================================
@@ -1176,6 +1290,14 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 });
 
 document.getElementById('exportCsvBtn').addEventListener('click', exportCsv);
+
+document.getElementById('shareBtn').addEventListener('click', copyShareLink);
+
+// Reset also clears the hash and the shared banner
+document.getElementById('resetBtn').addEventListener('click', () => {
+  history.replaceState(null, '', window.location.pathname);
+  document.getElementById('sharedBanner').style.display = 'none';
+});
 
 document.getElementById('catalogSearch').addEventListener('input', e => {
   renderCatalog(e.target.value);
