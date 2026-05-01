@@ -218,6 +218,7 @@
 <nav class="tabs">
   <button class="tab is-active" data-tab="bundles">Bundles</button>
   <button class="tab" data-tab="live">LIVE Scenario</button>
+  <button class="tab" data-tab="sensitivity">Sensitivity</button>
   <button class="tab" data-tab="catalog">COGS Catalog<span class="tab__count" id="tabCount"></span></button>
 </nav>
 
@@ -348,7 +349,48 @@
   </div>
 </div>
 
-<!-- ==================== TAB 3: COGS CATALOG ==================== -->
+<!-- ==================== TAB 3: SENSITIVITY ==================== -->
+<div class="panel" id="panel-sensitivity">
+  <div class="section-title">Sensitivity Analysis</div>
+  <div class="section-subtitle">How fees, commissions, and returns shift contribution margin</div>
+
+  <div class="summary-bar">
+    <div class="summary-bar__title">Color code (Contribution %)</div>
+    <div class="summary-bar__legend">
+      <span class="legend-item"><span class="legend-dot legend-dot--good"></span> ≥ 50% — Healthy</span>
+      <span class="legend-item"><span class="legend-dot legend-dot--warn"></span> 30–50% — Watch</span>
+      <span class="legend-item"><span class="legend-dot legend-dot--bad"></span> &lt; 30% — Margin compression</span>
+    </div>
+  </div>
+
+  <!-- 1. Scenario Matrix -->
+  <h3 class="section-title" style="margin-top: 32px; font-size: 16px;">Scenario Matrix</h3>
+  <div class="section-subtitle">Contribution % under preset fee/commission/return assumptions</div>
+  <div style="overflow-x: auto;">
+    <table class="glance" id="scenarioMatrix"></table>
+  </div>
+
+  <!-- 2. Creator Commission Sweep -->
+  <h3 class="section-title" style="margin-top: 32px; font-size: 16px;">Creator Commission Sweep</h3>
+  <div class="section-subtitle">Contribution % at each commission level (uses current TT fee, returns, fulfillment from globals)</div>
+  <div style="overflow-x: auto;">
+    <table class="glance" id="commissionSweep"></table>
+  </div>
+
+  <!-- 3. Heatmap -->
+  <h3 class="section-title" style="margin-top: 32px; font-size: 16px;">Bundle Heatmap</h3>
+  <div class="section-subtitle">Pick a bundle. Cells show contribution % at every TikTok-fee × creator-commission combination.</div>
+  <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
+    <span class="price-edit-label" style="font-size: 12px;">Bundle:</span>
+    <select id="heatmapBundle" style="padding: 8px 12px; font-family: inherit; font-size: 14px; border: 1px solid var(--border); border-radius: 4px; background: var(--white); color: var(--ink); min-width: 280px;"></select>
+  </div>
+  <div style="overflow-x: auto;">
+    <table class="glance" id="heatmapTable"></table>
+  </div>
+  <div style="font-size: 12px; color: var(--muted); margin-top: 8px;">Y-axis: TikTok fee · X-axis: Creator commission · Holding return rate &amp; fulfillment at globals</div>
+</div>
+
+<!-- ==================== TAB 4: COGS CATALOG ==================== -->
 <div class="panel" id="panel-catalog">
   <div class="section-title">NetSuite COGS Catalog</div>
   <div class="section-subtitle">All active FG SKUs · Source: NetSuite SuiteQL · Refresh by re-running query</div>
@@ -874,10 +916,126 @@ function exportCsv() {
 // ============================================================================
 // 8) WIRING
 // ============================================================================
+// ============================================================================
+// SENSITIVITY ANALYSIS
+// ============================================================================
+const SCENARIOS = [
+  { name: 'Best Case',  ttFee: 4,  creator: 6,  returns: 1, sub: 'Low fees / low returns' },
+  { name: 'Base',       ttFee: 6,  creator: 12, returns: 3, sub: 'Current globals' },
+  { name: 'Aggressive', ttFee: 7,  creator: 18, returns: 5, sub: 'Heavier promo' },
+  { name: 'Worst Case', ttFee: 9,  creator: 25, returns: 8, sub: 'Stress test' },
+];
+
+function calcWithOverrides(b, ttFeePct, creatorPct, returnPct, fulfillment) {
+  const itemsCogs = b.items.reduce((s, i) => s + (parseFloat(i.cogs) || 0), 0);
+  const price = getActivePrice(b);
+  const tiktokFeeAmt = price * (ttFeePct / 100);
+  const creatorCommAmt = price * (creatorPct / 100);
+  const returnsAmt = price * (returnPct / 100);
+  const grossMargin = price - itemsCogs;
+  const landed = grossMargin - tiktokFeeAmt - creatorCommAmt;
+  const contribution = landed - fulfillment - returnsAmt;
+  const contributionPct = price > 0 ? (contribution / price) * 100 : 0;
+  return { price, contribution, contributionPct };
+}
+
+function contribClass(pct) {
+  if (pct >= 50) return 'gm-good';
+  if (pct >= 30) return 'gm-warn';
+  return 'gm-bad';
+}
+
+function bgForPct(pct) {
+  if (pct >= 50) return 'background: var(--green-bg);';
+  if (pct >= 30) return 'background: var(--warn-bg);';
+  return 'background: var(--red-bg);';
+}
+
+function renderScenarioMatrix() {
+  const g = getGlobals();
+  const tbl = document.getElementById('scenarioMatrix');
+  let html = '<thead><tr><th>Bundle</th><th class="num">Sell Price</th>';
+  SCENARIOS.forEach(s => {
+    html += `<th class="num" title="TT ${s.ttFee}% / Creator ${s.creator}% / Return ${s.returns}%">${s.name}<div style="font-size:10px;font-weight:400;color:var(--muted-2);text-transform:none;letter-spacing:0;margin-top:2px;">TT ${s.ttFee}% / CR ${s.creator}% / RT ${s.returns}%</div></th>`;
+  });
+  html += '</tr></thead><tbody>';
+  bundles.forEach(b => {
+    const liveClass = b.type === 'live' ? 'is-live' : '';
+    html += `<tr class="${liveClass}"><td><span class="name-cell">${escapeHtml(b.name)}</span></td><td class="num">${fmt(getActivePrice(b), 0)}</td>`;
+    SCENARIOS.forEach(s => {
+      const r = calcWithOverrides(b, s.ttFee, s.creator, s.returns, g.fulfillment);
+      html += `<td class="num pct-cell ${contribClass(r.contributionPct)}" style="${bgForPct(r.contributionPct)}">${fmtPct(r.contributionPct)}<div style="font-size:11px;font-weight:500;color:var(--ink);margin-top:2px;">${fmt(r.contribution)}</div></td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody>';
+  tbl.innerHTML = html;
+}
+
+function renderCommissionSweep() {
+  const g = getGlobals();
+  const levels = [0, 6, 12, 18, 24, 30];
+  const tbl = document.getElementById('commissionSweep');
+  let html = '<thead><tr><th>Bundle</th><th class="num">Sell Price</th>';
+  levels.forEach(l => html += `<th class="num">${l}%</th>`);
+  html += '</tr></thead><tbody>';
+  bundles.forEach(b => {
+    const liveClass = b.type === 'live' ? 'is-live' : '';
+    html += `<tr class="${liveClass}"><td><span class="name-cell">${escapeHtml(b.name)}</span></td><td class="num">${fmt(getActivePrice(b), 0)}</td>`;
+    levels.forEach(l => {
+      const r = calcWithOverrides(b, g.tiktokFee * 100, l, g.returnRate * 100, g.fulfillment);
+      html += `<td class="num pct-cell ${contribClass(r.contributionPct)}" style="${bgForPct(r.contributionPct)}">${fmtPct(r.contributionPct)}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody>';
+  tbl.innerHTML = html;
+}
+
+function renderHeatmap() {
+  const g = getGlobals();
+  const sel = document.getElementById('heatmapBundle');
+  if (!sel.options.length) {
+    bundles.forEach((b, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = b.name;
+      sel.appendChild(opt);
+    });
+  }
+  const idx = parseInt(sel.value) || 0;
+  const b = bundles[idx];
+  if (!b) return;
+
+  const ttFees = [4, 5, 6, 7, 8, 9, 10];
+  const commLevels = [0, 5, 10, 15, 20, 25, 30];
+  const tbl = document.getElementById('heatmapTable');
+  let html = `<thead><tr><th>TT Fee \\ Creator</th>`;
+  commLevels.forEach(c => html += `<th class="num">${c}%</th>`);
+  html += '</tr></thead><tbody>';
+  ttFees.forEach(tt => {
+    html += `<tr><td><span class="name-cell">${tt}%</span></td>`;
+    commLevels.forEach(c => {
+      const r = calcWithOverrides(b, tt, c, g.returnRate * 100, g.fulfillment);
+      html += `<td class="num pct-cell ${contribClass(r.contributionPct)}" style="${bgForPct(r.contributionPct)}">${fmtPct(r.contributionPct)}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody>';
+  tbl.innerHTML = html;
+}
+
+function renderSensitivity() {
+  renderScenarioMatrix();
+  renderCommissionSweep();
+  renderHeatmap();
+}
+
 function renderAll() {
   renderGlance();
   renderBundles();
   renderLive();
+  renderSensitivity();
 }
 
 // Tabs
@@ -920,6 +1078,8 @@ document.getElementById('exportCsvBtn').addEventListener('click', exportCsv);
 document.getElementById('catalogSearch').addEventListener('input', e => {
   renderCatalog(e.target.value);
 });
+
+document.getElementById('heatmapBundle').addEventListener('change', renderHeatmap);
 
 // Boot
 loadCatalog();
