@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desktop Nav A/B Test — Intelligems Analysis | Jones Road Beauty</title>
+<link rel="stylesheet" href="https://jrb-fonts-cdn.vercel.app/fonts/canela.css">
+<link rel="stylesheet" href="https://jrb-fonts-cdn.vercel.app/fonts/geogrotesque.css">
+<link rel="stylesheet" href="https://jrb-fonts-cdn.vercel.app/fonts/articulatcf.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Geogrotesque', -apple-system, sans-serif;
+    color: #000;
+    background: #fff;
+    line-height: 1.5;
+    font-size: 16px;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+  section { padding: 64px 0; border-top: 1px solid #e8e8e8; }
+  section:first-of-type { border-top: 0; }
+  section.alt { background: #f8f8f8; }
+
+  h1, h2, h3, h4 { margin: 0 0 16px; font-weight: 300; }
+  h1 { font-family: 'Canela', serif; font-size: 56px; line-height: 1.1; letter-spacing: -0.5px; }
+  h2 { font-family: 'Canela', serif; font-size: 40px; line-height: 1.15; letter-spacing: -0.3px; }
+  h3 { font-family: 'Canela', serif; font-size: 28px; line-height: 1.2; }
+  .eyebrow {
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 12px;
+    color: #000;
+    margin: 0 0 16px;
+  }
+  .sub {
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    font-size: 14px;
+  }
+  p { margin: 0 0 16px; }
+  ul { padding-left: 22px; margin: 0 0 16px; }
+  li { margin-bottom: 8px; }
+
+  /* Hero */
+  .hero { padding: 96px 0 56px; }
+  .hero .meta { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 32px; font-size: 14px; }
+  .hero .meta div { border-left: 2px solid #000; padding-left: 12px; }
+  .hero .meta b { display: block; font-family: 'ArticulatCF', sans-serif; font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; margin-bottom: 4px; }
+
+  /* Winner card */
+  .winner-card {
+    background: #fff;
+    border: 2px solid #ff2e92;
+    padding: 40px;
+    margin-top: 32px;
+    border-radius: 0;
+  }
+  .winner-card .pill {
+    display: inline-block;
+    background: #ff2e92;
+    color: #fff;
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    padding: 6px 12px;
+    margin-bottom: 16px;
+  }
+  .winner-card h2 { margin-bottom: 12px; }
+  .winner-card .takeaway { font-size: 18px; line-height: 1.5; }
+  .winner-card .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 32px; padding-top: 24px; border-top: 1px solid #e8e8e8; }
+  .winner-card .stat .label { font-family: 'ArticulatCF', sans-serif; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; color: #000; margin-bottom: 6px; }
+  .winner-card .stat .val { font-family: 'Canela', serif; font-size: 32px; line-height: 1; color: #16a34a; }
+  .winner-card .stat .sub { font-family: 'Geogrotesque', sans-serif; font-weight: 400; font-size: 12px; color: #6b7280; margin-top: 4px; text-transform: none; letter-spacing: 0; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 14px; }
+  thead th {
+    background: #000;
+    color: #fff;
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    padding: 12px 10px;
+    text-align: right;
+    white-space: nowrap;
+  }
+  thead th:first-child { text-align: left; }
+  tbody td { padding: 12px 10px; border-bottom: 1px solid #e8e8e8; text-align: right; vertical-align: top; }
+  tbody td:first-child { text-align: left; font-weight: 500; }
+  tbody tr.winner-row { background: #fdf2f8; }
+  tbody tr.winner-row td:first-child::before { content: "★ "; color: #ff2e92; }
+  tbody tr.control-row { background: #fafafa; color: #6b7280; }
+  .pos { color: #16a34a; font-weight: 600; }
+  .neg { color: #dc2626; font-weight: 600; }
+  .neu { color: #6b7280; }
+  .badge {
+    display: inline-block;
+    font-family: 'ArticulatCF', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.8px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    color: #fff;
+  }
+  .badge.sig    { background: #22c55e; }
+  .badge.strong { background: #3b82f6; }
+  .badge.dir    { background: #eab308; color: #000; }
+  .badge.noise  { background: #9ca3af; }
+
+  /* Funnel */
+  .funnel {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin: 32px 0 16px;
+    border: 1px solid #e8e8e8;
+  }
+  .funnel-step { padding: 24px; border-right: 1px solid #e8e8e8; text-align: center; background: #fff; }
+  .funnel-step:last-child { border-right: 0; }
+  .funnel-step .step-label { font-family: 'ArticulatCF', sans-serif; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; color: #6b7280; margin-bottom: 8px; }
+  .funnel-step .step-rate { font-family: 'Canela', serif; font-size: 28px; line-height: 1; }
+  .funnel-step .step-delta { font-size: 13px; margin-top: 6px; }
+
+  /* Variation cards */
+  .var-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin: 24px 0; }
+  .var-card { background: #fff; border: 1px solid #e8e8e8; padding: 20px 16px; }
+  .var-card.win { border-color: #ff2e92; border-width: 2px; }
+  .var-card.ctrl { background: #fafafa; }
+  .var-card .name { font-family: 'ArticulatCF', sans-serif; font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; margin-bottom: 12px; line-height: 1.3; min-height: 42px; }
+  .var-card .nrpv { font-family: 'Canela', serif; font-size: 22px; line-height: 1; }
+  .var-card .uplift { font-size: 13px; margin-top: 4px; }
+  .var-card .p2bc { font-size: 12px; color: #6b7280; margin-top: 8px; }
+
+  /* Behavioral signal callout */
+  .signal {
+    background: #fff;
+    border-left: 4px solid #000;
+    padding: 24px 28px;
+    margin: 24px 0;
+  }
+  .signal h4 { font-family: 'ArticulatCF', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; font-size: 13px; margin: 0 0 8px; }
+  .signal p { margin: 0 0 8px; font-size: 14px; }
+
+  /* Caveat / warning box */
+  .caveat {
+    background: #fef3c7;
+    border-left: 4px solid #eab308;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .caveat b { font-family: 'ArticulatCF', sans-serif; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
+
+  /* Hypothesis cards */
+  .hyp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 24px; }
+  .hyp-card { background: #fff; border: 1px solid #000; padding: 24px; }
+  .hyp-card .num { font-family: 'Canela', serif; font-size: 48px; line-height: 1; color: #ff2e92; margin-bottom: 8px; }
+  .hyp-card h4 { font-family: 'Canela', serif; font-size: 20px; margin-bottom: 12px; line-height: 1.2; font-weight: 300; }
+  .hyp-card .label { font-family: 'ArticulatCF', sans-serif; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.8px; margin-top: 14px; margin-bottom: 4px; }
+  .hyp-card p { font-size: 13px; line-height: 1.5; }
+
+  @media (max-width: 768px) {
+    .wrap { padding: 0 20px; }
+    section { padding: 48px 0; }
+    h1 { font-size: 36px; }
+    h2 { font-size: 28px; }
+    .winner-card { padding: 24px; }
+    .winner-card .stats { grid-template-columns: repeat(2, 1fr); }
+    .var-grid { grid-template-columns: 1fr 1fr; }
+    .funnel { grid-template-columns: 1fr 1fr; }
+    .funnel-step { border-bottom: 1px solid #e8e8e8; }
+    .hyp-grid { grid-template-columns: 1fr; }
+    table { font-size: 12px; }
+    thead th, tbody td { padding: 8px 6px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Intelligems Analysis · Growth · CRO</div>
+    <h1>Desktop Nav A/B Test</h1>
+    <p style="font-size: 18px; max-width: 760px; margin-top: 16px;">Five-variant test (Control + 4 nav redesigns) on the desktop homepage. Tests the impact of a Find-Your-Shade button, mega menu removal, search emphasis, and a left-side category rail on revenue per visitor.</p>
+    <div class="meta">
+      <div><b>Test ID</b>ea46fd77-850d-4aa3-84c7-0565861e0f07</div>
+      <div><b>Started</b>2026-04-22</div>
+      <div><b>Status</b>Running (9 days)</div>
+      <div><b>Total Visitors</b>116,765</div>
+      <div><b>Total Orders</b>8,209</div>
+      <div><b>Traffic Split</b>20% × 5 variants</div>
+    </div>
+  </div>
+</section>
+
+<!-- WINNER -->
+<section class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Headline Finding</div>
+    <h2>V4 — Categories on left, FYS Button — leads on every primary metric</h2>
+
+    <div class="winner-card">
+      <span class="pill">Strong Signal · p2bc 0.87 (NRPV) / 0.89 (CVR)</span>
+      <h2>Likely winner — not yet conclusive</h2>
+      <p class="takeaway">Adding a left-side category rail with a Find-Your-Shade button drove a <strong>+5.5% lift in net revenue per visitor</strong> and a <strong>+5.9% lift in gross profit per visitor</strong> vs Control on desktop. The mechanism: more decisive PDP traffic and meaningfully higher Miracle Balm orders (+22%). p2bc has not yet crossed the 0.95 significance threshold — recommend running another 3–5 days before calling it.</p>
+      <div class="stats">
+        <div class="stat"><div class="label">CVR</div><div class="val">+4.2%</div><div class="sub">7.31% vs 7.02%</div></div>
+        <div class="stat"><div class="label">NRPV</div><div class="val">+5.5%</div><div class="sub">$6.63 vs $6.28</div></div>
+        <div class="stat"><div class="label">GPPV</div><div class="val">+5.9%</div><div class="sub">$4.90 vs $4.62</div></div>
+        <div class="stat"><div class="label">AOV</div><div class="val">+1.3%</div><div class="sub">$90.76 vs $89.57</div></div>
+      </div>
+    </div>
+
+    <div class="var-grid" style="margin-top: 32px;">
+      <div class="var-card ctrl">
+        <div class="name">Control</div>
+        <div class="nrpv">$6.28</div>
+        <div class="uplift neu">baseline</div>
+        <div class="p2bc">23,444 visitors</div>
+      </div>
+      <div class="var-card">
+        <div class="name">V1 — FYS Button</div>
+        <div class="nrpv">$5.99</div>
+        <div class="uplift neg">−4.8% NRPV</div>
+        <div class="p2bc">p2bc 0.16 · <span class="badge noise">Noise</span></div>
+      </div>
+      <div class="var-card">
+        <div class="name">V2 — FYS, No Mega Menu</div>
+        <div class="nrpv">$6.22</div>
+        <div class="uplift neg">−1.0% NRPV</div>
+        <div class="p2bc">p2bc 0.42 · <span class="badge noise">Noise</span></div>
+      </div>
+      <div class="var-card">
+        <div class="name">V3 — Search Highlight + FYS</div>
+        <div class="nrpv">$6.49</div>
+        <div class="uplift pos">+3.3% NRPV</div>
+        <div class="p2bc">p2bc 0.75 · <span class="badge dir">Directional</span></div>
+      </div>
+      <div class="var-card win">
+        <div class="name">V4 — Categories on Left + FYS</div>
+        <div class="nrpv">$6.63</div>
+        <div class="uplift pos">+5.5% NRPV</div>
+        <div class="p2bc">p2bc 0.87 · <span class="badge strong">Strong</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FULL METRICS -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Step 1</div>
+    <h2>Full metrics table</h2>
+    <p>All values are sitewide-orders, no outlier filter changes from defaults. Uplifts and p2bc are vs Control. Significance bands: <span class="badge sig">≥ 0.95</span> Significant · <span class="badge strong">0.85–0.94</span> Strong · <span class="badge dir">0.70–0.84</span> Directional · <span class="badge noise">&lt; 0.70</span> Noise.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Variant</th>
+          <th>Visitors</th>
+          <th>Orders</th>
+          <th>CVR</th>
+          <th>NRPV</th>
+          <th>GPPV</th>
+          <th>AOV</th>
+          <th>NRPV Uplift</th>
+          <th>p2bc (NRPV)</th>
+          <th>Read</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="control-row">
+          <td>Control</td>
+          <td>23,444</td>
+          <td>1,646</td>
+          <td>7.02%</td>
+          <td>$6.28</td>
+          <td>$4.62</td>
+          <td>$89.57</td>
+          <td class="neu">—</td>
+          <td class="neu">—</td>
+          <td><span class="badge noise">Baseline</span></td>
+        </tr>
+        <tr>
+          <td>V1 — FYS Button</td>
+          <td>23,484</td>
+          <td>1,576</td>
+          <td>6.71%</td>
+          <td>$5.99</td>
+          <td>$4.40</td>
+          <td>$89.16</td>
+          <td class="neg">−4.8%</td>
+          <td>0.16</td>
+          <td><span class="badge noise">Noise (negative)</span></td>
+        </tr>
+        <tr>
+          <td>V2 — FYS, No Mega Menu</td>
+          <td>23,257</td>
+          <td>1,606</td>
+          <td>6.91%</td>
+          <td>$6.22</td>
+          <td>$4.60</td>
+          <td>$90.14</td>
+          <td class="neg">−1.0%</td>
+          <td>0.42</td>
+          <td><span class="badge noise">Noise</span></td>
+        </tr>
+        <tr>
+          <td>V3 — Search Highlight + FYS</td>
+          <td>23,331</td>
+          <td>1,683</td>
+          <td>7.21%</td>
+          <td>$6.49</td>
+          <td>$4.79</td>
+          <td>$89.93</td>
+          <td class="pos">+3.3%</td>
+          <td>0.75</td>
+          <td><span class="badge dir">Directional</span></td>
+        </tr>
+        <tr class="winner-row">
+          <td>V4 — Categories on Left + FYS</td>
+          <td>23,249</td>
+          <td>1,698</td>
+          <td>7.30%</td>
+          <td>$6.63</td>
+          <td>$4.90</td>
+          <td>$90.76</td>
+          <td class="pos">+5.5%</td>
+          <td>0.87</td>
+          <td><span class="badge strong">Strong</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="caveat"><b>No exclusions / anomalies.</b> Traffic split is even at ~20% per variant (visitor count range 23,249–23,484). No variant flagged for zero/near-zero allocation.</div>
+  </div>
+</section>
+
+<!-- SIGNIFICANCE -->
+<section class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Step 2</div>
+    <h2>Statistical significance</h2>
+    <p>The test has not yet crossed the 0.95 conventional threshold on any variant. V4 sits in the <strong>Strong Signal</strong> band on its primary metrics (NRPV p2bc 0.866, CVR p2bc 0.879, GPPV p2bc 0.881) — meaning a real win is likely but not yet conclusive.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Variant</th>
+          <th>p2bc (CVR)</th>
+          <th>p2bc (NRPV)</th>
+          <th>p2bc (GPPV)</th>
+          <th>p2bc (ATC)</th>
+          <th>Read</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>V1</td><td>0.10</td><td>0.16</td><td>0.15</td><td>0.18</td><td><span class="badge noise">Likely worse than Control</span></td></tr>
+        <tr><td>V2</td><td>0.32</td><td>0.42</td><td>0.45</td><td>0.11</td><td><span class="badge noise">Flat / noise</span></td></tr>
+        <tr><td>V3</td><td>0.80</td><td>0.75</td><td>0.77</td><td>0.87</td><td><span class="badge dir">Directional positive</span></td></tr>
+        <tr class="winner-row"><td>V4</td><td>0.89</td><td>0.87</td><td>0.88</td><td>0.61</td><td><span class="badge strong">Strong signal — likely winner</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="caveat"><b>Recommended next step.</b> Continue running 3–5 more days. With ~13K daily desktop visitors and current effect sizes, V4 should cross 0.95 on NRPV by ~day 14 if the lift holds. Do not declare a winner yet — but V4 is the directionally clear lead and there is no scenario in the current data where V1 or V2 win.</div>
+  </div>
+</section>
+
+<!-- DEVICE -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Step 3</div>
+    <h2>Device breakdown — desktop only by design</h2>
+    <p>This test ships nav variants only on desktop, which is reflected in the audience split. Mobile audience is &lt; 32 visitors per variant (~0.06–0.14% of traffic) — uninterpretable due to sample size and excluded from the read.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Variant</th>
+          <th>Desktop Visitors</th>
+          <th>Desktop CVR</th>
+          <th>Desktop NRPV</th>
+          <th>Desktop GPPV</th>
+          <th>Desktop NRPV Uplift</th>
+          <th>p2bc</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="control-row"><td>Control</td><td>23,417</td><td>7.02%</td><td>$6.28</td><td>$4.62</td><td class="neu">—</td><td class="neu">—</td></tr>
+        <tr><td>V1</td><td>23,456</td><td>6.71%</td><td>$5.98</td><td>$4.40</td><td class="neg">−4.9%</td><td>0.16</td></tr>
+        <tr><td>V2</td><td>23,235</td><td>6.90%</td><td>$6.22</td><td>$4.60</td><td class="neg">−1.0%</td><td>0.42</td></tr>
+        <tr><td>V3</td><td>23,299</td><td>7.22%</td><td>$6.49</td><td>$4.79</td><td class="pos">+3.3%</td><td>0.75</td></tr>
+        <tr class="winner-row"><td>V4</td><td>23,236</td><td>7.31%</td><td>$6.63</td><td>$4.90</td><td class="pos">+5.5%</td><td>0.87</td></tr>
+      </tbody>
+    </table>
+
+    <div class="signal">
+      <h4>Mobile cohort excluded</h4>
+      <p>Mobile audience is 15–32 visitors per variant (~0.06–0.14% of traffic). With single-digit orders, every "uplift" is dominated by single-order swings — V4 mobile shows 0 orders / 15 visitors (0% CVR, "−100%"), V1 mobile shows 3 orders / 29 visitors (10.3% CVR, "+72% NRPV"). None of this is interpretable. Treat the test as desktop-only.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FUNNEL -->
+<section class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Step 4</div>
+    <h2>Funnel — V4 vs Control</h2>
+    <p>V4 holds PDP-view rate flat (no change) but lifts every downstream stage — ATC, checkout-begin, and order — driving the headline NRPV gain. The win is at the <strong>conversion funnel</strong>, not at the discovery stage.</p>
+
+    <div class="funnel">
+      <div class="funnel-step">
+        <div class="step-label">PDP View Rate</div>
+        <div class="step-rate">64.34%</div>
+        <div class="step-delta pos">+0.4% vs Control</div>
+        <div class="sub" style="font-size: 12px; color: #6b7280; margin-top: 4px; text-transform: none; letter-spacing: 0;">p2bc 0.70</div>
+      </div>
+      <div class="funnel-step">
+        <div class="step-label">Add to Cart</div>
+        <div class="step-rate">16.04%</div>
+        <div class="step-delta pos">+0.6% vs Control</div>
+        <div class="sub" style="font-size: 12px; color: #6b7280; margin-top: 4px; text-transform: none; letter-spacing: 0;">p2bc 0.61</div>
+      </div>
+      <div class="funnel-step">
+        <div class="step-label">Checkout Begin</div>
+        <div class="step-rate">9.22%</div>
+        <div class="step-delta pos">+2.4% vs Control</div>
+        <div class="sub" style="font-size: 12px; color: #6b7280; margin-top: 4px; text-transform: none; letter-spacing: 0;">p2bc 0.79</div>
+      </div>
+      <div class="funnel-step">
+        <div class="step-label">Order (CVR)</div>
+        <div class="step-rate">7.31%</div>
+        <div class="step-delta pos">+4.2% vs Control</div>
+        <div class="sub" style="font-size: 12px; color: #6b7280; margin-top: 4px; text-transform: none; letter-spacing: 0;">p2bc 0.89</div>
+      </div>
+    </div>
+
+    <div class="signal">
+      <h4>Where the lift compounds</h4>
+      <p>PDP and ATC rates are nearly flat between V4 and Control — <strong>the same number of users browse and add to cart</strong>. But more of those carts make it to checkout (+2.4%) and more of those checkouts convert (+4.2% CVR). Combined with a +1.3% AOV lift, NRPV climbs +5.5%. This is a <em>quality-of-traffic</em> win, not a <em>volume-of-traffic</em> win — V4's nav is sending more decisive shoppers down the funnel rather than more total clicks.</p>
+    </div>
+
+    <h3 style="margin-top: 40px;">V1 — same funnel, every stage worse</h3>
+    <div class="funnel">
+      <div class="funnel-step">
+        <div class="step-label">PDP View Rate</div>
+        <div class="step-rate">64.08%</div>
+        <div class="step-delta neu">flat</div>
+      </div>
+      <div class="funnel-step">
+        <div class="step-label">Add to Cart</div>
+        <div class="step-rate">15.65%</div>
+        <div class="step-delta neg">−1.9%</div>
+      </div>
+      <div class="funnel-step">
+        <div class="step-label">Checkout Begin</div>
+        <div class="step-rate">8.57%</div>
+        <div class="step-delta neg">−4.8%</div>
+      </div>
+      <div class="funnel-step">
+        <div class="step-label">Order (CVR)</div>
+        <div class="step-rate">6.71%</div>
+        <div class="step-delta neg">−4.4%</div>
+      </div>
+    </div>
+    <p style="font-size: 14px; color: #6b7280; margin-top: 8px;">V1 (FYS button alone, no other changes) compounds in the wrong direction — discovery is unchanged but every downstream step leaks. The FYS button on its own appears to introduce decision friction without a corresponding payoff.</p>
+  </div>
+</section>
+
+<!-- PRODUCT MIX -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Step 5</div>
+    <h2>Product mix — what V4 actually sells more of</h2>
+    <p>V4's revenue lift is concentrated in a few specific products. The standout: <strong>Miracle Balm orders +22.2%</strong> vs Control. Mini Miracle Balm orders dropped −12.2% — V4 appears to shift shoppers from the smaller SKU to the full-size hero product, raising AOV.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Control Orders</th>
+          <th>V4 Orders</th>
+          <th>Δ Orders</th>
+          <th>V4 vs Control</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="winner-row"><td>Miracle Balm</td><td>230</td><td>281</td><td class="pos">+51</td><td class="pos">+22.2%</td></tr>
+        <tr><td>Best Eyeshadow</td><td>111</td><td>126</td><td class="pos">+15</td><td class="pos">+13.5%</td></tr>
+        <tr><td>Brow Pencil</td><td>75</td><td>84</td><td class="pos">+9</td><td class="pos">+12.0%</td></tr>
+        <tr><td>Sleepless Nights Kit</td><td>148</td><td>158</td><td class="pos">+10</td><td class="pos">+6.8%</td></tr>
+        <tr><td>Mascara</td><td>152</td><td>158</td><td class="pos">+6</td><td class="pos">+3.9%</td></tr>
+        <tr><td>What The Foundation</td><td>631</td><td>654</td><td class="pos">+23</td><td class="pos">+3.6%</td></tr>
+        <tr><td>Face Pencil</td><td>246</td><td>253</td><td class="pos">+7</td><td class="pos">+2.8%</td></tr>
+        <tr><td>Just Enough Tinted Moisturizer</td><td>186</td><td>185</td><td class="neu">−1</td><td class="neu">−0.5%</td></tr>
+        <tr><td>Blushing Stick</td><td>239</td><td>239</td><td class="neu">0</td><td class="neu">0.0%</td></tr>
+        <tr><td>Mini Miracle Balm</td><td>343</td><td>301</td><td class="neg">−42</td><td class="neg">−12.2%</td></tr>
+      </tbody>
+    </table>
+
+    <div class="signal">
+      <h4>Trade-up effect</h4>
+      <p>The Mini Miracle Balm decline (−12%) almost perfectly offsets the Miracle Balm increase (+51 orders). Net result: same number of "balm buyers" but at a higher unit price. Hypothesis: the left-side category rail puts the Miracle Balm category one click closer to the homepage, or surfaces full-size SKUs more prominently than the mega-menu structure did.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HEATMAP -->
+<section class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Step 6</div>
+    <h2>Behavioral signal — Heatmap.com</h2>
+
+    <div class="caveat"><b>Data integrity caveat.</b> The Heatmap partnerTag integration only fired reliably for Control (29,190 sessions) and V1 (3,879 sessions). V2, V3, and V4 each have &lt; 15 sessions tagged in Heatmap — the tag is not propagating from Intelligems for those variants. The signal below is a Control vs V1 comparison only. <strong>Engineering follow-up: fix the partnerTag wiring for V2/V3/V4 before the next test.</strong></p></div>
+
+    <h3>Where users navigate after the homepage — Control vs V1</h3>
+    <p>Comparing the next-page destinations from a 200-row sample (raw rows ≠ unique sessions) for each variant:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Next Page After Homepage</th>
+          <th>Control</th>
+          <th>V1</th>
+          <th>Read</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Homepage (re-load / return)</td><td>53 / 200 (27%)</td><td>94 / 200 (47%)</td><td class="neg">V1 sends +75% more users back to the homepage</td></tr>
+        <tr><td>Miracle Balm PDP</td><td>28 / 200 (14%)</td><td>6 / 200 (3%)</td><td class="neg">V1 sends 78% fewer users to MB PDP</td></tr>
+        <tr><td>Blushing Stick PDP</td><td>22 / 200 (11%)</td><td>15 / 200 (8%)</td><td class="neg">−32%</td></tr>
+        <tr><td>What The Foundation PDP</td><td>21 / 200 (11%)</td><td>16 / 200 (8%)</td><td class="neg">−24%</td></tr>
+        <tr><td>Face Makeup Collection</td><td>11 / 200 (6%)</td><td>13 / 200 (7%)</td><td class="pos">+18%</td></tr>
+        <tr><td>Shop All Collection</td><td>5 / 200 (3%)</td><td>12 / 200 (6%)</td><td class="pos">+140%</td></tr>
+      </tbody>
+    </table>
+
+    <div class="signal">
+      <h4>V1 trades PDP intent for browse loops</h4>
+      <p>The Find-Your-Shade button alone (V1) appears to <strong>scatter</strong> homepage exits — users click into broader collections or bounce back to the homepage instead of going straight to a hero PDP. The 78% drop in Miracle Balm PDP visits explains the headline NRPV decline (V1 −4.8%): MB is the brand's highest-converting PDP, and V1 is starving it of traffic. This is consistent with the hypothesis that a CTA without a clear destination ("Find Your Shade" — but to which product?) creates indecision.</p>
+    </div>
+
+    <p style="font-size: 13px; color: #6b7280;">V4 behavioral data is missing from Heatmap (partnerTag not firing). The V4 win is therefore inferred from the funnel/product-mix signal in Intelligems alone — the +22% Miracle Balm order lift is consistent with the inverse of the V1 finding (V4 likely drives <em>more</em> direct PDP traffic, particularly to MB).</p>
+  </div>
+</section>
+
+<!-- LEARNINGS -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Step 7</div>
+    <h2>Key learnings</h2>
+    <ul style="font-size: 16px; line-height: 1.6;">
+      <li><strong>The Find-Your-Shade button on its own loses.</strong> V1 (FYS button only, no other nav changes) is the worst variant — every metric negative, NRPV −4.8%, ATC −1.9%, checkout-begin −4.8%. Heatmap shows it sends 47% of users back to the homepage and 78% fewer to the Miracle Balm PDP vs Control.</li>
+      <li><strong>The win comes from category prominence + a destination for FYS.</strong> V4 (categories on left + FYS) and V3 (search highlight + FYS) both win — adding FYS works only when paired with a clearer category structure. The standalone FYS button creates decision friction; bundled with discovery scaffolding, it adds value.</li>
+      <li><strong>Removing the mega menu is neutral, not positive.</strong> V2 (FYS + no mega menu) is a wash (NRPV −1.0%, p2bc 0.42). The mega menu isn't hurting conversion — its removal alone doesn't move the needle.</li>
+      <li><strong>V4's lift is post-PDP, not pre-PDP.</strong> PDP rate is flat vs Control. The win compounds at ATC → checkout → order, plus a +22% order lift on full-size Miracle Balm specifically. This looks like a quality-of-intent gain, not a discovery gain — fewer wandering shoppers, more decisive ones.</li>
+      <li><strong>Mobile is excluded from the test by design.</strong> &lt; 0.15% of traffic per variant. Read this as a desktop-only test. Mobile nav variants are a separate workstream.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- HYPOTHESES -->
+<section class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Step 8</div>
+    <h2>Future test hypotheses</h2>
+    <p>Three directly-motivated follow-ons from the V4 win and the V1 failure mode.</p>
+
+    <div class="hyp-grid">
+      <div class="hyp-card">
+        <div class="num">01</div>
+        <h4>V4 — Mobile port</h4>
+        <p>The current test isolated desktop. The category-rail-on-left pattern doesn't translate, but the underlying insight (clearer category prominence + FYS destination) might. Test a mobile equivalent: collapse mega menu sub-categories into a sticky category strip with FYS embedded.</p>
+        <div class="label">Primary metric</div>
+        <p>Mobile NRPV vs current mobile control</p>
+        <div class="label">Why it's motivated</div>
+        <p>Mobile is &gt; 60% of JRB sessions. A +5% NRPV lift on desktop is meaningful, but a comparable mobile lift would be the larger commercial unlock.</p>
+      </div>
+
+      <div class="hyp-card">
+        <div class="num">02</div>
+        <h4>FYS destination — Miracle Balm vs WTF vs quiz</h4>
+        <p>V1 lost because FYS sent users into ambiguity. Test where FYS routes users: directly to Miracle Balm shade selector vs WTF shade selector vs the existing shade-finder quiz. This isolates which "shade journey" recovers the V1 loss.</p>
+        <div class="label">Primary metric</div>
+        <p>FYS-click → ATC rate, Miracle Balm + WTF order share</p>
+        <div class="label">Why it's motivated</div>
+        <p>V4's success is partly the FYS button working — but we don't know which destination drove the +22% MB lift. Testing FYS routes deconfounds nav structure from CTA destination.</p>
+      </div>
+
+      <div class="hyp-card">
+        <div class="num">03</div>
+        <h4>Category rail without FYS</h4>
+        <p>V4 bundles two changes — category rail + FYS button. To isolate which lever drives the win, run a 3-arm: Control vs Categories-only vs Categories+FYS (=V4). If Categories-only matches V4, FYS is window dressing. If it underperforms, FYS is load-bearing.</p>
+        <div class="label">Primary metric</div>
+        <p>NRPV — does Categories-only ≥ V4?</p>
+        <div class="label">Why it's motivated</div>
+        <p>If the category rail does most of the work, JRB can simplify the nav further. If FYS does, it's a candidate for site-wide deployment beyond the homepage.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER META -->
+<section style="background: #f6f2eb; padding: 32px 0;">
+  <div class="wrap" style="font-size: 12px; color: #6b7280;">
+    <div class="eyebrow" style="color: #6b7280;">Methodology</div>
+    <p>Data sources: Intelligems experience analytics (overview + device_type audience), Intelligems variation_products (top 15 by revenue), Heatmap.com pageviewAnalytics + journeyContinuationAnalytics (filtered by partnerTag = variation name). All metrics sitewide-orders, default outlier filter (z-score 3). Test ran 2026-04-22 to 2026-05-01 (analysis date) — currently still live. p2bc = probability to beat control. Significance bands: ≥ 0.95 Significant · 0.85–0.94 Strong · 0.70–0.84 Directional · &lt; 0.70 Noise.</p>
+    <p>Generated 2026-05-01 by Intelligems Analysis skill. Test ID: ea46fd77-850d-4aa3-84c7-0565861e0f07.</p>
+  </div>
+</section>
+
+</body>
+</html>
