@@ -532,6 +532,7 @@
 
 <datalist id="productList"></datalist>
 
+<script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
 <script>
 // ============================================================================
 // 1) STATE
@@ -1050,12 +1051,17 @@ function serializeState() {
       i: b.items.map(i => [i.sku || '', i.name || '', i.cogs || 0]),
     })),
   };
-  return btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+  // Use LZ-string compression for tiny URLs (~70% size reduction vs base64)
+  return LZString.compressToEncodedURIComponent(JSON.stringify(state));
 }
 
 function deserializeState(encoded) {
   try {
-    const state = JSON.parse(decodeURIComponent(escape(atob(encoded))));
+    // Try LZ-string first (new format)
+    let json = LZString.decompressFromEncodedURIComponent(encoded);
+    // Fallback to legacy base64 (older shared links)
+    if (!json) json = decodeURIComponent(escape(atob(encoded)));
+    const state = JSON.parse(json);
     if (state.g) {
       if (state.g.tt != null) document.getElementById('tiktokFee').value = state.g.tt;
       if (state.g.cr != null) document.getElementById('creatorComm').value = state.g.cr;
