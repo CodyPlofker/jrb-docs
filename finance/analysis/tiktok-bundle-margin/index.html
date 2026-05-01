@@ -196,9 +196,109 @@
     .metrics { grid-template-columns: repeat(2, 1fr); }
     .live-grid { grid-template-columns: 1fr; }
     .item-row { grid-template-columns: 1fr 80px 100px 28px; gap: 6px; }
+    .panel { padding: 22px 18px; }
+    .header { padding: 16px 18px; }
+    .tabs { padding: 0 18px; }
   }
-  @media (max-width: 600px) {
-    .metrics { grid-template-columns: 1fr; }
+
+  @media (max-width: 640px) {
+    body { font-size: 14px; }
+
+    /* Header — stack */
+    .header { padding: 14px; flex-direction: column; align-items: flex-start; gap: 8px; }
+    .header__title { font-size: 19px; }
+    .header__subtitle { font-size: 12px; }
+    .header__meta { text-align: left; font-size: 11px; }
+
+    /* Tabs — horizontal scroll */
+    .tabs { padding: 0 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { padding: 12px 14px; font-size: 13px; flex-shrink: 0; }
+
+    /* Panel padding */
+    .panel { padding: 18px 14px; }
+
+    /* Section titles */
+    .section-title { font-size: 17px; }
+    .section-subtitle { font-size: 12px; margin-bottom: 16px; }
+
+    /* Assumptions — 2 columns */
+    .assumptions { padding: 14px; gap: 14px; grid-template-columns: repeat(2, 1fr); border-radius: 6px; }
+    .assumption input { font-size: 20px; width: 56px; }
+    .assumption__hint { font-size: 10px; }
+
+    /* Summary legend */
+    .summary-bar { padding: 12px 14px; }
+    .summary-bar__legend { gap: 12px; }
+    .legend-item { font-size: 11px; }
+
+    /* Bundle card */
+    .bundle-head { padding: 14px; flex-direction: column; align-items: stretch; gap: 10px; }
+    .bundle-head__main { min-width: 0; }
+    .bundle-head__name { font-size: 17px; }
+    .bundle-head__scenario { font-size: 12px; }
+    .bundle-head__right { justify-content: flex-end; }
+
+    /* Items — drop SKU column */
+    .items { padding: 12px 14px; }
+    .item-row { grid-template-columns: 1fr 80px 28px; gap: 6px; }
+    .item-row__sku { display: none; }
+    .item-row input[type="text"] { font-size: 13px; padding: 7px 9px; }
+    .item-row input[type="number"] { font-size: 12px; padding: 7px 8px; }
+    .add-item { font-size: 12px; padding: 8px 12px; margin-top: 8px; }
+
+    /* Price toggle — stack */
+    .price-toggle { padding: 12px 14px; flex-direction: column; align-items: stretch; gap: 8px; }
+    .price-btn { width: 100%; min-width: auto; flex-direction: row; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; }
+    .price-btn__amt { font-size: 16px; }
+    .price-edit { justify-content: space-between; }
+    .price-edit input { width: 100px; }
+
+    /* Metrics — horizontal rows on mobile */
+    .metrics { grid-template-columns: 1fr; padding: 12px; gap: 6px; }
+    .metric { flex-direction: row; align-items: center; justify-content: space-between; padding: 12px 14px; gap: 10px; }
+    .metric__label { font-size: 10px; flex: 1; }
+    .metric__value { font-size: 20px; }
+    .metric__sub { font-size: 11px; color: var(--muted); }
+    .metric__detail { display: none; }
+
+    /* Glance/sensitivity tables — make scrollable */
+    .glance th, .glance td { padding: 9px 8px; }
+    .glance th { font-size: 10px; }
+    .glance td.num, .glance td { font-size: 12px; }
+    .glance .pct-cell { font-size: 13px; }
+    .glance .name-cell { font-size: 12px; }
+
+    /* LIVE panel */
+    .live-panel { padding: 16px; }
+    .live-panel__title { font-size: 15px; }
+    .live-input-row { flex-wrap: wrap; gap: 6px; padding: 8px 0; }
+    .live-input-row label { font-size: 12px; flex-basis: 100%; }
+    .live-input-row input { width: 100%; }
+    .live-output-row__label { font-size: 12px; }
+    .live-output-row__val { font-size: 12px; }
+    .live-output-row.total .live-output-row__val { font-size: 14px; }
+
+    /* Catalog */
+    .catalog-search { flex-direction: column; align-items: stretch; gap: 6px; }
+    .catalog-table th, .catalog-table td { padding: 8px 10px; font-size: 11px; }
+
+    /* Buttons */
+    .toolbar { gap: 6px; }
+    .btn { padding: 9px 14px; font-size: 11px; }
+    .btn--small { padding: 7px 10px; font-size: 10px; }
+
+    /* Heatmap dropdown — full width */
+    #heatmapBundle { width: 100%; min-width: 0 !important; }
+
+    /* Footer */
+    .foot-note { padding: 18px 14px; font-size: 11px; }
+  }
+
+  @media (max-width: 380px) {
+    .assumptions { grid-template-columns: 1fr; }
+    .header__title { font-size: 17px; }
+    .item-row { grid-template-columns: 1fr 70px 24px; }
   }
 </style>
 </head>
@@ -284,21 +384,23 @@
     </div>
   </div>
 
-  <table class="glance">
-    <thead>
-      <tr>
-        <th>Bundle</th>
-        <th class="num">MSRP</th>
-        <th class="num">Sell Price</th>
-        <th class="num">Discount</th>
-        <th class="num">Gross %</th>
-        <th class="num">Landed %</th>
-        <th class="num">Contribution %</th>
-        <th class="num">Contribution $</th>
-      </tr>
-    </thead>
-    <tbody id="glanceBody"></tbody>
-  </table>
+  <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 24px;">
+    <table class="glance" style="margin-bottom: 0; min-width: 720px;">
+      <thead>
+        <tr>
+          <th>Bundle</th>
+          <th class="num">MSRP</th>
+          <th class="num">Sell Price</th>
+          <th class="num">Discount</th>
+          <th class="num">Gross %</th>
+          <th class="num">Landed %</th>
+          <th class="num">Contribution %</th>
+          <th class="num">Contribution $</th>
+        </tr>
+      </thead>
+      <tbody id="glanceBody"></tbody>
+    </table>
+  </div>
 
   <!-- BUNDLE CARDS -->
   <div class="section-title">Bundle Detail</div>
