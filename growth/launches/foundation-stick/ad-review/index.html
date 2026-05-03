@@ -14,10 +14,12 @@
   .topbar { background: #1a1a1c; border-bottom: 1px solid #2a2a2d; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; position: sticky; top: 0; z-index: 50; }
   .topbar .brand { font-family: 'Instrument Serif', Georgia, serif; font-size: 18px; letter-spacing: -0.2px; }
   .topbar .brand em { color: #c9a87c; font-style: italic; }
-  .topbar .stats { display: flex; gap: 10px; font-size: 13px; flex-wrap: wrap; }
-  .stat { display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: #232326; border-radius: 100px; }
-  .stat .num { font-weight: 700; font-size: 14px; }
+  .topbar .stats { display: flex; gap: 8px; font-size: 13px; flex-wrap: wrap; }
+  .stat { display: flex; align-items: center; gap: 5px; padding: 5px 10px; background: #232326; border-radius: 100px; font-size: 11px; }
+  .stat .num { font-weight: 700; font-size: 13px; }
   .stat.approve .num { color: #6ec87e; }
+  .stat.minor .num { color: #7ab6e8; }
+  .stat.iterate .num { color: #e89c4a; }
   .stat.reject .num { color: #e8716a; }
   .stat.star .num { color: #f0c14b; }
   .stat.unrated .num { color: #8a8580; }
@@ -30,11 +32,16 @@
   .filter-bar select { background: #232326; border: 1px solid #2a2a2d; color: #f0ede6; padding: 6px 10px; border-radius: 6px; font-family: inherit; font-size: 12px; cursor: pointer; max-width: 220px; }
   .filter-bar button { background: #232326; border: 1px solid #2a2a2d; color: #f0ede6; padding: 6px 12px; border-radius: 6px; font-family: inherit; font-size: 12px; cursor: pointer; transition: all 0.15s; }
   .filter-bar button:hover { background: #2a2a2d; }
-  .filter-bar button.primary { background: #c9a87c; color: #0d0d0e; border-color: #c9a87c; font-weight: 600; }
-  .filter-bar button.primary:hover { background: #d8b88c; }
-  .pill-toggle { display: inline-flex; background: #232326; border: 1px solid #2a2a2d; border-radius: 100px; padding: 2px; gap: 0; }
-  .pill-toggle button { background: transparent; border: 0; padding: 5px 12px; color: #8a8580; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; cursor: pointer; border-radius: 100px; transition: all 0.15s; }
-  .pill-toggle button.active { background: #c9a87c; color: #0d0d0e; }
+  .pill-toggle { display: inline-flex; background: #232326; border: 1px solid #2a2a2d; border-radius: 100px; padding: 2px; gap: 0; flex-wrap: wrap; }
+  .pill-toggle button { background: transparent; border: 0; padding: 5px 10px; color: #8a8580; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; cursor: pointer; border-radius: 100px; transition: all 0.15s; }
+  .pill-toggle button.active.all { background: #c9a87c; color: #0d0d0e; }
+  .pill-toggle button.active.unrated { background: #8a8580; color: #0d0d0e; }
+  .pill-toggle button.active.approve { background: #6ec87e; color: #0d0d0e; }
+  .pill-toggle button.active.minor { background: #7ab6e8; color: #0d0d0e; }
+  .pill-toggle button.active.iterate { background: #e89c4a; color: #0d0d0e; }
+  .pill-toggle button.active.reject { background: #e8716a; color: #fff; }
+  .pill-toggle button.active.star { background: #f0c14b; color: #0d0d0e; }
+  .pill-toggle button.active.note { background: #c9a87c; color: #0d0d0e; }
   .filter-bar .right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
   .filter-bar .count { color: #8a8580; font-size: 11px; }
 
@@ -46,62 +53,81 @@
   /* CARD */
   .card { background: #1a1a1c; border: 2px solid transparent; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s; cursor: pointer; position: relative; }
   .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
-  .card.approved { border-color: #6ec87e; }
-  .card.rejected { border-color: #e8716a; opacity: 0.55; }
-  .card.starred { border-color: #f0c14b; box-shadow: 0 0 0 1px #f0c14b inset; }
-  .card.starred.approved { border-color: #f0c14b; }
+  .card.v-approve { border-color: #6ec87e; }
+  .card.v-minor { border-color: #7ab6e8; }
+  .card.v-iterate { border-color: #e89c4a; }
+  .card.v-reject { border-color: #e8716a; opacity: 0.55; }
+  .card.starred { box-shadow: 0 0 0 2px #f0c14b inset, 0 8px 24px rgba(0,0,0,0.3); }
 
   .card-image { background: #0a0a0b; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
   .card-image img { width: 100%; height: 100%; object-fit: contain; display: block; background: #0a0a0b; }
-  .card-image.fmt-9x16 img { object-fit: contain; }
   .format-badge { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; font-weight: 700; letter-spacing: 1px; padding: 3px 7px; border-radius: 100px; }
-  .toolkit-badge { position: absolute; top: 8px; right: 8px; background: rgba(201,168,124,0.85); color: #0d0d0e; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; padding: 3px 7px; border-radius: 100px; max-width: 70%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .verdict-icon { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; backdrop-filter: blur(6px); }
-  .verdict-icon.approved { background: rgba(110,200,126,0.92); color: #0d0d0e; }
-  .verdict-icon.rejected { background: rgba(232,113,106,0.92); color: #fff; }
-  .verdict-icon.starred { background: rgba(240,193,75,0.92); color: #0d0d0e; }
+  .toolkit-badge { position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.65); color: #c9a87c; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; padding: 3px 7px; border-radius: 100px; max-width: 80%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; backdrop-filter: blur(4px); }
+  .star-toggle { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; border-radius: 50%; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.15); color: #f0c14b; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); transition: all 0.15s; }
+  .star-toggle:hover { background: rgba(240,193,75,0.25); transform: scale(1.08); }
+  .star-toggle.active { background: rgba(240,193,75,0.95); color: #0d0d0e; border-color: #f0c14b; }
+  .note-indicator { position: absolute; bottom: 8px; right: 8px; width: 24px; height: 24px; border-radius: 50%; background: rgba(0,0,0,0.65); color: #c9a87c; font-size: 11px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(201,168,124,0.4); }
+  .iterate-chips-mini { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; max-width: 60%; }
+  .iterate-chips-mini .mini-chip { background: rgba(232,156,74,0.92); color: #0d0d0e; font-size: 9px; font-weight: 700; letter-spacing: 0.4px; padding: 2px 6px; border-radius: 100px; backdrop-filter: blur(4px); }
 
   .card-meta { padding: 10px 12px 12px; background: #16161a; border-top: 1px solid #2a2a2d; }
   .card-meta .archetype { font-size: 9px; color: #c9a87c; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px; }
   .card-meta .headline { font-family: 'Instrument Serif', Georgia, serif; font-size: 14px; font-style: italic; line-height: 1.3; color: #f0ede6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-  .card-actions { display: flex; gap: 6px; padding: 8px 10px 10px; background: #16161a; border-top: 1px solid #2a2a2d; }
-  .card-actions button { flex: 1; background: #232326; border: 1px solid #2a2a2d; color: #8a8580; padding: 7px 0; border-radius: 6px; font-size: 14px; cursor: pointer; transition: all 0.12s; font-family: inherit; }
+  .card-actions { display: flex; gap: 4px; padding: 8px 8px 10px; background: #16161a; border-top: 1px solid #2a2a2d; }
+  .card-actions button { flex: 1; background: #232326; border: 1px solid #2a2a2d; color: #8a8580; padding: 7px 0; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.12s; font-family: inherit; }
   .card-actions button:hover { background: #2a2a2d; transform: translateY(-1px); }
-  .card-actions button.active.approve { background: #6ec87e; color: #0d0d0e; border-color: #6ec87e; }
   .card-actions button.active.reject { background: #e8716a; color: #fff; border-color: #e8716a; }
-  .card-actions button.active.star { background: #f0c14b; color: #0d0d0e; border-color: #f0c14b; }
+  .card-actions button.active.iterate { background: #e89c4a; color: #0d0d0e; border-color: #e89c4a; }
+  .card-actions button.active.minor { background: #7ab6e8; color: #0d0d0e; border-color: #7ab6e8; }
+  .card-actions button.active.approve { background: #6ec87e; color: #0d0d0e; border-color: #6ec87e; }
 
   /* LIGHTBOX */
   .lightbox { display: none; position: fixed; inset: 0; background: rgba(5,5,6,0.97); z-index: 100; align-items: stretch; padding: 0; }
   .lightbox.active { display: flex; }
   .lb-image-wrap { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; padding: 28px; position: relative; }
   .lb-image-wrap img { max-width: 100%; max-height: calc(100vh - 56px); object-fit: contain; box-shadow: 0 30px 80px rgba(0,0,0,0.8); border-radius: 6px; }
-  .lb-side { width: 380px; max-width: 38%; padding: 28px 28px 28px 0; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; }
+  .lb-side { width: 420px; max-width: 42%; padding: 28px 28px 28px 0; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
   .lb-side .pill-row { display: flex; gap: 6px; flex-wrap: wrap; }
   .lb-side .pill { background: #232326; padding: 4px 10px; border-radius: 100px; color: #c9a87c; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; font-size: 9px; }
-  .lb-side .headline { font-family: 'Instrument Serif', Georgia, serif; font-size: 24px; font-style: italic; line-height: 1.25; color: #f0ede6; }
-  .lb-side .label { font-size: 10px; color: #6a6560; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
+  .lb-side .headline { font-family: 'Instrument Serif', Georgia, serif; font-size: 22px; font-style: italic; line-height: 1.25; color: #f0ede6; }
+  .lb-side .label { font-size: 10px; color: #6a6560; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
   .lb-side .body { font-size: 13px; color: #b0a99f; line-height: 1.5; }
-  .lb-side .actions { display: flex; gap: 8px; margin-top: auto; padding-top: 20px; border-top: 1px solid #2a2a2d; }
-  .lb-side .actions button { flex: 1; padding: 12px 0; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid #2a2a2d; background: #232326; color: #f0ede6; transition: all 0.15s; font-family: inherit; }
-  .lb-side .actions button:hover { transform: translateY(-1px); }
-  .lb-side .actions button.active.approve { background: #6ec87e; color: #0d0d0e; border-color: #6ec87e; }
-  .lb-side .actions button.active.reject { background: #e8716a; color: #fff; border-color: #e8716a; }
-  .lb-side .actions button.active.star { background: #f0c14b; color: #0d0d0e; border-color: #f0c14b; }
+  .lb-side .verdict-row { display: flex; gap: 6px; }
+  .lb-side .verdict-row button { flex: 1; padding: 11px 0; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid #2a2a2d; background: #232326; color: #f0ede6; transition: all 0.15s; font-family: inherit; }
+  .lb-side .verdict-row button:hover { transform: translateY(-1px); }
+  .lb-side .verdict-row button.active.reject { background: #e8716a; color: #fff; border-color: #e8716a; }
+  .lb-side .verdict-row button.active.iterate { background: #e89c4a; color: #0d0d0e; border-color: #e89c4a; }
+  .lb-side .verdict-row button.active.minor { background: #7ab6e8; color: #0d0d0e; border-color: #7ab6e8; }
+  .lb-side .verdict-row button.active.approve { background: #6ec87e; color: #0d0d0e; border-color: #6ec87e; }
+  .lb-side .star-row { display: flex; gap: 6px; align-items: center; }
+  .lb-side .star-row button { padding: 9px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; border: 1px solid #2a2a2d; background: #232326; color: #f0c14b; transition: all 0.15s; font-family: inherit; }
+  .lb-side .star-row button.active { background: #f0c14b; color: #0d0d0e; border-color: #f0c14b; }
+  .lb-side .reasons-block { background: #1f1d18; border: 1px solid rgba(232,156,74,0.4); border-radius: 8px; padding: 12px; display: none; }
+  .lb-side .reasons-block.visible { display: block; }
+  .lb-side .reasons-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .lb-side .reasons-chips button { background: #232326; border: 1px solid #3a3530; color: #b0a99f; padding: 5px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.12s; font-family: inherit; }
+  .lb-side .reasons-chips button:hover { background: #2a2a2d; }
+  .lb-side .reasons-chips button.active { background: rgba(232,156,74,0.92); color: #0d0d0e; border-color: #e89c4a; }
+  .lb-side .add-reason { display: flex; gap: 6px; margin-top: 8px; }
+  .lb-side .add-reason input { flex: 1; background: #16161a; border: 1px solid #2a2a2d; color: #f0ede6; padding: 6px 10px; border-radius: 6px; font-family: inherit; font-size: 11px; }
+  .lb-side .add-reason input:focus { outline: 1px solid #c9a87c; }
+  .lb-side .add-reason button { background: #2a2a2d; border: 1px solid #3a3a3d; color: #f0ede6; padding: 6px 12px; border-radius: 6px; font-family: inherit; font-size: 11px; cursor: pointer; font-weight: 600; }
+  .lb-side .note-block textarea { width: 100%; background: #16161a; border: 1px solid #2a2a2d; color: #f0ede6; padding: 10px 12px; border-radius: 8px; font-family: inherit; font-size: 13px; line-height: 1.5; min-height: 70px; resize: vertical; }
+  .lb-side .note-block textarea:focus { outline: 1px solid #c9a87c; }
   .lb-close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; border-radius: 50%; background: rgba(35,35,38,0.85); border: 1px solid #2a2a2d; color: #f0ede6; font-size: 18px; cursor: pointer; backdrop-filter: blur(8px); z-index: 102; }
   .lb-close:hover { background: #2a2a2d; }
   .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; background: rgba(35,35,38,0.85); border: 1px solid #2a2a2d; color: #f0ede6; font-size: 22px; cursor: pointer; backdrop-filter: blur(8px); z-index: 102; }
   .lb-nav.prev { left: 16px; }
-  .lb-nav.next { right: calc(38% + 16px); }
+  .lb-nav.next { right: calc(42% + 16px); }
   .lb-nav:hover { background: #2a2a2d; }
   .lb-counter { position: absolute; bottom: 16px; left: 16px; background: rgba(35,35,38,0.85); border: 1px solid #2a2a2d; padding: 6px 12px; border-radius: 100px; font-size: 12px; color: #8a8580; backdrop-filter: blur(8px); z-index: 102; }
   @media (max-width: 720px) {
     .lightbox { flex-direction: column; }
     .lb-image-wrap { padding: 14px; }
-    .lb-image-wrap img { max-height: 50vh; }
+    .lb-image-wrap img { max-height: 45vh; }
     .lb-side { width: 100%; max-width: 100%; padding: 14px; }
-    .lb-nav.next { right: 16px; }
+    .lb-nav { display: none; }
   }
 
   /* EMPTY STATE */
@@ -121,6 +147,8 @@
   <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
   <div class="stats">
     <div class="stat approve">✓ <span class="num" id="count-approve">0</span></div>
+    <div class="stat minor">⊕ <span class="num" id="count-minor">0</span></div>
+    <div class="stat iterate">◐ <span class="num" id="count-iterate">0</span></div>
     <div class="stat reject">✗ <span class="num" id="count-reject">0</span></div>
     <div class="stat star">★ <span class="num" id="count-star">0</span></div>
     <div class="stat unrated">· <span class="num" id="count-unrated">0</span></div>
@@ -139,11 +167,14 @@
   <label>Archetype</label>
   <select id="filter-archetype"><option value="">All</option></select>
   <div class="pill-toggle" id="filter-status">
-    <button data-val="" class="active">All</button>
+    <button data-val="" class="active all">All</button>
     <button data-val="unrated">Unrated</button>
-    <button data-val="approved">✓</button>
-    <button data-val="starred">★</button>
-    <button data-val="rejected">✗</button>
+    <button data-val="approve" title="Approve">✓</button>
+    <button data-val="minor" title="Minor edits">⊕</button>
+    <button data-val="iterate" title="Iterate">◐</button>
+    <button data-val="reject" title="Reject">✗</button>
+    <button data-val="starred" title="Starred">★</button>
+    <button data-val="noted" title="Has note">📝</button>
   </div>
   <div class="right">
     <span class="count" id="visible-count">— ads</span>
@@ -161,7 +192,7 @@
 </main>
 
 <div class="hotkey-hint">
-  Click an ad to enlarge. In lightbox: <kbd>←</kbd> prev · <kbd>→</kbd> next · <kbd>A</kbd> approve · <kbd>R</kbd> reject · <kbd>S</kbd> star · <kbd>Esc</kbd> close
+  Click an ad to enlarge. In lightbox: <kbd>←</kbd> prev · <kbd>→</kbd> next · <kbd>A</kbd> approve · <kbd>M</kbd> minor · <kbd>I</kbd> iterate · <kbd>R</kbd> reject · <kbd>S</kbd> star · <kbd>N</kbd> note · <kbd>Esc</kbd> close
 </div>
 
 <div class="lightbox" id="lightbox">
@@ -172,6 +203,35 @@
   <div class="lb-side">
     <div class="pill-row" id="lb-pills"></div>
     <div class="headline" id="lb-headline"></div>
+
+    <div>
+      <div class="label">Verdict</div>
+      <div class="verdict-row">
+        <button data-action="reject" id="lb-reject">✗ Reject</button>
+        <button data-action="iterate" id="lb-iterate">◐ Iterate</button>
+        <button data-action="minor" id="lb-minor">⊕ Minor</button>
+        <button data-action="approve" id="lb-approve">✓ Approve</button>
+      </div>
+    </div>
+
+    <div class="reasons-block" id="reasons-block">
+      <div class="label">What needs work?</div>
+      <div class="reasons-chips" id="reasons-chips"></div>
+      <div class="add-reason">
+        <input type="text" id="add-reason-input" placeholder="Add custom reason and press Enter…" maxlength="40">
+        <button id="add-reason-btn">Add</button>
+      </div>
+    </div>
+
+    <div class="note-block">
+      <div class="label">Note (saved per ad)</div>
+      <textarea id="lb-note" placeholder="What's the issue or context for this ad? E.g. 'shade looks wrong, try Honey instead' or 'love the headline but cap is missing'"></textarea>
+    </div>
+
+    <div class="star-row">
+      <button data-action="star" id="lb-star">★ Star</button>
+    </div>
+
     <div>
       <div class="label">Persona / strategy</div>
       <div class="body" id="lb-persona"></div>
@@ -184,11 +244,6 @@
       <div class="label">Asset ID</div>
       <div class="body" id="lb-id" style="font-family:monospace;font-size:11px;"></div>
     </div>
-    <div class="actions">
-      <button data-action="reject" id="lb-reject">✗ Reject</button>
-      <button data-action="star" id="lb-star">★ Star</button>
-      <button data-action="approve" id="lb-approve">✓ Approve</button>
-    </div>
   </div>
   <div class="lb-counter" id="lb-counter">1 / 1</div>
 </div>
@@ -197,14 +252,38 @@
 
 <script>
 (() => {
-  const STORAGE_KEY = 'jrb-fs-grid-verdicts-v1';
+  const STORAGE_KEY = 'jrb-fs-grid-verdicts-v2';
+  const STORAGE_KEY_V1 = 'jrb-fs-grid-verdicts-v1';
+  const REASONS_KEY = 'jrb-fs-grid-custom-reasons-v2';
+  const DEFAULT_REASONS = ['Image', 'Copy'];
+
   const dataEl = document.getElementById('ads-data');
   let data;
   try { data = JSON.parse(dataEl.textContent); } catch { data = { ads: [] }; }
   const ads = data.ads || [];
 
+  // Migration v1 -> v2
   let verdicts = {};
   try { verdicts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { verdicts = {}; }
+  if (Object.keys(verdicts).length === 0) {
+    try {
+      const v1 = JSON.parse(localStorage.getItem(STORAGE_KEY_V1) || '{}');
+      Object.entries(v1).forEach(([id, entry]) => {
+        // v1 had: { verdict: 'approve'|'reject'|null, starred: bool, ts }
+        verdicts[id] = {
+          verdict: entry.verdict === 'approve' ? 'approve' : entry.verdict === 'reject' ? 'reject' : null,
+          starred: !!entry.starred,
+          iterateReasons: [],
+          note: '',
+          ts: entry.ts || new Date().toISOString(),
+        };
+      });
+      if (Object.keys(verdicts).length > 0) localStorage.setItem(STORAGE_KEY, JSON.stringify(verdicts));
+    } catch {}
+  }
+
+  let customReasons = [];
+  try { customReasons = JSON.parse(localStorage.getItem(REASONS_KEY) || '[]'); } catch { customReasons = []; }
 
   let filterState = { toolkit: '', format: '', archetype: '', status: '' };
   let visibleAds = [];
@@ -218,35 +297,57 @@
   const arSel = document.getElementById('filter-archetype');
   archetypeSet.forEach(a => { const o = document.createElement('option'); o.value = a; o.textContent = a; arSel.appendChild(o); });
 
-  function saveVerdicts() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(verdicts));
+  function saveVerdicts() { localStorage.setItem(STORAGE_KEY, JSON.stringify(verdicts)); }
+  function saveReasons() { localStorage.setItem(REASONS_KEY, JSON.stringify(customReasons)); }
+
+  function getEntry(id) {
+    return verdicts[id] || { verdict: null, starred: false, iterateReasons: [], note: '', ts: null };
   }
 
-  function getVerdict(id) {
-    return verdicts[id] || { verdict: null, starred: false, ts: null };
-  }
-
-  function setVerdict(id, action) {
-    const cur = getVerdict(id);
-    const next = { ...cur, ts: new Date().toISOString() };
-    if (action === 'approve') next.verdict = (cur.verdict === 'approve') ? null : 'approve';
-    else if (action === 'reject') next.verdict = (cur.verdict === 'reject') ? null : 'reject';
-    else if (action === 'star') next.starred = !cur.starred;
-    if (!next.verdict && !next.starred) delete verdicts[id];
-    else verdicts[id] = next;
+  function setEntry(id, patch) {
+    const cur = getEntry(id);
+    const next = { ...cur, ...patch, ts: new Date().toISOString() };
+    if (!next.verdict && !next.starred && !(next.note || '').trim() && !(next.iterateReasons || []).length) {
+      delete verdicts[id];
+    } else {
+      verdicts[id] = next;
+    }
     saveVerdicts();
+  }
+
+  function toggleVerdict(id, verdict) {
+    const cur = getEntry(id);
+    const newVerdict = (cur.verdict === verdict) ? null : verdict;
+    const patch = { verdict: newVerdict };
+    // If switching off iterate, clear reasons
+    if (cur.verdict === 'iterate' && newVerdict !== 'iterate') patch.iterateReasons = [];
+    setEntry(id, patch);
     updateCounters();
     refreshCard(id);
-    if (lightboxIdx >= 0 && visibleAds[lightboxIdx]?.id === id) updateLightboxButtons(id);
+    if (lightboxIdx >= 0 && visibleAds[lightboxIdx]?.id === id) updateLightboxState(id);
   }
 
-  function classifyVerdict(id) {
-    const v = getVerdict(id);
-    if (v.verdict === 'approve' && v.starred) return 'starred';
-    if (v.verdict === 'approve') return 'approved';
-    if (v.verdict === 'reject') return 'rejected';
-    if (v.starred) return 'starred';
-    return 'unrated';
+  function toggleStar(id) {
+    const cur = getEntry(id);
+    setEntry(id, { starred: !cur.starred });
+    updateCounters();
+    refreshCard(id);
+    if (lightboxIdx >= 0 && visibleAds[lightboxIdx]?.id === id) updateLightboxState(id);
+  }
+
+  function toggleReason(id, reason) {
+    const cur = getEntry(id);
+    const reasons = cur.iterateReasons || [];
+    const idx = reasons.indexOf(reason);
+    const next = idx >= 0 ? reasons.filter(r => r !== reason) : [...reasons, reason];
+    setEntry(id, { iterateReasons: next });
+    refreshCard(id);
+    updateLightboxReasons(id);
+  }
+
+  function setNote(id, note) {
+    setEntry(id, { note });
+    refreshCard(id);
   }
 
   function applyFilter(a) {
@@ -254,49 +355,71 @@
     if (filterState.format && a.format !== filterState.format) return false;
     if (filterState.archetype && a.archetype !== filterState.archetype) return false;
     if (filterState.status) {
-      const c = classifyVerdict(a.id);
-      if (filterState.status !== c) return false;
+      const e = getEntry(a.id);
+      if (filterState.status === 'unrated') {
+        if (e.verdict || e.starred || (e.note || '').trim() || (e.iterateReasons || []).length) return false;
+      } else if (filterState.status === 'starred') {
+        if (!e.starred) return false;
+      } else if (filterState.status === 'noted') {
+        if (!(e.note || '').trim()) return false;
+      } else {
+        if (e.verdict !== filterState.status) return false;
+      }
     }
     return true;
   }
 
   function buildCard(a) {
-    const v = getVerdict(a.id);
-    const cls = classifyVerdict(a.id);
+    const e = getEntry(a.id);
     const card = document.createElement('div');
-    card.className = `card ${cls === 'unrated' ? '' : cls}`;
+    const classes = ['card'];
+    if (e.verdict) classes.push(`v-${e.verdict}`);
+    if (e.starred) classes.push('starred');
+    card.className = classes.join(' ');
     card.dataset.id = a.id;
+    const reasonChips = (e.verdict === 'iterate' && e.iterateReasons?.length)
+      ? `<div class="iterate-chips-mini">${e.iterateReasons.map(r => `<span class="mini-chip">${escapeHtml(r)}</span>`).join('')}</div>`
+      : '';
     card.innerHTML = `
-      <div class="card-image fmt-${a.format}">
-        <img src="${a.url}" alt="${(a.headline || '').replace(/"/g,'&quot;')}" loading="lazy">
+      <div class="card-image">
+        <img src="${a.url}" alt="${escapeAttr(a.headline || '')}" loading="lazy">
         <div class="format-badge">${a.format}</div>
-        ${cls === 'unrated' ? `<div class="toolkit-badge">${a.toolkit_short || ''}</div>` : `<div class="verdict-icon ${cls}">${cls==='approved'?'✓':cls==='rejected'?'✗':'★'}</div>`}
+        <button class="star-toggle ${e.starred ? 'active' : ''}" data-action="star" title="Star">★</button>
+        ${reasonChips}
+        <div class="toolkit-badge">${escapeHtml(a.toolkit_short || '')}</div>
+        ${(e.note || '').trim() ? `<div class="note-indicator" title="Has note">📝</div>` : ''}
       </div>
       <div class="card-meta">
-        <div class="archetype">${a.archetype || ''}</div>
-        <div class="headline">${a.headline || ''}</div>
+        <div class="archetype">${escapeHtml(a.archetype || '')}</div>
+        <div class="headline">${escapeHtml(a.headline || '')}</div>
       </div>
       <div class="card-actions">
-        <button data-action="reject" class="${v.verdict==='reject'?'active reject':''}" title="Reject">✗</button>
-        <button data-action="star" class="${v.starred?'active star':''}" title="Star">★</button>
-        <button data-action="approve" class="${v.verdict==='approve'?'active approve':''}" title="Approve">✓</button>
+        <button data-action="reject" class="${e.verdict==='reject'?'active reject':''}" title="Reject">✗</button>
+        <button data-action="iterate" class="${e.verdict==='iterate'?'active iterate':''}" title="Iterate">◐</button>
+        <button data-action="minor" class="${e.verdict==='minor'?'active minor':''}" title="Minor edits">⊕</button>
+        <button data-action="approve" class="${e.verdict==='approve'?'active approve':''}" title="Approve">✓</button>
       </div>
     `;
-    card.querySelector('.card-image').addEventListener('click', (e) => {
-      e.stopPropagation();
+    card.querySelector('.card-image').addEventListener('click', (ev) => {
+      if (ev.target.closest('.star-toggle')) return;
+      ev.stopPropagation();
       openLightbox(visibleAds.findIndex(x => x.id === a.id));
     });
+    card.querySelector('.star-toggle').addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      toggleStar(a.id);
+    });
     card.querySelectorAll('.card-actions button').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        setVerdict(a.id, btn.dataset.action);
+      btn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        toggleVerdict(a.id, btn.dataset.action);
       });
     });
     return card;
   }
 
   function refreshCard(id) {
-    const card = document.querySelector(`.card[data-id="${CSS.escape(id)}"]`);
+    const card = document.querySelector(`.card[data-id="${cssEscape(id)}"]`);
     if (!card) return;
     const a = ads.find(x => x.id === id);
     if (!a) return;
@@ -314,18 +437,22 @@
   }
 
   function updateCounters() {
-    let approve = 0, reject = 0, star = 0;
+    let approve = 0, minor = 0, iterate = 0, reject = 0, star = 0;
     Object.values(verdicts).forEach(v => {
       if (v.verdict === 'approve') approve++;
-      if (v.verdict === 'reject') reject++;
+      else if (v.verdict === 'minor') minor++;
+      else if (v.verdict === 'iterate') iterate++;
+      else if (v.verdict === 'reject') reject++;
       if (v.starred) star++;
     });
-    const unrated = ads.length - approve - reject;
+    const reviewed = approve + minor + iterate + reject;
+    const unrated = ads.length - reviewed;
     document.getElementById('count-approve').textContent = approve;
+    document.getElementById('count-minor').textContent = minor;
+    document.getElementById('count-iterate').textContent = iterate;
     document.getElementById('count-reject').textContent = reject;
     document.getElementById('count-star').textContent = star;
     document.getElementById('count-unrated').textContent = unrated;
-    const reviewed = approve + reject;
     document.getElementById('progress-fill').style.width = ads.length ? `${(reviewed / ads.length) * 100}%` : '0%';
   }
 
@@ -338,15 +465,15 @@
     document.getElementById('lb-img').alt = a.headline || '';
     document.getElementById('lb-pills').innerHTML = `
       <span class="pill">${a.format}</span>
-      <span class="pill">${a.toolkit_short || ''}</span>
-      <span class="pill">${a.archetype || ''}</span>
+      <span class="pill">${escapeHtml(a.toolkit_short || '')}</span>
+      <span class="pill">${escapeHtml(a.archetype || '')}</span>
     `;
     document.getElementById('lb-headline').textContent = a.headline || '—';
     document.getElementById('lb-persona').textContent = a.persona || '—';
     document.getElementById('lb-subhead').textContent = a.subhead || '—';
     document.getElementById('lb-id').textContent = a.id;
     document.getElementById('lb-counter').textContent = `${idx + 1} / ${visibleAds.length}`;
-    updateLightboxButtons(a.id);
+    updateLightboxState(a.id);
     document.getElementById('lightbox').classList.add('active');
     document.body.style.overflow = 'hidden';
   }
@@ -363,63 +490,134 @@
     if (next >= 0 && next < visibleAds.length) openLightbox(next);
   }
 
-  function updateLightboxButtons(id) {
-    const v = getVerdict(id);
-    const ap = document.getElementById('lb-approve');
-    const rj = document.getElementById('lb-reject');
-    const st = document.getElementById('lb-star');
-    ap.className = v.verdict === 'approve' ? 'active approve' : '';
-    rj.className = v.verdict === 'reject' ? 'active reject' : '';
-    st.className = v.starred ? 'active star' : '';
+  function updateLightboxState(id) {
+    const e = getEntry(id);
+    ['reject','iterate','minor','approve'].forEach(action => {
+      const btn = document.getElementById(`lb-${action}`);
+      btn.className = e.verdict === action ? `active ${action}` : '';
+    });
+    const star = document.getElementById('lb-star');
+    star.className = e.starred ? 'active' : '';
+    document.getElementById('lb-note').value = e.note || '';
+    updateLightboxReasons(id);
+  }
+
+  function updateLightboxReasons(id) {
+    const e = getEntry(id);
+    const block = document.getElementById('reasons-block');
+    if (e.verdict === 'iterate') {
+      block.classList.add('visible');
+      const chips = document.getElementById('reasons-chips');
+      chips.innerHTML = '';
+      const allReasons = [...DEFAULT_REASONS, ...customReasons];
+      allReasons.forEach(reason => {
+        const btn = document.createElement('button');
+        btn.textContent = reason;
+        btn.className = (e.iterateReasons || []).includes(reason) ? 'active' : '';
+        btn.addEventListener('click', () => toggleReason(id, reason));
+        chips.appendChild(btn);
+      });
+    } else {
+      block.classList.remove('visible');
+    }
   }
 
   document.getElementById('lb-close').addEventListener('click', closeLightbox);
   document.getElementById('lb-prev').addEventListener('click', () => navLightbox(-1));
   document.getElementById('lb-next').addEventListener('click', () => navLightbox(1));
-  document.getElementById('lightbox').addEventListener('click', (e) => {
-    if (e.target.id === 'lightbox') closeLightbox();
+  document.getElementById('lightbox').addEventListener('click', (ev) => {
+    if (ev.target.id === 'lightbox') closeLightbox();
   });
-  ['lb-approve','lb-reject','lb-star'].forEach(btnId => {
-    document.getElementById(btnId).addEventListener('click', () => {
+  ['reject','iterate','minor','approve'].forEach(action => {
+    document.getElementById(`lb-${action}`).addEventListener('click', () => {
       if (lightboxIdx < 0) return;
-      const action = document.getElementById(btnId).dataset.action;
-      setVerdict(visibleAds[lightboxIdx].id, action);
+      toggleVerdict(visibleAds[lightboxIdx].id, action);
     });
   });
+  document.getElementById('lb-star').addEventListener('click', () => {
+    if (lightboxIdx < 0) return;
+    toggleStar(visibleAds[lightboxIdx].id);
+  });
 
-  document.addEventListener('keydown', (e) => {
+  // Note input
+  let noteSaveTimer = null;
+  document.getElementById('lb-note').addEventListener('input', (ev) => {
+    if (lightboxIdx < 0) return;
+    const id = visibleAds[lightboxIdx].id;
+    clearTimeout(noteSaveTimer);
+    noteSaveTimer = setTimeout(() => setNote(id, ev.target.value), 300);
+  });
+
+  // Custom reasons
+  function addCustomReason() {
+    const input = document.getElementById('add-reason-input');
+    const v = (input.value || '').trim();
+    if (!v) return;
+    if ([...DEFAULT_REASONS, ...customReasons].some(r => r.toLowerCase() === v.toLowerCase())) {
+      input.value = '';
+      return;
+    }
+    customReasons.push(v);
+    saveReasons();
+    input.value = '';
+    if (lightboxIdx >= 0) {
+      // Auto-toggle the new reason on this card
+      toggleReason(visibleAds[lightboxIdx].id, v);
+    }
+  }
+  document.getElementById('add-reason-btn').addEventListener('click', addCustomReason);
+  document.getElementById('add-reason-input').addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter') { ev.preventDefault(); addCustomReason(); }
+  });
+
+  document.addEventListener('keydown', (ev) => {
     if (!document.getElementById('lightbox').classList.contains('active')) return;
-    if (e.key === 'Escape') closeLightbox();
-    else if (e.key === 'ArrowLeft') navLightbox(-1);
-    else if (e.key === 'ArrowRight') navLightbox(1);
-    else if (e.key === 'a' || e.key === 'A') { setVerdict(visibleAds[lightboxIdx].id, 'approve'); }
-    else if (e.key === 'r' || e.key === 'R') { setVerdict(visibleAds[lightboxIdx].id, 'reject'); }
-    else if (e.key === 's' || e.key === 'S') { setVerdict(visibleAds[lightboxIdx].id, 'star'); }
+    // Ignore keys when typing in note/reason inputs
+    const tag = (ev.target?.tagName || '').toLowerCase();
+    if (tag === 'textarea' || tag === 'input') {
+      if (ev.key === 'Escape') ev.target.blur();
+      return;
+    }
+    const id = visibleAds[lightboxIdx]?.id;
+    if (!id) return;
+    if (ev.key === 'Escape') closeLightbox();
+    else if (ev.key === 'ArrowLeft') navLightbox(-1);
+    else if (ev.key === 'ArrowRight') navLightbox(1);
+    else if (ev.key === 'a' || ev.key === 'A') toggleVerdict(id, 'approve');
+    else if (ev.key === 'm' || ev.key === 'M') toggleVerdict(id, 'minor');
+    else if (ev.key === 'i' || ev.key === 'I') toggleVerdict(id, 'iterate');
+    else if (ev.key === 'r' || ev.key === 'R') toggleVerdict(id, 'reject');
+    else if (ev.key === 's' || ev.key === 'S') toggleStar(id);
+    else if (ev.key === 'n' || ev.key === 'N') { ev.preventDefault(); document.getElementById('lb-note').focus(); }
   });
 
   // FILTERS
   ['filter-toolkit','filter-format','filter-archetype'].forEach(id => {
-    document.getElementById(id).addEventListener('change', (e) => {
+    document.getElementById(id).addEventListener('change', (ev) => {
       const key = id.replace('filter-','');
-      filterState[key] = e.target.value;
+      filterState[key] = ev.target.value;
       render();
     });
   });
   document.querySelectorAll('#filter-status button').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('#filter-status button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#filter-status button').forEach(b => {
+        b.classList.remove('active','all','unrated','approve','minor','iterate','reject','star','note');
+      });
       btn.classList.add('active');
-      filterState.status = btn.dataset.val;
+      const v = btn.dataset.val;
+      btn.classList.add(v === '' ? 'all' : v === 'starred' ? 'star' : v === 'noted' ? 'note' : v);
+      filterState.status = v;
       render();
     });
   });
 
   // CSV EXPORT
   document.getElementById('export-csv').addEventListener('click', () => {
-    const rows = [['id','url','format','toolkit','archetype','headline','verdict','starred','timestamp']];
+    const rows = [['id','url','format','toolkit','archetype','headline','verdict','starred','iterate_reasons','note','timestamp']];
     ads.forEach(a => {
-      const v = getVerdict(a.id);
-      if (!v.verdict && !v.starred) return;
+      const e = getEntry(a.id);
+      if (!e.verdict && !e.starred && !(e.note || '').trim() && !(e.iterateReasons || []).length) return;
       const safe = (s) => `"${String(s ?? '').replace(/"/g,'""')}"`;
       rows.push([
         safe(a.id),
@@ -428,9 +626,11 @@
         safe(a.toolkit),
         safe(a.archetype),
         safe(a.headline),
-        safe(v.verdict || ''),
-        safe(v.starred ? '1' : '0'),
-        safe(v.ts || ''),
+        safe(e.verdict || ''),
+        safe(e.starred ? '1' : '0'),
+        safe((e.iterateReasons || []).join('; ')),
+        safe(e.note || ''),
+        safe(e.ts || ''),
       ]);
     });
     const csv = rows.map(r => r.join(',')).join('\n');
@@ -444,12 +644,19 @@
   });
 
   document.getElementById('reset-verdicts').addEventListener('click', () => {
-    if (!confirm('Clear ALL verdicts? This can\'t be undone.')) return;
+    if (!confirm('Clear ALL verdicts, stars, reasons, and notes? Custom reason tags will also be cleared. This can\'t be undone.')) return;
     verdicts = {};
+    customReasons = [];
     saveVerdicts();
+    saveReasons();
     updateCounters();
     render();
   });
+
+  // Helpers
+  function escapeHtml(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function escapeAttr(s) { return escapeHtml(s); }
+  function cssEscape(s) { return (window.CSS && CSS.escape) ? CSS.escape(s) : String(s).replace(/[^a-zA-Z0-9_-]/g, '\\$&'); }
 
   // INIT
   updateCounters();
