@@ -140,6 +140,7 @@
     <div class="stat star">★ <span class="num" id="stat-star">0</span></div>
     <div class="stat skip">⤳ <span class="num" id="stat-skip">0</span></div>
     <div class="stat reject">✗ <span class="num" id="stat-reject">0</span></div>
+    <div class="stat" style="background:#3a2f20; border:1px solid #4a3f30;"><span class="num" id="stat-deck" style="color:#c9a87c;">0</span> <span style="color:#8a8580; font-size:11px; font-weight:500;">of <span id="stat-total" style="color:#f0ede6;">0</span> left</span></div>
   </div>
 </div>
 
@@ -358,7 +359,12 @@ function updateStats() {
   document.getElementById('stat-skip').textContent = counts.skip;
   const total = ads.length;
   const done = Object.keys(reviews).length;
+  const remaining = ads.filter(a => matchesFilters(a) && !reviews[a.id]).length;
   document.getElementById('progress-fill').style.width = total > 0 ? (100 * done / total) + '%' : '0%';
+  const deckEl = document.getElementById('stat-deck');
+  const totalEl = document.getElementById('stat-total');
+  if (deckEl) deckEl.textContent = remaining;
+  if (totalEl) totalEl.textContent = total;
 }
 
 function showEndScreen() {
