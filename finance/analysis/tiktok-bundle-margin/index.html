@@ -121,7 +121,7 @@
   .price-edit-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
 
   /* ============================== METRIC GRID ============================== */
-  .metrics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; padding: 18px 20px; background: var(--warm); }
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; padding: 18px 20px; background: var(--warm); }
   .metric { display: flex; flex-direction: column; gap: 4px; padding: 14px; background: var(--white); border-radius: 4px; border: 1px solid transparent; }
   .metric--good { border-color: var(--green); background: var(--green-bg); }
   .metric--warn { border-color: var(--warn); background: var(--warn-bg); }
@@ -362,6 +362,14 @@
       <span class="assumption__hint">Of revenue</span>
     </div>
     <div class="assumption">
+      <span class="assumption__label">Ad Spend</span>
+      <div class="assumption__input-wrap">
+        <input type="number" id="adSpend" value="0" step="1">
+        <span class="assumption__suffix">%</span>
+      </div>
+      <span class="assumption__hint">Spark / paid amp · 0 for organic LIVE</span>
+    </div>
+    <div class="assumption">
       <span class="assumption__label">GM Target</span>
       <div class="assumption__input-wrap">
         <input type="number" id="gmTarget" value="80" step="5">
@@ -395,7 +403,8 @@
           <th class="num">Gross %</th>
           <th class="num">Landed %</th>
           <th class="num">Contribution %</th>
-          <th class="num">Contribution $</th>
+          <th class="num">Net Contrib %</th>
+          <th class="num">Net Contrib $</th>
         </tr>
       </thead>
       <tbody id="glanceBody"></tbody>
@@ -546,28 +555,28 @@ const DEFAULT_BUNDLES = [
     scenario: 'Live now · MSRP $66 · GO $50 (25% off) · Evergreen $56 (15% off)',
     items: [
       { sku: 'FGWT26836', name: 'What The Foundation, Light', cogs: 4.15 },
-      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.16 },
+      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.30 },
     ] },
   { id: 'b2', name: 'Mini MB + Eyeshadow Stick + Lip Recharge', type: 'evergreen',
     msrp: 76, goPrice: 60, evergreenPrice: 66, activePrice: 'evergreen',
     scenario: 'Live now · MSRP $76 · GO $60 (21% off) · Evergreen $66 (14% off)',
     items: [
-      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.16 },
+      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.30 },
       { sku: 'FGSS45769', name: 'JRB Eyeshadow Stick in Cream', cogs: 2.72 },
-      { sku: 'FGLR79972', name: 'JRB Lip Recharge Champagne', cogs: 1.74 },
+      { sku: 'FGLR79972', name: 'JRB Lip Recharge Champagne', cogs: 1.89 },
     ] },
   { id: 'b3', name: 'Lip Recharge + Mini Miracle Balm', type: 'evergreen',
     msrp: 44, goPrice: 34, evergreenPrice: 38, activePrice: 'evergreen',
     scenario: 'Live now · MSRP $44 · GO $34 (23% off) · Evergreen $38 (14% off)',
     items: [
-      { sku: 'FGLR79972', name: 'JRB Lip Recharge Champagne', cogs: 1.74 },
-      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.16 },
+      { sku: 'FGLR79972', name: 'JRB Lip Recharge Champagne', cogs: 1.89 },
+      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.30 },
     ] },
   { id: 'b4', name: 'Lip Recharge + Full Size Miracle Balm', type: 'evergreen',
     msrp: 62, goPrice: 46, evergreenPrice: 52, activePrice: 'evergreen',
     scenario: 'Live now · MSRP $62 · GO $46 (26% off) · Evergreen $52 (16% off)',
     items: [
-      { sku: 'FGLR79972', name: 'JRB Lip Recharge Champagne', cogs: 1.74 },
+      { sku: 'FGLR79972', name: 'JRB Lip Recharge Champagne', cogs: 1.89 },
       { sku: 'FGMB01416', name: 'Miracle Balm, Large - Flushed', cogs: 3.76 },
     ] },
   // ---------- LAUNCHING 5/12 ----------
@@ -583,7 +592,7 @@ const DEFAULT_BUNDLES = [
     scenario: 'Launching 5/12 · MSRP $58 · Evergreen $50 (14% off)',
     items: [
       { sku: 'FGFS78436', name: 'JRB Your Skin Foundation Stick Light', cogs: 3.76 },
-      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.16 },
+      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.30 },
     ] },
   // ---------- LIVE-ONLY DEAL ----------
   { id: 'b7', name: 'WTF + Mini MB · LIVE Deal', type: 'live',
@@ -591,7 +600,7 @@ const DEFAULT_BUNDLES = [
     scenario: 'LIVE 5/12 (2-hr window) · MSRP $66 · LIVE deal $50 (25% off) · #2 GMV driver',
     items: [
       { sku: 'FGWT26836', name: 'What The Foundation, Light', cogs: 4.15 },
-      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.16 },
+      { sku: 'FGMB07266-1', name: 'JRB MINI MIRACLE BALM DUSTY ROSE 2.0', cogs: 2.30 },
     ] },
 ];
 
@@ -603,6 +612,23 @@ let nextBundleId = bundles.length + 1;
 // ============================================================================
 const fmt = (n, d = 2) => '$' + Number(n).toFixed(d).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 const fmtPct = n => Number(n).toFixed(1) + '%';
+
+// Clean NetSuite item names → friendlier "Shopify-style" display
+function cleanProductName(name) {
+  if (!name) return '';
+  let n = name;
+  n = n.replace(/^JRB\s+/i, '');
+  n = n.replace(/\s+(2\.0|WIP|\(generic\)|\(specific\))\b/gi, '');
+  // ALL CAPS → Title Case
+  if (n === n.toUpperCase() && /[A-Z]/.test(n)) {
+    n = n.split(' ').map(w => {
+      if (!w) return w;
+      if (/^\d/.test(w)) return w;
+      return w[0].toUpperCase() + w.slice(1).toLowerCase();
+    }).join(' ');
+  }
+  return n.trim();
+}
 
 function getActivePrice(b) {
   if (b.activePrice === 'goPrice' && b.goPrice != null) return b.goPrice;
@@ -617,18 +643,21 @@ function getGlobals() {
     creatorComm: parseFloat(document.getElementById('creatorComm').value) / 100 || 0,
     fulfillment: parseFloat(document.getElementById('fulfillment').value) || 0,
     returnRate: parseFloat(document.getElementById('returnRate').value) / 100 || 0,
+    adSpend: parseFloat(document.getElementById('adSpend').value) / 100 || 0,
     gmTarget: parseFloat(document.getElementById('gmTarget').value) || 80,
   };
 }
 
 function calcBundle(b, g, extraCogsPerOrder = 0) {
   const itemsCogs = b.items.reduce((s, i) => s + (parseFloat(i.cogs) || 0), 0);
-  const totalCogs = itemsCogs + extraCogsPerOrder;
+  const packaging = parseFloat(b.packaging) || 0;
+  const totalCogs = itemsCogs + packaging + extraCogsPerOrder;
   const price = getActivePrice(b);
 
   const tiktokFeeAmt = price * g.tiktokFee;
   const creatorCommAmt = price * g.creatorComm;
   const returnsAmt = price * g.returnRate;
+  const adSpendAmt = price * g.adSpend;
 
   const grossMargin = price - totalCogs;
   const grossMarginPct = price > 0 ? (grossMargin / price) * 100 : 0;
@@ -639,14 +668,19 @@ function calcBundle(b, g, extraCogsPerOrder = 0) {
   const contribution = landedGrossMargin - g.fulfillment - returnsAmt;
   const contributionPct = price > 0 ? (contribution / price) * 100 : 0;
 
+  // Net Contribution = Contribution after marketing / ad spend
+  const netContribution = contribution - adSpendAmt;
+  const netContributionPct = price > 0 ? (netContribution / price) * 100 : 0;
+
   const discountPct = b.msrp > 0 ? ((b.msrp - price) / b.msrp) * 100 : 0;
 
   return {
-    price, totalCogs, itemsCogs,
-    tiktokFeeAmt, creatorCommAmt, returnsAmt, fulfillment: g.fulfillment,
+    price, totalCogs, itemsCogs, packaging,
+    tiktokFeeAmt, creatorCommAmt, returnsAmt, adSpendAmt, fulfillment: g.fulfillment,
     grossMargin, grossMarginPct,
     landedGrossMargin, landedGrossMarginPct,
     contribution, contributionPct,
+    netContribution, netContributionPct,
     discountPct,
   };
 }
@@ -688,6 +722,8 @@ async function loadCatalog() {
     console.error('Could not load cogs.json', e);
     CATALOG = [];
   }
+  // Add friendly display name to each item
+  CATALOG.forEach(item => { item.displayName = cleanProductName(item.name); });
   document.getElementById('catalogStat').textContent = CATALOG.length.toLocaleString();
   document.getElementById('tabCount').textContent = `(${CATALOG.length})`;
   document.getElementById('catalogTimestamp').textContent = new Date().toLocaleString();
@@ -703,17 +739,25 @@ function buildDatalist() {
   dl.innerHTML = '';
   CATALOG.forEach(item => {
     const opt = document.createElement('option');
-    opt.value = `${item.name} — ${item.sku} — $${item.cogs.toFixed(2)}`;
+    opt.value = `${item.displayName} · $${item.cogs.toFixed(2)}`;
     dl.appendChild(opt);
   });
 }
 
 function lookupBySearch(value) {
-  let hit = CATALOG.find(i => `${i.name} — ${i.sku} — $${i.cogs.toFixed(2)}` === value);
+  if (!value) return null;
+  const v = value.trim();
+  // Match the dropdown format: "Display Name · $X.XX"
+  let hit = CATALOG.find(i => `${i.displayName} · $${i.cogs.toFixed(2)}` === v);
   if (hit) return hit;
-  hit = CATALOG.find(i => i.sku.toUpperCase() === value.toUpperCase());
+  // SKU (case-insensitive)
+  hit = CATALOG.find(i => i.sku.toUpperCase() === v.toUpperCase());
   if (hit) return hit;
-  hit = CATALOG.find(i => i.name.toLowerCase() === value.toLowerCase());
+  // Clean display name match
+  hit = CATALOG.find(i => i.displayName.toLowerCase() === v.toLowerCase());
+  if (hit) return hit;
+  // Original NetSuite name (backwards compat for shared URLs)
+  hit = CATALOG.find(i => i.name.toLowerCase() === v.toLowerCase());
   return hit;
 }
 
@@ -758,7 +802,8 @@ function renderGlance() {
         <td class="num pct-cell ${grossClass}">${fmtPct(r.grossMarginPct)}</td>
         <td class="num pct-cell ${landedClass}">${fmtPct(r.landedGrossMarginPct)}</td>
         <td class="num pct-cell ${contribClass}">${fmtPct(r.contributionPct)}</td>
-        <td class="num">${fmt(r.contribution)}</td>
+        <td class="num pct-cell ${gmClass(r.netContributionPct, 'contribution', g.gmTarget)}">${fmtPct(r.netContributionPct)}</td>
+        <td class="num">${fmt(r.netContribution)}</td>
       </tr>
     `;
   }).join('');
@@ -810,11 +855,11 @@ function renderBundles() {
           <div class="item-row">
             <input type="text" list="productList" placeholder="Search product or SKU…"
               data-bundle="${bIdx}" data-item="${iIdx}" data-field="product"
-              value="${escapeHtml(item.name)}${item.sku ? ' — ' + item.sku + ' — $' + Number(item.cogs).toFixed(2) : ''}">
+              value="${escapeHtml(cleanProductName(item.name))}">
             <input type="number" step="0.01"
               data-bundle="${bIdx}" data-item="${iIdx}" data-field="cogs"
               value="${Number(item.cogs).toFixed(2)}" title="Override COGS">
-            <span class="item-row__sku">${escapeHtml(item.sku || '')}</span>
+            <span class="item-row__sku" title="${escapeHtml(item.sku || '')}">${escapeHtml(item.sku || '')}</span>
             <button class="icon-btn" data-action="deleteItem" data-bundle="${bIdx}" data-item="${iIdx}">×</button>
           </div>
         `).join('')}
@@ -845,6 +890,10 @@ function renderBundles() {
         <div class="price-edit">
           <span class="assumption__label">Evergreen $</span>
           <input type="number" data-bundle="${bIdx}" data-field="evergreenPrice" value="${b.evergreenPrice ?? ''}" step="1">
+        </div>
+        <div class="price-edit" title="Custom packaging cost per bundle (kit box, mailer, etc.) — TikTok bundles typically $0">
+          <span class="assumption__label">Packaging $</span>
+          <input type="number" data-bundle="${bIdx}" data-field="packaging" value="${b.packaging ?? 0}" step="0.25">
         </div>
       </div>
 
@@ -877,6 +926,12 @@ function renderBundles() {
           <span class="metric__sub">${fmt(r.contribution)}</span>
           <span class="metric__detail">After fulfillment + returns</span>
         </div>
+        <div class="metric ${metricClass(r.netContributionPct, 'contribution', g.gmTarget)}">
+          <span class="metric__label">Net Contribution</span>
+          <span class="metric__value">${fmtPct(r.netContributionPct)}</span>
+          <span class="metric__sub">${fmt(r.netContribution)}</span>
+          <span class="metric__detail">After ad spend</span>
+        </div>
       </div>
     `;
     wrap.appendChild(card);
@@ -907,7 +962,7 @@ function attachBundleListeners() {
           renderAll();
         }
       } else {
-        if (field === 'msrp' || field === 'goPrice' || field === 'evergreenPrice') {
+        if (field === 'msrp' || field === 'goPrice' || field === 'evergreenPrice' || field === 'packaging') {
           bundles[bIdx][field] = val === '' ? null : parseFloat(val) || 0;
         } else {
           bundles[bIdx][field] = val;
