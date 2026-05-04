@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foundation Stick — Iteration 2 Review</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { font-family: 'Inter', system-ui, sans-serif; background: #0d0d0e; color: #f0ede6; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  body { display: flex; flex-direction: column; min-height: 100vh; }
+
+  /* TOP BAR */
+  .topbar { background: #1a1a1c; border-bottom: 1px solid #2a2a2d; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; position: sticky; top: 0; z-index: 50; }
+  .topbar .brand { font-family: 'Instrument Serif', Georgia, serif; font-size: 18px; letter-spacing: -0.2px; }
+  .topbar .brand em { color: #c9a87c; font-style: italic; }
+  .topbar .stats { display: flex; gap: 8px; font-size: 13px; flex-wrap: wrap; }
+  .stat { display: flex; align-items: center; gap: 5px; padding: 5px 10px; background: #232326; border-radius: 100px; font-size: 11px; }
+  .stat .num { font-weight: 700; font-size: 13px; }
+  .stat.approve .num { color: #6ec87e; }
+  .stat.minor .num { color: #7ab6e8; }
+  .stat.iterate .num { color: #e89c4a; }
+  .stat.reject .num { color: #e8716a; }
+  .stat.unrated .num { color: #8a8580; }
+  .progress-bar { flex: 1; max-width: 240px; min-width: 120px; height: 6px; background: #2a2a2d; border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #c9a87c, #6ec87e); transition: width 0.3s; }
+
+  /* FILTER BAR */
+  .filter-bar { background: #16161a; border-bottom: 1px solid #2a2a2d; padding: 10px 28px; display: flex; gap: 12px; align-items: center; font-size: 12px; flex-wrap: wrap; position: sticky; top: 56px; z-index: 49; }
+  .filter-bar label { color: #8a8580; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; font-size: 10px; }
+  .filter-bar select { background: #232326; border: 1px solid #2a2a2d; color: #f0ede6; padding: 6px 10px; border-radius: 6px; font-family: inherit; font-size: 12px; cursor: pointer; max-width: 220px; }
+  .filter-bar button { background: #232326; border: 1px solid #2a2a2d; color: #f0ede6; padding: 6px 12px; border-radius: 6px; font-family: inherit; font-size: 12px; cursor: pointer; }
+  .filter-bar button:hover { background: #2a2a2d; }
+  .pill-toggle { display: inline-flex; background: #232326; border: 1px solid #2a2a2d; border-radius: 100px; padding: 2px; gap: 0; flex-wrap: wrap; }
+  .pill-toggle button { background: transparent; border: 0; padding: 5px 10px; color: #8a8580; font-size: 11px; font-weight: 600; cursor: pointer; border-radius: 100px; }
+  .pill-toggle button.active.all { background: #c9a87c; color: #0d0d0e; }
+  .pill-toggle button.active.unrated { background: #8a8580; color: #0d0d0e; }
+  .pill-toggle button.active.approve { background: #6ec87e; color: #0d0d0e; }
+  .pill-toggle button.active.minor { background: #7ab6e8; color: #0d0d0e; }
+  .pill-toggle button.active.iterate { background: #e89c4a; color: #0d0d0e; }
+  .pill-toggle button.active.reject { background: #e8716a; color: #fff; }
+  .filter-bar .right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+  .filter-bar .count { color: #8a8580; font-size: 11px; }
+  .meta-line { padding: 10px 28px; background: #0d0d0e; border-bottom: 1px solid #2a2a2d; font-size: 11px; color: #8a8580; }
+  .meta-line .crumb { color: #c9a87c; font-weight: 600; }
+  .meta-line a { color: #c9a87c; text-decoration: none; }
+
+  /* MAIN STAGE */
+  main { flex: 1; padding: 24px 28px 60px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 18px; }
+  @media (max-width: 720px) { main { padding: 16px 14px 60px; } .grid { grid-template-columns: 1fr; gap: 12px; } }
+
+  /* CARD: side-by-side old | new */
+  .card { background: #1a1a1c; border: 2px solid transparent; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s; cursor: pointer; }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+  .card.v-approve { border-color: #6ec87e; }
+  .card.v-minor { border-color: #7ab6e8; }
+  .card.v-iterate { border-color: #e89c4a; }
+  .card.v-reject { border-color: #e8716a; opacity: 0.55; }
+
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #2a2a2d; }
+  .compare .side { background: #0a0a0b; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .compare .side img { width: 100%; height: 100%; object-fit: contain; display: block; background: #0a0a0b; }
+  .compare .side .side-label { position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,0.75); color: #fff; font-size: 9px; font-weight: 700; letter-spacing: 1px; padding: 3px 7px; border-radius: 100px; backdrop-filter: blur(4px); }
+  .compare .side.old .side-label { background: rgba(232,113,106,0.88); color: #fff; }
+  .compare .side.new .side-label { background: rgba(110,200,126,0.88); color: #0d0d0e; }
+  .compare .side .placeholder { color: #5a5652; font-size: 11px; padding: 16px; text-align: center; }
+
+  .card-meta { padding: 12px 14px; background: #16161a; border-top: 1px solid #2a2a2d; }
+  .card-meta .id-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .card-meta .pill { background: #2a2a2d; padding: 3px 8px; border-radius: 100px; color: #c9a87c; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; font-size: 9px; }
+  .card-meta .pill.format { background: #2a2a2d; color: #f0ede6; }
+  .card-meta .pill.archetype { background: #2a2a2d; color: #c9a87c; }
+  .card-meta .headline-pair { font-size: 12px; line-height: 1.45; color: #b0a99f; margin-bottom: 8px; }
+  .card-meta .headline-pair strong { color: #6ec87e; font-weight: 600; }
+  .card-meta .headline-pair s { color: #8a8580; opacity: 0.65; }
+  .card-meta .note-snippet { font-size: 11px; color: #8a8580; padding: 8px 10px; background: #0d0d0e; border-left: 2px solid #e89c4a; border-radius: 4px; line-height: 1.4; max-height: 56px; overflow: hidden; }
+  .card-meta .note-snippet em { font-style: normal; color: #c9a87c; font-weight: 600; }
+
+  .card-actions { display: flex; gap: 4px; padding: 8px 8px 10px; background: #16161a; border-top: 1px solid #2a2a2d; }
+  .card-actions button { flex: 1; background: #232326; border: 1px solid #2a2a2d; color: #8a8580; padding: 7px 0; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.12s; font-family: inherit; }
+  .card-actions button:hover { background: #2a2a2d; transform: translateY(-1px); }
+  .card-actions button.active.reject { background: #e8716a; color: #fff; border-color: #e8716a; }
+  .card-actions button.active.iterate { background: #e89c4a; color: #0d0d0e; border-color: #e89c4a; }
+  .card-actions button.active.minor { background: #7ab6e8; color: #0d0d0e; border-color: #7ab6e8; }
+  .card-actions button.active.approve { background: #6ec87e; color: #0d0d0e; border-color: #6ec87e; }
+
+  /* LIGHTBOX — bigger side-by-side comparison */
+  .lightbox { display: none; position: fixed; inset: 0; background: rgba(5,5,6,0.97); z-index: 100; }
+  .lightbox.active { display: flex; flex-direction: column; }
+  .lb-top { padding: 14px 20px; display: flex; gap: 12px; align-items: center; border-bottom: 1px solid #2a2a2d; flex-wrap: wrap; }
+  .lb-top .pill-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .lb-top .pill { background: #232326; padding: 4px 10px; border-radius: 100px; color: #c9a87c; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; font-size: 9px; }
+  .lb-top .counter { margin-left: auto; color: #8a8580; font-size: 12px; }
+  .lb-top .lb-close { width: 32px; height: 32px; border-radius: 50%; background: #232326; border: 1px solid #2a2a2d; color: #f0ede6; font-size: 18px; cursor: pointer; }
+  .lb-body { flex: 1; display: grid; grid-template-columns: 1fr 1fr 320px; gap: 1px; background: #2a2a2d; min-height: 0; }
+  @media (max-width: 920px) { .lb-body { grid-template-columns: 1fr; grid-auto-rows: auto; } .lb-side { max-height: none !important; } }
+  .lb-image-side { background: #0a0a0b; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; position: relative; min-height: 0; }
+  .lb-image-side img { max-width: 100%; max-height: calc(100vh - 200px); object-fit: contain; border-radius: 4px; box-shadow: 0 20px 50px rgba(0,0,0,0.7); }
+  .lb-image-side .label { position: absolute; top: 12px; left: 12px; padding: 5px 12px; border-radius: 100px; font-size: 10px; font-weight: 700; letter-spacing: 1px; }
+  .lb-image-side.old .label { background: #e8716a; color: #fff; }
+  .lb-image-side.new .label { background: #6ec87e; color: #0d0d0e; }
+  .lb-side { background: #16161a; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+  .lb-side .label { font-size: 10px; color: #6a6560; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
+  .lb-side .body { font-size: 13px; color: #b0a99f; line-height: 1.5; }
+  .lb-side .body s { color: #8a8580; }
+  .lb-side .body strong { color: #6ec87e; }
+  .lb-side .note-block { padding: 10px 12px; background: #0d0d0e; border-left: 3px solid #e89c4a; border-radius: 4px; }
+  .lb-side .verdict-row { display: flex; gap: 6px; }
+  .lb-side .verdict-row button { flex: 1; padding: 11px 0; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid #2a2a2d; background: #232326; color: #f0ede6; transition: all 0.15s; font-family: inherit; }
+  .lb-side .verdict-row button:hover { transform: translateY(-1px); }
+  .lb-side .verdict-row button.active.reject { background: #e8716a; color: #fff; border-color: #e8716a; }
+  .lb-side .verdict-row button.active.iterate { background: #e89c4a; color: #0d0d0e; border-color: #e89c4a; }
+  .lb-side .verdict-row button.active.minor { background: #7ab6e8; color: #0d0d0e; border-color: #7ab6e8; }
+  .lb-side .verdict-row button.active.approve { background: #6ec87e; color: #0d0d0e; border-color: #6ec87e; }
+  .lb-side textarea { width: 100%; background: #0d0d0e; border: 1px solid #2a2a2d; color: #f0ede6; padding: 10px 12px; border-radius: 8px; font-family: inherit; font-size: 13px; line-height: 1.5; min-height: 70px; resize: vertical; }
+  .lb-side textarea:focus { outline: 1px solid #c9a87c; }
+  .lb-nav { position: fixed; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; background: rgba(35,35,38,0.85); border: 1px solid #2a2a2d; color: #f0ede6; font-size: 22px; cursor: pointer; backdrop-filter: blur(8px); z-index: 102; }
+  .lb-nav.prev { left: 16px; }
+  .lb-nav.next { right: 336px; }
+  @media (max-width: 920px) { .lb-nav.next { right: 16px; } }
+  .lb-nav:hover { background: #2a2a2d; }
+
+  /* EMPTY STATE */
+  .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 32px; text-align: center; min-height: 50vh; }
+  .empty-state h2 { font-family: 'Instrument Serif', Georgia, serif; font-size: 36px; font-style: italic; color: #c9a87c; margin-bottom: 16px; }
+  .empty-state p { color: #8a8580; font-size: 14px; line-height: 1.6; max-width: 480px; }
+
+  .hotkey-hint { text-align: center; padding: 14px 16px 24px; font-size: 11px; color: #5a5652; letter-spacing: 0.5px; }
+  .hotkey-hint kbd { background: #232326; border: 1px solid #2a2a2d; padding: 2px 6px; border-radius: 4px; font-family: monospace; color: #c9a87c; margin: 0 3px; font-size: 10px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">Foundation Stick · <em>Iteration 2 Review</em></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="stats">
+    <div class="stat approve">✓ <span class="num" id="count-approve">0</span></div>
+    <div class="stat minor">⊕ <span class="num" id="count-minor">0</span></div>
+    <div class="stat iterate">◐ <span class="num" id="count-iterate">0</span></div>
+    <div class="stat reject">✗ <span class="num" id="count-reject">0</span></div>
+    <div class="stat unrated">· <span class="num" id="count-unrated">0</span></div>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <label>Toolkit</label>
+  <select id="filter-toolkit"><option value="">All</option></select>
+  <label>Format</label>
+  <select id="filter-format">
+    <option value="">All</option>
+    <option value="1x1">1×1</option>
+    <option value="9x16">9×16</option>
+  </select>
+  <label>Original verdict</label>
+  <select id="filter-orig"><option value="">All</option><option value="iterate">iterate</option><option value="reject">reject</option><option value="approve">approve</option></select>
+  <div class="pill-toggle" id="filter-status">
+    <button data-val="" class="active all">All</button>
+    <button data-val="unrated">Unrated</button>
+    <button data-val="approve" title="Approve">✓</button>
+    <button data-val="minor" title="Minor">⊕</button>
+    <button data-val="iterate" title="Iterate">◐</button>
+    <button data-val="reject" title="Reject">✗</button>
+  </div>
+  <div class="right">
+    <span class="count" id="visible-count">— ads</span>
+    <button id="export-csv">Export CSV</button>
+    <button id="reset-verdicts">Reset</button>
+  </div>
+</div>
+<div class="meta-line"><span class="crumb">Iteration 2</span> · 17 concepts re-iterated from your <a href="../iteration-1/" target="_blank">iter-1 review</a>. training.md packaging spec corrected (cap = beige, not silver; no dramatic dome). <strong>Iter-1</strong> (left, red) vs <strong>Iter-2</strong> (right, green). Click to enlarge.</div>
+
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="empty-state" id="empty-state" style="display:none;">
+    <h2>No iterations match these filters.</h2>
+    <p>Try clearing one of the filters above.</p>
+  </div>
+</main>
+
+<div class="hotkey-hint">
+  Click any pair to enlarge. In lightbox: <kbd>←</kbd> prev · <kbd>→</kbd> next · <kbd>A</kbd> approve · <kbd>M</kbd> minor · <kbd>I</kbd> iterate · <kbd>R</kbd> reject · <kbd>N</kbd> note · <kbd>Esc</kbd> close
+</div>
+
+<div class="lightbox" id="lightbox">
+  <div class="lb-top">
+    <div class="pill-row" id="lb-pills"></div>
+    <div class="counter" id="lb-counter">1 / 1</div>
+    <button class="lb-close" id="lb-close">×</button>
+  </div>
+  <div class="lb-body">
+    <div class="lb-image-side old"><div class="label">ITER-1</div><img id="lb-old" alt=""></div>
+    <div class="lb-image-side new"><div class="label">ITER-2</div><img id="lb-new" alt=""></div>
+    <div class="lb-side">
+      <div>
+        <div class="label">Headline</div>
+        <div class="body" id="lb-headline"></div>
+      </div>
+      <div>
+        <div class="label">Cody's iter-1 note (what you flagged)</div>
+        <div class="note-block body" id="lb-orig-note"></div>
+      </div>
+      <div>
+        <div class="label">Verdict on iteration</div>
+        <div class="verdict-row">
+          <button data-action="reject" id="lb-reject">✗ Reject</button>
+          <button data-action="iterate" id="lb-iterate">◐ Iterate</button>
+          <button data-action="minor" id="lb-minor">⊕ Minor</button>
+          <button data-action="approve" id="lb-approve">✓ Approve</button>
+        </div>
+      </div>
+      <div>
+        <div class="label">Iteration note</div>
+        <textarea id="lb-note" placeholder="What still needs work, or why approving?"></textarea>
+      </div>
+      <div>
+        <div class="label">Persona / strategy</div>
+        <div class="body" id="lb-persona"></div>
+      </div>
+      <div>
+        <div class="label">Asset ID</div>
+        <div class="body" id="lb-id" style="font-family:monospace;font-size:11px;"></div>
+      </div>
+    </div>
+  </div>
+  <button class="lb-nav prev" id="lb-prev">‹</button>
+  <button class="lb-nav next" id="lb-next">›</button>
+</div>
+
+<script type="application/json" id="iter-data">{"iterations":[{"id":"iter2-T2-c5-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T2-c5","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T2-c5-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T2-c5-9x16-gpt-image-2.png","headline_iter1":"What's the one foundation that doesn't lie?","headline_iter2":"what's the one product you'd take if you had 60 seconds to leave the house?","archetype":"UGC-style","persona":"Mom \u00b7 Faux-IG-Story creator post. Native lo-fi. C-1 framework.","toolkit":"T2 \u00b7 Persona Stress-Test","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"product is worse now. check packaging. and the IG sticker is worse here, background needs to be white of the main copy "},{"id":"iter2-T3-c11-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T3-c11","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T3-c11-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T3-c11-9x16-gpt-image-2.png","headline_iter1":"Foundation sticks have failed you.","headline_iter2":"Foundation Sticks Failed You.","archetype":"Editorial / press","persona":"Long-Copy with stat-led close.","toolkit":"T3 \u00b7 12 Complaints + Long-Copy","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"packaging and product "},{"id":"iter2-T1-c9-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T1-c9","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c9-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c9-1x1-gpt-image-2.png","headline_iter1":"Looks like skin. Wears like nothing.","headline_iter2":"Skincare formula. Foundation finish. Wears 8 hours.","archetype":"Lifestyle in-use","persona":"Executive \u00b7 lived-in product on real exec desk. Identity-mirror \u2014 'I'm a busy professional, this is my counter.'","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"we should not be focusing on the time aspect here "},{"id":"iter2-T2-c7-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T2-c7","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T2-c7-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T2-c7-1x1-gpt-image-2.png","headline_iter1":"8-hour wear. No transfer. Looks like skin.","headline_iter2":"Studio. Pitch. Dinner. Same face.","archetype":"Lifestyle in-use","persona":"Creative Entrepreneur \u00b7 Brooklyn studio surface, paint-flecked workbench.","toolkit":"T2 \u00b7 Persona Stress-Test","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"copy is beter. product and packaging need work "},{"id":"iter2-T2-c9-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T2-c9","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T2-c9-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T2-c9-1x1-gpt-image-2.png","headline_iter1":"Worn by women who don't have time to be precious.","headline_iter2":"Worn by women who don't have time to be precious.","archetype":"Editorial / press","persona":"Creative Entrepreneur \u00b7 editorial flat-lay, gallery sensibility.","toolkit":"T2 \u00b7 Persona Stress-Test","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"old one is better. check real packaging references. the top is too domed. "},{"id":"iter2-T3-c1-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T3-c1","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T3-c1-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T3-c1-1x1-gpt-image-2.png","headline_iter1":"The 6 reasons foundation-stick haters are switching to JRB.","headline_iter2":"The 6 reasons foundation-stick haters are switching to JRB.","archetype":"Editorial / press","persona":"Mixed \u00b7 F-Listicle, the launch brief's 12 stated complaints, 6-row format.","toolkit":"T3 \u00b7 12 Complaints + Long-Copy","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"packaging is bad now "},{"id":"iter2-T1-c1-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T1-c1","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c1-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c1-1x1-gpt-image-2.png","headline_iter1":"I am a foundation-stick hater. I am wearing one. Send help.","headline_iter2":"I am a foundation-stick hater. I am wearing one. Send help.","archetype":"UGC-style","persona":"Executive \u00b7 faux-tweet format on X dark mode. The viewer recognizes 'tweet' before parsing words \u2014 pattern-interrupt for ad-blind scrollers. Per F-Faux-Tweet ca","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"iterate","iter1_verdict":"reject","iter1_note":"packaging. we dont have a silver cap"},{"id":"iter2-T1-c11-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T1-c11","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c11-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c11-1x1-gpt-image-2.png","headline_iter1":"The foundation stick for foundation skeptics.","headline_iter2":"The foundation stick for foundation skeptics.","archetype":"Hero product","persona":"Executive \u00b7 Stance Card meets product \u2014 typographic + product. Restrained, premium.","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"product is not domes like. this"},{"id":"iter2-T1-c9-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T1-c9","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c9-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c9-9x16-gpt-image-2.png","headline_iter1":"Looks like skin. Wears like nothing.","headline_iter2":"Skincare formula. Foundation finish. Wears 8 hours.","archetype":"Lifestyle in-use","persona":"Executive \u00b7 lived-in product on real exec desk. Identity-mirror \u2014 'I'm a busy professional, this is my counter.'","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"we should not be focusing on the time aspect here "},{"id":"iter2-T2-c10-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T2-c10","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T2-c10-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T2-c10-1x1-gpt-image-2.png","headline_iter1":"what's the foundation that doesn't make you look 'done'?","headline_iter2":"what's the foundation that doesn't make you look 'done'?","archetype":"UGC-style","persona":"Creative \u00b7 Faux-IG-Story Q&A.","toolkit":"T2 \u00b7 Persona Stress-Test","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"we need to reain the fake ugc better and packaging is bad. "},{"id":"iter2-T2-c9-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T2-c9","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T2-c9-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T2-c9-9x16-gpt-image-2.png","headline_iter1":"Worn by women who don't have time to be precious.","headline_iter2":"Worn by women who don't have time to be precious.","archetype":"Editorial / press","persona":"Creative Entrepreneur \u00b7 editorial flat-lay, gallery sensibility.","toolkit":"T2 \u00b7 Persona Stress-Test","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"product is worse. it was better before."},{"id":"iter2-T3-c1-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T3-c1","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T3-c1-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T3-c1-9x16-gpt-image-2.png","headline_iter1":"The 6 reasons foundation-stick haters are switching to JRB.","headline_iter2":"The 6 reasons foundation-stick haters are switching to JRB.","archetype":"Editorial / press","persona":"Mixed \u00b7 F-Listicle, the launch brief's 12 stated complaints, 6-row format.","toolkit":"T3 \u00b7 12 Complaints + Long-Copy","original_verdict":"reject","iter1_verdict":"iterate","iter1_note":"packaging. no silver cap"},{"id":"iter2-T3-c6-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T3-c6","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T3-c6-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T3-c6-1x1-gpt-image-2.png","headline_iter1":"6 reasons women over 35 are switching to this foundation stick.","headline_iter2":"6 reasons women over 35 are switching.","archetype":"Editorial / press","persona":"Mixed \u00b7 6-reasons skincare-grade listicle for ingredient buyers.","toolkit":"T3 \u00b7 12 Complaints + Long-Copy","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"packaging and product "},{"id":"iter2-T3-c6-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T3-c6","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T3-c6-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T3-c6-9x16-gpt-image-2.png","headline_iter1":"6 reasons women over 35 are switching to this foundation stick.","headline_iter2":"6 reasons women over 35 are switching.","archetype":"Editorial / press","persona":"Mixed \u00b7 6-reasons skincare-grade listicle for ingredient buyers.","toolkit":"T3 \u00b7 12 Complaints + Long-Copy","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"packaging got worse "},{"id":"iter2-T1-c2-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T1-c2","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c2-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c2-1x1-gpt-image-2.png","headline_iter1":"Before turning 40 / After turning 40:","headline_iter2":"Before turning 40 / After turning 40:","archetype":"UGC-style","persona":"Executive \u00b7 faux-tweet life-stage trigger ('Before turning 40'). Per JETM faux-tweet model \u2014 vanity-pile vs single-product split image inside the tweet.","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"iterate","iter1_verdict":"reject","iter1_note":"i dont wnat this to be a person. i wnated products. "},{"id":"iter2-T1-c3-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T1-c3","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c3-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c3-9x16-gpt-image-2.png","headline_iter1":"Looks like skin. Not makeup.","headline_iter2":"Looks like skin. Lasts past lunch.","archetype":"UGC-style","persona":"Mom \u00b7 faux-Notes-app format. iOS Notes UI mimic. C-1 'For people who' framework \u2014 speaks to chronic-late mom identity.","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"iterate","iter1_verdict":"reject","iter1_note":""},{"id":"iter2-T1-c7-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T1-c7","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c7-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c7-9x16-gpt-image-2.png","headline_iter1":"Calling all foundation-stick haters. This one is for you.","headline_iter2":"Calling all foundation-stick haters. This one is for you.","archetype":"Editorial / press","persona":"Executive \u00b7 Stance Card with the launch brief's official campaign concept tagline.","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"packaging is bad"},{"id":"iter2-T2-c10-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T2-c10","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T2-c10-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T2-c10-9x16-gpt-image-2.png","headline_iter1":"what's the foundation that doesn't make you look 'done'?","headline_iter2":"what's the foundation that doesn't make you look 'done'?","archetype":"UGC-style","persona":"Creative \u00b7 Faux-IG-Story Q&A.","toolkit":"T2 \u00b7 Persona Stress-Test","original_verdict":"iterate","iter1_verdict":"reject","iter1_note":""},{"id":"iter2-T3-c11-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T3-c11","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T3-c11-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T3-c11-1x1-gpt-image-2.png","headline_iter1":"Foundation sticks have failed you.","headline_iter2":"Foundation Sticks Failed You.","archetype":"Editorial / press","persona":"Long-Copy with stat-led close.","toolkit":"T3 \u00b7 12 Complaints + Long-Copy","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"packaging got worse "},{"id":"iter2-T1-c11-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T1-c11","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c11-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c11-9x16-gpt-image-2.png","headline_iter1":"The foundation stick for foundation skeptics.","headline_iter2":"The foundation stick for foundation skeptics.","archetype":"Hero product","persona":"Executive \u00b7 Stance Card meets product \u2014 typographic + product. Restrained, premium.","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"approve","iter1_verdict":"iterate","iter1_note":"product. we do not haver a dome "},{"id":"iter2-T1-c3-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T1-c3","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c3-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c3-1x1-gpt-image-2.png","headline_iter1":"Looks like skin. Not makeup.","headline_iter2":"Looks like skin. Lasts past lunch.","archetype":"UGC-style","persona":"Mom \u00b7 faux-Notes-app format. iOS Notes UI mimic. C-1 'For people who' framework \u2014 speaks to chronic-late mom identity.","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"reject","iter1_verdict":"iterate","iter1_note":"packaging is good now. change th eheadline. "},{"id":"iter2-T1-c7-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T1-c7","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c7-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c7-1x1-gpt-image-2.png","headline_iter1":"Calling all foundation-stick haters. This one is for you.","headline_iter2":"Calling all foundation-stick haters. This one is for you.","archetype":"Editorial / press","persona":"Executive \u00b7 Stance Card with the launch brief's official campaign concept tagline.","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"reject","iter1_verdict":"iterate","iter1_note":"packaging, doesnt hav a silver cap. and product does not have a dome "},{"id":"iter2-T3-c7-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T3-c7","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T3-c7-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T3-c7-1x1-gpt-image-2.png","headline_iter1":"Foundation Sticks Are Tired.","headline_iter2":"Foundation Sticks Are Tired.","archetype":"Editorial / press","persona":"Long-Copy Editorial \u2014 Ridge-style advertorial. 'Foundation Sticks Are Tired.'","toolkit":"T3 \u00b7 12 Complaints + Long-Copy","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"product. no dome. and i want you to only show ours "},{"id":"iter2-T1-c1-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T1-c1","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c1-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c1-9x16-gpt-image-2.png","headline_iter1":"I am a foundation-stick hater. I am wearing one. Send help.","headline_iter2":"I am a foundation-stick hater. I am wearing one. Send help.","archetype":"UGC-style","persona":"Executive \u00b7 faux-tweet format on X dark mode. The viewer recognizes 'tweet' before parsing words \u2014 pattern-interrupt for ad-blind scrollers. Per F-Faux-Tweet ca","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"iterate","iter1_verdict":"reject","iter1_note":""},{"id":"iter2-T2-c5-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T2-c5","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T2-c5-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T2-c5-1x1-gpt-image-2.png","headline_iter1":"What's the one foundation that doesn't lie?","headline_iter2":"what's the one product you'd take if you had 60 seconds to leave the house?","archetype":"UGC-style","persona":"Mom \u00b7 Faux-IG-Story creator post. Native lo-fi. C-1 framework.","toolkit":"T2 \u00b7 Persona Stress-Test","original_verdict":"reject","iter1_verdict":"reject","iter1_note":""},{"id":"iter2-T2-c7-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T2-c7","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T2-c7-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T2-c7-9x16-gpt-image-2.png","headline_iter1":"8-hour wear. No transfer. Looks like skin.","headline_iter2":"Studio. Pitch. Dinner. Same face.","archetype":"Lifestyle in-use","persona":"Creative Entrepreneur \u00b7 Brooklyn studio surface, paint-flecked workbench.","toolkit":"T2 \u00b7 Persona Stress-Test","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"product is too wide. copy is good. "},{"id":"iter2-T3-c7-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T3-c7","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T3-c7-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T3-c7-9x16-gpt-image-2.png","headline_iter1":"Foundation Sticks Are Tired.","headline_iter2":"Foundation Sticks Are Tired.","archetype":"Editorial / press","persona":"Long-Copy Editorial \u2014 Ridge-style advertorial. 'Foundation Sticks Are Tired.'","toolkit":"T3 \u00b7 12 Complaints + Long-Copy","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"product. no dome. and i want you to only show ours "},{"id":"iter2-T1-c12-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T1-c12","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c12-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c12-1x1-gpt-image-2.png","headline_iter1":"Done with foundation sticks that don't deliver.","headline_iter2":"On not putting up with bad foundation anymore?","archetype":"UGC-style","persona":"Mom \u00b7 faux-Notes-App final variation. Forbidden Word filter passes. Plain language stance.","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"packaging. we dont have a silver cap"},{"id":"iter2-T1-c12-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T1-c12","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c12-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c12-9x16-gpt-image-2.png","headline_iter1":"Done with foundation sticks that don't deliver.","headline_iter2":"On not putting up with bad foundation anymore?","archetype":"UGC-style","persona":"Mom \u00b7 faux-Notes-App final variation. Forbidden Word filter passes. Plain language stance.","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"packaging "},{"id":"iter2-T1-c8-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T1-c8","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c8-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c8-9x16-gpt-image-2.png","headline_iter1":"I gave up on foundation sticks three years ago. Then I tried this.","headline_iter2":"I gave up on foundation sticks three years ago. Then I tried this.","archetype":"Editorial / press","persona":"Mom \u00b7 Stance Card warmer variation \u2014 speaks to the surrender ('I gave up on foundation sticks').","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"no silver cap"},{"id":"iter2-T2-c8-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T2-c8","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T2-c8-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T2-c8-1x1-gpt-image-2.png","headline_iter1":"For women who never have time to retouch.","headline_iter2":"For women who never have time to retouch.","archetype":"Lifestyle in-use","persona":"Creative Entrepreneur \u00b7 LA cafe context, real surface.","toolkit":"T2 \u00b7 Persona Stress-Test","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"packaging. "},{"id":"iter2-T2-c8-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T2-c8","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T2-c8-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T2-c8-9x16-gpt-image-2.png","headline_iter1":"For women who never have time to retouch.","headline_iter2":"For women who never have time to retouch.","archetype":"Lifestyle in-use","persona":"Creative Entrepreneur \u00b7 LA cafe context, real surface.","toolkit":"T2 \u00b7 Persona Stress-Test","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"cap should not be siler. copy is cut off"},{"id":"iter2-T1-c2-9x16-gpt-image-2","format":"9x16","concept_id":"iter2-T1-c2","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c2-9x16-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c2-9x16-gpt-image-2.png","headline_iter1":"Before turning 40 / After turning 40:","headline_iter2":"Before turning 40 / After turning 40:","archetype":"UGC-style","persona":"Executive \u00b7 faux-tweet life-stage trigger ('Before turning 40'). Per JETM faux-tweet model \u2014 vanity-pile vs single-product split image inside the tweet.","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"iterate","iter1_verdict":"reject","iter1_note":"i dont wnat this to be a person. i wnated products. "},{"id":"iter2-T1-c8-1x1-gpt-image-2","format":"1x1","concept_id":"iter2-T1-c8","iter1_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_moqdt5uj_thisyq/iter-T1-c8-1x1-gpt-image-2.png","iter2_url":"https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mor3t1gi_rvlvhc/iter2-T1-c8-1x1-gpt-image-2.png","headline_iter1":"I gave up on foundation sticks three years ago. Then I tried this.","headline_iter2":"I gave up on foundation sticks three years ago. Then I tried this.","archetype":"Editorial / press","persona":"Mom \u00b7 Stance Card warmer variation \u2014 speaks to the surrender ('I gave up on foundation sticks').","toolkit":"T1 \u00b7 Faux-Native + Stance","original_verdict":"iterate","iter1_verdict":"iterate","iter1_note":"packagig "}],"totalImages":34,"iter1BriefId":"b_moqdt5uj_thisyq","iter2BriefId":"b_mor3t1gi_rvlvhc","generatedAt":"2026-05-04","_note":"Wave 1.6 iter-2 \u2014 34 new images. Compares iter-1 (left) vs iter-2 (right)."}</script>
+
+<script>
+(() => {
+  const STORAGE_KEY = 'jrb-fs-iter2-verdicts-v1';
+  const dataEl = document.getElementById('iter-data');
+  let data;
+  try { data = JSON.parse(dataEl.textContent); } catch { data = { iterations: [] }; }
+  const iters = data.iterations || [];
+
+  let verdicts = {};
+  try { verdicts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { verdicts = {}; }
+
+  let filterState = { toolkit: '', format: '', orig: '', status: '' };
+  let visible = [];
+  let lbIdx = -1;
+
+  // Populate dropdowns
+  const tkSet = [...new Set(iters.map(x => x.toolkit))].sort();
+  const tkSel = document.getElementById('filter-toolkit');
+  tkSet.forEach(t => { const o = document.createElement('option'); o.value = t; o.textContent = t; tkSel.appendChild(o); });
+
+  function saveVerdicts() { localStorage.setItem(STORAGE_KEY, JSON.stringify(verdicts)); }
+  function getEntry(id) { return verdicts[id] || { verdict: null, note: '', ts: null }; }
+  function setEntry(id, patch) {
+    const cur = getEntry(id);
+    const next = { ...cur, ...patch, ts: new Date().toISOString() };
+    if (!next.verdict && !(next.note || '').trim()) delete verdicts[id];
+    else verdicts[id] = next;
+    saveVerdicts();
+  }
+  function toggleVerdict(id, verdict) {
+    const cur = getEntry(id);
+    setEntry(id, { verdict: cur.verdict === verdict ? null : verdict });
+    updateCounters(); refreshCard(id);
+    if (lbIdx >= 0 && visible[lbIdx]?.id === id) updateLightbox(id);
+  }
+  function setNote(id, note) { setEntry(id, { note }); refreshCard(id); }
+
+  function applyFilter(x) {
+    if (filterState.toolkit && x.toolkit !== filterState.toolkit) return false;
+    if (filterState.format && x.format !== filterState.format) return false;
+    if (filterState.orig && x.iter1_verdict !== filterState.orig) return false;
+    if (filterState.status) {
+      const e = getEntry(x.id);
+      if (filterState.status === 'unrated') {
+        if (e.verdict || (e.note || '').trim()) return false;
+      } else if (e.verdict !== filterState.status) return false;
+    }
+    return true;
+  }
+
+  function buildCard(x) {
+    const e = getEntry(x.id);
+    const card = document.createElement('div');
+    const cls = ['card'];
+    if (e.verdict) cls.push(`v-${e.verdict}`);
+    card.className = cls.join(' ');
+    card.dataset.id = x.id;
+    const headlineHtml = (x.headline_iter1 !== x.headline_iter2)
+      ? `<s>${escapeHtml(x.headline_iter1)}</s> → <strong>${escapeHtml(x.headline_iter2)}</strong>`
+      : escapeHtml(x.headline_iter2);
+    const notePreview = x.iter1_note ? x.iter1_note.replace(/\n/g, ' ').slice(0, 140) + (x.iter1_note.length > 140 ? '…' : '') : '';
+    card.innerHTML = `
+      <div class="compare">
+        <div class="side old">
+          ${x.iter1_url ? `<img src="${x.iter1_url}" alt="iter-1" loading="lazy">` : '<div class="placeholder">no iter-1</div>'}
+          <div class="side-label">ITER-1</div>
+        </div>
+        <div class="side new">
+          <img src="${x.iter2_url}" alt="iter-2" loading="lazy">
+          <div class="side-label">ITER-2</div>
+        </div>
+      </div>
+      <div class="card-meta">
+        <div class="id-row">
+          <span class="pill format">${x.format}</span>
+          <span class="pill archetype">${escapeHtml(x.archetype || '')}</span>
+          <span class="pill" style="background:#1f1d18;color:#e89c4a;border:1px solid rgba(232,156,74,0.4);">${escapeHtml(x.iter1_verdict || '?')} → iter-2</span>
+        </div>
+        <div class="headline-pair">${headlineHtml}</div>
+        ${notePreview ? `<div class="note-snippet"><em>Cody's note:</em> ${escapeHtml(notePreview)}</div>` : ''}
+      </div>
+      <div class="card-actions">
+        <button data-action="reject" class="${e.verdict==='reject'?'active reject':''}" title="Reject">✗</button>
+        <button data-action="iterate" class="${e.verdict==='iterate'?'active iterate':''}" title="Iterate again">◐</button>
+        <button data-action="minor" class="${e.verdict==='minor'?'active minor':''}" title="Minor edits">⊕</button>
+        <button data-action="approve" class="${e.verdict==='approve'?'active approve':''}" title="Approve">✓</button>
+      </div>
+    `;
+    card.querySelector('.compare').addEventListener('click', () => {
+      openLightbox(visible.findIndex(v => v.id === x.id));
+    });
+    card.querySelectorAll('.card-actions button').forEach(btn => {
+      btn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        toggleVerdict(x.id, btn.dataset.action);
+      });
+    });
+    return card;
+  }
+
+  function refreshCard(id) {
+    const card = document.querySelector(`.card[data-id="${cssEscape(id)}"]`);
+    if (!card) return;
+    const x = iters.find(v => v.id === id);
+    if (!x) return;
+    const updated = buildCard(x);
+    card.replaceWith(updated);
+  }
+
+  function render() {
+    visible = iters.filter(applyFilter);
+    document.getElementById('visible-count').textContent = `${visible.length} of ${iters.length} pairs`;
+    const grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    visible.forEach(x => grid.appendChild(buildCard(x)));
+    document.getElementById('empty-state').style.display = visible.length === 0 ? 'flex' : 'none';
+  }
+
+  function updateCounters() {
+    let approve = 0, minor = 0, iterate = 0, reject = 0;
+    Object.values(verdicts).forEach(v => {
+      if (v.verdict === 'approve') approve++;
+      else if (v.verdict === 'minor') minor++;
+      else if (v.verdict === 'iterate') iterate++;
+      else if (v.verdict === 'reject') reject++;
+    });
+    const reviewed = approve + minor + iterate + reject;
+    document.getElementById('count-approve').textContent = approve;
+    document.getElementById('count-minor').textContent = minor;
+    document.getElementById('count-iterate').textContent = iterate;
+    document.getElementById('count-reject').textContent = reject;
+    document.getElementById('count-unrated').textContent = iters.length - reviewed;
+    document.getElementById('progress-fill').style.width = iters.length ? `${(reviewed / iters.length) * 100}%` : '0%';
+  }
+
+  // LIGHTBOX
+  function openLightbox(idx) {
+    if (idx < 0 || idx >= visible.length) return;
+    lbIdx = idx;
+    const x = visible[idx];
+    document.getElementById('lb-old').src = x.iter1_url || '';
+    document.getElementById('lb-new').src = x.iter2_url;
+    document.getElementById('lb-pills').innerHTML = `
+      <span class="pill">${x.format}</span>
+      <span class="pill">${escapeHtml(x.toolkit)}</span>
+      <span class="pill">${escapeHtml(x.archetype || '')}</span>
+      <span class="pill" style="background:#1f1d18;color:#e89c4a;">${escapeHtml(x.iter1_verdict || '?')} → iter-2</span>
+    `;
+    document.getElementById('lb-headline').innerHTML = (x.headline_iter1 !== x.headline_iter2)
+      ? `<s>${escapeHtml(x.headline_iter1)}</s> → <strong>${escapeHtml(x.headline_iter2)}</strong>`
+      : escapeHtml(x.headline_iter2);
+    document.getElementById('lb-orig-note').textContent = x.iter1_note || '(no note)';
+    document.getElementById('lb-persona').textContent = x.persona || '—';
+    document.getElementById('lb-id').textContent = x.id;
+    document.getElementById('lb-counter').textContent = `${idx + 1} / ${visible.length}`;
+    updateLightbox(x.id);
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+    lbIdx = -1;
+  }
+
+  function navLightbox(delta) {
+    if (lbIdx < 0) return;
+    const next = lbIdx + delta;
+    if (next >= 0 && next < visible.length) openLightbox(next);
+  }
+
+  function updateLightbox(id) {
+    const e = getEntry(id);
+    ['reject','iterate','minor','approve'].forEach(a => {
+      document.getElementById(`lb-${a}`).className = e.verdict === a ? `active ${a}` : '';
+    });
+    document.getElementById('lb-note').value = e.note || '';
+  }
+
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lb-prev').addEventListener('click', () => navLightbox(-1));
+  document.getElementById('lb-next').addEventListener('click', () => navLightbox(1));
+  ['reject','iterate','minor','approve'].forEach(a => {
+    document.getElementById(`lb-${a}`).addEventListener('click', () => {
+      if (lbIdx < 0) return;
+      toggleVerdict(visible[lbIdx].id, a);
+    });
+  });
+  let noteSaveTimer = null;
+  document.getElementById('lb-note').addEventListener('input', (ev) => {
+    if (lbIdx < 0) return;
+    const id = visible[lbIdx].id;
+    clearTimeout(noteSaveTimer);
+    noteSaveTimer = setTimeout(() => setNote(id, ev.target.value), 300);
+  });
+
+  document.addEventListener('keydown', (ev) => {
+    if (!document.getElementById('lightbox').classList.contains('active')) return;
+    const tag = (ev.target?.tagName || '').toLowerCase();
+    if (tag === 'textarea' || tag === 'input') {
+      if (ev.key === 'Escape') ev.target.blur();
+      return;
+    }
+    const id = visible[lbIdx]?.id;
+    if (!id) return;
+    if (ev.key === 'Escape') closeLightbox();
+    else if (ev.key === 'ArrowLeft') navLightbox(-1);
+    else if (ev.key === 'ArrowRight') navLightbox(1);
+    else if (ev.key === 'a' || ev.key === 'A') toggleVerdict(id, 'approve');
+    else if (ev.key === 'm' || ev.key === 'M') toggleVerdict(id, 'minor');
+    else if (ev.key === 'i' || ev.key === 'I') toggleVerdict(id, 'iterate');
+    else if (ev.key === 'r' || ev.key === 'R') toggleVerdict(id, 'reject');
+    else if (ev.key === 'n' || ev.key === 'N') { ev.preventDefault(); document.getElementById('lb-note').focus(); }
+  });
+
+  // FILTERS
+  ['filter-toolkit','filter-format','filter-orig'].forEach(id => {
+    document.getElementById(id).addEventListener('change', (ev) => {
+      const key = id.replace('filter-','');
+      filterState[key === 'orig' ? 'orig' : key] = ev.target.value;
+      render();
+    });
+  });
+  document.querySelectorAll('#filter-status button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#filter-status button').forEach(b => {
+        b.classList.remove('active','all','unrated','approve','minor','iterate','reject');
+      });
+      btn.classList.add('active');
+      const v = btn.dataset.val;
+      btn.classList.add(v === '' ? 'all' : v);
+      filterState.status = v;
+      render();
+    });
+  });
+
+  // CSV EXPORT (pulls iter verdict + Cody's iter-1 note (what you flagged) for downstream use)
+  document.getElementById('export-csv').addEventListener('click', () => {
+    const rows = [['id','format','concept_id','toolkit','archetype','iter_url','original_url','headline_old','headline_new','original_verdict','original_note','iter_verdict','iter_note','timestamp']];
+    iters.forEach(x => {
+      const e = getEntry(x.id);
+      if (!e.verdict && !(e.note || '').trim()) return;
+      const safe = (s) => `"${String(s ?? '').replace(/"/g,'""')}"`;
+      rows.push([
+        safe(x.id), safe(x.format), safe(x.concept_id), safe(x.toolkit), safe(x.archetype),
+        safe(x.iter2_url), safe(x.iter1_url),
+        safe(x.headline_iter1), safe(x.headline_iter2),
+        safe(x.iter1_verdict), safe(x.iter1_note),
+        safe(e.verdict || ''), safe(e.note || ''), safe(e.ts || ''),
+      ]);
+    });
+    const csv = rows.map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `fs-iter1-verdicts-${new Date().toISOString().slice(0,10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('reset-verdicts').addEventListener('click', () => {
+    if (!confirm('Clear ALL iteration verdicts and notes?')) return;
+    verdicts = {};
+    saveVerdicts();
+    updateCounters();
+    render();
+  });
+
+  function escapeHtml(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function cssEscape(s) { return (window.CSS && CSS.escape) ? CSS.escape(s) : String(s).replace(/[^a-zA-Z0-9_-]/g, '\\$&'); }
+
+  updateCounters();
+  render();
+})();
+</script>
+
+</body>
+</html>
