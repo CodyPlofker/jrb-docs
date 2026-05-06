@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pencil Drag — Evidence Brief for Wide Awake Strategy</title>
+<style>
+  @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-LightItalic.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+  @font-face { font-family: 'ArticulatCF'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype'); font-weight: 700; font-style: normal; font-display: swap; }
+
+  :root {
+    --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+    --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+    --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+    --font-serif: Canela, serif;
+    --font-articulat: ArticulatCF, 'Arial Black', Impact, sans-serif;
+    --black: #000;
+    --white: #fff;
+    --gray-bg: #f8f8f8;
+    --pink: #ff2e92;
+    --gray-border: #d0d0d0;
+    --gray-divider: #ebebeb;
+    --gray-text: #757575;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 24px;
+    color: var(--black);
+    letter-spacing: .025em;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    background: var(--white);
+  }
+
+  /* HEADER */
+  .header { background: var(--black); color: var(--white); padding: 56px 32px 64px; }
+  .header__inner { max-width: 1100px; margin: 0 auto; }
+  .header__eyebrow {
+    font-family: var(--font-display); font-size: 14px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.2px; color: var(--pink); margin-bottom: 18px;
+  }
+  .header__title {
+    font-family: var(--font-serif); font-size: 46px; font-weight: 300;
+    letter-spacing: 0.3px; line-height: 58px; margin-bottom: 18px; max-width: 920px;
+  }
+  .header__subtitle {
+    font-family: var(--font-body); font-size: 14px; line-height: 24px;
+    letter-spacing: .35px; color: var(--gray-border); max-width: 760px;
+  }
+  .header__meta { display: flex; gap: 28px; margin-top: 28px; flex-wrap: wrap; }
+  .header__meta-item {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: .5px; color: var(--gray-border);
+  }
+  .header__meta-item span { color: var(--white); margin-left: 6px; }
+  @media (max-width: 700px) {
+    .header { padding: 36px 20px 44px; }
+    .header__title { font-size: 28px; line-height: 38px; }
+  }
+
+  /* KPI STRIP */
+  .kpi-strip {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 1100px; margin: 0 auto; transform: translateY(-32px);
+    border-radius: 3px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.12);
+  }
+  .kpi-strip__card {
+    background: var(--white); padding: 26px 18px; text-align: center;
+    border-right: 1px solid var(--gray-divider);
+  }
+  .kpi-strip__card:last-child { border-right: none; }
+  .kpi-strip__value {
+    font-family: var(--font-display); font-size: 32px; font-weight: 700;
+    letter-spacing: 1px; color: var(--black);
+  }
+  .kpi-strip__label {
+    font-family: var(--font-mono); font-size: 10px; text-transform: uppercase;
+    letter-spacing: .4px; color: var(--gray-text); margin-top: 8px;
+  }
+  .kpi-strip__sub {
+    font-family: var(--font-body); font-size: 11px;
+    color: var(--pink); margin-top: 6px; letter-spacing: .3px;
+  }
+  @media (max-width: 700px) {
+    .kpi-strip { grid-template-columns: repeat(2, 1fr); transform: translateY(-20px); }
+    .kpi-strip__card:nth-child(2) { border-right: none; }
+    .kpi-strip__card:nth-child(1), .kpi-strip__card:nth-child(2) { border-bottom: 1px solid var(--gray-divider); }
+    .kpi-strip__value { font-size: 22px; }
+  }
+
+  /* SECTIONS */
+  .section { padding: 56px 32px; }
+  .section--alt { background: var(--gray-bg); }
+  .section__inner { max-width: 1100px; margin: 0 auto; }
+  .section__eyebrow {
+    font-family: var(--font-display); font-size: 13px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.2px; color: var(--pink); margin-bottom: 14px;
+  }
+  .section__title {
+    font-family: var(--font-serif); font-size: 32px; font-weight: 300;
+    line-height: 42px; letter-spacing: 0.3px; margin-bottom: 20px; max-width: 820px;
+  }
+  .section__lead {
+    font-family: var(--font-body); font-size: 15px; line-height: 26px;
+    letter-spacing: .25px; color: var(--black); max-width: 800px; margin-bottom: 28px;
+  }
+  .section__lead strong { font-weight: 700; }
+  @media (max-width: 700px) {
+    .section { padding: 40px 20px; }
+    .section__title { font-size: 24px; line-height: 32px; }
+  }
+
+  /* TL;DR CALLOUT */
+  .tldr {
+    background: var(--black); color: var(--white);
+    padding: 36px 36px; margin: 0 0 32px;
+    border-left: 6px solid var(--pink);
+  }
+  .tldr__label {
+    font-family: var(--font-display); font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.4px; color: var(--pink); margin-bottom: 12px;
+  }
+  .tldr__title {
+    font-family: var(--font-serif); font-size: 26px; font-weight: 300;
+    line-height: 36px; letter-spacing: .3px; margin-bottom: 18px;
+  }
+  .tldr__title em { font-style: italic; }
+  .tldr__points { list-style: none; padding: 0; margin: 0; }
+  .tldr__points li {
+    padding: 10px 0; padding-left: 28px; position: relative;
+    font-family: var(--font-body); font-size: 14px; line-height: 22px;
+    border-bottom: 1px solid rgba(255,255,255,.15); letter-spacing: .25px;
+  }
+  .tldr__points li:last-child { border-bottom: none; }
+  .tldr__points li::before {
+    content: "→"; position: absolute; left: 0; top: 10px;
+    color: var(--pink); font-family: var(--font-display); font-weight: 700;
+  }
+  @media (max-width: 700px) {
+    .tldr { padding: 24px 22px; }
+    .tldr__title { font-size: 19px; line-height: 28px; }
+  }
+
+  /* DRAG-COUNT TABLE (the core data exhibit) */
+  .drag-table-wrap { overflow-x: auto; margin: 16px 0 12px; }
+  .drag-table {
+    width: 100%; min-width: 760px; border-collapse: collapse;
+    font-family: var(--font-body); font-size: 13px; background: var(--white);
+  }
+  .drag-table th {
+    background: var(--black); color: var(--white); padding: 14px 14px;
+    text-align: left; font-family: var(--font-display); font-size: 11px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  }
+  .drag-table th.center, .drag-table td.center { text-align: center; }
+  .drag-table td {
+    padding: 14px 14px; border-bottom: 1px solid var(--gray-divider);
+    color: var(--black); line-height: 20px;
+  }
+  .drag-table tr:last-child td { border-bottom: none; }
+  .drag-table .pattern { font-family: var(--font-articulat); font-size: 12px; text-transform: uppercase; letter-spacing: .8px; }
+  .drag-table .count { font-family: var(--font-display); font-size: 16px; }
+  .drag-table .pct { color: var(--gray-text); font-family: var(--font-mono); font-size: 11px; }
+  .drag-table .penalty {
+    font-family: var(--font-display); font-size: 14px; color: var(--pink);
+    letter-spacing: .5px;
+  }
+  .drag-table tr.summary td {
+    background: #fff5fa; font-family: var(--font-articulat);
+    text-transform: uppercase; letter-spacing: 1px; font-size: 11px;
+  }
+  .drag-table caption {
+    text-align: left; font-family: var(--font-mono); font-size: 11px;
+    color: var(--gray-text); padding: 0 0 10px;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
+
+  /* RATING IMPACT BARS */
+  .impact-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0;
+  }
+  .impact-card {
+    background: var(--white); border: 1px solid var(--gray-border);
+    padding: 22px 22px;
+  }
+  .impact-card__product {
+    font-family: var(--font-articulat); font-size: 13px; text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 6px;
+  }
+  .impact-card__base {
+    font-family: var(--font-mono); font-size: 11px; color: var(--gray-text);
+    text-transform: uppercase; letter-spacing: .5px; margin-bottom: 18px;
+  }
+  .impact-row {
+    display: grid; grid-template-columns: 110px 1fr 64px;
+    gap: 12px; align-items: center; padding: 8px 0;
+    font-family: var(--font-body); font-size: 13px;
+  }
+  .impact-row__label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; }
+  .impact-row__bar { background: var(--gray-divider); height: 14px; position: relative; }
+  .impact-row__bar-fill { background: var(--black); height: 100%; }
+  .impact-row__bar-fill--bad { background: var(--pink); }
+  .impact-row__value { font-family: var(--font-display); font-size: 14px; text-align: right; }
+  @media (max-width: 700px) {
+    .impact-grid { grid-template-columns: 1fr; }
+    .impact-row { grid-template-columns: 90px 1fr 54px; }
+  }
+
+  /* QUOTE COLUMNS */
+  .quote-cols {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin: 16px 0;
+  }
+  .quote-col__head {
+    font-family: var(--font-articulat); font-size: 14px; text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 16px; padding-bottom: 8px;
+    border-bottom: 2px solid var(--black);
+  }
+  .quote-col__head .n { color: var(--pink); margin-left: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .5px; }
+  .quotes { list-style: none; padding: 0; margin: 0; }
+  .quotes li {
+    border-left: 2px solid var(--black); padding: 10px 0 10px 16px; margin-bottom: 14px;
+    font-family: var(--font-body); font-size: 14px; line-height: 23px;
+    letter-spacing: .25px; color: var(--black);
+  }
+  .quotes li .star {
+    display: inline-block; background: var(--pink); color: var(--white);
+    font-family: var(--font-mono); font-size: 10px; padding: 2px 6px;
+    margin-right: 8px; letter-spacing: .5px; transform: translateY(-2px);
+  }
+  @media (max-width: 700px) { .quote-cols { grid-template-columns: 1fr; } }
+
+  /* IMPLICATION CARDS */
+  .impl-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 16px 0 24px;
+  }
+  .impl-card {
+    background: var(--white); border: 1px solid var(--gray-border);
+    padding: 26px 26px; position: relative;
+  }
+  .impl-card__num {
+    font-family: var(--font-display); font-size: 32px; color: var(--pink);
+    line-height: 1; margin-bottom: 10px; letter-spacing: 1px;
+  }
+  .impl-card__title {
+    font-family: var(--font-articulat); font-size: 14px;
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;
+  }
+  .impl-card__body {
+    font-family: var(--font-body); font-size: 13px; line-height: 22px;
+    letter-spacing: .25px;
+  }
+  .impl-card__body em { font-style: italic; color: var(--black); }
+  .impl-card__tag {
+    display: inline-block; margin-top: 14px; padding: 4px 10px;
+    background: var(--black); color: var(--white);
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: .5px;
+  }
+  @media (max-width: 700px) { .impl-grid { grid-template-columns: 1fr; } }
+
+  /* HERO CLAIM BLOCK */
+  .claim {
+    background: var(--white); border: 2px solid var(--black);
+    padding: 36px 36px; margin: 24px 0;
+  }
+  .claim__label {
+    font-family: var(--font-display); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 1.2px;
+    color: var(--pink); margin-bottom: 12px;
+  }
+  .claim__text {
+    font-family: var(--font-serif); font-size: 30px; font-weight: 300;
+    line-height: 42px; letter-spacing: .3px;
+  }
+  .claim__text em { font-style: italic; }
+  @media (max-width: 700px) { .claim__text { font-size: 21px; line-height: 30px; } .claim { padding: 26px 22px; } }
+
+  /* FOOTER */
+  .footer {
+    background: var(--black); color: var(--gray-border); padding: 36px 32px;
+    text-align: center; font-family: var(--font-mono); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .footer a { color: var(--white); text-decoration: none; border-bottom: 1px solid var(--gray-text); }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header__inner">
+    <div class="header__eyebrow">Evidence Brief · Feeds Wide Awake Strategic Doc</div>
+    <h1 class="header__title">"It drags." Real review data on why pencil concealers cost JRB ratings — and why a creamy-pot Wide Awake is the answer.</h1>
+    <p class="header__subtitle">Mined from 30,487 Junip reviews of The Face Pencil and The Neutralizer Pencil. Quantifies the dragging / dryness / pulling complaint, sizes its rating impact, and translates the signal into hero-claim, audience, and PDP recommendations for Wide Awake Brightening Concealer.</p>
+    <div class="header__meta">
+      <div class="header__meta-item">Source<span>Junip CSV export · review_export_7180</span></div>
+      <div class="header__meta-item">Reviews mined<span>30,487 (Face + Neutralizer)</span></div>
+      <div class="header__meta-item">Compiled<span>May 6, 2026</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="kpi-strip">
+  <div class="kpi-strip__card">
+    <div class="kpi-strip__value">1,545</div>
+    <div class="kpi-strip__label">Reviews mention "dry"</div>
+    <div class="kpi-strip__sub">Across Face + Neutralizer</div>
+  </div>
+  <div class="kpi-strip__card">
+    <div class="kpi-strip__value">449</div>
+    <div class="kpi-strip__label">Mention "drag" or "tug"</div>
+    <div class="kpi-strip__sub">Verbatim friction language</div>
+  </div>
+  <div class="kpi-strip__card">
+    <div class="kpi-strip__value">2.86★</div>
+    <div class="kpi-strip__label">"Pulls on skin" avg rating</div>
+    <div class="kpi-strip__sub">Down 1.4 stars from base</div>
+  </div>
+  <div class="kpi-strip__card">
+    <div class="kpi-strip__value">~10%</div>
+    <div class="kpi-strip__label">Of ≤3★ reviews</div>
+    <div class="kpi-strip__sub">Cite drag / dry / pull / hard</div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- TL;DR FOR THE STRATEGY DOC                                      -->
+<!-- ============================================================== -->
+<section class="section">
+  <div class="section__inner">
+    <div class="tldr">
+      <div class="tldr__label">TL;DR for the Wide Awake Strategic Doc</div>
+      <p class="tldr__title">Pencil drag isn't a vibe — it's a <em>quantified, repeatable, rating-killing</em> friction across the JRB pencil portfolio. Wide Awake's creamy-pot format is the answer customers are already writing in their own words.</p>
+      <ul class="tldr__points">
+        <li><strong>1,545 reviews</strong> across Face Pencil + Neutralizer Pencil mention "dry." <strong>449</strong> use "drag" or "tug" verbatim. <strong>431</strong> say the pencil "pulls" on skin or eyelid.</li>
+        <li>"Pulls on skin / eyelid" reviews average <strong>2.86★</strong> on Face Pencil and <strong>2.67★</strong> on Neutralizer — vs. 4.24/4.28★ baselines. That's a ~1.4–1.6 star penalty per affected review.</li>
+        <li><strong>~10% of every 1–3★ review</strong> on Face Pencil and Neutralizer Pencil cites this exact friction. The drag complaint is the single largest rescuable bucket of negative reviews.</li>
+        <li>Lead Wide Awake's hero with comfort/glide, not just brightening. The audience is already telling us in their own words what they want fixed.</li>
+        <li>"Wide Awake vs. Neutralizer" comparison module on PDP isn't optional — it's the exact module customers ask for in 1–3★ reviews. Lead with format + comfort, not just the brightening complex.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- THE DATA EXHIBIT                                                -->
+<!-- ============================================================== -->
+<section class="section section--alt">
+  <div class="section__inner">
+    <div class="section__eyebrow">Section 1 — The data</div>
+    <h2 class="section__title">How often does the drag complaint actually appear?</h2>
+    <p class="section__lead">Below: every friction phrase counted across the full Junip corpus for both pencils, plus the average rating of reviews that contain each phrase. The "Rating drop" column is the gap between that phrase's avg rating and the product's overall baseline (Face Pencil 4.24 / Neutralizer 4.28).</p>
+
+    <h3 class="section__eyebrow" style="margin-top: 32px;">The Face Pencil — 24,961 reviews · 4.24★ baseline</h3>
+    <div class="drag-table-wrap">
+      <table class="drag-table">
+        <caption>Pattern matched against title + body. Avg rating is calculated across reviews containing the pattern.</caption>
+        <thead>
+          <tr><th>Phrase pattern</th><th class="center">Mentions</th><th class="center">% of reviews</th><th class="center">Avg ★</th><th class="center">Rating drop</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="pattern">"Dry" / "too dry"</td><td class="center count">1,300</td><td class="center pct">5.2%</td><td class="center">3.16</td><td class="center penalty">−1.08</td></tr>
+          <tr><td class="pattern">"Hard" / "too hard"</td><td class="center count">717</td><td class="center pct">2.9%</td><td class="center">2.94</td><td class="center penalty">−1.30</td></tr>
+          <tr><td class="pattern">"Pulls on skin / eyelid"</td><td class="center count">331</td><td class="center pct">1.3%</td><td class="center">2.86</td><td class="center penalty">−1.38</td></tr>
+          <tr><td class="pattern">"Drags" / "dragging"</td><td class="center count">206</td><td class="center pct">0.8%</td><td class="center">3.17</td><td class="center penalty">−1.07</td></tr>
+          <tr><td class="pattern">"Tugs" / "tugging"</td><td class="center count">145</td><td class="center pct">0.6%</td><td class="center">3.48</td><td class="center penalty">−0.76</td></tr>
+          <tr class="summary"><td>Drag/dry/tug/hard share of ≤3★ reviews</td><td class="center count">558</td><td class="center pct">10.1%</td><td class="center" colspan="2">of 5,513 ≤3★ reviews</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="section__eyebrow" style="margin-top: 32px;">The Neutralizer Pencil — 5,526 reviews · 4.28★ baseline</h3>
+    <div class="drag-table-wrap">
+      <table class="drag-table">
+        <thead>
+          <tr><th>Phrase pattern</th><th class="center">Mentions</th><th class="center">% of reviews</th><th class="center">Avg ★</th><th class="center">Rating drop</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="pattern">"Dry" / "too dry"</td><td class="center count">245</td><td class="center pct">4.4%</td><td class="center">3.02</td><td class="center penalty">−1.26</td></tr>
+          <tr><td class="pattern">"Hard" / "too hard"</td><td class="center count">168</td><td class="center pct">3.0%</td><td class="center">2.98</td><td class="center penalty">−1.30</td></tr>
+          <tr><td class="pattern">"Pulls on skin / eyelid"</td><td class="center count">100</td><td class="center pct">1.8%</td><td class="center">2.67</td><td class="center penalty">−1.61</td></tr>
+          <tr><td class="pattern">"Drags" / "dragging"</td><td class="center count">50</td><td class="center pct">0.9%</td><td class="center">3.18</td><td class="center penalty">−1.10</td></tr>
+          <tr><td class="pattern">"Tugs" / "tugging"</td><td class="center count">48</td><td class="center pct">0.9%</td><td class="center">3.10</td><td class="center penalty">−1.18</td></tr>
+          <tr class="summary"><td>Drag/dry/tug/hard share of ≤3★ reviews</td><td class="center count">129</td><td class="center pct">10.8%</td><td class="center" colspan="2">of 1,189 ≤3★ reviews</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="section__lead" style="margin-top: 28px;"><strong>What this proves:</strong> "Pulls on skin/eyelid" is the most punishing phrase in the corpus — each occurrence drops a review's rating by ~1.4–1.6 stars below baseline. Combined with the dry/hard/drag/tug phrases, drag-related friction accounts for <strong>~1 in every 10 ≤3★ reviews</strong> on each pencil. Fix this for Wide Awake and you reclaim the largest single bucket of unhappy reviewers in the under-eye category.</p>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- THE VERBATIM QUOTES                                             -->
+<!-- ============================================================== -->
+<section class="section">
+  <div class="section__inner">
+    <div class="section__eyebrow">Section 2 — In their own words</div>
+    <h2 class="section__title">The vocabulary Wide Awake should answer.</h2>
+    <p class="section__lead">All quotes are 1–2★ Junip reviews on The Face Pencil or The Neutralizer Pencil — verbatim, unedited. They are the language Wide Awake's hero copy, ad creative, and PDP comparison module should explicitly resolve.</p>
+
+    <div class="quote-cols">
+      <div>
+        <div class="quote-col__head">The Face Pencil <span class="n">407 ≤4★ reviews use this language</span></div>
+        <ul class="quotes">
+          <li><span class="star">1★</span>Very dry, pulls on my skin.</li>
+          <li><span class="star">1★</span>Too dry and hard for my dry skin.</li>
+          <li><span class="star">1★</span>Really dry. Tugs on skin when applied.</li>
+          <li><span class="star">1★</span>Too much drag for the eye bags.</li>
+          <li><span class="star">1★</span>Pencil is too hard to go onto my skin.</li>
+          <li><span class="star">1★</span>Goes on too dry. No coverage.</li>
+          <li><span class="star">1★</span>It is too dry and does not blend well.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="quote-col__head">The Neutralizer Pencil <span class="n">102 ≤4★ reviews use this language</span></div>
+        <ul class="quotes">
+          <li><span class="star">1★</span>Color fine but tugs too much at my skin.</li>
+          <li><span class="star">1★</span>I bought it for under eyes. Way too dry.</li>
+          <li><span class="star">1★</span>Dragged on my skin, made my skin look dry.</li>
+          <li><span class="star">1★</span>Too dry, pulled on my skin with application.</li>
+          <li><span class="star">1★</span>I found it too dry, even with pre-moisturizing.</li>
+          <li><span class="star">1★</span>This product is just too dry for my under-eye skin.</li>
+          <li><span class="star">1★</span>It tugs at my under eye skin when applying. It is not easy to apply.</li>
+          <li><span class="star">1★</span>Nope nope nope. It tugged delicate eye skin even with the under eye cream.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="section__lead" style="margin-top: 24px;">Notice the consistency of vocabulary: "drags," "tugs," "pulls," "too dry," "hard." The Neutralizer reviews are particularly punishing because the under-eye area is where customers are most format-sensitive — and where Wide Awake plays directly. The Neutralizer's "delicate eye skin," "under-eye cream," "pre-moisturizing" language tells us the customer is already trying everything and still failing — the format is the bottleneck, not the customer.</p>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- WHAT IT MEANS FOR WIDE AWAKE                                    -->
+<!-- ============================================================== -->
+<section class="section section--alt">
+  <div class="section__inner">
+    <div class="section__eyebrow">Section 3 — Strategic implications for Wide Awake</div>
+    <h2 class="section__title">Five places this data should show up in the strategy doc.</h2>
+
+    <div class="claim">
+      <div class="claim__label">Hero claim hypothesis</div>
+      <p class="claim__text">"The brightening concealer that <em>doesn't drag</em>." Coverage that brightens, glides, and never tugs on under-eye skin — because <em>2.86 stars</em> is what reviewers give a concealer that pulls.</p>
+    </div>
+
+    <div class="impl-grid">
+      <div class="impl-card">
+        <div class="impl-card__num">01</div>
+        <div class="impl-card__title">Lead with comfort, then brightening</div>
+        <div class="impl-card__body">The brightening complex (marshmallow root + rice bran + licorice root) is the rational hook. But the data says comfort is the emotional hook — <em>"too dry," "pulls on my skin," "tugs at my under eye"</em> appear ~1,500+ times in the corpus. That's the language hero copy should answer first.</div>
+        <span class="impl-card__tag">Hero claim · Ad copy</span>
+      </div>
+      <div class="impl-card">
+        <div class="impl-card__num">02</div>
+        <div class="impl-card__title">Audience is already self-identifying</div>
+        <div class="impl-card__body">10.1% of Face Pencil ≤3★ and 10.8% of Neutralizer ≤3★ reviewers describe their friction in the same vocabulary. That's a sized, addressable audience — <em>~700 verbatim-matched JRB customers</em> who are pre-qualified Wide Awake buyers and reachable via post-purchase email today.</div>
+        <span class="impl-card__tag">Launch audience · CRM</span>
+      </div>
+      <div class="impl-card">
+        <div class="impl-card__num">03</div>
+        <div class="impl-card__title">"Wide Awake vs. Neutralizer" PDP module</div>
+        <div class="impl-card__body">The Junip Deep-Dive flagged "How does Face Pencil differ from Neutralizer?" as the #1 unanswered education question. Wide Awake is the third entry in that confusion — it must lead its PDP with a side-by-side comparison: <em>format, texture, when to use, who it's for</em>. Pot vs. pencil, creamy vs. dry, brightening vs. neutralizing.</div>
+        <span class="impl-card__tag">PDP · Education</span>
+      </div>
+      <div class="impl-card">
+        <div class="impl-card__num">04</div>
+        <div class="impl-card__title">Don't cannibalize — reposition</div>
+        <div class="impl-card__body">5,526 Neutralizer customers exist. The portfolio risk is splitting the under-eye line three ways. Use the drag data to pre-segment: Face Pencil = targeted concealer for blemishes/redness; Neutralizer = travel pencil for dark circles; <strong>Wide Awake = the everyday creamy concealer for women whose skin is too dry / mature / delicate for a pencil.</strong> Each product solves a different friction.</div>
+        <span class="impl-card__tag">Portfolio · Positioning</span>
+      </div>
+      <div class="impl-card">
+        <div class="impl-card__num">05</div>
+        <div class="impl-card__title">UGC + ad brief direction</div>
+        <div class="impl-card__body">The "before / after" creative writes itself: <em>finger swiping a pencil that drags on the eyelid → finger swiping Wide Awake that glides</em>. Or: real reviewer reading a 1★ "tugs at my eye skin" review to camera, then trying Wide Awake. The verbatim quote bank in Section 2 is your shot list.</div>
+        <span class="impl-card__tag">Creative · UGC</span>
+      </div>
+      <div class="impl-card">
+        <div class="impl-card__num">06</div>
+        <div class="impl-card__title">Future formulation read-across</div>
+        <div class="impl-card__body">Drag/dryness is also the #1 negative on Best Pencil and Brow Pencil per the Junip Expanded pull. That's a base-formula tell, not three independent product complaints. Worth a side-by-side hardness/glide test of the entire pencil line — Wide Awake's launch is the moment to either reformulate or reposition the pencils as targeted, not under-eye-default.</div>
+        <span class="impl-card__tag">R&D · Out-of-scope but flagged</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- METHOD NOTE                                                     -->
+<!-- ============================================================== -->
+<section class="section">
+  <div class="section__inner">
+    <div class="section__eyebrow">Method</div>
+    <h2 class="section__title">How the counts were generated.</h2>
+    <p class="section__lead">Source file: <code style="font-family:var(--font-mono); font-size:13px;">review_export_7180.csv</code> from Junip — 362,745 lines, all JRB Yotpo + Junip reviews. Filtered to <code style="font-family:var(--font-mono); font-size:13px;">product_title = "The Face Pencil"</code> (24,961 rows) and <code style="font-family:var(--font-mono); font-size:13px;">product_title = "The Neutralizer Pencil"</code> (5,526 rows). Each phrase was matched against title + body using case-insensitive regex. "Pulls on skin/eyelid" requires the verb to appear within ~40 characters of skin/eye/lid/under to avoid false positives ("pulled it out of my bag"). Average ratings are mean of the rating column for matching reviews. The "Rating drop" column is the avg rating gap between the matched reviews and the product baseline (Face Pencil 4.24, Neutralizer 4.28). Verbatim quotes in Section 2 are pulled at random from 1–2★ reviews ≤260 chars matching the friction regex — unedited except for line-break removal.</p>
+    <p class="section__lead"><strong>Cross-references:</strong> Junip Review Deep-Dive (Mar 22, 2026) at <code style="font-family:var(--font-mono); font-size:13px;">jrb-pdp-research/junip-review-deep-dive.md</code>; Junip Expanded Review Intelligence (Mar 2026) merged into <code style="font-family:var(--font-mono); font-size:13px;">jrb-customer-intelligence/customer-intelligence.md</code>.</p>
+  </div>
+</section>
+
+<footer class="footer">
+  Feeds → <a href="../../briefs/wide-awake-brightening-concealer/index.html">Wide Awake Brightening Concealer · Strategic Brief</a> · 30,487 reviews mined · May 6, 2026
+</footer>
+
+</body>
+</html>
