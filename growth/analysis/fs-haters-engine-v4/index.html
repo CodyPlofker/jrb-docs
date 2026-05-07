@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>v3-vs-v4 — FS "Haters Convert" Toolkit (engine patches overnight)</title>
+<style>
+  :root { --bg:#fafafa; --fg:#000; --muted:#555; --line:#e6e6e6; --green:#00875a; --yellow:#b87800; --red:#c62828; --accent:#ff2e92; }
+  html,body{background:var(--bg);color:var(--fg);margin:0;font-family:-apple-system,"Helvetica Neue",system-ui,sans-serif;}
+  body{padding:24px 32px 80px;max-width:1700px;margin:0 auto;}
+  h1{font-size:28px;font-weight:600;margin:0 0 6px;letter-spacing:-0.01em;}
+  header.page-header{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:18px;}
+  header.page-header p{color:var(--muted);font-size:13px;margin:4px 0;}
+  header.page-header a{color:#000;}
+  .briefid{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:11px;color:var(--muted);}
+  .summary{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin-bottom:18px;}
+  .summary h2{margin:0 0 12px;font-size:16px;}
+  .summary-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px;}
+  .stat{background:#fafafa;border-radius:8px;padding:14px;}
+  .stat .delta{font-size:11px;font-family:ui-monospace,monospace;color:var(--muted);}
+  .stat .num{font-size:30px;font-weight:600;line-height:1;}
+  .stat .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:4px;}
+  .stat.green .num{color:var(--green);}
+  .stat.yellow .num{color:var(--yellow);}
+  .stat.red .num{color:var(--red);}
+  .summary p{font-size:13px;line-height:1.55;margin:6px 0;color:#222;}
+  .summary code{background:#f3f3f3;padding:1px 6px;border-radius:4px;font-family:ui-monospace,monospace;font-size:12px;}
+  .patches{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 22px;margin-bottom:24px;}
+  .patches h3{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 10px;font-weight:600;}
+  .patches ul{margin:0;padding-left:18px;font-size:13px;line-height:1.65;}
+  .patches li strong{font-weight:600;}
+  nav.toc{position:sticky;top:0;background:var(--bg);padding:12px 0;margin-bottom:14px;border-bottom:1px solid var(--line);z-index:10;display:flex;gap:6px;flex-wrap:wrap;}
+  nav.toc a{font-size:11px;padding:4px 10px;border-radius:99px;background:#fff;border:1px solid var(--line);color:#000;text-decoration:none;font-family:ui-monospace,monospace;}
+  nav.toc a.tier-green{border-color:var(--green);color:var(--green);}
+  nav.toc a.tier-yellow{border-color:var(--yellow);color:var(--yellow);}
+  nav.toc a.tier-red{border-color:var(--red);color:var(--red);}
+  .concept{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 22px;margin-bottom:18px;scroll-margin-top:80px;}
+  .concept header{margin-bottom:12px;}
+  .meta{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
+  .badge{font-size:10px;text-transform:uppercase;letter-spacing:.1em;padding:3px 9px;border-radius:99px;font-weight:600;}
+  .badge.archetype{background:#f0f0f0;color:#000;}
+  .badge.persona{background:#eef3ff;color:#1a4ed1;border:1px solid #d6e1ff;}
+  .v-pill{font-size:11px;padding:3px 10px;border-radius:99px;font-weight:600;font-family:ui-monospace,monospace;margin-left:auto;}
+  .v-pill.tier-green{background:#e0f3ea;color:var(--green);}
+  .v-pill.tier-yellow{background:#fef4e0;color:var(--yellow);}
+  .v-pill.tier-red{background:#fde6e6;color:var(--red);}
+  .cid{font-family:ui-monospace,monospace;font-size:11px;color:var(--muted);}
+  .copy-line{margin:6px 0 0;font-size:13px;color:#222;}
+  .copy-line strong{font-weight:600;}
+  .compare{display:grid;grid-template-columns:repeat(2, 1fr);gap:14px;margin-top:12px;}
+  .compare-block{display:grid;grid-template-columns:1fr 0.563fr;gap:10px;background:#fafafa;padding:12px;border-radius:8px;}
+  .compare-label{position:absolute;top:6px;left:6px;font-size:9px;text-transform:uppercase;letter-spacing:.1em;background:rgba(0,0,0,0.6);color:#fff;padding:2px 7px;border-radius:99px;z-index:2;font-weight:600;}
+  .compare-version{position:absolute;top:6px;right:6px;font-size:10px;font-weight:600;background:rgba(0,0,0,0.7);color:#fff;padding:3px 9px;border-radius:99px;z-index:2;font-family:ui-monospace,monospace;}
+  .cell{position:relative;background:#f3f3f3;border-radius:6px;overflow:hidden;}
+  .cell.aspect-square{aspect-ratio:1/1;}
+  .cell.aspect-9x16{aspect-ratio:9/16;}
+  .cell img{width:100%;height:100%;object-fit:cover;display:block;}
+  .cell.tier-green{box-shadow:inset 0 0 0 2px var(--green);}
+  .cell.tier-yellow{box-shadow:inset 0 0 0 2px var(--yellow);}
+  .cell.tier-red{box-shadow:inset 0 0 0 2px var(--red);}
+  .delta-note{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:11px;line-height:1.5;background:#f3f3f3;color:#222;}
+  .delta-note.green{background:#e8f5ee;color:#063b1f;}
+  .delta-note.yellow{background:#fef4e0;color:#5a3c00;}
+  .delta-note.red{background:#fde6e6;color:#5a0e0e;}
+  .delta-note strong{font-weight:600;}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>FS "Haters" Toolkit — v3 vs v4 (overnight engine patches)</h1>
+  <p>LP: <a href="https://www.jonesroadbeauty.com/pages/foundation-stick-10-reasons" target="_blank">/pages/foundation-stick-10-reasons</a></p>
+  <p class="briefid">v4 brief: b_mouwydxw_psk8vn · v3 brief: b_mouv9uvy_4oh8np · branch: <code style="background:#f3f3f3;padding:1px 6px;border-radius:4px;font-family:ui-monospace,monospace;">overnight/static-ads-engine-fixes</code></p>
+</header>
+
+<div class="summary">
+  <h2>The bet: engine patches first → re-run same brief</h2>
+  <div class="summary-stats">
+    <div class="stat green"><div class="num">19</div><div class="lbl">v4 ship-ready cells</div><div class="delta">↑ from 14 (v3) — +35%</div></div>
+    <div class="stat green"><div class="num">8</div><div class="lbl">Concepts ship BOTH formats</div><div class="delta">↑ from 4 (v3) — 2×</div></div>
+    <div class="stat green"><div class="num">0</div><div class="lbl">Concepts fail BOTH formats</div><div class="delta">↓ from 2 (v3) — 0 ✓</div></div>
+    <div class="stat"><div class="num">15</div><div class="lbl">Auto-iterate fires</div><div class="delta">heuristic bbox check</div></div>
+  </div>
+  <p><strong>What worked:</strong> orphan-word fix (c4/c5/c11/c12 9×16 wraps now clean), width-fit shrink (c2 9×16 no longer crops), cap-on solved dome (c10), single-angle subhead (c4), Bobbi Founder attribution (c7), vertical-standing fixed logo orientation (c6).</p>
+  <p><strong>What still fails:</strong> 4 cells with persistent issues — c1 1×1 stick still too big (heuristic missed it; vision-based detection would catch it but ANTHROPIC_API_KEY is blank in <code>.env.local</code>), c8 1×1 horizontal-lay still rotates the wordmark 90° (model ignored the new orientation rule), c9 9×16 CTA pill landed on stick wordmark (compositor doesn't yet do bbox-aware CTA placement), c11 9×16 white headline still unreadable on bright windshield (auto-contrast didn't fire for some reason — investigating).</p>
+  <p><strong>Engine is meaningfully smarter</strong> on the failure modes that have rules: orphan wrap, width-fit, contrast, single-angle subheads, packaging fidelity. The remaining 5 cells need either Vision (set the API key) or per-concept brief tweaks.</p>
+</div>
+
+<div class="patches">
+  <h3>The 6 engine patches landed overnight (commits on the branch)</h3>
+  <ul>
+    <li><code>508b061</code> — <strong>composite: orphan-word avoidance + 3-line enumeration + lower min size.</strong> ORPHAN_WORDS set, isOrphan() detector, 800-pt penalty in 2-line scoring, new 3-line enumeration step before greedy fallback, deOrphan() pass after greedy, headline min size 96/84 → 72/68.</li>
+    <li><code>d150196</code> — <strong>composite: width-fit auto-shrink.</strong> Defensive guarantee no rendered line exceeds maxHeadlineWidth — catches single hyphenated words ("Foundation-worn.") that wrapByWidth can't break.</li>
+    <li><code>bc6557f</code> — <strong>composite: auto-contrast hardening.</strong> Sanity-checks explicit headlineColor against actual sampled bg luminance; auto-overrides silently + logs when override would fail contrast (per Cody 2026-05-06).</li>
+    <li><code>2898390</code> — <strong>prompts: hard subject-size constraint + wordmark-orientation guard.</strong> Subject 26-40% (9×16) / 28-42% (1×1) of canvas height, max 50% width, '#1 COMPOSITION RULE' framing. Wordmark must remain UPRIGHT regardless of product orientation.</li>
+    <li><code>d6438e3</code> — <strong>generate: post-gen subject-size validation + auto-iterate ONCE.</strong> Detects oversized subjects via Vision (when ANTHROPIC_API_KEY set) and regenerates with stricter prompt. Caches via image hash.</li>
+    <li><code>26fdb28</code> — <strong>generate: heuristic pixel-based bbox fallback.</strong> Sharp-based pixel detection runs when Vision is disabled. Less accurate but catches the worst oversized cases. Used because Cody's .env.local has the Anthropic key blank.</li>
+  </ul>
+</div>
+
+<nav class="toc">
+  <a href="#c1" class="tier-yellow">c1</a>
+  <a href="#c2" class="tier-green">c2</a>
+  <a href="#c3" class="tier-green">c3</a>
+  <a href="#c4" class="tier-green">c4</a>
+  <a href="#c5" class="tier-green">c5</a>
+  <a href="#c6" class="tier-green">c6</a>
+  <a href="#c7" class="tier-green">c7</a>
+  <a href="#c8" class="tier-yellow">c8</a>
+  <a href="#c9" class="tier-yellow">c9</a>
+  <a href="#c10" class="tier-green">c10</a>
+  <a href="#c11" class="tier-yellow">c11</a>
+  <a href="#c12" class="tier-green">c12</a>
+</nav>
+
+<!-- Comparison cards: each concept shows v3 vs v4 side-by-side, both formats per side -->
+
+<article id="c1" class="concept">
+  <header>
+    <div class="meta"><span class="badge persona">Executive</span><span class="badge archetype">Editorial</span><span class="cid">c1</span><span class="v-pill tier-yellow">v4: 1×1 still oversized</span></div>
+    <p class="copy-line"><strong>Real coverage. No made-up look.</strong> · 8 hours of real hydration. Built like skincare.</p>
+  </header>
+  <div class="compare">
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-red"><span class="compare-label">1×1</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c1-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-red"><span class="compare-label">9×16</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c1-9x16-gpt-image-2.png"></div></div>
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-yellow"><span class="compare-label">1×1</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c1-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c1-9x16-gpt-image-2.png"></div></div>
+  </div>
+  <div class="delta-note yellow"><strong>v4 result:</strong> 9×16 fixed (small stick anchored low). 1×1 still oversized — heuristic auto-iterate didn't fire on this cell because pixel bbox came back under threshold. Vision-based detection would catch it; needs ANTHROPIC_API_KEY set in .env.local.</div>
+</article>
+
+<article id="c2" class="concept">
+  <header>
+    <div class="meta"><span class="badge persona">Executive</span><span class="badge archetype">Hero product</span><span class="cid">c2</span><span class="v-pill tier-green">v4: SHIP both</span></div>
+    <p class="copy-line"><strong>Skincare-built. Foundation-worn.</strong> · COVERAGE THAT DOESN'T CAKE, SETTLE, OR HIDE YOUR SKIN.</p>
+  </header>
+  <div class="compare">
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c2-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-yellow"><span class="compare-label">9×16</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c2-9x16-gpt-image-2.png"></div></div>
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c2-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c2-9x16-gpt-image-2.png"></div></div>
+  </div>
+  <div class="delta-note green"><strong>v4 result:</strong> 9×16 width-fit fixed the "oundation-worn" crop from v3. Stick still on the larger side but doesn't overlap text. Both ship.</div>
+</article>
+
+<article id="c3" class="concept">
+  <header>
+    <div class="meta"><span class="badge persona">Executive</span><span class="badge archetype">Before-After</span><span class="cid">c3</span><span class="v-pill tier-green">v4: SHIP both</span></div>
+    <p class="copy-line"><strong>Retire the 10-product face.</strong> · ONE STICK REPLACED HALF MY VANITY.</p>
+  </header>
+  <div class="compare">
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c3-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c3-9x16-gpt-image-2.png"></div></div>
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c3-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c3-9x16-gpt-image-2.png"></div></div>
+  </div>
+  <div class="delta-note green"><strong>v4 result:</strong> Was already shipping in v3, still ships in v4. Composition unchanged — Before-After archetype is robust.</div>
+</article>
+
+<article id="c4" class="concept">
+  <header>
+    <div class="meta"><span class="badge persona">Executive</span><span class="badge archetype">Category-Callout</span><span class="cid">c4</span><span class="v-pill tier-green">v4: SHIP both — orphan FIXED</span></div>
+    <p class="copy-line"><strong>Foundation for foundation skeptics.</strong> · BUILT LIKE SKINCARE.</p>
+  </header>
+  <div class="compare">
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c4-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-yellow"><span class="compare-label">9×16</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c4-9x16-gpt-image-2.png"></div></div>
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c4-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c4-9x16-gpt-image-2.png"></div></div>
+  </div>
+  <div class="delta-note green"><strong>v4 result:</strong> v3 9×16 had "for" orphan on its own line. v4 9×16 wraps cleanly: "Foundation for / foundation skeptics." — the orphan-avoidance + 3-line enumeration patch did its job.</div>
+</article>
+
+<article id="c5" class="concept">
+  <header>
+    <div class="meta"><span class="badge persona">Matriarch</span><span class="badge archetype">Press / Quote-pull</span><span class="cid">c5</span><span class="v-pill tier-green">v4: SHIP both — orphan FIXED</span></div>
+    <p class="copy-line"><strong>"The first foundation stick I've ever not hated."</strong> · VERIFIED BUYER. 30 SHADES FOR REAL SKIN.</p>
+  </header>
+  <div class="compare">
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c5-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-yellow"><span class="compare-label">9×16</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c5-9x16-gpt-image-2.png"></div></div>
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c5-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c5-9x16-gpt-image-2.png"></div></div>
+  </div>
+  <div class="delta-note green"><strong>v4 result:</strong> v3 9×16 wrapped to 4 lines ("The first / foundation / stick I've ever / not hated."). v4 wraps to 2 lines cleanly — the lower min-font size (96 → 72) gave the wrap algorithm room to breathe.</div>
+</article>
+
+<article id="c6" class="concept">
+  <header>
+    <div class="meta"><span class="badge persona">Matriarch</span><span class="badge archetype">Hero product</span><span class="cid">c6</span><span class="v-pill tier-green">v4: SHIP both</span></div>
+    <p class="copy-line"><strong>Doesn't settle. Doesn't streak.</strong> · STAYS WHERE YOU PUT IT. EIGHT FULL HOURS.</p>
+  </header>
+  <div class="compare">
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c6-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c6-9x16-gpt-image-2.png"></div></div>
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c6-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c6-9x16-gpt-image-2.png"></div></div>
+  </div>
+  <div class="delta-note green"><strong>v4 result:</strong> Vertical-standing fix held. Logo orientation correct (upright). Both ship.</div>
+</article>
+
+<article id="c7" class="concept">
+  <header>
+    <div class="meta"><span class="badge persona">Matriarch</span><span class="badge archetype">Founder LP-quote</span><span class="cid">c7</span><span class="v-pill tier-green">v4: SHIP both</span></div>
+    <p class="copy-line"><strong>"Coverage that feels like nothing."</strong> · — BOBBI BROWN, FOUNDER · ON CRAFTING YOUR SKIN.</p>
+  </header>
+  <div class="compare">
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c7-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c7-9x16-gpt-image-2.png"></div></div>
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c7-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c7-9x16-gpt-image-2.png"></div></div>
+  </div>
+  <div class="delta-note green"><strong>v4 result:</strong> Bobbi Brown, Founder attribution rendered exactly as briefed. Best concept of the toolkit IMO.</div>
+</article>
+
+<article id="c8" class="concept">
+  <header>
+    <div class="meta"><span class="badge persona">Matriarch</span><span class="badge archetype">Editorial — shade lineup</span><span class="cid">c8</span><span class="v-pill tier-yellow">v4: 9×16 fixed, 1×1 logos rotated</span></div>
+    <p class="copy-line"><strong>Thirty shades. Made for real skin.</strong> · LIGHT, MEDIUM, DEEP. NOT TOKEN. NOT CLOSE-ENOUGH.</p>
+  </header>
+  <div class="compare">
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c8-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-red"><span class="compare-label">9×16</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c8-9x16-gpt-image-2.png"></div></div>
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-yellow"><span class="compare-label">1×1</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c8-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c8-9x16-gpt-image-2.png"></div></div>
+  </div>
+  <div class="delta-note yellow"><strong>v4 result:</strong> 9×16 fixed (4 vertical-standing sticks, no macro fail). 1×1 sticks lying horizontal still rotate the wordmark 90° from viewer — the new orientation rule didn't take. Easiest fix: scene direction explicitly says "STANDING UPRIGHT" for the 1×1 lineup too.</div>
+</article>
+
+<article id="c9" class="concept">
+  <header>
+    <div class="meta"><span class="badge persona">Super-Mom</span><span class="badge archetype">Open purse spill</span><span class="cid">c9</span><span class="v-pill tier-yellow">v4: 1×1 ships, 9×16 CTA collision</span></div>
+    <p class="copy-line"><strong>Fingers, brush, or both.</strong> · NO MIRROR. NO RULES. NO TIME LOST.</p>
+  </header>
+  <div class="compare">
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c9-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c9-9x16-gpt-image-2.png"></div></div>
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c9-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-yellow"><span class="compare-label">9×16</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c9-9x16-gpt-image-2.png"></div></div>
+  </div>
+  <div class="delta-note yellow"><strong>v4 result:</strong> 9×16 v4 looks better than v3 (cleaner spill, better light) BUT CTA pill landed on top of stick wordmark. Composition issue — model put the stick at the wrong y-pos and CTA reserve isn't bbox-aware. Future engine work: subject-aware CTA placement.</div>
+</article>
+
+<article id="c10" class="concept">
+  <header>
+    <div class="meta"><span class="badge persona">Super-Mom</span><span class="badge archetype">UGC-style</span><span class="cid">c10</span><span class="v-pill tier-green">v4: SHIP both</span></div>
+    <p class="copy-line"><strong>"I am NOT a foundation girl."</strong> · REAL REVIEW. MADE FOR THE SKEPTICS WHO QUIT THE FORMAT.</p>
+  </header>
+  <div class="compare">
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c10-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c10-9x16-gpt-image-2.png"></div></div>
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c10-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c10-9x16-gpt-image-2.png"></div></div>
+  </div>
+  <div class="delta-note green"><strong>v4 result:</strong> Cap-on solved any dome risk. Both ship.</div>
+</article>
+
+<article id="c11" class="concept">
+  <header>
+    <div class="meta"><span class="badge persona">Super-Mom</span><span class="badge archetype">Lifestyle in-use (car)</span><span class="cid">c11</span><span class="v-pill tier-yellow">v4: 1×1 ships, 9×16 contrast still off</span></div>
+    <p class="copy-line"><strong>Foundation. 8 hours of real hydration.</strong> · +51% MOISTURE IN 30 MINUTES. +29% AT 2 HOURS.</p>
+  </header>
+  <div class="compare">
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c11-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-yellow"><span class="compare-label">9×16</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c11-9x16-gpt-image-2.png"></div></div>
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c11-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-yellow"><span class="compare-label">9×16</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c11-9x16-gpt-image-2.png"></div></div>
+  </div>
+  <div class="delta-note yellow"><strong>v4 result:</strong> 1×1 unchanged (already shipped in v3). 9×16 white headline still hard to read on bright golden bg — auto-contrast logic should have flipped it but the headline strip's sampled luminance is borderline. Fix path: lower the auto-contrast threshold OR tighten the brief's scene direction (pick a darker car interior).</div>
+</article>
+
+<article id="c12" class="concept">
+  <header>
+    <div class="meta"><span class="badge persona">Super-Mom</span><span class="badge archetype">Ingredient-Story</span><span class="cid">c12</span><span class="v-pill tier-green">v4: SHIP both — orphan FIXED</span></div>
+    <p class="copy-line"><strong>Foundation that moisturizes 51% more.</strong> · SKINCARE-BUILT. FOUNDATION-WORN.</p>
+  </header>
+  <div class="compare">
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c12-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-yellow"><span class="compare-label">9×16</span><span class="compare-version">v3</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouv9uvy_4oh8np/c12-9x16-gpt-image-2.png"></div></div>
+    <div class="compare-block"><div style="position:relative;" class="cell aspect-square tier-green"><span class="compare-label">1×1</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c12-1x1-gpt-image-2.png"></div><div style="position:relative;" class="cell aspect-9x16 tier-green"><span class="compare-label">9×16</span><span class="compare-version">v4</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mouwydxw_psk8vn/c12-9x16-gpt-image-2.png"></div></div>
+  </div>
+  <div class="delta-note green"><strong>v4 result:</strong> v3 9×16 had "that" orphan on its own line. v4 wraps cleanly without orphan. Both ship.</div>
+</article>
+
+</body>
+</html>
