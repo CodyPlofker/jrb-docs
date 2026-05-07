@@ -1,0 +1,906 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JRB PDP Above-The-Fold — Cleaner-Wins MVT · CRO Brief</title>
+<style>
+@font-face { font-family: "Canela"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Geogrotesque"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/GeogrotesqueCondBold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "RingsideWide"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/RingsideWideA-Book.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "RingsideWide"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/RingsideWideA-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "BaseMono"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideWeb-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "ArticulatCF"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+
+:root {
+  --c-text: #000;
+  --c-muted: #555;
+  --c-bg: #fff;
+  --c-bg-warm: #f6f2eb;
+  --c-bg-soft: #f8f8f8;
+  --c-border: #d0d0d0;
+  --c-border-soft: #ececec;
+  --c-accent: #ff2e92;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "RingsideWide", -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--c-text);
+  background: var(--c-bg);
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+
+/* Topbar */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--c-border-soft);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "BaseMono", monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.topbar__crumb { color: var(--c-muted); }
+.topbar__crumb strong { color: var(--c-text); font-weight: 400; }
+
+/* Layout */
+.brief {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 24px 96px;
+}
+
+/* Hero */
+.hero {
+  text-align: left;
+  margin-bottom: 56px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--c-border-soft);
+}
+.hero__eyebrow {
+  font-family: "BaseMono", monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin-bottom: 14px;
+}
+.hero__title {
+  font-family: "Canela", serif;
+  font-weight: 300;
+  font-size: 46px;
+  line-height: 1.1;
+  margin: 0 0 18px;
+  text-wrap: balance;
+}
+@media (max-width: 600px) { .hero__title { font-size: 32px; } }
+.hero__sub {
+  font-family: "RingsideWide";
+  font-size: 17px;
+  color: var(--c-muted);
+  max-width: 720px;
+  line-height: 1.55;
+  margin: 0;
+}
+.hero__meta {
+  display: flex; gap: 24px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  font-family: "BaseMono", monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+.hero__meta strong { color: var(--c-text); font-weight: 400; }
+
+/* Headlines */
+.h2 {
+  font-family: "Canela", serif;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 1.15;
+  margin: 56px 0 16px;
+  text-wrap: balance;
+}
+.h3 {
+  font-family: "Geogrotesque", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 36px 0 12px;
+}
+.eyebrow {
+  font-family: "BaseMono", monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin-bottom: 12px;
+}
+
+/* Cards */
+.card {
+  background: var(--c-bg-warm);
+  border-radius: 2px;
+  padding: 24px;
+  margin: 16px 0;
+}
+.card--accent {
+  border-left: 3px solid var(--c-accent);
+  background: var(--c-bg-soft);
+  padding-left: 22px;
+}
+.card--callout {
+  background: var(--c-text);
+  color: var(--c-bg);
+  padding: 32px 28px;
+}
+.card--callout .card__h {
+  color: #fff;
+}
+
+/* Hypothesis card */
+.hypothesis {
+  background: #000;
+  color: #fff;
+  padding: 32px 28px;
+  border-radius: 2px;
+  margin: 16px 0 32px;
+}
+.hypothesis__label {
+  font-family: "BaseMono", monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+.hypothesis__body {
+  font-family: "Canela", serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+.hypothesis__body em { font-style: italic; }
+
+/* Stat strip */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--c-border-soft);
+  border: 1px solid var(--c-border-soft);
+  margin: 24px 0;
+}
+@media (max-width: 720px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+.stat {
+  background: var(--c-bg);
+  padding: 20px 16px;
+  text-align: center;
+}
+.stat__value {
+  font-family: "Canela", serif;
+  font-weight: 300;
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat__label {
+  font-family: "BaseMono", monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  line-height: 1.3;
+}
+
+/* Friction list */
+.friction-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 32px;
+}
+.friction-item {
+  display: grid;
+  grid-template-columns: 60px 1fr 110px;
+  gap: 16px;
+  align-items: start;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--c-border-soft);
+}
+@media (max-width: 600px) {
+  .friction-item { grid-template-columns: 50px 1fr; }
+  .friction-item__leverage { grid-column: 1 / -1; padding-left: 66px; }
+}
+.friction-item__rank {
+  font-family: "Canela", serif;
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--c-text);
+}
+.friction-item__name {
+  font-family: "Geogrotesque", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.friction-item__detail {
+  font-family: "RingsideWide";
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--c-text);
+}
+.friction-item__leverage {
+  font-family: "BaseMono", monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  text-align: right;
+}
+.friction-item__leverage strong {
+  display: block;
+  color: var(--c-text);
+  font-size: 11px;
+  margin-bottom: 2px;
+  font-weight: 400;
+}
+
+/* Variant grid */
+.variant-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+@media (max-width: 720px) { .variant-grid { grid-template-columns: 1fr; } }
+.variant-card {
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 2px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.variant-card__head {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--c-border-soft);
+  background: var(--c-bg-warm);
+}
+.variant-card__label {
+  font-family: "BaseMono", monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin-bottom: 4px;
+}
+.variant-card__name {
+  font-family: "Geogrotesque", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+.variant-card__body {
+  padding: 18px;
+  font-size: 14px;
+  flex: 1;
+}
+.variant-card__body p { margin: 0 0 10px; }
+.variant-card__ice {
+  display: flex;
+  gap: 10px;
+  padding: 12px 18px;
+  background: var(--c-bg-soft);
+  border-top: 1px solid var(--c-border-soft);
+  font-family: "BaseMono", monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.variant-card__ice .pill {
+  background: var(--c-text);
+  color: var(--c-bg);
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+.variant-card__ice .score {
+  margin-left: auto;
+  font-family: "Geogrotesque", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* Tables */
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.tbl th, .tbl td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--c-border-soft);
+  vertical-align: top;
+}
+.tbl th {
+  font-family: "Geogrotesque", sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: var(--c-bg-soft);
+}
+.tbl td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tbl tr.row--win { background: rgba(255, 46, 146, 0.04); }
+
+/* Lede / pull quote */
+.lede {
+  font-family: "Canela", serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.5;
+  margin: 24px 0;
+  padding-left: 18px;
+  border-left: 3px solid var(--c-accent);
+  text-wrap: pretty;
+}
+
+/* Mockup-iframe row */
+.mockup-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 24px 0 32px;
+  background: var(--c-bg-warm);
+  padding: 16px;
+  border-radius: 2px;
+}
+@media (max-width: 900px) { .mockup-row { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 540px) { .mockup-row { grid-template-columns: 1fr; } }
+.mockup-row__cell {
+  background: var(--c-bg);
+  border: 1px solid var(--c-border-soft);
+  border-radius: 2px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+}
+.mockup-row__title {
+  font-family: "Geogrotesque", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.mockup-row__frame {
+  width: 100%;
+  height: 540px;
+  border: 0;
+  background: #fff;
+}
+.mockup-row__open {
+  font-family: "BaseMono", monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 6px;
+  display: block;
+  color: var(--c-text);
+}
+
+/* Section divider */
+.divider {
+  height: 1px;
+  background: var(--c-border-soft);
+  margin: 64px 0;
+  border: 0;
+}
+
+/* Two-col list */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+.two-col__col h4 {
+  font-family: "Geogrotesque", sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.two-col__col ul { padding-left: 18px; margin: 0; font-size: 14px; }
+.two-col__col li { margin-bottom: 6px; }
+
+/* Final CTA card */
+.final-cta {
+  background: var(--c-text);
+  color: var(--c-bg);
+  padding: 40px 32px;
+  border-radius: 2px;
+  margin: 48px 0 24px;
+  text-align: center;
+}
+.final-cta h3 {
+  font-family: "Canela", serif;
+  font-weight: 300;
+  font-size: 28px;
+  margin: 0 0 12px;
+  color: #fff;
+}
+.final-cta p {
+  font-family: "RingsideWide";
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 auto 18px;
+  max-width: 600px;
+  opacity: 0.85;
+}
+.final-cta__btn {
+  display: inline-block;
+  background: #fff;
+  color: #000;
+  font-family: "BaseMono", monospace;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 24px;
+  border-radius: 2px;
+}
+
+/* Footnote */
+.footnote {
+  font-family: "RingsideWide";
+  font-size: 13px;
+  color: var(--c-muted);
+  border-top: 1px solid var(--c-border-soft);
+  padding-top: 24px;
+  margin-top: 48px;
+}
+.footnote a { color: var(--c-text); }
+
+p { line-height: 1.6; }
+ul { line-height: 1.7; }
+strong { font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar__crumb">JRB · CRO · <strong>PDP Above-The-Fold MVT</strong></span>
+  <span class="topbar__crumb">v1.0 · 2026-05-06</span>
+</div>
+
+<div class="brief">
+
+  <div class="hero">
+    <div class="hero__eyebrow">CRO Brief · Convertibles Cumulative-Stacking MVT</div>
+    <h1 class="hero__title">PDP Above-The-Fold — Cleaner Wins.</h1>
+    <p class="hero__sub">A 4-cell cumulative-stacking test that progressively reduces the buy-box decision load while surfacing the highest-leverage missing signals. Backed by 28 customer studies, 6-brand competitive teardown, and direct precedent from JRB31 (+5.26% RPV).</p>
+    <div class="hero__meta">
+      <span><strong>Surface:</strong> All variant-bearing PDPs</span>
+      <span><strong>Pattern:</strong> Cumulative stacking (4 cells)</span>
+      <span><strong>Primary metric:</strong> RPS</span>
+      <span><strong>Runtime:</strong> 3 weeks</span>
+    </div>
+  </div>
+
+  <!-- ============= TL;DR ============= -->
+  <div class="eyebrow">TL;DR</div>
+  <div class="hypothesis">
+    <div class="hypothesis__label">Hypothesis</div>
+    <div class="hypothesis__body">
+      <em>We believe</em> reducing the number of decisions in the PDP above-the-fold and surfacing the highest-leverage missing signals (multi-use, on-skin shade, review proof) <em>will increase</em> Revenue Per Session and Add-to-Cart rate, <em>because</em> 28 customer studies confirm shade matching and information overload are the #1 and #3 friction points, and JRB31 (+5.26% RPV from removing duplicate shade copy) is direct precedent that "cleaner wins" works on this surface.
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat__value">129</div><div class="stat__label">Buttons in current<br>ATF (vs 16-30 for competitors)</div></div>
+    <div class="stat"><div class="stat__value">76.4%</div><div class="stat__label">Customers say<br>swatches missing from PDP</div></div>
+    <div class="stat"><div class="stat__value">+5.26%</div><div class="stat__label">RPV — JRB31<br>("cleaner-wins" precedent)</div></div>
+    <div class="stat"><div class="stat__value">100%</div><div class="stat__label">Lift in prospect interest<br>when multi-use revealed</div></div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ============= 1 — THE PROBLEM ============= -->
+  <div class="eyebrow">1 — The Problem</div>
+  <h2 class="h2">JRB's PDP above-the-fold is doing too much.</h2>
+
+  <p>The same Miracle Balm PDP gets described by prospects as both <em>"everything increased my interest more and more"</em> AND <em>"a little too much information... overwhelming."</em> The page suffers an <strong>information depth paradox</strong> — depth is helping researchers but punishing scanners. Above the fold, the cost of clutter is higher than the value of comprehensiveness.</p>
+
+  <p>Counts from a live audit of <code>jonesroadbeauty.com/products/miracle-balm</code> (mobile):</p>
+
+  <table class="tbl">
+    <thead><tr><th>Element</th><th class="num">Count in JRB ATF</th><th class="num">Competitor median</th></tr></thead>
+    <tbody>
+      <tr><td>Buttons</td><td class="num">129</td><td class="num">16–30</td></tr>
+      <tr><td>Images in gallery</td><td class="num">28</td><td class="num">8–12</td></tr>
+      <tr><td>Videos in gallery</td><td class="num">11</td><td class="num">0–2</td></tr>
+      <tr><td>Shade tiles in flat grid</td><td class="num">15</td><td class="num">5–10</td></tr>
+      <tr><td>Shade-tool entry points</td><td class="num">2</td><td class="num">1</td></tr>
+      <tr><td>Pack-quantity selector inside buy box</td><td class="num">Yes</td><td class="num">None of 6</td></tr>
+    </tbody>
+  </table>
+
+  <p class="lede">The directional bet is that JRB's ATF is structurally over-loaded. Reducing decisions and re-prioritizing what's surfaced should lift RPS — every JRB precedent test in this direction has won.</p>
+
+  <hr class="divider">
+
+  <!-- ============= 2 — RESEARCH ============= -->
+  <div class="eyebrow">2 — Research</div>
+  <h2 class="h2">What 28 customer studies say.</h2>
+
+  <p>This brief draws on the merged <code>customer-intelligence.md</code> file: <strong>11 ListenLabs studies (446 prospects)</strong> · <strong>13 Typeform surveys (7,545 responses)</strong> · <strong>2 Junip review analyses (240,797 reviews across 21 products)</strong> · <strong>1 OuterSignal behavioral snapshot (436K customers, 6 personas)</strong> · <strong>1 Richpanel CX analysis (29,661 tickets)</strong>.</p>
+
+  <h3 class="h3">Top friction points above the fold</h3>
+
+  <ol class="friction-list">
+    <li class="friction-item">
+      <div class="friction-item__rank">1</div>
+      <div>
+        <div class="friction-item__name">Shade & undertone uncertainty</div>
+        <div class="friction-item__detail">PENTA-confirmed across 10+ sources. 76.4% say on-skin swatches are missing from PDPs. 50.5% score shade confidence 1–3 out of 5. 78% want swatches on 3+ real skin tones. 24% of all CX tickets (7,048/quarter) require human shade help. <strong>This is the highest-confidence CRO opportunity across ALL intelligence sources.</strong></div>
+      </div>
+      <div class="friction-item__leverage"><strong>HIGHEST</strong>10× sources</div>
+    </li>
+    <li class="friction-item">
+      <div class="friction-item__rank">2</div>
+      <div>
+        <div class="friction-item__name">Information overload</div>
+        <div class="friction-item__detail">Direct prospect quote: <em>"a little too much information... overwhelming."</em> 129 buttons live in the hero section. Pack-qty selector + size selector + 5 category chips + 15-tile shade grid + 2 shade-tool links all stacked above the fold.</div>
+      </div>
+      <div class="friction-item__leverage"><strong>HIGHEST</strong>structural</div>
+    </li>
+    <li class="friction-item">
+      <div class="friction-item__rank">3</div>
+      <div>
+        <div class="friction-item__name">Multi-use proposition buried</div>
+        <div class="friction-item__detail">10% of PDP-study prospects initially confused Miracle Balm for lip balm. 6 of 16 quiz takers don't understand what MB is. 76% have never used a face balm. The "Replaces X products" framing increased prospect interest <strong>100% of the time</strong> when revealed — but is currently below the fold. Above the fold says only "All-Over Glow."</div>
+      </div>
+      <div class="friction-item__leverage"><strong>HIGH</strong>multi-source</div>
+    </li>
+    <li class="friction-item">
+      <div class="friction-item__rank">4</div>
+      <div>
+        <div class="friction-item__name">Reviews under-leveraged</div>
+        <div class="friction-item__detail">Reviews are the #1 trust signal for prospects (39% cite as top). 76K+ MB reviews exist — prospects called the count alone <em>"a trust moment."</em> But brand-site reviews are discounted vs. Sephora/Ulta. ATF currently shows stars + count; no quote, no third-party validation.</div>
+      </div>
+      <div class="friction-item__leverage"><strong>HIGH</strong>volume already exists</div>
+    </li>
+    <li class="friction-item">
+      <div class="friction-item__rank">5</div>
+      <div>
+        <div class="friction-item__name">Pack-quantity competes with primary purchase</div>
+        <div class="friction-item__detail">Customers facing shade uncertainty are also asked to commit to 1, 3, or 6 units before they've confirmed shade. AOV win from upsell may be cannibalized by ATC drop-off. JRB is the only one of 6 competitors with this pattern in-buy-box.</div>
+      </div>
+      <div class="friction-item__leverage"><strong>HIGH</strong>JRB-unique</div>
+    </li>
+    <li class="friction-item">
+      <div class="friction-item__rank">6</div>
+      <div>
+        <div class="friction-item__name">Age-representation gap</div>
+        <div class="friction-item__detail">16.4% of Website Feedback open-ends (12 of 73) explicitly request age-representative models. The actual core demo is 60+ Loyalist (28.6% of customers, 32.2% of revenue). Customer quote: <em>"the website seems geared toward 20 to 30 year olds."</em></div>
+      </div>
+      <div class="friction-item__leverage"><strong>MED</strong>brand-affinity</div>
+    </li>
+    <li class="friction-item">
+      <div class="friction-item__rank">7</div>
+      <div>
+        <div class="friction-item__name">Two competing shade tools</div>
+        <div class="friction-item__detail">"Compare Shades" + "Find My Shade" both sit just below the swatch grid. Decision fatigue on top of the 15-tile grid. Every competitor has exactly one shade-tool entry point.</div>
+      </div>
+      <div class="friction-item__leverage"><strong>MED</strong>JRB-unique</div>
+    </li>
+  </ol>
+
+  <h3 class="h3">Customer voice</h3>
+  <div class="card card--accent">
+    <p style="margin-top:0;font-style:italic">"I buy makeup online but choosing the right Miracle Balm tint online was too hard for me. I didn't want to select incorrect color and lose the money."</p>
+    <p style="font-family:'BaseMono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--c-muted);margin-bottom:0">— Typeform non-purchaser, age 51-65</p>
+  </div>
+  <div class="card card--accent">
+    <p style="margin-top:0;font-style:italic">"I'm 68. NOTHING worked on my skin... Older ladies this is the miracle we've been promised but never found until now!"</p>
+    <p style="font-family:'BaseMono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--c-muted);margin-bottom:0">— Junip review, age-mentioning Loyalist</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ============= 3 — COMPETITIVE ============= -->
+  <div class="eyebrow">3 — Competitive Audit</div>
+  <h2 class="h2">What every competitor does differently.</h2>
+
+  <p>Six brands audited. Three direct (Merit, Saie, Tower 28), three benchmark (Westman, Il Makiage, Sephora — last two cited as "gold standard" by JRB prospects).</p>
+
+  <table class="tbl">
+    <thead>
+      <tr><th>Pattern</th><th>JRB</th><th>Best-in-class</th><th>Gap</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Buttons in ATF</td><td class="num">129</td><td class="num">16 (Saie), 26 (e.l.f.), 27 (Westman), 30 (Tower 28)</td><td>4–8× higher</td></tr>
+      <tr><td>Pack-qty in buy box</td><td>Yes</td><td>None</td><td>JRB-unique friction</td></tr>
+      <tr><td>Shade tools in ATF</td><td class="num">2</td><td class="num">1 each</td><td>Competing CTAs</td></tr>
+      <tr><td>Multi-use ATF signal</td><td>Eyebrow only</td><td>Merit: "Cheeks · Lips · Eyes" icons</td><td>Borrowable</td></tr>
+      <tr><td>Inline review snippet</td><td>No</td><td>Westman, Tower 28</td><td>Missing</td></tr>
+      <tr><td>Texture-reassurance proof</td><td>No</td><td>Saie hero swatch video</td><td>Future test</td></tr>
+      <tr><td>Mini/sample availability</td><td>Yes</td><td>Most don't offer</td><td>JRB STRENGTH — keep</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="h3">Patterns worth borrowing</h3>
+  <div class="two-col">
+    <div class="two-col__col">
+      <h4>From Merit</h4>
+      <ul>
+        <li>"Cheeks / Lips / Eyes" mini-icons under title — instant multi-use comprehension</li>
+        <li>3-up swatch comparison rendered on lighter / medium / deep skin tones</li>
+        <li>"How to apply" 4-step animated GIF as 2nd gallery image</li>
+      </ul>
+    </div>
+    <div class="two-col__col">
+      <h4>From Westman Atelier</h4>
+      <ul>
+        <li>Featured customer-review snippet in title block — quote + age + verified attribution</li>
+        <li>"As seen in Vogue / Allure / Elle" 3-logo bar between title and shade selector</li>
+        <li>Risk reversal positioned where price is</li>
+      </ul>
+    </div>
+    <div class="two-col__col">
+      <h4>From Saie</h4>
+      <ul>
+        <li>Hero "image" is a 4-second swatch-on-skin video — kills texture anxiety</li>
+        <li>Single-line one-sentence proposition replaces description block</li>
+        <li>3-icon clean / vegan / cruelty-free row</li>
+      </ul>
+    </div>
+    <div class="two-col__col">
+      <h4>From Il Makiage / Sephora</h4>
+      <ul>
+        <li>Shade quiz takes over buy box until confirmed (Il Makiage)</li>
+        <li>"30-day money-back" inline with price (Il Makiage)</li>
+        <li>Filterable reviews by shade / age / skin tone (Sephora)</li>
+        <li>Social-proof microcopy beneath stars: "1.2K loves this week"</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ============= 4 — TEST DESIGN ============= -->
+  <div class="eyebrow">4 — Test Design</div>
+  <h2 class="h2">Convertibles cumulative stacking. 4 cells. One change per step.</h2>
+
+  <p>Per the Convertibles Needle Movers framework: <strong>"always multivariate with 1 variable different."</strong> Each variant adds <em>exactly one</em> change on top of the previous. V3 may look materially different from Control, but every change is independently attributable.</p>
+
+  <div class="card">
+<pre style="font-family:'BaseMono',monospace;font-size:13px;line-height:1.7;margin:0;white-space:pre-wrap">Control = Current PDP ATF (as-is)
+V1      = Control with ATF clutter REMOVED (decision-load reduction)
+V2      = V1 + multi-use proposition surfaced into the ATF
+V3      = V2 + single review snippet under stars</pre>
+  </div>
+
+  <p><strong>Why this stacking order:</strong> Removal first (foundation, highest-confidence move proven by JRB31). Multi-use second (once the ATF has breathing room, the highest-leverage missing signal can be added without re-cluttering). Review snippet third (third-party trust signal goes on top of the now-clean foundation, fixes the brand-site review-skepticism gap).</p>
+
+  <h3 class="h3">Variants</h3>
+
+  <div class="variant-grid">
+
+    <div class="variant-card">
+      <div class="variant-card__head">
+        <div class="variant-card__label">Control</div>
+        <div class="variant-card__name">As-Is</div>
+      </div>
+      <div class="variant-card__body">
+        <p>15-tile flat shade grid · pack-quantity selector inside buy box · two shade tools · eyebrow "All-Over Glow" only · 4-paragraph description above the fold · pinned promo bar.</p>
+      </div>
+      <div class="variant-card__ice">
+        <span>Baseline</span>
+        <span class="score">—</span>
+      </div>
+    </div>
+
+    <div class="variant-card">
+      <div class="variant-card__head">
+        <div class="variant-card__label">V1 · One change vs Control</div>
+        <div class="variant-card__name">Decluttered ATF</div>
+      </div>
+      <div class="variant-card__body">
+        <p><strong>Pure removal play.</strong> Pack-qty moves below ATC as a collapsible "Save more with a set" module. Shade-category chips removed. Second shade tool removed. Description compressed to one line in the buy box; full description moves to existing accordion. Promo bar slimmed to 24px.</p>
+        <p style="color:var(--c-muted);font-size:13px">Targets F3 (overload), F5 (pack-qty competition), F9 (dual tools). Direct precedent: JRB31 +5.26% RPV.</p>
+      </div>
+      <div class="variant-card__ice">
+        <span class="pill">I 5</span><span class="pill">C 5</span><span class="pill">E 4</span>
+        <span class="score">100</span>
+      </div>
+    </div>
+
+    <div class="variant-card">
+      <div class="variant-card__head">
+        <div class="variant-card__label">V2 · V1 + one change</div>
+        <div class="variant-card__name">+ Multi-Use Surfaced</div>
+      </div>
+      <div class="variant-card__body">
+        <p><strong>One new component.</strong> Above the H1: a 3-pill row reading <code>CHEEKS · LIPS · EYES</code> with "3 products in 1" framing. Subtitle becomes "A light-reflecting balm for cheeks, lips, and eyes."</p>
+        <p style="color:var(--c-muted);font-size:13px">Targets F2 (MB-as-lip-balm confusion), F6 (multi-use buried), and the F1 price objection ($38 ÷ 3 use cases ≈ $13/use, implicit). Lifted from Merit's pattern.</p>
+      </div>
+      <div class="variant-card__ice">
+        <span class="pill">I 4</span><span class="pill">C 5</span><span class="pill">E 4</span>
+        <span class="score">80</span>
+      </div>
+    </div>
+
+    <div class="variant-card">
+      <div class="variant-card__head">
+        <div class="variant-card__label">V3 · V2 + one change</div>
+        <div class="variant-card__name">+ Inline Review Snippet</div>
+      </div>
+      <div class="variant-card__body">
+        <p><strong>One new module.</strong> Between the stars and size selector: a featured customer quote with age + shade attribution + "verified buyer" badge. Rotates from a curated set of 5–8 verified Junip reviews.</p>
+        <p style="color:var(--c-muted);font-size:13px">Targets F4 (reviews under-leveraged) and F8 (age representation gap). Pattern lifted from Westman. The age + shade attribution makes the testimonial concrete and addresses the "skews 20–30" perception.</p>
+      </div>
+      <div class="variant-card__ice">
+        <span class="pill">I 4</span><span class="pill">C 4</span><span class="pill">E 3</span>
+        <span class="score">48</span>
+      </div>
+    </div>
+
+  </div>
+
+  <p style="font-size:13px;color:var(--c-muted)"><em>ICE scoring uses the JRB roadmap's 1–5 multiplicative format (Impact × Confidence × Ease).</em></p>
+
+  <hr class="divider">
+
+  <!-- ============= 5 — MOCKUPS ============= -->
+  <div class="eyebrow">5 — Mockups</div>
+  <h2 class="h2">414px-wide mobile mockups.</h2>
+  <p>Pink <code>NEW</code> tags mark the single change at each step. Mockup-fidelity (not production) — Unicode stars stand in for Junip SVGs, etc. Open in a tab for full mobile rendering.</p>
+
+  <div class="mockup-row">
+    <div class="mockup-row__cell">
+      <div class="mockup-row__title">Control</div>
+      <iframe class="mockup-row__frame" src="mockups/control.html"></iframe>
+      <a class="mockup-row__open" href="mockups/control.html" target="_blank">Open ↗</a>
+    </div>
+    <div class="mockup-row__cell">
+      <div class="mockup-row__title">V1 · Decluttered</div>
+      <iframe class="mockup-row__frame" src="mockups/v1.html"></iframe>
+      <a class="mockup-row__open" href="mockups/v1.html" target="_blank">Open ↗</a>
+    </div>
+    <div class="mockup-row__cell">
+      <div class="mockup-row__title">V2 · + Multi-Use</div>
+      <iframe class="mockup-row__frame" src="mockups/v2.html"></iframe>
+      <a class="mockup-row__open" href="mockups/v2.html" target="_blank">Open ↗</a>
+    </div>
+    <div class="mockup-row__cell">
+      <div class="mockup-row__title">V3 · + Review</div>
+      <iframe class="mockup-row__frame" src="mockups/v3.html"></iframe>
+      <a class="mockup-row__open" href="mockups/v3.html" target="_blank">Open ↗</a>
+    </div>
+  </div>
+
+  <p style="text-align:center"><a href="mockups/index.html" target="_blank" class="final-cta__btn" style="background:#000;color:#fff;display:inline-block;text-decoration:none">Open the gallery view ↗</a></p>
+
+  <hr class="divider">
+
+  <!-- ============= 6 — MEASUREMENT ============= -->
+  <div class="eyebrow">6 — Measurement & Targeting</div>
+  <h2 class="h2">Blanket roll, segmented analysis.</h2>
+
+  <p><strong>Targeting:</strong> Blanket — all PDP traffic. No segment is anticipated to suffer (we're removing clutter that affects everyone). Backend analysis filters by Quadrant of Traffic per BDW Ch 16.</p>
+
+  <p><strong>Quadrant analysis (mandatory):</strong> Per Dylan Ander, every test result must be filtered through {New, Returning} × {Mobile, Desktop} before declaring a winner. A flat-overall test can hide a +20% First-Time Mobile lift.</p>
+
+  <h3 class="h3">Success metrics</h3>
+
+  <table class="tbl">
+    <thead><tr><th>Tier</th><th>Metric</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr class="row--win"><td>Primary</td><td>Revenue Per Session</td><td>Captures CR + AOV in one number</td></tr>
+      <tr><td>Secondary</td><td>Add-to-Cart rate</td><td>Confirms ATF is converting better, not just shifting AOV</td></tr>
+      <tr><td>Secondary</td><td>PDP → Checkout Start</td><td>Confirms ATC-to-checkout flow preserved</td></tr>
+      <tr><td>Secondary</td><td>AOV</td><td>Watches for pack-qty move-below cannibalization</td></tr>
+      <tr><td>Quadrant</td><td>All metrics × {New/Returning} × {Mobile/Desktop}</td><td>Per BDW Ch 16, filter every result</td></tr>
+      <tr><td>Soft</td><td>Scroll depth past ATF, time-on-PDP</td><td>Cleaner ATF should reduce time-to-decision</td></tr>
+      <tr><td>Risk</td><td>AOV from pack sets</td><td>V1 moves the upsell — confirm not killing AOV</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="h3">Sample size + runtime</h3>
+  <p>JRB PDP traffic baseline: ~80K sessions/week to MMB-class PDPs. For a 4-cell test detecting 5% RPS lift at 95% significance, 80% power: <strong>~14 days to significance</strong>. Recommended runtime: <strong>3 weeks minimum</strong> to capture two complete shopping cycles (weekday × weekend × payday).</p>
+
+  <h3 class="h3">Decision tree</h3>
+  <div class="card">
+    <p style="margin-top:0"><strong>If V3 wins overall:</strong> ship V3 to all PDP variant templates. All three changes validated.</p>
+    <p><strong>If V2 wins but V3 doesn't:</strong> ship V2; investigate why review snippet didn't move the needle (curation, placement, attribution format).</p>
+    <p><strong>If only V1 wins:</strong> ship V1; defer multi-use icons to a separate isolated test.</p>
+    <p style="margin-bottom:0"><strong>If only Quadrant wins (e.g. First-Time Mobile +X%, Returning Desktop flat):</strong> ship as a Quadrant-targeted Intelligems audience.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ============= 7 — IMPLEMENTATION ============= -->
+  <div class="eyebrow">7 — Implementation Notes</div>
+  <h2 class="h2">Built on Intelligems. No theme changes.</h2>
+
+  <ul>
+    <li><strong>Serve via Intelligems</strong> — no Liquid changes until winner declared. <code>hide_section: true</code> on every CCIG variant of the live theme per JRB convention.</li>
+    <li>All variants are CSS/DOM transforms of existing PDP markup. <strong>V1</strong> is pure rearrangement (no new component). <strong>V2</strong> needs one new <code>.multi-use</code> module. <strong>V3</strong> needs Junip data pull or hardcoded curated review set.</li>
+    <li><strong>Mobile-first</strong>: 480×800 viewport per BDW. Desktop benefits responsively.</li>
+    <li><strong>Sticky ATC</strong> kept across all variants — separate proven pattern, not under test.</li>
+    <li><strong>Run on all variant-bearing PDPs</strong>: Miracle Balm, Mini Miracle Balm, JETM, WTF, Best Eyeshadow, Best Pencil, Cool Gel Bronzer, etc. ATF reorganization is template-universal.</li>
+  </ul>
+
+  <hr class="divider">
+
+  <!-- ============= 8 — WHAT'S NOT TESTED ============= -->
+  <div class="eyebrow">8 — Out of Scope</div>
+  <h2 class="h2">What we're explicitly not testing.</h2>
+
+  <p>To keep variant attribution clean, this round excludes:</p>
+
+  <table class="tbl">
+    <thead><tr><th>Excluded</th><th>Why</th><th>Future</th></tr></thead>
+    <tbody>
+      <tr><td>3-skin-tone swatches inside each shade tile</td><td>Larger surface change; deserves dedicated test</td><td>Future PDP-Shade-01</td></tr>
+      <tr><td>Money-back guarantee badge near price</td><td>Bundling would muddy V3 attribution</td><td>Future PDP-Trust-02</td></tr>
+      <tr><td>Hero image swap to age-rep model</td><td>Live implementation, not a test</td><td>Live change</td></tr>
+      <tr><td>Vogue/Allure 3-logo trust bar</td><td>Worth its own test</td><td>Future PDP-Trust-01</td></tr>
+      <tr><td>Mobile image zoom fix</td><td>Bug, not CRO test</td><td>Eng ticket</td></tr>
+      <tr><td>Shade quiz mechanics</td><td>Different surface; JRB18/JRB21 already won</td><td>Out of scope</td></tr>
+    </tbody>
+  </table>
+
+  <p>These deferred follow-ups become higher-confidence tests <em>after</em> this round — V3's review-snippet result will inform whether more trust signals are needed.</p>
+
+  <hr class="divider">
+
+  <!-- ============= 9 — THE BIG IDEA ============= -->
+  <div class="eyebrow">9 — The Big Idea</div>
+  <h2 class="h2">Above the fold is a decision-cost budget.</h2>
+
+  <p class="lede">Every button, chip, swatch, and tool entry-point above the fold is a unit of cognitive load the visitor pays before they're allowed to engage with the product. The current PDP spends that budget on "options" (15 shades, 5 categories, 3 packs, 2 shade tools) and runs out before delivering the highest-leverage signals (multi-use, social proof, texture reassurance). This test reallocates that budget — strip cost out of the option-presentation, spend it on signal instead.</p>
+
+  <p>Cody's intuition that <strong>"cleaner will do better"</strong> is the right directional bet. The data backs it. JRB precedent confirms it. Every competitor proves it.</p>
+
+  <div class="final-cta">
+    <h3>Recommended next step</h3>
+    <p>Approve the 4-cell variant set, log into Intelligems, and stand up the V1 → V2 → V3 cumulative-stacking test on all variant-bearing PDPs. Run 3 weeks blanket, segment results by Quadrant of Traffic on close-out.</p>
+    <a href="mockups/index.html" class="final-cta__btn" target="_blank">Review variant mockups ↗</a>
+  </div>
+
+  <p class="footnote">
+    <strong>Sources:</strong> Customer intelligence file at <code>~/Desktop/01-Projects/jrb-customer-intelligence/customer-intelligence.md</code> (28 studies, 5 platforms, last updated 2026-03-27). Live PDP audit at <code>jonesroadbeauty.com/products/miracle-balm</code> (mobile, 2026-05-06). Convertibles Needle Movers framework via <code>~/.claude/skills/generate-variations/SKILL.md</code>. CRO methodology via <code>~/.claude/skills/jrb-cro/references/cro-methodology.md</code> (Dylan Ander, Billion Dollar Websites). Past JRB test history JRB31, JRB06, JRB18, JRB21. Project repo: <code>~/Desktop/01-Projects/jrb-pdp-atf-test/</code>, branch <code>overnight/pdp-atf-cro-analysis</code>.
+  </p>
+
+</div>
+
+</body>
+</html>
