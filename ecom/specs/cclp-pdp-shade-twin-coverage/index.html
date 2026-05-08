@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCLP PDP Shade Twin — Model Coverage</title>
+<style>
+@font-face { font-family: "Canela"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf") format("opentype"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Geogrotesque"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "BaseMonoWide"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "RingsideWide"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #fff; color: #000; }
+body {
+  font-family: "RingsideWide", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 48px 24px 96px;
+}
+.wrap { max-width: 980px; margin: 0 auto; }
+
+.eyebrow {
+  font-family: "BaseMonoWide", Courier, monospace;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #000;
+  margin-bottom: 14px;
+}
+h1 {
+  font-family: "Canela", serif;
+  font-weight: 300;
+  font-size: 44px;
+  line-height: 1.1;
+  letter-spacing: .3px;
+  margin-bottom: 12px;
+}
+.lede {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+  max-width: 720px;
+}
+
+h2 {
+  font-family: "Geogrotesque", "Arial Black", Impact, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  margin: 48px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #000;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.stat {
+  background: #f8f8f8;
+  padding: 20px 18px;
+  border-radius: 3px;
+}
+.stat-num {
+  font-family: "Canela", serif;
+  font-size: 38px;
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-label {
+  font-family: "BaseMonoWide", Courier, monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+th {
+  font-family: "Geogrotesque", "Arial Black", Impact, sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  text-align: left;
+  background: #000;
+  color: #fff;
+  padding: 10px 12px;
+  vertical-align: top;
+}
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e5e5;
+  vertical-align: top;
+  line-height: 1.5;
+}
+tr:nth-child(even) td { background: #fafafa; }
+td.num { width: 36px; font-family: "BaseMonoWide", monospace; font-size: 12px; color: #666; }
+td.shade { font-weight: 700; white-space: nowrap; }
+td.model { white-space: nowrap; }
+.tier {
+  font-family: "BaseMonoWide", Courier, monospace;
+  font-size: 10px;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: #555;
+}
+
+.pill {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-family: "BaseMonoWide", Courier, monospace;
+  font-size: 10px;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.pill.in { background: #000; color: #fff; }
+.pill.amb { background: #fff; color: #000; border: 1px solid #000; }
+.pill.gap { background: #f8f8f8; color: #000; border: 1px dashed #000; }
+
+.callout {
+  background: #f8f8f8;
+  padding: 20px 22px;
+  border-radius: 3px;
+  margin: 16px 0 32px;
+}
+.callout p { margin-bottom: 10px; }
+.callout p:last-child { margin-bottom: 0; }
+.callout strong { font-weight: 700; }
+
+ul.unused {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+ul.unused li {
+  padding: 14px 16px;
+  background: #fafafa;
+  border-left: 3px solid #000;
+  margin-bottom: 8px;
+}
+ul.unused li strong {
+  display: inline-block;
+  margin-right: 8px;
+  font-family: "Geogrotesque", "Arial Black", Impact, sans-serif;
+  font-size: 13px;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+}
+ul.unused li .sub {
+  font-family: "BaseMonoWide", monospace;
+  font-size: 10px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: #555;
+  margin-right: 8px;
+}
+
+.action {
+  border: 1px solid #000;
+  padding: 22px 24px;
+  margin-top: 32px;
+}
+.action h2 {
+  margin-top: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 12px;
+}
+.action ol { padding-left: 20px; }
+.action li { margin-bottom: 8px; }
+
+.footer-meta {
+  margin-top: 48px;
+  padding-top: 18px;
+  border-top: 1px solid #e5e5e5;
+  font-family: "BaseMonoWide", monospace;
+  font-size: 11px;
+  letter-spacing: .6px;
+  color: #666;
+  text-transform: uppercase;
+}
+
+@media (max-width: 720px) {
+  body { padding: 32px 16px 64px; }
+  h1 { font-size: 32px; }
+  .summary { grid-template-columns: 1fr; }
+  table { font-size: 12px; }
+  td, th { padding: 8px 10px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="eyebrow">CCLP PDP — Foundation Stick — Section Spec</div>
+<h1>Shade Twin: Model Coverage</h1>
+<p class="lede">Status of the 30 model headshots in the <strong>CCLP PDP Shade Twin</strong> section. We are <em>not</em> swapping any photos — they're already in the section and approved. This doc identifies which models are in the photoshoot data so we can populate per-model styling info (Face Pencil, Neutralizer, Concealer, Brows, etc.). Two source files: <strong>4/7/2026 photoshoot screenshots</strong> and <strong>4/9/2026 Ben Ritter shoot CSV</strong>.</p>
+
+<div class="summary">
+  <div class="stat"><div class="stat-num">18</div><div class="stat-label">Confirmed</div></div>
+  <div class="stat"><div class="stat-num">2</div><div class="stat-label">Ambiguous</div></div>
+  <div class="stat"><div class="stat-num">10</div><div class="stat-label">Unknown</div></div>
+</div>
+
+<h2>1. Confirmed (18) — model identified, styling data ready</h2>
+<table>
+<thead>
+<tr><th>#</th><th>Shade</th><th>Tier</th><th>Model</th><th>Source</th><th>Styling Data</th></tr>
+</thead>
+<tbody>
+<tr><td class="num">1</td><td class="shade">Pale Alabaster</td><td class="tier">very-pale · neutral</td><td class="model">Romilly Newman</td><td class="tier">4/7</td><td>FP 1 · Neutralizer Fair Pink</td></tr>
+<tr><td class="num">5</td><td class="shade">Warm Linen</td><td class="tier">pale · warm</td><td class="model">Yumi</td><td class="tier">4/7</td><td>FP 2 & 3 · Neutralizer Fair Pink</td></tr>
+<tr><td class="num">6</td><td class="shade">Porcelain</td><td class="tier">pale · neutral</td><td class="model">Carly</td><td class="tier">4/9</td><td>NEW Concealer Fair Pink · P.O.P Blush · Navy Gel Liner · NEW Black Mascara · Untinted/yellow/pink Tinted Powder</td></tr>
+<tr><td class="num">7</td><td class="shade">Neutral Fair</td><td class="tier">fair · neutral</td><td class="model">Noreen Buoye</td><td class="tier">4/7</td><td>FP 6 & 8 · Neutralizer Fair Pink</td></tr>
+<tr><td class="num">9</td><td class="shade">Ivory</td><td class="tier">fair · warm</td><td class="model">Ali Stagnitta</td><td class="tier">4/7</td><td>FP 6 & 8 · Neutralizer Fair Pink · Best ES Ash (Brows)</td></tr>
+<tr><td class="num">12</td><td class="shade">Beige</td><td class="tier">light-medium · neutral</td><td class="model">Pilar DeMann</td><td class="tier">4/7</td><td>FP 7 & 9 · Neutralizer Fair Peach</td></tr>
+<tr><td class="num">13</td><td class="shade">Warm Beige</td><td class="tier">light-medium · warm</td><td class="model">Amy</td><td class="tier">4/7</td><td>FP 7 & 9 · Neutralizer Fair Peach</td></tr>
+<tr><td class="num">14</td><td class="shade">Neutral Beige</td><td class="tier">light-medium · neutral</td><td class="model">Krystal Weisberg</td><td class="tier">4/7</td><td>FP 9 & 11 · Neutralizer Light Peach · Dusty Rose Bronzer</td></tr>
+<tr><td class="num">15</td><td class="shade">Medium</td><td class="tier">medium · neutral-warm</td><td class="model">Marissa Turcotte</td><td class="tier">4/7</td><td>FP 11 & 13 · Neutralizer Light Peach · Dusty Rose Bronzer · Light Powder · Sangria Lip Recharge</td></tr>
+<tr><td class="num">16</td><td class="shade">Warm Medium</td><td class="tier">medium · warm</td><td class="model">Tara</td><td class="tier">4/7</td><td>FP 12 & 14 · Neutralizer Light Peachy Pink</td></tr>
+<tr><td class="num">17</td><td class="shade">Neutral Medium</td><td class="tier">medium · neutral</td><td class="model">Mayisha</td><td class="tier">4/7</td><td>FP 15 & 16 · Neutralizer Medium Peachy Pink · Dusty Rose Bronzer</td></tr>
+<tr><td class="num">18</td><td class="shade">Neutral Honey</td><td class="tier">medium · neutral</td><td class="model">Janet</td><td class="tier">4/9</td><td>NEW Concealer Light Peach & Medium Peach · Best ES Dark Brown (Brows) · Sangria Lip Recharge</td></tr>
+<tr><td class="num">20</td><td class="shade">Honey</td><td class="tier">medium-dark · warm</td><td class="model">Hetal</td><td class="tier">4/7</td><td>FP 16 & 17 · NEW Concealer Med Peachy Pink (16 & 17) · L+M Powder · Berry Blush · Black Best Pencil · Lip Recharge Me · Smokey Brown ES (Brows) · Golden Tan + Dusty Rose Bronzer</td></tr>
+<tr><td class="num">21</td><td class="shade">Warm Honey</td><td class="tier">medium-dark · neutral-warm</td><td class="model">Patricia Verdote</td><td class="tier">4/7</td><td>FP 17 & 18 · Neutralizer Medium Peach</td></tr>
+<tr><td class="num">23</td><td class="shade">Hazelnut</td><td class="tier">medium-dark · neutral</td><td class="model">Jonelle Copeland</td><td class="tier">4/7</td><td>FP 17 & 18 · Neutralizer Dark Apricot · Terracotta Bronzer · Lip Recharge Me · Best ES Dark Brown (Brows)</td></tr>
+<tr><td class="num">25</td><td class="shade">Almond</td><td class="tier">dark · warm</td><td class="model">Kristi Kirk</td><td class="tier">4/7</td><td>FP 18 & 19 · Neutralizer Dark Apricot</td></tr>
+<tr><td class="num">28</td><td class="shade">Chestnut</td><td class="tier">deep · cool</td><td class="model">Tracy Severe</td><td class="tier">4/7</td><td>FP 22, 23 & 24 · Best ES Dark Brown (Brows) · Black Best Pencil · Sangria Lip Recharge</td></tr>
+<tr><td class="num">29</td><td class="shade">Deep</td><td class="tier">deep · neutral</td><td class="model">Oumy Kane</td><td class="tier">4/7</td><td>FP 23</td></tr>
+</tbody>
+</table>
+
+<h2>2. Ambiguous (2) — multiple candidates</h2>
+<p style="margin-bottom:14px;">Open the customizer, look at the photo in each shade slot, and tell us which person it is.</p>
+<table>
+<thead>
+<tr><th>#</th><th>Shade</th><th>Tier</th><th>Candidates</th></tr>
+</thead>
+<tbody>
+<tr><td class="num">8</td><td class="shade">Fair</td><td class="tier">fair · cool</td><td><strong>Franki</strong> (4/7) <em>or</em> <strong>Katie</strong> (4/9)</td></tr>
+<tr><td class="num">22</td><td class="shade">Golden</td><td class="tier">medium-dark · warm</td><td><strong>Tomeka Cherry</strong> / <strong>Kayal Clough-Kirlen</strong> / <strong>Maya Moore</strong> (all 4/7) <em>or</em> <strong>Nakia</strong> (4/9)</td></tr>
+</tbody>
+</table>
+
+<h2>3. Unknown (10) — no spreadsheet match</h2>
+<p style="margin-bottom:14px;">The two photoshoot files don't tag any model to these shades. Either the model in the photo is one of the unused extras below (under a different shade tag), or these photos came from an earlier shoot we'd need to dig up.</p>
+<table>
+<thead>
+<tr><th>#</th><th>Shade</th><th>Tier</th><th>Action needed</th></tr>
+</thead>
+<tbody>
+<tr><td class="num">2</td><td class="shade">Alabaster</td><td class="tier">pale · neutral</td><td>Identify model in current photo · pull styling data</td></tr>
+<tr><td class="num">3</td><td class="shade">Bisque</td><td class="tier">pale · pink</td><td>Identify model in current photo · pull styling data</td></tr>
+<tr><td class="num">4</td><td class="shade">Linen</td><td class="tier">pale · neutral</td><td>Identify model in current photo · pull styling data</td></tr>
+<tr><td class="num">10</td><td class="shade">Light</td><td class="tier">light · warm</td><td>Identify model in current photo · pull styling data</td></tr>
+<tr><td class="num">11</td><td class="shade">Sand</td><td class="tier">light · neutral</td><td>Identify model in current photo · pull styling data</td></tr>
+<tr><td class="num">19</td><td class="shade">Medium Honey</td><td class="tier">medium · neutral-warm</td><td>Identify model in current photo · pull styling data</td></tr>
+<tr><td class="num">24</td><td class="shade">Pecan</td><td class="tier">dark · neutral</td><td>Identify model in current photo · pull styling data</td></tr>
+<tr><td class="num">26</td><td class="shade">Walnut</td><td class="tier">dark · neutral</td><td>Identify model in current photo · pull styling data</td></tr>
+<tr><td class="num">27</td><td class="shade">Cinnamon</td><td class="tier">dark · cool</td><td>Identify model in current photo · pull styling data</td></tr>
+<tr><td class="num">30</td><td class="shade">Espresso</td><td class="tier">deep · neutral</td><td>Identify model in current photo · pull styling data</td></tr>
+</tbody>
+</table>
+
+<h2>Unused Models in the Photoshoot Data</h2>
+<p style="margin-bottom:14px;">These five appear in the spreadsheets but their tagged Foundation Stick shade is already covered by another model (or, in Nora's case, no FS shade). If anyone recognizes them in one of the 10 unknown shade photos, they can be redirected to fill that slot.</p>
+<ul class="unused">
+  <li><strong>Nakia</strong> <span class="sub">Tagged Golden · 4/9</span> Bronze Bright Drops · NEW Brown Mascara · Cinnamon & Terracotta Bronzer/Gel · Cocoa · Best ES Dark Brown (Brows) · Medium Tinted Powder · Black Best Pencil · Brown + NEW Brown Mascara as liner · Lip Recharge Me</li>
+  <li><strong>Maya Moore</strong> <span class="sub">Tagged Golden · 4/7</span> NEW Concealer 17 & 18 · FP 17 & 18</li>
+  <li><strong>Kayal Clough-Kirlen</strong> <span class="sub">Tagged Golden · 4/7</span> FP 18 & 19 · Neutralizer Dark Apricot</li>
+  <li><strong>Katie</strong> <span class="sub">Tagged Fair · 4/9</span> FP Fair Peach · Best ES Ash (Brows) · Pink Lilac Lip Recharge · Dusty Rose Bronzer · NEW Brown Mascara on lashes & as eyeliner</li>
+  <li><strong>Nora</strong> <span class="sub">No FS shade — JETM Ivory only · 4/9</span> FP 6 · Fair Pink Concealer · Best ES Ash (Brows) · Untinted/yellow/light Powder · Sandy Blush · Dusty Rose Bronzer · Dahlia & Pink Lilac Lip Recharge · Brown Best Pencil · Gilded & Rose Gold Illuminating Drops</li>
+</ul>
+
+<div class="action">
+<h2>What we need from the team</h2>
+<ol>
+  <li><strong>Resolve the 2 ambiguous shades</strong> — open the section in the customizer and confirm whether the Fair photo is Franki or Katie, and whether the Golden photo is Tomeka, Kayal, Maya, or Nakia.</li>
+  <li><strong>Identify the 10 unknown models</strong> — for each of the 10 unknown shade slots, look at the photo and either match it to one of the 5 unused models above, or flag that we need to source the styling data from a different shoot/file.</li>
+  <li><strong>Confirm scope on per-model "what else she's wearing"</strong> — the section's schema currently shows the same 3 companion products (Magic Hour balm, On The Rocks lip, Face Pencil 12) for every model. To show each model's actual face pencil + neutralizer + lip + brow, the schema needs a small update so pairing blocks can be tied to a specific shade. Worth doing? Yes / No.</li>
+</ol>
+</div>
+
+<div class="footer-meta">CCLP Quiz V2 · Foundation Stick · Section: cclp-pdp-shade-twin · Updated 2026-05-08</div>
+
+</div>
+</body>
+</html>
