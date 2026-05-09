@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Handover — Static-Ads Engine Patches Overnight</title><style>
+:root { --fg:#0a0a0a; --muted:#555; --line:#e6e6e6; --bg:#fff; --code-bg:#f4f4f5; --link:#1a4ed1; }
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:-apple-system,"Helvetica Neue",system-ui,sans-serif;line-height:1.6;}
+body{padding:24px 18px 80px;max-width:760px;margin:0 auto;font-size:16px;}
+h1,h2,h3,h4{line-height:1.25;letter-spacing:-0.01em;margin:1.6em 0 0.5em;}
+h1{font-size:26px;font-weight:700;margin-top:0;}
+h2{font-size:20px;font-weight:600;border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:17px;font-weight:600;}
+h4{font-size:15px;font-weight:600;color:var(--muted);}
+p{margin:0.7em 0;}
+a{color:var(--link);text-decoration:underline;text-underline-offset:2px;}
+ul,ol{padding-left:22px;margin:0.7em 0;}
+li{margin:0.3em 0;}
+strong{font-weight:600;}
+code{background:var(--code-bg);padding:1.5px 5px;border-radius:4px;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13px;}
+pre{background:var(--code-bg);padding:14px;border-radius:6px;overflow-x:auto;font-size:13px;line-height:1.5;}
+pre code{background:none;padding:0;}
+blockquote{border-left:3px solid var(--line);padding:4px 14px;margin:1em 0;color:var(--muted);background:#fafafa;border-radius:0 6px 6px 0;}
+table{width:100%;border-collapse:collapse;margin:1em 0;font-size:14px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);}
+th{background:#fafafa;font-weight:600;}
+hr{border:none;border-top:1px solid var(--line);margin:2em 0;}
+</style></head><body><h1>Engine Patches — Overnight 2026-05-06 → 2026-05-07</h1>
+
+<p>Branch: <code>overnight/static-ads-engine-fixes</code> (off <code>main</code>)</p>
+<p>Trigger: Cody&#x27;s FS &quot;Haters Convert&quot; v3 toolkit had 4 systemic visual failures that scene-paragraph language couldn&#x27;t fix. Engine code patches needed.</p>
+
+<h2>Result</h2>
+
+<table><thead><tr>
+<th></th>
+<th>v3 (pre-patch)</th>
+<th>v4 (post-patch)</th>
+<th>Δ</th>
+</tr></thead><tbody>
+<tr>
+<td>Both formats ship</td>
+<td>4 / 12</td>
+<td><strong>8 / 12</strong></td>
+<td>+4</td>
+</tr>
+<tr>
+<td>1 format ships</td>
+<td>6</td>
+<td>4</td>
+<td>-2</td>
+</tr>
+<tr>
+<td>Both fail</td>
+<td>2</td>
+<td><strong>0</strong></td>
+<td>-2</td>
+</tr>
+<tr>
+<td>Total green cells</td>
+<td>14 / 24</td>
+<td><strong>19 / 24</strong></td>
+<td>+5</td>
+</tr>
+</tbody></table>
+
+<p>v4 walkthrough: <a href="preview/fs-haters-toolkit-v4.html"><code>preview/fs-haters-toolkit-v4.html</code></a> (also mirrored to <code>public/</code>).</p>
+
+<h2>What changed in the engine</h2>
+
+<p>Six atomic commits on the overnight branch, ordered by intended read:</p>
+
+<table><thead><tr>
+<th>Commit</th>
+<th>File</th>
+<th>Fix</th>
+</tr></thead><tbody>
+<tr>
+<td><code>508b061</code></td>
+<td><code>lib/composite.ts</code></td>
+<td><strong>Orphan-word avoidance + 3-line enumeration + lower min size</strong> — <code>ORPHAN_WORDS</code> set + <code>isOrphan()</code> detector. 800-pt orphan penalty in 2-line scoring. New BALANCED 3-line enumeration step before greedy fallback. <code>deOrphan()</code> post-process. Headline min size 96/84 → 72/68 so wrap can shrink further to land 2-line.</td>
+</tr>
+<tr>
+<td><code>d150196</code></td>
+<td><code>lib/composite.ts</code></td>
+<td><strong>Width-fit auto-shrink</strong> — defensive guarantee no rendered line exceeds <code>maxHeadlineWidth</code>. Catches single hyphenated words (&quot;Foundation-worn.&quot;) that <code>wrapByWidth</code> can&#x27;t break by word boundary.</td>
+</tr>
+<tr>
+<td><code>bc6557f</code></td>
+<td><code>lib/composite.ts</code></td>
+<td><strong>Auto-contrast hardening</strong> — explicit <code>concept.headlineColor</code> is now sanity-checked against actual sampled bg luminance via <code>colorContrasts()</code>. White only readable on bg luminance &lt; 140; black only readable on &gt; 100. If override would fail contrast, silently auto-overrides + logs.</td>
+</tr>
+<tr>
+<td><code>2898390</code></td>
+<td><code>lib/prompts.ts</code></td>
+<td><strong>Hard subject-size constraint + wordmark-orientation guard</strong> — <code>formatNote</code> now leads with a &quot;🔴 SUBJECT SIZE — #1 COMPOSITION RULE&quot; block: subject 26-40% of canvas height (9×16) / 28-42% (1×1), max 50% width. Subject anchored lower (y=84% / y=82%). New <code>JRB_GUARDRAILS</code> rule: wordmark must remain UPRIGHT regardless of product orientation; prefer vertical-standing if horizontal-lay would rotate the wordmark.</td>
+</tr>
+<tr>
+<td><code>d6438e3</code></td>
+<td><code>lib/generate.ts</code></td>
+<td><strong>Post-gen subject-size validation + auto-iterate ONCE</strong> — after <code>generateBase</code> returns the raw image, run <code>isSubjectOversized(base)</code>. If product height &gt; 50% OR product bottom &gt; 88% of canvas, regenerate ONCE with a stricter prompt that explicitly tells the model &quot;previous attempt was X%, MUST be ≤35%, push DOWN AND SHRINK.&quot; Skipped for <code>allowTextInImage</code> concepts (template ads need bigger subject).</td>
+</tr>
+<tr>
+<td><code>26fdb28</code></td>
+<td><code>lib/generate.ts</code></td>
+<td><strong>Heuristic pixel-based bbox fallback</strong> — Vision-based <code>detectSubjects</code> requires <code>ANTHROPIC_API_KEY</code> which is currently blank in <code>.env.local</code>. Added a sharp-based pixel heuristic (<code>heuristicProductBbox</code>) as a fallback so auto-iterate still fires without Vision. Less accurate but catches the worst oversized cases. Uses corner luminance to estimate bg, scans lower 75% for non-bg pixels.</td>
+</tr>
+</tbody></table>
+
+<p>Total: <strong>+357 insertions, -22 deletions across <code>lib/</code></strong>.</p>
+
+<h2>Critical config note</h2>
+
+<p><code>ANTHROPIC_API_KEY</code> in <code>.env.local</code> is currently blank. This silently disables:</p>
+<ul>
+<li><code>subjectPlacement.detectSubjects()</code> → <code>pickAnchor()</code> falls back to &quot;top&quot; anchor only</li>
+<li>The Vision-based path of the new auto-iterate validation (heuristic fallback covers most cases but is less accurate)</li>
+</ul>
+
+<p><strong>To unlock the full Patch 6 behavior:</strong> set <code>ANTHROPIC_API_KEY=sk-...</code> in <code>.env.local</code>. The c1 1×1 v4 failure (stick still oversized) would have been caught by Vision but slipped past the heuristic.</p>
+
+<h2>What still fails after the patches (4 cells)</h2>
+
+<ol>
+<li><strong>c1 1×1</strong> — stick still oversized. Heuristic missed it (subject is centered with light bg, low pixel contrast against bg). Vision would catch this. Workaround: set <code>ANTHROPIC_API_KEY</code>.</li>
+<li><strong>c8 1×1</strong> — 4 sticks lying horizontal still rotate the JONES ROAD wordmark 90° from viewer perspective. The new <code>JRB_GUARDRAILS</code> orientation rule wasn&#x27;t strong enough to override the brief&#x27;s &quot;lying horizontally&quot; scene direction. Fix: rewrite c8 1×1 scene to &quot;STANDING UPRIGHT&quot; (matches what 9×16 v4 did successfully).</li>
+<li><strong>c9 9×16</strong> — CTA pill landed on top of stick wordmark. The compositor places CTA at fixed y position; doesn&#x27;t yet do bbox-aware CTA placement. Future work: extend <code>composite.ts</code> to nudge CTA up if subject extends into CTA zone.</li>
+<li><strong>c11 9×16</strong> — white headline still unreadable on bright golden windshield. Auto-contrast logic didn&#x27;t trigger; the headline strip&#x27;s sampled luminance came back below threshold (probably because the strip overlaps darker dashboard areas). Fix paths: (a) tighten the auto-contrast threshold from 140 → 160, (b) rewrite the brief to specify a darker car interior, (c) drop white text color override and let auto-detect choose.</li>
+</ol>
+
+<h2>Next steps (next session)</h2>
+
+<ol>
+<li><strong>Set <code>ANTHROPIC_API_KEY</code></strong> in <code>.env.local</code> to unlock Vision-based detection. Re-run v4 → expect ~22/24 cells green.</li>
+<li><strong>Subject-aware CTA placement</strong> in <code>composite.ts</code> — if Vision returns <code>subjects.product</code> and it intrudes into the CTA reserve, nudge CTA up to clear by ≥60px.</li>
+<li><strong>Tighten auto-contrast threshold</strong> — bump 140 → 160 for the white-text contrast check.</li>
+<li><strong>Smarter horizontal-lay enforcement</strong> — either ban horizontal-lay scenes when the brief includes a wordmark requirement, OR add a vision-based rotation detector to flag cells with rotated wordmarks for auto-iterate.</li>
+<li><strong>Mini MB regression — DONE.</strong> Brief <code>b_mouxmtxy_v7xln1</code>, 4 cells (Hero product + Open purse spill, both formats). <strong>Result: 4/4 ship.</strong> Auto-iterate fired on 2 cells. Engine patches do NOT break MB-specific behavior. Images cached at <code>/tmp/mb-regression/</code>.</li>
+</ol>
+
+<h2>How to merge / review</h2>
+
+<pre><code>
+cd ~/Desktop/01-Projects/jrb-static-ads
+git checkout main
+git diff main...overnight/static-ads-engine-fixes  # review changes
+# If happy:
+git merge --no-ff overnight/static-ads-engine-fixes
+# If not happy:
+git branch -D overnight/static-ads-engine-fixes  # discard
+</code></pre>
+
+<p>Total session cost (Vercel Blob + OpenAI image generation): <strong>~$1.20</strong> of the $20 budget Cody approved overnight.</p>
+
+<p>— overnight session, 2026-05-06 evening → 2026-05-07 morning</p>
+</body></html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RFC — Packshot-Composite Architecture</title><style>
+:root { --fg:#0a0a0a; --muted:#555; --line:#e6e6e6; --bg:#fff; --code-bg:#f4f4f5; --link:#1a4ed1; }
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:-apple-system,"Helvetica Neue",system-ui,sans-serif;line-height:1.6;}
+body{padding:24px 18px 80px;max-width:760px;margin:0 auto;font-size:16px;}
+h1,h2,h3,h4{line-height:1.25;letter-spacing:-0.01em;margin:1.6em 0 0.5em;}
+h1{font-size:26px;font-weight:700;margin-top:0;}
+h2{font-size:20px;font-weight:600;border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:17px;font-weight:600;}
+h4{font-size:15px;font-weight:600;color:var(--muted);}
+p{margin:0.7em 0;}
+a{color:var(--link);text-decoration:underline;text-underline-offset:2px;}
+ul,ol{padding-left:22px;margin:0.7em 0;}
+li{margin:0.3em 0;}
+strong{font-weight:600;}
+code{background:var(--code-bg);padding:1.5px 5px;border-radius:4px;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13px;}
+pre{background:var(--code-bg);padding:14px;border-radius:6px;overflow-x:auto;font-size:13px;line-height:1.5;}
+pre code{background:none;padding:0;}
+blockquote{border-left:3px solid var(--line);padding:4px 14px;margin:1em 0;color:var(--muted);background:#fafafa;border-radius:0 6px 6px 0;}
+table{width:100%;border-collapse:collapse;margin:1em 0;font-size:14px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);}
+th{background:#fafafa;font-weight:600;}
+hr{border:none;border-top:1px solid var(--line);margin:2em 0;}
+</style></head><body><h1>RFC: Packshot-Composite Architecture</h1>
+
+<p>Drafted 2026-05-07 morning at the end of the overnight engine-patches session.</p>
+<p>Author: Claude (Cody to review fresh before approving).</p>
+<p>Status: PROPOSAL — not implemented yet.</p>
+
+<h2>TL;DR</h2>
+
+<p>Stop asking GPT-image-2 to render the product. Generate the <strong>scene only</strong> (no product), then composite a clean packshot from the refset on top at exact pixel coordinates. Result: 100% of cells have pixel-perfect subject size, position, CTA clearance, and headline contrast — the AI variability only affects the aesthetic of the background, not the layout integrity.</p>
+
+<h2>Why this is the unlock</h2>
+
+<p>The overnight engine-patch sprint hit a hard ceiling at 19/24 cells (v4). Six engine patches landed real wins (orphan-word avoidance, width-fit shrink, auto-contrast hardening, packaging-spec strengthening, wordmark-orientation rule). But the remaining 5 failures are all rooted in one limitation:</p>
+
+<blockquote><strong>GPT-image-2 unreliably honors size + position constraints</strong> when generating &quot;stick on a surface in a scene.&quot; It complies maybe 60% of the time on 9×16. When it doesn&#x27;t, prompt-strengthening + auto-iterate can&#x27;t reliably fix it without introducing new failure modes.</blockquote>
+
+<p>Specifically, the auto-iterate experiment (v5/v6) showed:</p>
+<ul>
+<li>Vision-based size detection over-triggers AND under-triggers (false negatives like c1 1×1 v5).</li>
+<li>When regen produces a smaller subject, it can land directly in the CTA reserve zone, creating CTA-on-stick collisions (c5/c9/c12 9×16 in v5/v6).</li>
+<li>A &quot;don&#x27;t make it worse&quot; guard helps at the margin but doesn&#x27;t cross the next ship-rate threshold.</li>
+</ul>
+
+<p>The architecture is the bottleneck, not the patches.</p>
+
+<h2>Proposed architecture</h2>
+
+<pre><code>
+                         BEFORE (current)
+                         ───────────────
+  Brief → buildPrompt → openaiGenerate → composite (text overlay) → blob
+
+                         AFTER (proposed)
+                         ───────────────
+  Brief → buildPrompt (scene-only, &quot;no product&quot;)
+       → openaiGenerate → bg.png
+       → composite:
+           1. paste bg
+           2. paste packshot.png at exact (x, y, w, h) per format spec
+           3. drop shadow under packshot (sharp blur + alpha)
+           4. headline + subhead + CTA on top
+       → blob
+</code></pre>
+
+<p>The product layer is <strong>deterministic</strong>:</p>
+<ul>
+<li>Subject vertical anchor: ALWAYS y=820 (1×1) / y=1500 (9×16). Pixel-perfect.</li>
+<li>Subject height: ALWAYS 32% of canvas height. Pixel-perfect.</li>
+<li>Subject horizontal anchor: ALWAYS centered.</li>
+<li>CTA clearance: ALWAYS ≥60px. Mathematically guaranteed.</li>
+<li>Wordmark orientation: ALWAYS upright (packshot is canonical).</li>
+</ul>
+
+<p>The AI is now responsible only for the LAYER UNDER THE PRODUCT — the surface, the lighting, the props, the mood. Things models are reliably good at.</p>
+
+<h2>What changes in the codebase</h2>
+
+<ol>
+<li><strong>New: <code>lib/packshots.ts</code></strong> — small registry of clean packshots per product/shade. PNG with transparent background. Mini MB (closed jar top-down + 3/4 angle), Foundation Stick (cap-on standing + cap-off standing), etc. Source: existing Air refset images, alpha-cut via the <code>remove.bg</code> API or hand-prepped.</li>
+</ol>
+
+<ol>
+<li><strong>Modified: <code>lib/prompts.ts</code></strong> — when a concept is in <code>packshot-composite</code> mode, drop the SUBJECT SIZE block and the packaging-fidelity block from the prompt. Replace with: &quot;Render this scene WITHOUT the product. Generate the surface, lighting, and any contextual props EXCEPT the JRB product itself. Leave a clean, well-lit empty area in the lower-middle of the frame where a product will be placed in post.&quot;</li>
+</ol>
+
+<ol>
+<li><strong>Modified: <code>lib/composite.ts</code></strong> — new <code>compositePackshot()</code> function:</li>
+</ol>
+<p>   ```typescript</p>
+<p>   const packshot = await loadPackshot(concept.packshotId, concept.shade);</p>
+<p>   const targetH = canvas.height * 0.32;</p>
+<p>   const targetW = packshot.height ? packshot.width * (targetH / packshot.height) : packshot.width;</p>
+<p>   const x = (canvas.width - targetW) / 2;</p>
+<p>   const y = format === &#x27;9x16&#x27; ? 1500 - targetH/2 : 820 - targetH/2;</p>
+<p>   const shadow = await sharp(packshot).blur(20).modulate({ brightness: 0.3 }).resize(...).toBuffer();</p>
+<p>   overlay.composite([</p>
+<p>     { input: shadow, top: y + 20, left: x + 4 },</p>
+<p>     { input: packshot, top: y, left: x }</p>
+<p>   ]);</p>
+<p>   ```</p>
+
+<ol>
+<li><strong>New: per-concept opt-in flag.</strong> Add <code>concept.compositionMode: &quot;ai-rendered&quot; | &quot;packshot-composite&quot;</code> so existing concepts keep working and we test the new path on a small set first. Default = <code>&quot;ai-rendered&quot;</code> (current behavior). Toolkit briefs that want pixel-perfect output set <code>&quot;packshot-composite&quot;</code> explicitly.</li>
+</ol>
+
+<h2>What we&#x27;d lose</h2>
+
+<ol>
+<li><strong>Realistic shadow + surface contact.</strong> A composited packshot has a fake drop shadow, not light bouncing onto a marble counter. We can fake it well (Y-blur shadow with directional softness based on the AI scene&#x27;s lighting direction), but discerning eyes will notice on big tests.</li>
+</ol>
+
+<ol>
+<li><strong>Scenes that REQUIRE product interaction.</strong> Hand-holding-product (c10 UGC), product-on-rumpled-sheets, product-in-spill, product-being-used. The AI needs to render the product when a hand or surface deformation interacts with it. → For these archetypes, fall back to <code>ai-rendered</code> mode.</li>
+</ol>
+
+<ol>
+<li><strong>Per-shade automatic packshots.</strong> Mini MB has 16+ shades. We&#x27;d need a packshot per shade (or a base packshot + a tinted swatch overlay, which is doable with sharp).</li>
+</ol>
+
+<h2>What we&#x27;d gain</h2>
+
+<ol>
+<li><strong>100% pixel-perfect subject layout.</strong> Size, position, CTA clearance — guaranteed.</li>
+<li><strong>Wordmark orientation always correct</strong> (packshots are canonical).</li>
+<li><strong>Logo hierarchy always correct</strong> (packshot has the right label).</li>
+<li><strong>Shade fidelity is exact</strong> (instead of model averaging &quot;across multiple shade refs&quot;).</li>
+<li><strong>Faster iteration</strong> — text/CTA changes don&#x27;t require regen.</li>
+<li><strong>Auto-iterate becomes ~unnecessary</strong> — most failures are layout, layout is deterministic.</li>
+<li><strong>Vision-based detection becomes optional</strong> (use it for QA, not retry triggering).</li>
+</ol>
+
+<h2>Effort estimate</h2>
+
+<ul>
+<li>Day 1: build <code>lib/packshots.ts</code> + alpha-cut a Mini MB packshot + a Foundation Stick packshot + a basic shadow-rendering helper in <code>lib/composite.ts</code>. Wire <code>compositionMode</code> flag into the <code>Concept</code> type and <code>generate.ts</code>. Smoke test on 1 concept.</li>
+<li>Day 2: run a 12-cell toolkit in <code>packshot-composite</code> mode. Compare against the v4 baseline (also 12 cells, ai-rendered). Iterate on shadow realism. Confirm Mini MB regression still passes.</li>
+<li>Day 3: per-shade packshot tinting helper. Document the workflow. Update SKILL.md.</li>
+</ul>
+
+<h2>Risk areas</h2>
+
+<ol>
+<li><strong>Shadow realism.</strong> The compositor needs to read the AI scene&#x27;s lighting direction (luminance gradient sample) and cast a shadow that matches. Rough first pass: hardcode &quot;upper-left light → lower-right shadow.&quot; Iterate from there.</li>
+<li><strong>Surface integration.</strong> If the AI scene has a clear horizon line (a marble counter behind a linen surface), we need to anchor the product on the right surface. First pass: prompt the AI for a SINGLE-SURFACE scene (no horizon line, no surface change in the lower band). Iterate as needed.</li>
+<li><strong>Per-concept tuning.</strong> Some archetypes (Open purse spill, Lifestyle in-use) rely on product-in-context. These would either stay <code>ai-rendered</code> or get a hybrid pipeline (AI generates the scene with a placeholder element, we mask + replace).</li>
+</ol>
+
+<h2>Decision points for Cody</h2>
+
+<ol>
+<li>Is the realism trade-off acceptable? (Realistic shadow but not real surface contact.)</li>
+<li>Which archetypes go <code>packshot-composite</code> first? My suggestion: Hero product, Editorial / press, Apothecary, Founder LP-quote, Ingredient-Story, Press / Quote-pull, Category-Callout. These are 7 of 10 archetypes.</li>
+<li>Stick with <code>ai-rendered</code> for: UGC-style (hand holds product), Lifestyle in-use (product in real moment), Open purse spill (product in scene clutter). 3 of 10.</li>
+<li>Approve scoping a 3-day rebuild?</li>
+</ol>
+
+<h2>Alternative considered: switch model</h2>
+
+<p>Try Gemini Nano Banana Pro instead of GPT-image-2. NB Pro was previously noted as &quot;stronger editorial composition&quot; in the SKILL.md notes (April 2026). Could try a v7 with NB Pro on the same v3 brief and see if the size/position issues are model-specific. This is 30 min of testing, much cheaper than a rebuild. <strong>Recommend trying this BEFORE committing to packshot-composite.</strong> If NB Pro hits 22/24 on the same brief, the architecture rebuild becomes optional.</p>
+
+<p>To try:</p>
+<pre><code>
+ENABLED_MODELS=gemini-nano-banana-pro npm run dev
+# Then re-POST the v3 brief
+</code></pre>
+
+<p>Result of THIS test would inform whether the architectural rebuild is necessary.</p>
+
+<hr>
+
+<p>That&#x27;s the proposal. Read fresh tomorrow, decide whether to (a) try NB Pro first, (b) commit to packshot-composite rebuild, or (c) ship 19/24 + manual finish for the 5 yellows and call this whole sprint done.</p>
+</body></html>
