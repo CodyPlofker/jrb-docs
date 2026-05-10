@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Gift for Mom — Claude Training Sessions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rose: #e8b4b8;
+    --rose-deep: #c08081;
+    --blush: #fdf2f1;
+    --cream: #fbf6ef;
+    --gold: #b8935a;
+    --gold-light: #d4af7a;
+    --ink: #2a1f1d;
+    --ink-soft: #5a4a47;
+    --paper: #fefcf8;
+  }
+
+  html, body {
+    background:
+      radial-gradient(ellipse at top left, rgba(232,180,184,0.25), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(184,147,90,0.15), transparent 50%),
+      linear-gradient(180deg, #fbf6ef 0%, #f5ebe0 100%);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    line-height: 1.6;
+    padding: 40px 20px;
+  }
+
+  .stage {
+    max-width: 720px;
+    margin: 0 auto;
+    perspective: 1500px;
+  }
+
+  /* Floating florals */
+  .floral {
+    position: fixed;
+    pointer-events: none;
+    opacity: 0.4;
+    z-index: 0;
+  }
+  .floral.tl { top: -20px; left: -20px; transform: rotate(-15deg); }
+  .floral.br { bottom: -20px; right: -20px; transform: rotate(165deg); }
+
+  /* Gift card */
+  .card {
+    position: relative;
+    background: var(--paper);
+    border-radius: 4px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.9) inset,
+      0 2px 4px rgba(0,0,0,0.04),
+      0 20px 60px rgba(80,40,30,0.15),
+      0 40px 120px rgba(80,40,30,0.08);
+    padding: 70px 60px 60px;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 14px;
+    border: 1px solid rgba(184,147,90,0.4);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 18px;
+    border: 1px solid rgba(184,147,90,0.2);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  /* Top ornament */
+  .ornament {
+    text-align: center;
+    margin-bottom: 28px;
+    color: var(--gold);
+    font-size: 22px;
+    letter-spacing: 8px;
+  }
+
+  .eyebrow {
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--rose-deep);
+    margin-bottom: 10px;
+  }
+
+  .greeting {
+    text-align: center;
+    font-family: 'Pinyon Script', cursive;
+    font-size: 76px;
+    line-height: 1;
+    color: var(--rose-deep);
+    margin-bottom: 6px;
+    font-weight: 400;
+  }
+
+  .greeting-sub {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--ink-soft);
+    margin-bottom: 36px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 36px;
+    max-width: 320px;
+  }
+  .divider .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+  }
+  .divider .ornament-mid {
+    margin: 0 16px;
+    color: var(--gold);
+    font-size: 14px;
+    letter-spacing: 4px;
+  }
+
+  /* Gift label */
+  .gift-label {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+
+  .gift-title {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 56px;
+    line-height: 1.05;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .gift-title em {
+    font-style: italic;
+    color: var(--rose-deep);
+  }
+
+  .gift-subtitle {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 20px;
+    color: var(--ink-soft);
+    margin-bottom: 44px;
+  }
+
+  /* Note */
+  .note {
+    background: linear-gradient(180deg, rgba(253,242,241,0.5), rgba(253,242,241,0.2));
+    border-left: 2px solid var(--rose);
+    padding: 28px 32px;
+    margin: 0 0 44px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .note-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--rose-deep);
+    margin-bottom: 14px;
+  }
+
+  .note p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+
+  .note p:last-child { margin-bottom: 0; }
+
+  /* What's included */
+  .included {
+    margin-bottom: 44px;
+  }
+
+  .included-title {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .included-list {
+    list-style: none;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .included-list li {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--ink);
+    padding: 16px 0 16px 36px;
+    position: relative;
+    border-bottom: 1px dashed rgba(184,147,90,0.25);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 12px;
+  }
+
+  .included-list li:last-child {
+    border-bottom: none;
+  }
+
+  .included-list li::before {
+    content: '✦';
+    position: absolute;
+    left: 8px;
+    top: 18px;
+    color: var(--rose-deep);
+    font-size: 14px;
+  }
+
+  .included-list .item-name {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .included-list .item-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--rose-deep);
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+
+  .included-list li em {
+    flex-basis: 100%;
+    display: block;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-weight: 300;
+  }
+
+  .included-total {
+    text-align: right;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(184,147,90,0.3);
+    font-family: 'Cormorant Garamond', serif;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .included-total .total-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-right: 10px;
+  }
+
+  .included-total .total-value {
+    font-size: 22px;
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  /* Voucher */
+  .voucher {
+    background: linear-gradient(135deg, #faf3e8 0%, #f5e8d3 100%);
+    border: 1px solid rgba(184,147,90,0.35);
+    border-radius: 4px;
+    padding: 28px 24px;
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .voucher::before, .voucher::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: var(--paper);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .voucher::before { left: -9px; }
+  .voucher::after { right: -9px; }
+
+  .voucher-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .voucher-code {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: 6px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .voucher-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--ink-soft);
+  }
+
+  /* Signature */
+  .signature {
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .signature-prelude {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+
+  .signature-name {
+    font-family: 'Pinyon Script', cursive;
+    font-size: 56px;
+    color: var(--rose-deep);
+    line-height: 1;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 44px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(184,147,90,0.2);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* Hearts decoration */
+  .hearts {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    opacity: 0.15;
+  }
+  .hearts.tl { top: 30px; left: 30px; }
+  .hearts.tr { top: 30px; right: 30px; transform: scaleX(-1); }
+  .hearts.bl { bottom: 30px; left: 30px; transform: scaleY(-1); }
+  .hearts.br { bottom: 30px; right: 30px; transform: scale(-1, -1); }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    body { padding: 20px 12px; }
+    .card { padding: 50px 28px 40px; }
+    .greeting { font-size: 56px; }
+    .gift-title { font-size: 38px; }
+    .gift-subtitle { font-size: 17px; }
+    .note { padding: 22px 20px; }
+    .note p { font-size: 17px; }
+    .included-list li { font-size: 16px; }
+    .signature-name { font-size: 44px; }
+    .voucher-code { font-size: 22px; letter-spacing: 4px; }
+    .hearts { width: 50px; height: 50px; }
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .card { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <article class="card">
+
+    <!-- Decorative corner hearts -->
+    <svg class="hearts tl" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30 20 Q15 20 15 35 Q15 50 50 75 Q85 50 85 35 Q85 20 70 20 Q60 20 50 30 Q40 20 30 20 Z"
+            fill="#e8b4b8" stroke="#c08081" stroke-width="0.5"/>
+    </svg>
+    <svg class="hearts br" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30 20 Q15 20 15 35 Q15 50 50 75 Q85 50 85 35 Q85 20 70 20 Q60 20 50 30 Q40 20 30 20 Z"
+            fill="#e8b4b8" stroke="#c08081" stroke-width="0.5"/>
+    </svg>
+
+    <div class="ornament">✦ ❦ ✦</div>
+
+    <p class="eyebrow">Mother's Day · 2026</p>
+    <h1 class="greeting">For Mom</h1>
+    <p class="greeting-sub">with all my love</p>
+
+    <div class="divider">
+      <span class="line"></span>
+      <span class="ornament-mid">❦</span>
+      <span class="line"></span>
+    </div>
+
+    <p class="gift-label">This Year, A Gift Of</p>
+    <h2 class="gift-title">Claude <em>Training</em><br>Sessions</h2>
+    <p class="gift-subtitle">private one-on-one lessons with Cody</p>
+
+    <div class="note">
+      <p class="note-heading">Mom —</p>
+      <p>You've watched me build a career in this AI world from the outside, and I think it's time you got to play with the magic too. So this year, instead of a card, I'm giving you me.</p>
+      <p>We'll sit down together — as many times as you want — and I'll teach you how to use Claude. Writing, planning, brainstorming, organizing your life, asking it absolutely anything. By the end, you'll have your own little assistant in your pocket.</p>
+      <p>It's hours of my time. Which, honestly, is the best part for me too.</p>
+    </div>
+
+    <div class="included">
+      <p class="included-title">✦ What's Included ✦</p>
+      <ul class="included-list">
+        <li>
+          <span class="item-name">Two-hour Claude training sessions</span>
+          <span class="item-value">$2,000</span>
+          <em>private one-on-one with Cody, as many as you'd like</em>
+        </li>
+        <li>
+          <span class="item-name">Six connector integrations</span>
+          <span class="item-value">included</span>
+          <em>your email, calendar, and the apps you live in, wired into Claude</em>
+        </li>
+        <li>
+          <span class="item-name">On-demand concierge</span>
+          <span class="item-value">$750</span>
+          <em>text or call your favorite son anytime something's stuck</em>
+        </li>
+      </ul>
+      <div class="included-total">
+        <span class="total-label">Total Value</span>
+        <span class="total-value">$2,750 +</span>
+      </div>
+    </div>
+
+    <div class="voucher">
+      <p class="voucher-label">Redeemable For</p>
+      <p class="voucher-code">BESTSON</p>
+      <p class="voucher-value">never expires · transferable to no one</p>
+    </div>
+
+    <div class="signature">
+      <p class="signature-prelude">All my love,</p>
+      <p class="signature-name">Cody</p>
+    </div>
+
+    <div class="footer">Happy Mother's Day · May 10, 2026</div>
+
+  </article>
+</div>
+
+</body>
+</html>
