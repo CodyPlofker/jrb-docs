@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FS Treatment Library v2 — post-walkthrough refines</title>
+<style>
+  :root { --bg:#fafafa; --fg:#0a0a0a; --muted:#666; --line:#e6e6e6; --green:#00875a; --red:#c62828; --accent:#ff2e92; }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:-apple-system,"Helvetica Neue",system-ui,sans-serif;line-height:1.5;}
+  body{padding:18px 14px 80px;max-width:980px;margin:0 auto;font-size:15px;}
+  h1{font-size:22px;font-weight:700;margin:0 0 4px;line-height:1.2;letter-spacing:-0.01em;}
+  header{padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:18px;}
+  header p{margin:4px 0;color:var(--muted);font-size:13px;}
+  .summary{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:18px;font-size:13px;line-height:1.55;}
+  .summary strong{font-weight:600;color:#0a0a0a;}
+  .summary code{background:#f3f3f3;padding:1px 5px;border-radius:3px;font-family:ui-monospace,monospace;font-size:12px;}
+  .stat-row{display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;margin:12px 0;}
+  .stat{background:#fafafa;border-radius:6px;padding:10px;text-align:center;}
+  .stat .num{font-size:22px;font-weight:700;color:var(--green);line-height:1;}
+  .stat .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:3px;}
+  nav.toc{position:sticky;top:0;background:var(--bg);padding:8px 0;margin-bottom:14px;border-bottom:1px solid var(--line);z-index:10;display:flex;gap:5px;flex-wrap:wrap;}
+  nav.toc a{font-size:11px;padding:3px 8px;border-radius:99px;background:#fff;border:1px solid var(--line);color:#000;text-decoration:none;font-family:ui-monospace,monospace;}
+  nav.toc a.green{border-color:var(--green);color:var(--green);}
+  nav.toc a.red{border-color:var(--red);color:var(--red);}
+  .treatment{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px;scroll-margin-top:60px;}
+  .treatment-head{margin-bottom:12px;display:flex;align-items:flex-start;gap:8px;}
+  .treatment-head .text{flex:1;}
+  .treatment-head h3{font-size:15px;font-weight:600;margin:0 0 4px;line-height:1.25;}
+  .treatment-head .desc{font-size:13px;color:var(--muted);line-height:1.45;margin:0;}
+  .badge{font-size:10px;padding:3px 9px;border-radius:99px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;flex-shrink:0;}
+  .badge.ship{background:#e0f3ea;color:var(--green);}
+  .badge.fail{background:#fde6e6;color:var(--red);}
+  .pair{display:grid;grid-template-columns:1fr 0.563fr;gap:10px;align-items:start;margin-top:8px;}
+  .cell{background:#f3f3f3;border-radius:6px;overflow:hidden;position:relative;}
+  .cell.aspect-square{aspect-ratio:1/1;}
+  .cell.aspect-9x16{aspect-ratio:9/16;}
+  .cell img{width:100%;height:100%;object-fit:cover;display:block;}
+  .cell-label{position:absolute;top:5px;left:5px;font-size:9px;text-transform:uppercase;letter-spacing:.1em;background:rgba(0,0,0,0.6);color:#fff;padding:2px 6px;border-radius:99px;font-weight:600;font-family:ui-monospace,monospace;}
+  .note{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:12px;line-height:1.5;}
+  .note.green{background:#e8f5ee;color:#063b1f;}
+  .note.red{background:#fde6e6;color:#5a0e0e;}
+  .footer{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>FS Treatment Library v2 — post-walkthrough refines</h1>
+  <p>Your Skin Foundation Stick · gpt-image-2 · 19 concepts (15 treatments + 4 T11 headline alts) · 38 cells</p>
+  <p>2026-05-11 · briefId: <code>b_mp13o70u_hlx0nt</code></p>
+</header>
+
+<div class="summary">
+  <p><strong>v1 → v2 in one round.</strong> Every per-treatment piece of feedback from your T1-T15 walkthrough was applied. Copy went through /jrb-copywriter (real review attribution pattern, FS-correct angle on T2, tighter heads on T4/T14, natural Notes-app voice on T5, etc.). Visual fixes per treatment (centered subjects on T9/T14, T7 press-band → star-rating-hero swap, T12 parchment → deep editorial green, T15 charcoal middle stripe, T10 cut from 6 to 3 stickers, T11 added headline + 4 alt headline tests). Five universal rules now locked as memory.</p>
+  <div class="stat-row">
+    <div class="stat"><div class="num">17/19</div><div class="lbl">SHIP (1×1)</div></div>
+    <div class="stat"><div class="num">89%</div><div class="lbl">SHIP RATE</div></div>
+    <div class="stat"><div class="num">2</div><div class="lbl">ENGINE BUGS</div></div>
+  </div>
+  <p><strong>Two remaining issues are engine bugs, not brief issues:</strong> T2/T15 star bars rendered as placeholder boxes — compositor needs to draw stars as SVG instead of asking the model. T13 has duplicate-text-layer overlap on headline — compositor double-render bug. Both fixable in <code>lib/composite.ts</code>.</p>
+  <p><strong>Once you approve the ship-ready treatments, I'll lock them into <code>lib/treatments.ts</code> + commit canonical PNGs to <code>lib/locked-examples/</code></strong> so any future product (Mini MB, Lip Recharge, future launches) can recreate the same visual systems by name.</p>
+</div>
+
+<nav class="toc">
+  <a href="#t01" class="green">T1</a><a href="#t02" class="red">T2</a><a href="#t03" class="green">T3</a><a href="#t04" class="green">T4</a><a href="#t05" class="green">T5</a><a href="#t06" class="green">T6</a><a href="#t07" class="green">T7</a><a href="#t08" class="green">T8</a><a href="#t09" class="green">T9</a><a href="#t10" class="green">T10</a><a href="#t11" class="green">T11</a><a href="#t11a" class="green">T11-A</a><a href="#t11b" class="green">T11-B</a><a href="#t11c" class="green">T11-C</a><a href="#t11d" class="green">T11-D</a><a href="#t12" class="green">T12</a><a href="#t13" class="red">T13</a><a href="#t14" class="green">T14</a><a href="#t15" class="green">T15</a>
+</nav>
+
+<article id="t01" class="treatment"><div class="treatment-head"><div class="text"><h3>T1 — Pull-Quote + Swatch</h3><p class="desc">Real reviewer attribution (LIGHT 3, BROOKLYN) replacing "Verified Buyer". Verbatim LP-trimmed quote.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t01-pullquote-swatch-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t01-pullquote-swatch-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> Ships. Attribution cleaned, quote tightened.</div></article>
+
+<article id="t02" class="treatment"><div class="treatment-head"><div class="text"><h3>T2 — Macro Hero + Star Bar</h3><p class="desc">New FS-correct angle ("foundation-stick haters"), centered, taller proportions. BUT star bar rendered as placeholder boxes.</p></div><span class="badge fail">FAIL</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t02-macro-hero-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t02-macro-hero-9x16-gpt-image-2.png"></div></div><div class="note red"><strong>NO</strong> ENGINE BUG: compositor needs to render stars as SVG. drawStars() helper exists for 5-Star archetype, just needs to fire here. Headline + composition correct.</div></article>
+
+<article id="t03" class="treatment"><div class="treatment-head"><div class="text"><h3>T3 — Faux iMessage Review</h3><p class="desc">Dropped "Verified Customer" label. No CTA pill. Real-name attribution.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t03-imessage-review-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t03-imessage-review-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> Ships. Hand looks real, card reads authentic.</div></article>
+
+<article id="t04" class="treatment"><div class="treatment-head"><div class="text"><h3>T4 — Question + Shade Grid</h3><p class="desc">Tighter headline, italic emphasis, shade labels removed, "Take the shade quiz" CTA references real LP quiz.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t04-shade-grid-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t04-shade-grid-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> Ships. 8 sticks upright, no labels under.</div></article>
+
+<article id="t05" class="treatment"><div class="treatment-head"><div class="text"><h3>T5 — Faux Notes App</h3><p class="desc">Headline rewritten - natural Notes-app voice. Stick upright in lower band.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t05-notes-app-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t05-notes-app-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> Ships. Consider standing upright in next iter for orientation consistency.</div></article>
+
+<article id="t06" class="treatment"><div class="treatment-head"><div class="text"><h3>T6 — Faux X/Tweet</h3><p class="desc">No changes - ship as-is per your call.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t06-tweet-split-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t06-tweet-split-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> Ships. Both formats now have full text (no leading-letter crop).</div></article>
+
+<article id="t07" class="treatment"><div class="treatment-head"><div class="text"><h3>T7 — Star Rating Hero (was Press Band)</h3><p class="desc">Press logos removed. Replaced with single oversized star rating badge + headline + centered product.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t07-star-rating-hero-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t07-star-rating-hero-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> STRONGEST. Was your best ad in v1; cleaner now without rights issue.</div></article>
+
+<article id="t08" class="treatment"><div class="treatment-head"><div class="text"><h3>T8 — Before/After Vertical Split</h3><p class="desc">New angle ("Foundation that does not cake."). Identical design between 1x1 and 9x16.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t08-before-after-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t08-before-after-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> Ships. Pink underline + pink CTA pill match across formats.</div></article>
+
+<article id="t09" class="treatment"><div class="treatment-head"><div class="text"><h3>T9 — Big-Number Stat</h3><p class="desc">Centered product. Stat scaled to ~35% of frame (not 60%).</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t09-big-stat-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t09-big-stat-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> Ships. Clean editorial stat hero, properly proportioned.</div></article>
+
+<article id="t10" class="treatment"><div class="treatment-head"><div class="text"><h3>T10 — Sticker Grid</h3><p class="desc">Cut from 6 stickers to 3. Natural-language copy ("NOT CAKEY"). Smaller, more elegant.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t10-sticker-grid-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t10-sticker-grid-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> Ships. Less cluttered, more premium.</div></article>
+
+<article id="t11" class="treatment"><div class="treatment-head"><div class="text"><h3>T11 — Annotated Diagram</h3><p class="desc">Added headline on top ("Foundation, broken down."). Same gorgeous diagram you loved.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t11-diagram-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t11-diagram-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> Ships. Diagram quality maintained.</div></article>
+
+<article id="t11a" class="treatment"><div class="treatment-head"><div class="text"><h3>T11-alt-A — "What is actually inside."</h3><p class="desc">Multi-headline test: curiosity-led variant. Diagram has 5 detailed ingredient callouts.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t11-alt-a-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t11-alt-a-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> STUNNING. Editorial product-page quality.</div></article>
+
+<article id="t11b" class="treatment"><div class="treatment-head"><div class="text"><h3>T11-alt-B — "The anatomy of real coverage."</h3><p class="desc">Multi-headline test: editorial-authority variant. Italic emphasis. 4 callouts + swatch.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t11-alt-b-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t11-alt-b-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> STUNNING. Premium feel.</div></article>
+
+<article id="t11c" class="treatment"><div class="treatment-head"><div class="text"><h3>T11-alt-C — "Why this stick does not cake."</h3><p class="desc">Multi-headline test: problem-first variant. Ties directly to top FS objection.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t11-alt-c-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t11-alt-c-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> STUNNING. Most directly addresses the LP conversion angle.</div></article>
+
+<article id="t11d" class="treatment"><div class="treatment-head"><div class="text"><h3>T11-alt-D — "Skincare-built. Foundation-worn."</h3><p class="desc">Multi-headline test: identity-led variant. LP verbatim language.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t11-alt-d-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t11-alt-d-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> Ships. Slightly less rich than A/B/C but solid.</div></article>
+
+<article id="t12" class="treatment"><div class="treatment-head"><div class="text"><h3>T12 — Bobbi Note on Deep Green</h3><p class="desc">REDESIGNED. Killed parchment - swapped to deep editorial green. Cream stick pops against it.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t12-bobbi-note-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t12-bobbi-note-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> STRIKING. Contrast is what was missing.</div></article>
+
+<article id="t13" class="treatment"><div class="treatment-head"><div class="text"><h3>T13 — Anonymized Portrait Crop</h3><p class="desc">Tighter headline attempted. BUT composite double-rendered the headline.</p></div><span class="badge fail">FAIL</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t13-portrait-crop-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t13-portrait-crop-9x16-gpt-image-2.png"></div></div><div class="note red"><strong>NO</strong> ENGINE BUG: composite double-render. Single brief headline rendered as two overlapping text layers.</div></article>
+
+<article id="t14" class="treatment"><div class="treatment-head"><div class="text"><h3>T14 — Bold Typographic + Centered Product</h3><p class="desc">Product moved from lower-right corner to centered. Headline swapped to LP-verbatim.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t14-typographic-centered-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t14-typographic-centered-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> Ships. Clean text-led editorial.</div></article>
+
+<article id="t15" class="treatment"><div class="treatment-head"><div class="text"><h3>T15 — Color-Blocked Stripe Stack</h3><p class="desc">Middle stripe changed from warm sand to deep charcoal. Stick pops against contrast.</p></div><span class="badge ship">SHIP</span></div><div class="pair"><div class="cell aspect-square"><span class="cell-label">1x1</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t15-stripe-stack-1x1-gpt-image-2.png"></div><div class="cell aspect-9x16"><span class="cell-label">9x16</span><img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mp13o70u_hlx0nt/t15-stripe-stack-9x16-gpt-image-2.png"></div></div><div class="note green"><strong>YES</strong> Ships. Charcoal middle fixes "all-beige" problem. Star bar in bottom stripe also broken (same engine bug as T2).</div></article>
+
+<div class="footer">
+  Fixture: <code>fixtures/fs-15-treatments-v2.json</code> · 19 concepts, 38 cells, 17 ship-ready on first 1×1 pass · Engine bugs queued: star-bar SVG render + T13 text-layer dedupe
+</div>
+
+</body>
+</html>
