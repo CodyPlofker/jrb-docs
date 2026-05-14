@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Complexion Quiz Survey — Interim Findings (n=32)</title>
+<link rel="preconnect" href="https://cdn.shopify.com">
+<style>
+  @font-face { font-family: "Canela"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf") format("opentype"); font-weight: 300; font-display: swap; }
+  @font-face { font-family: "ArticulatCF"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+  @font-face { font-family: "Geogrotesque"; src: url("https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+
+  *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: "Geogrotesque", -apple-system, BlinkMacSystemFont, sans-serif; color: #000; background: #fff; font-size: 16px; line-height: 1.55; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 64px 0; }
+  .section.alt { background: #f8f8f8; }
+  .topbar { background: #f6f2eb; padding: 16px 0; border-bottom: 1px solid #e8e2d4; font-size: 12px; letter-spacing: .15em; text-transform: uppercase; font-family: "ArticulatCF", sans-serif; }
+  .topbar a { color: #000; text-decoration: none; }
+
+  h1 { font-family: "Canela", Georgia, serif; font-weight: 300; font-size: 48px; line-height: 1.1; letter-spacing: -.01em; margin-bottom: 16px; }
+  h2 { font-family: "Canela", Georgia, serif; font-weight: 300; font-size: 32px; line-height: 1.2; margin-bottom: 24px; }
+  h3 { font-family: "ArticulatCF", sans-serif; font-weight: 700; text-transform: uppercase; font-size: 14px; letter-spacing: .3px; margin: 32px 0 12px; }
+  h4 { font-family: "ArticulatCF", sans-serif; font-weight: 700; font-size: 14px; letter-spacing: .3px; margin: 24px 0 8px; }
+  p { margin-bottom: 12px; }
+
+  .eyebrow { font-family: "ArticulatCF", sans-serif; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: .3em; color: #000; margin-bottom: 12px; }
+  .meta { font-size: 13px; color: #000; opacity: .65; margin-top: 8px; }
+
+  .headline-box { background: #f8f8f8; padding: 32px; margin-top: 32px; border-left: 4px solid #ff2e92; }
+  .headline-box p { font-size: 18px; line-height: 1.5; margin: 0; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 32px 0; }
+  .stat { background: #fff; padding: 24px; border: 1px solid #e8e2d4; }
+  .stat .num { font-family: "Canela", Georgia, serif; font-weight: 300; font-size: 40px; line-height: 1; margin-bottom: 4px; }
+  .stat .label { font-family: "ArticulatCF", sans-serif; font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: .25em; }
+
+  .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; font-size: 14px; }
+  .bar-row .lbl { width: 60px; font-family: "ArticulatCF", sans-serif; font-size: 12px; letter-spacing: .15em; }
+  .bar { flex: 1; height: 24px; background: #fff; border: 1px solid #e8e2d4; position: relative; }
+  .bar .fill { height: 100%; background: #000; }
+  .bar-row .ct { width: 40px; text-align: right; font-size: 13px; }
+
+  .issue-list, .win-list { list-style: none; counter-reset: item; }
+  .issue-list li, .win-list li { counter-increment: item; padding: 16px 0 16px 48px; border-bottom: 1px solid #e8e2d4; position: relative; }
+  .issue-list li:last-child, .win-list li:last-child { border-bottom: 0; }
+  .issue-list li::before, .win-list li::before { content: counter(item, decimal-leading-zero); position: absolute; left: 0; top: 16px; font-family: "Canela", Georgia, serif; font-weight: 300; font-size: 28px; line-height: 1; opacity: .35; }
+
+  .issue { font-family: "ArticulatCF", sans-serif; font-weight: 700; font-size: 15px; letter-spacing: .2px; line-height: 1.4; }
+  .issue-meta { font-size: 13px; color: #000; opacity: .7; margin-top: 4px; }
+
+  .severity { display: inline-block; padding: 2px 8px; font-family: "ArticulatCF", sans-serif; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; margin-right: 8px; vertical-align: middle; }
+  .severity.critical { background: #ff2e92; color: #fff; }
+  .severity.high     { background: #000;     color: #fff; }
+  .severity.medium   { background: #f6f2eb;  color: #000; border: 1px solid #000; }
+  .severity.low      { background: #f8f8f8;  color: #000; border: 1px solid #e8e2d4; }
+
+  .theme { margin-bottom: 28px; }
+  .theme-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 8px; }
+  .theme-name { font-family: "ArticulatCF", sans-serif; font-weight: 700; font-size: 14px; letter-spacing: .2px; }
+  .theme-count { font-family: "ArticulatCF", sans-serif; font-size: 11px; letter-spacing: .25em; opacity: .55; white-space: nowrap; }
+  blockquote { padding: 8px 16px; margin: 6px 0; border-left: 2px solid #000; font-family: "Canela", Georgia, serif; font-style: italic; font-weight: 300; font-size: 16px; line-height: 1.45; color: #000; }
+
+  .q-section { padding: 32px 0; border-top: 1px solid #e8e2d4; }
+  .q-section:first-of-type { border-top: 0; padding-top: 0; }
+  .q-title { font-family: "Canela", Georgia, serif; font-weight: 300; font-size: 24px; line-height: 1.25; margin-bottom: 6px; }
+  .q-sub { font-size: 13px; opacity: .65; margin-bottom: 24px; }
+
+  .recos { list-style: none; }
+  .recos li { padding: 14px 0; border-bottom: 1px solid #e8e2d4; display: flex; gap: 14px; align-items: flex-start; }
+  .recos li:last-child { border-bottom: 0; }
+  .recos .priority { font-family: "ArticulatCF", sans-serif; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; padding: 2px 8px; border: 1px solid #000; white-space: nowrap; margin-top: 2px; }
+  .recos .priority.p1 { background: #ff2e92; color: #fff; border-color: #ff2e92; }
+  .recos .priority.p2 { background: #000; color: #fff; border-color: #000; }
+  .recos .priority.p3 { background: #f8f8f8; color: #000; }
+
+  .footer { padding: 32px 0; text-align: center; font-size: 12px; opacity: .55; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 36px; }
+    h2 { font-size: 26px; }
+    .section { padding: 48px 0; }
+    .stat .num { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container">JRB · Growth Analysis · <a href="#headline">Complexion Quiz Survey — Interim Findings</a></div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">Complexion Quiz · Customer UX Survey</div>
+    <h1>Interim Findings</h1>
+    <div class="meta">n = 32 completed responses · Field period: 2026-05-13 → 2026-05-14 · Source: Typeform <code>ETOHbbPw</code></div>
+
+    <div class="headline-box" id="headline">
+      <p>Quiz is best-in-class on questions and model photos (avg confidence <strong>7.8/10</strong>, <strong>77% promoters</strong>) — but the single most fixable issue is that ~one-third of respondents only see ONE product recommendation on the results page. The additional matches are either missing, hidden below the fold, or not visually surfaced. Undertone remains the #1 source of mid-quiz confusion.</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat"><div class="num">32</div><div class="label">Responses</div></div>
+      <div class="stat"><div class="num">7.8</div><div class="label">Avg Confidence</div></div>
+      <div class="stat"><div class="num">77%</div><div class="label">Promoters (8–10)</div></div>
+      <div class="stat"><div class="num">22%</div><div class="label">Detractors (≤6)</div></div>
+    </div>
+
+    <h3>Confidence in Product + Shade Recommendations</h3>
+    <div class="bar-row"><span class="lbl">9–10</span><div class="bar"><div class="fill" style="width: 48%;"></div></div><span class="ct">15</span></div>
+    <div class="bar-row"><span class="lbl">7–8</span><div class="bar"><div class="fill" style="width: 29%;"></div></div><span class="ct">9</span></div>
+    <div class="bar-row"><span class="lbl">4–6</span><div class="bar"><div class="fill" style="width: 16%;"></div></div><span class="ct">5</span></div>
+    <div class="bar-row"><span class="lbl">0–3</span><div class="bar"><div class="fill" style="width: 7%;"></div></div><span class="ct">2</span></div>
+    <p class="meta">Note: 1 response did not provide a confidence score (n=31 for distribution).</p>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2>Top Issues (Ranked)</h2>
+    <ol class="issue-list">
+      <li>
+        <span class="severity critical">Critical</span>
+        <span class="issue">Users only see ONE product recommendation — additional matches are missing, hidden below the fold, or not visually surfaced</span>
+        <div class="issue-meta">Mentioned across 10 responses · Mobile referrals from Facebook are most affected · "I only received one recommendation"</div>
+      </li>
+      <li>
+        <span class="severity critical">Critical</span>
+        <span class="issue">Undertone question (cool/neutral/warm) is the #1 confusion point — the burn/tan logic feels wrong and terms are undefined</span>
+        <div class="issue-meta">8 mentions · "a warm undertone says I tan easily. Absolutely not!" · multiple users took quiz twice to test both options</div>
+      </li>
+      <li>
+        <span class="severity critical">Critical</span>
+        <span class="issue">Shade match returns wrong color (too dark, too warm, or contradicts in-store / past selfie quiz results)</span>
+        <div class="issue-meta">5 mentions · Includes inconsistency vs. in-store match and past quizzes (Medium vs Medium Honey)</div>
+      </li>
+      <li>
+        <span class="severity high">High</span>
+        <span class="issue">Color-family question (pale vs fair vs light) stalls users at the start of the quiz</span>
+        <div class="issue-meta">5 mentions · "I am always stuck at one of the first questions, i.e. my color family. Am I pale or fair?"</div>
+      </li>
+      <li>
+        <span class="severity high">High</span>
+        <span class="issue">Model photo set doesn't represent every user — missing redheads, silver/grey hair, older skin, certain undertones</span>
+        <div class="issue-meta">5 mentions · "very few redheads that are not super fair" · "models closer to my age range with silver grey hair"</div>
+      </li>
+      <li>
+        <span class="severity high">High</span>
+        <span class="issue">Sample-pack / try-before-buy is the #1 missing purchase driver for non-loyalists</span>
+        <div class="issue-meta">5 mentions, all from price-sensitive shoppers · "$5–$10 sample card to defray shipping" is a recurring ask</div>
+      </li>
+      <li>
+        <span class="severity high">High</span>
+        <span class="issue">Results-page rationale blurb has a copy-bug — describes wrong skin type/undertone for the user</span>
+        <div class="issue-meta">1 mention but visible bug: "We found your shade in these products too. They work well with combination skin that's deep with neutral undertones..." returned to a user who is not deep/neutral.</div>
+      </li>
+      <li>
+        <span class="severity medium">Medium</span>
+        <span class="issue">Results page lacks "why this product vs that" rationale (coverage level, when to use which)</span>
+        <div class="issue-meta">3 mentions · Want copy like "For more full coverage, use X. For touch-ups, use X."</div>
+      </li>
+      <li>
+        <span class="severity medium">Medium</span>
+        <span class="issue">Quiz scope is unclear at start — users assume it's Foundation-Stick-only</span>
+        <div class="issue-meta">2 mentions · "I just assumed it was only for the new foundation stick"</div>
+      </li>
+      <li>
+        <span class="severity low">Low</span>
+        <span class="issue">Reviews + press-logo interstitial screens between quiz and results feel inefficient</span>
+        <div class="issue-meta">"The extra screens are unnecessary and doesn't build anticipation or affect my buying decisions"</div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Top Wins</h2>
+    <ol class="win-list">
+      <li>
+        <span class="issue">The one-stop combined quiz beats multiple separate quizzes</span>
+        <div class="issue-meta">11 explicit affirmations · "I really like the 'one-stop shopping' experience" · "It's easier than taking multiple quizzes"</div>
+      </li>
+      <li>
+        <span class="issue">JRB shade quiz is better than every competitor quiz they've taken</span>
+        <div class="issue-meta">10 mentions · "This is the best I've seen" · "Results have been closer than any other shade finder I have used"</div>
+      </li>
+      <li>
+        <span class="issue">Multiple model photos / shade visuals are the #1 confidence driver</span>
+        <div class="issue-meta">7 explicit mentions in confidence rationale</div>
+      </li>
+      <li>
+        <span class="issue">When the quiz gets it right, it confirms the user's actual JRB shade — strong validation moment</span>
+        <div class="issue-meta">5 mentions · "Both times it gave me the matches I know are my perfect shade"</div>
+      </li>
+      <li>
+        <span class="issue">Question depth feels JRB-quality vs. surface-level competitor quizzes</span>
+        <div class="issue-meta">4 mentions · "JRB does a great job with the quizzes. I have not had other sites go into such detail"</div>
+      </li>
+      <li>
+        <span class="issue">Add-to-cart placement on results page makes purchase frictionless for loyalists</span>
+        <div class="issue-meta">3 mentions · "had the add to cart button conveniently right there"</div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2>Recommended Next Steps</h2>
+    <ul class="recos">
+      <li><span class="priority p1">P1 · Fix</span><div><strong>Debug the multi-product results display.</strong> Reproduce the "only WTF appeared" state — most reports were mobile referrals from Facebook in-app browser. Verify additional product cards are rendering and not hidden below a primary-result hero, then re-balance the visual hierarchy (main rec smaller, alternatives equally prominent).</div></li>
+      <li><span class="priority p1">P1 · Fix</span><div><strong>Patch the results-page rationale copy-bug.</strong> The "Other Matches to Round Out Your Routine" sentence appears to be mis-populating skin-type / undertone tokens against the wrong customer.</div></li>
+      <li><span class="priority p1">P1 · Re-write</span><div><strong>Rewrite the undertone question + helper text.</strong> Decouple "burns easily / tans easily" from undertone (warm undertones can absolutely burn). Add a one-line definition of cool/neutral/warm with a visual cue (vein color, jewelry, sun reaction) rather than a binary photo.</div></li>
+      <li><span class="priority p2">P2</span><div><strong>Add "why this product?" rationale on the results page.</strong> A 1-sentence blurb under each recommended product explaining coverage level, finish, or use-case.</div></li>
+      <li><span class="priority p2">P2</span><div><strong>Add a sample-pack option ($5–$10) to the results CTA</strong> — 5 explicit requests, all from non-loyalist segments. Strongest fence-sitter conversion lever.</div></li>
+      <li><span class="priority p2">P2</span><div><strong>Diversify model photo set.</strong> Add redheads, silver/grey-hair models, older-skin examples, and the missing Medium Honey shade option in the medium/medium-dark family.</div></li>
+      <li><span class="priority p3">P3</span><div><strong>Reframe the quiz intro.</strong> Welcome screen / first slide should make it clear this quiz now covers WTF, JETM, Foundation Stick, and powder — not just Foundation Stick.</div></li>
+      <li><span class="priority p3">P3</span><div><strong>Cross-link to MB and Blush quizzes from the results page</strong> — repeated suggestion, easy bundle/upsell.</div></li>
+      <li><span class="priority p3">P3</span><div><strong>Cut or shorten the reviews + press-logo interstitial screens</strong> between quiz and results.</div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Detailed Themes by Question</h2>
+
+    <div class="q-section">
+      <div class="q-title">Q2 — What aspects made you feel more or less confident about the product and shade recommendations?</div>
+      <div class="q-sub">31 responses (1 skip)</div>
+
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Multiple model photos / shade visuals built confidence</span><span class="theme-count">7 mentions</span></div>
+        <blockquote>The multiple photos for the various shade categories is really helpful.</blockquote>
+        <blockquote>More confident based on the number of models and specific skin color recommendations.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Undertone question is confusing — cool vs neutral vs warm</span><span class="theme-count">6 mentions</span></div>
+        <blockquote>The whole undertone issue is confusing to me… a warm undertone says I tan easily. Absolutely not!</blockquote>
+        <blockquote>Whether I'm cool or neutral — what I did was take the quiz twice using each option.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Result matched what I already use — felt validated</span><span class="theme-count">5 mentions</span></div>
+        <blockquote>Both times it gave me the matches I know are my perfect shade.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Color-family question (pale vs fair vs light) stalls users</span><span class="theme-count">4 mentions</span></div>
+        <blockquote>I am always stuck at one of the first questions, i.e. my color family. Am I pale or fair?</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Shade match felt off — too dark, too warm, or didn't match in-store</span><span class="theme-count">4 mentions</span></div>
+        <blockquote>Did not see skin tones that matched mine, produced a shade match likely too dark and too warm.</blockquote>
+        <blockquote>The recommendations were not exactly consistent with what I was recommended in the store.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Photo set didn't represent me (redheads, silver hair, older skin)</span><span class="theme-count">3 mentions</span></div>
+        <blockquote>Very few redheads that are not super fair.</blockquote>
+      </div>
+    </div>
+
+    <div class="q-section">
+      <div class="q-title">Q4 — Combined Quiz Feedback (the new format)</div>
+      <div class="q-sub">All 32 responses</div>
+
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Love combining into one quiz — efficient, one-stop shopping</span><span class="theme-count">11 mentions</span></div>
+        <blockquote>I really like the 'one-stop shopping' experience of the recommendation details!</blockquote>
+        <blockquote>I prefer it combined into one. It's easier than taking multiple quizzes.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Only got ONE product recommendation — multiple recs missing or hidden</span><span class="theme-count">6 mentions</span></div>
+        <blockquote>I only received one recommendation.</blockquote>
+        <blockquote>I did not get multiple product recommendations at the end… did not receive any other recommendations except foundation.</blockquote>
+        <blockquote>It only recommended WTF.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Results-page hierarchy felt off — main rec huge, others tiny / below fold</span><span class="theme-count">4 mentions</span></div>
+        <blockquote>I didn't love that my recommended product was huge, and then that I had to scroll down for the others, which were much smaller.</blockquote>
+        <blockquote>I didn't see the multiple results, only saw the WTF recommendation. Does the choice bar slide left or right?</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Want a "why this product vs that" explainer on results</span><span class="theme-count">3 mentions</span></div>
+        <blockquote>Additional detail for the main recommendation — for example, why WTF vs FP or Foundation Stick.</blockquote>
+        <blockquote>The products at the bottom should come with a blurb: 'For more full coverage, use X' / 'For touchups, use X.'</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Allow multiple coverage selections / show all 3 foundation matches</span><span class="theme-count">3 mentions</span></div>
+        <blockquote>I would have liked to have the quiz end with color matches for all three Foundation types.</blockquote>
+      </div>
+    </div>
+
+    <div class="q-section">
+      <div class="q-title">Q5 — Were any questions confusing?</div>
+      <div class="q-sub">All 32 responses</div>
+
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">No confusion / nothing was confusing</span><span class="theme-count">17 mentions</span></div>
+        <blockquote>Nope, no confusion at all.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Undertone (cool vs neutral vs warm) was the hardest question</span><span class="theme-count">6 mentions</span></div>
+        <blockquote>The undertone always confuses me.</blockquote>
+        <blockquote>Determining undertone is always somewhat tricky.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Color family / skin-shade-range selection (pale vs fair vs light)</span><span class="theme-count">5 mentions</span></div>
+        <blockquote>The one about color family.</blockquote>
+        <blockquote>Choosing my skin color.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Matching my face to model photos — pictures don't look like me</span><span class="theme-count">3 mentions</span></div>
+        <blockquote>Matching my face to pics is sometimes confusing.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Under-eye-circle question — neither photo matched</span><span class="theme-count">1 mention</span></div>
+        <blockquote>The circles question — neither picture reflected my under-eye circles.</blockquote>
+      </div>
+    </div>
+
+    <div class="q-section">
+      <div class="q-title">Q6 — What info or features were missing?</div>
+      <div class="q-sub">All 32 responses</div>
+
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Nothing missing / quiz felt complete</span><span class="theme-count">8 mentions</span></div>
+        <blockquote>It was a straightforward quiz that was 100% accurate.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">More diverse / specific shade-match photos (older models, silver hair, redheads, more granular shades)</span><span class="theme-count">7 mentions</span></div>
+        <blockquote>A better shade match… show three shades to better account for what I might need when tan, not tan, etc.</blockquote>
+        <blockquote>I would like to see models closer to my age range with silver grey hair.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Let me input shades I already use ("do you currently use X?")</span><span class="theme-count">4 mentions</span></div>
+        <blockquote>I think there should be which shades do you currently use.</blockquote>
+        <blockquote>Having suggestions for new products based on colors you use now would be helpful. 'If you wear Face Pencil 7,' for example.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Explain product rec rationale on results page (coverage / when to use which)</span><span class="theme-count">3 mentions</span></div>
+        <blockquote>'For more full coverage, use X' / 'For touch-ups, use X.'</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Photo-upload / selfie shade matching</span><span class="theme-count">2 mentions</span></div>
+        <blockquote>I would still like to have a shade selection that lets the user upload a makeup-free picture.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Show all 3 foundation matches (Foundation Stick + WTF + JETM)</span><span class="theme-count">2 mentions</span></div>
+        <blockquote>Having the color match in all of the categories would be useful.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Better intro / clarify quiz scope at start</span><span class="theme-count">1 mention</span></div>
+        <blockquote>Better description at the beginning, or I just assumed it was only for the new foundation stick.</blockquote>
+      </div>
+    </div>
+
+    <div class="q-section">
+      <div class="q-title">Q7 — How does this compare to other beauty product quizzes?</div>
+      <div class="q-sub">All 32 responses</div>
+
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">JRB quiz is better than competitors / best they've seen</span><span class="theme-count">10 mentions</span></div>
+        <blockquote>This is the best I've seen.</blockquote>
+        <blockquote>Results have been closer than any other shade finder I have used.</blockquote>
+        <blockquote>JRB does a great job with the quizzes. I have not had other sites go into such detail.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Don't take other brand quizzes — JRB-only / in-store preferred</span><span class="theme-count">5 mentions</span></div>
+        <blockquote>I haven't used any other sites in a while because I only use JRB products now!</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Want virtual try-on / AR overlay feature</span><span class="theme-count">2 mentions</span></div>
+        <blockquote>The only thing I think would make this more accurate would be to include a virtual 'try-on' function.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Want photo-upload for shade matching</span><span class="theme-count">2 mentions</span></div>
+        <blockquote>I have found the upload or taking a picture of my makeup-free face to be very helpful in shade matching.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Like swatches/face-images on competitor sites</span><span class="theme-count">2 mentions</span></div>
+        <blockquote>Sometimes other sites have shown red-hair models or more swatches directly on the face.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Want cross-brand shade entry (Sephora, IT Cosmetics, etc.)</span><span class="theme-count">1 mention</span></div>
+        <blockquote>I like on other sites you can add brands you have also used for shades.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Preferred older JRB MB quiz format</span><span class="theme-count">1 mention</span></div>
+        <blockquote>I preferred the older quiz format for miracle balm shade matching.</blockquote>
+      </div>
+    </div>
+
+    <div class="q-section">
+      <div class="q-title">Q8 — What would make you more likely to complete a purchase?</div>
+      <div class="q-sub">All 32 responses</div>
+
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Need physical samples / sample card before committing</span><span class="theme-count">5 mentions</span></div>
+        <blockquote>Having a shade-range sample bubble pack available for purchase for a small price would be awesome.</blockquote>
+        <blockquote>I would be willing to purchase a set of samples for maybe $5–$10 to defray shipping costs.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Discount, free shipping, or rewards program</span><span class="theme-count">5 mentions</span></div>
+        <blockquote>A discount or a rewards program, a lower free-shipping threshold.</blockquote>
+        <blockquote>Maybe an offer for free shipping (no limit) or a small discount.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Already purchased / brand-loyal — would buy regardless</span><span class="theme-count">6 mentions</span></div>
+        <blockquote>Now that I have been with Jones Road I trust the product and the team to get it right. So very likely.</blockquote>
+        <blockquote>Yes, but I already purchased anyway without it.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">More confidence in shade-match accuracy</span><span class="theme-count">4 mentions</span></div>
+        <blockquote>Being really sure that my skintone was interpreted correctly.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Return policy / money-back guarantee called out at point of sale</span><span class="theme-count">2 mentions</span></div>
+        <blockquote>Love the match guarantee. That also makes me click buy.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Live MUA chat / video call support</span><span class="theme-count">2 mentions</span></div>
+        <blockquote>What about a chatbot that could answer any questions as I was going through the quiz.</blockquote>
+        <blockquote>I think a video call with artist would be great.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Bundle / "complete your look" upsell (MB + blush + lip)</span><span class="theme-count">1 mention</span></div>
+        <blockquote>Rounding out an entire look based on the information I provide… 'For your combination skin that's light with a warm undertone, we would also recommend X Miracle Balm shade…'</blockquote>
+      </div>
+    </div>
+
+    <div class="q-section">
+      <div class="q-title">Q9 — Any additional feedback?</div>
+      <div class="q-sub">All 32 responses</div>
+
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Nothing / no additional feedback</span><span class="theme-count">21 mentions</span></div>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Quiz is well done / praise</span><span class="theme-count">4 mentions</span></div>
+        <blockquote>I really like this one — great work by you and your team.</blockquote>
+        <blockquote>None that I can think of, keep them coming!</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Cross-link to MB / blush / other quizzes from results page</span><span class="theme-count">2 mentions</span></div>
+        <blockquote>Maybe a link to the MB quiz and maybe a blush quiz?</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Results-page copy bug — recommendation blurb described wrong skin type</span><span class="theme-count">1 mention</span></div>
+        <blockquote>The opening sentence reads, 'We found your shade in these products too. They work well with combination skin that's deep with neutral undertones…' I think this is a glitch… my skin is not deep with neutral undertones.</blockquote>
+      </div>
+      <div class="theme">
+        <div class="theme-head"><span class="theme-name">Save/print/email results option</span><span class="theme-count">1 mention</span></div>
+        <blockquote>Have an option to save the results or to have an easy download/print option.</blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  <div class="container">JRB Growth · Generated 2026-05-14 · Survey continues — final report at n ≥ 50</div>
+</div>
+
+</body>
+</html>
