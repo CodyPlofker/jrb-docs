@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Jurni → CCLP Migration · Phase 1 Comparison</title>
+<title>Jurni → CCLP Migration Tracker</title>
 <style>
   @font-face{font-family:'Canela Light';src:url('https://d2zbaikdix1qer.cloudfront.net/fonts/jonesroad.myshopify.com/1772482947421-canela-light.woff2') format('woff2');font-display:swap}
   @font-face{font-family:'Ringside Wide Book';src:url('https://d2zbaikdix1qer.cloudfront.net/fonts/jonesroad.myshopify.com/1772482940494-ringside-wide-book.woff2') format('woff2');font-display:swap}
@@ -11,280 +11,380 @@
   @font-face{font-family:'Geogrotesque Bold';src:url('https://d2zbaikdix1qer.cloudfront.net/fonts/jonesroad.myshopify.com/1772482935848-geogrotesque-bold.woff2') format('woff2');font-display:swap}
 
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{background:#f8f8f8;color:#000;font-family:'Ringside Wide Book',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1840px;margin:0 auto;padding:48px 32px 80px}
+  html,body{background:#fff;color:#000;font-family:'Ringside Wide Book',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1280px;margin:0 auto;padding:56px 40px 96px}
 
-  .topbar{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid #000;padding-bottom:24px;margin-bottom:32px}
-  .topbar .left .eyebrow{font-family:'Base Mono Wide Thin',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.55;margin-bottom:10px}
-  h1{font-family:'Canela Light',Georgia,serif;font-weight:300;font-size:44px;line-height:1.05;letter-spacing:.01em}
-  .topbar .right{text-align:right;font-family:'Base Mono Wide Thin',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.65}
-  .topbar .right strong{font-family:'Canela Light',Georgia,serif;font-weight:300;font-size:30px;display:block;margin-top:4px;letter-spacing:.01em;text-transform:none;opacity:1}
+  .eyebrow{font-family:'Base Mono Wide Thin',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#000;opacity:.6;margin-bottom:16px}
+  h1{font-family:'Canela Light',Georgia,serif;font-weight:300;font-size:52px;line-height:1.05;letter-spacing:.01em;margin-bottom:14px}
+  .deck{font-family:'Ringside Wide Book',sans-serif;font-size:16px;line-height:1.55;max-width:720px;color:#000;margin-bottom:40px}
 
-  .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid #000;border-bottom:1px solid #000;background:#fff;margin-bottom:48px}
-  .kpi{padding:20px 22px;border-right:1px solid rgba(0,0,0,.12)}
+  /* KPI bar */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid #000;border-bottom:1px solid #000;margin-bottom:48px}
+  .kpi{padding:22px 22px;border-right:1px solid rgba(0,0,0,.12)}
   .kpi:last-child{border-right:none}
-  .kpi .label{font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.55;margin-bottom:6px}
-  .kpi .value{font-family:'Canela Light',Georgia,serif;font-weight:300;font-size:30px;line-height:1.05;letter-spacing:.01em}
-  .kpi .sub{font-family:'Ringside Wide Book',sans-serif;font-size:12px;opacity:.6;margin-top:4px}
+  .kpi .label{font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.55;margin-bottom:8px}
+  .kpi .value{font-family:'Canela Light',Georgia,serif;font-weight:300;font-size:34px;line-height:1.05;letter-spacing:.01em}
+  .kpi .sub{font-family:'Ringside Wide Book',sans-serif;font-size:12px;opacity:.6;margin-top:6px}
 
-  .row{background:#fff;border:1px solid rgba(0,0,0,.1);margin-bottom:28px}
-  .row-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid rgba(0,0,0,.08);flex-wrap:wrap;gap:12px}
-  .row-header .title{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-  .row-header .rank{font-family:'Base Mono Wide Thin',monospace;font-size:11px;letter-spacing:.16em;background:#000;color:#fff;padding:4px 9px;display:inline-block}
-  .row-header h2{font-family:'Canela Light',Georgia,serif;font-weight:300;font-size:24px;line-height:1.2;letter-spacing:.01em}
-  .row-header .stats{font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;opacity:.65;display:flex;gap:18px;flex-wrap:wrap}
-  .row-header .stats strong{font-family:'Canela Light',Georgia,serif;font-weight:300;font-size:18px;color:#000;opacity:1;letter-spacing:0;margin-left:6px}
-  .row-header .actions{display:flex;gap:10px}
-  .row-header .actions a{font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:8px 14px;border:1px solid #000;background:#fff;color:#000;text-decoration:none;transition:.15s}
-  .row-header .actions a:hover{background:#000;color:#fff}
-  .row-header .actions a.primary{background:#000;color:#fff}
-  .row-header .actions a.primary:hover{background:#fff;color:#000}
+  /* Progress bar */
+  .progress{margin-bottom:48px}
+  .progress-label{display:flex;justify-content:space-between;align-items:baseline;font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.7;margin-bottom:10px}
+  .progress-label strong{font-family:'Canela Light',Georgia,serif;font-weight:300;font-size:22px;letter-spacing:0;text-transform:none;opacity:1}
+  .progress-bar{height:38px;border:1px solid #000;display:flex;overflow:hidden}
+  .progress-bar .done{background:#000;color:#fff;display:flex;align-items:center;justify-content:flex-start;padding:0 14px;font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;min-width:0}
+  .progress-bar .pending{flex:1;background:#fff;display:flex;align-items:center;padding:0 14px;font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.6}
 
-  .compare{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#000}
-  .pane{position:relative;background:#fff;min-height:1100px}
-  .pane:first-child{border-right:1px solid rgba(0,0,0,.15)}
-  .pane .label{font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:10px 14px;background:#000;color:#fff;display:flex;justify-content:space-between;align-items:center}
-  .pane .label .pill{font-size:9px;padding:2px 6px;background:#fff;color:#000;letter-spacing:.1em}
-  .pane.cclp .label{background:#000}
-  .pane.cclp .label .pill{background:#fff;color:#000}
-  .pane iframe{width:100%;height:1050px;border:none;display:block}
+  /* Section heading */
+  h2{font-family:'Canela Light',Georgia,serif;font-weight:300;font-size:30px;line-height:1.15;letter-spacing:.01em;margin:64px 0 6px}
+  h2 + .sub{font-family:'Base Mono Wide Thin',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#000;opacity:.55;margin-bottom:22px}
 
-  .notes{background:#fff;border:1px solid rgba(0,0,0,.1);padding:28px 32px;margin-top:32px}
-  .notes h3{font-family:'Canela Light',Georgia,serif;font-weight:300;font-size:24px;margin-bottom:14px}
-  .notes ol{list-style:none;counter-reset:n;font-size:14px;line-height:1.7}
-  .notes ol li{counter-increment:n;padding-left:30px;position:relative;margin-bottom:10px}
-  .notes ol li::before{content:counter(n,decimal-leading-zero);position:absolute;left:0;font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;top:2px}
-  .notes strong{font-weight:500}
+  /* Table */
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead th{font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;text-align:left;font-weight:400;padding:14px 10px;border-bottom:1.5px solid #000;color:#000;background:#fff;white-space:nowrap}
+  thead th.num{text-align:right}
+  thead th.ctr{text-align:center}
+  tbody td{padding:14px 10px;border-bottom:1px solid rgba(0,0,0,.08);vertical-align:middle;font-family:'Ringside Wide Book',sans-serif}
+  tbody td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tbody td.ctr{text-align:center}
+  tbody td.rank{font-family:'Base Mono Wide Thin',monospace;font-size:11px;letter-spacing:.1em;opacity:.55;width:30px}
+  tbody td.name{font-weight:400}
+  tbody td.name .product{font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.12em;opacity:.5;display:block;margin-top:3px;text-transform:uppercase}
+  tbody tr:hover{background:#fafafa}
+  tbody tr.done{background:#fbfbfb}
+  tbody tr.done td.name{font-weight:500}
 
-  .meta{margin-top:60px;padding-top:20px;border-top:1px solid rgba(0,0,0,.1);font-family:'Base Mono Wide Thin',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.55}
+  /* Status badge */
+  .badge{display:inline-block;font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:4px 9px;white-space:nowrap}
+  .badge.done{background:#000;color:#fff}
+  .badge.pending{background:#fff;color:#000;border:1px solid rgba(0,0,0,.25);opacity:.7}
+  .badge.inprog{background:#ff2e92;color:#fff}
 
-  @media (max-width: 1200px) {
-    .compare{grid-template-columns:1fr}
-    .pane:first-child{border-right:none;border-bottom:1px solid #000}
-    .summary{grid-template-columns:repeat(2,1fr)}
+  /* Links */
+  a.link{font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:6px 10px;border:1px solid #000;background:#fff;color:#000;text-decoration:none;transition:.12s;white-space:nowrap}
+  a.link:hover{background:#000;color:#fff}
+  a.link.primary{background:#000;color:#fff}
+  a.link.primary:hover{background:#fff;color:#000}
+  a.link.disabled{opacity:.25;pointer-events:none;border-style:dashed}
+
+  td.actions{white-space:nowrap}
+  td.actions a + a{margin-left:6px}
+
+  /* Phase rows */
+  tr.phase-divider td{padding:32px 0 8px;border-bottom:none;font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.55}
+  tr.phase-divider td span{display:inline-block;border-bottom:1px solid #000;padding-bottom:6px;padding-right:16px}
+
+  /* Notes */
+  .notes{margin-top:60px;padding-top:24px;border-top:1px solid rgba(0,0,0,.1);font-size:13px;line-height:1.7;opacity:.75;max-width:780px}
+  .notes p{margin-bottom:10px}
+
+  .meta{margin-top:60px;padding-top:18px;border-top:1px solid rgba(0,0,0,.1);font-family:'Base Mono Wide Thin',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.5}
+
+  @media (max-width:880px){
+    .wrap{padding:40px 22px}
+    h1{font-size:36px}
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    table{font-size:12px}
+    .hide-mobile{display:none}
   }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <div class="topbar">
-    <div class="left">
-      <div class="eyebrow">Internal · Growth · Phase 1 Review</div>
-      <h1>Jurni → CCLP Migration</h1>
-    </div>
-    <div class="right">
-      <div>Phase 1 status</div>
-      <strong>6 of 18 done</strong>
-    </div>
-  </div>
+  <div class="eyebrow">Internal · Ecom · Tracker</div>
+  <h1>Jurni → CCLP Migration</h1>
+  <p class="deck">Live tracker for the 18 Jurni listicles being rebuilt as Shopify CCLP landing pages. Updated as new pages ship. Click any "CCLP" link to view the migrated page; click "Jurni" to compare against the original.</p>
 
-  <div class="summary">
-    <div class="kpi"><div class="label">Pages migrated</div><div class="value">6</div><div class="sub">of 18 total listicles</div></div>
+  <div class="kpis">
+    <div class="kpi"><div class="label">Migrated</div><div class="value">6 / 18</div><div class="sub">33% complete</div></div>
     <div class="kpi"><div class="label">Traffic covered</div><div class="value">68%</div><div class="sub">168k of 246k sessions/mo</div></div>
-    <div class="kpi"><div class="label">Revenue covered</div><div class="value">$118k</div><div class="sub">~70% of Jurni listicle revenue</div></div>
+    <div class="kpi"><div class="label">Revenue covered</div><div class="value">$118k</div><div class="sub">~70% of Jurni LP revenue</div></div>
     <div class="kpi"><div class="label">Images uploaded</div><div class="value">36</div><div class="sub">to Shopify Files · 1:1 match</div></div>
   </div>
 
-  <!-- 1. EyeshadowStick -->
-  <div class="row">
-    <div class="row-header">
-      <div class="title">
-        <span class="rank">01</span>
-        <h2>Eyeshadow Stick · Listicle V1</h2>
-      </div>
-      <div class="stats">
-        <span>Sessions <strong>41,781</strong></span>
-        <span>Orders <strong>305</strong></span>
-        <span>Rev <strong>$29,317</strong></span>
-        <span>CVR <strong>0.73%</strong></span>
-      </div>
-      <div class="actions">
-        <a href="https://myshop.jonesroadbeauty.com/preview/MjI0NA==" target="_blank">Open Jurni ↗</a>
-        <a class="primary" href="https://www.jonesroadbeauty.com/pages/eyeshadow-stick-listicle-cclp" target="_blank">Open CCLP ↗</a>
-      </div>
+  <div class="progress">
+    <div class="progress-label">
+      <span>Migration progress</span>
+      <strong>6 of 18 done</strong>
     </div>
-    <div class="compare">
-      <div class="pane jurni">
-        <div class="label">Jurni (Before) <span class="pill">Original</span></div>
-        <iframe src="https://myshop.jonesroadbeauty.com/preview/MjI0NA==" loading="lazy"></iframe>
-      </div>
-      <div class="pane cclp">
-        <div class="label">Shopify CCLP (After) <span class="pill">Live</span></div>
-        <iframe src="https://www.jonesroadbeauty.com/pages/eyeshadow-stick-listicle-cclp" loading="lazy"></iframe>
-      </div>
+    <div class="progress-bar">
+      <div class="done" style="width:33.3%">6 done</div>
+      <div class="pending">12 pending</div>
     </div>
   </div>
 
-  <!-- 2. MakeupTravelKit -->
-  <div class="row">
-    <div class="row-header">
-      <div class="title">
-        <span class="rank">02</span>
-        <h2>Makeup Travel Kit 2.0 · Listicle Trojan Horse</h2>
-      </div>
-      <div class="stats">
-        <span>Sessions <strong>27,016</strong></span>
-        <span>Orders <strong>160</strong></span>
-        <span>Rev <strong>$18,254</strong></span>
-        <span>CVR <strong>0.59%</strong></span>
-      </div>
-      <div class="actions">
-        <a href="https://myshop.jonesroadbeauty.com/preview/MTIyOQ==" target="_blank">Open Jurni ↗</a>
-        <a class="primary" href="https://www.jonesroadbeauty.com/pages/makeup-travel-kit-listicle-cclp" target="_blank">Open CCLP ↗</a>
-      </div>
-    </div>
-    <div class="compare">
-      <div class="pane jurni">
-        <div class="label">Jurni (Before) <span class="pill">Original</span></div>
-        <iframe src="https://myshop.jonesroadbeauty.com/preview/MTIyOQ==" loading="lazy"></iframe>
-      </div>
-      <div class="pane cclp">
-        <div class="label">Shopify CCLP (After) <span class="pill">Live</span></div>
-        <iframe src="https://www.jonesroadbeauty.com/pages/makeup-travel-kit-listicle-cclp" loading="lazy"></iframe>
-      </div>
-    </div>
-  </div>
+  <h2>Listicle migration table</h2>
+  <div class="sub">Sorted by traffic · 30-day sessions</div>
 
-  <!-- 3. LipRecharge -->
-  <div class="row">
-    <div class="row-header">
-      <div class="title">
-        <span class="rank">03</span>
-        <h2>Lip Recharge · Listicle Problem-First</h2>
-      </div>
-      <div class="stats">
-        <span>Sessions <strong>23,972</strong></span>
-        <span>Orders <strong>441</strong></span>
-        <span>Rev <strong>$25,739</strong></span>
-        <span>CVR <strong>1.84%</strong></span>
-      </div>
-      <div class="actions">
-        <a href="https://myshop.jonesroadbeauty.com/preview/MjgxMQ==" target="_blank">Open Jurni ↗</a>
-        <a class="primary" href="https://www.jonesroadbeauty.com/pages/lip-recharge-listicle-cclp" target="_blank">Open CCLP ↗</a>
-      </div>
-    </div>
-    <div class="compare">
-      <div class="pane jurni">
-        <div class="label">Jurni (Before) <span class="pill">Original</span></div>
-        <iframe src="https://myshop.jonesroadbeauty.com/preview/MjgxMQ==" loading="lazy"></iframe>
-      </div>
-      <div class="pane cclp">
-        <div class="label">Shopify CCLP (After) <span class="pill">Live</span></div>
-        <iframe src="https://www.jonesroadbeauty.com/pages/lip-recharge-listicle-cclp" loading="lazy"></iframe>
-      </div>
-    </div>
-  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>#</th>
+        <th>Page</th>
+        <th class="num">Sessions</th>
+        <th class="num">Revenue</th>
+        <th class="num">CVR</th>
+        <th>Source</th>
+        <th>Links</th>
+      </tr>
+    </thead>
+    <tbody>
 
-  <!-- 4. MMB V1 -->
-  <div class="row">
-    <div class="row-header">
-      <div class="title">
-        <span class="rank">04</span>
-        <h2>Mini Miracle Balm · Listicle V1</h2>
-      </div>
-      <div class="stats">
-        <span>Sessions <strong>23,097</strong></span>
-        <span>Orders <strong>136</strong></span>
-        <span>Rev <strong>$11,450</strong></span>
-        <span>CVR <strong>0.59%</strong></span>
-      </div>
-      <div class="actions">
-        <a href="https://myshop.jonesroadbeauty.com/preview/MjYzNA==" target="_blank">Open Jurni ↗</a>
-        <a class="primary" href="https://www.jonesroadbeauty.com/pages/miracle-balm-v1-listicle-cclp" target="_blank">Open CCLP ↗</a>
-      </div>
-    </div>
-    <div class="compare">
-      <div class="pane jurni">
-        <div class="label">Jurni (Before) <span class="pill">Original</span></div>
-        <iframe src="https://myshop.jonesroadbeauty.com/preview/MjYzNA==" loading="lazy"></iframe>
-      </div>
-      <div class="pane cclp">
-        <div class="label">Shopify CCLP (After) <span class="pill">Live</span></div>
-        <iframe src="https://www.jonesroadbeauty.com/pages/miracle-balm-v1-listicle-cclp" loading="lazy"></iframe>
-      </div>
-    </div>
-  </div>
+      <tr class="phase-divider"><td colspan="8"><span>Phase 1 · Done</span></td></tr>
 
-  <!-- 5. MMB V2 -->
-  <div class="row">
-    <div class="row-header">
-      <div class="title">
-        <span class="rank">05</span>
-        <h2>Mini Miracle Balm · Listicle V2 <span style="font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.15em;opacity:.55;margin-left:8px">(A/B HERO VARIANT OF V1)</span></h2>
-      </div>
-      <div class="stats">
-        <span>Sessions <strong>22,753</strong></span>
-        <span>Orders <strong>132</strong></span>
-        <span>Rev <strong>$11,794</strong></span>
-        <span>CVR <strong>0.58%</strong></span>
-      </div>
-      <div class="actions">
-        <a href="https://myshop.jonesroadbeauty.com/preview/MjYyNQ==" target="_blank">Open Jurni ↗</a>
-        <a class="primary" href="https://www.jonesroadbeauty.com/pages/miracle-balm-v2-listicle-cclp" target="_blank">Open CCLP ↗</a>
-      </div>
-    </div>
-    <div class="compare">
-      <div class="pane jurni">
-        <div class="label">Jurni (Before) <span class="pill">Original</span></div>
-        <iframe src="https://myshop.jonesroadbeauty.com/preview/MjYyNQ==" loading="lazy"></iframe>
-      </div>
-      <div class="pane cclp">
-        <div class="label">Shopify CCLP (After) <span class="pill">Live</span></div>
-        <iframe src="https://www.jonesroadbeauty.com/pages/miracle-balm-v2-listicle-cclp" loading="lazy"></iframe>
-      </div>
-    </div>
-  </div>
+      <tr class="done">
+        <td><span class="badge done">Done</span></td>
+        <td class="rank">01</td>
+        <td class="name">Eyeshadow Stick · V1<span class="product">The Eyeshadow Stick</span></td>
+        <td class="num">41,781</td>
+        <td class="num">$29,317</td>
+        <td class="num">0.73%</td>
+        <td>Meta</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/MjI0NA==" target="_blank">Jurni ↗</a>
+          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/eyeshadow-stick-listicle-cclp" target="_blank">CCLP ↗</a>
+        </td>
+      </tr>
+      <tr class="done">
+        <td><span class="badge done">Done</span></td>
+        <td class="rank">02</td>
+        <td class="name">Makeup Travel Kit 2.0 · Listicle Trojan<span class="product">The Makeup Travel Kit 2.0</span></td>
+        <td class="num">27,016</td>
+        <td class="num">$18,254</td>
+        <td class="num">0.59%</td>
+        <td>AppLovin</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/MTIyOQ==" target="_blank">Jurni ↗</a>
+          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/makeup-travel-kit-listicle-cclp" target="_blank">CCLP ↗</a>
+        </td>
+      </tr>
+      <tr class="done">
+        <td><span class="badge done">Done</span></td>
+        <td class="rank">03</td>
+        <td class="name">Lip Recharge · Problem-First V1<span class="product">Lip Recharge</span></td>
+        <td class="num">23,972</td>
+        <td class="num">$25,739</td>
+        <td class="num">1.84%</td>
+        <td>Meta</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/MjgxMQ==" target="_blank">Jurni ↗</a>
+          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/lip-recharge-listicle-cclp" target="_blank">CCLP ↗</a>
+        </td>
+      </tr>
+      <tr class="done">
+        <td><span class="badge done">Done</span></td>
+        <td class="rank">04</td>
+        <td class="name">Mini Miracle Balm · V1<span class="product">Mini Miracle Balm</span></td>
+        <td class="num">23,097</td>
+        <td class="num">$11,450</td>
+        <td class="num">0.59%</td>
+        <td>Meta</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/MjYzNA==" target="_blank">Jurni ↗</a>
+          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/miracle-balm-v1-listicle-cclp" target="_blank">CCLP ↗</a>
+        </td>
+      </tr>
+      <tr class="done">
+        <td><span class="badge done">Done</span></td>
+        <td class="rank">05</td>
+        <td class="name">Mini Miracle Balm · V2 <em style="font-style:normal;opacity:.5;font-size:11px;font-family:'Base Mono Wide Thin',monospace;letter-spacing:.1em">(A/B hero variant of V1)</em><span class="product">Mini Miracle Balm</span></td>
+        <td class="num">22,753</td>
+        <td class="num">$11,794</td>
+        <td class="num">0.58%</td>
+        <td>Meta</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/MjYyNQ==" target="_blank">Jurni ↗</a>
+          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/miracle-balm-v2-listicle-cclp" target="_blank">CCLP ↗</a>
+        </td>
+      </tr>
+      <tr class="done">
+        <td><span class="badge done">Done</span></td>
+        <td class="rank">06</td>
+        <td class="name">Multi-Product Generic · v1<span class="product">Miracle Balm + WTF</span></td>
+        <td class="num">17,580</td>
+        <td class="num">$5,408</td>
+        <td class="num">0.29%</td>
+        <td>Google</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/Nzk0" target="_blank">Jurni ↗</a>
+          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/multi-product-generic-listicle-cclp" target="_blank">CCLP ↗</a>
+        </td>
+      </tr>
 
-  <!-- 6. Multi-Product Generic -->
-  <div class="row">
-    <div class="row-header">
-      <div class="title">
-        <span class="rank">06</span>
-        <h2>Multi-Product Generic · Listicle</h2>
-      </div>
-      <div class="stats">
-        <span>Sessions <strong>17,580</strong></span>
-        <span>Orders <strong>51</strong></span>
-        <span>Rev <strong>$5,408</strong></span>
-        <span>CVR <strong>0.29%</strong></span>
-      </div>
-      <div class="actions">
-        <a href="https://myshop.jonesroadbeauty.com/preview/Nzk0" target="_blank">Open Jurni ↗</a>
-        <a class="primary" href="https://www.jonesroadbeauty.com/pages/multi-product-generic-listicle-cclp" target="_blank">Open CCLP ↗</a>
-      </div>
-    </div>
-    <div class="compare">
-      <div class="pane jurni">
-        <div class="label">Jurni (Before) <span class="pill">Original</span></div>
-        <iframe src="https://myshop.jonesroadbeauty.com/preview/Nzk0" loading="lazy"></iframe>
-      </div>
-      <div class="pane cclp">
-        <div class="label">Shopify CCLP (After) <span class="pill">Live</span></div>
-        <iframe src="https://www.jonesroadbeauty.com/pages/multi-product-generic-listicle-cclp" loading="lazy"></iframe>
-      </div>
-    </div>
-  </div>
+      <tr class="phase-divider"><td colspan="8"><span>Phase 2 · Pending — mid-tier</span></td></tr>
+
+      <tr>
+        <td><span class="badge pending">Pending</span></td>
+        <td class="rank">07</td>
+        <td class="name">Body Collection · Listicle V1<span class="product">Body Collection</span></td>
+        <td class="num">17,388</td>
+        <td class="num">$3,524</td>
+        <td class="num">0.18%</td>
+        <td>Meta</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/MTc0MQ==" target="_blank">Jurni ↗</a>
+          <a class="link disabled">CCLP —</a>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="badge pending">Pending</span></td>
+        <td class="rank">08</td>
+        <td class="name">Professional Mom · Multi-Product Listicle V1<span class="product">Persona · Professional Mom</span></td>
+        <td class="num">5,374</td>
+        <td class="num">$9,871</td>
+        <td class="num">1.56%</td>
+        <td>Meta</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/ODQ1" target="_blank">Jurni ↗</a>
+          <a class="link disabled">CCLP —</a>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="badge pending">Pending</span></td>
+        <td class="rank">09</td>
+        <td class="name">Emily DiDonato · Creator · Eyeshadow Stick · V2<span class="product">The Eyeshadow Stick</span></td>
+        <td class="num">4,853</td>
+        <td class="num">$3,992</td>
+        <td class="num">0.97%</td>
+        <td>Meta</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/OTcw" target="_blank">Jurni ↗</a>
+          <a class="link disabled">CCLP —</a>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="badge pending">Pending</span></td>
+        <td class="rank">10</td>
+        <td class="name">Pinterest · Face Pencil · Listicle V1<span class="product">The Face Pencil</span></td>
+        <td class="num">2,774</td>
+        <td class="num">$1,700</td>
+        <td class="num">0.87%</td>
+        <td>Meta</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/OTE0" target="_blank">Jurni ↗</a>
+          <a class="link disabled">CCLP —</a>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="badge pending">Pending</span></td>
+        <td class="rank">11</td>
+        <td class="name">Emily DiDonato · Creator · Miracle Balm · V1<span class="product">Miracle Balm</span></td>
+        <td class="num">2,269</td>
+        <td class="num">$2,865</td>
+        <td class="num">1.37%</td>
+        <td>Meta</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/ODM2" target="_blank">Jurni ↗</a>
+          <a class="link disabled">CCLP —</a>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="badge pending">Pending</span></td>
+        <td class="rank">12</td>
+        <td class="name">JETM · Listicle · Mom V1<span class="product">Just Enough Tinted Moisturizer</span></td>
+        <td class="num">2,069</td>
+        <td class="num">$2,287</td>
+        <td class="num">1.11%</td>
+        <td>Meta</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/NjU4" target="_blank">Jurni ↗</a>
+          <a class="link disabled">CCLP —</a>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="badge pending">Pending</span></td>
+        <td class="rank">13</td>
+        <td class="name">JETM · Listicle · Busy Women<span class="product">Just Enough Tinted Moisturizer</span></td>
+        <td class="num">2,017</td>
+        <td class="num">$171</td>
+        <td class="num">0.10%</td>
+        <td>TikTok</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/OTI4" target="_blank">Jurni ↗</a>
+          <a class="link disabled">CCLP —</a>
+        </td>
+      </tr>
+
+      <tr class="phase-divider"><td colspan="8"><span>Phase 3 · Pending — long tail</span></td></tr>
+
+      <tr>
+        <td><span class="badge pending">Pending</span></td>
+        <td class="rank">14</td>
+        <td class="name">Lip Recharge · Listicle · Social Proof V2<span class="product">Lip Recharge</span></td>
+        <td class="num">1,486</td>
+        <td class="num">$1,109</td>
+        <td class="num">1.01%</td>
+        <td>AppLovin</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/MjgzNw==" target="_blank">Jurni ↗</a>
+          <a class="link disabled">CCLP —</a>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="badge pending">Pending</span></td>
+        <td class="rank">15</td>
+        <td class="name">WTF · Creator · Multi-Product V1<span class="product">What The Foundation</span></td>
+        <td class="num">1,456</td>
+        <td class="num">$2,090</td>
+        <td class="num">1.24%</td>
+        <td>Meta</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/ODEx" target="_blank">Jurni ↗</a>
+          <a class="link disabled">CCLP —</a>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="badge pending">Pending</span></td>
+        <td class="rank">16</td>
+        <td class="name">Tonya Morris · Creator · JETM<span class="product">Just Enough Tinted Moisturizer</span></td>
+        <td class="num">743</td>
+        <td class="num">$532</td>
+        <td class="num">1.08%</td>
+        <td>Meta</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/ODEy" target="_blank">Jurni ↗</a>
+          <a class="link disabled">CCLP —</a>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="badge pending">Pending</span></td>
+        <td class="rank">17</td>
+        <td class="name">Mini Miracle Balm Trio · Listicle V1<span class="product">Mini Miracle Balm Trio</span></td>
+        <td class="num">517</td>
+        <td class="num">$0</td>
+        <td class="num">0.00%</td>
+        <td>Organic</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/MTA3OQ==" target="_blank">Jurni ↗</a>
+          <a class="link disabled">CCLP —</a>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="badge pending">Pending</span></td>
+        <td class="rank">18</td>
+        <td class="name">Dusty Rose &amp; Sunkissed · Listicle V3<span class="product">Dusty Rose &amp; Sunkissed Kits</span></td>
+        <td class="num">491</td>
+        <td class="num">$480</td>
+        <td class="num">1.02%</td>
+        <td>Meta</td>
+        <td class="actions">
+          <a class="link" href="https://myshop.jonesroadbeauty.com/preview/MjA0Nw==" target="_blank">Jurni ↗</a>
+          <a class="link disabled">CCLP —</a>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
 
   <div class="notes">
-    <h3>Notes for review</h3>
-    <ol>
-      <li><strong>1:1 image match.</strong> Every section image on every CCLP page was uploaded from the matching Jurni position to Shopify Files. Hero, 5 (or 3) reasons, Bobbi quote — all match the originals.</li>
-      <li><strong>MMB V1 vs V2 share identical body content.</strong> Only the hero headline differs ("5 Ways… Transform" vs "5 Reasons… Talking"). That's the A/B test Jurni was running. In Shopify, this could collapse to one page + Intelligems hero test instead of two pages.</li>
-      <li><strong>Multi-Product Generic isn't a numbered listicle</strong> — it's a multi-product trust page. Used <code>cclp-reason-row</code> sections with empty number labels for the alternating content rows. Hero, main product, 3 content rows, FAQ, final CTA all render.</li>
-      <li><strong>Known CCLP template limitations</strong> (consistent across all 6, addressable with section enhancements): no review photos in <code>cclp-testimonial-cards</code>, no closing-CTA image in <code>cclp-cta-band</code>. Both are template-level &mdash; Jurni had these, CCLP doesn't yet.</li>
-      <li><strong>If iframes don't render</strong> some sites block embedding via X-Frame-Options. Click the "Open ↗" buttons at the top of each row to view in a new tab.</li>
-    </ol>
-  </div>
-
-  <div class="notes" style="margin-top:16px">
-    <h3>Phase 2 readiness</h3>
-    <p style="font-size:14px;line-height:1.65;margin-bottom:14px">Same flow as Phase 1: pull Jurni JSX content → scrape image URLs from preview → bulk upload to Shopify Files → generate CCLP template → push to live theme → create page. Phase 2 covers 8 more funnels (BodyCollection, ProfessionalMom, Emily Creator x2, Pinterest FacePencil, JETM Mom, JETM BusyWomen) and another ~39k sessions/mo.</p>
-    <p style="font-family:'Base Mono Wide Thin',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;opacity:.55">Awaiting go-ahead.</p>
+    <p><strong>How this tracker is maintained:</strong> Each row gets its CCLP link filled in and status flipped to "Done" as we ship that page. Once all 18 are done, Jurni can be sunset.</p>
+    <p><strong>MMB V1 / V2:</strong> Identical body content — only the hero headline differs. In Jurni these were separate funnels; in Shopify they could collapse to one page + Intelligems hero test (instead of two).</p>
+    <p><strong>Known CCLP template limitations (consistent across all migrated pages):</strong> No review photos in <code>cclp-testimonial-cards</code>; no closing-CTA image in <code>cclp-cta-band</code>. Both are template-level — addressable with section enhancements if we want full Jurni parity.</p>
   </div>
 
   <div class="meta">
-    Phase 1 deployed 2026-05-15 · 6 templates · 1 image upload batch (36 files) · 6 Shopify pages created · Live on jonesroad.myshopify.com · Source: Jurni MCP funnel data
+    Last updated 2026-05-15 · Source: Jurni MCP funnel data (last_30d) · Migration to live theme on jonesroad.myshopify.com
   </div>
 </div>
 </body>
