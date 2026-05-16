@@ -12,11 +12,11 @@
 
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{background:#fff;color:#000;font-family:'Ringside Wide Book',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1320px;margin:0 auto;padding:56px 40px 96px}
+  .wrap{max-width:1380px;margin:0 auto;padding:56px 40px 96px}
 
   .eyebrow{font-family:'Base Mono Wide Thin',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#000;opacity:.6;margin-bottom:16px}
   h1{font-family:'Canela Light',Georgia,serif;font-weight:300;font-size:52px;line-height:1.05;letter-spacing:.01em;margin-bottom:14px}
-  .deck{font-family:'Ringside Wide Book',sans-serif;font-size:16px;line-height:1.55;max-width:820px;color:#000;margin-bottom:40px}
+  .deck{font-family:'Ringside Wide Book',sans-serif;font-size:16px;line-height:1.55;max-width:860px;color:#000;margin-bottom:40px}
 
   .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid #000;border-bottom:1px solid #000;margin-bottom:48px}
   .kpi{padding:22px 22px;border-right:1px solid rgba(0,0,0,.12)}
@@ -28,10 +28,9 @@
   .pills{display:flex;gap:14px;margin:36px 0 24px;flex-wrap:wrap;font-family:'Base Mono Wide Thin',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
   .pill-chip{padding:8px 14px;border:1px solid rgba(0,0,0,.2);display:inline-flex;align-items:center;gap:8px}
   .pill-chip .ct{background:#000;color:#fff;padding:1px 7px;font-size:10px;letter-spacing:.05em}
-  .pill-chip.done .ct{background:#000}
-  .pill-chip.merged .ct{background:#ff2e92}
-  .pill-chip.cut{opacity:.55;text-decoration:line-through}
-  .pill-chip.cut .ct{background:#fff;color:#000;border:1px solid rgba(0,0,0,.4)}
+  .pill-chip.preview .ct{background:#ff2e92}
+  .pill-chip.qa .ct{background:#d4a93a;color:#000}
+  .pill-chip.unresolved .ct{background:#fff;color:#000;border:1px solid #000}
 
   h2{font-family:'Canela Light',Georgia,serif;font-weight:300;font-size:30px;line-height:1.15;letter-spacing:.01em;margin:56px 0 6px}
   h2 + .sub{font-family:'Base Mono Wide Thin',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#000;opacity:.55;margin-bottom:22px}
@@ -39,43 +38,51 @@
   table{width:100%;border-collapse:collapse;font-size:13px}
   thead th{font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;text-align:left;font-weight:400;padding:14px 10px;border-bottom:1.5px solid #000;color:#000;background:#fff;white-space:nowrap;vertical-align:bottom}
   thead th.num{text-align:right}
-  tbody td{padding:14px 10px;border-bottom:1px solid rgba(0,0,0,.08);vertical-align:middle;font-family:'Ringside Wide Book',sans-serif}
+  tbody td{padding:14px 10px;border-bottom:1px solid rgba(0,0,0,.08);vertical-align:top;font-family:'Ringside Wide Book',sans-serif}
   tbody td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   tbody td.rank{font-family:'Base Mono Wide Thin',monospace;font-size:11px;letter-spacing:.1em;opacity:.55;width:30px}
-  tbody td.name{font-weight:500;max-width:300px}
+  tbody td.name{font-weight:500;max-width:280px}
   tbody td.name .product{font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.12em;opacity:.5;display:block;margin-top:3px;text-transform:uppercase;font-weight:400}
   tbody td.name .note{font-size:12px;color:#000;opacity:.7;display:block;margin-top:4px;font-style:italic;font-weight:400}
   tbody tr:hover{background:#fafafa}
-  tbody tr.done{background:#fbfbfb}
-  tbody tr.cut td.name{opacity:.55}
-  tbody tr.cut td.num{opacity:.55}
+  tbody tr.unresolved td.name{opacity:.7}
 
   .badge{display:inline-block;font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:4px 9px;white-space:nowrap}
-  .badge.done{background:#000;color:#fff}
-  .badge.merged{background:#ff2e92;color:#fff}
-  .badge.cut{background:#fff;color:#000;border:1px dashed rgba(0,0,0,.3);opacity:.7}
+  .badge.preview{background:#000;color:#fff}
+  .badge.qa{background:#d4a93a;color:#000}
+  .badge.unresolved{background:#fff;color:#000;border:1px solid #000}
+
+  code.h{font-family:'Base Mono Wide Thin',monospace;font-size:11px;background:#f8f8f8;padding:3px 7px;letter-spacing:.04em;border:1px solid rgba(0,0,0,.08);white-space:nowrap;display:inline-block}
+  code.t{font-family:'Base Mono Wide Thin',monospace;font-size:11px;background:#000;color:#fff;padding:3px 7px;letter-spacing:.04em;white-space:nowrap;display:inline-block}
 
   a.link{font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:6px 10px;border:1px solid #000;background:#fff;color:#000;text-decoration:none;transition:.12s;white-space:nowrap;display:inline-block;margin-bottom:4px}
   a.link:hover{background:#000;color:#fff}
   a.link.primary{background:#000;color:#fff}
   a.link.primary:hover{background:#fff;color:#000}
-  a.link.disabled{opacity:.25;pointer-events:none;border-style:dashed}
   td.actions{white-space:nowrap}
   td.actions a + a{margin-left:6px}
 
   tr.phase-divider td{padding:32px 0 8px;border-bottom:none;font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.55}
   tr.phase-divider td span{display:inline-block;border-bottom:1px solid #000;padding-bottom:6px;padding-right:16px}
 
-  .notes{margin-top:60px;padding-top:24px;border-top:1px solid rgba(0,0,0,.1);font-size:13px;line-height:1.7;max-width:840px}
+  .qa-box{background:#fff;border:1px solid rgba(0,0,0,.15);padding:28px 32px;margin-top:40px}
+  .qa-box h3{font-family:'Canela Light',Georgia,serif;font-weight:300;font-size:24px;margin-bottom:8px}
+  .qa-box .qsub{font-family:'Base Mono Wide Thin',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.55;margin-bottom:18px}
+  .qa-box ol{padding-left:20px;font-size:13.5px;line-height:1.8}
+  .qa-box ol li{margin-bottom:6px}
+  .qa-box ol li strong{font-weight:500}
+
+  .callout{background:#fff5e0;border:1px solid #d4a93a;padding:22px 26px;margin-top:28px}
+  .callout h3{font-family:'Geogrotesque Bold','Ringside Wide Book',sans-serif;font-weight:700;font-size:13px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px}
+  .callout p{font-size:13px;line-height:1.7;margin-bottom:8px}
+  .callout ul{font-size:13px;line-height:1.7;padding-left:0;list-style:none;margin-top:6px}
+  .callout ul li{padding-left:14px;position:relative;margin-bottom:6px}
+  .callout ul li::before{content:"—";position:absolute;left:0;opacity:.5}
+
+  .notes{margin-top:60px;padding-top:24px;border-top:1px solid rgba(0,0,0,.1);font-size:13px;line-height:1.7;max-width:880px}
   .notes p{margin-bottom:10px;opacity:.85}
   .notes strong{font-weight:500}
-  .notes code{font-family:'Base Mono Wide Thin',monospace;font-size:11px;background:#f6f2eb;padding:2px 6px;letter-spacing:.05em}
-
-  .redirects-box{background:#f6f2eb;border:1px solid rgba(0,0,0,.1);padding:24px 28px;margin-top:40px;font-size:13px;line-height:1.7}
-  .redirects-box h3{font-family:'Canela Light',Georgia,serif;font-weight:300;font-size:22px;margin-bottom:14px}
-  .redirects-box table{font-size:12px}
-  .redirects-box td{padding:8px 10px;border-bottom:1px solid rgba(0,0,0,.08)}
-  .redirects-box code{font-family:'Base Mono Wide Thin',monospace;font-size:11px;background:#fff;padding:2px 6px;letter-spacing:.05em;display:inline-block}
+  .notes code{font-family:'Base Mono Wide Thin',monospace;font-size:11px;background:#f8f8f8;padding:2px 6px;letter-spacing:.05em}
 
   .meta{margin-top:60px;padding-top:18px;border-top:1px solid rgba(0,0,0,.1);font-family:'Base Mono Wide Thin',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.5}
 
@@ -90,195 +97,242 @@
 <body>
 <div class="wrap">
 
-  <div class="eyebrow">Internal · Ecom · Replo Migration · 2026-05-15</div>
+  <div class="eyebrow">Internal · Ecom · Replo Migration · 2026-05-16</div>
   <h1>Replo → CCLP Migration</h1>
-  <p class="deck">Replo had 11 active pages on jonesroadbeauty.com totalling ~$58.5k in current ad spend. <strong>Migration complete</strong> — 5 pages live on CCLP, 2 JETM pages merged into one Trojan Horse page, and 5 low-spend Replo pages cut + redirected to the right CCLP / PDP destination. All redirects are live in Shopify, so ads pointing to the old Replo URLs now land on the right page automatically.</p>
+  <p class="deck">Approach: <strong>keep every existing Replo page URL alive and swap the template underneath it</strong>, so no ad/email/SMS links need to change. 11 Replo pages → 4 new CCLP templates. New templates are built and previewable; team needs to QA each one, then we flip the template suffix on the live page. 1 page (Sunscreen) is unresolved — decide cut vs. build.</p>
 
   <div class="kpis">
-    <div class="kpi"><div class="label">New CCLP pages</div><div class="value">4</div><div class="sub">live + serving Replo traffic</div></div>
-    <div class="kpi"><div class="label">Spend covered</div><div class="value">$58.5k</div><div class="sub">100% — all Replo URLs redirected</div></div>
-    <div class="kpi"><div class="label">URL redirects</div><div class="value">9</div><div class="sub">old Replo paths → CCLP / PDP</div></div>
-    <div class="kpi"><div class="label">Migration status</div><div class="value">DONE</div><div class="sub">Replo can be sunset</div></div>
+    <div class="kpi"><div class="label">Replo pages</div><div class="value">11</div><div class="sub">all live, template swap pending</div></div>
+    <div class="kpi"><div class="label">CCLP templates built</div><div class="value">4</div><div class="sub">MB Secret · WTF · Gel Liner · JETM</div></div>
+    <div class="kpi"><div class="label">Preview URLs</div><div class="value">4</div><div class="sub">ready for QA on staged handles</div></div>
+    <div class="kpi"><div class="label">Open items</div><div class="value">1</div><div class="sub">Sunscreen TH — cut or rebuild</div></div>
   </div>
 
   <div class="pills">
-    <span class="pill-chip done"><span class="ct">3</span>Rebuilt 1:1</span>
-    <span class="pill-chip merged"><span class="ct">2</span>Merged (JETM TH+Min · WTF V1+SC)</span>
-    <span class="pill-chip cut"><span class="ct">5</span>Cut + redirected</span>
+    <span class="pill-chip preview"><span class="ct">10</span>Template ready · awaiting QA</span>
+    <span class="pill-chip qa"><span class="ct">0</span>QA approved · ready to flip</span>
+    <span class="pill-chip unresolved"><span class="ct">1</span>Unresolved (Sunscreen)</span>
   </div>
 
-  <h2>Migration table</h2>
-  <div class="sub">11 original Replo pages · sorted by spend</div>
+  <h2>Template swap plan</h2>
+  <div class="sub">11 live Replo pages · ordered by spend · template stays at preview URL until QA passes</div>
 
   <table>
     <thead>
       <tr>
         <th>Status</th>
         <th>#</th>
-        <th>Original Replo page</th>
+        <th>Live page (keep URL)</th>
         <th class="num">Spend</th>
-        <th>Destination</th>
+        <th>Current template</th>
+        <th>→ New CCLP template</th>
         <th>Links</th>
       </tr>
     </thead>
     <tbody>
 
-      <tr class="phase-divider"><td colspan="6"><span>Rebuilt 1:1 · 4 listicles + 1 Trojan Horse</span></td></tr>
+      <tr class="phase-divider"><td colspan="7"><span>Miracle Balm — 5 Replo pages → 1 CCLP template</span></td></tr>
 
-      <tr class="done">
-        <td><span class="badge done">Done</span></td>
+      <tr>
+        <td><span class="badge preview">Preview</span></td>
         <td class="rank">01</td>
-        <td class="name">Miracle Balm — The Secret<span class="product">Miracle Balm · Trojan Horse pattern</span><span class="note">Cody-built v2 with cclp-trojan-horse template (press, reasons, benefits, buybox, steps, ingredients, trust bar, FAQ)</span></td>
+        <td class="name">Miracle Balm — The Secret (TH V2)<span class="product">Miracle Balm · main</span><span class="note">Highest spend MB page. Cody built v2 Trojan Horse template.</span></td>
         <td class="num">$18,000</td>
-        <td>cclp-trojan-horse</td>
+        <td><code class="h">replo.a5c37a86</code></td>
+        <td><code class="t">miracle-balm-the-secret-v2</code></td>
         <td class="actions">
-          <a class="link" href="https://www.jonesroadbeauty.com/pages/miraclebalmthesecretthv2" target="_blank">Replo ↗</a>
-          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/miracle-balm-the-secret-v2" target="_blank">CCLP ↗</a>
-          <a class="link" href="https://jonesroad.myshopify.com/admin/themes/147743604886/editor?previewPath=%2Fpages%2Fmiracle-balm-the-secret-v2" target="_blank">Editor ↗</a>
+          <a class="link" href="https://www.jonesroadbeauty.com/pages/miraclebalmthesecretthv2" target="_blank">Live ↗</a>
+          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/miracle-balm-the-secret-v2" target="_blank">Preview ↗</a>
+          <a class="link" href="https://jonesroad.myshopify.com/admin/pages/94189715606" target="_blank">Admin ↗</a>
         </td>
       </tr>
-      <tr class="done">
-        <td><span class="badge done">Done</span></td>
+      <tr>
+        <td><span class="badge preview">Preview</span></td>
         <td class="rank">02</td>
-        <td class="name">WTF Reviews Listicle<span class="product">What The Foundation</span><span class="note">5 reasons, each paired with a verified-buyer review</span></td>
-        <td class="num">$15,000</td>
-        <td>CCLP Listicle</td>
+        <td class="name">MB Secret — Face Pencil GWP variant<span class="product">Miracle Balm · variant</span></td>
+        <td class="num">$0</td>
+        <td><code class="h">replo.d52afa32</code></td>
+        <td><code class="t">miracle-balm-the-secret-v2</code></td>
         <td class="actions">
-          <a class="link" href="https://www.jonesroadbeauty.com/pages/listicle-wtf-reviews" target="_blank">Replo ↗</a>
-          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/wtf-reviews-listicle-v2" target="_blank">CCLP ↗</a>
-          <a class="link" href="https://jonesroad.myshopify.com/admin/themes/147743604886/editor?previewPath=%2Fpages%2Fwtf-reviews-listicle-v2" target="_blank">Editor ↗</a>
+          <a class="link" href="https://www.jonesroadbeauty.com/pages/miraclebalmthesecretthv2-gwp-the-face-pencil-ng" target="_blank">Live ↗</a>
+          <a class="link" href="https://jonesroad.myshopify.com/admin/pages/97482211478" target="_blank">Admin ↗</a>
         </td>
       </tr>
-      <tr class="done">
-        <td><span class="badge done">Done</span></td>
+      <tr>
+        <td><span class="badge preview">Preview</span></td>
         <td class="rank">03</td>
-        <td class="name">Gel Liner — Most Requested Launch<span class="product">Gel Liner</span><span class="note">3-reason listicle, Bobbi quote, FAQ</span></td>
-        <td class="num">$12,000</td>
-        <td>CCLP Listicle</td>
+        <td class="name">MB Secret — More/Better variant<span class="product">Miracle Balm · variant</span></td>
+        <td class="num">$0</td>
+        <td><code class="h">replo.75e31dfc</code></td>
+        <td><code class="t">miracle-balm-the-secret-v2</code></td>
         <td class="actions">
-          <a class="link" href="https://www.jonesroadbeauty.com/pages/gel-liner-thv2-2025" target="_blank">Replo ↗</a>
-          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/gel-liner-listicle-v2" target="_blank">CCLP ↗</a>
-          <a class="link" href="https://jonesroad.myshopify.com/admin/themes/147743604886/editor?previewPath=%2Fpages%2Fgel-liner-listicle-v2" target="_blank">Editor ↗</a>
+          <a class="link" href="https://www.jonesroadbeauty.com/pages/miraclebalmthesecretthv2-more-better-beauty-products-nosub-pdp-higher" target="_blank">Live ↗</a>
+          <a class="link" href="https://jonesroad.myshopify.com/admin/pages/98414231702" target="_blank">Admin ↗</a>
         </td>
       </tr>
-      <tr class="cut">
-        <td><span class="badge cut">Cut</span></td>
+      <tr>
+        <td><span class="badge preview">Preview</span></td>
         <td class="rank">04</td>
-        <td class="name">WTF Reviews Listicle (SC Header)<span class="product">What The Foundation</span><span class="note">Cut + merged with #02 — A/B test only showed 1% lift, not worth maintaining a second page. Both Replo + V2 URLs redirect to V1.</span></td>
-        <td class="num">$8,000</td>
-        <td>Merged into V1</td>
-        <td class="actions">
-          <a class="link" href="https://www.jonesroadbeauty.com/pages/listicle-wtf-reviews-sc-header" target="_blank">Test redirect ↗</a>
-        </td>
-      </tr>
-
-      <tr class="phase-divider"><td colspan="6"><span>Merged · 2 JETM pages → 1 Trojan Horse</span></td></tr>
-
-      <tr class="done">
-        <td><span class="badge merged">Merged</span></td>
-        <td class="rank">05</td>
-        <td class="name">JETM — TH<span class="product">Just Enough Tinted Moisturizer</span><span class="note">Merged with #06 into one Trojan Horse page — best of both</span></td>
-        <td class="num">$3,000</td>
-        <td>JETM — The Secret (v2)</td>
-        <td class="actions">
-          <a class="link" href="https://www.jonesroadbeauty.com/pages/jetm-th" target="_blank">Replo ↗</a>
-          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/jetm-the-secret-v2" target="_blank">CCLP ↗</a>
-          <a class="link" href="https://jonesroad.myshopify.com/admin/themes/147743604886/editor?previewPath=%2Fpages%2Fjetm-the-secret-v2" target="_blank">Editor ↗</a>
-        </td>
-      </tr>
-      <tr class="done">
-        <td><span class="badge merged">Merged</span></td>
-        <td class="rank">06</td>
-        <td class="name">JETM — Minimalist<span class="product">Just Enough Tinted Moisturizer</span><span class="note">Merged with #05 — redirects to same JETM Secret v2</span></td>
-        <td class="num">$2,000</td>
-        <td>JETM — The Secret (v2)</td>
-        <td class="actions">
-          <a class="link" href="https://www.jonesroadbeauty.com/pages/jetm-minimalist" target="_blank">Replo ↗</a>
-          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/jetm-the-secret-v2" target="_blank">CCLP ↗</a>
-        </td>
-      </tr>
-
-      <tr class="phase-divider"><td colspan="6"><span>Cut · 5 pages redirected to PDP / equivalent CCLP</span></td></tr>
-
-      <tr class="cut">
-        <td><span class="badge cut">Cut</span></td>
-        <td class="rank">07</td>
-        <td class="name">Sunscreen TH V2<span class="product">Everyday Sunscreen</span><span class="note">Redirects to Everyday Sunscreen PDP</span></td>
-        <td class="num">$500</td>
-        <td>/products/everyday-sunscreen</td>
-        <td class="actions"><a class="link" href="https://www.jonesroadbeauty.com/pages/sunscreen-thv2" target="_blank">Test redirect ↗</a></td>
-      </tr>
-      <tr class="cut">
-        <td><span class="badge cut">Cut</span></td>
-        <td class="rank">08</td>
-        <td class="name">MB Listicle V2 — Skincare<span class="product">Miracle Balm</span><span class="note">Redirects to MB Secret v2</span></td>
+        <td class="name">MB Listicle V2 — Skincare persona<span class="product">Miracle Balm · listicle</span></td>
         <td class="num">$9</td>
-        <td>/pages/miracle-balm-the-secret-v2</td>
-        <td class="actions"><a class="link" href="https://www.jonesroadbeauty.com/pages/mblisticlev2-skincare" target="_blank">Test redirect ↗</a></td>
+        <td><code class="h">replo.f51ce559</code></td>
+        <td><code class="t">miracle-balm-the-secret-v2</code></td>
+        <td class="actions">
+          <a class="link" href="https://www.jonesroadbeauty.com/pages/mblisticlev2-skincare" target="_blank">Live ↗</a>
+          <a class="link" href="https://jonesroad.myshopify.com/admin/pages/111739043990" target="_blank">Admin ↗</a>
+        </td>
       </tr>
-      <tr class="cut">
-        <td><span class="badge cut">Cut</span></td>
-        <td class="rank">09</td>
-        <td class="name">MB Listicle V2 — Minimalist<span class="product">Miracle Balm</span><span class="note">Redirects to MB Secret v2</span></td>
+      <tr>
+        <td><span class="badge preview">Preview</span></td>
+        <td class="rank">05</td>
+        <td class="name">MB Listicle V2 — Minimalist persona<span class="product">Miracle Balm · listicle</span></td>
         <td class="num">$0.12</td>
-        <td>/pages/miracle-balm-the-secret-v2</td>
-        <td class="actions"><a class="link" href="https://www.jonesroadbeauty.com/pages/mblisticlev2-minimalist" target="_blank">Test redirect ↗</a></td>
+        <td><code class="h">replo.7edf8b50</code></td>
+        <td><code class="t">miracle-balm-the-secret-v2</code></td>
+        <td class="actions">
+          <a class="link" href="https://www.jonesroadbeauty.com/pages/mblisticlev2-minimalist" target="_blank">Live ↗</a>
+          <a class="link" href="https://jonesroad.myshopify.com/admin/pages/111739011222" target="_blank">Admin ↗</a>
+        </td>
       </tr>
-      <tr class="cut">
-        <td><span class="badge cut">Cut</span></td>
+
+      <tr class="phase-divider"><td colspan="7"><span>WTF Foundation — 2 Replo pages → 1 CCLP template</span></td></tr>
+
+      <tr>
+        <td><span class="badge preview">Preview</span></td>
+        <td class="rank">06</td>
+        <td class="name">WTF Reviews Listicle<span class="product">What The Foundation · main</span><span class="note">5 reasons paired with verified-buyer reviews</span></td>
+        <td class="num">$15,000</td>
+        <td><code class="h">replo.d70a36e0</code></td>
+        <td><code class="t">cclp-listicle-wtf-reviews</code></td>
+        <td class="actions">
+          <a class="link" href="https://www.jonesroadbeauty.com/pages/listicle-wtf-reviews" target="_blank">Live ↗</a>
+          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/wtf-reviews-listicle-v2" target="_blank">Preview ↗</a>
+          <a class="link" href="https://jonesroad.myshopify.com/admin/pages/94373576854" target="_blank">Admin ↗</a>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="badge preview">Preview</span></td>
+        <td class="rank">07</td>
+        <td class="name">WTF Reviews — SC Header variant<span class="product">What The Foundation · variant</span><span class="note">SC + V1 only showed ~1% lift in A/B — merged into one template</span></td>
+        <td class="num">$8,000</td>
+        <td><code class="h">replo.d333ee8b</code></td>
+        <td><code class="t">cclp-listicle-wtf-reviews</code></td>
+        <td class="actions">
+          <a class="link" href="https://www.jonesroadbeauty.com/pages/listicle-wtf-reviews-sc-header" target="_blank">Live ↗</a>
+          <a class="link" href="https://jonesroad.myshopify.com/admin/pages/98328051862" target="_blank">Admin ↗</a>
+        </td>
+      </tr>
+
+      <tr class="phase-divider"><td colspan="7"><span>Gel Liner — 1 Replo page → 1 CCLP template</span></td></tr>
+
+      <tr>
+        <td><span class="badge preview">Preview</span></td>
+        <td class="rank">08</td>
+        <td class="name">Gel Liner — Most Requested Launch<span class="product">Gel Liner · main</span><span class="note">3-reason listicle + Bobbi quote + FAQ</span></td>
+        <td class="num">$12,000</td>
+        <td><code class="h">replo.ff4cac65</code></td>
+        <td><code class="t">cclp-listicle-gel-liner</code></td>
+        <td class="actions">
+          <a class="link" href="https://www.jonesroadbeauty.com/pages/gel-liner-thv2-2025" target="_blank">Live ↗</a>
+          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/gel-liner-listicle-v2" target="_blank">Preview ↗</a>
+          <a class="link" href="https://jonesroad.myshopify.com/admin/pages/110584397974" target="_blank">Admin ↗</a>
+        </td>
+      </tr>
+
+      <tr class="phase-divider"><td colspan="7"><span>JETM — 2 Replo pages → 1 CCLP template (merged)</span></td></tr>
+
+      <tr>
+        <td><span class="badge preview">Preview</span></td>
+        <td class="rank">09</td>
+        <td class="name">JETM — Trojan Horse<span class="product">Just Enough Tinted Moisturizer · main</span><span class="note">Merged with #10 — best of both into one Trojan Horse</span></td>
+        <td class="num">$3,000</td>
+        <td><code class="h">replo.14b8f246</code></td>
+        <td><code class="t">cclp-jetm-the-secret-v2</code></td>
+        <td class="actions">
+          <a class="link" href="https://www.jonesroadbeauty.com/pages/jetm-th" target="_blank">Live ↗</a>
+          <a class="link primary" href="https://www.jonesroadbeauty.com/pages/jetm-the-secret-v2" target="_blank">Preview ↗</a>
+          <a class="link" href="https://jonesroad.myshopify.com/admin/pages/112824713366" target="_blank">Admin ↗</a>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="badge preview">Preview</span></td>
         <td class="rank">10</td>
-        <td class="name">MB Secret — More/Better Variant<span class="product">Miracle Balm</span><span class="note">Redirects to MB Secret v2</span></td>
-        <td class="num">$0</td>
-        <td>/pages/miracle-balm-the-secret-v2</td>
-        <td class="actions"><a class="link" href="https://www.jonesroadbeauty.com/pages/miraclebalmthesecretthv2-more-better-beauty-products-nosub-pdp-higher" target="_blank">Test redirect ↗</a></td>
+        <td class="name">JETM — Minimalist persona<span class="product">Just Enough Tinted Moisturizer · variant</span></td>
+        <td class="num">$2,000</td>
+        <td><code class="h">replo.1318196d</code></td>
+        <td><code class="t">cclp-jetm-the-secret-v2</code></td>
+        <td class="actions">
+          <a class="link" href="https://www.jonesroadbeauty.com/pages/jetm-minimalist" target="_blank">Live ↗</a>
+          <a class="link" href="https://jonesroad.myshopify.com/admin/pages/112824778902" target="_blank">Admin ↗</a>
+        </td>
       </tr>
-      <tr class="cut">
-        <td><span class="badge cut">Cut</span></td>
+
+      <tr class="phase-divider"><td colspan="7"><span>Unresolved — needs decision</span></td></tr>
+
+      <tr class="unresolved">
+        <td><span class="badge unresolved">Decide</span></td>
         <td class="rank">11</td>
-        <td class="name">MB Secret — Face Pencil GWP Variant<span class="product">Miracle Balm</span><span class="note">Redirects to MB Secret v2</span></td>
-        <td class="num">$0</td>
-        <td>/pages/miracle-balm-the-secret-v2</td>
-        <td class="actions"><a class="link" href="https://www.jonesroadbeauty.com/pages/miraclebalmthesecretthv2-gwp-the-face-pencil-ng" target="_blank">Test redirect ↗</a></td>
+        <td class="name">Sunscreen — Trojan Horse V2<span class="product">Everyday Sunscreen</span><span class="note">No CCLP template built. Options: (a) build cclp-sunscreen Trojan template, (b) swap to existing CCLP listicle, (c) unpublish (PDP is fine)</span></td>
+        <td class="num">$500</td>
+        <td><code class="h">replo.ae9f3514</code></td>
+        <td>—</td>
+        <td class="actions">
+          <a class="link" href="https://www.jonesroadbeauty.com/pages/sunscreen-thv2" target="_blank">Live ↗</a>
+          <a class="link" href="https://jonesroad.myshopify.com/admin/pages/109872382102" target="_blank">Admin ↗</a>
+        </td>
       </tr>
 
     </tbody>
   </table>
 
-  <div class="redirects-box">
-    <h3>Active Shopify URL redirects</h3>
-    <p style="margin-bottom:14px;opacity:.85">All seven redirects are live in Shopify Admin (Online Store → Navigation → URL Redirects). Old Replo paths will automatically redirect to the destinations below — no ad URL changes needed.</p>
-    <table>
-      <tr><td><code>/pages/jetm-th</code></td><td>→</td><td><code>/pages/jetm-the-secret-v2</code></td></tr>
-      <tr><td><code>/pages/jetm-minimalist</code></td><td>→</td><td><code>/pages/jetm-the-secret-v2</code></td></tr>
-      <tr><td><code>/pages/sunscreen-thv2</code></td><td>→</td><td><code>/products/everyday-sunscreen</code></td></tr>
-      <tr><td><code>/pages/mblisticlev2-skincare</code></td><td>→</td><td><code>/pages/miracle-balm-the-secret-v2</code></td></tr>
-      <tr><td><code>/pages/mblisticlev2-minimalist</code></td><td>→</td><td><code>/pages/miracle-balm-the-secret-v2</code></td></tr>
-      <tr><td><code>/pages/miraclebalmthesecretthv2-more-better-beauty-products-nosub-pdp-higher</code></td><td>→</td><td><code>/pages/miracle-balm-the-secret-v2</code></td></tr>
-      <tr><td><code>/pages/miraclebalmthesecretthv2-gwp-the-face-pencil-ng</code></td><td>→</td><td><code>/pages/miracle-balm-the-secret-v2</code></td></tr>
-      <tr><td><code>/pages/listicle-wtf-reviews-sc-header</code></td><td>→</td><td><code>/pages/wtf-reviews-listicle-v2</code></td></tr>
-      <tr><td><code>/pages/wtf-reviews-listicle-sc-v2</code></td><td>→</td><td><code>/pages/wtf-reviews-listicle-v2</code></td></tr>
-    </table>
+  <div class="qa-box">
+    <h3>QA checklist — per template</h3>
+    <div class="qsub">Whitney + Sam + Rebecca · review the 4 preview URLs before we flip live</div>
+    <ol>
+      <li><strong>Hero copy + photo</strong> render correctly (no broken fonts, no orphan words).</li>
+      <li><strong>Buybox</strong> — gallery thumbnails load (no <code>?</code> placeholders), shade swatches present where applicable, ATC clicks add the right variant.</li>
+      <li><strong>Reasons / accordion</strong> — each reason copy is accurate to product, no Lorem, no broken bullets.</li>
+      <li><strong>Step-by-step</strong> — images load, copy reads in order, no Replo placeholder thumbnails.</li>
+      <li><strong>Ingredients</strong> — claims approved (no unauthorized clinical %), image loads.</li>
+      <li><strong>FAQ</strong> — answers accurate; expand/collapse works.</li>
+      <li><strong>Reviews</strong> — Junip stars load, real reviewer names (never "Verified Buyer"), no internal-staff quotes.</li>
+      <li><strong>Mobile</strong> — full page on iPhone width; sticky CTA appears + adds to cart.</li>
+      <li><strong>Press / trust bar</strong> — logos load from theme file, not text fallbacks.</li>
+      <li><strong>Ship-readiness</strong> — sign off in #landingpages thread before template flip.</li>
+    </ol>
   </div>
 
-  <div class="notes" style="background:#fff5e0;border:1px solid #d4a93a;padding:22px 26px;border-radius:0;margin-top:32px">
-    <h3 style="font-family:'Geogrotesque Bold',sans-serif;font-weight:700;font-size:13px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px">⚠ Rebecca — image swap needed</h3>
-    <p style="margin-bottom:8px;opacity:1"><strong><a href="https://www.jonesroadbeauty.com/pages/jetm-the-secret-v2" target="_blank">JETM — The Secret (v2)</a>:</strong> the Trojan Horse template is wired up correctly (same as MB Secret v2), but JETM doesn't have the equivalent of MB's clean swatch lineup + step-by-step instructional thumbnails in the Air/Shopify libraries I can access. Current placeholders:</p>
-    <ul style="font-size:13px;line-height:1.7;padding-left:0;list-style:none">
-      <li style="padding-left:14px;position:relative;margin-bottom:6px"><span style="position:absolute;left:0;opacity:.5">—</span> <strong>Buybox gallery (6 thumbnails):</strong> single-shade product+swatch combos (alabaster, ivory, porcelain, honey, almond, chestnut). Probably want a lifestyle hero + a few variant angles instead.</li>
-      <li style="padding-left:14px;position:relative;margin-bottom:6px"><span style="position:absolute;left:0;opacity:.5">—</span> <strong>How-to-use step images:</strong> using hannahbrosh ad creative thumbnails as placeholders. Swap for proper JETM how-to footage when shot.</li>
-      <li style="padding-left:14px;position:relative;margin-bottom:6px"><span style="position:absolute;left:0;opacity:.5">—</span> <strong>Ingredients section image:</strong> currently the JETM Swatch Range video thumbnail (9:16 aspect, awkward crop). Replace with a proper 5:6 portrait JETM multi-shade swatch when one exists.</li>
+  <div class="callout">
+    <h3>How the template swap works (Rebecca)</h3>
+    <p>Once a preview is QA-approved, the swap is a 2-click change in Shopify admin — no ad URL changes, no redirects, no downtime.</p>
+    <ul>
+      <li>Open the <strong>live page</strong> (Admin link in the table above)</li>
+      <li>In the right-rail <em>Theme template</em> dropdown, change from the current <code>replo.{uuid}</code> to the new CCLP template (e.g. <code>miracle-balm-the-secret-v2</code>)</li>
+      <li>Save. The live URL now renders the CCLP template instantly.</li>
+      <li>Revert anytime by switching back to the Replo template — no data loss.</li>
     </ul>
-    <p style="margin-top:10px;font-size:12px;opacity:.75">Editor link in the table above drops straight into the customizer for this page.</p>
+  </div>
+
+  <div class="callout">
+    <h3>⚠ Rebecca — JETM image swap needed</h3>
+    <p><strong>JETM Trojan Horse template:</strong> wired correctly, but JETM doesn't have the equivalent of MB's clean swatch lineup + step-by-step instructional thumbnails in the Air/Shopify libraries I can access. Current placeholders:</p>
+    <ul>
+      <li><strong>Buybox gallery (6 thumbnails):</strong> single-shade product+swatch combos. Want a lifestyle hero + variant angles instead.</li>
+      <li><strong>How-to-use step images:</strong> using hannahbrosh ad creative thumbnails as placeholders. Swap for proper JETM how-to footage when shot.</li>
+      <li><strong>Ingredients section image:</strong> currently the JETM Swatch Range video thumbnail (9:16, awkward crop). Replace with a proper 5:6 portrait JETM multi-shade swatch.</li>
+    </ul>
+    <p style="margin-top:10px;font-size:12px;opacity:.75">Admin link in row #09 above for direct page access.</p>
   </div>
 
   <div class="notes">
-    <p><strong>JETM merge approach:</strong> The new <code>/pages/jetm-the-secret-v2</code> uses the same Trojan Horse template Cody built for Miracle Balm Secret. Combines best of both old JETM pages — hero from TH ("Better Skin Days"), reasons from both (easy-to-apply + clinical hydration), benefits grid for clinical claims, shade-finder CTA.</p>
-    <p><strong>WTF A/B (#02 vs #04):</strong> rebuilt both as separate pages to mirror the Replo A/B setup. Could collapse into one + Intelligems hero test later.</p>
-    <p><strong>Note for ads:</strong> redirects work for any traffic source — Meta, TikTok, Google, organic, email. No ad URL updates required. Worth keeping the old Replo URLs in ads if you want to track the redirect performance separately.</p>
+    <p><strong>JETM merge approach:</strong> The <code>cclp-jetm-the-secret-v2</code> template uses the same Trojan Horse structure as MB Secret. Combines best of both old JETM pages — hero from TH ("Better Skin Days"), reasons from both (easy-to-apply + clinical hydration), benefits grid for clinical claims, shade-finder CTA. Both <code>/pages/jetm-th</code> and <code>/pages/jetm-minimalist</code> will run this template.</p>
+    <p><strong>WTF SC merge:</strong> Old A/B (V1 vs SC header) showed ~1% lift. Both pages will run the single <code>cclp-listicle-wtf-reviews</code> template. If team still wants a hero A/B, we can run it via Intelligems on the same template later.</p>
+    <p><strong>MB Secret v3:</strong> A test variant template (<code>miracle-balm-the-secret-v3</code>) is built — different hero (centered vs split), benefits section removed, Junip reviews added below ingredients. Once v2 is QA-approved + live, we can A/B v2 vs v3 on a subset of the MB Replo pages.</p>
+    <p><strong>Old redirects:</strong> The 9 redirects I had set up have been removed. Every Replo URL stays live on its original handle — only the template underneath changes.</p>
   </div>
 
   <div class="meta">
-    Last updated 2026-05-15 · Replo template files live at <code>templates/page.replo.{uuid}.json</code> · CCLP rebuilds at <code>templates/page.cclp-*.json</code> · Redirects in Shopify Admin → URL Redirects
+    Last updated 2026-05-16 · 11 Replo pages mapped to 4 CCLP templates + 1 unresolved · Templates in <code>jrb-ecomexperts/templates/page.{name}.json</code>
   </div>
 </div>
 </body>
