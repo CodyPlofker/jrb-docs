@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Meta Performance Dashboard — Jones Road Beauty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{ --bg:#fff; --bg-alt:#f8f8f8; --ink:#000; --line:#e5e5e5; }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Inter",-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:48px 32px 80px}
+  .eyebrow{font-size:12px;letter-spacing:.3px;text-transform:uppercase;font-weight:700;color:#000;margin:0 0 12px}
+  h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:300;font-size:46px;line-height:1.05;margin:0 0 8px;letter-spacing:-.5px}
+  .sub{font-size:14px;color:#555;margin:0 0 24px;max-width:780px}
+  .tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin:8px 0 32px}
+  .tab{appearance:none;background:none;border:0;padding:14px 20px;font-family:"Inter";font-size:12px;letter-spacing:.3px;font-weight:700;text-transform:uppercase;color:#888;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tab:hover{color:#000}
+  .tab.active{color:#000;border-bottom-color:#000}
+  .view{display:none}
+  .view.active{display:block}
+  h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:300;font-size:30px;margin:0 0 6px}
+  .note{font-size:13px;color:#555;margin:0 0 18px;max-width:780px}
+  .scorecards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 32px}
+  .card{background:var(--bg-alt);padding:18px;border:1px solid var(--line)}
+  .card .label{font-size:11px;letter-spacing:.3px;text-transform:uppercase;font-weight:700;color:#000;margin:0 0 8px}
+  .card .value{font-family:"Cormorant Garamond",Georgia,serif;font-weight:300;font-size:30px;line-height:1;color:#000;margin:0}
+  .card .delta{font-size:12px;color:#555;margin:6px 0 0}
+  .card.warn .value{color:#c0392b}
+  .section{margin:0 0 40px}
+  .chart-wrap{position:relative;height:380px;background:var(--bg);border:1px solid var(--line);padding:24px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .grid2 .chart-wrap{height:340px}
+  ul.hyp{margin:0;padding:0;list-style:none}
+  ul.hyp li{padding:14px 16px;border:1px solid var(--line);margin-bottom:8px;background:var(--bg)}
+  ul.hyp li b{font-size:12px;letter-spacing:.3px;text-transform:uppercase;display:block;margin:0 0 4px}
+  ul.hyp li.confirmed b::before{content:"CONFIRMED · ";color:#000;font-weight:700}
+  ul.hyp li.likely b::before{content:"LIKELY · ";color:#000;font-weight:700}
+  ul.hyp li.investigate b::before{content:"INVESTIGATE · ";color:#888;font-weight:700}
+  ul.hyp li p{margin:0;font-size:13px;color:#000;line-height:1.5}
+  ul.hyp li small{display:block;color:#666;font-size:11px;margin-top:6px}
+  .footer{font-size:11px;color:#888;margin-top:48px;padding-top:16px;border-top:1px solid var(--line);letter-spacing:.2px}
+  .footer strong{color:#000;letter-spacing:.3px;text-transform:uppercase;font-weight:700}
+  .pill{display:inline-block;padding:2px 8px;font-size:10px;letter-spacing:.3px;text-transform:uppercase;font-weight:700;background:#000;color:#fff;margin-right:6px}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+  th:first-child,td:first-child{text-align:left}
+  th{font-weight:700;letter-spacing:.3px;text-transform:uppercase;font-size:10px;color:#666}
+  tr.inflection{background:#fff8e6}
+  .toggles{display:flex;flex-direction:column;gap:8px;margin:0 0 18px;padding:14px;background:#fafafa;border:1px solid var(--line)}
+  .toggle-group{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .toggle-group-label{font-size:10px;letter-spacing:.4px;text-transform:uppercase;font-weight:700;color:#888;min-width:80px;display:inline-block}
+  .toggles button{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);background:var(--bg);cursor:pointer;font-family:"Inter",sans-serif;font-size:11px;letter-spacing:.3px;text-transform:uppercase;font-weight:700;color:#666;user-select:none;transition:all .12s ease}
+  .toggles button:hover{color:#000;border-color:#000}
+  .toggles button.on{color:#fff}
+  .toggles .swatch{display:inline-block;width:10px;height:10px;border-radius:50%}
+  .toggles .scale{font-size:9px;letter-spacing:.2px;text-transform:none;color:#888;font-weight:400;margin-left:2px}
+  .toggles button.on .scale{color:rgba(255,255,255,0.7)}
+  .view.active + section, section.view{margin-top:0}
+  .wow-grid{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:24px}
+  .wow-row{display:grid;grid-template-columns:200px 1fr 120px 80px 80px;align-items:center;gap:20px;padding:18px 22px;background:var(--bg)}
+  .wow-row:hover{background:#fafafa}
+  .wow-label{font-size:13px;letter-spacing:.2px;font-weight:700;color:#000}
+  .wow-label small{display:block;font-size:10px;color:#666;font-weight:400;letter-spacing:.2px;text-transform:none;margin-top:3px}
+  .wow-spark-wrap{display:flex;flex-direction:column;gap:4px;align-self:stretch;justify-content:center}
+  .wow-spark{height:78px;display:flex;align-items:flex-end;gap:2px}
+  .wow-spark .bar{flex:1;min-width:6px;background:#cfcfcf;transition:opacity .15s;border-radius:1px 1px 0 0}
+  .wow-spark .bar.good{background:#0e8a57}
+  .wow-spark .bar.bad{background:#c0392b}
+  .wow-spark .bar.last{outline:2px solid #000;outline-offset:2px}
+  .wow-spark-axis{display:flex;gap:2px;align-items:flex-start;height:14px;padding-top:2px}
+  .wow-spark-axis .tick{flex:1;min-width:6px;font-size:9px;color:#888;text-align:center;font-variant-numeric:tabular-nums;letter-spacing:.1px;line-height:1;overflow:visible}
+  .wow-latest{font-family:"Cormorant Garamond",Georgia,serif;font-weight:300;font-size:28px;color:#000;text-align:right;font-variant-numeric:tabular-nums;line-height:1}
+  .wow-delta{font-size:12px;letter-spacing:.2px;font-weight:700;text-align:right;padding:5px 8px;font-variant-numeric:tabular-nums;border-radius:2px}
+  .wow-delta.good{color:#0e8a57;background:#e8f5ee}
+  .wow-delta.bad{color:#c0392b;background:#fdecea}
+  .wow-delta.flat{color:#666;background:#f0f0f0}
+  .wow-section-label{padding:12px 22px;background:#000;color:#fff;font-size:11px;letter-spacing:.4px;text-transform:uppercase;font-weight:700}
+  @media (max-width:760px){.wow-row{grid-template-columns:130px 1fr 80px 55px 55px;gap:10px;padding:12px 12px}.wow-latest{font-size:18px}.wow-spark{height:54px}}
+  @media (max-width:760px){.scorecards{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}h1{font-size:32px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Meta · Jones Road Beauty · 2026-05-19</p>
+  <h1>Meta Performance Dashboard</h1>
+  <p class="sub">Cost per Quiz Completion drill-down + ROAS Decline Investigation. Sources: Meta Marketing API (Polar) + Tommy Washburn / Meta team data + Growth standup notes.</p>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="corr">Correlations Explorer</button>
+    <button class="tab" data-tab="wow">Weekly Trends</button>
+    <button class="tab" data-tab="roas">ROAS Investigation</button>
+    <button class="tab" data-tab="cpq">Cost per Quiz Completion</button>
+    <button class="tab" data-tab="hyp">Hypotheses</button>
+    <button class="tab" data-tab="data">Data table</button>
+  </div>
+
+  <!-- WEEKLY TRENDS (small multiples) -->
+  <section class="view" id="view-wow">
+    <h2>Weekly Trends</h2>
+    <p class="note">One row per metric. Bars = each week's value. Color = direction (green when moving the right way, red when wrong). Latest week value + WoW% + vs-4-weeks-ago% on the right. Data range: Oct 27, 2025 → May 11, 2026 (last full week).</p>
+    <div class="wow-grid" id="wowGrid"></div>
+  </section>
+
+  <!-- CORRELATIONS EXPLORER -->
+  <section class="view active" id="view-corr">
+    <h2>Correlations Explorer</h2>
+    <p class="note">Monthly. Toggle metrics to see what tracks with what. Default view = Meta ROAS, Northbeam ROAS, IA% spend, AN% spend. Northbeam shows the real (third-party-attributed) trajectory — already below 1.0 since June '25, now at <strong>0.47</strong> in May '26. The biggest structural correlate of the May collapse: IA% went 0% → 60% of spend in three months while spend mix shifted from VO → CO.</p>
+
+    <div class="toggles" id="metricToggles"></div>
+
+    <div class="chart-wrap" style="height:520px"><canvas id="corrChart"></canvas></div>
+
+    <div class="scorecards" style="margin-top:24px">
+      <div class="card warn"><p class="label">Northbeam ROAS May '26</p><p class="value">0.47</p><p class="delta">vs 1.07 in Jan '25 (-56%)</p></div>
+      <div class="card warn"><p class="label">IA% of spend May '26</p><p class="value">60%</p><p class="delta">0% in Feb '26 → 60% in May (3 months)</p></div>
+      <div class="card"><p class="label">VO → CO shift</p><p class="value">23% vs 59%</p><p class="delta">Dec '25 was 64% VO / 15% CO. Now flipped.</p></div>
+      <div class="card"><p class="label">Audience Network %</p><p class="value">2.18%</p><p class="delta">historically 0.3-0.5%. Spiked May but still small.</p></div>
+    </div>
+  </section>
+
+  <!-- ROAS INVESTIGATION -->
+  <section class="view" id="view-roas">
+    <h2>What happened to ROAS</h2>
+    <p class="note">In-platform ROAS held 1.4-1.7× through Q4 2025, dipped to 1.27 in Feb, then dropped below 1.0 in March 2026 and stayed there. Three things broke at roughly the same time: (1) Meta P5 best-practices collapsed (Composite Optimal 99% → 51%, Advantage+ Creative 94% → 41%), (2) Meta switched conversion reporting on Mar 17, and (3) AEB campaigns were transitioned to Incremental Attribution (IA / broad reach). Reach is now 50%+ cheaper but link-click → purchase CVR has roughly halved.</p>
+
+    <div class="scorecards">
+      <div class="card"><p class="label">ROAS Feb → May</p><p class="value">1.27 → 0.82</p><p class="delta">−35% in 3 months</p></div>
+      <div class="card"><p class="label">CPM Feb → May</p><p class="value">$23.72 → $12.24</p><p class="delta">−48% (cheaper inventory)</p></div>
+      <div class="card"><p class="label">Impressions Feb → May</p><p class="value">73M → 113M</p><p class="delta">+54% reach</p></div>
+      <div class="card warn"><p class="label">Click → Purchase CVR</p><p class="value">1.62% → 1.00%</p><p class="delta">−38% conversion</p></div>
+    </div>
+
+    <div class="section">
+      <h2>Reach is up, ROAS is down (weekly)</h2>
+      <p class="note">Spend held roughly flat. Impressions surged late-April onward as IA / broad reach kicked in. ROAS did not follow. Click here is the volume; conversion is the throttle.</p>
+      <div class="chart-wrap"><canvas id="reachRoasChart"></canvas></div>
+    </div>
+
+    <div class="section">
+      <h2>P5 best-practice adoption vs ROAS (monthly)</h2>
+      <p class="note">From Tommy Washburn's analysis: Composite Optimal % and Advantage+ Creative adoption collapsed starting Feb 2026. ROAS tracks them closely. Spend in Learning Phase doubled to 16% (peaked 26% in Feb) — the algorithm is starved of signal.</p>
+      <div class="chart-wrap"><canvas id="p5Chart"></canvas></div>
+    </div>
+
+    <div class="grid2">
+      <div class="section">
+        <h2>CPM (cost of reach)</h2>
+        <p class="note">Cheaper impressions correlate with the IA push and Audience Network expansion.</p>
+        <div class="chart-wrap"><canvas id="cpmChart"></canvas></div>
+      </div>
+      <div class="section">
+        <h2>Link click → purchase CVR</h2>
+        <p class="note">Where the funnel actually breaks. Halved since Q4 '25.</p>
+        <div class="chart-wrap"><canvas id="cvrChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Purchases volume</h2>
+      <p class="note">Monthly purchase count from Meta (in-platform). Apr-May running ~50% of Jan 2025 levels at similar spend.</p>
+      <div class="chart-wrap"><canvas id="purchaseChart"></canvas></div>
+    </div>
+  </section>
+
+  <!-- CPQ TAB -->
+  <section class="view" id="view-cpq">
+    <h2>Cost per Quiz Completion</h2>
+    <p class="note">Ad set: Prospecting|Manual|Consideration|QuizComplete2 (ID 120214206733560628, since renamed Prospecting|ASC|Consideration|QuizComplete). <span class="pill">CAVEAT</span> Quiz event broke May 12 per Growth standup — last 6 days are dashed because the pixel was misfiring, not because of normal attribution lag.</p>
+
+    <div class="scorecards" id="cpqCards"></div>
+
+    <div class="section">
+      <h2>Weekly CPQ</h2>
+      <p class="note">Monday-start weeks. Settled data only.</p>
+      <div class="chart-wrap"><canvas id="cpqWeekly"></canvas></div>
+    </div>
+
+    <div class="section">
+      <h2>Daily CPQ</h2>
+      <p class="note">Solid = settled. Dashed = May 12-18 (pixel broken, not normal lag). Y-axis capped at $40 for readability.</p>
+      <div class="chart-wrap"><canvas id="cpqDaily"></canvas></div>
+    </div>
+  </section>
+
+  <!-- HYPOTHESES -->
+  <section class="view" id="view-hyp">
+    <h2>Hypothesis tracker</h2>
+    <p class="note">From yesterday's Growth standup + Tommy's Slack message today (May 19). Ranked by my read of the data above.</p>
+    <ul class="hyp">
+      <li class="confirmed">
+        <b>Quiz pixel broken since May 12</b>
+        <p>Quiz completion event stopped firing in Meta + GA4 on May 12. Six days of optimization-blind delivery on Quiz Complete ad sets. Confirmed by Growth team — action was to pause those campaigns.</p>
+        <small>Maps to the late-May CPQ spike on the chart and contributes to May ROAS, but does not explain Mar-Apr decline.</small>
+      </li>
+      <li class="confirmed">
+        <b>P5 best-practice adoption collapsed (Feb 2026)</b>
+        <p>Composite Optimal % went 99% (Dec '25) → 51% (May '26). Advantage+ Creative went 94% → 41%. Value/ROAS bid optimization went 63% → 19%. Spend in Learning Phase doubled to 16% (peaked 26% in Feb). When Meta loses signal hygiene, delivery quality drops first.</p>
+        <small>Source: Tommy Washburn chart shared in #meta_jrb today. P5 collapse leads ROAS decline by ~30 days.</small>
+      </li>
+      <li class="confirmed">
+        <b>CAPI signal degraded May 2026</b>
+        <p>CAPI Qualified % was 100% all year, dropped to 90% in May. Tommy flagged this in the same Slack message. Reduced server-side signal = Meta optimizing blind.</p>
+        <small>Compounds with the broken Quiz pixel — broader Pixel/CAPI audit recommended.</small>
+      </li>
+      <li class="likely">
+        <b>AEB → IA transition pulled cheap impressions, not buyers</b>
+        <p>Tommy recommended AEB → IA migration April 29. Late-April / May CPM crashed from $25 → $12 and impressions surged 50%+, but purchase CVR fell from 1.62% → 1.00%. Classic IA failure mode: broader audience, cheaper inventory, lower intent.</p>
+        <small>Standup noted "downward trend may have started before IA was implemented" — IA accelerated, not caused, the decline.</small>
+      </li>
+      <li class="likely">
+        <b>Meta reporting change (March 17, 2026)</b>
+        <p>Meta changed conversion reporting from "purchases counted on link clicks" to "purchases after link clicks." ROAS dipped below 1.0 within days of that change. Open question: how much is reporting artifact vs. real degradation? Likely both — comparing in-platform ROAS pre/post 3/17 conflates the two.</p>
+        <small>To untangle: compare Northbeam-attributed ROAS over the same window — that doesn't move with Meta reporting changes. Standup said Northbeam ROAS hit ~4 (lowest ever), so real degradation is happening too.</small>
+      </li>
+      <li class="likely">
+        <b>Foundation Stick shade paralysis at conversion</b>
+        <p>Standup: top-of-funnel engagement on Foundation Stick is healthy; drop-off is at conversion. 30 shades on PDP is suspected to cause decision paralysis. Notable because Foundation Stick is a launch the campaign is leaning into.</p>
+        <small>Reach is being purchased, conversion isn't following. Matches the macro CVR collapse pattern. Worth A/B testing a "Pick your shade" funnel or quiz-first PDP.</small>
+      </li>
+      <li class="investigate">
+        <b>Audience Network delivery issues</b>
+        <p>Sam Brady flagged in Slack on May 5 and May 18. Some advertisers reporting issues. Not confirmed widespread.</p>
+        <small>Audience Network breakdown is available in Meta — quick check: does the spend share on AN spike in March-May?</small>
+      </li>
+      <li class="investigate">
+        <b>Creative mix: video crushing static, Jonesy underperforming</b>
+        <p>Standup: video (UGC + partnership) dramatically outperforming static. Jonesy content spent $50K in 7 days without beating cheaper internal content. Static-heavy weeks may correlate with the steeper CVR drops.</p>
+        <small>Worth pulling spend share by creative_type weekly and overlaying on this chart.</small>
+      </li>
+      <li class="investigate">
+        <b>Partnership Ads diminishing returns</b>
+        <p>Tommy on April 23: Partnerships (VO) 0.40 ncROAS vs Cost Cap 0.55 ncROAS — recommended reallocation toward Cost Cap. Partnerships still drove 60-70% of Meta spend at the time.</p>
+        <small>If Partnerships ROAS slipped from 1.0+ to 0.4 while Partnerships was the dominant spend bucket, that alone moves the blended number meaningfully.</small>
+      </li>
+      <li class="investigate">
+        <b>Website / landing-page conversion</b>
+        <p>Standup flagged site speed and landing page experience as a "divide and conquer" audit item. Cody — worth pulling Heatmap CVR by page for the same window.</p>
+        <small>Easy ask: /heatmap on top JRB LPs to see if site-side CVR moved.</small>
+      </li>
+    </ul>
+  </section>
+
+  <!-- DATA -->
+  <section class="view" id="view-data">
+    <h2>Monthly Meta metrics (Polar)</h2>
+    <p class="note">Feb-May 2026 highlighted as the inflection band.</p>
+    <table id="dataTable"></table>
+  </section>
+
+  <div class="footer">
+    <strong>Sources</strong> &nbsp;Meta Marketing API via Polar Analytics · Tommy Washburn (Meta) "ROAS Investigation" #meta_jrb 2026-05-19 · JRB Growth standup notes 2026-05-18 (Granola)
+  </div>
+</div>
+
+<script>
+const DATA = {"monthly": [{"date": "2025-01-01", "spend": 2218338.56, "imps": 78476862, "clicks": 1657219, "link_clicks": 1061991, "purchases": 37126, "rev": 3437932.27, "cpm": 28.27, "ctr": 0.01353, "roas": 1.55, "atc": 358433, "ic": 55967, "cvr": 3.5, "aov": 92.6, "nb_roas": 1.07, "nb_spend": 2224460.82, "nb_cpa": 85.33, "an_pct": 0.34, "vo_pct": 0.0, "co_pct": 0.0, "asc_pct": 73.3, "ia_pct": 0.0, "imps_m": 78.5, "cpc_link": 2.09, "cpc_all": 1.34, "ctr_link_pct": 1.35, "atc_rate": 33.75, "ic_rate": 15.61, "post_ic_rate": 66.34, "spend_m": 2.22, "purchases_k": 37.13, "an_imps_k": null}, {"date": "2025-02-01", "spend": 2246002.27, "imps": 88882613, "clicks": 2052441, "link_clicks": 1361471, "purchases": 40063, "rev": 3939199.12, "cpm": 25.27, "ctr": 0.01532, "roas": 1.75, "atc": 461840, "ic": 65842, "cvr": 2.94, "aov": 98.33, "nb_roas": 1.21, "nb_spend": 2246002.27, "nb_cpa": 80.87, "an_pct": 0.36, "vo_pct": 0.0, "co_pct": 0.0, "asc_pct": 75.1, "ia_pct": 0.0, "imps_m": 88.9, "cpc_link": 1.65, "cpc_all": 1.09, "ctr_link_pct": 1.53, "atc_rate": 33.92, "ic_rate": 14.26, "post_ic_rate": 60.85, "spend_m": 2.25, "purchases_k": 40.06, "an_imps_k": null}, {"date": "2025-03-01", "spend": 2277411.21, "imps": 72775525, "clicks": 1572698, "link_clicks": 1031712, "purchases": 33080, "rev": 3351896.76, "cpm": 31.29, "ctr": 0.01418, "roas": 1.47, "atc": 320715, "ic": 50272, "cvr": 3.21, "aov": 101.33, "nb_roas": 0.98, "nb_spend": 2277411.21, "nb_cpa": 101.47, "an_pct": 0.19, "vo_pct": 0.0, "co_pct": 0.0, "asc_pct": 81.9, "ia_pct": 0.0, "imps_m": 72.8, "cpc_link": 2.21, "cpc_all": 1.45, "ctr_link_pct": 1.42, "atc_rate": 31.09, "ic_rate": 15.67, "post_ic_rate": 65.8, "spend_m": 2.28, "purchases_k": 33.08, "an_imps_k": null}, {"date": "2025-04-01", "spend": 2280196.71, "imps": 64593996, "clicks": 1583737, "link_clicks": 983255, "purchases": 37113, "rev": 3877913.23, "cpm": 35.3, "ctr": 0.01522, "roas": 1.7, "atc": 334615, "ic": 50671, "cvr": 3.77, "aov": 104.49, "nb_roas": 1.01, "nb_spend": 2280196.71, "nb_cpa": 100.6, "an_pct": 0.08, "vo_pct": 0.0, "co_pct": 0.0, "asc_pct": 93.3, "ia_pct": 0.0, "imps_m": 64.6, "cpc_link": 2.32, "cpc_all": 1.44, "ctr_link_pct": 1.52, "atc_rate": 34.03, "ic_rate": 15.14, "post_ic_rate": 73.24, "spend_m": 2.28, "purchases_k": 37.11, "an_imps_k": null}, {"date": "2025-05-01", "spend": 4111115.62, "imps": 117104130, "clicks": 2515268, "link_clicks": 1731405, "purchases": 69799, "rev": 7799180.33, "cpm": 35.11, "ctr": 0.01479, "roas": 1.9, "atc": 807500, "ic": 106924, "cvr": 4.03, "aov": 111.74, "nb_roas": 1.09, "nb_spend": 4111115.62, "nb_cpa": 100.39, "an_pct": 0.14, "vo_pct": 0.0, "co_pct": 0.0, "asc_pct": 96.6, "ia_pct": 0.0, "imps_m": 117.1, "cpc_link": 2.37, "cpc_all": 1.63, "ctr_link_pct": 1.48, "atc_rate": 46.64, "ic_rate": 13.24, "post_ic_rate": 65.28, "spend_m": 4.11, "purchases_k": 69.8, "an_imps_k": null}, {"date": "2025-06-01", "spend": 1981444.95, "imps": 55369147, "clicks": 1220867, "link_clicks": 823537, "purchases": 26735, "rev": 2974383.44, "cpm": 35.79, "ctr": 0.01487, "roas": 1.5, "atc": 253042, "ic": 38443, "cvr": 3.25, "aov": 111.25, "nb_roas": 0.91, "nb_spend": 1981444.95, "nb_cpa": 120.29, "an_pct": 0.21, "vo_pct": 8.1, "co_pct": 0.0, "asc_pct": 85.4, "ia_pct": 0.0, "imps_m": 55.4, "cpc_link": 2.41, "cpc_all": 1.62, "ctr_link_pct": 1.49, "atc_rate": 30.73, "ic_rate": 15.19, "post_ic_rate": 69.54, "spend_m": 1.98, "purchases_k": 26.73, "an_imps_k": null}, {"date": "2025-07-01", "spend": 1887518.15, "imps": 62789504, "clicks": 1750582, "link_clicks": 1159710, "purchases": 25985, "rev": 2584243.59, "cpm": 30.06, "ctr": 0.01847, "roas": 1.37, "atc": 321168, "ic": 47113, "cvr": 2.24, "aov": 99.45, "nb_roas": 0.82, "nb_spend": 1894550.53, "nb_cpa": 118.58, "an_pct": 0.41, "vo_pct": 14.8, "co_pct": 0.0, "asc_pct": 78.0, "ia_pct": 0.0, "imps_m": 62.8, "cpc_link": 1.63, "cpc_all": 1.08, "ctr_link_pct": 1.85, "atc_rate": 27.69, "ic_rate": 14.67, "post_ic_rate": 55.15, "spend_m": 1.89, "purchases_k": 25.98, "an_imps_k": null}, {"date": "2025-08-01", "spend": 2006113.7, "imps": 71034322, "clicks": 1919047, "link_clicks": 1281399, "purchases": 25800, "rev": 2587954.51, "cpm": 28.24, "ctr": 0.01804, "roas": 1.29, "atc": 368272, "ic": 45249, "cvr": 2.01, "aov": 100.31, "nb_roas": 0.79, "nb_spend": 2006113.7, "nb_cpa": 122.72, "an_pct": 0.48, "vo_pct": 30.6, "co_pct": 0.0, "asc_pct": 60.4, "ia_pct": 2.6, "imps_m": 71.0, "cpc_link": 1.57, "cpc_all": 1.05, "ctr_link_pct": 1.8, "atc_rate": 28.74, "ic_rate": 12.29, "post_ic_rate": 57.02, "spend_m": 2.01, "purchases_k": 25.8, "an_imps_k": null}, {"date": "2025-09-01", "spend": 1842822.47, "imps": 77133577, "clicks": 1811718, "link_clicks": 1228736, "purchases": 22555, "rev": 2359269.05, "cpm": 23.89, "ctr": 0.01593, "roas": 1.28, "atc": 304567, "ic": 36580, "cvr": 1.84, "aov": 104.6, "nb_roas": 0.8, "nb_spend": 1842822.47, "nb_cpa": 128.25, "an_pct": 0.6, "vo_pct": 41.5, "co_pct": 0.7, "asc_pct": 49.5, "ia_pct": 0.2, "imps_m": 77.1, "cpc_link": 1.5, "cpc_all": 1.02, "ctr_link_pct": 1.59, "atc_rate": 24.79, "ic_rate": 12.01, "post_ic_rate": 61.66, "spend_m": 1.84, "purchases_k": 22.55, "an_imps_k": null}, {"date": "2025-10-01", "spend": 4046914.83, "imps": 137201844, "clicks": 3902058, "link_clicks": 2914732, "purchases": 57271, "rev": 6557724.61, "cpm": 29.5, "ctr": 0.02124, "roas": 1.62, "atc": 469110, "ic": 84837, "cvr": 1.96, "aov": 114.5, "nb_roas": 1.14, "nb_spend": 4046914.83, "nb_cpa": 99.6, "an_pct": 1.7, "vo_pct": 46.0, "co_pct": 25.8, "asc_pct": 22.7, "ia_pct": 0.0, "imps_m": 137.2, "cpc_link": 1.39, "cpc_all": 1.04, "ctr_link_pct": 2.12, "atc_rate": 16.09, "ic_rate": 18.08, "post_ic_rate": 67.51, "spend_m": 4.05, "purchases_k": 57.27, "an_imps_k": null}, {"date": "2025-11-01", "spend": 4957835.2, "imps": 179980023, "clicks": 4203359, "link_clicks": 2994190, "purchases": 67529, "rev": 7497698.11, "cpm": 27.55, "ctr": 0.01664, "roas": 1.51, "atc": 846019, "ic": 99023, "cvr": 2.26, "aov": 111.03, "nb_roas": 0.73, "nb_spend": 4957835.02, "nb_cpa": 146.89, "an_pct": 0.5, "vo_pct": 44.1, "co_pct": 31.3, "asc_pct": 19.6, "ia_pct": 0.0, "imps_m": 180.0, "cpc_link": 1.66, "cpc_all": 1.18, "ctr_link_pct": 1.66, "atc_rate": 28.26, "ic_rate": 11.7, "post_ic_rate": 68.2, "spend_m": 4.96, "purchases_k": 67.53, "an_imps_k": null}, {"date": "2025-12-01", "spend": 3712146.12, "imps": 113990613, "clicks": 3004959, "link_clicks": 2040179, "purchases": 44515, "rev": 5107869.99, "cpm": 32.57, "ctr": 0.0179, "roas": 1.38, "atc": 574274, "ic": 60942, "cvr": 2.18, "aov": 114.74, "nb_roas": 0.76, "nb_spend": 3712146.06, "nb_cpa": 151.14, "an_pct": 0.35, "vo_pct": 64.2, "co_pct": 15.1, "asc_pct": 14.4, "ia_pct": 0.0, "imps_m": 114.0, "cpc_link": 1.82, "cpc_all": 1.24, "ctr_link_pct": 1.79, "atc_rate": 28.15, "ic_rate": 10.61, "post_ic_rate": 73.04, "spend_m": 3.71, "purchases_k": 44.52, "an_imps_k": null}, {"date": "2026-01-01", "spend": 2781235.27, "imps": 105644468, "clicks": 2854867, "link_clicks": 1945438, "purchases": 38603, "rev": 4329179.22, "cpm": 26.33, "ctr": 0.01841, "roas": 1.56, "atc": 457133, "ic": 52564, "cvr": 1.98, "aov": 112.15, "nb_roas": 0.81, "nb_spend": 2781235.02, "nb_cpa": 134.63, "an_pct": 0.28, "vo_pct": 57.4, "co_pct": 16.3, "asc_pct": 18.3, "ia_pct": 0.0, "imps_m": 105.6, "cpc_link": 1.43, "cpc_all": 0.97, "ctr_link_pct": 1.84, "atc_rate": 23.5, "ic_rate": 11.5, "post_ic_rate": 73.44, "spend_m": 2.78, "purchases_k": 38.6, "an_imps_k": null}, {"date": "2026-02-01", "spend": 1743805.51, "imps": 73523234, "clicks": 1888038, "link_clicks": 1269575, "purchases": 20509, "rev": 2216812.33, "cpm": 23.72, "ctr": 0.01727, "roas": 1.27, "atc": 228154, "ic": 27370, "cvr": 1.62, "aov": 108.09, "nb_roas": 0.71, "nb_spend": 1743805.16, "nb_cpa": 147.12, "an_pct": 0.33, "vo_pct": 43.4, "co_pct": 29.5, "asc_pct": 19.9, "ia_pct": 0.0, "imps_m": 73.5, "cpc_link": 1.37, "cpc_all": 0.92, "ctr_link_pct": 1.73, "atc_rate": 17.97, "ic_rate": 12.0, "post_ic_rate": 74.93, "spend_m": 1.74, "purchases_k": 20.51, "an_imps_k": null}, {"date": "2026-03-01", "spend": 2361864.42, "imps": 93399244, "clicks": 2083516, "link_clicks": 1533490, "purchases": 25306, "rev": 2303974.64, "cpm": 25.29, "ctr": 0.01642, "roas": 0.98, "atc": 222555, "ic": 28408, "cvr": 1.65, "aov": 91.04, "nb_roas": 0.56, "nb_spend": 2361818.78, "nb_cpa": 158.04, "an_pct": 0.43, "vo_pct": 22.4, "co_pct": 58.4, "asc_pct": 19.0, "ia_pct": 3.0, "imps_m": 93.4, "cpc_link": 1.54, "cpc_all": 1.13, "ctr_link_pct": 1.64, "atc_rate": 14.51, "ic_rate": 12.76, "post_ic_rate": 89.08, "spend_m": 2.36, "purchases_k": 25.31, "an_imps_k": null}, {"date": "2026-04-01", "spend": 2091893.81, "imps": 90787726, "clicks": 2289214, "link_clicks": 1834500, "purchases": 19536, "rev": 1793732.25, "cpm": 23.04, "ctr": 0.02021, "roas": 0.86, "atc": 165857, "ic": 21802, "cvr": 1.06, "aov": 91.82, "nb_roas": 0.52, "nb_spend": 2091893.16, "nb_cpa": 172.81, "an_pct": 0.42, "vo_pct": 26.9, "co_pct": 53.0, "asc_pct": 16.9, "ia_pct": 28.2, "imps_m": 90.8, "cpc_link": 1.14, "cpc_all": 0.91, "ctr_link_pct": 2.02, "atc_rate": 9.04, "ic_rate": 13.15, "post_ic_rate": 89.61, "spend_m": 2.09, "purchases_k": 19.54, "an_imps_k": null}, {"date": "2026-05-01", "spend": 1383068.52, "imps": 113033078, "clicks": 1392800, "link_clicks": 1139488, "purchases": 11395, "rev": 1132932.18, "cpm": 12.24, "ctr": 0.01008, "roas": 0.82, "atc": 99196, "ic": 12469, "cvr": 1.0, "aov": 99.42, "nb_roas": 0.47, "nb_spend": 1366101.81, "nb_cpa": 208.9, "an_pct": 2.18, "vo_pct": 23.1, "co_pct": 58.8, "asc_pct": 13.8, "ia_pct": 59.6, "imps_m": 113.0, "cpc_link": 1.21, "cpc_all": 0.99, "ctr_link_pct": 1.01, "atc_rate": 8.71, "ic_rate": 12.57, "post_ic_rate": 91.39, "spend_m": 1.38, "purchases_k": 11.39, "an_imps_k": null}], "weekly": [{"date": "2025-10-27", "spend": 135910.18, "imps": 5037085, "link_clicks": 97750, "purchases": 2137, "rev": 239002.47, "cpm": 26.98, "ctr": 0.01941, "roas": 1.76, "atc": 19180, "cvr": 2.19, "aov": 111.84, "cpc_link": 1.39, "atc_rate": 19.62, "imps_m": 5.0, "spend_k": 135.9, "rev_k": 239.0, "nb_roas": 1.0, "nb_cpa": 111.46, "an_pct": 0.47, "vo_pct": 31.0, "co_pct": 44.0, "asc_pct": 18.2, "ia_pct": 0.0}, {"date": "2025-11-03", "spend": 668365.64, "imps": 24031614, "link_clicks": 559877, "purchases": 8659, "rev": 956737.59, "cpm": 27.81, "ctr": 0.0233, "roas": 1.43, "atc": 99989, "cvr": 1.55, "aov": 110.49, "cpc_link": 1.19, "atc_rate": 17.86, "imps_m": 24.0, "spend_k": 668.4, "rev_k": 956.7, "nb_roas": 0.8, "nb_cpa": 132.77, "an_pct": 0.34, "vo_pct": 35.7, "co_pct": 28.9, "asc_pct": 25.7, "ia_pct": 0.0}, {"date": "2025-11-10", "spend": 525112.17, "imps": 22999650, "link_clicks": 470138, "purchases": 7638, "rev": 818471.67, "cpm": 22.83, "ctr": 0.02044, "roas": 1.56, "atc": 91855, "cvr": 1.62, "aov": 107.16, "cpc_link": 1.12, "atc_rate": 19.54, "imps_m": 23.0, "spend_k": 525.1, "rev_k": 818.5, "nb_roas": 0.91, "nb_cpa": 114.2, "an_pct": 0.46, "vo_pct": 31.7, "co_pct": 35.7, "asc_pct": 23.9, "ia_pct": 0.0}, {"date": "2025-11-17", "spend": 1658091.27, "imps": 57433534, "link_clicks": 922430, "purchases": 24399, "rev": 2715918.91, "cpm": 28.87, "ctr": 0.01606, "roas": 1.64, "atc": 317519, "cvr": 2.65, "aov": 111.31, "cpc_link": 1.8, "atc_rate": 34.42, "imps_m": 57.4, "spend_k": 1658.1, "rev_k": 2715.9, "nb_roas": 0.73, "nb_cpa": 147.54, "an_pct": 0.38, "vo_pct": 44.5, "co_pct": 34.0, "asc_pct": 18.3, "ia_pct": 0.0}, {"date": "2025-11-24", "spend": 1970355.94, "imps": 70478140, "link_clicks": 943995, "purchases": 24696, "rev": 2767567.47, "cpm": 27.96, "ctr": 0.01339, "roas": 1.4, "atc": 317476, "cvr": 2.62, "aov": 112.07, "cpc_link": 2.09, "atc_rate": 33.63, "imps_m": 70.5, "spend_k": 1970.4, "rev_k": 2767.6, "nb_roas": 0.64, "nb_cpa": 170.17, "an_pct": 0.65, "vo_pct": 51.2, "co_pct": 27.0, "asc_pct": 18.0, "ia_pct": 0.0}, {"date": "2025-12-01", "spend": 934312.95, "imps": 32099830, "link_clicks": 507446, "purchases": 11077, "rev": 1242509.36, "cpm": 29.11, "ctr": 0.01581, "roas": 1.33, "atc": 133593, "cvr": 2.18, "aov": 112.17, "cpc_link": 1.84, "atc_rate": 26.33, "imps_m": 32.1, "spend_k": 934.3, "rev_k": 1242.5, "nb_roas": 0.64, "nb_cpa": 173.06, "an_pct": 0.62, "vo_pct": 62.0, "co_pct": 18.9, "asc_pct": 15.0, "ia_pct": 0.0}, {"date": "2025-12-08", "spend": 846015.3, "imps": 20683453, "link_clicks": 414639, "purchases": 9866, "rev": 1138929.33, "cpm": 40.9, "ctr": 0.02005, "roas": 1.35, "atc": 130939, "cvr": 2.38, "aov": 115.44, "cpc_link": 2.04, "atc_rate": 31.58, "imps_m": 20.7, "spend_k": 846.0, "rev_k": 1138.9, "nb_roas": 0.8, "nb_cpa": 143.98, "an_pct": 0.34, "vo_pct": 67.9, "co_pct": 12.8, "asc_pct": 13.1, "ia_pct": 0.0}, {"date": "2025-12-15", "spend": 756994.25, "imps": 20340249, "link_clicks": 380295, "purchases": 9056, "rev": 1045657.95, "cpm": 37.22, "ctr": 0.0187, "roas": 1.38, "atc": 107738, "cvr": 2.38, "aov": 115.47, "cpc_link": 1.99, "atc_rate": 28.33, "imps_m": 20.3, "spend_k": 757.0, "rev_k": 1045.7, "nb_roas": 0.76, "nb_cpa": 152.34, "an_pct": 0.24, "vo_pct": 68.5, "co_pct": 11.5, "asc_pct": 13.2, "ia_pct": 0.0}, {"date": "2025-12-22", "spend": 755797.14, "imps": 26483641, "link_clicks": 481385, "purchases": 9290, "rev": 1084252.26, "cpm": 28.54, "ctr": 0.01818, "roas": 1.43, "atc": 133095, "cvr": 1.93, "aov": 116.71, "cpc_link": 1.57, "atc_rate": 27.65, "imps_m": 26.5, "spend_k": 755.8, "rev_k": 1084.3, "nb_roas": 0.81, "nb_cpa": 143.41, "an_pct": 0.24, "vo_pct": 60.2, "co_pct": 16.9, "asc_pct": 15.4, "ia_pct": 0.0}, {"date": "2025-12-29", "spend": 1009530.8, "imps": 37562007, "link_clicks": 655405, "purchases": 12845, "rev": 1470612.17, "cpm": 26.88, "ctr": 0.01745, "roas": 1.46, "atc": 172242, "cvr": 1.96, "aov": 114.49, "cpc_link": 1.54, "atc_rate": 26.28, "imps_m": 37.6, "spend_k": 1009.5, "rev_k": 1470.6, "nb_roas": 0.84, "nb_cpa": 134.19, "an_pct": 0.18, "vo_pct": 57.6, "co_pct": 17.5, "asc_pct": 16.9, "ia_pct": 0.0}, {"date": "2026-01-05", "spend": 609725.89, "imps": 23301068, "link_clicks": 410672, "purchases": 7434, "rev": 866883.21, "cpm": 26.17, "ctr": 0.01762, "roas": 1.42, "atc": 97896, "cvr": 1.81, "aov": 116.61, "cpc_link": 1.48, "atc_rate": 23.84, "imps_m": 23.3, "spend_k": 609.7, "rev_k": 866.9, "nb_roas": 0.7, "nb_cpa": 162.8, "an_pct": 0.25, "vo_pct": 60.4, "co_pct": 8.4, "asc_pct": 21.8, "ia_pct": 0.0}, {"date": "2026-01-12", "spend": 630007.41, "imps": 22692635, "link_clicks": 435945, "purchases": 9621, "rev": 1052785.85, "cpm": 27.76, "ctr": 0.01921, "roas": 1.67, "atc": 107131, "cvr": 2.21, "aov": 109.43, "cpc_link": 1.45, "atc_rate": 24.57, "imps_m": 22.7, "spend_k": 630.0, "rev_k": 1052.8, "nb_roas": 0.82, "nb_cpa": 130.07, "an_pct": 0.26, "vo_pct": 52.0, "co_pct": 26.1, "asc_pct": 15.4, "ia_pct": 0.0}, {"date": "2026-01-19", "spend": 555039.64, "imps": 20811853, "link_clicks": 401254, "purchases": 8480, "rev": 932974.79, "cpm": 26.67, "ctr": 0.01928, "roas": 1.68, "atc": 86870, "cvr": 2.11, "aov": 110.02, "cpc_link": 1.38, "atc_rate": 21.65, "imps_m": 20.8, "spend_k": 555.0, "rev_k": 933.0, "nb_roas": 0.86, "nb_cpa": 124.43, "an_pct": 0.32, "vo_pct": 59.6, "co_pct": 13.5, "asc_pct": 18.5, "ia_pct": 0.0}, {"date": "2026-01-26", "spend": 472236.82, "imps": 18740976, "link_clicks": 354547, "purchases": 6473, "rev": 720839.24, "cpm": 25.2, "ctr": 0.01892, "roas": 1.53, "atc": 74575, "cvr": 1.83, "aov": 111.36, "cpc_link": 1.33, "atc_rate": 21.03, "imps_m": 18.7, "spend_k": 472.2, "rev_k": 720.8, "nb_roas": 0.85, "nb_cpa": 126.4, "an_pct": 0.47, "vo_pct": 59.5, "co_pct": 13.7, "asc_pct": 18.7, "ia_pct": 0.0}, {"date": "2026-02-02", "spend": 414902.85, "imps": 17161514, "link_clicks": 313230, "purchases": 5238, "rev": 583097.35, "cpm": 24.18, "ctr": 0.01825, "roas": 1.41, "atc": 64473, "cvr": 1.67, "aov": 111.32, "cpc_link": 1.32, "atc_rate": 20.58, "imps_m": 17.2, "spend_k": 414.9, "rev_k": 583.1, "nb_roas": 0.77, "nb_cpa": 141.52, "an_pct": 0.59, "vo_pct": 59.2, "co_pct": 9.8, "asc_pct": 22.7, "ia_pct": 0.0}, {"date": "2026-02-09", "spend": 440358.69, "imps": 18818814, "link_clicks": 342938, "purchases": 5263, "rev": 559465.39, "cpm": 23.4, "ctr": 0.01822, "roas": 1.27, "atc": 54315, "cvr": 1.53, "aov": 106.3, "cpc_link": 1.28, "atc_rate": 15.84, "imps_m": 18.8, "spend_k": 440.4, "rev_k": 559.5, "nb_roas": 0.7, "nb_cpa": 147.99, "an_pct": 0.35, "vo_pct": 45.1, "co_pct": 27.5, "asc_pct": 20.8, "ia_pct": 0.0}, {"date": "2026-02-16", "spend": 450007.26, "imps": 20886706, "link_clicks": 355834, "purchases": 5086, "rev": 554786.84, "cpm": 21.55, "ctr": 0.01704, "roas": 1.23, "atc": 56273, "cvr": 1.43, "aov": 109.08, "cpc_link": 1.26, "atc_rate": 15.81, "imps_m": 20.9, "spend_k": 450.0, "rev_k": 554.8, "nb_roas": 0.7, "nb_cpa": 150.67, "an_pct": 0.16, "vo_pct": 35.8, "co_pct": 37.7, "asc_pct": 19.7, "ia_pct": 0.0}, {"date": "2026-02-23", "spend": 441888.52, "imps": 16404085, "link_clicks": 249533, "purchases": 4759, "rev": 488336.77, "cpm": 26.94, "ctr": 0.01521, "roas": 1.11, "atc": 50355, "cvr": 1.91, "aov": 102.61, "cpc_link": 1.77, "atc_rate": 20.18, "imps_m": 16.4, "spend_k": 441.9, "rev_k": 488.3, "nb_roas": 0.65, "nb_cpa": 153.06, "an_pct": 0.22, "vo_pct": 31.2, "co_pct": 46.3, "asc_pct": 16.0, "ia_pct": 0.0}, {"date": "2026-03-02", "spend": 545517.19, "imps": 20019570, "link_clicks": 310753, "purchases": 6428, "rev": 616198.37, "cpm": 27.25, "ctr": 0.01552, "roas": 1.13, "atc": 66533, "cvr": 2.07, "aov": 95.86, "cpc_link": 1.76, "atc_rate": 21.41, "imps_m": 20.0, "spend_k": 545.5, "rev_k": 616.2, "nb_roas": 0.59, "nb_cpa": 158.54, "an_pct": 0.34, "vo_pct": 25.9, "co_pct": 51.4, "asc_pct": 22.7, "ia_pct": 0.0}, {"date": "2026-03-09", "spend": 465939.18, "imps": 16357478, "link_clicks": 240958, "purchases": 5114, "rev": 482427.41, "cpm": 28.48, "ctr": 0.01473, "roas": 1.04, "atc": 50190, "cvr": 2.12, "aov": 94.33, "cpc_link": 1.93, "atc_rate": 20.83, "imps_m": 16.4, "spend_k": 465.9, "rev_k": 482.4, "nb_roas": 0.58, "nb_cpa": 157.98, "an_pct": 0.28, "vo_pct": 27.8, "co_pct": 52.2, "asc_pct": 20.0, "ia_pct": 0.0}, {"date": "2026-03-16", "spend": 574943.38, "imps": 21611483, "link_clicks": 380276, "purchases": 6089, "rev": 530628.13, "cpm": 26.6, "ctr": 0.0176, "roas": 0.92, "atc": 49138, "cvr": 1.6, "aov": 87.15, "cpc_link": 1.51, "atc_rate": 12.92, "imps_m": 21.6, "spend_k": 574.9, "rev_k": 530.6, "nb_roas": 0.55, "nb_cpa": 153.18, "an_pct": 0.61, "vo_pct": 20.3, "co_pct": 62.4, "asc_pct": 17.3, "ia_pct": 5.0}, {"date": "2026-03-23", "spend": 571772.08, "imps": 25894083, "link_clicks": 439089, "purchases": 5663, "rev": 487254.7, "cpm": 22.08, "ctr": 0.01696, "roas": 0.85, "atc": 39197, "cvr": 1.29, "aov": 86.04, "cpc_link": 1.3, "atc_rate": 8.93, "imps_m": 25.9, "spend_k": 571.8, "rev_k": 487.3, "nb_roas": 0.52, "nb_cpa": 160.12, "an_pct": 0.53, "vo_pct": 17.5, "co_pct": 66.0, "asc_pct": 16.5, "ia_pct": 5.8}, {"date": "2026-03-30", "spend": 440028.77, "imps": 20287692, "link_clicks": 409063, "purchases": 4101, "rev": 361872.43, "cpm": 21.69, "ctr": 0.02016, "roas": 0.82, "atc": 30082, "cvr": 1.0, "aov": 88.24, "cpc_link": 1.08, "atc_rate": 7.35, "imps_m": 20.3, "spend_k": 440.0, "rev_k": 361.9, "nb_roas": 0.52, "nb_cpa": 167.29, "an_pct": 0.18, "vo_pct": 17.9, "co_pct": 63.5, "asc_pct": 18.6, "ia_pct": 8.6}, {"date": "2026-04-06", "spend": 567723.64, "imps": 23630486, "link_clicks": 599401, "purchases": 5580, "rev": 498133.25, "cpm": 24.03, "ctr": 0.02537, "roas": 0.88, "atc": 51032, "cvr": 0.93, "aov": 89.27, "cpc_link": 0.95, "atc_rate": 8.51, "imps_m": 23.6, "spend_k": 567.7, "rev_k": 498.1, "nb_roas": 0.58, "nb_cpa": 150.7, "an_pct": 0.15, "vo_pct": 25.2, "co_pct": 58.4, "asc_pct": 16.4, "ia_pct": 28.2}, {"date": "2026-04-13", "spend": 546533.01, "imps": 22125300, "link_clicks": 514402, "purchases": 5247, "rev": 471989.7, "cpm": 24.7, "ctr": 0.02325, "roas": 0.86, "atc": 40366, "cvr": 1.02, "aov": 89.95, "cpc_link": 1.06, "atc_rate": 7.85, "imps_m": 22.1, "spend_k": 546.5, "rev_k": 472.0, "nb_roas": 0.51, "nb_cpa": 170.89, "an_pct": 0.52, "vo_pct": 27.9, "co_pct": 49.7, "asc_pct": 18.0, "ia_pct": 27.3}, {"date": "2026-04-20", "spend": 398778.74, "imps": 16361691, "link_clicks": 249953, "purchases": 3619, "rev": 352030.92, "cpm": 24.37, "ctr": 0.01528, "roas": 0.88, "atc": 31817, "cvr": 1.45, "aov": 97.27, "cpc_link": 1.6, "atc_rate": 12.73, "imps_m": 16.4, "spend_k": 398.8, "rev_k": 352.0, "nb_roas": 0.48, "nb_cpa": 196.46, "an_pct": 0.47, "vo_pct": 33.8, "co_pct": 44.6, "asc_pct": 14.5, "ia_pct": 36.1}, {"date": "2026-04-27", "spend": 494714.61, "imps": 31753415, "link_clicks": 312949, "purchases": 4090, "rev": 406424.89, "cpm": 15.58, "ctr": 0.00986, "roas": 0.82, "atc": 37508, "cvr": 1.31, "aov": 99.37, "cpc_link": 1.58, "atc_rate": 11.99, "imps_m": 31.8, "spend_k": 494.7, "rev_k": 406.4, "nb_roas": 0.47, "nb_cpa": 208.98, "an_pct": 1.0, "vo_pct": 24.1, "co_pct": 54.6, "asc_pct": 16.5, "ia_pct": 49.7}, {"date": "2026-05-04", "spend": 486042.57, "imps": 40763911, "link_clicks": 300946, "purchases": 4260, "rev": 428044.9, "cpm": 11.92, "ctr": 0.00738, "roas": 0.88, "atc": 39023, "cvr": 1.42, "aov": 100.48, "cpc_link": 1.62, "atc_rate": 12.97, "imps_m": 40.8, "spend_k": 486.0, "rev_k": 428.0, "nb_roas": 0.52, "nb_cpa": 192.16, "an_pct": 1.13, "vo_pct": 22.4, "co_pct": 59.1, "asc_pct": 14.2, "ia_pct": 61.6}, {"date": "2026-05-11", "spend": 603310.63, "imps": 52674103, "link_clicks": 662659, "purchases": 4620, "rev": 451831.83, "cpm": 11.45, "ctr": 0.01258, "roas": 0.75, "atc": 38413, "cvr": 0.7, "aov": 97.8, "cpc_link": 0.91, "atc_rate": 5.8, "imps_m": 52.7, "spend_k": 603.3, "rev_k": 451.8, "nb_roas": 0.42, "nb_cpa": 228.56, "an_pct": 3.64, "vo_pct": 24.6, "co_pct": 57.7, "asc_pct": 13.3, "ia_pct": 58.7}], "p5": [{"date": "2025-01-01", "composite": 43, "acplus": 46, "value_opt": 1, "learning": 17}, {"date": "2025-02-01", "composite": 73, "acplus": 76, "value_opt": 3, "learning": 6}, {"date": "2025-03-01", "composite": 79, "acplus": 80, "value_opt": 4, "learning": 9}, {"date": "2025-04-01", "composite": 88, "acplus": 88, "value_opt": 30, "learning": 7}, {"date": "2025-05-01", "composite": 87, "acplus": 92, "value_opt": 28, "learning": 7}, {"date": "2025-06-01", "composite": 92, "acplus": 90, "value_opt": 44, "learning": 5}, {"date": "2025-07-01", "composite": 94, "acplus": 91, "value_opt": 36, "learning": 10}, {"date": "2025-08-01", "composite": 98, "acplus": 90, "value_opt": 48, "learning": 8}, {"date": "2025-09-01", "composite": 99, "acplus": 88, "value_opt": 52, "learning": 11}, {"date": "2025-10-01", "composite": 98, "acplus": 94, "value_opt": 47, "learning": 8}, {"date": "2025-11-01", "composite": 93, "acplus": 94, "value_opt": 43, "learning": 8}, {"date": "2025-12-01", "composite": 99, "acplus": 86, "value_opt": 63, "learning": 9}, {"date": "2026-01-01", "composite": 95, "acplus": 84, "value_opt": 55, "learning": 12}, {"date": "2026-02-01", "composite": 79, "acplus": 61, "value_opt": 42, "learning": 26}, {"date": "2026-03-01", "composite": 54, "acplus": 32, "value_opt": 22, "learning": 16}, {"date": "2026-04-01", "composite": 58, "acplus": 35, "value_opt": 26, "learning": 16}, {"date": "2026-05-01", "composite": 51, "acplus": 41, "value_opt": 19, "learning": 14}], "cpq_daily_labels": ["2026-01-01", "2026-01-02", "2026-01-03", "2026-01-04", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-10", "2026-01-11", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-17", "2026-01-18", "2026-01-19", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-24", "2026-01-25", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-01-31", "2026-02-01", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-07", "2026-02-08", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-14", "2026-02-15", "2026-02-16", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-21", "2026-02-22", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-02-28", "2026-03-01", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-07", "2026-03-08", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-14", "2026-03-15", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-21", "2026-03-22", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-29", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-04", "2026-04-05", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-11", "2026-04-12", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-18", "2026-04-19", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-25", "2026-04-26", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-01", "2026-05-02", "2026-05-03", "2026-05-04", "2026-05-05", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-16", "2026-05-18"], "cpq_daily_s": [3.42, 3.64, 3.55, 3.64, 3.79, 3.62, 4.02, 4.07, 3.92, 3.31, 3.68, 3.71, 3.58, 3.03, 3.59, 3.32, 3.23, 3.17, 3.4, 3.87, 4.1, 4.09, 4.2, 3.92, 3.66, 4.14, 3.43, 4.1, 3.99, 4.8, 3.93, 3.89, 4.37, 4.05, 4.2, 4.45, 4.66, 4.06, 3.96, 4.23, 4.57, 4.51, 4.69, 4.79, 4.47, 4.66, 4.79, 4.58, 4.52, 4.88, 4.7, 4.91, 4.9, 4.58, 4.34, 5.65, 5.47, 6.38, 4.24, 4.65, 4.71, 5.95, 6.56, 5.95, 9.68, 13.42, 15.26, 15.14, 9.62, 7.51, 7.45, 8.59, 6.32, 6.81, 8.36, 7.19, 9.06, 10.11, 10.13, 9.32, 9.94, 9.49, 9.26, 8.66, 9.61, 9.96, 9.62, 10.0, 10.69, 12.92, 11.19, 13.39, 22.64, 15.46, 12.2, 11.4, 9.09, 6.47, 7.14, 9.04, 8.96, 10.07, 10.95, 11.78, 10.87, 9.65, 13.24, 16.93, 14.79, 9.93, 10.55, 9.35, 11.72, 13.26, 8.2, 8.98, 11.02, 9.56, 9.99, 10.24, 9.95, 10.18, 9.07, 8.76, 8.06, 8.14, 10.03, 9.43, 8.81, 10.56, 9.46, null, null, null, null, null, null], "cpq_daily_u": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 34.16, 40, 40, 40, 40, 40], "cpq_weekly_labels": ["2025-12-29", "2026-01-05", "2026-01-12", "2026-01-19", "2026-01-26", "2026-02-02", "2026-02-09", "2026-02-16", "2026-02-23", "2026-03-02", "2026-03-09", "2026-03-16", "2026-03-23", "2026-03-30", "2026-04-06", "2026-04-13", "2026-04-20", "2026-04-27", "2026-05-04"], "cpq_weekly_vals": [3.56, 3.81, 3.37, 3.82, 4.05, 4.24, 4.55, 4.76, 4.89, 7.31, 7.88, 9.26, 9.5, 12.91, 8.66, 11.63, 10.01, 9.86, 9.14], "cpq_totals": {"spend": "$662,294", "completions": "122,507", "overall_cpq": "$5.41", "first4": "$3.64", "last4": "$10.16", "delta": "+179%", "first_date": "2026-01-01", "last_settled": "2026-05-11", "last_date": "2026-05-18"}, "headline": {"feb_roas": "1.27", "may_roas": "0.82", "feb_cpm": "$23.72", "may_cpm": "$12.24", "feb_imps": "74M", "may_imps": "113M", "feb_cvr": "1.62%", "may_cvr": "1.00%", "nov_a_plus": 94, "may_a_plus": 41, "nov_compopt": 93, "may_compopt": 51}};
+
+// Tabs
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('view-'+t.dataset.tab).classList.add('active');
+  });
+});
+
+const monthLabels = DATA.monthly.map(m=>m.date.slice(0,7));
+
+// ===== Correlations Explorer =====
+// Each metric: id, label, color, axis (y=ROAS x-scale, y1=% 0-100, y2=$, y3=count/M, y4=small % 0-5, y5=funnel % 0-100)
+// Default on: meta_roas, nb_roas, ia_pct, an_pct
+const METRICS = [
+  // --- Efficiency: ROAS, CPA ---
+  {id:'meta_roas', label:'Meta ROAS', short:'ROAS', color:'#000000', axis:'y', vals:DATA.monthly.map(m=>m.roas), unit:'x', on:true, group:'Efficiency', scale:'(0-2x)'},
+  {id:'nb_roas',   label:'Northbeam ROAS', short:'NB ROAS', color:'#c0392b', axis:'y', vals:DATA.monthly.map(m=>m.nb_roas), unit:'x', on:true, group:'Efficiency', scale:'(0-2x)'},
+  {id:'nb_cpa',    label:'Northbeam CPA ($)', short:'NB CPA', color:'#a04000', axis:'y2', vals:DATA.monthly.map(m=>m.nb_cpa), unit:'$', on:false, group:'Efficiency', scale:'($)'},
+  // --- Cost per X ---
+  {id:'cpm',       label:'CPM ($)', short:'CPM', color:'#16a085', axis:'y2', vals:DATA.monthly.map(m=>m.cpm), unit:'$', on:false, group:'Cost', scale:'($)'},
+  {id:'cpc_link',  label:'CPC link ($)', short:'CPC Link', color:'#27ae60', axis:'y2', vals:DATA.monthly.map(m=>m.cpc_link), unit:'$', on:false, group:'Cost', scale:'($)'},
+  {id:'cpc_all',   label:'CPC all ($)', short:'CPC All', color:'#16a085', axis:'y2', vals:DATA.monthly.map(m=>m.cpc_all), unit:'$', on:false, group:'Cost', scale:'($)'},
+  // --- Funnel ---
+  {id:'ctr_link_pct', label:'Link CTR %', short:'Link CTR', color:'#f39c12', axis:'y4', vals:DATA.monthly.map(m=>m.ctr_link_pct), unit:'%', on:false, group:'Funnel', scale:'(0-5%)'},
+  {id:'atc_rate',  label:'ATC rate (ATC / link clicks)', short:'ATC rate', color:'#e74c3c', axis:'y5', vals:DATA.monthly.map(m=>m.atc_rate), unit:'%', on:false, group:'Funnel', scale:'(0-50%)'},
+  {id:'ic_rate',   label:'IC rate (IC / ATC)', short:'IC rate', color:'#9b59b6', axis:'y5', vals:DATA.monthly.map(m=>m.ic_rate), unit:'%', on:false, group:'Funnel', scale:'(0-50%)'},
+  {id:'post_ic_rate', label:'Post-IC rate (Purchases / IC)', short:'Post-IC', color:'#34495e', axis:'y1', vals:DATA.monthly.map(m=>m.post_ic_rate), unit:'%', on:false, group:'Funnel', scale:'(0-100%)'},
+  {id:'cvr',       label:'Link click → purchase CVR', short:'CVR', color:'#d35400', axis:'y4', vals:DATA.monthly.map(m=>m.cvr), unit:'%', on:false, group:'Funnel', scale:'(0-5%)'},
+  // --- Spend mix ---
+  {id:'ia_pct',    label:'IA % spend', short:'IA%', color:'#5b2c7c', axis:'y1', vals:DATA.monthly.map(m=>m.ia_pct), unit:'%', on:true, group:'Spend mix', scale:'(0-100%)'},
+  {id:'an_pct',    label:'Audience Network % spend', short:'AN%', color:'#e67e22', axis:'y1', vals:DATA.monthly.map(m=>m.an_pct), unit:'%', on:true, group:'Spend mix', scale:'(0-100%)'},
+  {id:'vo_pct',    label:'VO % spend', short:'VO%', color:'#1e9b7e', axis:'y1', vals:DATA.monthly.map(m=>m.vo_pct), unit:'%', on:false, group:'Spend mix', scale:'(0-100%)'},
+  {id:'co_pct',    label:'CO % spend', short:'CO%', color:'#2b7fc4', axis:'y1', vals:DATA.monthly.map(m=>m.co_pct), unit:'%', on:false, group:'Spend mix', scale:'(0-100%)'},
+  {id:'asc_pct',   label:'ASC % spend', short:'ASC%', color:'#888888', axis:'y1', vals:DATA.monthly.map(m=>m.asc_pct), unit:'%', on:false, group:'Spend mix', scale:'(0-100%)'},
+  // --- Volume ---
+  {id:'spend_m',   label:'Spend ($M)', short:'Spend', color:'#2c3e50', axis:'y3', vals:DATA.monthly.map(m=>m.spend_m), unit:'$M', on:false, group:'Volume', scale:'($M)'},
+  {id:'imps_m',    label:'Impressions (M)', short:'Reach', color:'#7f8c8d', axis:'y3', vals:DATA.monthly.map(m=>m.imps_m), unit:'M', on:false, group:'Volume', scale:'(M)'},
+  {id:'an_imps_k', label:'AN Impressions (K)', short:'AN Imps', color:'#d68910', axis:'y3', vals:DATA.monthly.map(m=>m.an_imps_k), unit:'K', on:false, group:'Volume', scale:'(K)'},
+  {id:'purchases_k', label:'Purchases (K)', short:'Purchases', color:'#95a5a6', axis:'y3', vals:DATA.monthly.map(m=>m.purchases_k), unit:'K', on:false, group:'Volume', scale:'(K)'},
+  {id:'aov',       label:'AOV ($)', short:'AOV', color:'#8e44ad', axis:'y2', vals:DATA.monthly.map(m=>m.aov), unit:'$', on:false, group:'Volume', scale:'($)'},
+];
+
+const togglesEl = document.getElementById('metricToggles');
+const GROUPS = ['Efficiency','Cost','Funnel','Spend mix','Volume'];
+togglesEl.innerHTML = GROUPS.map(g=>{
+  const items = METRICS.filter(m=>m.group===g);
+  return `<div class="toggle-group"><span class="toggle-group-label">${g}</span>` + items.map(m=>`
+    <button type="button" data-id="${m.id}" class="${m.on?'on':''}" style="${m.on?'border-color:'+m.color+';background:'+m.color+';color:#fff;':''}" aria-pressed="${m.on}">
+      <span class="swatch" style="background:${m.color}"></span>
+      ${m.short}<span class="scale">${m.scale}</span>
+    </button>
+  `).join('') + '</div>';
+}).join('');
+
+function buildDatasets(){
+  return METRICS.filter(m=>m.on).map(m=>({
+    label: m.label,
+    data: m.vals,
+    yAxisID: m.axis,
+    borderColor: m.color,
+    backgroundColor: m.color+'22',
+    borderWidth: (m.id==='meta_roas'||m.id==='nb_roas')?2.5:1.8,
+    pointRadius: 3,
+    pointBackgroundColor: m.color,
+    tension: 0.25,
+    fill: false
+  }));
+}
+
+const corrChart = new Chart(document.getElementById('corrChart'),{
+  type:'line',
+  data:{labels:monthLabels, datasets:buildDatasets()},
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    interaction:{mode:'index', intersect:false},
+    plugins:{
+      legend:{display:true,position:'bottom',labels:{color:'#000',font:{family:'Inter',size:11},boxWidth:14}},
+      tooltip:{backgroundColor:'#000',titleColor:'#fff',bodyColor:'#fff',padding:10,
+        callbacks:{label:c=>{
+          const m = METRICS.find(x=>x.label===c.dataset.label);
+          if(!m) return c.formattedValue;
+          const v = c.parsed.y;
+          if(m.unit==='x') return m.short+': '+v.toFixed(2)+'x';
+          if(m.unit==='%') return m.short+': '+v.toFixed(1)+'%';
+          if(m.unit==='$') return m.short+': $'+v.toFixed(2);
+          if(m.unit==='M') return m.short+': '+v.toFixed(0)+'M';
+          return m.short+': '+v;
+        }}}
+    },
+    scales:{
+      x:{grid:{display:false},ticks:{color:'#666',font:{family:'Inter',size:11}}},
+      y:{position:'left',title:{display:true,text:'ROAS',color:'#000',font:{size:11,weight:700}},beginAtZero:true,max:2,ticks:{color:'#666',callback:v=>v.toFixed(1)+'x'},grid:{color:'#eee'}},
+      y1:{position:'right',title:{display:true,text:'% of spend',color:'#666',font:{size:11,weight:700}},beginAtZero:true,max:100,ticks:{color:'#666',callback:v=>v+'%'},grid:{display:false}},
+      y2:{display:false,beginAtZero:true},
+      y3:{display:false,beginAtZero:true},
+      y4:{display:false,beginAtZero:true,max:5},
+      y5:{display:false,beginAtZero:true,max:50}
+    }
+  }
+});
+
+togglesEl.addEventListener('click', (e)=>{
+  const btn = e.target.closest('button[data-id]');
+  if(!btn) return;
+  const m = METRICS.find(x=>x.id===btn.dataset.id);
+  m.on = !m.on;
+  btn.classList.toggle('on', m.on);
+  btn.setAttribute('aria-pressed', m.on);
+  if(m.on){ btn.style.background=m.color; btn.style.color='#fff'; btn.style.borderColor=m.color; }
+  else    { btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; }
+  corrChart.data.datasets = buildDatasets();
+  corrChart.update();
+});
+// Expose chart for debug
+window.corrChart = corrChart;
+
+// ===== Weekly Trends (small multiples) =====
+// Direction: 'up' = higher is good, 'down' = lower is good
+const WOW_METRICS = [
+  // --- Efficiency ---
+  {group:'Efficiency', label:'Meta ROAS',      key:'roas',       dir:'up',   fmt:v=>v.toFixed(2)+'x'},
+  {group:'Efficiency', label:'Northbeam ROAS', key:'nb_roas',    dir:'up',   fmt:v=>v.toFixed(2)+'x', sub:'3rd-party attributed'},
+  {group:'Efficiency', label:'Northbeam CPA',  key:'nb_cpa',     dir:'down', fmt:v=>'$'+v.toFixed(0)},
+  // --- Cost ---
+  {group:'Cost',       label:'CPM',            key:'cpm',        dir:'down', fmt:v=>'$'+v.toFixed(2)},
+  {group:'Cost',       label:'CPC link',       key:'cpc_link',   dir:'down', fmt:v=>'$'+v.toFixed(2)},
+  // --- Funnel ---
+  {group:'Funnel',     label:'Link CTR',       key:'ctr',        dir:'up',   fmt:v=>(v*100).toFixed(2)+'%'},
+  {group:'Funnel',     label:'ATC rate',       key:'atc_rate',   dir:'up',   fmt:v=>v.toFixed(1)+'%', sub:'ATC / link clicks'},
+  {group:'Funnel',     label:'CVR',            key:'cvr',        dir:'up',   fmt:v=>v.toFixed(2)+'%', sub:'Purchase / link click'},
+  // --- Spend mix ---
+  {group:'Spend mix',  label:'IA % spend',     key:'ia_pct',     dir:'down', fmt:v=>v.toFixed(0)+'%', sub:'Incremental Attribution'},
+  {group:'Spend mix',  label:'AN % spend',     key:'an_pct',     dir:'down', fmt:v=>v.toFixed(1)+'%', sub:'Audience Network'},
+  {group:'Spend mix',  label:'VO % spend',     key:'vo_pct',     dir:'up',   fmt:v=>v.toFixed(0)+'%', sub:'Value Optimization'},
+  {group:'Spend mix',  label:'CO % spend',     key:'co_pct',     dir:'down', fmt:v=>v.toFixed(0)+'%', sub:'Cost / Conversion Opt'},
+  {group:'Spend mix',  label:'ASC % spend',    key:'asc_pct',    dir:'up',   fmt:v=>v.toFixed(0)+'%', sub:'Advantage+ Shopping'},
+  // --- Volume ---
+  {group:'Volume',     label:'Spend',          key:'spend_k',    dir:null,   fmt:v=>'$'+v.toFixed(0)+'K'},
+  {group:'Volume',     label:'Impressions',    key:'imps_m',     dir:null,   fmt:v=>v.toFixed(1)+'M'},
+  {group:'Volume',     label:'Link clicks',    key:'link_clicks',dir:'up',   fmt:v=>(v/1000).toFixed(0)+'K'},
+  {group:'Volume',     label:'Add to Cart',    key:'atc',        dir:'up',   fmt:v=>(v/1000).toFixed(0)+'K'},
+  {group:'Volume',     label:'Purchases',      key:'purchases',  dir:'up',   fmt:v=>(v/1000).toFixed(1)+'K'},
+  {group:'Volume',     label:'Revenue',        key:'rev_k',      dir:'up',   fmt:v=>'$'+v.toFixed(0)+'K'},
+  {group:'Volume',     label:'AOV',            key:'aov',        dir:'up',   fmt:v=>'$'+v.toFixed(0)},
+];
+
+(function buildWow(){
+  const grid = document.getElementById('wowGrid');
+  // Use only fully-settled weeks: drop trailing partial week (2026-05-18 has only 1 day)
+  const weeks = DATA.weekly.filter(w => w.date !== '2026-05-18');
+  let lastGroup = '';
+  let html = '';
+  WOW_METRICS.forEach(m => {
+    if(m.group !== lastGroup){
+      html += `<div class="wow-section-label">${m.group}</div>`;
+      lastGroup = m.group;
+    }
+    const vals = weeks.map(w => w[m.key]).filter(v => v != null);
+    if(!vals.length) return;
+    const max = Math.max(...vals);
+    const min = Math.min(...vals);
+    const range = max - min || 1;
+    const last = vals[vals.length-1];
+    const prev = vals[vals.length-2];
+    const fourAgo = vals[vals.length-5]; // 4 weeks earlier
+    const wowPct = prev ? ((last - prev) / prev * 100) : 0;
+    const fourWkPct = fourAgo ? ((last - fourAgo) / fourAgo * 100) : 0;
+    // Class for delta: depends on direction
+    const cls = (pct) => {
+      if(!m.dir || Math.abs(pct) < 1) return 'flat';
+      const goingUp = pct > 0;
+      const wantUp = m.dir === 'up';
+      return (goingUp === wantUp) ? 'good' : 'bad';
+    };
+    // Bar colors: per-bar based on WoW relative to previous bar
+    const bars = vals.map((v, i) => {
+      const h = Math.max(3, ((v - min) / range) * 36 + 2); // 2-38px tall
+      let barCls = '';
+      if(i === vals.length - 1) barCls = 'last';
+      else if(m.dir && i > 0){
+        const change = v - vals[i-1];
+        const goingUp = change > 0;
+        const wantUp = m.dir === 'up';
+        if(Math.abs(change/vals[i-1]) > 0.02){ // >2% move
+          barCls += ' ' + ((goingUp === wantUp) ? 'good' : 'bad');
+        }
+      }
+      const tip = weeks[i].date + ': ' + m.fmt(v);
+      return `<div class="bar ${barCls}" style="height:${h}px" title="${tip}"></div>`;
+    }).join('');
+    const sub = m.sub ? `<small>${m.sub}</small>` : '';
+    const fmtPct = (p) => (p >= 0 ? '+' : '') + p.toFixed(0) + '%';
+    // Build week-label axis: show abbreviated date every ~4 weeks
+    const axisTicks = weeks.map((w, i) => {
+      // Show label every 4 weeks + always show first and last
+      const showLabel = (i === 0) || (i === weeks.length - 1) || (i % 4 === 0);
+      let label = '';
+      if(showLabel){
+        const [yyyy, mm, dd] = w.date.split('-');
+        label = mm + '/' + dd;
+      }
+      return `<div class="tick">${label}</div>`;
+    }).join('');
+    html += `<div class="wow-row">
+      <div class="wow-label">${m.label}${sub}</div>
+      <div class="wow-spark-wrap">
+        <div class="wow-spark">${bars}</div>
+        <div class="wow-spark-axis">${axisTicks}</div>
+      </div>
+      <div class="wow-latest">${m.fmt(last)}</div>
+      <div class="wow-delta ${cls(wowPct)}" title="Week-over-week">${fmtPct(wowPct)}</div>
+      <div class="wow-delta ${cls(fourWkPct)}" title="vs 4 weeks ago">${fmtPct(fourWkPct)}</div>
+    </div>`;
+  });
+  // Header above the grid
+  const headerRow = `<div class="wow-row" style="background:#fafafa;font-weight:700;color:#666;font-size:11px;letter-spacing:.3px;text-transform:uppercase">
+    <div class="wow-label">Metric</div>
+    <div>Last ${weeks.length} weeks (Oct 27 → ${weeks[weeks.length-1].date})</div>
+    <div style="text-align:right">Latest</div>
+    <div style="text-align:right">WoW</div>
+    <div style="text-align:right">vs 4wk</div>
+  </div>`;
+  grid.innerHTML = headerRow + html;
+})();
+
+const weekLabels = DATA.weekly.map(w=>w.date);
+
+const baseAxis = { grid:{color:'#eee',drawBorder:false}, ticks:{color:'#666',font:{family:'Inter',size:11}} };
+
+// Reach vs ROAS (weekly, dual-axis)
+new Chart(document.getElementById('reachRoasChart'),{
+  data:{
+    labels: weekLabels,
+    datasets:[
+      {type:'line',label:'ROAS',data:DATA.weekly.map(w=>w.roas),yAxisID:'y',borderColor:'#000',backgroundColor:'rgba(0,0,0,0.04)',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#000',tension:.25,fill:true},
+      {type:'bar',label:'Impressions (M)',data:DATA.weekly.map(w=>Math.round(w.imps/1e6)),yAxisID:'y1',backgroundColor:'rgba(150,150,150,0.35)',borderColor:'rgba(150,150,150,0.6)',borderWidth:1}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,position:'bottom',labels:{color:'#000',font:{family:'Inter',size:11},boxWidth:14}},tooltip:{backgroundColor:'#000',titleColor:'#fff',bodyColor:'#fff',padding:10}},
+    scales:{
+      x:{...baseAxis,grid:{display:false},ticks:{...baseAxis.ticks,maxTicksLimit:14,autoSkip:true}},
+      y:{...baseAxis,position:'left',title:{display:true,text:'ROAS',color:'#000',font:{size:11,weight:700}},beginAtZero:true,ticks:{...baseAxis.ticks,callback:v=>v.toFixed(2)+'x'}},
+      y1:{...baseAxis,position:'right',title:{display:true,text:'Impressions (M)',color:'#666',font:{size:11,weight:700}},beginAtZero:true,grid:{display:false}}
+    }
+  }
+});
+
+// P5 + ROAS (monthly)
+new Chart(document.getElementById('p5Chart'),{
+  data:{
+    labels: monthLabels,
+    datasets:[
+      {type:'line',label:'ROAS',data:DATA.monthly.map(m=>m.roas),yAxisID:'y1',borderColor:'#000',borderWidth:3,pointRadius:4,pointBackgroundColor:'#000',tension:.25},
+      {type:'line',label:'Composite Optimal %',data:DATA.p5.map(p=>p.composite),yAxisID:'y',borderColor:'#5b2c7c',borderWidth:1.8,pointRadius:2,tension:.25,borderDash:[]},
+      {type:'line',label:'Advantage+ Creative %',data:DATA.p5.map(p=>p.acplus),yAxisID:'y',borderColor:'#2b7fc4',borderWidth:1.8,pointRadius:2,tension:.25},
+      {type:'line',label:'Value (ROAS) Opt %',data:DATA.p5.map(p=>p.value_opt),yAxisID:'y',borderColor:'#1e9b7e',borderWidth:1.8,pointRadius:2,tension:.25},
+      {type:'line',label:'Spend in Learning %',data:DATA.p5.map(p=>p.learning),yAxisID:'y',borderColor:'#c0392b',borderWidth:1.5,pointRadius:2,tension:.25,borderDash:[4,3]}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,position:'bottom',labels:{color:'#000',font:{family:'Inter',size:11},boxWidth:14}},tooltip:{backgroundColor:'#000',titleColor:'#fff',bodyColor:'#fff',padding:10}},
+    scales:{
+      x:{...baseAxis,grid:{display:false}},
+      y:{...baseAxis,position:'left',title:{display:true,text:'% of spend',color:'#666',font:{size:11,weight:700}},beginAtZero:true,max:100,ticks:{...baseAxis.ticks,callback:v=>v+'%'}},
+      y1:{...baseAxis,position:'right',title:{display:true,text:'ROAS',color:'#000',font:{size:11,weight:700}},beginAtZero:true,grid:{display:false},ticks:{...baseAxis.ticks,callback:v=>v.toFixed(2)+'x'}}
+    }
+  }
+});
+
+// CPM chart
+new Chart(document.getElementById('cpmChart'),{
+  type:'line',
+  data:{labels:weekLabels,datasets:[{label:'CPM',data:DATA.weekly.map(w=>w.cpm),borderColor:'#000',borderWidth:2,pointRadius:2,tension:.25,backgroundColor:'rgba(0,0,0,0.04)',fill:true}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#000',titleColor:'#fff',bodyColor:'#fff',padding:10,callbacks:{label:c=>'CPM: $'+c.parsed.y.toFixed(2)}}},
+    scales:{x:{...baseAxis,grid:{display:false},ticks:{...baseAxis.ticks,maxTicksLimit:10,autoSkip:true}},y:{...baseAxis,beginAtZero:true,ticks:{...baseAxis.ticks,callback:v=>'$'+v}}}}
+});
+
+// CVR chart
+new Chart(document.getElementById('cvrChart'),{
+  type:'line',
+  data:{labels:weekLabels,datasets:[{label:'CVR',data:DATA.weekly.map(w=>w.cvr),borderColor:'#c0392b',borderWidth:2,pointRadius:2,tension:.25,backgroundColor:'rgba(192,57,43,0.06)',fill:true}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#000',titleColor:'#fff',bodyColor:'#fff',padding:10,callbacks:{label:c=>'CVR: '+c.parsed.y.toFixed(2)+'%'}}},
+    scales:{x:{...baseAxis,grid:{display:false},ticks:{...baseAxis.ticks,maxTicksLimit:10,autoSkip:true}},y:{...baseAxis,beginAtZero:true,ticks:{...baseAxis.ticks,callback:v=>v+'%'}}}}
+});
+
+// Purchases chart (monthly)
+new Chart(document.getElementById('purchaseChart'),{
+  type:'bar',
+  data:{labels:monthLabels,datasets:[{label:'Purchases',data:DATA.monthly.map(m=>m.purchases),backgroundColor:'#000'}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#000',titleColor:'#fff',bodyColor:'#fff',padding:10}},
+    scales:{x:{...baseAxis,grid:{display:false}},y:{...baseAxis,beginAtZero:true,ticks:{...baseAxis.ticks,callback:v=>(v/1000)+'k'}}}}
+});
+
+// CPQ cards + charts
+const cpqEl = document.getElementById('cpqCards');
+cpqEl.innerHTML = `
+  <div class="card"><p class="label">Spend (settled)</p><p class="value">${DATA.cpq_totals.spend}</p><p class="delta">${DATA.cpq_totals.first_date} → ${DATA.cpq_totals.last_settled}</p></div>
+  <div class="card"><p class="label">Quiz Completions</p><p class="value">${DATA.cpq_totals.completions}</p><p class="delta">inferred from spend ÷ CPQ</p></div>
+  <div class="card"><p class="label">Avg CPQ</p><p class="value">${DATA.cpq_totals.overall_cpq}</p><p class="delta">period total</p></div>
+  <div class="card warn"><p class="label">CPQ trend</p><p class="value">${DATA.cpq_totals.delta}</p><p class="delta">${DATA.cpq_totals.first4} (first 4 wks) → ${DATA.cpq_totals.last4} (last 4 wks)</p></div>
+`;
+new Chart(document.getElementById('cpqWeekly'),{
+  type:'line',
+  data:{labels:DATA.cpq_weekly_labels,datasets:[{label:'Weekly CPQ',data:DATA.cpq_weekly_vals,borderColor:'#000',backgroundColor:'rgba(0,0,0,0.04)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#000',pointBorderColor:'#fff',pointBorderWidth:1.5,tension:.25,fill:true}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#000',titleColor:'#fff',bodyColor:'#fff',padding:10,callbacks:{label:c=>'CPQ: $'+c.parsed.y.toFixed(2)}}},
+    scales:{x:{...baseAxis,grid:{display:false}},y:{...baseAxis,beginAtZero:true,ticks:{...baseAxis.ticks,callback:v=>'$'+v}}}}
+});
+new Chart(document.getElementById('cpqDaily'),{
+  type:'line',
+  data:{labels:DATA.cpq_daily_labels,datasets:[
+    {label:'CPQ (settled)',data:DATA.cpq_daily_s,borderColor:'#000',borderWidth:1.5,pointRadius:2,pointBackgroundColor:'#000',tension:.2,spanGaps:false},
+    {label:'CPQ (pixel broken / unsettled)',data:DATA.cpq_daily_u,borderColor:'#999',borderWidth:1.5,borderDash:[4,4],pointRadius:2,pointBackgroundColor:'#999',tension:.2,spanGaps:false}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{color:'#000',font:{family:'Inter',size:11},boxWidth:14}},tooltip:{backgroundColor:'#000',titleColor:'#fff',bodyColor:'#fff',padding:10}},
+    scales:{x:{...baseAxis,grid:{display:false},ticks:{...baseAxis.ticks,maxTicksLimit:14,autoSkip:true}},y:{...baseAxis,beginAtZero:true,max:40,ticks:{...baseAxis.ticks,callback:v=>'$'+v}}}}
+});
+
+// Data table
+const t = document.getElementById('dataTable');
+const head = `<thead><tr><th>Month</th><th>Spend</th><th>Imps</th><th>CPM</th><th>Link clicks</th><th>CTR</th><th>Purchases</th><th>Rev</th><th>ROAS</th><th>CVR</th><th>AOV</th></tr></thead>`;
+const rows = DATA.monthly.map(m=>{
+  const inflection = (m.date>='2026-02-01' && m.date<='2026-05-01')?' class="inflection"':'';
+  return `<tr${inflection}><td>${m.date.slice(0,7)}</td><td>$${(m.spend/1e6).toFixed(2)}M</td><td>${(m.imps/1e6).toFixed(1)}M</td><td>$${m.cpm.toFixed(2)}</td><td>${(m.link_clicks/1e3).toFixed(0)}k</td><td>${(m.ctr*100).toFixed(2)}%</td><td>${(m.purchases/1e3).toFixed(1)}k</td><td>$${(m.rev/1e6).toFixed(2)}M</td><td>${m.roas.toFixed(2)}x</td><td>${m.cvr.toFixed(2)}%</td><td>$${m.aov.toFixed(0)}</td></tr>`;
+}).join('');
+t.innerHTML = head+'<tbody>'+rows+'</tbody>';
+</script>
+</body>
+</html>
