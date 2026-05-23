@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>BG Plate Library — pick winners</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<style>
+  :root { --ink: #111; --muted: #6b6b6b; --bg: #fafaf7; --line: #e5e2dc; --pick: #ff2e92; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--ink); }
+  header { padding: 24px 32px 16px; background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10; }
+  h1 { margin: 0 0 4px; font-size: 20px; }
+  .meta { color: var(--muted); font-size: 13px; max-width: 880px; margin-bottom: 12px; }
+  .picked-out { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .picked-out code { background: #eef; color: #04a; padding: 6px 10px; border-radius: 6px; font-size: 13px; word-break: break-all; }
+  .picked-out .count { font-weight: 600; color: var(--ink); }
+  .picked-out button { background: var(--ink); color: #fff; border: 0; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+  section { padding: 24px 32px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; max-width: 1400px; margin: 0 auto; }
+  .cell { background: #fff; border: 2px solid var(--line); border-radius: 10px; overflow: hidden; cursor: pointer; transition: border-color .12s, transform .12s; position: relative; }
+  .cell:hover { border-color: #999; }
+  .cell.picked { border-color: var(--pick); transform: scale(.98); }
+  .cell .num { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,.7); color: #fff; font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 4px; font-variant-numeric: tabular-nums; }
+  .cell.picked .num { background: var(--pick); }
+  .cell img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: #f3f1ea; }
+  .cell .lbl { padding: 8px 10px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); }
+  .cell .lbl b { color: var(--ink); display: block; font-size: 13px; margin-bottom: 1px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>BG Plate Library — pick winners</h1>
+  <div class="meta">24 surface plates. Tap a tile to mark it as a winner — the numbers below update so you can read them off to me. Texture × palette grid (8 textures × 3 palettes).</div>
+  <div class="picked-out">
+    <span class="count">Picked: <span id="picked-count">0</span></span>
+    <code id="picked-list">—</code>
+    <button onclick="copyPicks()">Copy list</button>
+    <button onclick="clearPicks()" style="background:#999">Clear</button>
+  </div>
+</header>
+
+<section>
+  <div class="grid" id="grid"></div>
+</section>
+
+<script>
+const CELLS = [{"id": "plate-flat-bone-1x1-gpt-image-2", "filename": "plate-flat-bone-1x1-gpt-image-2.png", "texture": "flat", "palette": "bone", "label": "flat \u00d7 bone", "number": 1}, {"id": "plate-flat-blush-1x1-gpt-image-2", "filename": "plate-flat-blush-1x1-gpt-image-2.png", "texture": "flat", "palette": "blush", "label": "flat \u00d7 blush", "number": 2}, {"id": "plate-flat-sand-1x1-gpt-image-2", "filename": "plate-flat-sand-1x1-gpt-image-2.png", "texture": "flat", "palette": "sand", "label": "flat \u00d7 sand", "number": 3}, {"id": "plate-paper-bone-1x1-gpt-image-2", "filename": "plate-paper-bone-1x1-gpt-image-2.png", "texture": "paper", "palette": "bone", "label": "paper \u00d7 bone", "number": 4}, {"id": "plate-paper-blush-1x1-gpt-image-2", "filename": "plate-paper-blush-1x1-gpt-image-2.png", "texture": "paper", "palette": "blush", "label": "paper \u00d7 blush", "number": 5}, {"id": "plate-paper-sand-1x1-gpt-image-2", "filename": "plate-paper-sand-1x1-gpt-image-2.png", "texture": "paper", "palette": "sand", "label": "paper \u00d7 sand", "number": 6}, {"id": "plate-linen-bone-1x1-gpt-image-2", "filename": "plate-linen-bone-1x1-gpt-image-2.png", "texture": "linen", "palette": "bone", "label": "linen \u00d7 bone", "number": 7}, {"id": "plate-linen-blush-1x1-gpt-image-2", "filename": "plate-linen-blush-1x1-gpt-image-2.png", "texture": "linen", "palette": "blush", "label": "linen \u00d7 blush", "number": 8}, {"id": "plate-linen-sand-1x1-gpt-image-2", "filename": "plate-linen-sand-1x1-gpt-image-2.png", "texture": "linen", "palette": "sand", "label": "linen \u00d7 sand", "number": 9}, {"id": "plate-plaster-bone-1x1-gpt-image-2", "filename": "plate-plaster-bone-1x1-gpt-image-2.png", "texture": "plaster", "palette": "bone", "label": "plaster \u00d7 bone", "number": 10}, {"id": "plate-plaster-blush-1x1-gpt-image-2", "filename": "plate-plaster-blush-1x1-gpt-image-2.png", "texture": "plaster", "palette": "blush", "label": "plaster \u00d7 blush", "number": 11}, {"id": "plate-plaster-sand-1x1-gpt-image-2", "filename": "plate-plaster-sand-1x1-gpt-image-2.png", "texture": "plaster", "palette": "sand", "label": "plaster \u00d7 sand", "number": 12}, {"id": "plate-watercolor-bone-1x1-gpt-image-2", "filename": "plate-watercolor-bone-1x1-gpt-image-2.png", "texture": "watercolor", "palette": "bone", "label": "watercolor \u00d7 bone", "number": 13}, {"id": "plate-watercolor-blush-1x1-gpt-image-2", "filename": "plate-watercolor-blush-1x1-gpt-image-2.png", "texture": "watercolor", "palette": "blush", "label": "watercolor \u00d7 blush", "number": 14}, {"id": "plate-watercolor-sand-1x1-gpt-image-2", "filename": "plate-watercolor-sand-1x1-gpt-image-2.png", "texture": "watercolor", "palette": "sand", "label": "watercolor \u00d7 sand", "number": 15}, {"id": "plate-travertine-bone-1x1-gpt-image-2", "filename": "plate-travertine-bone-1x1-gpt-image-2.png", "texture": "travertine", "palette": "bone", "label": "travertine \u00d7 bone", "number": 16}, {"id": "plate-travertine-blush-1x1-gpt-image-2", "filename": "plate-travertine-blush-1x1-gpt-image-2.png", "texture": "travertine", "palette": "blush", "label": "travertine \u00d7 blush", "number": 17}, {"id": "plate-travertine-sand-1x1-gpt-image-2", "filename": "plate-travertine-sand-1x1-gpt-image-2.png", "texture": "travertine", "palette": "sand", "label": "travertine \u00d7 sand", "number": 18}, {"id": "plate-suede-bone-1x1-gpt-image-2", "filename": "plate-suede-bone-1x1-gpt-image-2.png", "texture": "suede", "palette": "bone", "label": "suede \u00d7 bone", "number": 19}, {"id": "plate-suede-blush-1x1-gpt-image-2", "filename": "plate-suede-blush-1x1-gpt-image-2.png", "texture": "suede", "palette": "blush", "label": "suede \u00d7 blush", "number": 20}, {"id": "plate-suede-sand-1x1-gpt-image-2", "filename": "plate-suede-sand-1x1-gpt-image-2.png", "texture": "suede", "palette": "sand", "label": "suede \u00d7 sand", "number": 21}, {"id": "plate-gradient-bone-1x1-gpt-image-2", "filename": "plate-gradient-bone-1x1-gpt-image-2.png", "texture": "gradient", "palette": "bone", "label": "gradient \u00d7 bone", "number": 22}, {"id": "plate-gradient-blush-1x1-gpt-image-2", "filename": "plate-gradient-blush-1x1-gpt-image-2.png", "texture": "gradient", "palette": "blush", "label": "gradient \u00d7 blush", "number": 23}, {"id": "plate-gradient-sand-1x1-gpt-image-2", "filename": "plate-gradient-sand-1x1-gpt-image-2.png", "texture": "gradient", "palette": "sand", "label": "gradient \u00d7 sand", "number": 24}];
+const STORAGE_KEY = "bg-plates-picks";
+let picks = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+
+const grid = document.getElementById('grid');
+CELLS.forEach(c => {
+  const div = document.createElement('div');
+  div.className = 'cell' + (picks.has(c.number) ? ' picked' : '');
+  div.dataset.num = c.number;
+  div.innerHTML = `
+    <div class="num">#${c.number}</div>
+    <img src="plates/${c.filename}" alt="${c.label}" loading="lazy"/>
+    <div class="lbl"><b>${c.texture} × ${c.palette}</b>${c.id}</div>
+  `;
+  div.onclick = () => {
+    if (picks.has(c.number)) picks.delete(c.number);
+    else picks.add(c.number);
+    div.classList.toggle('picked');
+    save();
+  };
+  grid.appendChild(div);
+});
+
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...picks]));
+  const sorted = [...picks].sort((a, b) => a - b);
+  document.getElementById('picked-count').textContent = sorted.length;
+  document.getElementById('picked-list').textContent = sorted.length ? sorted.join(', ') : '—';
+}
+
+function copyPicks() {
+  const sorted = [...picks].sort((a, b) => a - b);
+  navigator.clipboard.writeText(sorted.join(', '));
+}
+
+function clearPicks() {
+  picks.clear();
+  localStorage.setItem(STORAGE_KEY, '[]');
+  document.querySelectorAll('.cell.picked').forEach(el => el.classList.remove('picked'));
+  save();
+}
+
+save();
+</script>
+
+</body>
+</html>
