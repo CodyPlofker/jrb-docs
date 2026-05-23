@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>T1 — packshot composite (5 quotes × 6 bg)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<style>
+  :root { --ink: #111; --muted: #6b6b6b; --bg: #fafaf7; --line: #e5e2dc; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--ink); }
+  header { padding: 28px 40px 18px; background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10; }
+  h1 { margin: 0 0 4px; font-size: 22px; }
+  .meta { color: var(--muted); font-size: 13px; max-width: 880px; }
+  section { padding: 24px 40px; }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 28px; max-width: 1400px; margin: 0 auto; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cell { background: #fff; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .cell .lbl { padding: 7px 11px; font-size: 11px; border-bottom: 1px solid var(--line); color: var(--muted); display: flex; justify-content: space-between; }
+  .cell .lbl b { color: var(--ink); }
+  .cell img { width: 100%; height: auto; display: block; background: #f8f7f0; aspect-ratio: 1; object-fit: contain; }
+  .cell.nine-sixteen img { aspect-ratio: 9/16; }
+  .concept-card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+  .concept-card h3 { margin: 0 0 4px; font-size: 16px; }
+  .quote-group { margin-bottom: 36px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+  .quote-group > .q { font-family: Georgia, serif; font-style: italic; font-size: 22px; margin: 0 0 4px; }
+  .quote-group > .name { color: var(--muted); font-size: 13px; letter-spacing: 0.08em; margin-bottom: 14px; }
+  @media (max-width: 720px) {
+    header { padding: 20px 18px 14px; }
+    section { padding: 18px; }
+    .pair { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>T1 — packshot composite (5 quotes × 6 backgrounds)</h1>
+  <div class="meta">Scene-only gen (bg + swatch + headline + CTA) → clean transparent FS packshot composited at locked Y. Bulletproof spacing: subject placement is in CODE, not in the model. 60 cells (5 quotes × 6 bgs × 2 formats).</div>
+</header>
+
+<section>
+  <div id="root"></div>
+</section>
+
+<script>
+const BG_LABELS = {
+  bone: "1. Bone (#EFEAE0) flat",
+  cream: "2. Cream (#F1ECE2) flat",
+  softpink: "3. Soft pink (#EBDADB) flat",
+  paper: "4. Bone + paper texture",
+  gradient: "5. Cream + soft gradient",
+  marble: "6. Warm marble texture",
+};
+const BG_ORDER = ["bone", "cream", "softpink", "paper", "gradient", "marble"];
+const QUOTES = [
+  { id: "q1", headline: '"Feels weightless. Covers my redness fully."', subhead: "—SARAH K." },
+  { id: "q2", headline: '"Feels like skincare and glides on so smoothly."', subhead: "—JEN M." },
+  { id: "q3", headline: '"The first foundation stick I’ve ever not hated."', subhead: "—LISA T." },
+  { id: "q4", headline: '"Luminosity in a stick."', subhead: "—EMILY R. · ALABASTER" },
+  { id: "q5", headline: '"It really does look like your skin."', subhead: "—DIANA H. · BEIGE" },
+];
+
+const root = document.getElementById('root');
+QUOTES.forEach(q => {
+  const group = document.createElement('div');
+  group.className = 'quote-group';
+  group.innerHTML = `<div class="q">${q.headline}</div><div class="name">${q.subhead}</div>`;
+  BG_ORDER.forEach(bg => {
+    const base = `pck-${q.id}-${bg}`;
+    const oneByOne = `composited/${base}-1x1-gpt-image-2.png`;
+    const nineSixteen = `composited/${base}-9x16-gpt-image-2.png`;
+    const card = document.createElement('div');
+    card.className = 'concept-card';
+    card.innerHTML = `
+      <h3>${BG_LABELS[bg]}</h3>
+      <div class="pair">
+        <div class="cell">
+          <div class="lbl"><b>1×1</b><span>${base}</span></div>
+          <img src="${oneByOne}" alt="${base} 1x1" loading="lazy"/>
+        </div>
+        <div class="cell nine-sixteen">
+          <div class="lbl"><b>9×16</b><span>${base}</span></div>
+          <img src="${nineSixteen}" alt="${base} 9x16" loading="lazy"/>
+        </div>
+      </div>
+    `;
+    group.appendChild(card);
+  });
+  root.appendChild(group);
+});
+</script>
+
+</body>
+</html>
