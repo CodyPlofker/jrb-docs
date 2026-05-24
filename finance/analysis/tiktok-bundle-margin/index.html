@@ -300,6 +300,33 @@
     .header__title { font-size: 17px; }
     .item-row { grid-template-columns: 1fr 70px 24px; }
   }
+
+  /* ===== NEW BUNDLE MODAL ===== */
+  .modal { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+  .modal__overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.55); }
+  .modal__box { position: relative; background: var(--white); border-radius: 4px; width: 92%; max-width: 600px; max-height: 88vh; overflow-y: auto; padding: 24px; box-shadow: 0 16px 48px rgba(0,0,0,0.25); }
+  .modal__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .modal__title { font-family: var(--font-display); font-size: 18px; font-weight: 600; color: var(--ink); margin: 0; }
+  .modal__close { background: none; border: none; font-size: 28px; line-height: 1; color: var(--muted); cursor: pointer; padding: 0 4px; }
+  .modal__close:hover { color: var(--ink); }
+  .modal__field { margin-bottom: 16px; }
+  .modal__label { display: block; font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+  .modal__input { width: 100%; padding: 10px 14px; font-family: var(--font-body); font-size: 13px; border: 1px solid var(--border); border-radius: 2px; box-sizing: border-box; background: var(--white); color: var(--ink); }
+  .modal__input:focus { outline: none; border-color: var(--black); }
+  .modal__actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 22px; border-top: 1px solid var(--border); padding-top: 16px; }
+  .nb-results { max-height: 240px; overflow-y: auto; border: 1px solid var(--border); border-radius: 2px; margin-top: 8px; }
+  .nb-result { display: flex; align-items: center; padding: 8px 12px; cursor: pointer; border-bottom: 1px solid var(--border-soft); font-size: 12px; gap: 12px; }
+  .nb-result:last-child { border-bottom: none; }
+  .nb-result:hover { background: var(--gray); }
+  .nb-result__name { flex: 1; font-weight: 500; color: var(--ink); }
+  .nb-result__sku { font-family: var(--font-mono); font-size: 10px; color: var(--muted-2); }
+  .nb-result__cogs { font-family: var(--font-mono); font-size: 11px; color: var(--ink); min-width: 50px; text-align: right; }
+  .nb-picked { display: flex; flex-direction: column; gap: 6px; min-height: 44px; padding: 8px; border: 1px dashed var(--border); border-radius: 2px; }
+  .nb-picked__chip { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: var(--gray); border-radius: 2px; font-size: 12px; }
+  .nb-picked__chip span.meta { color: var(--muted-2); font-family: var(--font-mono); font-size: 10px; margin-left: 8px; }
+  .nb-picked__chip button { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 16px; padding: 0 4px; line-height: 1; }
+  .nb-picked__chip button:hover { color: var(--red); }
+  .nb-picked__empty { color: var(--muted-2); font-size: 12px; padding: 6px 10px; }
 </style>
 </head>
 <body>
@@ -541,6 +568,34 @@
 
 <datalist id="productList"></datalist>
 
+<!-- New Bundle Modal -->
+<div id="newBundleModal" class="modal" style="display:none">
+  <div class="modal__overlay" data-nb-close></div>
+  <div class="modal__box">
+    <div class="modal__head">
+      <h3 class="modal__title">Create new bundle</h3>
+      <button class="modal__close" data-nb-close aria-label="Close">×</button>
+    </div>
+    <div class="modal__field">
+      <label class="modal__label" for="nbName">Bundle name</label>
+      <input id="nbName" type="text" placeholder="e.g. WTF + Lip Recharge" class="modal__input">
+    </div>
+    <div class="modal__field">
+      <label class="modal__label" for="nbSearch">Add products (click to select)</label>
+      <input id="nbSearch" type="text" placeholder="Search by name or SKU…" class="modal__input">
+      <div id="nbResults" class="nb-results"></div>
+    </div>
+    <div class="modal__field">
+      <label class="modal__label">Selected (<span id="nbPickedCount">0</span>)</label>
+      <div id="nbPicked" class="nb-picked"></div>
+    </div>
+    <div class="modal__actions">
+      <button class="btn btn--small" data-nb-close>Cancel</button>
+      <button class="btn btn--primary btn--small" id="nbCreate">Create Bundle</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
 <script>
 // ============================================================================
@@ -729,8 +784,10 @@ async function loadCatalog() {
   document.getElementById('catalogTimestamp').textContent = new Date().toLocaleString();
   buildDatalist();
   renderCatalog();
-  // Restore shared scenario from URL hash if present (must run after CATALOG loads)
-  checkUrlHash();
+  // URL hash (shared scenario) takes priority; otherwise hydrate from localStorage
+  if (!checkUrlHash()) {
+    loadStateFromStorage();
+  }
   renderAll();
 }
 
@@ -1308,11 +1365,24 @@ function renderSensitivity() {
   renderHeatmap();
 }
 
+// ----- Persistence (survives refresh; per browser) -----
+const STORAGE_KEY = 'tt-bundle-margin-state-v1';
+function saveStateToStorage() {
+  try { localStorage.setItem(STORAGE_KEY, serializeState()); } catch (e) { /* quota / private mode */ }
+}
+function loadStateFromStorage() {
+  try {
+    const s = localStorage.getItem(STORAGE_KEY);
+    return s ? deserializeState(s) : false;
+  } catch (e) { return false; }
+}
+
 function renderAll() {
   renderGlance();
   renderBundles();
   renderLive();
   renderSensitivity();
+  saveStateToStorage();
 }
 
 // Tabs
@@ -1331,21 +1401,112 @@ document.querySelectorAll('.assumption input, #liveOrders, #giveawayMiniMB, #giv
 });
 
 // Buttons
-document.getElementById('addBundleBtn').addEventListener('click', () => {
+// ----- New Bundle modal (pick SKUs first) -----
+const nbModal = document.getElementById('newBundleModal');
+let nbPicked = [];
+
+function openNewBundleModal() {
+  nbPicked = [];
+  document.getElementById('nbName').value = '';
+  document.getElementById('nbSearch').value = '';
+  renderNbResults('');
+  renderNbPicked();
+  nbModal.style.display = 'flex';
+  setTimeout(() => document.getElementById('nbName').focus(), 0);
+}
+function closeNewBundleModal() { nbModal.style.display = 'none'; }
+
+function renderNbResults(filter) {
+  const f = (filter || '').toLowerCase().trim();
+  const wrap = document.getElementById('nbResults');
+  if (!CATALOG.length) {
+    wrap.innerHTML = '<div class="nb-result"><span class="nb-result__name" style="color:var(--muted)">Catalog still loading…</span></div>';
+    return;
+  }
+  const matches = f
+    ? CATALOG.filter(i => i.name.toLowerCase().includes(f) || i.sku.toLowerCase().includes(f) || (i.displayName || '').toLowerCase().includes(f))
+    : CATALOG.slice(0, 60);
+  if (!matches.length) {
+    wrap.innerHTML = '<div class="nb-result"><span class="nb-result__name" style="color:var(--muted)">No matches</span></div>';
+    return;
+  }
+  wrap.innerHTML = matches.slice(0, 60).map(i => `
+    <div class="nb-result" data-sku="${escapeHtml(i.sku)}">
+      <span class="nb-result__name">${escapeHtml(i.displayName || i.name)}</span>
+      <span class="nb-result__sku">${escapeHtml(i.sku)}</span>
+      <span class="nb-result__cogs">${fmt(i.cogs)}</span>
+    </div>
+  `).join('');
+  wrap.querySelectorAll('.nb-result[data-sku]').forEach(el => {
+    el.addEventListener('click', () => {
+      const item = CATALOG.find(c => c.sku === el.dataset.sku);
+      if (item) {
+        nbPicked.push({ sku: item.sku, name: item.name, cogs: item.cogs });
+        renderNbPicked();
+      }
+    });
+  });
+}
+
+function renderNbPicked() {
+  const wrap = document.getElementById('nbPicked');
+  document.getElementById('nbPickedCount').textContent = nbPicked.length;
+  if (!nbPicked.length) {
+    wrap.innerHTML = '<div class="nb-picked__empty">No products selected — search and click above to add. You can also create an empty bundle and fill it in later.</div>';
+    return;
+  }
+  wrap.innerHTML = nbPicked.map((i, idx) => `
+    <div class="nb-picked__chip">
+      <span>${escapeHtml(cleanProductName(i.name))}<span class="meta">${escapeHtml(i.sku)} · ${fmt(i.cogs)}</span></span>
+      <button data-idx="${idx}" title="Remove">×</button>
+    </div>
+  `).join('');
+  wrap.querySelectorAll('button[data-idx]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      nbPicked.splice(parseInt(btn.dataset.idx), 1);
+      renderNbPicked();
+    });
+  });
+}
+
+document.getElementById('addBundleBtn').addEventListener('click', openNewBundleModal);
+document.getElementById('nbSearch').addEventListener('input', e => renderNbResults(e.target.value));
+nbModal.querySelectorAll('[data-nb-close]').forEach(el => el.addEventListener('click', closeNewBundleModal));
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && nbModal.style.display !== 'none') closeNewBundleModal();
+});
+
+document.getElementById('nbCreate').addEventListener('click', () => {
+  const name = document.getElementById('nbName').value.trim() || 'New Bundle';
+  const items = nbPicked.length ? nbPicked.slice() : [{ sku: '', name: '', cogs: 0 }];
+  // Sensible defaults based on COGS so the new card isn't stuck at $60
+  const cogsSum = items.reduce((s, i) => s + (parseFloat(i.cogs) || 0), 0);
+  const msrp = Math.max(40, Math.round((cogsSum * 8) / 2) * 2);
+  const evergreenPrice = Math.max(20, Math.round(msrp * 0.85));
   bundles.push({
     id: 'b' + (nextBundleId++),
-    name: 'New Bundle',
+    name,
     type: 'evergreen',
-    msrp: 60, goPrice: null, evergreenPrice: 50, activePrice: 'evergreen',
+    msrp,
+    goPrice: null,
+    evergreenPrice,
+    activePrice: 'evergreen',
     scenario: 'Custom bundle',
-    items: [{ sku: '', name: '', cogs: 0 }],
+    items,
   });
+  closeNewBundleModal();
   renderAll();
+  setTimeout(() => {
+    const cards = document.querySelectorAll('#bundlesWrap .bundle-card');
+    if (cards.length) cards[cards.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 50);
 });
 
 document.getElementById('resetBtn').addEventListener('click', () => {
   if (confirm('Reset to defaults? Custom bundles will be lost.')) {
     bundles = JSON.parse(JSON.stringify(DEFAULT_BUNDLES));
+    nextBundleId = bundles.length + 1;
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
     renderAll();
   }
 });
