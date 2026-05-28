@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Static Ads — Workflow & Backend Walkthrough</title>
+<style>
+  @font-face {
+    font-family: 'Canela';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');
+    font-weight: 300; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'ArticulatCF';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Regular.otf') format('opentype');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'ArticulatCF';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Medium.otf') format('opentype');
+    font-weight: 500; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'ArticulatCF';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: #fff; color: #000;
+    font-family: 'ArticulatCF', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 400; font-size: 16px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: #000; }
+  hr { border: 0; border-top: 1px solid #000; margin: 0; }
+
+  /* Layout */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 28px; }
+  section { padding: 96px 0; border-top: 1px solid #000; }
+  section.alt { background: #f8f8f8; }
+  section:first-of-type { border-top: 0; padding-top: 80px; }
+
+  /* Type */
+  h1, h2, h3, h4 { color: #000; font-weight: 300; margin: 0 0 24px; letter-spacing: -0.01em; }
+  h1 { font-family: 'Canela', Georgia, serif; font-size: 72px; line-height: 1.02; font-weight: 300; }
+  h2 { font-family: 'Canela', Georgia, serif; font-size: 48px; line-height: 1.06; font-weight: 300; margin-bottom: 32px; }
+  h3 { font-family: 'Canela', Georgia, serif; font-size: 30px; line-height: 1.15; font-weight: 300; margin-top: 48px; margin-bottom: 16px; }
+  h4 {
+    font-family: 'ArticulatCF', sans-serif; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.3px;
+    font-size: 13px; margin-top: 36px; margin-bottom: 12px;
+  }
+  p { margin: 0 0 18px; color: #000; }
+  p.lead { font-size: 19px; line-height: 1.5; }
+  ul, ol { margin: 0 0 20px; padding-left: 22px; }
+  li { margin: 0 0 8px; }
+
+  .eyebrow {
+    font-family: 'ArticulatCF', sans-serif; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.3px;
+    font-size: 12px; color: #000; margin-bottom: 20px; display: block;
+  }
+  .pink { color: #ff2e92; }
+  .muted-line { color: #000; opacity: 0.55; }
+
+  /* Pillbox / chip */
+  .chip {
+    display: inline-block; padding: 4px 10px; margin: 0 6px 6px 0;
+    background: #000; color: #fff; font-size: 11px;
+    font-family: 'ArticulatCF', sans-serif; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .chip.ghost { background: #fff; color: #000; border: 1px solid #000; }
+  .chip.pink { background: #ff2e92; color: #fff; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 0 0 24px; font-size: 14px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #000; vertical-align: top; }
+  th {
+    font-family: 'ArticulatCF', sans-serif; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.3px; font-size: 11px;
+    border-top: 1px solid #000;
+  }
+  td.mono, td code { font-family: 'SF Mono', Menlo, monospace; font-size: 13px; }
+
+  /* Code */
+  pre, code {
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 13px; line-height: 1.55;
+  }
+  pre {
+    background: #000; color: #f8f8f8; padding: 22px 24px; overflow-x: auto;
+    margin: 0 0 24px; white-space: pre-wrap; word-break: break-word;
+  }
+  pre.light { background: #fff; color: #000; border: 1px solid #000; }
+  code.inline { background: #f0f0f0; padding: 1px 6px; font-size: 13px; }
+
+  /* Step blocks */
+  .step {
+    display: flex; gap: 24px; padding: 24px 0; border-bottom: 1px solid #000;
+  }
+  .step:last-child { border-bottom: 0; }
+  .step-num {
+    font-family: 'Canela', Georgia, serif; font-size: 56px;
+    line-height: 1; font-weight: 300; min-width: 80px; color: #000;
+  }
+  .step-body h4 { margin-top: 0; }
+
+  /* Mode cards */
+  .modes { display: grid; grid-template-columns: 1fr; gap: 0; margin-bottom: 16px; }
+  .mode {
+    border: 1px solid #000; padding: 28px; background: #fff;
+    margin-bottom: -1px;
+  }
+  .mode.center-band { background: #f8f8f8; }
+  .mode h4 { margin-top: 0; }
+  .mode .cost {
+    font-family: 'ArticulatCF', sans-serif; font-weight: 700;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px;
+    margin-top: 8px;
+  }
+
+  /* Two col */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  @media (max-width: 720px) {
+    .two { grid-template-columns: 1fr; }
+    h1 { font-size: 52px; }
+    h2 { font-size: 36px; }
+    h3 { font-size: 24px; }
+    .step { flex-direction: column; gap: 8px; }
+    .step-num { font-size: 40px; }
+  }
+
+  /* Callout */
+  .callout {
+    border-left: 3px solid #ff2e92;
+    padding: 16px 20px; margin: 0 0 24px;
+    background: #fff;
+  }
+  .callout.alt { background: #f8f8f8; }
+  .callout h4 { margin-top: 0; }
+
+  /* Diagram */
+  .flow {
+    border: 1px solid #000; padding: 32px; background: #fff;
+    font-family: 'SF Mono', Menlo, monospace; font-size: 12px; line-height: 1.8;
+    overflow-x: auto;
+  }
+  .flow .arrow { text-align: center; padding: 6px 0; opacity: 0.5; }
+  .flow .box {
+    border: 1px solid #000; padding: 10px 14px; margin: 0 auto; max-width: 480px;
+    text-align: center;
+  }
+  .flow .box.pink { border-color: #ff2e92; color: #ff2e92; }
+
+  /* Footer */
+  footer {
+    background: #000; color: #fff; padding: 64px 0; text-align: center;
+  }
+  footer .container { padding: 0 28px; }
+  footer h2 { color: #fff; }
+  footer p { color: #fff; }
+
+  /* Anchors */
+  .toc { font-size: 14px; padding: 0; margin: 32px 0 0; list-style: none; }
+  .toc li { margin: 4px 0; padding-left: 0; }
+  .toc a {
+    text-decoration: none; border-bottom: 1px solid #000;
+    font-family: 'ArticulatCF', sans-serif; font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<!-- ───────────────────────── HERO ───────────────────────── -->
+<section>
+  <div class="container">
+    <span class="eyebrow">JONES ROAD BEAUTY · INTERNAL WALKTHROUGH</span>
+    <h1>Static Ads.<br>The workflow, the brain,<br>and the code driving it.</h1>
+    <p class="lead" style="margin-top: 28px; max-width: 680px;">
+      A look at how we go from "we need a new toolkit for Suburban Super-Mom"
+      to 12&nbsp;to 48 finished static ads sitting in a comparison grid, ready for the
+      Meta Ads Manager — with every rule, every prompt, and every guardrail
+      visible.
+    </p>
+    <p style="margin-top: 18px; max-width: 680px;">
+      The system has two surfaces. A Claude Code skill called <code class="inline">/static-ads</code> is
+      the brain that interviews me and writes the brief. A Next.js app called
+      <code class="inline">jrb-static-ads</code> is the engine that takes the brief, talks to image models, composites
+      brand fonts, and serves the result. Everything below is what's actually running.
+    </p>
+    <ul class="toc">
+      <li><a href="#architecture">01 — Architecture at a glance</a></li>
+      <li><a href="#flow">02 — End-to-end flow</a></li>
+      <li><a href="#skill">03 — The skill: /static-ads</a></li>
+      <li><a href="#modes">04 — Three modes</a></li>
+      <li><a href="#intake">05 — The 8-question intake</a></li>
+      <li><a href="#rules">06 — Universal hard rules</a></li>
+      <li><a href="#engine">07 — The engine: jrb-static-ads</a></li>
+      <li><a href="#guts">08 — What's actually driving the output</a></li>
+      <li><a href="#models">09 — Models in production</a></li>
+      <li><a href="#refsets">10 — Refsets &amp; references</a></li>
+      <li><a href="#treatments">11 — Code-composited treatments</a></li>
+      <li><a href="#iterate">12 — Iteration loop</a></li>
+      <li><a href="#chain">13 — Skill chain (upstream / downstream)</a></li>
+      <li><a href="#feedback">14 — What I'd love feedback on</a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ───────────────────────── 01 ARCHITECTURE ───────────────────────── -->
+<section class="alt" id="architecture">
+  <div class="container">
+    <span class="eyebrow">01 · Architecture at a glance</span>
+    <h2>Two surfaces, one pipeline.</h2>
+
+    <div class="two">
+      <div>
+        <h4>Surface 1 — The Skill</h4>
+        <p><code class="inline">/static-ads</code> lives in <code class="inline">~/.claude/skills/static-ads/SKILL.md</code>.
+        It's a 480-line Claude Code skill — basically a giant playbook the model reads at runtime.</p>
+        <p>It interviews me, pulls customer intelligence, checks past angles, drafts scene direction, delegates
+        copywriting to a separate skill (<code class="inline">/jrb-copywriter</code>), assembles a JSON brief, fires it at the engine,
+        polls until done, then builds a comparison HTML page.</p>
+      </div>
+      <div>
+        <h4>Surface 2 — The Engine</h4>
+        <p><code class="inline">jrb-static-ads</code> is a Next.js 16 app at <code class="inline">~/Desktop/01-Projects/jrb-static-ads</code>.</p>
+        <p>Web UI for browsing briefs + a Studio for hand-building one. API routes for <code class="inline">/api/briefs</code>,
+        <code class="inline">/api/refsets</code>, <code class="inline">/api/review-bank</code>, plus a per-cell iterate endpoint.
+        Under the hood it talks to OpenAI gpt-image-2 and Gemini Nano Banana Pro, stores state in Upstash Redis,
+        and saves outputs to Vercel Blob.</p>
+      </div>
+    </div>
+
+    <h4 style="margin-top: 48px;">Stack</h4>
+    <ul>
+      <li>Next.js 16 · React 19 · TypeScript · Tailwind 4</li>
+      <li><strong>Image generation:</strong> OpenAI <code class="inline">gpt-image-2</code> (primary), Gemini <code class="inline">nano-banana-pro</code> (co-equal, ~37% cheaper)</li>
+      <li><strong>Scene writing:</strong> Claude Haiku 4.5 — auto-fills a 150–200 word scene description when I leave it blank</li>
+      <li><strong>State:</strong> Upstash Redis (briefs, assets, status)</li>
+      <li><strong>Storage:</strong> Vercel Blob (final composited PNGs)</li>
+      <li><strong>Compositor:</strong> sharp + server-side font rendering (Canela Light + ArticulatCF Bold + BaseMonoWide)</li>
+      <li><strong>References:</strong> Air MCP for real JRB photography; never AI-generated humans</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ───────────────────────── 02 FLOW ───────────────────────── -->
+<section id="flow">
+  <div class="container">
+    <span class="eyebrow">02 · End-to-end flow</span>
+    <h2>From "I want ads" to a 48-cell grid.</h2>
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h4>I describe what I want in plain English</h4>
+        <p>"I want a Mini Miracle Balm toolkit aimed at Suburban Super-Mom focused on trial-risk." That's it.
+        The skill picks up from there.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h4>Research pre-load (before any question)</h4>
+        <p>The skill auto-pulls our customer intelligence repo, reads the angle registry to make sure we're not
+        repeating what we already shipped, and queries existing refsets in the engine. It surfaces 4–6 lines of
+        context before asking anything.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h4>The 8-question intake</h4>
+        <p>Sequential — one question at a time. Mode, product, persona, angle, creative direction, awareness stage,
+        toolkit size, reference ads, exclusions. If I batch-answer, it accepts and skips ahead.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h4>Copy is delegated to /jrb-copywriter</h4>
+        <p>This is a hard rule. Claude never writes JRB headlines, subheads, or CTAs from inside <code class="inline">/static-ads</code>.
+        It briefs a separate skill that owns voice + style + claims compliance, then surfaces the options to me.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-body">
+        <h4>Scene direction</h4>
+        <p>For each concept the skill drafts 2–3 distinct scene alternatives (composition, surface, light, props),
+        I pick one, and it expands into a fully prescriptive scene paragraph using a "Scene Anatomy" template
+        — explicit zones, lighting direction, surface material, prop positions, "top 55% empty" callouts.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-body">
+        <h4>Brief JSON → POST /api/briefs</h4>
+        <p>The skill assembles a JSON brief (product, angle, personas, refsetId, concepts[]) and POSTs to the
+        engine. Engine returns a briefId immediately and starts generating fire-and-forget.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">07</div>
+      <div class="step-body">
+        <h4>The engine fans out — N concepts × 2 formats × M models</h4>
+        <p>For each cell the engine: loads real product references (Air photos), injects per-product training
+        rules, builds a final prompt with brand guardrails, calls the image model, downloads the output,
+        composites brand fonts on top via sharp, uploads to blob, marks ready.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">08</div>
+      <div class="step-body">
+        <h4>Skill polls until ready, builds a comparison page</h4>
+        <p>Polls every 15s. Toolkit (48 cells) takes 8–12 min, first-principles (4–8 cells) takes 1–3 min.
+        Then it generates a comparison HTML page with a diversity audit panel, downloads every PNG, grades
+        each one visually against a 4-point checklist, and writes the verdict inline.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">09</div>
+      <div class="step-body">
+        <h4>I review, iterate, ship</h4>
+        <p>Greens go to Meta. Yellows get fed back to <code class="inline">/static-ads</code> with a one-sentence delta and the engine
+        re-renders just that cell at a versioned URL. Reds get killed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── 03 SKILL ───────────────────────── -->
+<section class="alt" id="skill">
+  <div class="container">
+    <span class="eyebrow">03 · The skill</span>
+    <h2>/static-ads — the brain.</h2>
+    <p class="lead">A 480-line markdown file the Claude Code agent reads at runtime. No code execution
+    of its own — it's pure instruction, plus tool calls (file reads, curl, Air MCP).</p>
+
+    <h4>What lives in it</h4>
+    <ul>
+      <li>Three modes (First-principles, Toolkit, Iteration) and when to pick which</li>
+      <li>Universal hard rules that apply to every output</li>
+      <li>A research pre-load checklist (customer intelligence, angle registry, refsets)</li>
+      <li>The 8-question intake</li>
+      <li>A toolkit recipe — 6 archetypes × 2 hook types = 12 entity-distinct slots</li>
+      <li>A claim-distinctness audit (NLP-style "would Andromeda read these as different?")</li>
+      <li>An 8-axis embedding-distance audit (every pair must differ on ≥4 axes)</li>
+      <li>Scene Anatomy template + 3 reusable scene templates proven 4/4 in production</li>
+      <li>13 known failure modes with their iterate deltas</li>
+      <li>A "done-gating" checklist before I'm allowed to call something shipped</li>
+    </ul>
+
+    <h4>The whole skill is grounded in Meta research</h4>
+    <p>Andromeda + GEM (Meta's ad-ranking embedding models) reward diversity in the creative pool. We don't run
+    one ad and scale spend — we ship 12 truly different ads per persona/angle and let the auction find the
+    winner. The 8-axis audit (composition, palette, lighting, claim type, etc.) is the heuristic for "truly
+    different" that maps onto how Andromeda actually clusters embeddings.</p>
+  </div>
+</section>
+
+<!-- ───────────────────────── 04 MODES ───────────────────────── -->
+<section id="modes">
+  <div class="container">
+    <span class="eyebrow">04 · Three modes</span>
+    <h2>Pick one before anything else.</h2>
+
+    <div class="modes">
+      <div class="mode">
+        <h4>Mode A — First-principles</h4>
+        <p>One or two sharp concepts. Best-of-best on a single angle. New territory exploration.</p>
+        <div class="cost">1–2 concepts · 2 models · 2 formats · 4–8 cells · ~$1.20</div>
+      </div>
+      <div class="mode center-band">
+        <h4>Mode B — Toolkit</h4>
+        <p>Twelve truly-different ads that earn distinct Meta entity IDs by varying ≥4 of the embedding-distance
+        axes per pair, while sharing one persona + one core angle. This is the default for broad-testing into
+        Andromeda.</p>
+        <div class="cost">12 concepts · 2 formats · 1–2 models · 24–48 cells · $7.20–$14.40</div>
+      </div>
+      <div class="mode">
+        <h4>Mode C — Iteration</h4>
+        <p>A specific cell underperformed and needs a delta fix. Skill hands off to <code class="inline">/ad-iteration-brief</code>
+        which diagnoses against Northbeam/Polar metrics, then we fire the engine's per-cell iterate endpoint.</p>
+        <div class="cost">1 cell · ~$0.30</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── 05 INTAKE ───────────────────────── -->
+<section class="alt" id="intake">
+  <div class="container">
+    <span class="eyebrow">05 · The 8-question intake</span>
+    <h2>One question at a time.</h2>
+    <table>
+      <thead>
+        <tr><th style="width:60px">#</th><th>Question</th><th>What it drives</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Q0</td><td>Mode?</td><td>First-principles / Toolkit / Iteration. If Iteration → stop, hand to /ad-iteration-brief.</td></tr>
+        <tr><td>Q1</td><td>Product?</td><td>Drives refset pick. Mini MB → rs_mocu5gig_nhpybt. Full MB → rs_mofw944m_j94hs7.</td></tr>
+        <tr><td>Q2</td><td>Persona?</td><td>One of the 6 canonical JRB personas. Persona is the most load-bearing axis — stays constant across the toolkit.</td></tr>
+        <tr><td>Q3</td><td>Angle / customer insight?</td><td>One sentence. The friction or aspiration this set is meant to break. Quote CI language verbatim when available.</td></tr>
+        <tr><td>Q4</td><td>Creative direction?</td><td>Free text OR "propose" → skill surfaces 2–3 alternatives. Toolkit: this is an aesthetic guardrail across all 12, not per-concept.</td></tr>
+        <tr><td>Q5</td><td>Awareness stage?</td><td>Unaware / Problem-aware / Solution-aware / Product-aware / Most-aware. Drives copy register and scene calibration.</td></tr>
+        <tr><td>Q6</td><td>Toolkit size?</td><td>Toolkit only. Default 12. Range 8–30.</td></tr>
+        <tr><td>Q7</td><td>Reference ads?</td><td>Optional. 1–5 URLs of past winners, competitor inspiration, Pinterest moodboards. Each with one-line caption. Anchors the toolkit in embedding space adjacent to known winners.</td></tr>
+        <tr><td>Q8</td><td>Constraints / exclusions?</td><td>"No bathroom scenes" / "Avoid Apothecary direction (just used)" / etc.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ───────────────────────── 06 RULES ───────────────────────── -->
+<section id="rules">
+  <div class="container">
+    <span class="eyebrow">06 · Universal hard rules</span>
+    <h2>Things the system will refuse to break.</h2>
+    <p>These run on every output regardless of mode. Most exist because we hit the failure mode in production
+    and locked in the rule afterwards.</p>
+
+    <h4>Copy &amp; voice</h4>
+    <ul>
+      <li><strong>Copy comes from /jrb-copywriter, never the model.</strong> Every headline, subhead, and CTA is delegated. Writing copy inside /static-ads is a hard process violation.</li>
+      <li><strong>Only the 6 canonical JRB personas.</strong> Ageless Matriarch (60+), High-Powered Executive, Wellness Practitioner, Suburban Super-Mom, Creative Entrepreneur, Dedicated Educator. Never invent a persona.</li>
+      <li><strong>No invented quotes.</strong> Customer-voice claims, founder-voice notes, review snippets in image — all verbatim from real sources only.</li>
+      <li><strong>No unapproved clinical claims.</strong> All percentages, "100% of users", "improves", "barrier", "hydration" must come from the approved claims sheet, verbatim.</li>
+      <li><strong>Bobbi Brown attribution.</strong> Any time Bobbi's named, "Founder" or "Makeup Artist" must follow — otherwise the copy implies the other Bobbi Brown brand (which she sold).</li>
+      <li><strong>Verify claims before shipping.</strong> Wear time, clinical stats, shade counts — must match LP/PDP language exactly.</li>
+    </ul>
+
+    <h4>Imagery</h4>
+    <ul>
+      <li><strong>No AI-generated humans.</strong> Faces, hands, bodies all come from Air refs. AI is fine for backgrounds, textures, packshots, surfaces, UGC context.</li>
+      <li><strong>No invented branding on non-JR objects.</strong> Every dropper bottle, book, glasses, cup must be unbranded. Each scene paragraph calls this out explicitly.</li>
+      <li><strong>No press logos.</strong> No Vogue / Allure / Cut / "AS SEEN IN" bands. We don't have rights.</li>
+      <li><strong>Image-headline match.</strong> The scene must telegraph "this is a foundation ad" within 1 second.</li>
+    </ul>
+
+    <h4>Composition (the hard pixel rules)</h4>
+    <ul>
+      <li><strong>No copy ever overlaps the product.</strong> Headline, subhead, and CTA each clear the product bounding box completely.</li>
+      <li><strong>Subject occupies 26–42% of frame height</strong> (not 60–80%), vertically centered around y=820 (1×1) or y=1500 (9×16).</li>
+      <li><strong>Top 55–60% reserved for headline + subhead.</strong> Bottom 5–10% reserved for CTA pill.</li>
+      <li><strong>≥80px clearance between subhead bottom and product top.</strong> ≥60px clearance between product bottom and CTA pill top.</li>
+      <li><strong>No orphan-word wraps.</strong> Never break "for", "of", "and", "the", "or", "a" onto its own line.</li>
+      <li><strong>JONES ROAD wordmark on the lid only.</strong> Never wrapped around the jar body.</li>
+      <li><strong>Wordmark orientation:</strong> when a product lies horizontal, the wordmark still reads upright to the viewer — never rotated 90° sideways.</li>
+    </ul>
+
+    <h4>Output</h4>
+    <ul>
+      <li><strong>Output sizes:</strong> 1080×1080 (1:1) and 1080×1920 (9:16). Meta safe zones enforced by the compositor.</li>
+      <li><strong>Brand fonts composited server-side</strong> — Canela Light (headline), ArticulatCF Bold (subhead, ALL CAPS, ls .3px), BaseMonoWide (CTA). The image model never renders text.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ───────────────────────── 07 ENGINE ───────────────────────── -->
+<section class="alt" id="engine">
+  <div class="container">
+    <span class="eyebrow">07 · The engine</span>
+    <h2>jrb-static-ads — the Next.js app.</h2>
+    <p>Two ways to drive it: the Studio UI (hand-builds a brief in a wizard) or the skill (POSTs a JSON brief
+    directly). Both end up at the same <code class="inline">/api/briefs</code> handler.</p>
+
+    <h4>File map</h4>
+    <table>
+      <thead><tr><th>Path</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">app/studio/</td><td>Wizard UI — brief builder, concept cards, review-bank picker, scene preview.</td></tr>
+        <tr><td class="mono">app/api/briefs/route.ts</td><td>POST handler. Inlines refset references at submit time, persists the brief, kicks off generation.</td></tr>
+        <tr><td class="mono">app/api/briefs/[id]/iterate/route.ts</td><td>Per-cell iterate endpoint. Takes <code class="inline">{conceptId, format, model, delta}</code>, re-renders one cell.</td></tr>
+        <tr><td class="mono">app/api/refsets/route.ts</td><td>List + create refsets (packshot anchor packs).</td></tr>
+        <tr><td class="mono">app/api/review-bank/route.ts</td><td>Returns parsed customer-review proof-points for a given product.</td></tr>
+        <tr><td class="mono">app/briefs/[id]/page.tsx</td><td>Concept-grid reviewer — renders all cells with safe-zone toggles.</td></tr>
+        <tr><td class="mono">lib/generate.ts</td><td>Generation orchestrator. Fans out concepts × formats × models, handles concurrency.</td></tr>
+        <tr><td class="mono">lib/prompts.ts</td><td>The big one. <code class="inline">buildPrompt()</code> assembles the final image-model prompt from every input source.</td></tr>
+        <tr><td class="mono">lib/scene.ts</td><td>Anthropic Haiku scene writer — auto-fills 150–200 word scene descriptions.</td></tr>
+        <tr><td class="mono">lib/composite.ts</td><td>Sharp-based compositor. Lays Canela/ArticulatCF/BaseMono on top of the model output. ~33KB of typography logic.</td></tr>
+        <tr><td class="mono">lib/productDirection.ts</td><td>Loads per-product training MD (Mini MB, Foundation Stick, Bright Skin Drops) and injects as the FIRST prompt block.</td></tr>
+        <tr><td class="mono">lib/baseline.ts</td><td>The 8 reference JRB-look ads auto-prepended to every branded brief.</td></tr>
+        <tr><td class="mono">lib/antiReferences.ts</td><td>Merit / Saie / Glossier / Rare ads attached as a NEGATIVE block — "don't look like this."</td></tr>
+        <tr><td class="mono">lib/handsPack.ts</td><td>Hand references — only attached when the archetype implies a hand.</td></tr>
+        <tr><td class="mono">lib/shadePack.ts</td><td>Shade-lock packs — when a concept specifies <code class="inline">shade: "au-naturel"</code>, the engine prepends shade refs.</td></tr>
+        <tr><td class="mono">lib/treatments/index.ts</td><td>Registry of code-composited templates (storyboard, headline-stack, ugc-meme, pullquote, etc.).</td></tr>
+        <tr><td class="mono">lib/models/openai.ts</td><td>gpt-image-2 adapter.</td></tr>
+        <tr><td class="mono">lib/models/gemini.ts</td><td>Gemini Nano Banana Pro adapter; refs-first ordering.</td></tr>
+        <tr><td class="mono">data/products/&lt;slug&gt;/training.md</td><td>Per-product packaging-fidelity rules. Read first by every prompt.</td></tr>
+        <tr><td class="mono">data/products/&lt;slug&gt;/review-bank.md</td><td>Verbatim customer review quotes for proof-point picker.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ───────────────────────── 08 GUTS ───────────────────────── -->
+<section id="guts">
+  <div class="container">
+    <span class="eyebrow">08 · What's actually driving the output</span>
+    <h2>The prompt is assembled, not handwritten.</h2>
+    <p>Every image-model call gets a multi-block prompt that's stitched together from ~15 different sources.
+    Here's what goes in, in order.</p>
+
+    <!-- buildPrompt signature -->
+    <h3>The assembler — <code class="inline">buildPrompt()</code></h3>
+    <p>One function. Pulls everything into one structured string. This is the signature:</p>
+    <pre>// lib/prompts.ts:328
+export function buildPrompt({
+  concept,                  // archetype, scene, persona, headline, subhead, cta
+  format,                   // "1x1" | "9x16"
+  product,                  // "Mini Miracle Balm"
+  angle,                    // one-sentence creative angle
+  mode,                     // "branded" | "ugc" | "advertorial"
+  hasRealPersonReference,
+  allowGeneratedPeople,
+  hasReferences,
+  hasMoodReference,
+  moodReferenceCaption,
+  referenceAdCaptions,
+  reviewNuggets,            // verbatim customer quotes selected in Studio
+  antiReferenceCaptions,    // "don't look like this" — competitor anti-refs
+  brandDirectionBlock,      // JRB-wide brand context
+  productDirectionBlock,    // per-product training (FIRST in the stack)
+  safeZonesBlock,           // pixel-precise safe-zone rules
+  shadeLabel,
+  shadeRefCount,
+}: PromptInputs): string</pre>
+
+    <!-- Guardrails block -->
+    <h3>Brand guardrails — same on every call</h3>
+    <p>The <code class="inline">JRB_GUARDRAILS</code> constant is the brand-wide preamble. Lives in <code class="inline">lib/prompts.ts</code>. Excerpt:</p>
+    <pre>PACKAGING FIDELITY IS THE #1 RULE — read this before anything else.
+Jones Road Beauty product packaging is sacred. The product's exact form,
+material, label copy, branded ink color, proportions, and WORDMARK
+PLACEMENT must match the real product. Never reinvent, stylize, simplify,
+or approximate packaging.
+
+Composition rules (apply to every scene):
+- HARD PIXEL RULE — TOP CLEARANCE. The TOP edge of every subject element
+  (jar, lid, hand, balm interior, propped object, leaning lid, swatch
+  streak — every visible non-background element) MUST sit at or below:
+    • 1:1 (1080×1080): pixel y=540
+    • 9:16 (1080×1920): pixel y=960
+  The upper half is RESERVED for a headline + subhead composite.
+- FULL-BLEED PHOTOGRAPHY — the photographic content must fill the ENTIRE
+  output frame edge to edge with NO INTERNAL WHITE BORDER.
+- BALM INTERIOR DEFAULTS TO USED — for any open-jar shot, the visible
+  balm surface MUST look used: show a finger-swipe scoop, a gentle swirl,
+  or surface relief from real scoop behavior. NEVER render a flat,
+  glassy, mirror-smooth, untouched, freshly-poured balm surface — that
+  reads as drugstore / e-commerce stock photography.
+- WORDMARK ORIENTATION — when a product is shown lying horizontally,
+  the JONES ROAD wordmark MUST remain readable from the viewer's
+  perspective. NEVER render the wordmark rotated 90° from the viewer.</pre>
+
+    <!-- Archetype directions -->
+    <h3>Archetype direction — picks the scene preamble</h3>
+    <p>Every concept has an <code class="inline">archetype</code>. The engine looks up a per-archetype scene preamble that gets
+    layered on top of the scene paragraph. Excerpts:</p>
+    <pre>"Apothecary":
+  "Warm linen-textured surface. Open jar with lid resting beside it.
+  Small natural objects nearby — fresh herb sprig, amber dropper bottle
+  (unbranded), small mortar — arranged like a wellness ritual. Soft
+  morning side-light. Editorial, grounded, never glossy.",
+
+"Open purse spill":
+  "Single jar centered on a soft surface with a partially open canvas
+  bag's contents spilling out behind it (worn paperback, folded
+  sunglasses, key on leather fob — all unbranded). Warm afternoon
+  light. The jar reads as the only branded item in a real, lived-in
+  moment.",
+
+"5-Star Review Spotlight":
+  "Pull quote in Canela italic title-case over a neutral ground
+  (bone, beige, or light pink). Hero product anchored in the lower
+  band. Five solid black stars in a horizontal row beneath the quote,
+  with bold tracked-out review count (e.g. '29,931 5-STAR REVIEWS')
+  in BaseMono ALL CAPS. NEVER use exclamation points in the quote.",
+
+"Bobbi Ad":
+  "Bobbi Brown as the visual anchor — REQUIRES a real reference photo
+  of Bobbi when the brief mode is `branded`; the model never invents
+  her face. Editorial portrait + product, soft natural window light.
+  Bobbi's handwritten signature ('xx, Bobbi') rendered via the
+  compositor only."</pre>
+
+    <!-- Per product training -->
+    <h3>Per-product training — the FIRST block</h3>
+    <p>Each product has its own training MD at <code class="inline">data/products/&lt;slug&gt;/training.md</code>. This goes
+    in as the very first block of the prompt, before brand guardrails — because the model pays the most
+    attention to the top. Excerpt from Mini Miracle Balm:</p>
+    <pre>⛔️ HARD ANTI-RULES — these are the failures we keep seeing.
+   NEVER do any of them.
+
+SIDE-WALL TEXT — the jar's body is plain unprinted opaque white
+plastic. Period.
+
+DO NOT print, stamp, emboss, or render ANY of the following on the
+jar wall:
+- "MINI MIRACLE BALM"
+- "BAUME MIRACLE MINI" (French translation — JRB does not use French)
+- "8.5g", "0.3 oz" — any net-weight stamp
+- "JONES ROAD" anywhere on the side wall (LID TOP only)
+- Bilingual or trilingual side labels
+- Ingredient lists, made-in tags, batch codes
+
+WORDMARK PLACEMENT — "JONES ROAD" on the LID TOP, nowhere else.
+
+JAR PROPORTIONS — SHALLOW puck, NOT a tall jar.
+Mini Miracle Balm is a shallow disc, total height ≈ 2 cm.
+Lid thickness ≈ jar body height (lid:body ratio ~1:1). The whole
+jar is wider than it is tall.
+
+JAR MATERIAL — opaque white plastic, never glass or transparent.
+The balm color inside is visible ONLY from the OPEN top when the
+lid is off — never through the side walls.
+
+BALM SHADE — match the attached reference EXACTLY. NEVER invent
+a color. NEVER average two reference shades into a new fictional
+color.</pre>
+    <p class="muted-line" style="font-size: 13px;">These rules are the scar tissue of every failure mode we've shipped a fix for. The model
+    used to invent French labels and net-weight stamps to "look professional." Now it doesn't.</p>
+
+    <!-- Hard pixel rules -->
+    <h3>Format-specific composition — the format note</h3>
+    <p>Different format = different geometry. The <code class="inline">formatNote</code> is constructed per-format with pixel-exact
+    bounds. 9×16 excerpt:</p>
+    <pre>Vertical 9:16 (1080×1920).
+
+🔴 SUBJECT SIZE — THIS IS THE #1 COMPOSITION RULE.
+   THE SUBJECT MUST BE SMALL RELATIVE TO THE FRAME.
+
+- Subject TOTAL HEIGHT: between 26% and 40% of canvas height
+  (between 500px and 770px tall).
+- Subject TOTAL WIDTH: never exceeds 50% of canvas width (max 540px).
+- NEVER render the subject as a close-up that fills most of the frame.
+- NEVER render the subject larger than 45% of the canvas height.
+- The subject is a small editorial product hero, not a macro close-up.
+  Think 'Vogue editorial pull-quote treatment' not 'Sephora product
+  detail page.'
+
+POSITION: Subject's vertical CENTER at y=1500 (range y=1450–1550).
+Subject TOP edge between y=1200 and y=1300.
+Subject BOTTOM edge between y=1700 and y=1820 — NO part of subject
+may extend below y=1820.
+
+CLEARANCE ZONES (HARD PIXEL RULES):
+- Upper 60% of canvas (pixel y=0 to y=1150) MUST be empty surface —
+  no jar, no lid, no balm, no shadow extending up. This is the
+  headline + subhead composite zone.
+- Bottom 5% (pixel y=1820 to y=1920) MUST be empty for the CTA pill.
+
+CRITICAL: NO part of the JONES ROAD wordmark, lid printing, or any
+branded surface may appear in pixel y=0 to y=1300 — at least 200px
+of clear empty surface BETWEEN the bottom of the typography zone
+(~y=1100) and the top of the lid wordmark.</pre>
+
+    <!-- Scene writer -->
+    <h3>Scene writer — when I leave the scene blank</h3>
+    <p>If a concept's <code class="inline">scene</code> field is empty, the engine invokes Claude Haiku 4.5 to write one,
+    seeded by the archetype + angle + any reference notes + selected review nuggets. Lives in <code class="inline">lib/scene.ts</code>:</p>
+    <pre>// lib/scene.ts — abridged
+const JRB_SCENE_RULES = `JRB brand rules:
+- No AI-generated faces (unless archetype is UGC or problem-solution)
+- Clean, elevated, editorial aesthetic
+- Natural light preferred (golden hour, window light, overcast)
+- Products are the hero — no clutter
+- Neutral backgrounds: white, cream, linen, sand, warm gray
+- Real skin, real texture — never retouched or perfect
+- For "Hero product": product alone, beautiful still life, macro detail
+- For "UGC-style": hand holding or using product, casual but polished
+- For "Editorial / press": minimalist, product + whitespace, type-forward
+- For "Lifestyle in-use": product integrated naturally into a moment
+- For "Problem-Solution": before/after texture or skin close-up`;
+
+export async function generateScene(input: SceneInput): Promise<string> {
+  // Brief composed of: product, archetype, angle, reference notes,
+  // scene nudge, selected review nuggets — anthropic Haiku writes
+  // a 150–200 word visual scene description.
+  const message = await client.messages.create({
+    model: "claude-haiku-4-5-20251001",
+    max_tokens: 300,
+    messages: [{ role: "user", content: prompt }],
+  });
+  return message.content[0].text.trim();
+}</pre>
+
+    <!-- Negatives -->
+    <h3>Negative prompts — last block</h3>
+    <p>Closes out every prompt with what the model is forbidden to produce:</p>
+    <pre>export const NEGATIVE_STANDARD = [
+  "no text",
+  "no typography",
+  "no words",
+  "no watermarks",
+  "no UI elements",
+  "no frames or borders",
+  "no badges",
+  "no price tags",
+  "no invented packaging",
+  "no generic jars",
+  "no unbranded products",
+  "no altered labels",
+  "no restyled lids",
+  "no placeholder branding",
+  "no approximated JRB logo",
+  "no wordmark wrapped around the side of the jar",
+].join(", ");</pre>
+
+    <!-- Final order -->
+    <h4>The final prompt order</h4>
+    <ol>
+      <li>Per-product training (Mini MB, FS, etc.) — FIRST</li>
+      <li>JRB brand-wide guardrails</li>
+      <li>Format-specific composition note (1×1 vs 9×16)</li>
+      <li>Archetype direction</li>
+      <li>The scene paragraph (either hand-written or Haiku-generated)</li>
+      <li>Product reference notes (real Air photos attached separately)</li>
+      <li>Reference ads (past winners / competitor inspiration) — interpret style, don't copy products</li>
+      <li>Mood reference (if attached)</li>
+      <li>Anti-references (Merit / Saie / Glossier / Rare) — "don't look like this"</li>
+      <li>Review proof points (verbatim customer quotes from Studio picker)</li>
+      <li>Shade lock (if a specific shade is requested)</li>
+      <li>Safe zones</li>
+      <li>Negative prompts</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ───────────────────────── 09 MODELS ───────────────────────── -->
+<section class="alt" id="models">
+  <div class="container">
+    <span class="eyebrow">09 · Models in production</span>
+    <h2>Locked, validated, swappable.</h2>
+    <p>Lives in <code class="inline">lib/generate.ts</code>. Single line of code:</p>
+    <pre>const DEFAULT_MODELS: ModelId[] = ["gpt-image-2"];
+const MODELS: ModelId[] = process.env.ENABLED_MODELS
+  ? (process.env.ENABLED_MODELS.split(",").map(s => s.trim())
+      .filter(Boolean) as ModelId[])
+  : DEFAULT_MODELS;
+const FORMATS: Format[] = ["1x1", "9x16"];</pre>
+    <table>
+      <thead><tr><th>Model</th><th>Status</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">gpt-image-2</td><td><span class="chip">PRIMARY</span></td><td>Cleaner identity. Strongest in-image typography compliance. Most reliable on JRB wordmark placement.</td></tr>
+        <tr><td class="mono">gemini-nano-banana-pro</td><td><span class="chip ghost">CO-EQUAL (opt-in)</span></td><td>Stronger editorial composition. ~37% cheaper than GPT 2. Not a fallback — runs every cell when enabled.</td></tr>
+        <tr><td class="mono">gemini-nano-banana-2</td><td><span class="chip ghost">DEPRECATED</span></td><td>Jar-doubling at 9×16. Available via env override for re-validation only.</td></tr>
+        <tr><td class="mono">gpt-image-1.5</td><td><span class="chip ghost">DEPRECATED</span></td><td>Structural side-text bleed. Available via env override only.</td></tr>
+      </tbody>
+    </table>
+    <p>Single-model default ($7.20 / toolkit) is the recommended first run. Iterate yellows on the cheaper NB Pro
+    to save spend on second pass.</p>
+  </div>
+</section>
+
+<!-- ───────────────────────── 10 REFSETS ───────────────────────── -->
+<section id="refsets">
+  <div class="container">
+    <span class="eyebrow">10 · Refsets &amp; references</span>
+    <h2>Real photography, locked.</h2>
+    <p>A <strong>refset</strong> is a saved pack of cropped, rect-parameterized Air imgix URLs that lock product
+    identity. We never let the model hallucinate the jar. Every concept attaches a refset → real packshots get
+    sent as input images to the model alongside the prompt.</p>
+
+    <h4>Active production refsets</h4>
+    <table>
+      <thead><tr><th>ID</th><th>Product</th><th>Anchors</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="mono">rs_mocu5gig_nhpybt</td>
+          <td>Mini Miracle Balm</td>
+          <td>10 references — 1×1 + 9×16 bestseller pyramids, CheekyRose macro (texture anchor), Group_190 (wordmark dual-signal), Chic_169 (multi-shade variety), Miami Beach single-jar identity anchor, 4-set top-down packshot, macros, swatches.</td>
+        </tr>
+        <tr>
+          <td class="mono">rs_mofw944m_j94hs7</td>
+          <td>Full-size Miracle Balm</td>
+          <td>3 references — BalmFamily_066 (8-jar arrangement), Flushed_051 (top-down macro), GoldenHour_043 (copper shimmer macro).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>What else gets auto-attached at runtime</h4>
+    <ul>
+      <li><strong>Baseline pack</strong> — 8 reference JRB-look ads. Auto-prepended to every <em>branded</em> brief.</li>
+      <li><strong>Anti-references</strong> — Merit, Saie, Glossier, Rare ads, attached as a separate "don't look like this" block.</li>
+      <li><strong>Hands pack</strong> — Real JRB hand photography. Only attached when archetype implies a hand (UGC, Lifestyle in-use).</li>
+      <li><strong>Shade pack</strong> — If a concept specifies <code class="inline">shade: "au-naturel"</code>, the engine prepends shade refs and injects a SHADE LOCK block telling the model to match exactly.</li>
+      <li><strong>Review bank</strong> — Verbatim customer quotes parsed from <code class="inline">review-bank.md</code>. Selectable as proof-points in Studio; passed through to the prompt as "use these to shape the angle, don't invent new claims."</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ───────────────────────── 11 TREATMENTS ───────────────────────── -->
+<section class="alt" id="treatments">
+  <div class="container">
+    <span class="eyebrow">11 · Code-composited treatments</span>
+    <h2>When the model isn't allowed to render text.</h2>
+    <p>Some ad formats are too text-heavy or too brand-strict for the image model to handle. For those,
+    the engine renders the entire ad in code (TypeScript + sharp, or Python + PIL) — the model is either
+    bypassed entirely or only generates the ambient lifestyle background.</p>
+
+    <h4>Treatment registry — <code class="inline">lib/treatments/index.ts</code></h4>
+    <table>
+      <thead><tr><th>compositeMode</th><th>What it is</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">storyboard-pullquote</td><td>100% sharp/PIL render. Long-form review monologue with JRB-pink inline emphasis. Verbatim review copy only.</td></tr>
+        <tr><td class="mono">storyboard-twocol</td><td>Storyboard text left + composited clean packshot right.</td></tr>
+        <tr><td class="mono">headline-stack</td><td>Rhythmic ALL-CAPS phrases left + composited packshot right. 3–4 lines, BaseMono.</td></tr>
+        <tr><td class="mono">ugc-meme</td><td>Engine generates ambient lifestyle scene (no products), Python/TS composites the real packshot in + a caption pill.</td></tr>
+        <tr><td class="mono">stories-ugc-native</td><td>IG-style with optional link-sticker label + @mention rendered underlined below caption.</td></tr>
+        <tr><td class="mono">sarcastic-quote-hero</td><td>Provocative headline + italic flip attribution (e.g. "— said no one ever").</td></tr>
+      </tbody>
+    </table>
+
+    <p>Each treatment has a <strong>locked example PNG</strong> sitting at <code class="inline">lib/locked-examples/</code> that future runs
+    must visually match. When we promote a one-off proven winner into the registry, it becomes a permanent
+    template — Mini MB winners cascade into Foundation Stick, Lip Recharge, etc., without rebuilding the
+    visual system from scratch.</p>
+  </div>
+</section>
+
+<!-- ───────────────────────── 12 ITERATE ───────────────────────── -->
+<section id="iterate">
+  <div class="container">
+    <span class="eyebrow">12 · Iteration loop</span>
+    <h2>Per-cell fixes, versioned.</h2>
+    <p>When a cell scores yellow on the 4-point checklist, I write a one-sentence delta and the engine
+    re-renders just that cell at a new versioned URL. The comparison page updates to point at the new
+    version. Original is preserved.</p>
+
+    <pre>curl -X POST $JRB_STATIC_ADS_URL/api/briefs/&lt;briefId&gt;/iterate \
+  -H "Content-Type: application/json" \
+  -d '{
+        "conceptId": "c1",
+        "format":    "1x1",
+        "model":     "gpt-image-2",
+        "delta":     "raise the entire scene up — bottom 22% must be empty linen"
+      }'</pre>
+
+    <h4>Known failure modes &amp; their deltas</h4>
+    <table>
+      <thead><tr><th>Pattern</th><th>Symptom</th><th>Delta</th></tr></thead>
+      <tbody>
+        <tr><td>Jar-doubling</td><td>Closed jar stacked on top of open jar</td><td class="mono">"single open jar only — no second closed jar"</td></tr>
+        <tr><td>Invented outer carton</td><td>Generates an unbranded outer carton box</td><td class="mono">"no outer carton, no secondary box"</td></tr>
+        <tr><td>Body-band wordmark</td><td>"JONES ROAD" wraps around jar body</td><td class="mono">"JONES ROAD wordmark on the LID only"</td></tr>
+        <tr><td>Bottom CTA collision</td><td>Product extends into bottom 22%</td><td class="mono">"raise the entire scene up — bottom 22% empty"</td></tr>
+        <tr><td>Balm-texture flatness</td><td>Balm reads matte / granular</td><td class="mono">"smooth, soft sheen, match reference texture"</td></tr>
+        <tr><td>Headline overlap subject</td><td>Subject extends into top half</td><td class="mono">"subject in LOWER HALF only — top edge ≤ y=540"</td></tr>
+        <tr><td>Inset white border</td><td>White margin around the image</td><td class="mono">trimWhiteBorder() auto-trims; or add "full-bleed, edge-to-edge"</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ───────────────────────── 13 CHAIN ───────────────────────── -->
+<section class="alt" id="chain">
+  <div class="container">
+    <span class="eyebrow">13 · Skill chain</span>
+    <h2>What feeds in. What it feeds out.</h2>
+
+    <h4>Upstream — produces inputs to /static-ads</h4>
+    <table>
+      <thead><tr><th>Skill</th><th>Output</th><th>Feeds</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">/jrb-cro</td><td>A/B test recs with ICE scoring</td><td>angle, archetype</td></tr>
+        <tr><td class="mono">/jrb-copywriter:ad-copy</td><td>Meta primary text + headlines</td><td>headline, subhead, CTA, scaffolds scene</td></tr>
+        <tr><td class="mono">/jrb-video-hooks</td><td>Curiosity / Disagreeable / Agreeable / Paradox hook patterns</td><td>Toolkit hook-type writing</td></tr>
+        <tr><td class="mono">/persona-enrichment</td><td>Three-Layer System persona psych</td><td>persona, scene emotional tone</td></tr>
+        <tr><td class="mono">/listenlabs + /junip + /richpanel</td><td>Customer language, friction</td><td>Headlines + scene framing</td></tr>
+        <tr><td class="mono">/outersignal</td><td>Behavioral persona data</td><td>Persona narrowing</td></tr>
+        <tr><td class="mono">/competitive-landscape</td><td>Competitor visuals</td><td>Category-Callout decoy choices</td></tr>
+        <tr><td class="mono">/meta-analysis + /page-watchlist</td><td>Winning ads to refresh</td><td>Iterate vs new brief decision</td></tr>
+        <tr><td class="mono">/ad-iteration-brief + /persona-iteration-brief</td><td>Yellow-ad diagnostics</td><td>Next variant brief</td></tr>
+      </tbody>
+    </table>
+    <p>All of these read from <code class="inline">customer-intelligence.md</code> — a single private GitHub repo that pools
+    every learning across ListenLabs prospect interviews, Typeform customer surveys, OuterSignal behavioral data,
+    Richpanel CS tickets, and Junip reviews. One source of truth.</p>
+
+    <h4>Downstream — what /static-ads feeds into</h4>
+    <ul>
+      <li><strong>Green cells</strong> → manual upload to Meta Ads Manager</li>
+      <li><strong>Yellow cells</strong> → <code class="inline">/persona-iteration-brief</code> (Phase 2 of persona scaling)</li>
+      <li><strong>Approved ads</strong> → logged into <code class="inline">customer-intelligence.md</code> under "Creative — winning patterns"</li>
+      <li><strong>Locked treatments</strong> → promoted to <code class="inline">lib/treatments.ts</code> registry with template + locked-example PNG so future products can recreate the same visual system</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ───────────────────────── 14 FEEDBACK ───────────────────────── -->
+<section id="feedback">
+  <div class="container">
+    <span class="eyebrow">14 · What I'd love feedback on</span>
+    <h2>Specifically asking.</h2>
+    <ul style="font-size: 17px; line-height: 1.65;">
+      <li><strong>The 8-axis embedding-distance audit.</strong> Is the heuristic right? Are we measuring the things Andromeda actually cares about, or am I auditing for human-readable diversity that doesn't map to Meta's clustering?</li>
+      <li><strong>Toolkit size of 12 as the default.</strong> 12 vs 24 vs 48 — what's the right number when the marginal cost is ~$0.30/cell and Meta auctions need ≥8 entity-distinct creatives to find the winner?</li>
+      <li><strong>Per-product training MDs as the prompt's first block.</strong> Right call, or should they live as a system-prompt-level constant baked into the model adapter? (My intuition: keep them per-product so we can ship FS / Lip Recharge training without redeploying.)</li>
+      <li><strong>Delegating copy to /jrb-copywriter.</strong> Hard process gate — never write copy inside /static-ads. Is the boundary in the right place, or should /static-ads own a leaner "headline candidate" pass and only escalate to /jrb-copywriter for finalization?</li>
+      <li><strong>Code-composited treatments vs model-rendered text.</strong> Right now we never let the model render text. With gpt-image-2 typography compliance getting better, is the right move to start trusting the model on simple text + reserve code-composite for complex templates only?</li>
+      <li><strong>Where the system over-engineers.</strong> The 480-line skill, the 15-block prompt assembly, the 13 known failure modes — does any of this feel like accumulated complexity I should be ripping out?</li>
+      <li><strong>Where the system under-invests.</strong> What's missing that would obviously make it better?</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <h2 style="color:#fff;">That's the system.</h2>
+    <p style="opacity: 0.7; max-width: 560px; margin: 0 auto;">Internal walkthrough — Jones Road Beauty. The skill lives in <code class="inline" style="background:#222; color:#fff;">~/.claude/skills/static-ads/</code>. The engine is at <code class="inline" style="background:#222; color:#fff;">github.com/CodyPlofker/jrb-static-ads</code>.</p>
+  </div>
+</footer>
+
+</body>
+</html>
