@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>c2 packaging fix — before / after</title>
+<style>
+  * { box-sizing: border-box }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f6f2eb; color: #000; padding: 24px; }
+  h1 { font-family: Georgia, serif; font-weight: 300; font-size: 28px; margin: 0 0 8px; }
+  .meta { color: #555; margin-bottom: 24px; font-size: 13px; }
+  .note { background: #fff8e7; border: 1px solid #e6c97a; padding: 12px 16px; margin-bottom: 24px; font-size: 13px; border-radius: 4px; }
+  .row { margin-bottom: 28px; }
+  .row h2 { font-size: 18px; margin: 0 0 12px; font-weight: 600; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .pair { grid-template-columns: 1fr; } }
+  .cell { background: #fff; border: 1px solid #ddd; overflow: hidden; }
+  .cell img { display: block; width: 100%; height: auto; }
+  .cell-meta { padding: 10px 12px; font-size: 12px; }
+  .cell-meta .label { font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; font-size: 11px; }
+  .cell-meta .verdict { color: #555; margin-top: 4px; }
+  .before .label { color: #b14040; }
+  .after .label { color: #2f7a3d; }
+  .before { border-left: 4px solid #c33; }
+  .after { border-left: 4px solid #2f7a3d; }
+  .delta { background: #fafafa; border: 1px solid #ddd; padding: 12px 16px; font-size: 12px; line-height: 1.55; margin-bottom: 24px; font-family: ui-monospace, Menlo, monospace; }
+</style>
+</head>
+<body>
+  <h1>c2 packaging fix — before / after</h1>
+  <div class="meta">Brief <code>b_mpouo929_w39zjl</code> · concept c2 (5-Star Review Spotlight) · Foundation Stick</div>
+
+  <div class="note">
+    <b>What changed:</b> HARD_RULES disambiguated jar-wall (plain) vs stick-body (label hierarchy) packaging rules, then both c2 cells iterated at quality:"high" with size9x16Override:"2160x3840" and a targeted packaging-fidelity delta.
+  </div>
+
+  <div class="row">
+    <h2>1×1 (square)</h2>
+    <div class="pair">
+      <div class="cell before">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mpouo929_w39zjl/c2-1x1-gpt-image-2.png" alt="c2 1x1 before" />
+        <div class="cell-meta">
+          <div class="label">Before — medium quality</div>
+          <div class="verdict">Stick lay horizontal. Body label garbled (mid-cylinder text not legible). Cost ~$0.015.</div>
+        </div>
+      </div>
+      <div class="cell after">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mpouo929_w39zjl/c2-1x1-gpt-image-2-vmlr7.png" alt="c2 1x1 after" />
+        <div class="cell-meta">
+          <div class="label">After — high quality + fixed HARD_RULES</div>
+          <div class="verdict">Stick upright, JONES ROAD clearly bold. Smaller body lines still slightly soft at 1×1 size but readable as label hierarchy. Cost ~$0.21.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <h2>9×16 (vertical)</h2>
+    <div class="pair">
+      <div class="cell before">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mpouo929_w39zjl/c2-9x16-gpt-image-2.png" alt="c2 9x16 before" />
+        <div class="cell-meta">
+          <div class="label">Before — medium quality / 1024×1536</div>
+          <div class="verdict">Horizontal stick. Label area garbled — small body lines unreadable, looked like AI noise. Cost ~$0.021.</div>
+        </div>
+      </div>
+      <div class="cell after">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mpouo929_w39zjl/c2-9x16-gpt-image-2-vqo4t.png" alt="c2 9x16 after" />
+        <div class="cell-meta">
+          <div class="label">After — high quality / 2160×3840</div>
+          <div class="verdict">JONES ROAD large + clean. "YOUR SKIN FOUNDATION STICK" + "STICK FOND DE TEINT" readable in the lower lines. Silver cap correct. Beige foundation pigment exposed on the right. Ship-ready. Cost ~$0.80.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <h2>Iteration delta sent to the engine</h2>
+    <div class="delta">PACKAGING FIDELITY FIX. Match the Foundation Stick BODY LABEL hierarchy EXACTLY from the FIRST product reference image — three printed lines in dark ink on the beige cylindrical body: line 1 = JONES ROAD (largest, bold sans-serif). Line 2 = YOUR SKIN FOUNDATION STICK (smaller, regular sans-serif, slightly tracked out). Line 3 = STICK FOND DE TEINT (smallest, regular sans-serif, French translation). Three lines only — no fourth line, no oz/g stamp, no batch code, no extra French copy, no ingredient list. EVERY word must be correctly spelled and crisply legible — no garbled glyphs, no fake letters. The cap is brushed silver/metal (not gold). The exposed product head shows a soft beige foundation pigment, not white. Re-render with full attention to the label clarity.</div>
+  </div>
+
+  <div class="row">
+    <h2>Recommended HARD_RULES change (now committed)</h2>
+    <div class="delta">For JARS (Mini MB, Miracle Balm): walls PLAIN — no side text.
+For STICKS (Foundation Stick, etc): three-line label hierarchy MANDATORY — JONES ROAD / YOUR SKIN FOUNDATION STICK / STICK FOND DE TEINT. No oz/g, no batch, no ingredient list. Every word legible.
+If framing puts label too small to render: prefer tighter crop OR cap-on view.</div>
+  </div>
+</body>
+</html>
