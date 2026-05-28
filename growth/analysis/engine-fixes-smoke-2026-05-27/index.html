@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Engine fixes A–G smoke — b_mpouo929_w39zjl</title>
+<style>
+  * { box-sizing: border-box }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f6f2eb; color: #000; padding: 32px; }
+  h1 { font-family: "Canela", Georgia, serif; font-weight: 300; font-size: 36px; margin: 0 0 8px; }
+  .meta { color: #555; margin-bottom: 24px; font-size: 14px; }
+  .summary-bar { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; padding: 16px; background: #fff; border: 1px solid #ddd; }
+  .summary-stat { font-size: 13px; }
+  .summary-stat b { font-size: 18px; display: block; }
+  .row { margin-bottom: 32px; }
+  .row h2 { font-size: 20px; margin: 0 0 12px; font-weight: 600; }
+  .grid { display: grid; gap: 16px; }
+  .grid-1x1 { grid-template-columns: repeat(2, 1fr); }
+  .grid-9x16 { grid-template-columns: repeat(2, 1fr); }
+  .cell { background: #fff; border: 1px solid #ddd; overflow: hidden; }
+  .cell-img { background: #f8f8f8; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; }
+  .cell-img img { width: 100%; height: 100%; object-fit: contain; }
+  .grid-9x16 .cell-img { aspect-ratio: 9/16; }
+  .cell-missing { color: #999; padding: 24px; text-align: center; font-style: italic; }
+  .cell-meta { padding: 12px 16px; }
+  .cell-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .cell-id { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: #555; }
+  .cell-archetype { font-size: 12px; color: #777; margin-bottom: 6px; }
+  .cell-headline { font-family: "Canela", Georgia, serif; font-weight: 300; font-size: 16px; margin-bottom: 4px; }
+  .cell-subhead { font-size: 12px; color: #555; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px; }
+  .cell-cost { font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: #999; margin-bottom: 8px; }
+  .badge { display: inline-block; padding: 2px 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.4px; }
+  .badge-green { background: #d6f5d6; color: #1a6b1a; }
+  .badge-yellow { background: #fff4c2; color: #6b5a1a; }
+  .badge-red { background: #f5d6d6; color: #6b1a1a; }
+  .badge-gray { background: #eee; color: #555; }
+  details { margin-top: 8px; font-size: 12px; }
+  summary { cursor: pointer; color: #333; padding: 4px 0; }
+  .qa-summary { font-style: italic; color: #444; margin-bottom: 8px; padding: 8px; background: #fafafa; }
+  .vio { padding: 8px; margin-top: 6px; border-left: 3px solid #ccc; background: #fafafa; }
+  .vio-red { border-color: #c33; }
+  .vio-yellow { border-color: #c93; }
+  .vio-head { display: flex; justify-content: space-between; font-family: ui-monospace, Menlo, monospace; font-size: 11px; margin-bottom: 4px; }
+  .vio-rule { color: #000; font-weight: 600; }
+  .vio-sev { color: #999; }
+  .vio-detail { color: #333; font-size: 12px; }
+  .vio-empty { color: #999; font-style: italic; padding: 4px 0; }
+  pre { font-size: 10px; background: #fafafa; padding: 8px; overflow-x: auto; white-space: pre-wrap; line-height: 1.4; max-height: 240px; overflow-y: auto; }
+  .note { background: #fff8e7; border: 1px solid #e6c97a; padding: 12px 16px; margin-bottom: 24px; font-size: 13px; }
+</style>
+</head>
+<body>
+  <h1>Engine fixes A–G — smoke b_mpouo929_w39zjl</h1>
+  <div class="meta">Branch <code>overnight/engine-quality-fixes-2026-05-27</code> · commit <code>faa0fc6</code> · product: Your Skin Foundation Stick · mode: branded</div>
+
+  <div class="note">
+    <b>What you're looking at:</b> 2 concepts × 1 model × 2 formats = 4 cells.
+    Fix A (quality medium / 2160×3840 9×16) is hit on every cell.
+    Fix B (treatment refs) is dormant here — neither concept declares a compositeMode.
+    Fix C (vision QA) ran on every <b>ready</b> cell — see grades + violations below.
+    Fix D (auto-quote review) wraps c2's review-style headline.
+    Fix E (format-twin) attached c1/c2's 1×1 result as the first input to the matching 9×16 generation.
+    Fix F (HARD_RULES preamble + fitToBudget) is baked into every prompt.
+    Fix G (auto-retry) is off (default) — toggle <code>autoRetryOnComposition: true</code> in the brief to activate.
+  </div>
+
+  <div class="summary-bar">
+    <div class="summary-stat"><b>4</b>total cells</div>
+    <div class="summary-stat"><b>4</b>ready</div>
+    <div class="summary-stat"><b>0</b>green</div>
+    <div class="summary-stat"><b>0</b>yellow</div>
+    <div class="summary-stat"><b>0</b>red</div>
+    <div class="summary-stat"><b>$0.07</b>total spend</div>
+    <div class="summary-stat"><b>ready</b>brief status</div>
+  </div>
+
+  <div class="row">
+    <h2>1×1 (square) — generated first when coherentFormats is on</h2>
+    <div class="grid grid-1x1">
+      
+    <div class="cell">
+      <div class="cell-img">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mpouo929_w39zjl/c1-1x1-gpt-image-2.png" alt="c1-1x1-gpt-image-2" loading="lazy" />
+      </div>
+      <div class="cell-meta">
+        <div class="cell-head">
+          <span class="cell-id">c1 · 1x1</span>
+          <span class="badge badge-gray">QA skipped</span>
+        </div>
+        <div class="cell-archetype">Hero product</div>
+        <div class="cell-headline">Looks like nothing.</div>
+        <div class="cell-subhead">Coverage that disappears.</div>
+        <div class="cell-cost">$0.015</div>
+        
+        <details class="cell-prompt"><summary>Prompt tail (last 800 chars)</summary>
+          <pre>reference image — the model PRESERVES the reference person's likeness exactly; never invents, never composites, never restyles their face. When a hand belongs to the real reference person, keep their natural styling (manicure, jewelry, skin tone) — don't strip or anonymize. Packshot/hero archetype: NEVER include humans in the scene. Just product + ground.. STRICTLY FORBIDDEN — never AI-generate any of these. no AI-generated faces. no AI-generated full bodies. no AI-generated portraits or identity-bearing close-ups of any person. no fictional people pretending to be customers, models, or staff. if a recognizable person is needed and no real reference is attached, AUTO-DOWNGRADE to back-of-head / shoulder / hand-only framing rather than invent a person — never render an AI face as a fallback</pre>
+        </details>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-img">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mpouo929_w39zjl/c2-1x1-gpt-image-2.png" alt="c2-1x1-gpt-image-2" loading="lazy" />
+      </div>
+      <div class="cell-meta">
+        <div class="cell-head">
+          <span class="cell-id">c2 · 1x1</span>
+          <span class="badge badge-gray">QA skipped</span>
+        </div>
+        <div class="cell-archetype">5-Star Review Spotlight</div>
+        <div class="cell-headline">Skin looks even and natural.</div>
+        <div class="cell-subhead">Verified review, Maya C.</div>
+        <div class="cell-cost">$0.015</div>
+        
+        <details class="cell-prompt"><summary>Prompt tail (last 800 chars)</summary>
+          <pre>l-body framing where no face is shown. (3) a real reference person from an attached reference image — the model PRESERVES the reference person's likeness exactly; never invents, never composites, never restyles their face. When a hand belongs to the real reference person, keep their natural styling (manicure, jewelry, skin tone) — don't strip or anonymize. STRICTLY FORBIDDEN — never AI-generate any of these. no AI-generated faces. no AI-generated full bodies. no AI-generated portraits or identity-bearing close-ups of any person. no fictional people pretending to be customers, models, or staff. if a recognizable person is needed and no real reference is attached, AUTO-DOWNGRADE to back-of-head / shoulder / hand-only framing rather than invent a person — never render an AI face as a fallback</pre>
+        </details>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <h2>9×16 (vertical) — reflowed from the matching 1×1</h2>
+    <div class="grid grid-9x16">
+      
+    <div class="cell">
+      <div class="cell-img">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mpouo929_w39zjl/c1-9x16-gpt-image-2.png" alt="c1-9x16-gpt-image-2" loading="lazy" />
+      </div>
+      <div class="cell-meta">
+        <div class="cell-head">
+          <span class="cell-id">c1 · 9x16</span>
+          <span class="badge badge-gray">QA skipped</span>
+        </div>
+        <div class="cell-archetype">Hero product</div>
+        <div class="cell-headline">Looks like nothing.</div>
+        <div class="cell-subhead">Coverage that disappears.</div>
+        <div class="cell-cost">$0.021</div>
+        
+        <details class="cell-prompt"><summary>Prompt tail (last 800 chars)</summary>
+          <pre>reference image — the model PRESERVES the reference person's likeness exactly; never invents, never composites, never restyles their face. When a hand belongs to the real reference person, keep their natural styling (manicure, jewelry, skin tone) — don't strip or anonymize. Packshot/hero archetype: NEVER include humans in the scene. Just product + ground.. STRICTLY FORBIDDEN — never AI-generate any of these. no AI-generated faces. no AI-generated full bodies. no AI-generated portraits or identity-bearing close-ups of any person. no fictional people pretending to be customers, models, or staff. if a recognizable person is needed and no real reference is attached, AUTO-DOWNGRADE to back-of-head / shoulder / hand-only framing rather than invent a person — never render an AI face as a fallback</pre>
+        </details>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cell-img">
+        <img src="https://n4gwmimywboza84h.public.blob.vercel-storage.com/ads/b_mpouo929_w39zjl/c2-9x16-gpt-image-2.png" alt="c2-9x16-gpt-image-2" loading="lazy" />
+      </div>
+      <div class="cell-meta">
+        <div class="cell-head">
+          <span class="cell-id">c2 · 9x16</span>
+          <span class="badge badge-gray">QA skipped</span>
+        </div>
+        <div class="cell-archetype">5-Star Review Spotlight</div>
+        <div class="cell-headline">Skin looks even and natural.</div>
+        <div class="cell-subhead">Verified review, Maya C.</div>
+        <div class="cell-cost">$0.021</div>
+        
+        <details class="cell-prompt"><summary>Prompt tail (last 800 chars)</summary>
+          <pre>l-body framing where no face is shown. (3) a real reference person from an attached reference image — the model PRESERVES the reference person's likeness exactly; never invents, never composites, never restyles their face. When a hand belongs to the real reference person, keep their natural styling (manicure, jewelry, skin tone) — don't strip or anonymize. STRICTLY FORBIDDEN — never AI-generate any of these. no AI-generated faces. no AI-generated full bodies. no AI-generated portraits or identity-bearing close-ups of any person. no fictional people pretending to be customers, models, or staff. if a recognizable person is needed and no real reference is attached, AUTO-DOWNGRADE to back-of-head / shoulder / hand-only framing rather than invent a person — never render an AI face as a fallback</pre>
+        </details>
+      </div>
+    </div>
+    </div>
+  </div>
+</body>
+</html>
