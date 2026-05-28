@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JRB T&E Policy — Side-by-Side Review</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 32px 40px 80px;
+    color: #111;
+    background: #fafaf8;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.3px; }
+  .sub { color: #666; font-size: 13px; margin-bottom: 24px; }
+  .legend { display: flex; gap: 18px; margin-bottom: 16px; font-size: 12px; color: #555; flex-wrap: wrap; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .dot.gap { background: #ffd8d8; border: 1px solid #f5a3a3; }
+  .dot.diff { background: #fff4c2; border: 1px solid #e9d069; }
+  .dot.match { background: #d8efd8; border: 1px solid #9bc89b; }
+  .dot.new { background: #d8e6ff; border: 1px solid #8fb1ee; }
+
+  .controls { margin-bottom: 16px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .controls button {
+    background: #fff; border: 1px solid #ccc; padding: 6px 14px;
+    cursor: pointer; border-radius: 4px; font-size: 13px;
+  }
+  .controls button.active { background: #111; color: #fff; border-color: #111; }
+  .controls input {
+    border: 1px solid #ccc; padding: 6px 10px; border-radius: 4px; font-size: 13px;
+    width: 240px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    table-layout: fixed;
+  }
+  thead th {
+    position: sticky; top: 0;
+    background: #111; color: #fff;
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    border-right: 1px solid #333;
+    z-index: 5;
+  }
+  thead th:last-child { border-right: none; }
+  th.cat-col { width: 12%; }
+  th.col { width: 17.6%; }
+  th.decision-col { width: 18%; background: #1d3d77 !important; }
+
+  td {
+    padding: 12px 14px;
+    vertical-align: top;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #f1f1f1;
+    font-size: 13px;
+  }
+  td:last-child { border-right: none; }
+  td.cat {
+    font-weight: 600;
+    background: #f4f4f1;
+    font-size: 13px;
+  }
+  td.cat .tag {
+    display: inline-block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-top: 6px;
+    font-weight: 700;
+  }
+  .tag.gap { background: #ffd8d8; color: #8a1f1f; }
+  .tag.diff { background: #fff4c2; color: #6b5300; }
+  .tag.match { background: #d8efd8; color: #1f5a1f; }
+  .tag.new { background: #d8e6ff; color: #1d3d77; }
+
+  tr.row-gap td.cat { border-left: 3px solid #d9534f; }
+  tr.row-diff td.cat { border-left: 3px solid #d4b520; }
+  tr.row-match td.cat { border-left: 3px solid #5cb85c; }
+  tr.row-new td.cat { border-left: 3px solid #4a7fd4; }
+
+  .silent { color: #b94a48; font-style: italic; }
+  .key { background: #fff4c2; padding: 1px 4px; border-radius: 2px; }
+  .risk { color: #b94a48; font-weight: 600; }
+  td .label { font-size: 10px; text-transform: uppercase; color: #888; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 4px; }
+
+  .section-header td {
+    background: #ebe9e1;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 11px;
+    color: #555;
+    padding: 10px 14px;
+  }
+
+  td.decision {
+    background: #f6f8fc;
+    border-left: 2px solid #d0dcf0;
+  }
+  td.decision select {
+    width: 100%;
+    padding: 5px 6px;
+    border: 1px solid #c5cad5;
+    border-radius: 3px;
+    font-size: 12px;
+    background: #fff;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  td.decision select.accept { background: #e6f4e6; color: #1f5a1f; border-color: #9bc89b; }
+  td.decision select.reject { background: #fbe2e2; color: #8a1f1f; border-color: #f5a3a3; }
+  td.decision select.discuss { background: #fff4c2; color: #6b5300; border-color: #e9d069; }
+  td.decision select.modify { background: #d8e6ff; color: #1d3d77; border-color: #8fb1ee; }
+  td.decision textarea {
+    width: 100%;
+    min-height: 50px;
+    padding: 6px 8px;
+    border: 1px solid #c5cad5;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: inherit;
+    resize: vertical;
+    background: #fff;
+  }
+
+  .export-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-left: auto;
+  }
+  .export-bar button {
+    background: #1d3d77;
+    color: #fff;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .export-bar button.danger { background: #fff; color: #8a1f1f; border: 1px solid #f5a3a3; }
+  .export-bar .progress { font-size: 12px; color: #666; }
+
+  details {
+    margin-top: 28px;
+    background: #fff;
+    padding: 18px 22px;
+    border-radius: 6px;
+    border: 1px solid #e3e3e0;
+  }
+  details summary { font-weight: 600; cursor: pointer; font-size: 15px; }
+  details ol { margin: 12px 0 0 22px; padding: 0; }
+  details li { margin-bottom: 8px; }
+
+  td.decision select:disabled {
+    opacity: 1; cursor: default;
+    -webkit-appearance: none; appearance: none;
+    padding-right: 8px;
+  }
+  td.decision textarea[readonly] {
+    background: #fff; cursor: default;
+    border-color: #e3e3e0;
+    min-height: auto;
+  }
+  td.decision textarea[readonly]:empty { display: none; }
+</style>
+</head>
+<body>
+
+<h1>JRB T&amp;E Policy — Cody's Review</h1>
+<div class="sub">Reviewed by Cody on May 28, 2026. Current Corporate &amp; Retail vs. James's Proposed vs. Augustinus Bader benchmark. Cody's decisions baked into the rightmost column.</div>
+
+<div style="background:#fff;border:1px solid #e3e3e0;border-radius:6px;padding:18px 22px;margin-bottom:20px;">
+  <div style="font-weight:700;font-size:14px;margin-bottom:10px;letter-spacing:.3px;text-transform:uppercase;color:#444;">Cody's review — May 28, 2026</div>
+  <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:13px;">
+    <span style="background:#e6f4e6;color:#1f5a1f;padding:4px 10px;border-radius:3px;font-weight:600;">14 Accept</span>
+    <span style="background:#d8e6ff;color:#1d3d77;padding:4px 10px;border-radius:3px;font-weight:600;">5 Accept w/ changes</span>
+    <span style="background:#fff4c2;color:#6b5300;padding:4px 10px;border-radius:3px;font-weight:600;">4 Discuss</span>
+    <span style="background:#fbe2e2;color:#8a1f1f;padding:4px 10px;border-radius:3px;font-weight:600;">2 Reject</span>
+    <span style="background:#f1f1f1;color:#555;padding:4px 10px;border-radius:3px;font-weight:600;">1 Open</span>
+  </div>
+  <div style="margin-top:14px;font-size:13px;color:#444;line-height:1.55;">
+    <strong>Top open items for the conversation:</strong>
+    Alcohol (lean toward NO across the board), client/vendor entertainment (NO — we don't take people out),
+    event-related expenses (the gap I originally flagged — still needs language), employee gifts (Chrissy/Kaitlyn may already have something written),
+    airfare thresholds, staff entertainment guardrails for managers.
+  </div>
+</div>
+
+
+<div class="legend">
+  <span><i class="dot gap"></i> Gap / silent today (risk)</span>
+  <span><i class="dot diff"></i> Differs from AB</span>
+  <span><i class="dot match"></i> Already aligned</span>
+  <span><i class="dot new"></i> New category James added</span>
+</div>
+
+<div class="controls">
+  <button class="filter active" data-f="all">All</button>
+  <button class="filter" data-f="gap">Gaps only</button>
+  <button class="filter" data-f="diff">Differs from AB</button>
+  <button class="filter" data-f="new">New from James</button>
+  <input type="text" id="search" placeholder="Search rows…">
+  <div class="export-bar" style="display:none">
+    <span class="progress" id="progress">0 of 0 decided</span>
+    <button id="export">Export decisions</button>
+    <button class="danger" id="clear">Clear all</button>
+  </div>
+</div>
+
+<table id="cmp">
+  <thead>
+    <tr>
+      <th class="cat-col">Category</th>
+      <th class="col">JRB Corporate (current)</th>
+      <th class="col">JRB Retail (current)</th>
+      <th class="col">James's Proposed</th>
+      <th class="col">Augustinus Bader (benchmark)</th>
+      <th class="decision-col">Your call &amp; notes</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr class="section-header"><td colspan="6">Submission &amp; Receipts</td></tr>
+
+    <tr data-row-id="submission-deadline" class="row-diff" data-tags="diff">
+      <td class="cat">Submission deadline<span class="tag diff">Differs</span></td>
+      <td>30 days from incurring expense.</td>
+      <td>30 days from incurring expense.</td>
+      <td>30 days from expense (or 30 days post-trip for travel). After 60 days, Finance discretion to deny. Nov–Dec must be submitted by Jan 10 for fiscal-year close.</td>
+      <td>28 days. Manager pre-approval required before reimbursement.</td>
+      <td class="decision">
+        <select disabled class="modify" data-id="submission-deadline" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept">Accept</option>
+          <option value="modify" selected>Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="submission-deadline" data-field="notes" placeholder="Notes for James…">Just keep it tight/short.</textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="receipt-standard" class="row-gap" data-tags="gap">
+      <td class="cat">Receipt standard<span class="tag gap">Gap</span></td>
+      <td><span class="risk">Itemized receipt only required "if not already showing in Ramp."</span> Ramp auto-capture treated as substitute.</td>
+      <td>Itemized receipts required for all expenses. Signed cc slip not sufficient.</td>
+      <td>Itemized receipts ALWAYS required regardless of Ramp capture. Receipts uploaded within 5 business days. Missing Receipt Affidavit limited to 2/quarter.</td>
+      <td>Documentation required for ALL expenses regardless of value. Receipts retained 36 months.</td>
+      <td class="decision">
+        <select disabled class="modify" data-id="receipt-standard" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept">Accept</option>
+          <option value="modify" selected>Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="receipt-standard" data-field="notes" placeholder="Notes for James…">People (me included) won't know what an "affidavit" is. Keep it shorter and clearer.</textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="manager-pre-approval-for-travel" class="row-match" data-tags="match">
+      <td class="cat">Manager pre-approval for travel<span class="tag match">Aligned</span></td>
+      <td>Required.</td>
+      <td>Required.</td>
+      <td>Required in writing or via Ramp. Verbal not enforceable. Department head co-approval if trip &gt; $1,500. Finance notification if &gt; $5,000.</td>
+      <td>Required. Reservations without approval are explicitly non-reimbursable.</td>
+      <td class="decision">
+        <select disabled class="modify" data-id="manager-pre-approval-for-travel" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept">Accept</option>
+          <option value="modify" selected>Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="manager-pre-approval-for-travel" data-field="notes" placeholder="Notes for James…">Just shorten.</textarea>
+      </td>
+    </tr>
+
+    <tr class="section-header"><td colspan="6">Airfare</td></tr>
+
+    <tr data-row-id="booking-lead-time" class="row-diff" data-tags="diff">
+      <td class="cat">Booking lead time<span class="tag diff">Differs</span></td>
+      <td>2 weeks. Last-minute requires manager approval.</td>
+      <td>2 weeks. Last-minute requires manager approval.</td>
+      <td>Keep 2-week rule. Last-minute requires manager pre-approval.</td>
+      <td>7–14+ days. Written justification required if &lt; 7 days.</td>
+      <td class="decision">
+        <select disabled class="modify" data-id="booking-lead-time" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept">Accept</option>
+          <option value="modify" selected>Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="booking-lead-time" data-field="notes" placeholder="Notes for James…">2 weeks. Last-minute requires manager approval in writing.</textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="class-of-service" class="row-diff" data-tags="diff">
+      <td class="cat">Class of service<span class="tag diff">Differs</span></td>
+      <td>Coach / economy only.</td>
+      <td>Coach / economy only.</td>
+      <td>Coach / economy only. Upgrades are personal expense.</td>
+      <td>Premium Economy default. Business Class only for flights ≥ 7 hours, pre-approved.</td>
+      <td class="decision">
+        <select disabled class="accept" data-id="class-of-service" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept" selected>Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="class-of-service" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="airfare-thresholds" class="row-gap" data-tags="gap">
+      <td class="cat">Airfare thresholds<span class="tag gap">Gap (Retail)</span></td>
+      <td>Hard-coded by city: Palm Beach $440, Chicago $450, Austin $400. East Hampton/Williamsburg/Greenwich/Montclair = no airfare (mileage or rail).</td>
+      <td><span class="risk">References thresholds "below" but table is MISSING from doc.</span></td>
+      <td>Replace city-by-city table with single rule: lowest fare within ±3 hrs of desired time. Any fare &gt; $500 one-way domestic or above route median needs manager approval + written justification.</td>
+      <td>"Lowest Logical Airfare" = lowest fare within ±3 hours of desired time. No hard-coded city caps.</td>
+      <td class="decision">
+        <select disabled class="discuss" data-id="airfare-thresholds" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept">Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss" selected>Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="airfare-thresholds" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="wifi-in-flight" class="row-match" data-tags="match">
+      <td class="cat">WiFi in flight<span class="tag match">Aligned</span></td>
+      <td>Reimbursable for work use.</td>
+      <td>Reimbursable for work use.</td>
+      <td>Reimbursable when used for work.</td>
+      <td>Not specifically addressed (allowed under reasonable business expense).</td>
+      <td class="decision">
+        <select disabled class="accept" data-id="wifi-in-flight" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept" selected>Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="wifi-in-flight" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+    <tr class="section-header"><td colspan="6">Lodging</td></tr>
+
+    <tr data-row-id="hotel-rate-cap" class="row-gap" data-tags="gap">
+      <td class="cat">Hotel rate cap<span class="tag gap">Gap (Retail)</span></td>
+      <td>Pre-approval required if &gt; $250/night.</td>
+      <td><span class="silent">SILENT — no threshold.</span></td>
+      <td>$300/night standard markets; $400/night major (NYC/SF/LA/Miami/Chicago). Above = manager approval + Finance notification.</td>
+      <td>Cap of approx $500/night equivalent (£400). Single occupancy standard biz rate.</td>
+      <td class="decision">
+        <select disabled class="accept" data-id="hotel-rate-cap" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept" selected>Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="hotel-rate-cap" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="airbnb-alt-lodging" class="row-gap" data-tags="gap new">
+      <td class="cat">AirBnB / alt lodging<span class="tag gap">Gap</span></td>
+      <td><span class="silent">SILENT.</span></td>
+      <td><span class="silent">SILENT.</span></td>
+      <td>AirBnB &amp; short-term rentals PROHIBITED unless pre-approved by Finance for team event stay. Reason: card protections, insurance, traveler safety don't apply.</td>
+      <td>AirBnB explicitly prohibited. Friends/family stays max $50/night USD for host gift or meal (cash/gift cards prohibited).</td>
+      <td class="decision">
+        <select disabled class="accept" data-id="airbnb-alt-lodging" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept" selected>Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="airbnb-alt-lodging" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+    <tr class="section-header"><td colspan="6">Meals &amp; Alcohol</td></tr>
+
+    <tr data-row-id="daily-meal-cap" class="row-diff" data-tags="diff">
+      <td class="cat">Daily meal cap<span class="tag diff">Differs</span></td>
+      <td>$80/day per traveling employee. No per-meal breakdown.</td>
+      <td>$80/day per traveling employee. No per-meal breakdown.</td>
+      <td>Keep $80/day cap. Add soft per-meal guidance: $20 breakfast / $25 lunch / $40 dinner. Non-travel team meals capped at $40/person.</td>
+      <td>$100/day NA, $135/day Intl. Per-meal: B $20 / L $30 / D $50 NA (B $30 / L $40 / D $65 Intl). Not per diem — actuals only.</td>
+      <td class="decision">
+        <select disabled class="accept" data-id="daily-meal-cap" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept" selected>Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="daily-meal-cap" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="alcohol" class="row-gap" data-tags="gap">
+      <td class="cat">Alcohol<span class="tag gap">Major risk</span></td>
+      <td><span class="risk">SILENT — being read as permission. Largest single reimbursement risk.</span></td>
+      <td>Explicitly NOT reimbursable.</td>
+      <td>Reimbursable ONLY with client/vendor/partner/retailer or documented BD setting + manager pre-approval. Alcohol on internal-only team meals NOT reimbursable. Same rule both populations.</td>
+      <td>Treated as entertainment, subject to manager pre-approval. No blanket prohibition.</td>
+      <td class="decision">
+        <select disabled class="discuss" data-id="alcohol" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept">Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss" selected>Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="alcohol" data-field="notes" placeholder="Notes for James…">We should NOT allow/reimburse. Outside of events, we do not take "clients" out, so there is no need and we should not be covering employees' alcohol.</textarea>
+      </td>
+    </tr>
+
+    <tr class="section-header"><td colspan="6">Ground Transport &amp; Mileage</td></tr>
+
+    <tr data-row-id="uber-taxi" class="row-match" data-tags="match">
+      <td class="cat">Uber / taxi<span class="tag match">Aligned</span></td>
+      <td>Allowed while traveling, transporting goods, or pre-approved. Home commute not reimbursable.</td>
+      <td>Same as Corporate.</td>
+      <td>Standardize: reimbursable while traveling, transporting JRB goods, or working past 8:30pm in a city. Pre-approved otherwise. Personal commute never reimbursable.</td>
+      <td>Allowed in major metros. After 7:30pm work, taxi home allowed within city limits.</td>
+      <td class="decision">
+        <select disabled class="modify" data-id="uber-taxi" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept">Accept</option>
+          <option value="modify" selected>Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="uber-taxi" data-field="notes" placeholder="Notes for James…">Want to dial this in. A lot of people are going to events who don't need to be. Rule should be: only reimbursable if a manager has assigned the employee to work the event — otherwise it's the employee's responsibility.</textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="mileage-rate" class="row-gap" data-tags="gap">
+      <td class="cat">Mileage rate<span class="tag gap">Gap</span></td>
+      <td><span class="risk">Hard-coded $0.73/mile — NOT the published IRS rate. 2025 = $0.70, 2026 not released.</span></td>
+      <td>References "current IRS rate." Better practice.</td>
+      <td>Reference IRS standard rate as published; do not hard-code. Update Ramp settings annually. Mileage OR fuel, not both.</td>
+      <td>Personal vehicle reimbursable; Google Maps / MapQuest documentation required.</td>
+      <td class="decision">
+        <select disabled class="accept" data-id="mileage-rate" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept" selected>Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="mileage-rate" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="parking-traffic-violations" class="row-diff" data-tags="diff">
+      <td class="cat">Parking / traffic violations<span class="tag diff">Inconsistent today</span></td>
+      <td>Employee responsibility, including home location.</td>
+      <td><span class="risk">Not addressed — inconsistent with Corporate.</span></td>
+      <td>Never reimbursable, in either policy. Both populations.</td>
+      <td>Non-reimbursable in all cases (including electronic toll tag violations).</td>
+      <td class="decision">
+        <select disabled class="accept" data-id="parking-traffic-violations" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept" selected>Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="parking-traffic-violations" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+    <tr class="section-header"><td colspan="6">Entertainment, Events &amp; Gifts</td></tr>
+
+    <tr data-row-id="staff-entertainment-non-travel" class="row-match" data-tags="match">
+      <td class="cat">Staff entertainment (non-travel)<span class="tag match">Aligned</span></td>
+      <td>Manager pre-approval required. Senior-most pays. All attendees listed.</td>
+      <td>Same as Corporate + alcohol explicitly excluded.</td>
+      <td>Manager pre-approval before event. List every attendee. Senior-most pays &amp; submits. Alcohol on internal-only NOT reimbursable.</td>
+      <td>Manager pre-approval. Senior-most pays. Attendee names, titles, business purpose required.</td>
+      <td class="decision">
+        <select disabled class="" data-id="staff-entertainment-non-travel" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept">Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="staff-entertainment-non-travel" data-field="notes" placeholder="Notes for James…">There should be some guardrails for managers.</textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="client-vendor-entertainment" class="row-new" data-tags="new gap">
+      <td class="cat">Client / vendor entertainment<span class="tag new">NEW category</span></td>
+      <td><span class="silent">Not addressed.</span></td>
+      <td><span class="silent">Not addressed.</span></td>
+      <td>Separate category: up to $150/person with manager pre-approval. Alcohol permitted within cap with pre-approval. List every attendee by name, company, title, business purpose.</td>
+      <td>Addressed as separate entertainment category with attendee documentation rules.</td>
+      <td class="decision">
+        <select disabled class="reject" data-id="client-vendor-entertainment" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept">Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject" selected>Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="client-vendor-entertainment" data-field="notes" placeholder="Notes for James…">No. We should not allow. Vendors take us out; we do not take vendors/clients out.</textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="event-related-expenses" class="row-new" data-tags="new gap">
+      <td class="cat">Event-related expenses<span class="tag new">NEW — Cody's gap</span></td>
+      <td><span class="risk">Not addressed — Cody's flagged gap.</span></td>
+      <td><span class="risk">Not addressed.</span></td>
+      <td><strong>New section.</strong> Reimbursable: (a) working event in assigned role, (b) setup/breakdown/staffing, (c) representing JRB customer/press/partner-facing, (d) defined business purpose w/ pre-approval. NOT reimbursable: social, networking, personal interest, "brand support" without role. Every submission needs event name, dates, role, approver, approval date.</td>
+      <td>Meetings &amp; Events section governs any event with 10+ travelers or vendor-supplied venue. RFP, hotel addendum, contract sign-off by financial controller.</td>
+      <td class="decision">
+        <select disabled class="discuss" data-id="event-related-expenses" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept">Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss" selected>Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="event-related-expenses" data-field="notes" placeholder="Notes for James…">To discuss.</textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="employee-gifts-recognition" class="row-new" data-tags="new gap">
+      <td class="cat">Employee gifts / recognition<span class="tag new">NEW category</span></td>
+      <td><span class="silent">Not addressed.</span></td>
+      <td><span class="silent">Not addressed.</span></td>
+      <td>Reimbursable: life events (wedding, birth, adoption, milestone retirement) up to $100/recipient; sympathy/bereavement up to $50. NOT reimbursable: birthday, holiday, anniversary, departure, thank-you (unless dept-head-approved program).</td>
+      <td>Wedding/birth/adoption/retirement up to $100. Birthday, holiday, thank-you, flowers, departure parties NON-reimbursable.</td>
+      <td class="decision">
+        <select disabled class="discuss" data-id="employee-gifts-recognition" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept">Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss" selected>Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="employee-gifts-recognition" data-field="notes" placeholder="Notes for James…">We do have something written down somewhere — Chrissy or Kaitlyn might know.</textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="spouse-companion-travel" class="row-new" data-tags="new gap">
+      <td class="cat">Spouse / companion travel<span class="tag new">NEW category</span></td>
+      <td><span class="silent">Not addressed.</span></td>
+      <td><span class="silent">Not addressed.</span></td>
+      <td>Non-reimbursable unless pre-approved by department head + Finance in writing.</td>
+      <td>Non-reimbursable unless pre-approved in writing by Management.</td>
+      <td class="decision">
+        <select disabled class="reject" data-id="spouse-companion-travel" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept">Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject" selected>Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="spouse-companion-travel" data-field="notes" placeholder="Notes for James…">Not allowed.</textarea>
+      </td>
+    </tr>
+
+    <tr class="section-header"><td colspan="6">Approvals, Audit &amp; Enforcement</td></tr>
+
+    <tr data-row-id="approval-thresholds" class="row-gap" data-tags="gap">
+      <td class="cat">Approval thresholds<span class="tag gap">Gap</span></td>
+      <td><span class="risk">Single tier — "manager approves everything." Same person approves $200 dinner and $5K trip.</span></td>
+      <td><span class="risk">Single tier — same gap.</span></td>
+      <td>Tiered matrix wired into Ramp: routine &lt; $1K manager only; $1K–$2.5K manager + dept head notify; &gt; $2.5K manager + dept head + Finance notify. Single trip &gt; $5K = VP Finance. Self-approval prohibited at every level.</td>
+      <td>Tiered: manager, department head, Global Controller, CFO for exceptions over guidelines.</td>
+      <td class="decision">
+        <select disabled class="accept" data-id="approval-thresholds" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept" selected>Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="approval-thresholds" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="finance-audit-rights" class="row-gap" data-tags="gap">
+      <td class="cat">Finance audit rights<span class="tag gap">Gap</span></td>
+      <td><span class="silent">Not stated.</span></td>
+      <td>"At the discretion of management." Weak.</td>
+      <td><strong>New section.</strong> Right to audit any submission, request docs, deny reimbursement, recover via payroll deduction, report patterns. Quarterly: 5–10% random sample + 100% review of execs, dept heads, $15K+ annual spenders. 3+ violations in 12 months = Finance + HR review.</td>
+      <td>Random post-audits + monthly audits of execs, dept heads, $15K+ T&amp;E spenders, repeat violators. Issues escalate to Global Controller → CFO.</td>
+      <td class="decision">
+        <select disabled class="accept" data-id="finance-audit-rights" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept" selected>Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="finance-audit-rights" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="personal-use-repayment" class="row-diff" data-tags="diff">
+      <td class="cat">Personal-use repayment<span class="tag diff">Awkward today</span></td>
+      <td>Repay via check to <span class="key">"Just Steven LLC"</span> within 5 days. Confusing for new hires.</td>
+      <td>Repay within 5 days to JRB.</td>
+      <td>Repay within 5 business days, check made payable to <span class="key">"Jones Road Beauty c/o Just Steven LLC."</span> Repeat use may reduce limits, cancel card, or trigger discipline.</td>
+      <td>Repayment expected. Disciplinary action up to termination + criminal prosecution for fraud.</td>
+      <td class="decision">
+        <select disabled class="accept" data-id="personal-use-repayment" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept" selected>Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="personal-use-repayment" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="violation-consequences" class="row-new" data-tags="new">
+      <td class="cat">Violation consequences<span class="tag new">NEW</span></td>
+      <td>"Misuse can result in cards being canceled." Vague.</td>
+      <td>"May result in card cancellation and/or disciplinary action."</td>
+      <td>1st: written notice from manager → Finance copy. 2nd in 12 months: dept head + Finance review; expense may be denied; limits may be reduced. 3rd: HR + possible card revocation + possible termination.</td>
+      <td>Disciplinary action up to termination. Fraud → criminal prosecution.</td>
+      <td class="decision">
+        <select disabled class="accept" data-id="violation-consequences" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept" selected>Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="violation-consequences" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+    <tr class="section-header"><td colspan="6">Other</td></tr>
+
+    <tr data-row-id="per-diem" class="row-match" data-tags="match">
+      <td class="cat">Per diem<span class="tag match">Aligned</span></td>
+      <td>Not used. Actuals up to $80/day cap.</td>
+      <td>Not used. Actuals up to $80/day cap.</td>
+      <td>Keep actuals-only model.</td>
+      <td>Explicitly NOT per-diem. Actuals only.</td>
+      <td class="decision">
+        <select disabled class="accept" data-id="per-diem" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept" selected>Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="per-diem" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="hourly-non-exempt-travel" class="row-match" data-tags="match">
+      <td class="cat">Hourly / non-exempt travel<span class="tag match">JRB ahead</span></td>
+      <td>2 hours pre-flight paid. Cross-store travel paid. Regular commute not paid.</td>
+      <td>2 hours pre-flight paid. Cross-store travel paid. Regular commute not paid.</td>
+      <td>Keep current language. Lives in master + Retail addendum. Regional manager pre-approval for event support travel.</td>
+      <td>Not specifically addressed.</td>
+      <td class="decision">
+        <select disabled class="accept" data-id="hourly-non-exempt-travel" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept" selected>Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="hourly-non-exempt-travel" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="exceptions-process" class="row-new" data-tags="new">
+      <td class="cat">Exceptions process<span class="tag new">NEW</span></td>
+      <td><span class="silent">Not addressed.</span></td>
+      <td><span class="silent">Not addressed.</span></td>
+      <td>Any deviation requires written pre-approval from employee's dept head AND VP Finance (or designee). Approval attached to submission in Ramp. Retroactive exceptions discouraged.</td>
+      <td>Not specifically addressed at this level.</td>
+      <td class="decision">
+        <select disabled class="accept" data-id="exceptions-process" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept" selected>Accept</option>
+          <option value="modify">Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea readonly data-id="exceptions-process" data-field="notes" placeholder="Notes for James…"></textarea>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+<details open>
+  <summary>James's 7 priority actions (in his recommended sequence)</summary>
+  <ol>
+    <li><strong>Consolidate to one master policy with a Retail addendum</strong> — kills the inconsistency baked in by having two parallel documents.</li>
+    <li><strong>Add the Event-Related Expenses section</strong> — closes Cody's flagged gap. Reimbursable only with defined working role + pre-approval.</li>
+    <li><strong>Implement tiered approval matrix in Ramp</strong> — replace "manager approves everything." Self-approval prohibited at every level.</li>
+    <li><strong>Resolve alcohol across both populations</strong> — recommended rule: allowed only with clients/vendors/partners + pre-approval. Not on internal team meals.</li>
+    <li><strong>Tighten receipt language</strong> — itemized always required. Remove the "if not already in Ramp" loophole. IRS substantiation risk.</li>
+    <li><strong>Add Finance audit rights + violation consequences</strong> — explicit claw-back, denial of reimbursement, escalating discipline. Investor / acquirer expectation.</li>
+    <li><strong>Replace hard-coded mileage rate</strong> — reference published IRS rate; update Ramp annually. ($0.73 in current doc is not the actual IRS rate.)</li>
+  </ol>
+</details>
+
+<details>
+  <summary>What's silent today that James fills in (quick scan)</summary>
+  <ol>
+    <li>Alcohol (Corporate)</li>
+    <li>Hotel rate cap (Retail)</li>
+    <li>Airfare threshold table (Retail says "below" then doesn't list them)</li>
+    <li>AirBnB / alt lodging (both)</li>
+    <li>Client/vendor entertainment (both)</li>
+    <li>Event-related expenses (both)</li>
+    <li>Employee gifts &amp; recognition (both)</li>
+    <li>Spouse / companion travel (both)</li>
+    <li>Finance audit rights (Corp silent; Retail vague)</li>
+    <li>Exceptions process (both)</li>
+    <li>Parking/traffic violations (Retail)</li>
+  </ol>
+</details>
+
+<script>
+  const search = document.getElementById('search');
+  const rows = document.querySelectorAll('#cmp tbody tr');
+  const filters = document.querySelectorAll('.filter');
+  let activeFilter = 'all';
+
+  function apply() {
+    const q = search.value.toLowerCase().trim();
+    rows.forEach(r => {
+      if (r.classList.contains('section-header')) { r.style.display = ''; return; }
+      const tags = (r.dataset.tags || '').split(/\s+/);
+      const tagOk = activeFilter === 'all' || tags.includes(activeFilter);
+      const textOk = !q || r.textContent.toLowerCase().includes(q);
+      r.style.display = (tagOk && textOk) ? '' : 'none';
+    });
+  }
+
+  filters.forEach(b => b.addEventListener('click', () => {
+    filters.forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    activeFilter = b.dataset.f;
+    apply();
+  }));
+  search.addEventListener('input', apply);
+
+  /* ---------- Decision column persistence ---------- */
+  const STORE_KEY = 'jrb-te-decisions-v1';
+  const store = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+  const selects = document.querySelectorAll('td.decision select');
+  const notes = document.querySelectorAll('td.decision textarea');
+  const progress = document.getElementById('progress');
+
+  function colorize(sel) {
+    sel.classList.remove('accept','reject','discuss','modify');
+    if (sel.value) sel.classList.add(sel.value);
+  }
+  function updateProgress() {
+    const total = selects.length;
+    const done = Array.from(selects).filter(s => s.value).length;
+    progress.textContent = `${done} of ${total} decided`;
+  }
+
+  selects.forEach(s => {
+    const id = s.dataset.id;
+    if (store[id]?.status) s.value = store[id].status;
+    colorize(s);
+    s.addEventListener('change', () => {
+      store[id] = store[id] || {};
+      store[id].status = s.value;
+      localStorage.setItem(STORE_KEY, JSON.stringify(store));
+      colorize(s);
+      updateProgress();
+    });
+  });
+  notes.forEach(t => {
+    const id = t.dataset.id;
+    if (store[id]?.notes) t.value = store[id].notes;
+    t.addEventListener('input', () => {
+      store[id] = store[id] || {};
+      store[id].notes = t.value;
+      localStorage.setItem(STORE_KEY, JSON.stringify(store));
+    });
+  });
+  updateProgress();
+
+  /* Export — copy markdown to clipboard */
+  document.getElementById('export').addEventListener('click', async () => {
+    const statusLabel = { accept: 'ACCEPT', modify: 'ACCEPT w/ changes', discuss: 'DISCUSS', reject: 'REJECT' };
+    const rows = document.querySelectorAll('tr[data-row-id]');
+    const buckets = { accept: [], modify: [], discuss: [], reject: [], '': [] };
+    rows.forEach(r => {
+      const id = r.dataset.rowId;
+      const cat = r.querySelector('td.cat')?.firstChild?.textContent?.trim() || id;
+      const status = store[id]?.status || '';
+      const note = (store[id]?.notes || '').trim();
+      buckets[status].push({ cat, note });
+    });
+    let md = '# JRB T&E Policy — Cody\'s decisions\n\n';
+    for (const k of ['accept','modify','discuss','reject']) {
+      if (!buckets[k].length) continue;
+      md += `## ${statusLabel[k]}\n`;
+      buckets[k].forEach(({cat, note}) => {
+        md += `- **${cat}**${note ? ' — ' + note : ''}\n`;
+      });
+      md += '\n';
+    }
+    if (buckets[''].length) {
+      md += `## Not yet decided (${buckets[''].length})\n`;
+      buckets[''].forEach(({cat, note}) => {
+        md += `- ${cat}${note ? ' — ' + note : ''}\n`;
+      });
+    }
+    try {
+      await navigator.clipboard.writeText(md);
+      const btn = document.getElementById('export');
+      const orig = btn.textContent;
+      btn.textContent = 'Copied to clipboard ✓';
+      setTimeout(() => btn.textContent = orig, 1800);
+    } catch {
+      // fallback: open in a new window
+      const w = window.open('', '_blank');
+      w.document.write('<pre>' + md.replace(/</g,'&lt;') + '</pre>');
+    }
+  });
+
+  document.getElementById('clear').addEventListener('click', () => {
+    if (!confirm('Clear all your decisions and notes?')) return;
+    localStorage.removeItem(STORE_KEY);
+    Object.keys(store).forEach(k => delete store[k]);
+    selects.forEach(s => { s.value = ''; colorize(s); });
+    notes.forEach(t => t.value = '');
+    updateProgress();
+  });
+</script>
+
+</body>
+</html>
