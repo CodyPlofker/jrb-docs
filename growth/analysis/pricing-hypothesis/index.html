@@ -353,10 +353,10 @@
         <div class="note">The deterioration was already in motion before the Feb 10, 2025 price increase.</div>
       </div>
       <div class="scorecard">
-        <div class="label">Post-hike basket</div>
-        <div class="value">+8%</div>
-        <div class="delta good">New AOV lift</div>
-        <div class="note">Price increase landed cleanly. Matches announced 7-10% range exactly.</div>
+        <div class="label">Net-new reach (Meta)</div>
+        <div class="value">94%+</div>
+        <div class="delta good">of reach, and growing</div>
+        <div class="note">Reaching net-new people isn't the problem (cheaper + bigger in 2026). Converting them is — net-new→1st-purchase fell 2-4×. See §2.8.</div>
       </div>
     </div>
 
@@ -528,6 +528,34 @@
   </div>
 </section>
 
+<!-- Net-new reach follow-up -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Section 2.8 · Follow-up</div>
+    <h2>Net-new reach isn't the bottleneck — converting it is</h2>
+    <p class="section-intro">Pulled straight from the Meta Ads API: reach, frequency, and the new-vs-existing (prospecting) split. This tests Mandar's "net new reach is dropping" claim directly — and points the diagnosis at conversion, not reach.</p>
+
+    <div class="chart-container">
+      <div class="chart-title">Net-new (prospecting) reach vs net-new → first-purchase conversion</div>
+      <div class="chart-sub">Bars = net-new accounts reached per month (left). Line = share of those reached who became first-time buyers (right).</div>
+      <div class="chart-canvas-wrap"><canvas id="chartNetNewReach"></canvas></div>
+    </div>
+
+    <h3>What the reach data says</h3>
+    <ul>
+      <li><strong>Net-new reach is 89-99% of all Meta reach</strong> every month — JRB's Meta account is overwhelmingly a prospecting machine, not a retargeting one.</li>
+      <li><strong>It's growing, not shrinking:</strong> ~16-18M net-new accounts/month in early 2025 rose to 23-34M/month in Mar-May 2026.</li>
+      <li><strong>Cost per 1,000 reached is flat-to-down:</strong> total CPMr went $113 (Jan 2024) → $79-103 (2026); net-new CPMr $98 (Feb 2025) → $69-91 (2026). Reaching new people got cheaper, not more expensive.</li>
+      <li><strong>Frequency fell from ~6.0 to ~4.5</strong> — Meta is spreading across more unique accounts, fewer times each. Not the signature of reach exhaustion.</li>
+    </ul>
+
+    <h3>The smoking gun</h3>
+    <p>Net-new-reach → first-purchase conversion fell <strong>2-4×</strong> — from ~0.11-0.16% in 2025 to ~0.03-0.06% in 2026. We're putting JRB in front of <em>more</em> new people and converting a far <em>smaller</em> fraction of them. That is exactly what a price/offer barrier looks like — which strengthens Mandar's underlying thesis even though the "reach is dropping" framing doesn't hold in the raw data.</p>
+
+    <p style="font-size:13px;color:#555;">Reconciliation needed: Mandar's declining "net new reach" red line likely measures net-new <em>activations within bid caps</em> (a cost-constrained metric), not raw reach. His screenshot + Malik's 90-day pull will confirm. Either way, the actionable conclusion is the same: the lever is conversion of the new audience (offer, price, landing page, creative), not finding more of them.</p>
+  </div>
+</section>
+
 <!-- Sale period evidence -->
 <section class="gray">
   <div class="wrap">
@@ -599,6 +627,21 @@
         <div class="delta up">vs 170/mo in 2024</div>
       </div>
     </div>
+
+    <h3>The Feb 2026 crash — diagnosed</h3>
+    <p>Feb 2026's avg crashed to 4.10, the low of the series. Cause: a one-month spike in 1-star reviews — 14 of 99 reviews (14.1%) vs the trailing-6-month norm of ~6.8%. About 7 extra angry reviews dragged the average down. Important context: this is the Junip <em>store-review</em> widget (~99 reviews/month covering service, shipping, and site experience), not product reviews — so the small sample is fragile to a handful of bad experiences.</p>
+    <table>
+      <thead><tr><th>Month</th><th class="num">1★</th><th class="num">5★</th><th class="num">n</th><th class="num">Avg</th></tr></thead>
+      <tbody>
+        <tr><td>Dec 2025</td><td class="num">13</td><td class="num">129</td><td class="num">178</td><td class="num">4.39</td></tr>
+        <tr><td>Jan 2026</td><td class="num">6</td><td class="num">73</td><td class="num">93</td><td class="num">4.45</td></tr>
+        <tr><td>Feb 2026</td><td class="num bad">14</td><td class="num">67</td><td class="num">99</td><td class="num bad">4.10</td></tr>
+        <tr><td>Mar 2026</td><td class="num">7</td><td class="num">70</td><td class="num">89</td><td class="num">4.48</td></tr>
+        <tr><td>Apr 2026</td><td class="num">2</td><td class="num">83</td><td class="num">98</td><td class="num good">4.64</td></tr>
+        <tr><td>May 2026</td><td class="num">2</td><td class="num">59</td><td class="num">69</td><td class="num good">4.64</td></tr>
+      </tbody>
+    </table>
+    <p>It fully recovered — 4.48 in March, 4.64 in April and May. A one-month blip, not a sustained collapse. The specific driver of the 1-star cluster (likely post-holiday shipping/returns or a Valentine's fulfillment backlog) needs the review text or a Richpanel CS pull for Feb 2026 — neither is wired into this analysis yet. Worth a quick Richpanel check if we want the exact cause, but it does not look structural.</p>
   </div>
 </section>
 
@@ -973,6 +1016,31 @@
       scales: {
         y: { title: { display: true, text: 'Cost per acquisition ($)' }, grid: { color: COLORS.lightGray }, beginAtZero: true },
         x: { grid: { display: false } }
+      }
+    }
+  });
+
+  // 2.8 Net-new reach vs conversion
+  const nnMonths = ["Oct'24","Nov'24","Dec'24","Jan'25","Feb'25","Mar'25","Apr'25","May'25","Jun'25","Jul'25","Aug'25","Sep'25","Oct'25","Nov'25","Dec'25","Jan'26","Feb'26","Mar'26","Apr'26","May'26"];
+  const nnReachM = [20.0,18.4,16.0,17.1,18.3,15.2,8.7,17.5,10.8,14.5,14.8,20.7,29.7,33.0,24.9,17.5,16.0,23.1,25.8,34.1];
+  const nnConvPct = [null,null,null,null,0.110,0.101,0.171,0.164,0.102,0.083,0.084,0.055,0.111,0.075,0.084,0.092,0.056,0.051,0.037,0.030];
+  new Chart(document.getElementById('chartNetNewReach'), {
+    type: 'bar',
+    data: {
+      labels: nnMonths,
+      datasets: [
+        { type:'bar', label:'Net-new accounts reached (M)', data: nnReachM, backgroundColor: COLORS.black, yAxisID:'yReach', order:2 },
+        { type:'line', label:'Net-new → first-purchase conversion (%)', data: nnConvPct, borderColor: COLORS.pink, backgroundColor: COLORS.pink, borderWidth:2.5, pointRadius:3, tension:0.3, yAxisID:'yConv', order:1, spanGaps:true }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode:'index', intersect:false },
+      plugins: { legend: { position:'bottom', labels:{ boxWidth:12, padding:16 } } },
+      scales: {
+        yReach: { position:'left', title:{display:true,text:'Net-new reach (millions)'}, grid:{color:COLORS.lightGray} },
+        yConv: { position:'right', title:{display:true,text:'Conversion to 1st purchase (%)'}, grid:{display:false}, min:0, max:0.2 },
+        x: { grid:{display:false} }
       }
     }
   });
