@@ -53,9 +53,10 @@
     z-index: 5;
   }
   thead th:last-child { border-right: none; }
-  th.cat-col { width: 12%; }
-  th.col { width: 17.6%; }
-  th.decision-col { width: 18%; background: #1d3d77 !important; }
+  th.cat-col { width: 11%; }
+  th.col { width: 14.8%; }
+  th.decision-col { width: 15%; background: #1d3d77 !important; }
+  th.elizabeth-col { width: 15%; background: #6b4f8a !important; }
 
   td {
     padding: 12px 14px;
@@ -123,7 +124,7 @@
   td.decision select.reject { background: #fbe2e2; color: #8a1f1f; border-color: #f5a3a3; }
   td.decision select.discuss { background: #fff4c2; color: #6b5300; border-color: #e9d069; }
   td.decision select.modify { background: #d8e6ff; color: #1d3d77; border-color: #8fb1ee; }
-  td.decision textarea {
+  td.decision textarea, td.elizabeth textarea {
     width: 100%;
     min-height: 50px;
     padding: 6px 8px;
@@ -133,6 +134,13 @@
     font-family: inherit;
     resize: vertical;
     background: #fff;
+  }
+  td.elizabeth {
+    background: #fbf8ff;
+    border-left: 2px solid #dbccef;
+  }
+  td.elizabeth textarea {
+    border-color: #cdb9e8;
   }
 
   .export-bar {
@@ -172,12 +180,12 @@
     -webkit-appearance: none; appearance: none;
     padding-right: 8px;
   }
-  td.decision textarea[readonly] {
+  td.decision textarea[readonly], td.elizabeth textarea[readonly] {
     background: #fff; cursor: default;
     border-color: #e3e3e0;
     min-height: auto;
   }
-  td.decision textarea[readonly]:empty { display: none; }
+  td.decision textarea[readonly]:empty, td.elizabeth textarea[readonly]:empty { display: none; }
 </style>
 </head>
 <body>
@@ -203,7 +211,7 @@
 </div>
 
 <div style="background:#f6f8fc;border:1px solid #d0dcf0;border-radius:6px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#26364f;line-height:1.5;">
-  <strong>For Liz / James:</strong> this version is editable for review. Use the rightmost column to change the call or add notes. Comments now save to a shared backend across devices/browsers. The <strong>Export decisions</strong> button remains as a backup.
+  <strong>For Liz / James:</strong> this version is editable for review. Cody's call/notes are in the blue column; Elizabeth can add feedback in the purple column. Comments save to a shared backend across devices/browsers. The <strong>Export decisions</strong> button remains as a backup.
 </div>
 
 <div class="legend">
@@ -800,6 +808,30 @@
   }));
   search.addEventListener('input', apply);
 
+  function insertElizabethFeedbackColumn() {
+    const headerRow = document.querySelector('#cmp thead tr');
+    if (!headerRow.querySelector('.elizabeth-col')) {
+      const th = document.createElement('th');
+      th.className = 'elizabeth-col';
+      th.textContent = "Elizabeth's feedback";
+      headerRow.appendChild(th);
+    }
+    document.querySelectorAll('#cmp tbody tr').forEach(r => {
+      if (r.classList.contains('section-header')) {
+        const cell = r.querySelector('td');
+        if (cell) cell.colSpan = 7;
+        return;
+      }
+      const id = r.dataset.rowId;
+      if (!id || r.querySelector('td.elizabeth')) return;
+      const td = document.createElement('td');
+      td.className = 'elizabeth';
+      td.innerHTML = `<textarea data-id="${id}" data-field="elizabeth_feedback" placeholder="Elizabeth feedback…"></textarea>`;
+      r.appendChild(td);
+    });
+  }
+  insertElizabethFeedbackColumn();
+
   /* ---------- Decision column persistence ---------- */
   const STORE_KEY = 'jrb-te-decisions-v1';
   const DOC_ID = 'te_policy_review_2026';
@@ -810,6 +842,7 @@
   const store = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
   const selects = document.querySelectorAll('td.decision select');
   const notes = document.querySelectorAll('td.decision textarea');
+  const elizabethNotes = document.querySelectorAll('td.elizabeth textarea');
   const progress = document.getElementById('progress');
   const sync = document.getElementById('sync');
   const saveTimers = {};
@@ -830,12 +863,15 @@
     const done = Array.from(selects).filter(s => s.value).length;
     progress.textContent = `${done} of ${total} decided`;
   }
+  function elizabethKey(rowId) {
+    return `elizabeth:${rowId}`;
+  }
   function getPayload(id) {
     return {
       row_id: id,
       status: store[id]?.status || '',
       notes: store[id]?.notes || '',
-      reviewer: store[id]?.reviewer || 'Shared reviewer',
+      reviewer: id.startsWith('elizabeth:') ? 'Elizabeth' : (store[id]?.reviewer || 'Shared reviewer'),
       saved_at: new Date().toISOString()
     };
   }
@@ -917,6 +953,15 @@
         store[id].notes = t.value;
       }
     });
+    elizabethNotes.forEach(t => {
+      const id = elizabethKey(t.dataset.id);
+      store[id] = store[id] || {};
+      if (store[id].notes !== undefined) {
+        t.value = store[id].notes;
+      } else {
+        store[id].notes = t.value;
+      }
+    });
     persistLocal();
     updateProgress();
   }
@@ -948,6 +993,22 @@
       saveShared(id);
     });
   });
+  elizabethNotes.forEach(t => {
+    const rowId = t.dataset.id;
+    const id = elizabethKey(rowId);
+    t.addEventListener('input', () => {
+      store[id] = store[id] || {};
+      store[id].notes = t.value;
+      persistLocal();
+      queueSave(id);
+    });
+    t.addEventListener('blur', () => {
+      store[id] = store[id] || {};
+      store[id].notes = t.value;
+      persistLocal();
+      saveShared(id);
+    });
+  });
   hydrateControls();
   loadShared();
 
@@ -961,21 +1022,22 @@
       const cat = r.querySelector('td.cat')?.firstChild?.textContent?.trim() || id;
       const status = store[id]?.status || '';
       const note = (store[id]?.notes || '').trim();
-      buckets[status].push({ cat, note });
+      const elizabeth = (store[elizabethKey(id)]?.notes || '').trim();
+      buckets[status].push({ cat, note, elizabeth });
     });
     let md = '# JRB T&E Policy — Cody\'s decisions\n\n';
     for (const k of ['accept','modify','discuss','reject']) {
       if (!buckets[k].length) continue;
       md += `## ${statusLabel[k]}\n`;
-      buckets[k].forEach(({cat, note}) => {
-        md += `- **${cat}**${note ? ' — ' + note : ''}\n`;
+      buckets[k].forEach(({cat, note, elizabeth}) => {
+        md += `- **${cat}**${note ? ' — ' + note : ''}${elizabeth ? ' — Elizabeth: ' + elizabeth : ''}\n`;
       });
       md += '\n';
     }
     if (buckets[''].length) {
       md += `## Not yet decided (${buckets[''].length})\n`;
-      buckets[''].forEach(({cat, note}) => {
-        md += `- ${cat}${note ? ' — ' + note : ''}\n`;
+      buckets[''].forEach(({cat, note, elizabeth}) => {
+        md += `- ${cat}${note ? ' — ' + note : ''}${elizabeth ? ' — Elizabeth: ' + elizabeth : ''}\n`;
       });
     }
     try {
@@ -997,6 +1059,7 @@
     Object.keys(store).forEach(k => delete store[k]);
     selects.forEach(s => { s.value = ''; colorize(s); });
     notes.forEach(t => t.value = '');
+    elizabethNotes.forEach(t => t.value = '');
     updateProgress();
     setSync('Local view cleared; refresh reloads shared notes');
   });
