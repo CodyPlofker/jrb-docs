@@ -194,12 +194,15 @@
   </div>
   <div style="margin-top:14px;font-size:13px;color:#444;line-height:1.55;">
     <strong>Top open items for the conversation:</strong>
-    Alcohol (lean toward NO across the board), client/vendor entertainment (NO — we don't take people out),
-    event-related expenses (the gap I originally flagged — still needs language), employee gifts (Chrissy/Kaitlyn may already have something written),
+    Alcohol (NO across the board), reimbursement when an employee has a company card (default should be NO / use the card), client/vendor entertainment (NO — we don't take people out),
+    event/store/brand travel eligibility (only assigned working roles; fewer people should go), employee gifts (Chrissy/Kaitlyn may already have something written),
     airfare thresholds, staff entertainment guardrails for managers.
   </div>
 </div>
 
+<div style="background:#f6f8fc;border:1px solid #d0dcf0;border-radius:6px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#26364f;line-height:1.5;">
+  <strong>For Liz / James:</strong> this version is editable for review. Use the rightmost column to change the call or add notes. Your comments save in this browser only. Click <strong>Export decisions</strong> to copy your notes, then paste them back into Slack or email.
+</div>
 
 <div class="legend">
   <span><i class="dot gap"></i> Gap / silent today (risk)</span>
@@ -214,7 +217,7 @@
   <button class="filter" data-f="diff">Differs from AB</button>
   <button class="filter" data-f="new">New from James</button>
   <input type="text" id="search" placeholder="Search rows…">
-  <div class="export-bar" style="display:none">
+  <div class="export-bar">
     <span class="progress" id="progress">0 of 0 decided</span>
     <button id="export">Export decisions</button>
     <button class="danger" id="clear">Clear all</button>
@@ -243,14 +246,14 @@
       <td>30 days from expense (or 30 days post-trip for travel). After 60 days, Finance discretion to deny. Nov–Dec must be submitted by Jan 10 for fiscal-year close.</td>
       <td>28 days. Manager pre-approval required before reimbursement.</td>
       <td class="decision">
-        <select disabled class="modify" data-id="submission-deadline" data-field="status">
+        <select class="modify" data-id="submission-deadline" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept">Accept</option>
           <option value="modify" selected>Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="submission-deadline" data-field="notes" placeholder="Notes for James…">Just keep it tight/short.</textarea>
+        <textarea data-id="submission-deadline" data-field="notes" placeholder="Notes for James…">Just keep it tight/short.</textarea>
       </td>
     </tr>
 
@@ -261,14 +264,32 @@
       <td>Itemized receipts ALWAYS required regardless of Ramp capture. Receipts uploaded within 5 business days. Missing Receipt Affidavit limited to 2/quarter.</td>
       <td>Documentation required for ALL expenses regardless of value. Receipts retained 36 months.</td>
       <td class="decision">
-        <select disabled class="modify" data-id="receipt-standard" data-field="status">
+        <select class="modify" data-id="receipt-standard" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept">Accept</option>
           <option value="modify" selected>Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="receipt-standard" data-field="notes" placeholder="Notes for James…">People (me included) won't know what an "affidavit" is. Keep it shorter and clearer.</textarea>
+        <textarea data-id="receipt-standard" data-field="notes" placeholder="Notes for James…">People (me included) won't know what an "affidavit" is. Keep it shorter and clearer.</textarea>
+      </td>
+    </tr>
+
+    <tr data-row-id="reimbursement-when-company-card-exists" class="row-gap" data-tags="gap new">
+      <td class="cat">Reimbursement when company card exists<span class="tag gap">Gap</span></td>
+      <td><span class="silent">Not clearly addressed.</span> Employees with cards can still submit reimbursements, creating avoidable fraud / duplicate-payment risk.</td>
+      <td><span class="silent">Not clearly addressed.</span></td>
+      <td><strong>Add rule:</strong> if an employee has a JRB card, reimbursable out-of-pocket expenses should be exception-only. Employee should use the card whenever possible; reimbursement requires documented reason the card could not be used + manager/Finance approval.</td>
+      <td>AB generally pushes controlled booking/card/payment flows and requires documentation/pre-approval for reimbursement.</td>
+      <td class="decision">
+        <select class="modify" data-id="reimbursement-when-company-card-exists" data-field="status">
+          <option value="">— Decide —</option>
+          <option value="accept">Accept</option>
+          <option value="modify" selected>Accept w/ changes</option>
+          <option value="discuss">Needs discussion</option>
+          <option value="reject">Reject / Keep current</option>
+        </select>
+        <textarea data-id="reimbursement-when-company-card-exists" data-field="notes" placeholder="Notes for James…">If someone has a company card, we should do everything possible not to allow normal reimbursements on their own card. Much easier for fraud / taking advantage.</textarea>
       </td>
     </tr>
 
@@ -279,14 +300,14 @@
       <td>Required in writing or via Ramp. Verbal not enforceable. Department head co-approval if trip &gt; $1,500. Finance notification if &gt; $5,000.</td>
       <td>Required. Reservations without approval are explicitly non-reimbursable.</td>
       <td class="decision">
-        <select disabled class="modify" data-id="manager-pre-approval-for-travel" data-field="status">
+        <select class="modify" data-id="manager-pre-approval-for-travel" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept">Accept</option>
           <option value="modify" selected>Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="manager-pre-approval-for-travel" data-field="notes" placeholder="Notes for James…">Just shorten.</textarea>
+        <textarea data-id="manager-pre-approval-for-travel" data-field="notes" placeholder="Notes for James…">Just shorten.</textarea>
       </td>
     </tr>
 
@@ -299,14 +320,14 @@
       <td>Keep 2-week rule. Last-minute requires manager pre-approval.</td>
       <td>7–14+ days. Written justification required if &lt; 7 days.</td>
       <td class="decision">
-        <select disabled class="modify" data-id="booking-lead-time" data-field="status">
+        <select class="modify" data-id="booking-lead-time" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept">Accept</option>
           <option value="modify" selected>Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="booking-lead-time" data-field="notes" placeholder="Notes for James…">2 weeks. Last-minute requires manager approval in writing.</textarea>
+        <textarea data-id="booking-lead-time" data-field="notes" placeholder="Notes for James…">2 weeks. Last-minute requires manager approval in writing.</textarea>
       </td>
     </tr>
 
@@ -317,14 +338,14 @@
       <td>Coach / economy only. Upgrades are personal expense.</td>
       <td>Premium Economy default. Business Class only for flights ≥ 7 hours, pre-approved.</td>
       <td class="decision">
-        <select disabled class="accept" data-id="class-of-service" data-field="status">
+        <select class="accept" data-id="class-of-service" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept" selected>Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="class-of-service" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="class-of-service" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
@@ -335,14 +356,14 @@
       <td>Replace city-by-city table with single rule: lowest fare within ±3 hrs of desired time. Any fare &gt; $500 one-way domestic or above route median needs manager approval + written justification.</td>
       <td>"Lowest Logical Airfare" = lowest fare within ±3 hours of desired time. No hard-coded city caps.</td>
       <td class="decision">
-        <select disabled class="discuss" data-id="airfare-thresholds" data-field="status">
+        <select class="discuss" data-id="airfare-thresholds" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept">Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss" selected>Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="airfare-thresholds" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="airfare-thresholds" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
@@ -353,14 +374,14 @@
       <td>Reimbursable when used for work.</td>
       <td>Not specifically addressed (allowed under reasonable business expense).</td>
       <td class="decision">
-        <select disabled class="accept" data-id="wifi-in-flight" data-field="status">
+        <select class="accept" data-id="wifi-in-flight" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept" selected>Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="wifi-in-flight" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="wifi-in-flight" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
@@ -373,14 +394,14 @@
       <td>$300/night standard markets; $400/night major (NYC/SF/LA/Miami/Chicago). Above = manager approval + Finance notification.</td>
       <td>Cap of approx $500/night equivalent (£400). Single occupancy standard biz rate.</td>
       <td class="decision">
-        <select disabled class="accept" data-id="hotel-rate-cap" data-field="status">
+        <select class="accept" data-id="hotel-rate-cap" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept" selected>Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="hotel-rate-cap" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="hotel-rate-cap" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
@@ -391,14 +412,14 @@
       <td>AirBnB &amp; short-term rentals PROHIBITED unless pre-approved by Finance for team event stay. Reason: card protections, insurance, traveler safety don't apply.</td>
       <td>AirBnB explicitly prohibited. Friends/family stays max $50/night USD for host gift or meal (cash/gift cards prohibited).</td>
       <td class="decision">
-        <select disabled class="accept" data-id="airbnb-alt-lodging" data-field="status">
+        <select class="accept" data-id="airbnb-alt-lodging" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept" selected>Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="airbnb-alt-lodging" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="airbnb-alt-lodging" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
@@ -411,14 +432,14 @@
       <td>Keep $80/day cap. Add soft per-meal guidance: $20 breakfast / $25 lunch / $40 dinner. Non-travel team meals capped at $40/person.</td>
       <td>$100/day NA, $135/day Intl. Per-meal: B $20 / L $30 / D $50 NA (B $30 / L $40 / D $65 Intl). Not per diem — actuals only.</td>
       <td class="decision">
-        <select disabled class="accept" data-id="daily-meal-cap" data-field="status">
+        <select class="accept" data-id="daily-meal-cap" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept" selected>Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="daily-meal-cap" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="daily-meal-cap" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
@@ -429,14 +450,14 @@
       <td>Reimbursable ONLY with client/vendor/partner/retailer or documented BD setting + manager pre-approval. Alcohol on internal-only team meals NOT reimbursable. Same rule both populations.</td>
       <td>Treated as entertainment, subject to manager pre-approval. No blanket prohibition.</td>
       <td class="decision">
-        <select disabled class="discuss" data-id="alcohol" data-field="status">
+        <select class="discuss" data-id="alcohol" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept">Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss" selected>Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="alcohol" data-field="notes" placeholder="Notes for James…">We should NOT allow/reimburse. Outside of events, we do not take "clients" out, so there is no need and we should not be covering employees' alcohol.</textarea>
+        <textarea data-id="alcohol" data-field="notes" placeholder="Notes for James…">We should NOT allow/reimburse. Outside of events, we do not take "clients" out, so there is no need and we should not be covering employees' alcohol.</textarea>
       </td>
     </tr>
 
@@ -449,14 +470,14 @@
       <td>Standardize: reimbursable while traveling, transporting JRB goods, or working past 8:30pm in a city. Pre-approved otherwise. Personal commute never reimbursable.</td>
       <td>Allowed in major metros. After 7:30pm work, taxi home allowed within city limits.</td>
       <td class="decision">
-        <select disabled class="modify" data-id="uber-taxi" data-field="status">
+        <select class="modify" data-id="uber-taxi" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept">Accept</option>
           <option value="modify" selected>Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="uber-taxi" data-field="notes" placeholder="Notes for James…">Want to dial this in. A lot of people are going to events who don't need to be. Rule should be: only reimbursable if a manager has assigned the employee to work the event — otherwise it's the employee's responsibility.</textarea>
+        <textarea data-id="uber-taxi" data-field="notes" placeholder="Notes for James…">Want to dial this in. A lot of people are going to events who don't need to be. Rule should be: only reimbursable if a manager has assigned the employee to work the event — otherwise it's the employee's responsibility.</textarea>
       </td>
     </tr>
 
@@ -467,14 +488,14 @@
       <td>Reference IRS standard rate as published; do not hard-code. Update Ramp settings annually. Mileage OR fuel, not both.</td>
       <td>Personal vehicle reimbursable; Google Maps / MapQuest documentation required.</td>
       <td class="decision">
-        <select disabled class="accept" data-id="mileage-rate" data-field="status">
+        <select class="accept" data-id="mileage-rate" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept" selected>Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="mileage-rate" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="mileage-rate" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
@@ -485,14 +506,14 @@
       <td>Never reimbursable, in either policy. Both populations.</td>
       <td>Non-reimbursable in all cases (including electronic toll tag violations).</td>
       <td class="decision">
-        <select disabled class="accept" data-id="parking-traffic-violations" data-field="status">
+        <select class="accept" data-id="parking-traffic-violations" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept" selected>Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="parking-traffic-violations" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="parking-traffic-violations" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
@@ -505,14 +526,14 @@
       <td>Manager pre-approval before event. List every attendee. Senior-most pays &amp; submits. Alcohol on internal-only NOT reimbursable.</td>
       <td>Manager pre-approval. Senior-most pays. Attendee names, titles, business purpose required.</td>
       <td class="decision">
-        <select disabled class="" data-id="staff-entertainment-non-travel" data-field="status">
+        <select class="" data-id="staff-entertainment-non-travel" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept">Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="staff-entertainment-non-travel" data-field="notes" placeholder="Notes for James…">There should be some guardrails for managers.</textarea>
+        <textarea data-id="staff-entertainment-non-travel" data-field="notes" placeholder="Notes for James…">There should be some guardrails for managers.</textarea>
       </td>
     </tr>
 
@@ -523,14 +544,14 @@
       <td>Separate category: up to $150/person with manager pre-approval. Alcohol permitted within cap with pre-approval. List every attendee by name, company, title, business purpose.</td>
       <td>Addressed as separate entertainment category with attendee documentation rules.</td>
       <td class="decision">
-        <select disabled class="reject" data-id="client-vendor-entertainment" data-field="status">
+        <select class="reject" data-id="client-vendor-entertainment" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept">Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject" selected>Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="client-vendor-entertainment" data-field="notes" placeholder="Notes for James…">No. We should not allow. Vendors take us out; we do not take vendors/clients out.</textarea>
+        <textarea data-id="client-vendor-entertainment" data-field="notes" placeholder="Notes for James…">No. We should not allow. Vendors take us out; we do not take vendors/clients out.</textarea>
       </td>
     </tr>
 
@@ -541,14 +562,14 @@
       <td><strong>New section.</strong> Reimbursable: (a) working event in assigned role, (b) setup/breakdown/staffing, (c) representing JRB customer/press/partner-facing, (d) defined business purpose w/ pre-approval. NOT reimbursable: social, networking, personal interest, "brand support" without role. Every submission needs event name, dates, role, approver, approval date.</td>
       <td>Meetings &amp; Events section governs any event with 10+ travelers or vendor-supplied venue. RFP, hotel addendum, contract sign-off by financial controller.</td>
       <td class="decision">
-        <select disabled class="discuss" data-id="event-related-expenses" data-field="status">
+        <select class="discuss" data-id="event-related-expenses" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept">Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss" selected>Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="event-related-expenses" data-field="notes" placeholder="Notes for James…">To discuss.</textarea>
+        <textarea data-id="event-related-expenses" data-field="notes" placeholder="Notes for James…">Need to make clear for events / brand / store events who we will cover travel for and who we will not. Right now more people go than are necessary. Reimbursable only if manager assigned them to work the event in a defined role.</textarea>
       </td>
     </tr>
 
@@ -559,14 +580,14 @@
       <td>Reimbursable: life events (wedding, birth, adoption, milestone retirement) up to $100/recipient; sympathy/bereavement up to $50. NOT reimbursable: birthday, holiday, anniversary, departure, thank-you (unless dept-head-approved program).</td>
       <td>Wedding/birth/adoption/retirement up to $100. Birthday, holiday, thank-you, flowers, departure parties NON-reimbursable.</td>
       <td class="decision">
-        <select disabled class="discuss" data-id="employee-gifts-recognition" data-field="status">
+        <select class="discuss" data-id="employee-gifts-recognition" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept">Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss" selected>Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="employee-gifts-recognition" data-field="notes" placeholder="Notes for James…">We do have something written down somewhere — Chrissy or Kaitlyn might know.</textarea>
+        <textarea data-id="employee-gifts-recognition" data-field="notes" placeholder="Notes for James…">We do have something written down somewhere — Chrissy or Kaitlyn might know.</textarea>
       </td>
     </tr>
 
@@ -577,14 +598,14 @@
       <td>Non-reimbursable unless pre-approved by department head + Finance in writing.</td>
       <td>Non-reimbursable unless pre-approved in writing by Management.</td>
       <td class="decision">
-        <select disabled class="reject" data-id="spouse-companion-travel" data-field="status">
+        <select class="reject" data-id="spouse-companion-travel" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept">Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject" selected>Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="spouse-companion-travel" data-field="notes" placeholder="Notes for James…">Not allowed.</textarea>
+        <textarea data-id="spouse-companion-travel" data-field="notes" placeholder="Notes for James…">Not allowed.</textarea>
       </td>
     </tr>
 
@@ -597,14 +618,14 @@
       <td>Tiered matrix wired into Ramp: routine &lt; $1K manager only; $1K–$2.5K manager + dept head notify; &gt; $2.5K manager + dept head + Finance notify. Single trip &gt; $5K = VP Finance. Self-approval prohibited at every level.</td>
       <td>Tiered: manager, department head, Global Controller, CFO for exceptions over guidelines.</td>
       <td class="decision">
-        <select disabled class="accept" data-id="approval-thresholds" data-field="status">
+        <select class="accept" data-id="approval-thresholds" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept" selected>Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="approval-thresholds" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="approval-thresholds" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
@@ -615,14 +636,14 @@
       <td><strong>New section.</strong> Right to audit any submission, request docs, deny reimbursement, recover via payroll deduction, report patterns. Quarterly: 5–10% random sample + 100% review of execs, dept heads, $15K+ annual spenders. 3+ violations in 12 months = Finance + HR review.</td>
       <td>Random post-audits + monthly audits of execs, dept heads, $15K+ T&amp;E spenders, repeat violators. Issues escalate to Global Controller → CFO.</td>
       <td class="decision">
-        <select disabled class="accept" data-id="finance-audit-rights" data-field="status">
+        <select class="accept" data-id="finance-audit-rights" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept" selected>Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="finance-audit-rights" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="finance-audit-rights" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
@@ -633,14 +654,14 @@
       <td>Repay within 5 business days, check made payable to <span class="key">"Jones Road Beauty c/o Just Steven LLC."</span> Repeat use may reduce limits, cancel card, or trigger discipline.</td>
       <td>Repayment expected. Disciplinary action up to termination + criminal prosecution for fraud.</td>
       <td class="decision">
-        <select disabled class="accept" data-id="personal-use-repayment" data-field="status">
+        <select class="accept" data-id="personal-use-repayment" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept" selected>Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="personal-use-repayment" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="personal-use-repayment" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
@@ -651,14 +672,14 @@
       <td>1st: written notice from manager → Finance copy. 2nd in 12 months: dept head + Finance review; expense may be denied; limits may be reduced. 3rd: HR + possible card revocation + possible termination.</td>
       <td>Disciplinary action up to termination. Fraud → criminal prosecution.</td>
       <td class="decision">
-        <select disabled class="accept" data-id="violation-consequences" data-field="status">
+        <select class="accept" data-id="violation-consequences" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept" selected>Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="violation-consequences" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="violation-consequences" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
@@ -671,14 +692,14 @@
       <td>Keep actuals-only model.</td>
       <td>Explicitly NOT per-diem. Actuals only.</td>
       <td class="decision">
-        <select disabled class="accept" data-id="per-diem" data-field="status">
+        <select class="accept" data-id="per-diem" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept" selected>Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="per-diem" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="per-diem" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
@@ -689,14 +710,14 @@
       <td>Keep current language. Lives in master + Retail addendum. Regional manager pre-approval for event support travel.</td>
       <td>Not specifically addressed.</td>
       <td class="decision">
-        <select disabled class="accept" data-id="hourly-non-exempt-travel" data-field="status">
+        <select class="accept" data-id="hourly-non-exempt-travel" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept" selected>Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="hourly-non-exempt-travel" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="hourly-non-exempt-travel" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
@@ -707,14 +728,14 @@
       <td>Any deviation requires written pre-approval from employee's dept head AND VP Finance (or designee). Approval attached to submission in Ramp. Retroactive exceptions discouraged.</td>
       <td>Not specifically addressed at this level.</td>
       <td class="decision">
-        <select disabled class="accept" data-id="exceptions-process" data-field="status">
+        <select class="accept" data-id="exceptions-process" data-field="status">
           <option value="">— Decide —</option>
           <option value="accept" selected>Accept</option>
           <option value="modify">Accept w/ changes</option>
           <option value="discuss">Needs discussion</option>
           <option value="reject">Reject / Keep current</option>
         </select>
-        <textarea readonly data-id="exceptions-process" data-field="notes" placeholder="Notes for James…"></textarea>
+        <textarea data-id="exceptions-process" data-field="notes" placeholder="Notes for James…"></textarea>
       </td>
     </tr>
 
