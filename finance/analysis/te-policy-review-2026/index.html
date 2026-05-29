@@ -153,6 +153,8 @@
   }
   .export-bar button.danger { background: #fff; color: #8a1f1f; border: 1px solid #f5a3a3; }
   .export-bar .progress { font-size: 12px; color: #666; }
+  .export-bar .sync { font-size: 12px; color: #1d3d77; min-width: 110px; }
+  .export-bar .sync.error { color: #8a1f1f; }
 
   details {
     margin-top: 28px;
@@ -201,7 +203,7 @@
 </div>
 
 <div style="background:#f6f8fc;border:1px solid #d0dcf0;border-radius:6px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#26364f;line-height:1.5;">
-  <strong>For Liz / James:</strong> this version is editable for review. Use the rightmost column to change the call or add notes. Your comments save in this browser only. Click <strong>Export decisions</strong> to copy your notes, then paste them back into Slack or email.
+  <strong>For Liz / James:</strong> this version is editable for review. Use the rightmost column to change the call or add notes. Comments now save to a shared backend across devices/browsers. The <strong>Export decisions</strong> button remains as a backup.
 </div>
 
 <div class="legend">
@@ -219,8 +221,9 @@
   <input type="text" id="search" placeholder="Search rows…">
   <div class="export-bar">
     <span class="progress" id="progress">0 of 0 decided</span>
+    <span class="sync" id="sync">Loading shared notes…</span>
     <button id="export">Export decisions</button>
-    <button class="danger" id="clear">Clear all</button>
+    <button class="danger" id="clear">Clear local view</button>
   </div>
 </div>
 
@@ -799,43 +802,154 @@
 
   /* ---------- Decision column persistence ---------- */
   const STORE_KEY = 'jrb-te-decisions-v1';
+  const DOC_ID = 'te_policy_review_2026';
+  // Uses the existing JRB Field Notes Supabase project as a lightweight shared store.
+  // The key below is the browser-safe anon/public key, not a service-role secret.
+  const SHARED_API_URL = 'https://bbqiczszwwprqcpqyujm.supabase.co/rest/v1/feedback';
+  const SHARED_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJicWljenN6d3dwcnFjcHF5dWptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MDQ2NDYsImV4cCI6MjA4ODA4MDY0Nn0.7yTrFx-kDjYNsunUA9x4MwJcrO9XkNBSKPUwCjkJUjw';
   const store = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
   const selects = document.querySelectorAll('td.decision select');
   const notes = document.querySelectorAll('td.decision textarea');
   const progress = document.getElementById('progress');
+  const sync = document.getElementById('sync');
+  const saveTimers = {};
 
+  function setSync(message, isError = false) {
+    sync.textContent = message;
+    sync.classList.toggle('error', isError);
+  }
   function colorize(sel) {
     sel.classList.remove('accept','reject','discuss','modify');
     if (sel.value) sel.classList.add(sel.value);
+  }
+  function persistLocal() {
+    localStorage.setItem(STORE_KEY, JSON.stringify(store));
   }
   function updateProgress() {
     const total = selects.length;
     const done = Array.from(selects).filter(s => s.value).length;
     progress.textContent = `${done} of ${total} decided`;
   }
+  function getPayload(id) {
+    return {
+      row_id: id,
+      status: store[id]?.status || '',
+      notes: store[id]?.notes || '',
+      reviewer: store[id]?.reviewer || 'Shared reviewer',
+      saved_at: new Date().toISOString()
+    };
+  }
+  async function saveShared(id) {
+    setSync('Saving…');
+    const payload = getPayload(id);
+    try {
+      const res = await fetch(SHARED_API_URL, {
+        method: 'POST',
+        headers: {
+          apikey: SHARED_API_KEY,
+          Authorization: `Bearer ${SHARED_API_KEY}`,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal'
+        },
+        body: JSON.stringify({
+          category: DOC_ID,
+          submitter_name: id,
+          content: JSON.stringify(payload)
+        })
+      });
+      if (!res.ok) throw new Error(await res.text());
+      setSync('Saved ✓');
+    } catch (err) {
+      console.error('Shared save failed', err);
+      setSync('Local only — export if needed', true);
+    }
+  }
+  function queueSave(id, delay = 700) {
+    clearTimeout(saveTimers[id]);
+    saveTimers[id] = setTimeout(() => saveShared(id), delay);
+  }
+  async function loadShared() {
+    try {
+      const params = new URLSearchParams({
+        category: `eq.${DOC_ID}`,
+        select: 'id,submitter_name,content,created_at',
+        order: 'created_at.asc'
+      });
+      const res = await fetch(`${SHARED_API_URL}?${params}`, {
+        headers: { apikey: SHARED_API_KEY, Authorization: `Bearer ${SHARED_API_KEY}` }
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const rows = await res.json();
+      rows.forEach(row => {
+        const id = row.submitter_name;
+        if (!id) return;
+        try {
+          const payload = JSON.parse(row.content || '{}');
+          store[id] = { ...(store[id] || {}), ...payload, shared_created_at: row.created_at };
+        } catch {}
+      });
+      persistLocal();
+      hydrateControls();
+      setSync(rows.length ? 'Shared notes loaded ✓' : 'Shared sync ready');
+    } catch (err) {
+      console.error('Shared load failed', err);
+      setSync('Local only — export if needed', true);
+      hydrateControls();
+    }
+  }
+  function hydrateControls() {
+    selects.forEach(s => {
+      const id = s.dataset.id;
+      store[id] = store[id] || {};
+      if (store[id].status !== undefined) {
+        s.value = store[id].status;
+      } else {
+        store[id].status = s.value;
+      }
+      colorize(s);
+    });
+    notes.forEach(t => {
+      const id = t.dataset.id;
+      store[id] = store[id] || {};
+      if (store[id].notes !== undefined) {
+        t.value = store[id].notes;
+      } else {
+        store[id].notes = t.value;
+      }
+    });
+    persistLocal();
+    updateProgress();
+  }
 
   selects.forEach(s => {
     const id = s.dataset.id;
-    if (store[id]?.status) s.value = store[id].status;
     colorize(s);
     s.addEventListener('change', () => {
       store[id] = store[id] || {};
       store[id].status = s.value;
-      localStorage.setItem(STORE_KEY, JSON.stringify(store));
+      persistLocal();
       colorize(s);
       updateProgress();
+      queueSave(id, 0);
     });
   });
   notes.forEach(t => {
     const id = t.dataset.id;
-    if (store[id]?.notes) t.value = store[id].notes;
     t.addEventListener('input', () => {
       store[id] = store[id] || {};
       store[id].notes = t.value;
-      localStorage.setItem(STORE_KEY, JSON.stringify(store));
+      persistLocal();
+      queueSave(id);
+    });
+    t.addEventListener('blur', () => {
+      store[id] = store[id] || {};
+      store[id].notes = t.value;
+      persistLocal();
+      saveShared(id);
     });
   });
-  updateProgress();
+  hydrateControls();
+  loadShared();
 
   /* Export — copy markdown to clipboard */
   document.getElementById('export').addEventListener('click', async () => {
@@ -878,12 +992,13 @@
   });
 
   document.getElementById('clear').addEventListener('click', () => {
-    if (!confirm('Clear all your decisions and notes?')) return;
+    if (!confirm('Clear the local cached view? Shared notes will reload on refresh.')) return;
     localStorage.removeItem(STORE_KEY);
     Object.keys(store).forEach(k => delete store[k]);
     selects.forEach(s => { s.value = ''; colorize(s); });
     notes.forEach(t => t.value = '');
     updateProgress();
+    setSync('Local view cleared; refresh reloads shared notes');
   });
 </script>
 
