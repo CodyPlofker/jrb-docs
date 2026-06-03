@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>JRB Theme Speed Audit — Andrew Digest</title>
+  <title>JRB Theme Speed Audit — Andrew + Thai Digest</title>
   <meta name="description" content="Consolidated speed-audit digest for the rebuilt JRB Shopify theme." />
   <style>
     @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
@@ -122,19 +122,6 @@
     tr:last-child td { border-bottom: 0; }
     .note { margin-top: 18px; font-size: 14px; line-height: 1.55; }
     .quote { border-left: 3px solid var(--color-black); padding-left: 16px; margin-top: 24px; }
-    .thai-block {
-      font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans Thai', 'Sukhumvit Set', 'Th Sarabun New', Arial, sans-serif;
-      letter-spacing: 0;
-      line-height: 1.65;
-    }
-    .thai-block h2,
-    .thai-block h3,
-    .thai-block p,
-    .thai-block li,
-    .thai-block td,
-    .thai-block th { letter-spacing: 0; }
-    .thai-block h2 { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans Thai', 'Sukhumvit Set', Arial, sans-serif; font-weight: 700; }
-    .thai-block h3 { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans Thai', 'Sukhumvit Set', Arial, sans-serif; font-weight: 700; }
     .footer { padding: 28px 20px; background: var(--color-black); color: var(--color-white); }
     .footer p { color: var(--color-white); font-size: 13px; }
 
@@ -167,10 +154,10 @@
 
     <section class="section">
       <div class="section__inner">
-        <p class="eyebrow">Short Slack digest for Andrew</p>
+        <p class="eyebrow">Short Slack digest for Andrew + Thai</p>
         <h2>What to fix first.</h2>
         <div class="quote">
-          <p>Claude and Codex independently audited the rebuilt Shopify theme for speed. The top Tier-1 wins are: consolidate third-party script redundancy, fix font loading, remove or gate Replo legacy cruft, and replace oversized raw theme assets that bypass Shopify image transforms. Full consolidation is linked below with file-line evidence and the split between safe-to-ship items and PR-required theme changes.</p>
+          <p>Claude and Codex independently audited the rebuilt Shopify theme for speed. The top Tier-1 wins are: consolidate third-party script redundancy, fix font loading, remove or gate Replo legacy cruft, and replace oversized raw theme assets that bypass Shopify image transforms. Full consolidation is linked below with file-line evidence and the split between safe-to-ship items and PR-required theme changes. Sharing with Andrew and Thai.</p>
         </div>
         <span class="path">Full consolidated doc: /Users/codyplofker/Library/Mobile Documents/iCloud~md~obsidian/Documents/Knowledge/projects/jrb-theme-speed-audit/consolidated.md</span>
       </div>
@@ -242,55 +229,6 @@
           </table>
         </div>
         <p class="note">Guardrail: shared theme files such as custom-fonts.liquid, layout/theme.liquid, sections, snippets, and assets should not be pushed directly to live. Those go through the PR-to-develop flow. Template JSONs are the only items that can be direct if the change is confirmed safe and reversible.</p>
-      </div>
-    </section>
-
-    <section class="section section--gray thai-block" lang="th">
-      <div class="section__inner">
-        <p class="eyebrow">สรุปภาษาไทยสำหรับ Andrew</p>
-        <h2>สิ่งที่ควรแก้ก่อนเพื่อเพิ่มความเร็วเว็บ</h2>
-        <div class="quote">
-          <p>Claude และ Codex ตรวจสอบธีม Shopify ที่ rebuild ใหม่แยกกัน และพบตรงกันว่า bottleneck หลักไม่ได้อยู่ที่ตัวธีมใหม่ แต่อยู่ที่น้ำหนักรอบ ๆ ธีม: สคริปต์ third-party ที่ซ้ำซ้อน, การโหลดฟอนต์, ไฟล์ Replo เก่าที่ค้างอยู่, รูปภาพ/วิดีโอขนาดใหญ่ที่ไม่ได้ผ่าน Shopify image pipeline, และไลบรารีที่ถูกโหลดแบบ global โดยไม่จำเป็น</p>
-        </div>
-        <div class="grid grid--two">
-          <article class="card">
-            <span class="tag tag--accent">ยืนยันโดยทั้งสอง audit</span>
-            <h3>ลดความซ้ำซ้อนของ third-party scripts</h3>
-            <p>ตรวจสอบและลดการยิงซ้ำของ Intelligems, Convert, PDQ, heatmap.com, Clarity/GTM/app embeds และ tracking อื่น ๆ เป้าหมายคือให้มี CRO blocker แค่ตัวเดียว และ defer/async สคริปต์ที่ไม่จำเป็นต่อ first paint</p>
-          </article>
-          <article class="card">
-            <span class="tag tag--accent">ยืนยันโดยทั้งสอง audit</span>
-            <h3>แก้การโหลดฟอนต์</h3>
-            <p>เพิ่ม font-display, preload ฟอนต์ Canela ที่ใช้ above-the-fold, เพิ่ม Typekit preconnect หรือ self-host ArticulatCF และล้าง declaration เก่า/ซ้ำ เพื่อช่วยลด render blocking และ layout delay</p>
-          </article>
-          <article class="card">
-            <span class="tag tag--accent">ยืนยันโดยทั้งสอง audit</span>
-            <h3>จัดการ Replo cruft ประมาณ 81MB</h3>
-            <p>ทำ inventory ว่า page.replo template ไหนยังมี traffic อยู่ ย้ายหน้าที่สำคัญเป็น native sections แล้วค่อยลบหรือ gate ไฟล์/หน้าเก่าที่ไม่ใช้ เพื่อลดน้ำหนักและลดความเสี่ยงในการ review/deploy</p>
-          </article>
-          <article class="card">
-            <span class="tag tag--accent">ยืนยันโดยทั้งสอง audit</span>
-            <h3>แทนที่ raw asset ขนาด 4.5MB</h3>
-            <p>รูป quiz card complexion ถูกโหลดจาก theme asset โดยตรงและอาจแสดงผลเล็กมากบนหน้าเว็บ ควรย้ายไปใช้ Shopify image_url/srcset/sizes พร้อม width และ height เพื่อให้ได้ responsive transforms</p>
-          </article>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>เริ่มได้ทันที</th>
-                <th>ควรทำผ่าน PR-to-develop</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>ทำ live firing inventory ของ scripts, Replo traffic inventory, media inventory และ measurement pass ด้วย Lighthouse/WebPageTest/Shopify Web Performance</td>
-                <td>แก้ shared theme files เช่น layout/theme.liquid, custom-fonts.liquid, sections, snippets, assets, script loading, font loading, raw media rendering, Swiper, cart/GWP lazy loading และ Intelligems payload</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="note">ข้อควรระวัง: shared theme files ไม่ควรถูก push live โดยตรง ให้ทำผ่าน PR-to-develop พร้อม QA และ rollback path ส่วน template JSON-only cleanup ทำได้เร็วกว่า ถ้ายืนยันแล้วว่า unused, safe และ reversible</p>
       </div>
     </section>
 
