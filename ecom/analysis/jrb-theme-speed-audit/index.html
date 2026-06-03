@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JRB Theme Speed Audit — Andrew Digest</title>
+  <meta name="description" content="Consolidated speed-audit digest for the rebuilt JRB Shopify theme." />
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'ArticulatCF'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype'); font-weight: 700; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --font-articulat: ArticulatCF, 'Arial Black', Impact, sans-serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-gray-bg: #f8f8f8;
+      --color-border: #d0d0d0;
+      --color-accent: #ff2e92;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--color-white);
+      color: var(--color-black);
+      font-family: var(--font-body);
+      font-size: 16px;
+      letter-spacing: .025em;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+    .page { min-height: 100vh; }
+    .hero {
+      background: var(--color-black);
+      color: var(--color-white);
+      padding: 56px 20px 48px;
+    }
+    .hero__inner, .section__inner { max-width: 1080px; margin: 0 auto; }
+    .eyebrow {
+      margin: 0 0 16px;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    h1, h2 {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-weight: 300;
+      letter-spacing: .5px;
+      line-height: 1.08;
+      text-wrap: balance;
+    }
+    h1 { max-width: 850px; font-size: clamp(34px, 7vw, 64px); }
+    h2 { font-size: clamp(28px, 4vw, 42px); }
+    h3 {
+      margin: 0 0 10px;
+      font-family: var(--font-articulat);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: .3px;
+      line-height: 1.2;
+    }
+    p { margin: 0; color: var(--color-black); }
+    .hero p { color: var(--color-white); }
+    .lede { max-width: 760px; margin-top: 22px; font-size: 18px; line-height: 1.55; }
+    .section { padding: 48px 20px; background: var(--color-white); }
+    .section--gray { background: var(--color-gray-bg); }
+    .grid { display: grid; gap: 18px; margin-top: 28px; }
+    .grid--two { grid-template-columns: 1fr; }
+    .card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 3px;
+      padding: 22px;
+    }
+    .section:not(.section--gray) .card { background: var(--color-gray-bg); }
+    .tag {
+      display: inline-block;
+      margin-bottom: 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: .4px;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+    .tag--accent { color: var(--color-accent); }
+    .list { display: grid; gap: 12px; margin: 22px 0 0; padding: 0; list-style: none; }
+    .list li { position: relative; padding-left: 18px; color: var(--color-black); }
+    .list li::before { content: ''; position: absolute; left: 0; top: .72em; width: 7px; height: 7px; background: var(--color-black); border-radius: 100%; }
+    .split { display: grid; gap: 18px; margin-top: 28px; }
+    .path {
+      display: block;
+      margin-top: 12px;
+      padding: 14px 16px;
+      overflow-wrap: anywhere;
+      border: 1px solid var(--color-border);
+      border-radius: 3px;
+      background: var(--color-white);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.5;
+      text-transform: none;
+    }
+    .table-wrap { margin-top: 24px; overflow-x: auto; border: 1px solid var(--color-border); border-radius: 3px; background: var(--color-white); }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { padding: 14px 16px; border-bottom: 1px solid var(--color-border); text-align: left; vertical-align: top; color: var(--color-black); }
+    th { font-family: var(--font-display); font-size: 15px; letter-spacing: 1px; line-height: 1.1; text-transform: uppercase; }
+    td { font-size: 14px; line-height: 1.45; }
+    tr:last-child td { border-bottom: 0; }
+    .note { margin-top: 18px; font-size: 14px; line-height: 1.55; }
+    .quote { border-left: 3px solid var(--color-black); padding-left: 16px; margin-top: 24px; }
+    .footer { padding: 28px 20px; background: var(--color-black); color: var(--color-white); }
+    .footer p { color: var(--color-white); font-size: 13px; }
+
+    @media screen and (min-width: 768px) {
+      .hero { padding: 80px 32px 64px; }
+      .section { padding: 64px 32px; }
+      .grid--two, .split { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .card { padding: 28px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero__inner">
+        <p class="eyebrow">JRB theme speed audit</p>
+        <h1>Top speed wins from the Claude and Codex audit.</h1>
+        <p class="lede">The rebuilt Shopify theme is not the problem. Both auditors found the biggest speed drag in the weight around it: redundant third-party scripts, font loading, Replo leftovers, raw assets, and global libraries.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section__inner">
+        <p class="eyebrow">Short Slack digest for Andrew</p>
+        <h2>What to fix first.</h2>
+        <div class="quote">
+          <p>Claude and Codex independently audited the rebuilt Shopify theme for speed. The top Tier-1 wins are: consolidate third-party script redundancy, fix font loading, remove or gate Replo legacy cruft, and replace oversized raw theme assets that bypass Shopify image transforms. Full consolidation is linked below with file-line evidence and the split between safe-to-ship items and PR-required theme changes.</p>
+        </div>
+        <span class="path">Full consolidated doc: /Users/codyplofker/Library/Mobile Documents/iCloud~md~obsidian/Documents/Knowledge/projects/jrb-theme-speed-audit/consolidated.md</span>
+      </div>
+    </section>
+
+    <section class="section section--gray">
+      <div class="section__inner">
+        <p class="eyebrow">Tier-1 wins</p>
+        <h2>Highest-confidence speed impact.</h2>
+        <div class="grid grid--two">
+          <article class="card">
+            <span class="tag tag--accent">Confirmed by both</span>
+            <h3>Third-party script redundancy</h3>
+            <p>Two A/B-testing stacks plus a third PDQ test path: Intelligems, Convert, and PDQ. Two heatmap/session paths need verification: heatmap.com plus possible Clarity/GTM/app embed firing. Intelligems is explicitly render-blocking; Convert/PDQ are not async everywhere.</p>
+          </article>
+          <article class="card">
+            <span class="tag tag--accent">Confirmed by both</span>
+            <h3>Font-display, preload, Typekit preconnect</h3>
+            <p>Canela, Ringside, Base Mono, and Geogrotesque have no font-display. Canela is not preloaded for above-fold headings. ArticulatCF uses Typekit without a preconnect, and there are repeated/legacy declarations.</p>
+          </article>
+          <article class="card">
+            <span class="tag tag--accent">Confirmed by both</span>
+            <h3>Roughly 81MB of Replo cruft</h3>
+            <p>The export includes 448 Replo chunk snippets and 162 Replo page templates. Unused source weight bloats deploys and code review; live Replo pages likely carry heavy HTML, CSS, and runtime cost. Codex also found Replo head rendering globally.</p>
+          </article>
+          <article class="card">
+            <span class="tag tag--accent">Confirmed by both</span>
+            <h3>4.5MB raw asset image bypassing CDN transforms</h3>
+            <p>The quiz card complexion image is a 4.5MB theme asset that can render into a 112-by-112 card via asset_url. Theme assets do not get the same responsive image pipeline as Shopify image objects.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section__inner">
+        <p class="eyebrow">Execution split</p>
+        <h2>What can move now versus what needs a PR.</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Safe to start or ship now</th>
+                <th>Needs PR-to-develop</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Live firing inventory across Intelligems, Convert, PDQ, heatmap.com, Clarity, GTM, app embeds, Web Pixels, Triple Whale, Northbeam, Postpilot, Rokt, Loop, SMS affiliate, Junip, and Replo.</td>
+                <td>Third-party script loading changes in layout and snippets: one CRO blocker max, defer nonessential scripts, unconditional async/defer for kept scripts.</td>
+              </tr>
+              <tr>
+                <td>Replo traffic inventory: identify which page.replo templates still receive traffic and which can be migrated or deleted.</td>
+                <td>Font PR in custom-fonts.liquid and theme layout: font-display, Canela preload, Typekit preconnect or self-host, invalid format fix, legacy source cleanup.</td>
+              </tr>
+              <tr>
+                <td>Media inventory and replacement prep: find pages using the 4.5MB quiz image and theme MP4s; prepare optimized Shopify Files assets.</td>
+                <td>Raw media PR: update cclp-quiz-hero and related section rendering to use Shopify image_url, srcset, sizes, width, and height.</td>
+              </tr>
+              <tr>
+                <td>Measurement pass on PDP, collection, quiz/CCLP, and one live Replo page using Lighthouse/WebPageTest/Shopify Web Performance.</td>
+                <td>Swiper PR: remove global include, standardize one version, section-scope loader, remove jsDelivr fallback/version drift.</td>
+              </tr>
+              <tr>
+                <td>Template JSON-only cleanup if assignments are confirmed unused, reversible, and do not touch shared theme files.</td>
+                <td>Cart/GWP/settings lazy-load PR, Intelligems payload PR, PDP mini-builder lazy-load PR, and staged Replo deletion/gating PRs.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Guardrail: shared theme files such as custom-fonts.liquid, layout/theme.liquid, sections, snippets, and assets should not be pushed directly to live. Those go through the PR-to-develop flow. Template JSONs are the only items that can be direct if the change is confirmed safe and reversible.</p>
+      </div>
+    </section>
+
+    <section class="section section--gray">
+      <div class="section__inner">
+        <p class="eyebrow">Recommended order</p>
+        <h2>Run the work in this order.</h2>
+        <ol class="list">
+          <li>Inventory live third-party firing and remove/disable obvious duplicates with owners aligned.</li>
+          <li>Open a font PR for font-display, Canela preload, Typekit preconnect or self-hosting, and format cleanup.</li>
+          <li>Replace the 4.5MB quiz card image and move photographic fallbacks to responsive Shopify image objects.</li>
+          <li>Remove global Swiper loading and standardize one section-scoped version.</li>
+          <li>Lazy-load cart/GWP/settings payload and trim Intelligems product data to active experiment needs.</li>
+          <li>Stage Replo cleanup behind traffic inventory, rebuilding high-traffic survivors as native sections before deletion.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="section__inner">
+      <p>Prepared from Claude Opus and Codex findings in the Knowledge vault folder: projects/jrb-theme-speed-audit.</p>
+    </div>
+  </footer>
+  <script>
+    document.addEventListener('mousemove', function addMouse() {
+      document.body.classList.add('has-mouse');
+      document.removeEventListener('mousemove', addMouse);
+    });
+  </script>
+</body>
+</html>
