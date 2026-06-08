@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mascara Shade Strategy — Bobbi Kit 6.0</title>
+<style>
+  /* ===== JRB Fonts (CDN) ===== */
+  @font-face { font-family:'Canela'; src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight:300; font-style:normal; font-display:swap; }
+  @font-face { font-family:'Canela'; src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-LightItalic.otf') format('opentype'); font-weight:300; font-style:italic; font-display:swap; }
+  @font-face { font-family:'RingsideWideWeb'; src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:'BaseMonoWideWeb'; src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:'ArticulatCF'; src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype'); font-weight:700; font-style:normal; font-display:swap; }
+
+  :root{
+    --font-serif:Canela, serif;
+    --font-body:RingsideWideWeb, Helvetica, Arial, sans-serif;
+    --font-mono:BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+    --font-articulat:ArticulatCF, 'Arial Black', Impact, sans-serif;
+    --pink:#ff2e92;
+    --gray-bg:#f8f8f8;
+    --bone:#f6f2eb;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+  body{ font-family:var(--font-body); font-size:16px; line-height:1.6; color:#000; background:#fff; letter-spacing:.025em; }
+
+  .wrap{ max-width:760px; margin:0 auto; padding:0 24px; }
+
+  /* ===== Header ===== */
+  header{ padding:72px 0 40px; border-bottom:1px solid #ededed; }
+  .eyebrow{ font-family:var(--font-mono); font-size:12px; text-transform:uppercase; letter-spacing:1.6px; color:#757575; margin-bottom:22px; }
+  h1{ font-family:var(--font-serif); font-weight:300; font-size:44px; line-height:1.12; letter-spacing:.5px; margin-bottom:20px; }
+  .standfirst{ font-size:18px; line-height:1.55; max-width:620px; color:#000; }
+  .meta{ margin-top:28px; font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#757575; }
+  .meta span{ margin-right:18px; }
+
+  /* ===== Recommendation callout ===== */
+  .reco{ margin:40px 0; border:1px solid #000; border-radius:3px; overflow:hidden; }
+  .reco__tag{ background:#000; color:#fff; font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:1.4px; padding:11px 22px; }
+  .reco__body{ padding:26px 24px 28px; }
+  .reco__body p{ font-size:18px; line-height:1.5; }
+  .reco__body strong, .accent{ color:var(--pink); }
+  .reco__sub{ margin-top:14px; font-size:14px; color:#333; line-height:1.5; }
+
+  /* ===== Section ===== */
+  section{ padding:50px 0; border-bottom:1px solid #ededed; }
+  section.alt{ background:var(--gray-bg); border-bottom:none; padding-left:0; padding-right:0; }
+  section.alt .wrap{ padding-top:0; padding-bottom:0; }
+  .kicker{ font-family:var(--font-mono); font-size:12px; text-transform:uppercase; letter-spacing:1.4px; color:#757575; margin-bottom:14px; }
+  h2{ font-family:var(--font-serif); font-weight:300; font-size:30px; line-height:1.2; letter-spacing:.4px; margin-bottom:18px; }
+  h3{ font-family:var(--font-articulat); font-weight:700; font-size:15px; text-transform:uppercase; letter-spacing:.3px; margin:24px 0 8px; }
+  p{ margin-bottom:14px; }
+  p:last-child{ margin-bottom:0; }
+  .lead{ font-size:17px; }
+
+  /* ===== Stat row ===== */
+  .stats{ display:flex; gap:16px; margin:28px 0 8px; flex-wrap:wrap; }
+  .stat{ flex:1; min-width:150px; background:#fff; border:1px solid #ededed; border-radius:3px; padding:22px 20px; }
+  section.alt .stat{ background:#fff; }
+  .stat__num{ font-family:var(--font-serif); font-weight:300; font-size:46px; line-height:1; letter-spacing:.5px; }
+  .stat__num.pink{ color:var(--pink); }
+  .stat__label{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#333; margin-top:12px; line-height:1.4; }
+  .stat__src{ font-size:12px; color:#757575; margin-top:6px; }
+
+  /* ===== Two-up ===== */
+  .twoup{ display:flex; gap:20px; margin-top:24px; flex-wrap:wrap; }
+  .col{ flex:1; min-width:240px; border:1px solid #ededed; border-radius:3px; padding:22px 22px 24px; background:#fff; }
+  .col h3{ margin-top:0; }
+  .col .who{ font-family:var(--font-serif); font-style:italic; font-size:17px; color:#000; margin-bottom:10px; display:block; }
+  .col p{ font-size:14px; line-height:1.55; }
+
+  /* ===== Precedent list ===== */
+  .case{ padding:18px 0; border-top:1px solid #ededed; }
+  .case:first-of-type{ border-top:none; }
+  .case__name{ font-family:var(--font-articulat); font-weight:700; font-size:14px; text-transform:uppercase; letter-spacing:.3px; margin-bottom:5px; }
+  .case p{ font-size:14px; line-height:1.55; margin-bottom:0; color:#333; }
+
+  /* ===== Pull quote ===== */
+  .pull{ font-family:var(--font-serif); font-weight:300; font-style:italic; font-size:22px; line-height:1.4; letter-spacing:.3px; margin:26px 0; padding-left:20px; border-left:2px solid var(--pink); }
+
+  ul.clean{ list-style:none; margin:16px 0 0; }
+  ul.clean li{ position:relative; padding-left:22px; margin-bottom:12px; font-size:15px; line-height:1.55; }
+  ul.clean li::before{ content:""; position:absolute; left:0; top:10px; width:8px; height:8px; background:#000; border-radius:50%; }
+  ul.clean li.yes::before{ background:var(--pink); }
+
+  /* ===== Footer ===== */
+  footer{ background:var(--bone); padding:40px 0 56px; }
+  footer .kicker{ color:#757575; }
+  footer p{ font-size:13px; line-height:1.6; color:#333; }
+  footer a{ color:#000; }
+  .srcs{ font-size:12px; color:#757575; line-height:1.8; margin-top:10px; }
+
+  @media (max-width:700px){
+    header{ padding:48px 0 32px; }
+    h1{ font-size:32px; }
+    h2{ font-size:25px; }
+    .standfirst{ font-size:16px; }
+    .stat__num{ font-size:38px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Research Brief · Decision Support</div>
+    <h1>Mascara shade strategy for Bobbi Kit 6.0</h1>
+    <p class="standfirst">The kit is currently planned with a brown mascara only. This brief tests whether that shade choice serves our whole customer base — and recommends a fix.</p>
+    <div class="meta"><span>Prepared for Payal</span><span>June 2026</span><span>Question raised in kit review</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="reco">
+    <div class="reco__tag">The Recommendation</div>
+    <div class="reco__body">
+      <p>Offer <strong>both black and brown</strong> in the kit — with black as the default. If the kit can only hold one fixed mascara, make it <strong>black, not brown</strong>.</p>
+      <p class="reco__sub">A brown-only kit is the single weakest option, both for inclusivity and for raw conversion. The reason isn't taste — it's mechanical: brown mascara barely shows up on dark lashes, which describes most Black, Asian, and Latina customers. Black works on everyone. Confidence: high on direction, moderate on exact magnitude.</p>
+    </div>
+  </div>
+</div>
+
+<section class="alt">
+  <div class="wrap" style="padding-top:50px;padding-bottom:50px;">
+    <div class="kicker">The Market Reality</div>
+    <h2>Black outsells brown roughly three to one</h2>
+    <p class="lead">Before you even segment by ethnicity, black is the dominant shade preference in the US. Brown is a real but secondary choice; black is the universal default and best-seller across the category.</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat__num pink">62%</div>
+        <div class="stat__label">Prefer black mascara</div>
+        <div class="stat__src">US consumers</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">21%</div>
+        <div class="stat__label">Prefer brown</div>
+        <div class="stat__src">US consumers</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">17%</div>
+        <div class="stat__label">Prefer colored</div>
+        <div class="stat__src">US consumers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Why The Shade Matters</div>
+    <h2>Brown is a light-features product. Black is for everyone.</h2>
+    <p class="lead">Every independent source — L'Oréal, No7, Thrive, Shine, The Zoe Report — lands in the same place on who each shade is built for. Brown reads as "soft and natural" precisely because it's close in tone to light lashes. On already-dark lashes it delivers almost no contrast, so it disappears and defeats the purpose of mascara.</p>
+
+    <div class="twoup">
+      <div class="col">
+        <h3>Brown mascara</h3>
+        <span class="who">Fair skin · blonde, red or light-brown hair · light eyes</span>
+        <p>Recommended as a softer, low-contrast enhancement for lighter features. Even among blondes — its core audience — sentiment leans slightly back toward black.</p>
+      </div>
+      <div class="col">
+        <h3>Black mascara</h3>
+        <span class="who">Medium-to-deep skin · dark hair · dark eyes</span>
+        <p>The recommended shade for deeper complexions and dark lashes — it "complements the depth of their features" and is the only shade that delivers visible definition.</p>
+      </div>
+    </div>
+
+    <p class="pull">The customers a brown-only kit serves worst are exactly the ones we'd least want to underserve.</p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap" style="padding-top:50px;padding-bottom:50px;">
+    <div class="kicker">The Demographic Skew</div>
+    <h2>This lands hardest on our most makeup-engaged customers</h2>
+    <ul class="clean">
+      <li><strong>Hispanic / Latina:</strong> the most makeup-engaged segment in the US — over-index on mascara use by 20%+ and spend ~19% more on beauty than non-Hispanic white women, with an aesthetic that leans toward dramatic, defined, dark lashes.</li>
+      <li><strong>Black customers:</strong> dark lashes against a deeper complexion — black is the definition shade; brown tends to vanish.</li>
+      <li><strong>East-Asian customers:</strong> predominantly very dark, often sparse lashes where visible contrast matters most — black is near-universal; brown frequently reads as invisible.</li>
+    </ul>
+    <p style="margin-top:18px;font-size:14px;color:#333;">Note on confidence: clean per-ethnicity black-vs-brown survey splits don't really exist publicly, so the ethnic read rests on the universal expert guidance plus the contrast mechanism plus the Latina usage data — strong on direction, lighter on a precise number.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">The Brand Risk &amp; Precedent</div>
+    <h2>No brown-mascara scandal exists — but the pattern that burns brands does</h2>
+    <p class="lead">There's no documented case of a brand being dragged for a brown-only mascara specifically; mascara shade rarely goes viral the way foundation does. But "a shade range tuned to light features" is one of the most reliable ways beauty brands have gotten into trouble, and the playbook is always the same.</p>
+
+    <div class="case">
+      <div class="case__name">Tarte — Shape Tape Foundation (2018)</div>
+      <p>Launched 15 shades, only 3 for deep skin. Immediate backlash, influencers pressured not to endorse, public apology within five days, forced relaunch as Face Tape with 50 shades.</p>
+    </div>
+    <div class="case">
+      <div class="case__name">Youthforia — Date Night Foundation (2023–24)</div>
+      <p>Launched with too few deep shades; the eventual "darkest" shade drew a 24M-view TikTok comparison to black face paint and CNN coverage, forcing a statement and a line extension.</p>
+    </div>
+    <div class="case">
+      <div class="case__name">The structural analog — "default to light = nude"</div>
+      <p>Ballet pointe shoes, "flesh-tone" bandages and "nude" tights were all historically made in one pale shade — and all eventually hit petitions and public reckonings. A kit shipping one shade tuned to light features is the same shape of problem.</p>
+    </div>
+
+    <p style="margin-top:22px;">Our risk is quieter than a viral pile-on but more certain: a functional miss (the mascara underperforms on dark lashes → weaker reviews and returns from those buyers) and a brand-signal miss for a company whose own line "celebrates the individual beauty of all women." In every case above, the brand didn't intend exclusion — it just optimized for the light-featured default and got read as exclusionary after the fact.</p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap" style="padding-top:50px;padding-bottom:50px;">
+    <div class="kicker">What To Do</div>
+    <h2>The asymmetry is the whole argument</h2>
+    <ul class="clean">
+      <li class="yes"><strong>Best:</strong> include both shades, default black, brown as the swap. Mascara is a low-cost SKU against kit AOV — cheap insurance.</li>
+      <li class="yes"><strong>If one fixed shade only:</strong> make it black. Black is universal; brown is the exclusionary choice and is minority-preferred even among white consumers.</li>
+      <li><strong>Avoid:</strong> brown-only. Saves nothing, quietly underserves Black, Asian and Latina customers, and is off-brand against Bobbi's own black-mascara heritage.</li>
+    </ul>
+    <p style="margin-top:20px;"><strong>Next validation step:</strong> the cleanest proof isn't the open internet — it's our own data. If JRB's current mascara sells in both shades, we can pull shade-level sell-through from Shopify and mine Junip reviews for "didn't show up / too light / wish it came in black" language from our actual customers. That turns "the internet says" into "our buyers say." Happy to run it.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="kicker">Method &amp; Sources</div>
+    <p>Synthesized from a multi-source web sweep (market reports, expert/brand guidance, and consumer commentary), hand-verified. The raw research surfaced consistent expert and market consensus; it was lighter on raw customer-voice (Reddit / retailer reviews don't index well), which is exactly why the Shopify + Junip pull is the recommended next step.</p>
+    <p class="srcs">Sources: Econ Market Research &amp; corroborating mascara/eye-makeup market reports · L'Oréal Paris · No7 · Thrive Causemetics · Shine Cosmetics · The Zoe Report · Boden Agency (Hispanic beauty trends) · Stylecaster &amp; Yahoo (Tarte Shape Tape) · CNN (Youthforia) · Dance Magazine (flesh-tone precedent).</p>
+  </div>
+</footer>
+
+</body>
+</html>
