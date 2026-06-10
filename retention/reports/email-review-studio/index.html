@@ -81,6 +81,20 @@
   .collabel.claude { color:var(--pink); }
   .collabel.claude .tag { background:var(--pink); color:#fff; border-radius:10px; padding:2px 8px; margin-left:4px; }
   .frames.compare .frame-wrap { zoom: var(--z, .7); }
+  /* edit mode */
+  .ed { padding:12px 16px; border-bottom:1px solid var(--line); }
+  .ed .erow { display:grid; grid-template-columns:78px 1fr; gap:6px 8px; align-items:center; margin-bottom:8px; }
+  .ed .erow label { font-size:11px; color:var(--muted); }
+  .ed input[type=text], .ed input[type=number], .ed select { width:100%; border:1px solid var(--line); border-radius:5px; padding:5px 7px; font:12px 'Courier New',monospace; }
+  .ed input[type=color] { width:34px; height:26px; border:1px solid var(--line); border-radius:5px; padding:0; background:none; vertical-align:middle; }
+  .ed textarea { width:100%; border:1px solid var(--line); border-radius:6px; padding:7px; font:13px inherit; min-height:48px; resize:vertical; }
+  .ed .pal { display:flex; gap:5px; margin-top:4px; }
+  .ed .pal i { width:16px; height:16px; border-radius:3px; border:1px solid #ccc; cursor:pointer; display:inline-block; }
+  .ed .edhead { font-family:'Courier New',monospace; font-size:12px; background:#f6f6f6; border-radius:5px; padding:6px 8px; margin-bottom:10px; word-break:break-word; }
+  .edits .ei { padding:8px 16px; border-bottom:1px solid #f1f1f1; font-size:12px; }
+  .edits .ei .p { font-family:'Courier New',monospace; font-size:11px; }
+  .edits .ei .ar { color:var(--pink); }
+  .edits .ei .del { float:right; color:#ccc; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -104,6 +118,7 @@
     <div class="modebar">
       <div class="pill on" id="pill-inspect" onclick="setMode('inspect')">Inspect</div>
       <div class="pill" id="pill-comment" onclick="setMode('comment')"><span class="dot"></span> Comment</div>
+      <div class="pill" id="pill-edit" onclick="setMode('edit')">✎ Edit</div>
       <div class="pill cmp" id="pill-compare" onclick="toggleCompare()">⇆ Show real JRB email</div>
     </div>
     <div class="frames" id="frames">
@@ -131,6 +146,10 @@
     </div>
     <div class="ph" style="border-top:1px solid var(--line);">Comments on this email</div>
     <div class="clist" id="clist"></div>
+    <div id="editsWrap" style="display:none;">
+      <div class="ph" style="border-top:1px solid var(--line);">Edits on this email</div>
+      <div class="edits" id="editsList"></div>
+    </div>
   </div>
 </div>
 
@@ -159,11 +178,11 @@ const COLOR_TOKENS = {
   '#999999':'Footer legal', '#e0e0e0':'Hairline',
 };
 
-let state = { mode:'inspect', current:null, selectedRid:null, pendingRid:null, comments:{}, compare:false };
+let state = { mode:'inspect', current:null, selectedRid:null, pendingRid:null, comments:{}, edits:{}, compare:false };
 load();
 
-function load(){ try{ const s=JSON.parse(localStorage.getItem('jrb_review')||'{}'); state.comments=s.comments||{}; if(s.reviewer) document.getElementById('reviewer').value=s.reviewer; }catch(e){} }
-function persist(){ localStorage.setItem('jrb_review', JSON.stringify({comments:state.comments, reviewer:document.getElementById('reviewer').value})); }
+function load(){ try{ const s=JSON.parse(localStorage.getItem('jrb_review')||'{}'); state.comments=s.comments||{}; state.edits=s.edits||{}; if(s.reviewer) document.getElementById('reviewer').value=s.reviewer; }catch(e){} }
+function persist(){ localStorage.setItem('jrb_review', JSON.stringify({comments:state.comments, edits:state.edits, reviewer:document.getElementById('reviewer').value})); }
 document.getElementById('reviewer').addEventListener('input', persist);
 
 // ---------- rail ----------
@@ -189,7 +208,7 @@ function openDoc(slug){ state.current=slug; state.selectedRid=null; state.pendin
   frame.src='emails/'+slug+'.html';
   applyCompareLayout();
 }
-frame.addEventListener('load', ()=>{ try{ instrument(); }catch(e){ console.warn(e);} renderComments(); });
+frame.addEventListener('load', ()=>{ try{ instrument(); }catch(e){ console.warn(e);} renderComments(); renderEdits(); });
 teamframe.addEventListener('load', function(){ const d=this.contentDocument; if(d&&d.body){ setTimeout(()=>{ try{ this.style.height=(d.body.scrollHeight+20)+'px'; }catch(e){} },300);} });
 
 // ---------- compare ----------
@@ -240,9 +259,13 @@ function instrument(){
   doc.addEventListener('mouseout', ()=>{ tip.style.display='none'; });
   doc.addEventListener('click', e=>{ const el=e.target; if(!el.getAttribute||!el.getAttribute('data-rid'))return;
     e.preventDefault(); e.stopPropagation();
-    clearSel(doc); el.classList.add('rs-sel'); state.selectedRid=el.getAttribute('data-rid'); showInspector(el,true);
-    if(state.mode==='comment'){ openComposer(el); }
+    clearSel(doc); el.classList.add('rs-sel'); state.selectedRid=el.getAttribute('data-rid');
+    if(state.mode==='comment'){ showInspector(el,true); openComposer(el); }
+    else if(state.mode==='edit'){ showEditor(el); }
+    else { showInspector(el,true); }
   }, true);
+  // re-apply saved edits for this email
+  (state.edits[state.current]||[]).forEach(ed=>{ const t=doc.querySelector(`[data-rid="${ed.rid}"]`); if(t){ try{ if(ed.prop==='text'){ t.textContent=ed.to; } else { t.style.setProperty(cssProp(ed.prop), ed.to); } }catch(e){} } });
 }
 function clearHL(doc){ doc.querySelectorAll('.rs-hl').forEach(e=>e.classList.remove('rs-hl')); }
 function clearSel(doc){ doc.querySelectorAll('.rs-sel').forEach(e=>e.classList.remove('rs-sel')); }
@@ -287,8 +310,55 @@ function showInspector(el, locked){
 function setMode(m){ state.mode=m;
   document.getElementById('pill-inspect').classList.toggle('on',m==='inspect');
   document.getElementById('pill-comment').classList.toggle('on',m==='comment');
-  if(m==='inspect') cancelComposer();
+  document.getElementById('pill-edit').classList.toggle('on',m==='edit');
+  if(m!=='comment') cancelComposer();
+  document.getElementById('panel-title').textContent = m==='edit'?'Edit element':'Inspector';
+  if(m==='edit'){ const doc=frame.contentDocument; const el=state.selectedRid&&doc?doc.querySelector(`[data-rid="${state.selectedRid}"]`):null; el?showEditor(el):(document.getElementById('inspector').innerHTML='<div class="hint">Edit mode. Click any element to change its font, size, weight, color, spacing, radius, padding, or text — live. Every change is captured as a precise before&rarr;after delta.</div>'); }
+  renderEdits();
 }
+
+// ---------- editor ----------
+const EDIT_FONTS={ "Canela":"'Canela',Georgia,serif", "ArticulatCF":"'ArticulatCF',Helvetica,Arial,sans-serif", "RingsideWide":"'RingsideWide',Helvetica,Arial,sans-serif", "Courier":"'Courier New',monospace" };
+function cssProp(p){ return ({size:'font-size',weight:'font-weight',ls:'letter-spacing',lh:'line-height',color:'color',bg:'background-color',radius:'border-radius',pad:'padding',font:'font-family'})[p]||p; }
+function origVal(el,p){ const cs=getComputedStyle(el); return ({size:cs.fontSize,weight:cs.fontWeight,ls:cs.letterSpacing,lh:cs.lineHeight,color:rgbToHex(cs.color),bg:rgbToHex(cs.backgroundColor),radius:cs.borderRadius,pad:cs.padding,font:(cs.fontFamily.split(',')[0]||'').replace(/['"]/g,''),text:(el.textContent||'').trim()})[p]; }
+function showEditor(el){
+  const s=specs(el); state.selectedRid=s.rid;
+  const editable = el.children.length===0 && el.tagName!=='IMG';
+  const opt=(v,sel)=>`<option ${v===sel?'selected':''}>${v}</option>`;
+  document.getElementById('inspector').innerHTML=`
+    <div class="ed">
+      <div class="edhead">${s.label}</div>
+      ${editable?`<div class="erow" style="grid-template-columns:1fr"><label>text</label></div><textarea id="e-text" oninput="applyEdit('text',this.value)">${(el.textContent||'').trim().replace(/</g,'&lt;')}</textarea><div style="height:8px"></div>`:''}
+      <div class="erow"><label>font</label><select id="e-font" onchange="applyEdit('font',this.value)">${Object.keys(EDIT_FONTS).map(f=>opt(f,s.fontShort.replace(/ .*/,''))).join('')}</select></div>
+      <div class="erow"><label>weight</label><select id="e-weight" onchange="applyEdit('weight',this.value)">${['300','400','600','700','900'].map(w=>opt(w,s.weight)).join('')}</select></div>
+      <div class="erow"><label>size</label><input id="e-size" type="text" value="${s.size}" onchange="applyEdit('size',this.value)"></div>
+      <div class="erow"><label>tracking</label><input id="e-ls" type="text" value="${s.ls}" onchange="applyEdit('ls',this.value)"></div>
+      <div class="erow"><label>line-h</label><input id="e-lh" type="text" value="${s.lh}" onchange="applyEdit('lh',this.value)"></div>
+      <div class="erow"><label>color</label><span><input type="color" value="${/^#......$/.test(s.color)?s.color:'#000000'}" oninput="applyEdit('color',this.value)"> <span class="v">${s.color}</span></span></div>
+      <div class="erow"><label>background</label><span><input type="color" value="${/^#......$/.test(s.bg)?s.bg:'#ffffff'}" oninput="applyEdit('bg',this.value)"> <span class="v">${s.bg}</span></span></div>
+      <div class="erow"><label>radius</label><input id="e-radius" type="text" value="${getComputedStyle(el).borderRadius}" onchange="applyEdit('radius',this.value)"></div>
+      <div class="erow"><label>padding</label><input id="e-pad" type="text" value="${s.pad}" onchange="applyEdit('pad',this.value)"></div>
+      <div class="pal">${['#000000','#ffffff','#f50a99','#f8f8f8','#f6f2eb'].map(c=>`<i style="background:${c}" title="${c} color" onclick="applyEdit('color','${c}')"></i>`).join('')}</div>
+    </div>`;
+}
+function applyEdit(prop,val){
+  const doc=frame.contentDocument; const el=doc.querySelector(`[data-rid="${state.selectedRid}"]`); if(!el)return;
+  const slug=state.current; const arr=(state.edits[slug]=state.edits[slug]||[]);
+  let rec=arr.find(e=>e.rid===state.selectedRid && e.prop===prop);
+  const from = rec? rec.from : origVal(el,prop);
+  if(prop==='text'){ el.textContent=val; } else { el.style.setProperty(cssProp(prop), prop==='font'?EDIT_FONTS[val]:val); }
+  if(rec){ rec.to=val; } else { arr.push({rid:state.selectedRid, label:specs(el).label, prop, from, to:val, ts:Date.now()}); }
+  persist(); renderEdits(); placePins();
+}
+function renderEdits(){
+  const wrap=document.getElementById('editsWrap'); if(!wrap)return;
+  const list=state.edits[state.current]||[];
+  wrap.style.display = (state.mode==='edit'||list.length) ? 'block':'none';
+  document.getElementById('editsList').innerHTML = list.length? list.map((e,i)=>`<div class="ei"><span class="del" onclick="delEdit(${i})">×</span><b>${e.label.replace(/</g,'&lt;')}</b><div class="p">${e.prop}: ${(''+e.from).replace(/</g,'&lt;')} <span class="ar">&rarr;</span> ${(''+e.to).replace(/</g,'&lt;')}</div></div>`).join('') : '<div class="empty">No edits yet.</div>';
+}
+function delEdit(i){ const list=state.edits[state.current]||[]; const ed=list[i]; const doc=frame.contentDocument; const el=doc&&doc.querySelector(`[data-rid="${ed.rid}"]`);
+  if(el){ try{ if(ed.prop==='text'){el.textContent=ed.from;} else {el.style.setProperty(cssProp(ed.prop), ed.prop==='font'?(EDIT_FONTS[ed.from]||ed.from):ed.from);} }catch(e){} }
+  list.splice(i,1); persist(); renderEdits(); if(state.mode==='edit'&&el) showEditor(el); }
 
 // ---------- composer ----------
 function openComposer(el){
@@ -337,17 +407,21 @@ function delComment(i){ (state.comments[state.current]||[]).splice(i,1); persist
 
 // ---------- export ----------
 function allComments(){ const out=[]; DOCS.forEach(d=>{ (state.comments[d.slug]||[]).forEach(m=>out.push({email:d.name, ...m})); }); return out; }
+function allEdits(){ const out=[]; DOCS.forEach(d=>{ (state.edits[d.slug]||[]).forEach(e=>out.push({email:d.name, ...e})); }); return out; }
 function copyFeedback(){
-  const r=document.getElementById('reviewer').value||'(unnamed)'; const all=allComments();
-  if(!all.length){ alert('No comments yet.'); return; }
-  let md=`# JRB Email Review — ${r} — ${new Date().toLocaleDateString()}\n${all.length} comments across ${new Set(all.map(a=>a.email)).size} emails\n`;
-  DOCS.forEach(d=>{ const list=state.comments[d.slug]||[]; if(!list.length)return;
-    md+=`\n## ${d.name}\n`; list.forEach((m,i)=>{ md+=`${i+1}. ${m.note}\n   ↳ on: ${m.label}\n   ↳ current: ${m.specs.font} ${m.specs.weight} ${m.specs.size} / ${m.specs.color}\n`; }); });
-  navigator.clipboard.writeText(md).then(()=>alert('Copied '+all.length+' comments to clipboard.\nPaste into Slack/email to Cody.'),()=>fallbackCopy(md));
+  const r=document.getElementById('reviewer').value||'(unnamed)'; const cm=allComments(), ed=allEdits();
+  if(!cm.length && !ed.length){ alert('No comments or edits yet.'); return; }
+  let md=`# JRB Email Review — ${r} — ${new Date().toLocaleDateString()}\n${cm.length} comments · ${ed.length} edits\n`;
+  DOCS.forEach(d=>{ const cl=state.comments[d.slug]||[], el=state.edits[d.slug]||[]; if(!cl.length&&!el.length)return;
+    md+=`\n## ${d.name}\n`;
+    cl.forEach((m,i)=>{ md+=`${i+1}. ${m.note}\n   ↳ on: ${m.label}  ·  current: ${m.specs.font} ${m.specs.weight} ${m.specs.size} / ${m.specs.color}\n`; });
+    if(el.length){ md+=`   EDITS:\n`; el.forEach(e=>{ md+=`   • ${e.label} — ${e.prop}: ${e.from} → ${e.to}\n`; }); }
+  });
+  navigator.clipboard.writeText(md).then(()=>alert(`Copied ${cm.length} comments + ${ed.length} edits to clipboard.\nPaste into Slack/email to Cody.`),()=>fallbackCopy(md));
 }
 function fallbackCopy(t){ const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); alert('Copied to clipboard.'); }
 function downloadJSON(){ const r=document.getElementById('reviewer').value||'unnamed';
-  const data={reviewer:r, date:new Date().toISOString(), comments:allComments()};
+  const data={reviewer:r, date:new Date().toISOString(), comments:allComments(), edits:allEdits()};
   const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const a=document.createElement('a');
   a.href=URL.createObjectURL(b); a.download=`jrb-email-review-${r.replace(/\s+/g,'-')}.json`; a.click();
 }
