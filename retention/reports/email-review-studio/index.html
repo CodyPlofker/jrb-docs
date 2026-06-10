@@ -104,7 +104,7 @@
   <div class="top">
     <div class="brand">Email Review Studio<b>Jones Road Beauty</b></div>
     <div class="spacer"></div>
-    <input id="reviewer" placeholder="Your name (for feedback)">
+    <input id="reviewer" placeholder="Your name (optional)">
     <span id="savestatus" class="savestat">Auto-saves as you go</span>
     <button class="btn ghost" id="copybtn" onclick="copyFeedback()">Copy</button>
     <button class="btn ghost" onclick="downloadJSON()">JSON</button>
@@ -197,9 +197,8 @@ let syncTimer=null;
 function setStatus(t,k){ const e=document.getElementById('savestatus'); if(e){ e.textContent=t; e.className='savestat'+(k?' '+k:''); } }
 function syncDebounced(){ if(!FEEDBACK_ENDPOINT) return; clearTimeout(syncTimer); setStatus('Saving…','saving'); syncTimer=setTimeout(doSync,800); }
 function doSync(){
-  const r=document.getElementById('reviewer').value.trim();
-  if(!r){ setStatus('Add your name (top right) to save','warn'); return; }
-  const payload={reviewer:r, clientId:CID, comments:allComments(), edits:allEdits()};
+  const name=document.getElementById('reviewer').value.trim();
+  const payload={reviewer: name || ('Anon · '+CID.slice(1,6)), clientId:CID, comments:allComments(), edits:allEdits()};
   fetch(FEEDBACK_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
     .then(res=>res.json()).then(d=>{ if(!d||!d.ok) throw 0; const n=payload.comments.length+payload.edits.length; setStatus(n?`Saved ✓ · ${n} item${n>1?'s':''}`:'Saved ✓','ok'); })
     .catch(()=>setStatus('Save failed — retrying…','warn'));
@@ -462,10 +461,10 @@ function downloadJSON(){ const r=document.getElementById('reviewer').value||'unn
 }
 
 if(new URLSearchParams(location.search).get('compare')==='1') state.compare=true;
-setStatus(document.getElementById('reviewer').value.trim()?'Auto-saves as you go':'Add your name (top right) to save', document.getElementById('reviewer').value.trim()?'':'warn');
+setStatus('Auto-saves as you go');
 renderRail(); openDoc(DOCS[0].slug);
 // On open, push any feedback already saved in this browser (e.g. from an older page version) up to the DB.
-if(FEEDBACK_ENDPOINT && document.getElementById('reviewer').value.trim() && (allComments().length || allEdits().length)){ setTimeout(doSync, 1200); }
+if(FEEDBACK_ENDPOINT && (allComments().length || allEdits().length)){ setTimeout(doSync, 1200); }
 window.addEventListener('resize', ()=>{ if(state.compare) applyCompareLayout(); placePins(); });
 </script>
 </body>
