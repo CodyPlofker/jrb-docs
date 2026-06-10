@@ -72,6 +72,8 @@
   .cmt .del { float:right; color:#ccc; cursor:pointer; font-size:14px; }
   .cmt .del:hover { color:#e00; }
   .empty { color:var(--muted); font-size:12px; text-align:center; padding:30px 16px; }
+  .savestat { font-size:12px; color:#9a9aa2; white-space:nowrap; }
+  .savestat.ok { color:#56c271; } .savestat.warn { color:#e0a23a; } .savestat.saving { color:#bbb; }
   .pill.cmp { margin-left:14px; }
   .frames { display:flex; gap:28px; justify-content:center; align-items:flex-start; }
   .col { }
@@ -103,9 +105,9 @@
     <div class="brand">Email Review Studio<b>Jones Road Beauty</b></div>
     <div class="spacer"></div>
     <input id="reviewer" placeholder="Your name (for feedback)">
-    <button class="btn" id="copybtn" onclick="copyFeedback()">Copy my feedback</button>
+    <span id="savestatus" class="savestat">Auto-saves as you go</span>
+    <button class="btn ghost" id="copybtn" onclick="copyFeedback()">Copy</button>
     <button class="btn ghost" onclick="downloadJSON()">JSON</button>
-    <button class="btn" id="sendbtn" style="display:none" onclick="submitFeedback()">Send to JRB</button>
   </div>
 
   <div class="rail" id="rail">
@@ -187,7 +189,23 @@ let state = { mode:'inspect', current:null, selectedRid:null, pendingRid:null, c
 load();
 
 function load(){ try{ const s=JSON.parse(localStorage.getItem('jrb_review')||'{}'); state.comments=s.comments||{}; state.edits=s.edits||{}; if(s.reviewer) document.getElementById('reviewer').value=s.reviewer; }catch(e){} }
-function persist(){ localStorage.setItem('jrb_review', JSON.stringify({comments:state.comments, edits:state.edits, reviewer:document.getElementById('reviewer').value})); }
+function persist(){ localStorage.setItem('jrb_review', JSON.stringify({comments:state.comments, edits:state.edits, reviewer:document.getElementById('reviewer').value})); syncDebounced(); }
+
+// ---------- auto-save to DB ----------
+const CID = (function(){ let c=localStorage.getItem('jrb_cid'); if(!c){ c='c'+Date.now().toString(36)+Math.random().toString(36).slice(2,8); localStorage.setItem('jrb_cid',c);} return c; })();
+let syncTimer=null;
+function setStatus(t,k){ const e=document.getElementById('savestatus'); if(e){ e.textContent=t; e.className='savestat'+(k?' '+k:''); } }
+function syncDebounced(){ if(!FEEDBACK_ENDPOINT) return; clearTimeout(syncTimer); setStatus('Saving…','saving'); syncTimer=setTimeout(doSync,800); }
+function doSync(){
+  const r=document.getElementById('reviewer').value.trim();
+  if(!r){ setStatus('Add your name (top right) to save','warn'); return; }
+  const payload={reviewer:r, clientId:CID, comments:allComments(), edits:allEdits()};
+  fetch(FEEDBACK_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(res=>res.json()).then(d=>{ if(!d||!d.ok) throw 0; const n=payload.comments.length+payload.edits.length; setStatus(n?`Saved ✓ · ${n} item${n>1?'s':''}`:'Saved ✓','ok'); })
+    .catch(()=>setStatus('Save failed — retrying…','warn'));
+  // single retry on failure
+  setTimeout(()=>{ if(document.getElementById('savestatus').textContent.startsWith('Save failed')) doSync(); }, 4000);
+}
 document.getElementById('reviewer').addEventListener('input', persist);
 
 // ---------- rail ----------
@@ -444,7 +462,7 @@ function downloadJSON(){ const r=document.getElementById('reviewer').value||'unn
 }
 
 if(new URLSearchParams(location.search).get('compare')==='1') state.compare=true;
-if(FEEDBACK_ENDPOINT){ document.getElementById('sendbtn').style.display='inline-block'; }
+setStatus(document.getElementById('reviewer').value.trim()?'Auto-saves as you go':'Add your name (top right) to save', document.getElementById('reviewer').value.trim()?'':'warn');
 renderRail(); openDoc(DOCS[0].slug);
 window.addEventListener('resize', ()=>{ if(state.compare) applyCompareLayout(); placePins(); });
 </script>
