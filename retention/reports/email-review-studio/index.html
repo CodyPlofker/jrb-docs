@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JRB Email Review Studio</title>
+<style>
+  @font-face { font-family:'Canela'; font-weight:300; font-display:swap; src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); }
+  @font-face { font-family:'ArticulatCF'; font-weight:400; font-display:swap; src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Regular.otf') format('opentype'); }
+  @font-face { font-family:'ArticulatCF'; font-weight:700; font-display:swap; src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype'); }
+  :root { --pink:#f50a99; --ink:#111; --line:#e6e6e6; --muted:#888; --bg:#f4f4f5; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; font-family:'ArticulatCF',-apple-system,Helvetica,Arial,sans-serif; color:var(--ink); background:var(--bg); }
+  .app { display:grid; grid-template-columns:230px 1fr 340px; grid-template-rows:56px 1fr; height:100vh; }
+
+  /* top bar */
+  .top { grid-column:1/4; display:flex; align-items:center; gap:16px; padding:0 18px; background:#000; color:#fff; }
+  .top .brand { font-family:'Canela',serif; font-size:19px; letter-spacing:.3px; }
+  .top .brand b { font-family:'ArticulatCF',sans-serif; font-weight:700; font-size:11px; letter-spacing:2px; color:var(--pink); display:block; margin-top:-2px; }
+  .top .spacer { flex:1; }
+  .top input { background:#1c1c1c; border:1px solid #333; color:#fff; border-radius:6px; padding:8px 12px; font-size:13px; font-family:inherit; width:180px; }
+  .top input::placeholder { color:#888; }
+  .btn { background:var(--pink); color:#fff; border:none; border-radius:6px; padding:9px 16px; font-family:inherit; font-weight:700; font-size:12px; letter-spacing:.5px; cursor:pointer; }
+  .btn.ghost { background:#1c1c1c; border:1px solid #333; }
+  .btn:active { transform:translateY(1px); }
+
+  /* left rail */
+  .rail { grid-row:2; background:#fff; border-right:1px solid var(--line); overflow-y:auto; padding:14px 0; }
+  .rail h4 { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin:14px 18px 8px; }
+  .doc { display:flex; align-items:center; gap:8px; padding:10px 18px; cursor:pointer; border-left:3px solid transparent; font-size:13px; }
+  .doc:hover { background:#faf7f9; }
+  .doc.active { background:#fdeef6; border-left-color:var(--pink); font-weight:700; }
+  .doc .score { margin-left:auto; font-size:10px; font-weight:700; color:#fff; background:#bbb; border-radius:10px; padding:2px 7px; }
+  .doc .score.s90 { background:#1f9d55; } .doc .score.s80 { background:#caa53a; } .doc .score.s70 { background:#c96; }
+  .doc .cc { margin-left:6px; font-size:10px; color:var(--pink); font-weight:700; }
+
+  /* stage */
+  .stage { grid-row:2; overflow:auto; position:relative; background:#e8e8e8; padding:24px 0 80px; }
+  .frame-wrap { width:600px; margin:0 auto; background:#fff; box-shadow:0 4px 30px rgba(0,0,0,.12); position:relative; }
+  iframe { width:600px; border:0; display:block; }
+  .stage .modebar { position:sticky; top:0; z-index:5; display:flex; gap:8px; justify-content:center; padding:0 0 16px; }
+  .pill { background:#fff; border:1px solid var(--line); border-radius:20px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px; }
+  .pill.on { background:#000; color:#fff; border-color:#000; }
+  .pill .dot { width:8px; height:8px; border-radius:50%; background:var(--pink); }
+
+  /* right panel */
+  .panel { grid-row:2; background:#fff; border-left:1px solid var(--line); overflow-y:auto; display:flex; flex-direction:column; }
+  .panel .ph { padding:14px 16px 10px; border-bottom:1px solid var(--line); font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); display:flex; justify-content:space-between; }
+  .insp { padding:14px 16px; border-bottom:1px solid var(--line); }
+  .insp .el { font-family:'Courier New',monospace; font-size:12px; background:#f6f6f6; border-radius:5px; padding:6px 8px; margin-bottom:10px; word-break:break-word; }
+  .kv { display:grid; grid-template-columns:84px 1fr; gap:4px 8px; font-size:12px; margin-bottom:3px; align-items:center; }
+  .kv .k { color:var(--muted); }
+  .kv .v { font-family:'Courier New',monospace; }
+  .kv .tok { display:inline-block; background:#fdeef6; color:#c10c7c; border-radius:4px; padding:1px 6px; font-size:11px; margin-left:6px; }
+  .chipc { width:12px; height:12px; border-radius:3px; border:1px solid #ddd; display:inline-block; vertical-align:-2px; margin-right:5px; }
+  .cssbox { font-family:'Courier New',monospace; font-size:10.5px; color:#555; background:#fafafa; border:1px solid #eee; border-radius:5px; padding:6px 8px; margin-top:8px; white-space:pre-wrap; word-break:break-all; max-height:120px; overflow:auto; }
+  .hint { color:var(--muted); font-size:12px; padding:18px 16px; line-height:1.5; }
+
+  /* comments */
+  .composer { padding:12px 16px; border-bottom:1px solid var(--line); display:none; background:#fffdf9; }
+  .composer.show { display:block; }
+  .composer textarea { width:100%; border:1px solid var(--line); border-radius:6px; padding:8px; font-family:inherit; font-size:13px; resize:vertical; min-height:54px; }
+  .composer .tgt { font-size:11px; color:var(--pink); font-weight:700; margin-bottom:6px; }
+  .clist { flex:1; padding:6px 0; }
+  .cmt { padding:10px 16px; border-bottom:1px solid #f1f1f1; cursor:pointer; }
+  .cmt:hover { background:#faf7f9; }
+  .cmt .num { display:inline-block; width:18px; height:18px; background:var(--pink); color:#fff; border-radius:50%; font-size:10px; font-weight:700; text-align:center; line-height:18px; margin-right:6px; }
+  .cmt .note { font-size:13px; margin:4px 0; }
+  .cmt .meta { font-family:'Courier New',monospace; font-size:10px; color:var(--muted); }
+  .cmt .del { float:right; color:#ccc; cursor:pointer; font-size:14px; }
+  .cmt .del:hover { color:#e00; }
+  .empty { color:var(--muted); font-size:12px; text-align:center; padding:30px 16px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="brand">Email Review Studio<b>Jones Road Beauty</b></div>
+    <div class="spacer"></div>
+    <input id="reviewer" placeholder="Your name (for feedback)">
+    <button class="btn ghost" onclick="downloadJSON()">Download JSON</button>
+    <button class="btn" onclick="copyFeedback()">Copy my feedback</button>
+  </div>
+
+  <div class="rail" id="rail">
+    <h4>Emails — trained vs team</h4>
+    <div id="doclist"></div>
+    <h4>Reference</h4>
+    <div id="reflist"></div>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="modebar">
+      <div class="pill on" id="pill-inspect" onclick="setMode('inspect')">Inspect</div>
+      <div class="pill" id="pill-comment" onclick="setMode('comment')"><span class="dot"></span> Comment</div>
+    </div>
+    <div class="frame-wrap" id="framewrap">
+      <iframe id="frame" src="about:blank"></iframe>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="ph"><span id="panel-title">Inspector</span><span id="cc-badge"></span></div>
+    <div class="insp" id="inspector"><div class="hint">Hover any element to see its fonts, colors, and spacing. Click to lock it. Switch to <b>Comment</b> mode to leave a note pinned to an element.</div></div>
+    <div class="composer" id="composer">
+      <div class="tgt" id="composer-tgt"></div>
+      <textarea id="composer-text" placeholder="What should change? e.g. 'Headline should be Canela Thin, not Light'"></textarea>
+      <div style="margin-top:8px; display:flex; gap:8px;">
+        <button class="btn" onclick="saveComment()">Add comment</button>
+        <button class="btn ghost" onclick="cancelComposer()">Cancel</button>
+      </div>
+    </div>
+    <div class="ph" style="border-top:1px solid var(--line);">Comments on this email</div>
+    <div class="clist" id="clist"></div>
+  </div>
+</div>
+
+<script>
+// ---------- catalog ----------
+const DOCS = [
+  {slug:'6.9-everyday-sunscreen', name:'6.9 Everyday Sunscreen', score:82, kind:'email'},
+  {slug:'5.31-complexion-comparison', name:'5.31 Complexion Comparison', score:89, kind:'email'},
+  {slug:'6.4-summer-duos', name:'6.4 Summer Duos', score:85, kind:'email'},
+  {slug:'6.6-eye-color', name:'6.6 Eye Color', score:84, kind:'email'},
+  {slug:'6.7-kits-roundup', name:'6.7 Kits Roundup', score:75, kind:'email'},
+  {slug:'design-system', name:'Design System v4.2', score:null, kind:'ref'},
+];
+
+// ---------- token dictionaries ----------
+const FONT_TOKENS = [
+  [/canela/i, 'Canela Light — headline'],
+  [/articulat/i, 'ArticulatCF — body / label / CTA'],
+  [/ringside/i, 'RingsideWide — live text'],
+  [/courier/i, 'Courier mono — footer'],
+  [/geogrotesque/i, 'Geogrotesque — display (sparing)'],
+];
+const COLOR_TOKENS = {
+  '#000000':'Black', '#ffffff':'White', '#f50a99':'JRB Pink', '#f8f8f8':'Light band',
+  '#f6f2eb':'Warm cream', '#e8e8e8':'Surround', '#1155cc':'Unsub blue', '#666666':'Footer name',
+  '#999999':'Footer legal', '#e0e0e0':'Hairline',
+};
+
+let state = { mode:'inspect', current:null, selectedRid:null, pendingRid:null, comments:{} };
+load();
+
+function load(){ try{ const s=JSON.parse(localStorage.getItem('jrb_review')||'{}'); state.comments=s.comments||{}; if(s.reviewer) document.getElementById('reviewer').value=s.reviewer; }catch(e){} }
+function persist(){ localStorage.setItem('jrb_review', JSON.stringify({comments:state.comments, reviewer:document.getElementById('reviewer').value})); }
+document.getElementById('reviewer').addEventListener('input', persist);
+
+// ---------- rail ----------
+function renderRail(){
+  const de=document.getElementById('doclist'), re=document.getElementById('reflist'); de.innerHTML=''; re.innerHTML='';
+  DOCS.forEach(d=>{
+    const n=(state.comments[d.slug]||[]).length;
+    const sc = d.score==null?'':`<span class="score ${d.score>=87?'s90':d.score>=80?'s80':'s70'}">${d.score}</span>`;
+    const cc = n?`<span class="cc">${n}●</span>`:'';
+    const el=document.createElement('div'); el.className='doc'+(state.current===d.slug?' active':'');
+    el.innerHTML=`<span>${d.name}</span>${cc}${sc}`;
+    el.onclick=()=>openDoc(d.slug);
+    (d.kind==='ref'?re:de).appendChild(el);
+  });
+}
+
+// ---------- open doc ----------
+const frame=document.getElementById('frame');
+function openDoc(slug){ state.current=slug; state.selectedRid=null; state.pendingRid=null; cancelComposer(); renderRail(); frame.src='emails/'+slug+'.html'; }
+frame.addEventListener('load', ()=>{ try{ instrument(); }catch(e){ console.warn(e);} renderComments(); });
+
+function instrument(){
+  const doc=frame.contentDocument; if(!doc||!doc.body) return;
+  // inject overlay styles
+  const st=doc.createElement('style');
+  st.textContent=`.rs-hl{outline:2px solid #f50a99!important; outline-offset:-1px; cursor:crosshair;}
+  .rs-sel{outline:2px solid #1155cc!important; outline-offset:-1px;}
+  .rs-tip{position:fixed; z-index:99999; background:#000; color:#fff; font:11px/1.4 'Courier New',monospace; padding:5px 8px; border-radius:5px; pointer-events:none; max-width:240px;}
+  .rs-pin{position:absolute; z-index:99998; width:22px; height:22px; background:#f50a99; color:#fff; border-radius:50% 50% 50% 2px; font:700 11px/22px ArialAarial,sans-serif; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,.3); transform:translate(-4px,-26px);}`;
+  doc.head.appendChild(st);
+  // assign ids
+  let i=0; doc.body.querySelectorAll('*').forEach(el=>{ if(el.classList.contains('rs-ui'))return; el.setAttribute('data-rid','r'+(i++)); });
+  // tooltip
+  const tip=doc.createElement('div'); tip.className='rs-tip rs-ui'; tip.style.display='none'; doc.body.appendChild(tip);
+  // size iframe to content
+  setTimeout(()=>{ frame.style.height=(doc.body.scrollHeight+20)+'px'; placePins(); }, 350);
+
+  doc.addEventListener('mouseover', e=>{ const el=e.target; if(!el.getAttribute||!el.getAttribute('data-rid'))return;
+    clearHL(doc); el.classList.add('rs-hl'); showInspector(el);
+    const s=specs(el); tip.innerHTML=`${s.tag} · ${s.fontShort} ${s.weight} ${s.size}`; tip.style.display='block';
+    tip.style.left=Math.min(e.clientX+12, (frame.clientWidth-250))+'px'; tip.style.top=(e.clientY+12)+'px'; });
+  doc.addEventListener('mousemove', e=>{ tip.style.left=Math.min(e.clientX+12,(frame.clientWidth-250))+'px'; tip.style.top=(e.clientY+12)+'px'; });
+  doc.addEventListener('mouseout', ()=>{ tip.style.display='none'; });
+  doc.addEventListener('click', e=>{ const el=e.target; if(!el.getAttribute||!el.getAttribute('data-rid'))return;
+    e.preventDefault(); e.stopPropagation();
+    clearSel(doc); el.classList.add('rs-sel'); state.selectedRid=el.getAttribute('data-rid'); showInspector(el,true);
+    if(state.mode==='comment'){ openComposer(el); }
+  }, true);
+}
+function clearHL(doc){ doc.querySelectorAll('.rs-hl').forEach(e=>e.classList.remove('rs-hl')); }
+function clearSel(doc){ doc.querySelectorAll('.rs-sel').forEach(e=>e.classList.remove('rs-sel')); }
+
+// ---------- specs ----------
+function rgbToHex(c){ const m=c.match(/\d+/g); if(!m)return c; if(m.length>=4 && m[3]==='0')return 'transparent'; return '#'+m.slice(0,3).map(x=>(+x).toString(16).padStart(2,'0')).join(''); }
+function fontToken(f){ for(const[re,name]of FONT_TOKENS) if(re.test(f))return name; return null; }
+function label(el){
+  if(el.tagName==='IMG') return 'IMG · '+(el.getAttribute('alt')||'(no alt)').slice(0,44);
+  const t=(el.textContent||'').trim().replace(/\s+/g,' ').slice(0,46);
+  return el.tagName+(t?' · "'+t+'"':'');
+}
+function specs(el){
+  const cs=getComputedStyle(el); const fam=cs.fontFamily;
+  return {
+    tag:el.tagName.toLowerCase(), label:label(el),
+    font:fam, fontShort:(fam.split(',')[0]||'').replace(/['"]/g,''),
+    weight:cs.fontWeight, size:cs.fontSize, ls:cs.letterSpacing, lh:cs.lineHeight,
+    color:rgbToHex(cs.color), bg:rgbToHex(cs.backgroundColor),
+    pad:cs.padding, transform:cs.textTransform,
+    inlineCss:el.getAttribute('style')||'(styles from <style> block)',
+    tokenFont:fontToken(fam), rid:el.getAttribute('data-rid')
+  };
+}
+function colorRow(k,hex){ const tok=COLOR_TOKENS[hex.toLowerCase()]; const chip=hex==='transparent'?'':`<span class="chipc" style="background:${hex}"></span>`; return `<div class="kv"><span class="k">${k}</span><span class="v">${chip}${hex}${tok?`<span class="tok">${tok}</span>`:''}</span></div>`; }
+function showInspector(el, locked){
+  const s=specs(el);
+  document.getElementById('panel-title').textContent = locked?'Selected element':'Inspector';
+  document.getElementById('inspector').innerHTML=`
+    <div class="el">${s.label}</div>
+    <div class="kv"><span class="k">font</span><span class="v">${s.fontShort}${s.tokenFont?`<span class="tok">${s.tokenFont}</span>`:''}</span></div>
+    <div class="kv"><span class="k">weight</span><span class="v">${s.weight}</span></div>
+    <div class="kv"><span class="k">size</span><span class="v">${s.size} · lh ${s.lh}</span></div>
+    <div class="kv"><span class="k">tracking</span><span class="v">${s.ls}${s.transform!=='none'?' · '+s.transform:''}</span></div>
+    ${colorRow('color',s.color)}
+    ${colorRow('background',s.bg)}
+    <div class="kv"><span class="k">padding</span><span class="v">${s.pad}</span></div>
+    <div class="cssbox">${(s.inlineCss).replace(/</g,'&lt;')}</div>`;
+}
+
+// ---------- modes ----------
+function setMode(m){ state.mode=m;
+  document.getElementById('pill-inspect').classList.toggle('on',m==='inspect');
+  document.getElementById('pill-comment').classList.toggle('on',m==='comment');
+  if(m==='inspect') cancelComposer();
+}
+
+// ---------- composer ----------
+function openComposer(el){
+  const s=specs(el); state.pendingRid=s.rid;
+  document.getElementById('composer-tgt').textContent='📌 '+s.label;
+  document.getElementById('composer').classList.add('show');
+  document.getElementById('composer-text').value=''; document.getElementById('composer-text').focus();
+}
+function cancelComposer(){ document.getElementById('composer').classList.remove('show'); state.pendingRid=null; }
+function saveComment(){
+  const txt=document.getElementById('composer-text').value.trim(); if(!txt||!state.pendingRid)return;
+  const doc=frame.contentDocument; const el=doc.querySelector(`[data-rid="${state.pendingRid}"]`); if(!el)return;
+  const s=specs(el); const slug=state.current;
+  (state.comments[slug]=state.comments[slug]||[]).push({ rid:s.rid, label:s.label, note:txt,
+    specs:{font:s.fontShort,weight:s.weight,size:s.size,color:s.color,bg:s.bg}, ts:Date.now() });
+  persist(); cancelComposer(); renderComments(); renderRail();
+}
+
+// ---------- comments + pins ----------
+function renderComments(){
+  const slug=state.current; const list=state.comments[slug]||[];
+  document.getElementById('cc-badge').textContent=list.length?list.length+' note'+(list.length>1?'s':''):'';
+  const c=document.getElementById('clist');
+  if(!list.length){ c.innerHTML='<div class="empty">No comments yet.<br>Switch to Comment mode and click an element.</div>'; placePins(); return; }
+  c.innerHTML=list.map((m,i)=>`<div class="cmt" onclick="gotoPin(${i})">
+    <span class="del" onclick="event.stopPropagation();delComment(${i})">×</span>
+    <div><span class="num">${i+1}</span><b style="font-size:11px">${m.label.replace(/</g,'&lt;')}</b></div>
+    <div class="note">${m.note.replace(/</g,'&lt;')}</div>
+    <div class="meta">${m.specs.font} ${m.specs.weight} ${m.specs.size} · ${m.specs.color}</div></div>`).join('');
+  placePins();
+}
+function placePins(){
+  const doc=frame.contentDocument; if(!doc||!doc.body)return;
+  doc.querySelectorAll('.rs-pin').forEach(p=>p.remove());
+  const list=state.comments[state.current]||[];
+  list.forEach((m,i)=>{ const el=doc.querySelector(`[data-rid="${m.rid}"]`); if(!el)return;
+    const r=el.getBoundingClientRect(); const pin=doc.createElement('div'); pin.className='rs-pin rs-ui'; pin.textContent=i+1;
+    pin.style.left=(r.left+doc.documentElement.scrollLeft+6)+'px'; pin.style.top=(r.top+doc.documentElement.scrollTop+2)+'px';
+    pin.onclick=(e)=>{e.stopPropagation();}; doc.body.appendChild(pin); });
+}
+function gotoPin(i){ const doc=frame.contentDocument; const m=(state.comments[state.current]||[])[i]; if(!m)return;
+  const el=doc.querySelector(`[data-rid="${m.rid}"]`); if(!el)return;
+  el.scrollIntoView({behavior:'smooth',block:'center'}); clearSel(doc); el.classList.add('rs-sel'); showInspector(el,true);
+}
+function delComment(i){ (state.comments[state.current]||[]).splice(i,1); persist(); renderComments(); renderRail(); }
+
+// ---------- export ----------
+function allComments(){ const out=[]; DOCS.forEach(d=>{ (state.comments[d.slug]||[]).forEach(m=>out.push({email:d.name, ...m})); }); return out; }
+function copyFeedback(){
+  const r=document.getElementById('reviewer').value||'(unnamed)'; const all=allComments();
+  if(!all.length){ alert('No comments yet.'); return; }
+  let md=`# JRB Email Review — ${r} — ${new Date().toLocaleDateString()}\n${all.length} comments across ${new Set(all.map(a=>a.email)).size} emails\n`;
+  DOCS.forEach(d=>{ const list=state.comments[d.slug]||[]; if(!list.length)return;
+    md+=`\n## ${d.name}\n`; list.forEach((m,i)=>{ md+=`${i+1}. ${m.note}\n   ↳ on: ${m.label}\n   ↳ current: ${m.specs.font} ${m.specs.weight} ${m.specs.size} / ${m.specs.color}\n`; }); });
+  navigator.clipboard.writeText(md).then(()=>alert('Copied '+all.length+' comments to clipboard.\nPaste into Slack/email to Cody.'),()=>fallbackCopy(md));
+}
+function fallbackCopy(t){ const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); alert('Copied to clipboard.'); }
+function downloadJSON(){ const r=document.getElementById('reviewer').value||'unnamed';
+  const data={reviewer:r, date:new Date().toISOString(), comments:allComments()};
+  const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const a=document.createElement('a');
+  a.href=URL.createObjectURL(b); a.download=`jrb-email-review-${r.replace(/\s+/g,'-')}.json`; a.click();
+}
+
+renderRail(); openDoc(DOCS[0].slug);
+window.addEventListener('resize', placePins);
+</script>
+</body>
+</html>
