@@ -464,6 +464,8 @@ function downloadJSON(){ const r=document.getElementById('reviewer').value||'unn
 if(new URLSearchParams(location.search).get('compare')==='1') state.compare=true;
 setStatus(document.getElementById('reviewer').value.trim()?'Auto-saves as you go':'Add your name (top right) to save', document.getElementById('reviewer').value.trim()?'':'warn');
 renderRail(); openDoc(DOCS[0].slug);
+// On open, push any feedback already saved in this browser (e.g. from an older page version) up to the DB.
+if(FEEDBACK_ENDPOINT && document.getElementById('reviewer').value.trim() && (allComments().length || allEdits().length)){ setTimeout(doSync, 1200); }
 window.addEventListener('resize', ()=>{ if(state.compare) applyCompareLayout(); placePins(); });
 </script>
 </body>
