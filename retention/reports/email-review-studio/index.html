@@ -103,8 +103,9 @@
     <div class="brand">Email Review Studio<b>Jones Road Beauty</b></div>
     <div class="spacer"></div>
     <input id="reviewer" placeholder="Your name (for feedback)">
-    <button class="btn ghost" onclick="downloadJSON()">Download JSON</button>
-    <button class="btn" onclick="copyFeedback()">Copy my feedback</button>
+    <button class="btn ghost" onclick="copyFeedback()">Copy</button>
+    <button class="btn ghost" onclick="downloadJSON()">JSON</button>
+    <button class="btn" onclick="submitFeedback()">Send to JRB</button>
   </div>
 
   <div class="rail" id="rail">
@@ -154,6 +155,10 @@
 </div>
 
 <script>
+// ---------- feedback endpoint ----------
+// Paste the Google Apps Script Web App URL here (see feedback-setup.md) to enable "Send to JRB".
+const FEEDBACK_ENDPOINT = '';
+
 // ---------- catalog ----------
 const DOCS = [
   {slug:'6.9-everyday-sunscreen', name:'6.9 Everyday Sunscreen', score:82, kind:'email'},
@@ -420,6 +425,17 @@ function copyFeedback(){
   navigator.clipboard.writeText(md).then(()=>alert(`Copied ${cm.length} comments + ${ed.length} edits to clipboard.\nPaste into Slack/email to Cody.`),()=>fallbackCopy(md));
 }
 function fallbackCopy(t){ const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); alert('Copied to clipboard.'); }
+function submitFeedback(){
+  const r=document.getElementById('reviewer').value.trim();
+  const cm=allComments(), ed=allEdits();
+  if(!cm.length && !ed.length){ alert('Add some comments or edits first.'); return; }
+  if(!r){ alert('Add your name first (top right).'); return; }
+  if(!FEEDBACK_ENDPOINT){ alert('The shared sheet isn’t wired up yet — use "Copy" and send it to Cody for now.'); return; }
+  const payload={reviewer:r, date:new Date().toISOString(), comments:cm, edits:ed};
+  fetch(FEEDBACK_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
+    .then(()=>alert(`Sent ${cm.length} comments + ${ed.length} edits to the JRB feedback sheet. Thank you!`))
+    .catch(()=>{ fallbackCopy(JSON.stringify(payload,null,2)); alert('Network hiccup — your feedback was copied to clipboard instead. Paste to Cody.'); });
+}
 function downloadJSON(){ const r=document.getElementById('reviewer').value||'unnamed';
   const data={reviewer:r, date:new Date().toISOString(), comments:allComments(), edits:allEdits()};
   const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const a=document.createElement('a');
