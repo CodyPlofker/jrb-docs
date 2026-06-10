@@ -99,6 +99,13 @@
   .edits .ei .p { font-family:'Courier New',monospace; font-size:11px; }
   .edits .ei .ar { color:var(--pink); }
   .edits .ei .del { float:right; color:#ccc; cursor:pointer; }
+  .tcmt { padding:9px 16px; border-bottom:1px solid #f1f1f1; cursor:pointer; }
+  .tcmt:hover { background:#f6f8fc; }
+  .tcmt .who { display:inline-block; background:#5b6b8c; color:#fff; border-radius:10px; padding:1px 7px; font-size:10px; font-weight:700; }
+  .tcmt .tnote { font-size:13px; margin:5px 0 2px; }
+  .tcmt .tel { font-family:'Courier New',monospace; font-size:10px; color:#999; }
+  .teamhead { display:flex; justify-content:space-between; align-items:center; }
+  .teamhead .tg { cursor:pointer; color:var(--pink); text-transform:none; letter-spacing:0; font-weight:700; }
 </style>
 </head>
 <body>
@@ -154,6 +161,13 @@
     <div id="editsWrap" style="display:none;">
       <div class="ph" style="border-top:1px solid var(--line);">Edits on this email</div>
       <div class="edits" id="editsList"></div>
+    </div>
+    <div id="teamWrap">
+      <div class="ph teamhead" style="border-top:1px solid var(--line);">
+        <span>Team feedback <span id="teamCount"></span></span>
+        <span class="tg" id="teamToggle" onclick="toggleTeam()">hide</span>
+      </div>
+      <div id="teamList"></div>
     </div>
   </div>
 </div>
@@ -231,8 +245,9 @@ function openDoc(slug){ state.current=slug; state.selectedRid=null; state.pendin
   document.getElementById('claudelabel').innerHTML = d&&d.score!=null ? `Claude build <span class="tag">${d.score}/100</span>` : 'Design system';
   frame.src='emails/'+slug+'.html';
   applyCompareLayout();
+  loadTeam();
 }
-frame.addEventListener('load', ()=>{ try{ instrument(); }catch(e){ console.warn(e);} renderComments(); renderEdits(); });
+frame.addEventListener('load', ()=>{ try{ instrument(); }catch(e){ console.warn(e);} renderComments(); renderEdits(); renderTeam(); placeTeamPins(); });
 teamframe.addEventListener('load', function(){ const d=this.contentDocument; if(d&&d.body){ setTimeout(()=>{ try{ this.style.height=(d.body.scrollHeight+20)+'px'; }catch(e){} },300);} });
 
 // ---------- compare ----------
@@ -266,7 +281,8 @@ function instrument(){
   st.textContent=`.rs-hl{outline:2px solid #f50a99!important; outline-offset:-1px; cursor:crosshair;}
   .rs-sel{outline:2px solid #1155cc!important; outline-offset:-1px;}
   .rs-tip{position:fixed; z-index:99999; background:#000; color:#fff; font:11px/1.4 'Courier New',monospace; padding:5px 8px; border-radius:5px; pointer-events:none; max-width:240px;}
-  .rs-pin{position:absolute; z-index:99998; width:22px; height:22px; background:#f50a99; color:#fff; border-radius:50% 50% 50% 2px; font:700 11px/22px ArialAarial,sans-serif; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,.3); transform:translate(-4px,-26px);}`;
+  .rs-pin{position:absolute; z-index:99998; width:22px; height:22px; background:#f50a99; color:#fff; border-radius:50% 50% 50% 2px; font:700 11px/22px Arial,sans-serif; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,.3); transform:translate(-4px,-26px);}
+  .rs-teampin{position:absolute; z-index:99997; width:20px; height:20px; background:#5b6b8c; color:#fff; border-radius:50% 50% 50% 2px; font:700 10px/20px Arial,sans-serif; text-align:center; box-shadow:0 2px 5px rgba(0,0,0,.3); transform:translate(10px,-22px);}`;
   doc.head.appendChild(st);
   // assign ids
   let i=0; doc.body.querySelectorAll('*').forEach(el=>{ if(el.classList.contains('rs-ui'))return; el.setAttribute('data-rid','r'+(i++)); });
@@ -428,6 +444,44 @@ function gotoPin(i){ const doc=frame.contentDocument; const m=(state.comments[st
   el.scrollIntoView({behavior:'smooth',block:'center'}); clearSel(doc); el.classList.add('rs-sel'); showInspector(el,true);
 }
 function delComment(i){ (state.comments[state.current]||[]).splice(i,1); persist(); renderComments(); renderRail(); }
+
+// ---------- team feedback (everyone's comments, read from DB) ----------
+let teamRows=[]; let showTeam=true;
+function curDocName(){ const d=DOCS.find(x=>x.slug===state.current); return d?d.name:''; }
+function teamForCurrent(){ return teamRows.filter(r => r.email===curDocName() && r.client_id!==CID); }
+async function loadTeam(){
+  if(!FEEDBACK_ENDPOINT) return;
+  try{ const res=await fetch(FEEDBACK_ENDPOINT); const d=await res.json(); teamRows=d.rows||[]; }catch(e){ teamRows=[]; }
+  renderTeam(); placeTeamPins();
+}
+function toggleTeam(){ showTeam=!showTeam; document.getElementById('teamToggle').textContent=showTeam?'hide':'show'; renderTeam(); placeTeamPins(); }
+function renderTeam(){
+  const list=teamForCurrent();
+  document.getElementById('teamCount').textContent = list.length?`· ${list.length}`:'';
+  const c=document.getElementById('teamList');
+  if(!showTeam){ c.innerHTML=''; return; }
+  if(!list.length){ c.innerHTML='<div class="empty">No team comments on this email yet.</div>'; return; }
+  c.innerHTML=list.map((r,i)=>{
+    const detail = r.type==='edit' ? `${r.prop}: ${r.from_val} → ${r.to_val}` : (r.note||'');
+    return `<div class="tcmt" onclick="gotoTeam('${r.rid||''}')"><span class="who">${(r.reviewer||'Anon').replace(/</g,'&lt;')}</span>
+      <div class="tnote">${detail.replace(/</g,'&lt;')}</div>
+      <div class="tel">${(r.element||'').replace(/</g,'&lt;')}</div></div>`;
+  }).join('');
+}
+function placeTeamPins(){
+  const doc=frame.contentDocument; if(!doc||!doc.body) return;
+  doc.querySelectorAll('.rs-teampin').forEach(p=>p.remove());
+  if(!showTeam) return;
+  const list=teamForCurrent().filter(r=>r.type==='comment' && r.rid);
+  // number them to match the list order
+  const order=teamForCurrent();
+  list.forEach(r=>{ const el=doc.querySelector(`[data-rid="${r.rid}"]`); if(!el)return;
+    const rect=el.getBoundingClientRect(); const pin=doc.createElement('div'); pin.className='rs-teampin rs-ui';
+    pin.textContent='•'; pin.title=`${r.reviewer||'Anon'}: ${r.note||''}`;
+    pin.style.left=(rect.left+doc.documentElement.scrollLeft+6)+'px'; pin.style.top=(rect.top+doc.documentElement.scrollTop+2)+'px';
+    pin.onclick=(e)=>e.stopPropagation(); doc.body.appendChild(pin); });
+}
+function gotoTeam(rid){ if(!rid)return; const doc=frame.contentDocument; const el=doc.querySelector(`[data-rid="${rid}"]`); if(el) el.scrollIntoView({behavior:'smooth',block:'center'}); }
 
 // ---------- export ----------
 function allComments(){ const out=[]; DOCS.forEach(d=>{ (state.comments[d.slug]||[]).forEach(m=>out.push({email:d.name, ...m})); }); return out; }
