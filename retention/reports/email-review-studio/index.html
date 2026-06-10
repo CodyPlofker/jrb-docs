@@ -157,7 +157,7 @@
 <script>
 // ---------- feedback endpoint ----------
 // Paste the Google Apps Script Web App URL here (see feedback-setup.md) to enable "Send to JRB".
-const FEEDBACK_ENDPOINT = '';
+const FEEDBACK_ENDPOINT = 'https://jrb-tools-api.vercel.app/api/feedback';
 
 // ---------- catalog ----------
 const DOCS = [
@@ -432,9 +432,10 @@ function submitFeedback(){
   if(!r){ alert('Add your name first (top right).'); return; }
   if(!FEEDBACK_ENDPOINT){ alert('The shared sheet isn’t wired up yet — use "Copy" and send it to Cody for now.'); return; }
   const payload={reviewer:r, date:new Date().toISOString(), comments:cm, edits:ed};
-  fetch(FEEDBACK_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
-    .then(()=>alert(`Sent ${cm.length} comments + ${ed.length} edits to the JRB feedback sheet. Thank you!`))
-    .catch(()=>{ fallbackCopy(JSON.stringify(payload,null,2)); alert('Network hiccup — your feedback was copied to clipboard instead. Paste to Cody.'); });
+  fetch(FEEDBACK_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(res=>res.json())
+    .then(d=>{ if(!d||!d.ok) throw new Error((d&&d.error)||'server'); alert(`Sent ${d.added} item(s) to the JRB feedback database. Thank you!`); })
+    .catch(()=>{ fallbackCopy(JSON.stringify(payload,null,2)); alert('Couldn’t reach the server — your feedback was copied to clipboard instead. Paste it to Cody.'); });
 }
 function downloadJSON(){ const r=document.getElementById('reviewer').value||'unnamed';
   const data={reviewer:r, date:new Date().toISOString(), comments:allComments(), edits:allEdits()};
