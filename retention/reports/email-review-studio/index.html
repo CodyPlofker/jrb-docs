@@ -70,6 +70,15 @@
   .cmt .del { float:right; color:#ccc; cursor:pointer; font-size:14px; }
   .cmt .del:hover { color:#e00; }
   .empty { color:var(--muted); font-size:12px; text-align:center; padding:30px 16px; }
+  .pill.cmp { margin-left:14px; }
+  .frames { display:flex; gap:28px; justify-content:center; align-items:flex-start; }
+  .col { }
+  .collabel { text-align:center; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; font-weight:700; margin:0 0 10px; }
+  .collabel.team { color:#111; }
+  .collabel.team .tag { background:#111; color:#fff; border-radius:10px; padding:2px 8px; margin-left:4px; }
+  .collabel.claude { color:var(--pink); }
+  .collabel.claude .tag { background:var(--pink); color:#fff; border-radius:10px; padding:2px 8px; margin-left:4px; }
+  .frames.compare .frame-wrap { zoom: var(--z, .7); }
 </style>
 </head>
 <body>
@@ -93,9 +102,17 @@
     <div class="modebar">
       <div class="pill on" id="pill-inspect" onclick="setMode('inspect')">Inspect</div>
       <div class="pill" id="pill-comment" onclick="setMode('comment')"><span class="dot"></span> Comment</div>
+      <div class="pill cmp" id="pill-compare" onclick="toggleCompare()">⇆ Show real JRB email</div>
     </div>
-    <div class="frame-wrap" id="framewrap">
-      <iframe id="frame" src="about:blank"></iframe>
+    <div class="frames" id="frames">
+      <div class="col" id="teamcol" style="display:none;">
+        <div class="collabel team">Real JRB email <span class="tag">SENT</span></div>
+        <div class="frame-wrap"><iframe id="teamframe" src="about:blank"></iframe></div>
+      </div>
+      <div class="col" id="claudecol">
+        <div class="collabel claude" id="claudelabel">Claude build</div>
+        <div class="frame-wrap" id="framewrap"><iframe id="frame" src="about:blank"></iframe></div>
+      </div>
     </div>
   </div>
 
@@ -140,7 +157,7 @@ const COLOR_TOKENS = {
   '#999999':'Footer legal', '#e0e0e0':'Hairline',
 };
 
-let state = { mode:'inspect', current:null, selectedRid:null, pendingRid:null, comments:{} };
+let state = { mode:'inspect', current:null, selectedRid:null, pendingRid:null, comments:{}, compare:false };
 load();
 
 function load(){ try{ const s=JSON.parse(localStorage.getItem('jrb_review')||'{}'); state.comments=s.comments||{}; if(s.reviewer) document.getElementById('reviewer').value=s.reviewer; }catch(e){} }
@@ -163,8 +180,39 @@ function renderRail(){
 
 // ---------- open doc ----------
 const frame=document.getElementById('frame');
-function openDoc(slug){ state.current=slug; state.selectedRid=null; state.pendingRid=null; cancelComposer(); renderRail(); frame.src='emails/'+slug+'.html'; }
+const teamframe=document.getElementById('teamframe');
+function openDoc(slug){ state.current=slug; state.selectedRid=null; state.pendingRid=null; cancelComposer(); renderRail();
+  const d=DOCS.find(x=>x.slug===slug);
+  document.getElementById('claudelabel').innerHTML = d&&d.score!=null ? `Claude build <span class="tag">${d.score}/100</span>` : 'Design system';
+  frame.src='emails/'+slug+'.html';
+  applyCompareLayout();
+}
 frame.addEventListener('load', ()=>{ try{ instrument(); }catch(e){ console.warn(e);} renderComments(); });
+teamframe.addEventListener('load', function(){ const d=this.contentDocument; if(d&&d.body){ setTimeout(()=>{ try{ this.style.height=(d.body.scrollHeight+20)+'px'; }catch(e){} },300);} });
+
+// ---------- compare ----------
+function toggleCompare(){ state.compare=!state.compare; applyCompareLayout(); }
+function applyCompareLayout(){
+  const isDS = state.current==='design-system';
+  const on = state.compare && !isDS;
+  const pill=document.getElementById('pill-compare');
+  pill.style.display = isDS ? 'none' : 'flex';
+  pill.classList.toggle('on', on);
+  document.getElementById('teamcol').style.display = on ? 'block' : 'none';
+  const frames=document.getElementById('frames');
+  if(on){
+    const want='emails/'+state.current+'-team.html';
+    if(teamframe.getAttribute('data-src')!==want){ teamframe.setAttribute('data-src',want); teamframe.src=want; }
+    const avail=document.getElementById('stage').clientWidth;
+    const z=Math.max(0.4, Math.min(1,(avail-100)/2/600));
+    frames.style.setProperty('--z', z.toFixed(3));
+    frames.classList.add('compare');
+  } else {
+    frames.classList.remove('compare');
+    frames.style.removeProperty('--z');
+  }
+  setTimeout(placePins,80);
+}
 
 function instrument(){
   const doc=frame.contentDocument; if(!doc||!doc.body) return;
@@ -302,8 +350,9 @@ function downloadJSON(){ const r=document.getElementById('reviewer').value||'unn
   a.href=URL.createObjectURL(b); a.download=`jrb-email-review-${r.replace(/\s+/g,'-')}.json`; a.click();
 }
 
+if(new URLSearchParams(location.search).get('compare')==='1') state.compare=true;
 renderRail(); openDoc(DOCS[0].slug);
-window.addEventListener('resize', placePins);
+window.addEventListener('resize', ()=>{ if(state.compare) applyCompareLayout(); placePins(); });
 </script>
 </body>
 </html>
