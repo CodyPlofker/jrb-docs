@@ -103,9 +103,9 @@
     <div class="brand">Email Review Studio<b>Jones Road Beauty</b></div>
     <div class="spacer"></div>
     <input id="reviewer" placeholder="Your name (for feedback)">
-    <button class="btn ghost" onclick="copyFeedback()">Copy</button>
+    <button class="btn" id="copybtn" onclick="copyFeedback()">Copy my feedback</button>
     <button class="btn ghost" onclick="downloadJSON()">JSON</button>
-    <button class="btn" onclick="submitFeedback()">Send to JRB</button>
+    <button class="btn" id="sendbtn" style="display:none" onclick="submitFeedback()">Send to JRB</button>
   </div>
 
   <div class="rail" id="rail">
@@ -443,6 +443,7 @@ function downloadJSON(){ const r=document.getElementById('reviewer').value||'unn
 }
 
 if(new URLSearchParams(location.search).get('compare')==='1') state.compare=true;
+if(FEEDBACK_ENDPOINT){ document.getElementById('sendbtn').style.display='inline-block'; }
 renderRail(); openDoc(DOCS[0].slug);
 window.addEventListener('resize', ()=>{ if(state.compare) applyCompareLayout(); placePins(); });
 </script>
