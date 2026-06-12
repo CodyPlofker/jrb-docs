@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JRB Back in Stock Custom API Dev Brief</title>
+  <style>
+    @font-face {
+      font-family: 'GeogrotesqueCondBoldWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'BaseMonoWideWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'RingsideWideWeb';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Canela';
+      src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-warm-bg: #f6f2eb;
+      --color-border: #d0d0d0;
+      --color-soft: #f8f8f8;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: var(--color-white);
+      color: var(--color-black);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.48;
+      letter-spacing: .01em;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 34px 18px 64px;
+    }
+    .eyebrow {
+      font-family: var(--font-display);
+      font-size: 16px;
+      line-height: 1;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 760px;
+      margin: 18px 0 18px;
+      font-family: var(--font-serif);
+      font-size: clamp(38px, 6vw, 76px);
+      font-weight: 300;
+      letter-spacing: 0;
+      line-height: .96;
+    }
+    h2 {
+      margin: 0 0 18px;
+      font-family: var(--font-display);
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+    }
+    h3 {
+      margin: 24px 0 10px;
+      font-family: var(--font-display);
+      font-size: 18px;
+      line-height: 1.05;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+    p {
+      margin: 0 0 14px;
+      max-width: 820px;
+    }
+    ul,
+    ol {
+      margin: 0;
+      padding-left: 22px;
+    }
+    li {
+      margin: 8px 0;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 20px 0 34px;
+    }
+    .chip {
+      border: 1px solid var(--color-border);
+      border-radius: 2px;
+      padding: 7px 10px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+    .section {
+      border-top: 1px solid var(--color-black);
+      padding: 34px 0;
+    }
+    .callout {
+      border: 1px solid var(--color-border);
+      border-radius: 2px;
+      background: var(--color-soft);
+      padding: 18px;
+      margin: 18px 0 0;
+    }
+    .callout strong {
+      font-family: var(--font-display);
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .tile {
+      border: 1px solid var(--color-border);
+      border-radius: 2px;
+      padding: 16px;
+      min-height: 150px;
+    }
+    .tile-title {
+      margin: 0 0 8px;
+      font-family: var(--font-display);
+      font-size: 17px;
+      line-height: 1;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+    .tile p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .status-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+    .status-table th,
+    .status-table td {
+      border: 1px solid var(--color-border);
+      padding: 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .status-table th {
+      font-family: var(--font-display);
+      font-size: 14px;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+    .paste-box {
+      border: 1px solid var(--color-black);
+      border-radius: 2px;
+      padding: 18px;
+      background: var(--color-white);
+      white-space: pre-wrap;
+      font-family: var(--font-body);
+      line-height: 1.5;
+    }
+    code {
+      font-family: var(--font-mono);
+      font-size: .9em;
+    }
+    @media (max-width: 760px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .status-table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="eyebrow">Jones Road Beauty</div>
+    <h1>Back in Stock Custom API Dev Brief</h1>
+    <p>
+      This is the current handoff for the dev-only Back in Stock custom API work.
+      The short version: capture and inventory detection are working in dev; Klaviyo message send/queue behavior still needs Retention and EE review before launch.
+    </p>
+
+    <div class="meta">
+      <span class="chip">Updated Jun 11, 2026, 9:50 PM ET</span>
+      <span class="chip">Dev only</span>
+      <span class="chip">Do not merge yet</span>
+      <span class="chip">PR #419</span>
+    </div>
+
+    <section class="section">
+      <h2>Paste-Ready Team Update</h2>
+      <div class="paste-box">Quick BIS custom API update:
+
+What is working in dev:
+- Dev-only theme is wired up. Nothing should touch the live theme.
+- PDP Notify Me form captures emails through the custom BIS API when the dev setting is enabled.
+- Klaviyo profile gets created/found.
+- Klaviyo records Subscribed to Back in Stock with the correct Shopify product and variant.
+- Shopify inventory webhook is registered to the dev API.
+- A real inventory flip from 0 to 1 was received and processed.
+- The API stored a restock_threshold_crossed event for the exact test variant.
+- Webhook HMAC/security is working; webhook calls are returning 202.
+
+What is not fully proven yet:
+- Klaviyo did not show an outgoing or queued message after restock.
+- So the remaining gap is likely Klaviyo flow/settings, not PDP capture or Shopify webhook intake.
+
+What we need Retention/EE to check:
+1. Confirm the Klaviyo Back in Stock flow is triggered by Subscribed to Back in Stock.
+2. Confirm it uses the Klaviyo Back in Stock delay block.
+3. Confirm the email step is Live, not Draft or Manual.
+4. Confirm Back in Stock settings minimum inventory threshold is 1 or lower for this test.
+5. Check Back in Stock reports/queued profiles for codyptestbis@gmail.com.
+6. Confirm custom catalog/API BIS is configured the way Klaviyo expects.
+
+Recommendation:
+- Review the draft theme PR now.
+- Do not merge or cut over until Klaviyo send/queue behavior is confirmed.
+- API changes are deployed in the Vercel preview and committed locally, but the API repo does not currently have a Git remote for a matching PR.</div>
+    </section>
+
+    <section class="section">
+      <h2>Current Status</h2>
+      <div class="grid">
+        <div class="tile">
+          <div class="tile-title">Theme</div>
+          <p>Draft PR is open for the dev-gated PDP waitlist integration and updated modal design. Production defaults remain off.</p>
+        </div>
+        <div class="tile">
+          <div class="tile-title">API</div>
+          <p>Preview API accepts PDP signups, verifies Shopify webhooks, updates Klaviyo catalog inventory, and logs inventory state.</p>
+        </div>
+        <div class="tile">
+          <div class="tile-title">Klaviyo</div>
+          <p>Profile capture and Back in Stock subscription event are confirmed. Actual message send/queue is not confirmed yet.</p>
+        </div>
+      </div>
+
+      <table class="status-table">
+        <thead>
+          <tr>
+            <th>Area</th>
+            <th>Status</th>
+            <th>Evidence</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PDP capture</td>
+            <td>Working in dev</td>
+            <td>Test profile <code>codyptestbis@gmail.com</code> shows <code>Subscribed to Back in Stock</code>.</td>
+          </tr>
+          <tr>
+            <td>Product and variant mapping</td>
+            <td>Working in dev</td>
+            <td>Klaviyo event has product <code>shopify-product-8664915509398</code> and variant <code>shopify-variant-46420752760982</code>.</td>
+          </tr>
+          <tr>
+            <td>Inventory webhook</td>
+            <td>Working in dev</td>
+            <td>Real Shopify inventory flip <code>0 -> 1</code> created <code>restock_threshold_crossed</code> at Jun 11, 2026, 9:21 PM ET.</td>
+          </tr>
+          <tr>
+            <td>Klaviyo message send</td>
+            <td>Open</td>
+            <td>No visible outgoing or queued message after restock. Retention/EE needs to verify flow and Back in Stock settings.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>What Changed</h2>
+      <h3>Theme PR</h3>
+      <ul>
+        <li>Added a dev-gated custom BIS setting: <code>waitlist_custom_bis_enabled</code>.</li>
+        <li>Added a custom BIS endpoint setting: <code>waitlist_custom_bis_endpoint</code>.</li>
+        <li>When enabled, PDP waitlist submissions post to the custom API instead of the legacy AMP path.</li>
+        <li>When disabled, the current legacy Back In Stock behavior remains in place.</li>
+        <li>Updated popup title, CTA, body copy, success copy, and styling to better match JRB.</li>
+        <li>Did not include <code>settings_data.json</code> or generated <code>assets/site.css</code> / <code>assets/site.js</code> in the PR.</li>
+      </ul>
+
+      <h3>API Preview</h3>
+      <ul>
+        <li>Accepts PDP subscribe requests and creates Klaviyo profile/list/BIS records.</li>
+        <li>Registers a preview-only Shopify <code>INVENTORY_LEVELS_UPDATE</code> webhook.</li>
+        <li>Verifies Shopify webhook HMAC using raw request body handling.</li>
+        <li>Discovers online-fulfillment locations from Shopify unless explicitly configured.</li>
+        <li>Updates Klaviyo custom catalog inventory on inventory changes.</li>
+        <li>Upserts missing Klaviyo custom catalog item/variant records when Klaviyo returns missing-variant errors.</li>
+        <li>Stores inventory state and logs <code>restock_threshold_crossed</code> events.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Links</h2>
+      <ul>
+        <li><a href="https://github.com/EcomExperts-io/JonesRoadBeauty/pull/419">Draft theme PR #419</a></li>
+        <li><a href="https://jonesroad.myshopify.com/products/bis-webhook-test-do-not-buy?preview_theme_id=148037959830">Dev theme test PDP</a></li>
+        <li><a href="https://admin.shopify.com/store/jonesroad/products/8664915509398">Shopify admin test product</a></li>
+        <li><a href="https://www.klaviyo.com/profiles">Klaviyo profile search</a></li>
+        <li><a href="https://www.klaviyo.com/list/X4jeW8">Klaviyo BIS test list</a></li>
+      </ul>
+      <div class="callout">
+        <p><strong>Security note:</strong> the doc and PR intentionally do not include any protected Vercel preview query, private API key, Shopify secret, or Klaviyo private key.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Recommended Testing Plan</h2>
+      <ol>
+        <li>Retention/EE opens the Klaviyo profile for <code>codyptestbis@gmail.com</code> and confirms the Back in Stock activity is present.</li>
+        <li>Retention confirms the Back in Stock flow is triggered by <code>Subscribed to Back in Stock</code>.</li>
+        <li>Retention confirms the flow contains the Klaviyo Back in Stock delay block and a Live email step.</li>
+        <li>Retention checks whether the test profile appears in Back in Stock reports or queued profiles after inventory is restored.</li>
+        <li>EE reviews PR #419 for theme safety, especially that the custom BIS setting defaults off and the legacy path remains intact.</li>
+        <li>After Klaviyo send/queue is confirmed, decide whether the API project needs a proper GitHub remote/PR before launch.</li>
+      </ol>
+    </section>
+
+    <section class="section">
+      <h2>Decision</h2>
+      <p>
+        Keep the PR in draft and keep the implementation dev-only until the Klaviyo message send path is confirmed.
+        The core build looks like the right build, but launch readiness depends on Retention verifying Klaviyo flow behavior.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
