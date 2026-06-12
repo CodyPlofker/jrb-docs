@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JRB PDP Sticky Nav Replacement Scroll Prototype</title>
+  <style>
+    @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'BaseMonoWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'RingsideWideWeb'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Canela'; src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+
+    :root {
+      --font-display: GeogrotesqueCondBoldWeb, 'Arial Black', Impact, sans-serif;
+      --font-mono: BaseMonoWideWeb, Courier, 'Courier New', sans-serif;
+      --font-body: RingsideWideWeb, Helvetica, Arial, sans-serif;
+      --font-serif: Canela, serif;
+      --color-black: #000;
+      --color-white: #fff;
+      --color-gray-bg: #f8f8f8;
+      --color-border: #d0d0d0;
+      --ease-primary: cubic-bezier(.39, .575, .565, 1);
+      --header-height: 76px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: #000;
+      background: #fff;
+      letter-spacing: .025em;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 550;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      height: 40px;
+      padding: 0 36px;
+      border-radius: 2px;
+      border: 1px solid #000;
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .4s var(--ease-primary), color .4s var(--ease-primary), border-color .4s var(--ease-primary);
+    }
+    .has-mouse .button:not(:disabled):hover { background: #fff; border-color: #d0d0d0; color: #000; }
+
+    .top-note {
+      padding: 18px 24px;
+      background: #f8f8f8;
+      border-bottom: 1px solid #d0d0d0;
+    }
+    .top-note__inner { max-width: 1180px; margin: 0 auto; }
+    .top-note__eyebrow {
+      margin: 0 0 6px;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+    .top-note__title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 38px;
+      font-weight: 300;
+      letter-spacing: .5px;
+      line-height: 54px;
+    }
+    .top-note__body { max-width: 840px; margin: 10px 0 0; font-size: 15px; line-height: 1.5; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: var(--header-height);
+      background: #fff;
+      border-bottom: 1px solid #ededed;
+      box-shadow: 0 1px 2px rgba(16,24,40,.04);
+    }
+    .site-header__state {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 24px;
+      padding: 0 32px;
+      background: #fff;
+      transition: opacity .4s var(--ease-primary), transform .4s var(--ease-primary), visibility .4s var(--ease-primary);
+    }
+    .site-header__nav { opacity: 1; transform: translateY(0); visibility: visible; }
+    .site-header__pdp { opacity: 0; transform: translateY(-8px); visibility: hidden; border-bottom: 1px solid #d0d0d0; }
+    body.is-sticky-pdp .site-header__nav { opacity: 0; transform: translateY(8px); visibility: hidden; }
+    body.is-sticky-pdp .site-header__pdp { opacity: 1; transform: translateY(0); visibility: visible; }
+    .site-header__links { display: flex; align-items: center; gap: 24px; font-family: var(--font-display); font-size: 15px; font-weight: 700; letter-spacing: .98px; text-transform: uppercase; }
+    .site-header__brand { font-family: var(--font-display); font-size: 26px; font-weight: 700; letter-spacing: 2px; line-height: 1; text-transform: uppercase; text-align: center; }
+    .site-header__icons { justify-content: flex-end; }
+    .site-header__icon { width: 18px; height: 18px; border: 1px solid #000; border-radius: 100%; }
+
+    .sticky-product { grid-template-columns: 1fr auto 1fr; }
+    .sticky-product__back { font-family: var(--font-display); font-size: 15px; font-weight: 700; letter-spacing: .98px; text-transform: uppercase; }
+    .sticky-product__center { display: flex; align-items: center; justify-content: center; gap: 14px; min-width: 0; }
+    .sticky-product__thumb { width: 44px; height: 44px; flex: 0 0 44px; overflow: hidden; border-radius: 3px; background: #f8f8f8; }
+    .sticky-product__thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .sticky-product__title { margin: 0; font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 1.18px; line-height: 1; text-transform: uppercase; white-space: nowrap; }
+    .sticky-product__meta { margin: 5px 0 0; font-size: 12px; line-height: 1; white-space: nowrap; }
+    .sticky-product__action { display: flex; justify-content: flex-end; align-items: center; gap: 14px; }
+    .sticky-product__price { font-size: 14px; white-space: nowrap; }
+
+    .pdp-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 480px);
+      gap: 48px;
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 56px 32px 72px;
+      background: #fff;
+    }
+    .pdp-hero__gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start; }
+    .pdp-hero__media { aspect-ratio: 1/1; overflow: hidden; border-radius: 3px; background: #f8f8f8; }
+    .pdp-hero__media img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .pdp-hero__media--flat { display: flex; align-items: center; justify-content: center; padding: 32px; }
+    .pdp-hero__swatch { width: min(58%, 220px); aspect-ratio: 1; border-radius: 100%; background: #e0ded8; border: 1px solid #d0d0d0; }
+    .buybox { position: sticky; top: calc(var(--header-height) + 28px); align-self: start; max-width: 480px; }
+    .buybox__kicker { margin: 0 0 10px; font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .buybox__title { margin: 0 0 10px; font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: 1.18px; line-height: 1.15; text-transform: uppercase; }
+    .buybox__desc { margin: 0 0 18px; font-size: 16px; line-height: 1.5; }
+    .buybox__stars-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .buybox__stars { display: flex; gap: 2px; color: #000; }
+    .buybox__stars svg { width: 16px; height: 16px; display: block; }
+    .buybox__review-count { font-size: 14px; text-decoration: underline; }
+    .buybox__label { margin: 0 0 10px; font-family: var(--font-display); font-size: 15px; font-weight: 700; letter-spacing: .98px; text-transform: uppercase; }
+    .buybox__swatches { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+    .buybox__swatch { width: 28px; height: 28px; border-radius: 100%; border: 1px solid #d4d4d4; display: flex; align-items: center; justify-content: center; }
+    .buybox__swatch.is-active { border-color: #000; }
+    .buybox__swatch i { width: 24px; height: 24px; border-radius: 100%; display: block; background: var(--swatch); }
+    .buybox__button.button { width: 100%; height: 44px; font-size: 14px; }
+    .buybox__button-price { margin-left: 14px; padding-left: 14px; border-left: 1px solid #fff; font-family: var(--font-body); font-size: 16px; align-self: stretch; display: inline-flex; align-items: center; }
+    .has-mouse .buybox__button.button:hover .buybox__button-price { border-left-color: #d0d0d0; }
+    .buybox__trust { margin-top: 16px; font-size: 14px; line-height: 1.45; }
+
+    .content-section { padding: 68px 32px; }
+    .content-section--gray { background: #f8f8f8; }
+    .content-section--white { background: #fff; }
+    .content-section__inner { max-width: 980px; margin: 0 auto; }
+    .content-section__eyebrow { margin: 0 0 12px; font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 1px; line-height: 1.2; text-transform: uppercase; }
+    .content-section__title { margin: 0 0 18px; font-family: var(--font-serif); font-size: 38px; font-weight: 300; letter-spacing: .5px; line-height: 54px; }
+    .content-section__body { margin: 0; max-width: 700px; font-size: 16px; line-height: 1.58; }
+    .accordion-list { margin-top: 34px; border-top: 1px solid #d7d7d7; }
+    .accordion { padding: 20px 0; border-bottom: 1px solid #d7d7d7; }
+    .accordion__summary { display: flex; justify-content: space-between; gap: 24px; margin: 0 0 12px; font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: .5px; line-height: 22px; text-transform: uppercase; }
+    .accordion__body { margin: 0; max-width: 740px; font-size: 15px; line-height: 1.58; }
+
+    .compare-callout { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .callout-card { background: #fff; border: 1px solid #d0d0d0; border-radius: 3px; padding: 24px; box-shadow: 0 1px 2px rgba(16,24,40,.04); }
+    .callout-card__title { margin: 0 0 10px; font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 1.18px; text-transform: uppercase; }
+    .callout-card__body { margin: 0; font-size: 15px; line-height: 1.5; }
+
+    @media (max-width: 900px) {
+      :root { --header-height: 64px; }
+      .top-note { padding: 18px 20px; }
+      .top-note__title { font-size: 26px; line-height: 37px; }
+      .site-header__state { grid-template-columns: 1fr auto; padding: 0 14px; gap: 12px; }
+      .site-header__links { display: none; }
+      .site-header__brand { text-align: left; font-size: 22px; }
+      .site-header__icons { display: flex; gap: 16px; }
+      .sticky-product__back, .sticky-product__thumb, .sticky-product__price { display: none; }
+      .sticky-product__center { justify-content: flex-start; }
+      .sticky-product__title { max-width: 190px; overflow: hidden; text-overflow: ellipsis; font-size: 16px; letter-spacing: .98px; }
+      .sticky-product__action .button { height: 40px; padding: 0 18px; font-size: 12px; }
+      .pdp-hero { grid-template-columns: 1fr; padding: 24px 20px 56px; gap: 28px; }
+      .pdp-hero__gallery { grid-template-columns: 1fr; }
+      .pdp-hero__media:nth-child(n+2) { display: none; }
+      .buybox { position: static; max-width: none; }
+      .content-section { padding: 48px 20px; }
+      .content-section__title { font-size: 26px; line-height: 37px; }
+      .compare-callout { grid-template-columns: 1fr; }
+      .scroll-marker { left: 18px; right: 18px; max-width: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <section class="top-note">
+    <div class="top-note__inner">
+      <p class="top-note__eyebrow">PDP CRO concept</p>
+      <h1 class="top-note__title">Scroll prototype: sticky CTA replaces the nav</h1>
+      <p class="top-note__body">Scroll down. When the original buy box/Add to Cart area leaves view, the normal header transforms into a compact product CTA. This keeps purchase access persistent without stacking a second sticky bar over PDP content.</p>
+    </div>
+  </section>
+
+  <header class="site-header" aria-label="Sticky header demo">
+    <nav class="site-header__state site-header__nav" aria-label="Normal navigation">
+      <div class="site-header__links"><span>Shop</span><span>Find your shade</span><span>About</span></div>
+      <div class="site-header__brand">Jones Road</div>
+      <div class="site-header__links site-header__icons"><span class="site-header__icon"></span><span class="site-header__icon"></span></div>
+    </nav>
+    <nav class="site-header__state site-header__pdp sticky-product" aria-label="Product navigation replacement">
+      <div class="sticky-product__back">Shop all</div>
+      <div class="sticky-product__center">
+        <div class="sticky-product__thumb"><img src="assets/reference-pdp.png" alt="Skin Texture Refiner thumbnail"></div>
+        <div>
+          <p class="sticky-product__title">Skin Texture Refiner</p>
+          <p class="sticky-product__meta">Niacinamide 5% + PHA 5%</p>
+        </div>
+      </div>
+      <div class="sticky-product__action"><span class="sticky-product__price">$41.50</span><a class="button" href="#buybox">Add to cart</a></div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="pdp-hero" id="buybox">
+      <div class="pdp-hero__gallery" aria-label="Product media">
+        <div class="pdp-hero__media"><img src="assets/reference-pdp.png" alt="Reference PDP screenshot showing product education layout"></div>
+        <div class="pdp-hero__media pdp-hero__media--flat"><div class="pdp-hero__swatch"></div></div>
+        <div class="pdp-hero__media pdp-hero__media--flat"><div class="pdp-hero__swatch" style="background:#d8c9bd;"></div></div>
+        <div class="pdp-hero__media pdp-hero__media--flat"><div class="pdp-hero__swatch" style="background:#c9b5a5;"></div></div>
+      </div>
+
+      <aside class="buybox" data-buybox>
+        <p class="buybox__kicker">PDP test variant</p>
+        <h2 class="buybox__title">Skin Texture Refiner</h2>
+        <p class="buybox__desc">A daily treatment with progressive efficacy that evens out skin tone and refines skin texture.</p>
+        <div class="buybox__stars-row" aria-label="4.8 out of 5 stars">
+          <div class="buybox__stars" aria-hidden="true">
+            <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          </div>
+          <span class="buybox__review-count">128 Reviews</span>
+        </div>
+        <p class="buybox__label">Choose shade</p>
+        <div class="buybox__swatches" aria-label="Shade options">
+          <span class="buybox__swatch is-active"><i style="--swatch:#e9d7c5;"></i></span>
+          <span class="buybox__swatch"><i style="--swatch:#d6b99d;"></i></span>
+          <span class="buybox__swatch"><i style="--swatch:#c69c7b;"></i></span>
+          <span class="buybox__swatch"><i style="--swatch:#a87557;"></i></span>
+          <span class="buybox__swatch"><i style="--swatch:#7a4d38;"></i></span>
+        </div>
+        <a class="button buybox__button" href="#"><span>Add to cart</span><span class="buybox__button-price">$41.50</span></a>
+        <p class="buybox__trust">Free shipping on US orders over $75 · Free & Easy Returns</p>
+      </aside>
+    </section>
+
+    <section class="content-section content-section--gray">
+      <div class="content-section__inner">
+        <p class="content-section__eyebrow">What changes on scroll</p>
+        <h2 class="content-section__title">The header becomes the purchase moment.</h2>
+        <p class="content-section__body">The regular site navigation is available while the customer is still in the primary buy box. After that section scrolls away, the same fixed header space turns into product name, variant context, price, and Add to Cart. No new sticky layer is added.</p>
+        <div class="accordion-list">
+          <section class="accordion"><h3 class="accordion__summary">Guardrail one: no content coverage <span>−</span></h3><p class="accordion__body">Unlike a bottom sticky bar or a second top bar, this pattern does not cover the page. It uses the space already occupied by the nav.</p></section>
+          <section class="accordion"><h3 class="accordion__summary">Guardrail two: show product context <span>−</span></h3><p class="accordion__body">The sticky state should include product name, selected shade or variant, price, and a clear purchase action.</p></section>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section content-section--white">
+      <div class="content-section__inner">
+        <p class="content-section__eyebrow">Why test it</p>
+        <h2 class="content-section__title">CTA persistence without the cramped-page feeling.</h2>
+        <p class="content-section__body">This is meant to preserve the CRO upside of a sticky Add to Cart while avoiding the main downside Cody flagged: hiding valuable PDP education. On mobile, the key question is whether top nav replacement beats bottom sticky CTA because it avoids covering the reading area.</p>
+      </div>
+    </section>
+
+    <section class="content-section content-section--gray">
+      <div class="compare-callout">
+        <article class="callout-card"><h3 class="callout-card__title">Avoid</h3><p class="callout-card__body">Normal nav plus extra sticky ATC. This stacks chrome and can steal 140–150px of vertical space before customers see product education.</p></article>
+        <article class="callout-card"><h3 class="callout-card__title">Recommended test</h3><p class="callout-card__body">Header transforms into the PDP CTA after the original buy box scrolls away. Same sticky footprint, more usable content space.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener('mousemove', function addMouse() {
+      document.body.classList.add('has-mouse');
+      document.removeEventListener('mousemove', addMouse);
+    });
+
+    const buybox = document.querySelector('[data-buybox]');
+
+    function updateStickyState() {
+      if (!buybox) return;
+      const buyboxTop = buybox.getBoundingClientRect().top + window.scrollY;
+      const buyboxBottom = buyboxTop + buybox.offsetHeight;
+      const shouldShow = window.scrollY + 92 >= buyboxBottom;
+      document.body.classList.toggle('is-sticky-pdp', shouldShow);
+    }
+
+    updateStickyState();
+    window.addEventListener('scroll', updateStickyState, { passive: true });
+    window.addEventListener('resize', updateStickyState);
+  </script>
+</body>
+</html>
