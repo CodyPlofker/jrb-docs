@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JETM Reviews — v03 Stats callout + manual quote carousel</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;color:#000;background:#fff;-webkit-font-smoothing:antialiased;line-height:1.5;}
+.section{background:#f8f8f8;}
+.wrap{max-width:1000px;margin:0 auto;padding:52px 20px 60px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;text-align:center;margin-bottom:10px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:34px;text-align:center;text-wrap:balance;margin-bottom:34px;line-height:1.12;}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:40px;}
+.stat{background:#fff;border:1px solid #e6e6e6;border-radius:3px;padding:26px 16px;text-align:center;}
+.stat__num{font-family:'Canela',serif;font-weight:300;font-size:44px;line-height:1;margin-bottom:8px;}
+.stat__lbl{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.5px;font-size:10.5px;line-height:1.5;}
+.stat__stars{color:#000;font-size:15px;letter-spacing:1.4px;margin-bottom:8px;}
+/* carousel */
+.carousel{background:#fff;border:1px solid #e6e6e6;border-radius:3px;padding:40px 28px 30px;text-align:center;position:relative;}
+.track{position:relative;min-height:188px;}
+.slide{display:none;flex-direction:column;align-items:center;}
+.slide.is-on{display:flex;}
+.slide__stars{color:#000;font-size:17px;letter-spacing:1.8px;margin-bottom:18px;}
+.slide__quote{font-family:'Canela',serif;font-weight:300;font-size:25px;line-height:1.38;text-wrap:balance;max-width:620px;margin-bottom:20px;}
+.slide__meta{display:flex;align-items:center;gap:8px;}
+.slide__shade{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:11px;}
+.verified{display:inline-flex;align-items:center;gap:4px;font-family:'BaseMonoWideWeb',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.4px;}
+.verified svg{width:12px;height:12px;}
+.controls{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:26px;}
+.navbtn{width:44px;height:44px;border:1px solid #cfcfcf;background:#fff;border-radius:3px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;}
+.navbtn:hover{border-color:#000;}
+.navbtn svg{width:16px;height:16px;}
+.dots{display:flex;gap:7px;}
+.dot{width:8px;height:8px;border-radius:50%;background:#cfcfcf;border:0;padding:0;cursor:pointer;}
+.dot.is-on{background:#000;}
+@media(max-width:740px){
+.wrap{padding:40px 16px 48px;}
+.headline{font-size:26px;}
+.stats{grid-template-columns:1fr;gap:10px;}
+.stat{display:flex;align-items:center;justify-content:center;gap:14px;padding:18px;text-align:left;}
+.stat__num{font-size:34px;margin:0;}
+.slide__quote{font-size:21px;}
+.carousel{padding:32px 18px 26px;}
+}
+</style>
+</head>
+<body>
+<div class="section">
+<div class="wrap">
+  <div class="eyebrow">The numbers</div>
+  <h2 class="headline">A barely-there face, by the numbers.</h2>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat__num">7,187</div>
+      <div class="stat__lbl">Verified reviews</div>
+    </div>
+    <div class="stat">
+      <div class="stat__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="stat__num" style="font-size:38px;">4.62</div>
+      <div class="stat__lbl">Average rating</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num">92%</div>
+      <div class="stat__lbl">Would recommend</div>
+    </div>
+  </div>
+
+  <div class="carousel">
+    <div class="track" id="track" aria-live="polite">
+      <div class="slide is-on">
+        <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="slide__quote">&ldquo;Jones Road just gets it! No frills, just does the job extremely well, so easy to use, very moisturising, natural glow, no fuss.&rdquo;</p>
+        <div class="slide__meta"><span class="slide__shade">Shade: Light</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+      </div>
+      <div class="slide">
+        <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="slide__quote">&ldquo;Great product. Blends well with my skin color. I do wish it had SPF &mdash; I just mix in my own sunscreen. Always recommend.&rdquo;</p>
+        <div class="slide__meta"><span class="slide__shade">Shade: Beige</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+      </div>
+      <div class="slide">
+        <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="slide__quote">&ldquo;Love everything &mdash; it takes years off, for that natural glow.&rdquo;</p>
+        <div class="slide__meta"><span class="slide__shade">Shade: Medium</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+      </div>
+      <div class="slide">
+        <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="slide__quote">&ldquo;This is the only makeup I put on my skin now. My skin just glows.&rdquo;</p>
+        <div class="slide__meta"><span class="slide__shade">Shade: Honey</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="navbtn" id="prev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="dots" id="dots"></div>
+      <button class="navbtn" id="next" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+(function(){
+  var slides=Array.prototype.slice.call(document.querySelectorAll('#track .slide'));
+  var dotsWrap=document.getElementById('dots');
+  var i=0;
+  slides.forEach(function(_,n){
+    var d=document.createElement('button');d.className='dot'+(n===0?' is-on':'');
+    d.setAttribute('aria-label','Go to review '+(n+1));
+    d.addEventListener('click',function(){go(n);});dotsWrap.appendChild(d);
+  });
+  var dots=Array.prototype.slice.call(dotsWrap.children);
+  function go(n){
+    i=(n+slides.length)%slides.length;
+    slides.forEach(function(s,k){s.classList.toggle('is-on',k===i);});
+    dots.forEach(function(d,k){d.classList.toggle('is-on',k===i);});
+  }
+  document.getElementById('prev').addEventListener('click',function(){go(i-1);});
+  document.getElementById('next').addEventListener('click',function(){go(i+1);});
+})();
+</script>
+</body>
+</html>

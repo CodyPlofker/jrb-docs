@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WTF Shade — v02 Depth-grouped tabs</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:520px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 4px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;}
+.tabs{display:flex;gap:0;margin:22px 0 0;border-bottom:1px solid #e0e0e0;}
+.tab{flex:1;appearance:none;background:none;border:none;cursor:pointer;padding:12px 4px;font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;border-bottom:2px solid transparent;margin-bottom:-1px;min-height:44px;}
+.tab[aria-selected="true"]{border-bottom-color:#000;}
+.panel{display:none;padding-top:18px;}
+.panel.active{display:block;}
+.rows{display:flex;flex-direction:column;gap:8px;}
+.row{appearance:none;border:1px solid #e6e6e6;background:#fff;border-radius:3px;cursor:pointer;padding:8px 10px;display:flex;align-items:center;gap:12px;text-align:left;width:100%;transition:border-color .15s;}
+.row[aria-pressed="true"]{border-color:#000;}
+.row img{width:54px;height:54px;border-radius:3px;object-fit:cover;flex-shrink:0;}
+.row .ring{width:28px;height:28px;border-radius:100%;border:1.5px solid #d4d4d4;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.row[aria-pressed="true"] .ring{border-color:#000;}
+.row .dot{width:24px;height:24px;border-radius:100%;}
+.row .meta{flex:1;min-width:0;display:flex;flex-direction:column;}
+.row .rn,.row .rd{display:block;}
+.row .rn{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:14px;}
+.row .rd{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.4;margin-top:2px;}
+.row .rd::first-letter{text-transform:uppercase;}
+.row .check{font-family:'RingsideWideWeb',sans-serif;font-size:14px;opacity:0;flex-shrink:0;padding-right:4px;}
+.row[aria-pressed="true"] .check{opacity:1;}
+.bar{margin-top:22px;background:#f8f8f8;border-radius:3px;padding:13px 16px;font-family:'RingsideWideWeb',sans-serif;font-size:13px;display:flex;justify-content:space-between;align-items:center;}
+.bar b{font-family:'ArticulatCF',sans-serif;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">16 shades · grouped by depth</div>
+  <h2 class="headline">Start with your depth.</h2>
+  <p class="sub">Pick the family closest to your skin, then choose by undertone. Every shade shown on real skin.</p>
+
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <div id="panels"></div>
+
+  <div class="bar">
+    <span>Selected: <b id="picked">Porcelain</b></span>
+    <span id="picked-tone" style="font-size:12px;"></span>
+  </div>
+</div>
+
+<script>
+const SHADES=[
+{n:"Alabaster",h:"#f0d9bd",d:"is pale with neutral pink undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_alabaster_1.jpg?v=1755118504",g:"Fair"},
+{n:"Porcelain",h:"#f2cca1",d:"is pale with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504",g:"Fair"},
+{n:"Fair",h:"#e9b08d",d:"is fair with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Fair_01_cc.jpg?v=1755118504",g:"Fair"},
+{n:"Ivory",h:"#d6a37f",d:"is fair with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/ivory_PDP_1_cc.jpg?v=1755118504",g:"Fair"},
+{n:"Light",h:"#d2a473",d:"is light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Light_cc.jpg?v=1755118504",g:"Light"},
+{n:"Beige",h:"#c89172",d:"is light to medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Beige_01_cc.jpg?v=1755118504",g:"Light"},
+{n:"Medium",h:"#b97f51",d:"is medium with neutral warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Medium_01_cc.jpg?v=1755118504",g:"Medium"},
+{n:"Medium Honey",h:"#ba7049",d:"is medium to tan with neutral warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_MediumHoney_01_cc.jpg?v=1755118504",g:"Medium"},
+{n:"Honey",h:"#a65631",d:"is medium to tan with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Honey_01_cc.jpg?v=1755118504",g:"Medium"},
+{n:"Golden",h:"#894e30",d:"is tan with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_golden_1_cc.jpg?v=1755118505",g:"Medium"},
+{n:"Pecan",h:"#873a2a",d:"is dark with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Pecan_01_cc.jpg?v=1755118504",g:"Deep"},
+{n:"Almond",h:"#673524",d:"is dark with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_almond_1_cc.jpg?v=1755118505",g:"Deep"},
+{n:"Cinnamon",h:"#792f22",d:"is dark with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Cinnamon_01_cc.jpg?v=1755118504",g:"Deep"},
+{n:"Chestnut",h:"#62271f",d:"is dark to deep with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Chestnut_01.png?v=1755118504",g:"Deep"},
+{n:"Deep",h:"#49221b",d:"is deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Deep_01.png?v=1755118504",g:"Deep"},
+{n:"Espresso",h:"#351a13",d:"is very deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Espresso_01.png?v=1755118504",g:"Deep"}
+];
+const GROUPS=["Fair","Light","Medium","Deep"];
+const tabs=document.getElementById('tabs'),panels=document.getElementById('panels');
+let selected="Porcelain";
+function W(u){return u+(u.includes('?')?'&':'?')+'width=800';}
+GROUPS.forEach((grp,gi)=>{
+  const t=document.createElement('button');
+  t.className='tab';t.setAttribute('role','tab');t.setAttribute('aria-selected',gi===0);
+  t.textContent=grp;t.onclick=()=>showTab(gi);
+  tabs.appendChild(t);
+  const p=document.createElement('div');
+  p.className='panel'+(gi===0?' active':'');
+  const rows=document.createElement('div');rows.className='rows';
+  SHADES.filter(s=>s.g===grp).forEach(s=>{
+    const r=document.createElement('button');r.className='row';r.setAttribute('aria-pressed',s.n===selected);
+    r.dataset.name=s.n;
+    r.innerHTML=`<span class="ring"><span class="dot" style="background:${s.h}"></span></span>
+      <img src="${W(s.img)}" alt="${s.n} on skin">
+      <span class="meta"><span class="rn">${s.n}</span><span class="rd">${s.d}</span></span>
+      <span class="check">&#10003;</span>`;
+    r.onclick=()=>pick(s);
+    rows.appendChild(r);
+  });
+  p.appendChild(rows);panels.appendChild(p);
+});
+function showTab(i){
+  [...tabs.children].forEach((t,j)=>t.setAttribute('aria-selected',j===i));
+  [...panels.children].forEach((p,j)=>p.classList.toggle('active',j===i));
+}
+function pick(s){
+  selected=s.n;
+  document.querySelectorAll('.row').forEach(r=>r.setAttribute('aria-pressed',r.dataset.name===s.n));
+  document.getElementById('picked').textContent=s.n;
+  document.getElementById('picked-tone').textContent=s.d.replace(/^is /,'');
+}
+pick(SHADES[1]);
+</script>
+</body>
+</html>

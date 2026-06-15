@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lip Recharge Shade — v03 2-question live finder</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+img{display:block;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;line-height:1.08;text-wrap:balance;}
+.sub{font-family:'RingsideWideWeb',sans-serif;line-height:1.55;}
+.label{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
+.mono{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.5px;}
+.stars{letter-spacing:1px;font-size:15px;color:#000;}
+
+.wrap{max-width:520px;margin:0 auto;padding:34px 20px 48px;}
+.eyebrow{margin-bottom:2px;}
+.headline{font-size:29px;margin:6px 0 6px;}
+.sub{font-size:13.5px;max-width:48ch;}
+.finder{margin-top:20px;background:#f8f8f8;border-radius:3px;padding:16px 16px 18px;}
+.fq{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;margin:0 0 9px;}
+.fq2{margin-top:16px;}
+.seg{display:flex;gap:7px;flex-wrap:wrap;}
+.seg button{appearance:none;border:1px solid #d4d4d4;background:#fff;border-radius:2px;padding:9px 12px;cursor:pointer;font-family:'BaseMonoWideWeb',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.4px;min-height:40px;}
+.seg button[aria-pressed="true"]{background:#000;color:#fff;border-color:#000;}
+.reco{display:none;margin-top:16px;background:#fff;border:1px solid #000;border-radius:3px;padding:12px;align-items:center;gap:13px;}
+.reco.show{display:flex;}
+.reco img{width:60px;height:60px;border-radius:3px;object-fit:cover;flex:0 0 auto;}
+.reco .rl{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:10px;}
+.reco .rn{font-family:'Canela',serif;font-weight:300;font-size:20px;}
+.reco .rx{margin-left:auto;align-self:flex-start;appearance:none;background:none;border:none;cursor:pointer;font-family:'BaseMonoWideWeb',monospace;font-size:11px;text-decoration:underline;}
+.counthdr{display:flex;align-items:baseline;justify-content:space-between;margin:22px 0 12px;}
+.counthdr .lab{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:13px;}
+.counthdr .n{font-family:'RingsideWideWeb',sans-serif;font-size:12px;}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.card{appearance:none;border:1px solid #e4e4e4;background:#fff;border-radius:3px;padding:0;cursor:pointer;overflow:hidden;text-align:left;transition:opacity .2s,border-color .15s;}
+.card.dim{opacity:.28;pointer-events:none;}
+.card.reco-hit{border-color:#000;}
+.card .ph{width:100%;aspect-ratio:1/1;overflow:hidden;background:#f8f8f8;}
+.card .ph img{width:100%;height:100%;object-fit:cover;}
+.card .meta{padding:7px 8px 9px;}
+.card .cn{font-family:'RingsideWideWeb',sans-serif;font-size:11.5px;display:flex;align-items:center;gap:5px;}
+.card .cdot{width:10px;height:10px;border-radius:100%;border:1px solid rgba(0,0,0,.12);flex:0 0 auto;}
+.atc{margin-top:20px;width:100%;background:#000;color:#fff;border:none;border-radius:3px;cursor:pointer;height:44px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:13px;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:10px;}
+.atc .pipe{opacity:.45;}.atc .d{width:13px;height:13px;border-radius:100%;border:1px solid rgba(255,255,255,.55);}
+.note{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.55;margin-top:14px;}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Shade finder</div>
+  <h2 class="headline">Answer two things. See your wash.</h2>
+  <p class="sub">No quiz redirect &mdash; we filter the 9 shades right here and pre-select one to try first.</p>
+
+  <div class="finder">
+    <p class="fq">1 &mdash; Which undertone feels like you?</p>
+    <div class="seg" data-group="undertone">
+      <button data-v="cool">Cool / pink</button>
+      <button data-v="warm">Warm / golden</button>
+      <button data-v="neutral">Neutral / nude</button>
+    </div>
+    <p class="fq fq2">2 &mdash; How much color do you want?</p>
+    <div class="seg" data-group="depth">
+      <button data-v="fair">Barely there</button>
+      <button data-v="medium">A real tint</button>
+      <button data-v="deep">Most pigment</button>
+    </div>
+    <div class="reco" id="reco">
+      <img id="reco-img" src="" alt="">
+      <div>
+        <div class="rl">Try this first</div>
+        <div class="rn" id="reco-name"></div>
+      </div>
+      <button class="rx" id="reco-clear">Show all</button>
+    </div>
+  </div>
+
+  <div class="counthdr">
+    <span class="lab">Your matches</span>
+    <span class="n" id="count">9 of 9 shades</span>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <button class="atc" id="atc">Add <span class="d" id="a-dot"></span> <b id="a-name"></b> to bag <span class="pipe">|</span> $24</button>
+  <p class="note">All 9 are universal and sheer &mdash; the filter just narrows the starting point. You can't go wrong.</p>
+</div>
+<script>
+const C="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/";
+function W(u){return u+(u.includes('?')?'&':'?')+'width=900';}
+
+const SH=[
+{n:'On The Rocks',h:'#e9dfe0',d:'is clear',fam:'Clear',depth:'all',undertone:'neutral',tone:'medium',pack:C+'OTR_Lip_Recharge_PDP_-_1.png?v=1773763814',lip:C+'OTR_Lip_Recharge_PDP_-_2.jpg?v=1772135120',smear:C+'OTR_Lip_Recharge_PDP_-_3_5ef92c5d-4e7d-4910-a7ad-d7b94c06058c.png?v=1772135136'},
+{n:'Petal',h:'#ed97a2',d:'is a sheer pale pink',fam:'Pale pink',depth:'fair',undertone:'cool',tone:'fair',pack:C+'Petal_Lip_Recharge_PDP_-_1.png?v=1772726302',lip:C+'Petal_Lip_Recharge_PDP_-_2.png?v=1772135253',smear:C+'Petal_Lip_Recharge_PDP_-_3.png?v=1772135258'},
+{n:'Champagne',h:'#e8b192',d:'is a sheer gold with multi-dimensional shimmer',fam:'Gold shimmer',depth:'fair',undertone:'warm',tone:'fair',pack:C+'Champagne_Lip_Recharge_PDP_-_1.png?v=1772726302',lip:C+'Champagne_Lip_Recharge_PDP_-_2.png?v=1772135468',smear:C+'Champagne_Lip_Recharge_PDP_-_3.png?v=1772135475'},
+{n:'Rosé',h:'#d14662',d:'is a sheer pink with gold shimmer',fam:'Pink + gold',depth:'light',undertone:'warm',tone:'fair',pack:C+'Rose_Lip_Recharge_PDP_-_1.png?v=1772726302',lip:C+'Rose_Lip_Recharge_PDP_-_2_1.png?v=1772138261',smear:C+'Rose_Lip_Recharge_PDP_-_3_1.png?v=1772138263'},
+{n:'Pink Lilac',h:'#da6a7e',d:'is a sheer cool pink with subtle monochromatic shimmer',fam:'Cool pink',depth:'light',undertone:'cool',tone:'light',pack:C+'PinkLilac_Lip_Recharge_PDP_-_1.png?v=1772726302',lip:C+'PinkLilac_Lip_Recharge_PDP_-_2_1.png?v=1772135383',smear:C+'PinkLilac_Lip_Recharge_PDP_-_3.png?v=1772135390'},
+{n:'Lilac',h:'#ad8cbf',d:'is a sheer lavender with multi-dimensional shimmer',fam:'Lavender',depth:'medium',undertone:'cool',tone:'medium',pack:C+'Lilac_Lip_Recharge_PDP_-_1_1.png?v=1772726302',lip:C+'Lilac_Lip_Recharge_PDP_-_2_1.png?v=1772139009',smear:C+'Lilac_Lip_Recharge_PDP_-_3.png?v=1772138954'},
+{n:'Me',h:'#a8625a',d:'is a sheer nude brown',fam:'Nude brown',depth:'medium',undertone:'neutral',tone:'light',pack:C+'Me_Lip_Recharge_PDP_-_1.png?v=1772726302',lip:C+'Me_Lip_Recharge_PDP_-_2.png?v=1772138464',smear:C+'Me_Lip_Recharge_PDP_-_3.png?v=1772138459'},
+{n:'Dahlia',h:'#b13a4a',d:'is a sheer rosy pink with monochromatic shimmer',fam:'Rosy pink',depth:'medium',undertone:'cool',tone:'medium',pack:C+'Dahlia_Lip_Recharge_PDP_-_1.png?v=1772726302',lip:C+'Dahlia_Lip_Recharge_PDP_-_2.png?v=1772138370',smear:C+'Dahlia_Lip_Recharge_PDP_-_3.png?v=1772138373'},
+{n:'Sangria',h:'#820d39',d:'is a sheer berry',fam:'Berry',depth:'deep',undertone:'cool',tone:'deep',pack:C+'Sangria_Lip_Recharge_PDP_-_1_1.png?v=1772726302',lip:C+'Sangria_Lip_Recharge_PDP_-_2.png?v=1772138661',smear:C+'Sangria_Lip_Recharge_PDP_-_3.png?v=1772138658'}
+];
+let sel=0;const chosen={undertone:null,depth:null};
+const grid=document.getElementById('grid');
+SH.forEach((s,i)=>{
+  const b=document.createElement('button');b.className='card';b.dataset.i=i;
+  b.innerHTML=`<span class="ph"><img src="${W(s.lip)}" alt="${s.n} on lips"></span>`+
+    `<span class="meta"><span class="cn"><span class="cdot" style="background:${s.h}"></span>${s.n}</span></span>`;
+  b.onclick=()=>pick(i);grid.appendChild(b);
+});
+function pick(i){sel=i;const s=SH[i];document.getElementById('a-dot').style.background=s.h;
+  document.getElementById('a-name').textContent=s.n;}
+pick(0);
+document.querySelectorAll('.seg').forEach(g=>g.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));
+  b.setAttribute('aria-pressed','true');chosen[g.dataset.group]=b.dataset.v;apply();}));
+document.getElementById('reco-clear').onclick=()=>{chosen.undertone=null;chosen.depth=null;
+  document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed','false'));
+  document.getElementById('reco').classList.remove('show');apply();};
+function matches(s){
+  let ok=true;
+  if(chosen.undertone&&s.undertone!==chosen.undertone&&s.undertone!=='neutral'&&s.depth!=='all')ok=false;
+  if(chosen.depth){
+    if(chosen.depth==='fair'&&!['fair','light','all'].includes(s.depth))ok=false;
+    if(chosen.depth==='medium'&&!['light','medium','all'].includes(s.depth))ok=false;
+    if(chosen.depth==='deep'&&!['medium','deep','all'].includes(s.depth))ok=false;
+  }
+  return ok;
+}
+function apply(){
+  let shown=0,firstHit=-1;
+  [...grid.children].forEach(c=>{
+    const s=SH[+c.dataset.i];const m=matches(s);
+    c.classList.toggle('dim',!m);c.classList.remove('reco-hit');
+    if(m){shown++;if(firstHit<0)firstHit=+c.dataset.i;}
+  });
+  document.getElementById('count').textContent=shown+' of '+SH.length+' shades';
+  if(chosen.undertone&&chosen.depth&&firstHit>=0){
+    // best = first hit that also matches undertone exactly if possible
+    let best=firstHit;
+    [...grid.children].forEach(c=>{const s=SH[+c.dataset.i];
+      if(matches(s)&&s.undertone===chosen.undertone){best=+c.dataset.i;}});
+    grid.children[best].classList.add('reco-hit');
+    const s=SH[best];const r=document.getElementById('reco');r.classList.add('show');
+    document.getElementById('reco-img').src=W(s.lip);
+    document.getElementById('reco-name').textContent=s.n;
+    pick(best);
+  }
+}
+</script>
+</body></html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FS Shade — v05 Visual shade-on-skin</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:520px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 4px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.5;}
+/* big stage */
+.stage{position:relative;margin-top:20px;border-radius:3px;overflow:hidden;background:#f8f8f8;aspect-ratio:1/1;border:1px solid #ededed;}
+.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .25s;}
+.stage img.on{opacity:1;}
+.cap{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:10px;padding:14px;background:linear-gradient(to top,rgba(255,255,255,.97),rgba(255,255,255,0));}
+.cap .cdot{width:30px;height:30px;border-radius:100%;border:1.5px solid #000;flex-shrink:0;}
+.cap .cn{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:16px;}
+.cap .cd{font-family:'RingsideWideWeb',sans-serif;font-size:11px;line-height:1.2;}
+.cap .cstep{margin-left:auto;font-family:'BaseMonoWideWeb',monospace;font-size:9.5px;letter-spacing:.4px;text-transform:uppercase;text-align:right;line-height:1.3;}
+/* nudger arrows under the stage */
+.nudge{display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
+.nudge button{appearance:none;border:1px solid #d4d4d4;background:#fff;border-radius:3px;cursor:pointer;height:40px;padding:0 14px;font-family:'BaseMonoWideWeb',monospace;font-size:11px;letter-spacing:.4px;text-transform:uppercase;display:flex;align-items:center;gap:6px;}
+.nudge .pos{font-family:'RingsideWideWeb',sans-serif;font-size:12px;}
+.nudge .pos b{font-family:'ArticulatCF',sans-serif;font-weight:700;}
+/* swatch rail */
+.railhead{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 12px;}
+.railhead .lab{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:14px;}
+.railhead .hint{font-family:'RingsideWideWeb',sans-serif;font-size:12px;}
+.rail{display:grid;grid-template-columns:repeat(6,1fr);gap:14px 6px;}
+.swatch{appearance:none;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0;min-height:44px;}
+.ring{width:32px;height:32px;border-radius:100%;border:1.5px solid #d4d4d4;display:flex;align-items:center;justify-content:center;transition:border-color .15s,box-shadow .15s;}
+.dot{width:26px;height:26px;border-radius:100%;}
+.swatch[aria-pressed="true"] .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.sname{font-family:'RingsideWideWeb',sans-serif;font-size:8.5px;line-height:1.1;text-align:center;letter-spacing:-.2px;}
+.atc{margin-top:18px;}
+.atc button{width:100%;appearance:none;border:none;border-radius:3px;cursor:pointer;height:46px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:13px;letter-spacing:.6px;background:#000;color:#fff;}
+.atc .pipe{opacity:.55;margin:0 8px;}
+.note{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">30 shades · medium-to-full, buildable</div>
+  <h2 class="headline">See every shade up close.</h2>
+  <p class="sub">Tap any swatch and the stick above swaps to that shade. The creamy formula melts in — natural skin finish, no sitting in pores or lines.</p>
+
+  <div class="stage" id="stage">
+    <div class="cap">
+      <span class="cdot" id="cdot"></span>
+      <span>
+        <span class="cn" id="cn"></span><br>
+        <span class="cd" id="cd"></span>
+      </span>
+      <span class="cstep" id="cstep"></span>
+    </div>
+  </div>
+
+  <div class="nudge">
+    <button id="prev">‹ Lighter</button>
+    <span class="pos">Shade <b id="pos">6</b> of 30</span>
+    <button id="next">Deeper ›</button>
+  </div>
+
+  <div class="railhead">
+    <span class="lab">Shade</span>
+    <span class="hint" id="hint"></span>
+  </div>
+  <div class="rail" id="rail"></div>
+
+  <div class="atc"><button id="atc">Add to bag<span class="pipe">|</span>$38</button></div>
+  <p class="note">Buildable and natural, so a near-match still blends — you don't have to land it exactly.</p>
+</div>
+
+<script>
+const SHADES=[
+{n:"Pale Alabaster",h:"#f1ddc6",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_1.jpg?v=1777924896"},
+{n:"Alabaster",h:"#efd6bd",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_10.jpg?v=1777925395"},
+{n:"Bisque",h:"#eccdb0",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_19.jpg?v=1777991567"},
+{n:"Linen",h:"#ecd0b8",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_28.jpg?v=1777991768"},
+{n:"Warm Linen",h:"#e8c6a6",g:"fair",u:"warm",d:"Fair with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_29.jpg?v=1777991792"},
+{n:"Porcelain",h:"#e6c3a6",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_55.jpg?v=1777991814"},
+{n:"Fair",h:"#e3bda0",g:"fair",u:"cool",d:"Fair with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_56.jpg?v=1778074299"},
+{n:"Neutral Fair",h:"#e2bb9d",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_55_1.jpg?v=1778074281"},
+{n:"Ivory",h:"#ddb293",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_57.jpg?v=1778074322"},
+{n:"Light",h:"#d8ab8a",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_82.jpg?v=1778074341"},
+{n:"Sand",h:"#d6a988",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_83.jpg?v=1778074361"},
+{n:"Beige",h:"#cf9f7f",g:"light",u:"neutral",d:"Light with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_84.jpg?v=1778074380"},
+{n:"Warm Beige",h:"#cb9876",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_109.jpg?v=1778074399"},
+{n:"Neutral Beige",h:"#c69273",g:"light",u:"neutral",d:"Light with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_110.jpg?v=1778074448"},
+{n:"Medium",h:"#bd8868",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_111.jpg?v=1778074466"},
+{n:"Warm Medium",h:"#b8825f",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_136.jpg?v=1778074517"},
+{n:"Neutral Medium",h:"#b27c5b",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_141.jpg?v=1778074535"},
+{n:"Neutral Honey",h:"#a9714f",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_146_2.jpg?v=1778074627"},
+{n:"Medium Honey",h:"#a36a48",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_137.jpg?v=1778074645"},
+{n:"Honey",h:"#9b6242",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_142.jpg?v=1778074662"},
+{n:"Warm Honey",h:"#94592f",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_147_1.jpg?v=1778075035"},
+{n:"Golden",h:"#8a5430",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_138.jpg?v=1778075124"},
+{n:"Hazelnut",h:"#7c4a30",g:"deep",u:"warm",d:"Deep with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_143.jpg?v=1778075141"},
+{n:"Pecan",h:"#724229",g:"deep",u:"neutral",d:"Deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_139.jpg?v=1778075176"},
+{n:"Almond",h:"#693c27",g:"deep",u:"warm",d:"Deep with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_139_1.jpg?v=1778075205"},
+{n:"Walnut",h:"#5e3623",g:"deep",u:"warm",d:"Deep with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_144_1.jpg?v=1778075345"},
+{n:"Cinnamon",h:"#552f20",g:"deep",u:"cool",d:"Deep with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_149.jpg?v=1778075361"},
+{n:"Chestnut",h:"#4b2a1e",g:"deep",u:"cool",d:"Deep with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_140.jpg?v=1778075377"},
+{n:"Deep",h:"#3f231a",g:"deep",u:"neutral",d:"Deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_145.jpg?v=1778075391"},
+{n:"Espresso",h:"#321b14",g:"deep",u:"neutral",d:"Deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_150.jpg?v=1778075404"}
+];
+function W(u){return u+(u.includes('?')?'&':'?')+'width=800';}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+const stage=document.getElementById('stage'),rail=document.getElementById('rail');
+let selected=5;
+const layers=SHADES.map((s,i)=>{const im=document.createElement('img');im.src=W(s.img);im.alt=s.n+' Foundation Stick';im.dataset.i=i;stage.insertBefore(im,stage.querySelector('.cap'));return im;});
+SHADES.forEach((s,i)=>{
+  const b=document.createElement('button');b.className='swatch';b.setAttribute('aria-pressed',i===selected);b.dataset.i=i;b.setAttribute('aria-label',s.n);
+  b.innerHTML=`<span class="ring"><span class="dot" style="background:${s.h}"></span></span><span class="sname">${s.n}</span>`;
+  b.onclick=()=>select(i);
+  rail.appendChild(b);
+});
+function select(i){
+  selected=i;const s=SHADES[i];
+  layers.forEach(l=>l.classList.toggle('on',+l.dataset.i===i));
+  document.getElementById('cdot').style.background=s.h;
+  document.getElementById('cn').textContent=s.n;
+  document.getElementById('cd').textContent=s.d;
+  document.getElementById('cstep').innerHTML='Shade '+(i+1)+'<br>of 30';
+  document.getElementById('pos').textContent=i+1;
+  document.getElementById('hint').textContent=cap(s.g)+' · '+cap(s.u)+' undertone';
+  [...rail.children].forEach(c=>c.setAttribute('aria-pressed',+c.dataset.i===i));
+  document.getElementById('atc').innerHTML='Add to bag — '+s.n+'<span class="pipe">|</span>$38';
+}
+document.getElementById('prev').onclick=()=>select(Math.max(0,selected-1));
+document.getElementById('next').onclick=()=>select(Math.min(SHADES.length-1,selected+1));
+select(selected);
+</script>
+</body>
+</html>

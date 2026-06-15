@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WTF Buybox v03 — Mobile-stacked</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:430px;margin:0 auto;padding:0 0 92px;position:relative;}
+
+.hero{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#f8f8f8;}
+.hstrip{display:flex;gap:6px;padding:8px 16px 0;overflow-x:auto;}
+.hstrip img{width:56px;height:56px;object-fit:cover;border-radius:3px;border:1px solid #d4d4d4;flex:none;background:#f8f8f8;}
+
+.pad{padding:16px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.pname{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;font-size:22px;letter-spacing:1.18px;margin:6px 0 8px;line-height:1.1;}
+.rating{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.stars{display:inline-flex;gap:2px;}
+.stars svg{width:16px;height:16px;}
+.rcount{font-family:'RingsideWideWeb';font-size:14px;}
+.price{font-family:'RingsideWideWeb';font-size:19px;margin-bottom:14px;}
+
+/* benefit chips ABOVE swatches */
+.exp-label{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:11px;margin-bottom:8px;}
+.exp{display:flex;flex-direction:column;gap:8px;margin-bottom:22px;}
+.chip{display:flex;align-items:center;gap:9px;border:1px solid #d4d4d4;border-radius:3px;padding:11px 13px;font-family:'RingsideWideWeb';font-size:13.5px;}
+.chip svg{width:15px;height:15px;flex:none;}
+
+.shade-head{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 12px;}
+.shade-label{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:11px;}
+.shade-current{font-family:'RingsideWideWeb';font-size:13px;}
+.swatches{display:grid;grid-template-columns:repeat(8,1fr);gap:11px;}
+.sw{width:30px;height:30px;border-radius:100%;border:1px solid #d4d4d4;padding:2px;cursor:pointer;background:none;display:flex;align-items:center;justify-content:center;}
+.sw.sel{border-color:#000;border-width:1.5px;}
+.sw i{display:block;width:24px;height:24px;border-radius:100%;}
+
+/* sticky ATC bar pinned bottom */
+.sticky{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #e3e3e3;padding:10px 16px;max-width:430px;margin:0 auto;}
+.atc{display:flex;align-items:center;justify-content:center;width:100%;height:46px;background:#000;color:#fff;border:none;border-radius:3px;font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:13px;letter-spacing:.5px;cursor:pointer;}
+.atc .pipe{opacity:.45;margin:0 12px;}
+.sticky .sub{font-family:'RingsideWideWeb';font-size:11px;text-align:center;margin-top:6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="hero" id="hero" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Light_cc.jpg?v=1755118504&width=860" alt="What The Foundation">
+  <div class="hstrip" id="hstrip">
+    <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Light_cc.jpg?v=1755118504&width=160" alt="">
+    <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504&width=160" alt="">
+    <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Medium_01_cc.jpg?v=1755118504&width=160" alt="">
+    <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Honey_01_cc.jpg?v=1755118504&width=160" alt="">
+  </div>
+
+  <div class="pad">
+    <div class="eyebrow">Foundation</div>
+    <h1 class="pname">What The Foundation</h1>
+    <div class="rating">
+      <span class="stars" id="stars"></span>
+      <span class="rcount">53,379 reviews · 4.46&#9733;</span>
+    </div>
+    <div class="price">$46.00</div>
+
+    <!-- BENEFIT CHIPS ABOVE SWATCHES -->
+    <div class="exp-label">What to expect</div>
+    <div class="exp">
+      <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg>Light-to-medium, buildable</span>
+      <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg>Looks like skin, not makeup</span>
+      <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg>Best on normal-to-dry skin</span>
+    </div>
+
+    <div class="shade-head">
+      <span class="shade-label">Shade — 16 available</span>
+      <span class="shade-current" id="shadeCur">Light</span>
+    </div>
+    <div class="swatches" id="sw"></div>
+  </div>
+
+  <!-- STICKY ATC -->
+  <div class="sticky">
+    <button class="atc">Add to bag — <span id="atcShade">Light</span><span class="pipe">|</span>$46.00</button>
+    <div class="sub">Free shipping over $50 · Easy returns</div>
+  </div>
+</div>
+
+<script>
+var SH=[["Alabaster","#f3ddc9"],["Porcelain","#eed3bb"],["Fair","#ecccb0"],["Ivory","#e8c4a4"],["Light","#e2b896"],["Beige","#d9aa84"],["Medium","#cf9b72"],["Medium Honey","#c89065"],["Honey","#bd825a"],["Golden","#b3784f"],["Pecan","#a56b43"],["Almond","#965d39"],["Cinnamon","#85502f"],["Chestnut","#6f4226"],["Deep","#5a341d"],["Espresso","#432615"]];
+var star='<svg viewBox="0 0 24 24" fill="#000"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z"/></svg>';
+document.getElementById('stars').innerHTML=star.repeat(4)+'<svg viewBox="0 0 24 24"><defs><linearGradient id="h"><stop offset="46%" stop-color="#000"/><stop offset="46%" stop-color="#fff"/></linearGradient></defs><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z" fill="url(#h)" stroke="#000"/></svg>';
+var sw=document.getElementById('sw');
+SH.forEach(function(s,i){var b=document.createElement('button');b.className='sw'+(i===4?' sel':'');b.innerHTML='<i style="background:'+s[1]+'"></i>';b.title=s[0];b.onclick=function(){document.querySelectorAll('.sw').forEach(function(x){x.classList.remove('sel')});b.classList.add('sel');document.getElementById('shadeCur').textContent=s[0];document.getElementById('atcShade').textContent=s[0];};sw.appendChild(b);});
+var hs=document.getElementById('hstrip').children;
+for(var t=0;t<hs.length;t++){(function(el){el.onclick=function(){document.getElementById('hero').src=el.src.replace('width=160','width=860');};})(hs[t]);}
+</script>
+</body>
+</html>

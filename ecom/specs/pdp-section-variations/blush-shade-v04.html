@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blushing Stick Shade — v04 Compare two shades side-by-side</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:540px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 6px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.55;}
+/* compare panels */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px;}
+.panel{border:1px solid #e4e4e4;border-radius:3px;overflow:hidden;}
+.panel.active{border-color:#000;box-shadow:0 0 0 1px #000;}
+.panel .ph{position:relative;aspect-ratio:3/4;background:#f8f8f8;}
+.panel .ph img{width:100%;height:100%;object-fit:cover;display:block;}
+.panel .ph .tag{position:absolute;top:8px;left:8px;background:#000;color:#fff;font-family:'BaseMonoWideWeb',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.5px;padding:4px 7px;border-radius:2px;}
+.panel .meta{padding:10px 11px 12px;}
+.panel .nm{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:14px;line-height:1.05;display:flex;align-items:center;gap:7px;}
+.panel .nm .sw{width:14px;height:14px;border-radius:100%;border:1px solid rgba(0,0,0,.15);flex-shrink:0;}
+.panel .dd{font-family:'RingsideWideWeb',sans-serif;font-size:11.5px;margin-top:4px;}
+/* which-am-i-changing toggle */
+.changing{display:flex;gap:8px;margin-top:14px;}
+.changing button{flex:1;appearance:none;border:1px solid #d4d4d4;background:#fff;border-radius:3px;cursor:pointer;padding:9px;font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:11px;min-height:44px;}
+.changing button[aria-pressed="true"]{border-color:#000;background:#000;color:#fff;}
+/* swatch picker */
+.pickhead{font-family:'RingsideWideWeb',sans-serif;font-size:12px;margin:16px 0 11px;}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px 6px;}
+.swatch{appearance:none;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;padding:0;}
+.ring{width:40px;height:40px;border-radius:100%;border:1.5px solid #d4d4d4;display:flex;align-items:center;justify-content:center;position:relative;transition:border-color .15s,box-shadow .15s;}
+.dot{width:34px;height:34px;border-radius:100%;}
+.swatch.inA .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.swatch.inB .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.ab{position:absolute;bottom:-4px;right:-4px;width:16px;height:16px;border-radius:100%;background:#000;color:#fff;font-family:'RingsideWideWeb',sans-serif;font-size:9px;display:none;align-items:center;justify-content:center;}
+.swatch.inA .ab.a{display:flex;}
+.swatch.inB .ab.b{display:flex;}
+.sname{font-family:'RingsideWideWeb',sans-serif;font-size:10.5px;text-align:center;line-height:1.1;}
+/* how to pick note */
+.howto{margin-top:22px;border:1px solid #000;border-radius:3px;padding:15px 16px;}
+.howto .t{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;margin-bottom:8px;}
+.howto p{font-family:'RingsideWideWeb',sans-serif;font-size:12.5px;line-height:1.55;}
+.howto p+p{margin-top:7px;}
+/* atc dual */
+.atc2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;}
+.atc2 button{appearance:none;border:none;border-radius:3px;cursor:pointer;height:46px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:12px;letter-spacing:.4px;background:#000;color:#fff;padding:0 6px;}
+.atc2 button:disabled{background:#e4e4e4;color:#8a8a8a;cursor:not-allowed;}
+.atc2 .pipe{opacity:.55;margin:0 6px;}
+.note{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">9 shades · cream blush + lip</div>
+  <h2 class="headline">Torn between two? Put them side by side.</h2>
+  <p class="sub">Compare any two shades on the cheek at once. Tap a panel to make it the one you're swapping, then choose from the row below.</p>
+
+  <div class="compare">
+    <div class="panel active" id="panelA" data-slot="A">
+      <span class="ph"><img id="imgA" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Pretty_-_2.webp?width=500" alt=""><span class="tag">A</span></span>
+      <span class="meta"><span class="nm"><span class="sw" id="swA" style="background:#df839d"></span><span id="nmA">Pretty</span></span><span class="dd" id="ddA">A baby pink</span></span>
+    </div>
+    <div class="panel" id="panelB" data-slot="B">
+      <span class="ph"><img id="imgB" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Miami_-_2.webp?width=500" alt=""><span class="tag">B</span></span>
+      <span class="meta"><span class="nm"><span class="sw" id="swB" style="background:#e9826b"></span><span id="nmB">Miami</span></span><span class="dd" id="ddB">A warm peachy coral</span></span>
+    </div>
+  </div>
+
+  <div class="changing" role="group" aria-label="Which panel to change">
+    <button data-slot="A" aria-pressed="true">Changing A</button>
+    <button data-slot="B" aria-pressed="false">Changing B</button>
+  </div>
+
+  <p class="pickhead">Tap a shade to drop it into panel <b id="activeLabel">A</b></p>
+  <div class="grid" id="grid"></div>
+
+  <div class="howto">
+    <div class="t">Between two shades? Here's how to pick</div>
+    <p>Go with the one that pulls toward your natural flush &mdash; pinch your cheek and match that tone. Cooler skin tends to love the pinks and berries; warm skin glows in coral.</p>
+    <p>Still split? Choose the deeper of the two. Blushing Stick starts light and builds, so you can always apply a deeper shade with a lighter hand &mdash; but you can't add depth to a shade that's too soft.</p>
+  </div>
+
+  <div class="atc2">
+    <button id="atcA">Add A — Pretty<span class="pipe">|</span>$34</button>
+    <button id="atcB">Add B — Miami<span class="pipe">|</span>$34</button>
+  </div>
+  <p class="note">A little goes a long way &mdash; one stick does cheeks and lips.</p>
+</div>
+
+<script>
+const SHADES=[
+{n:"Joy",sub:"Emily's Shade",h:"#894556",d:"A sheer raspberry",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Joy_-_2.webp"},
+{n:"Bare",h:"#b1848f",d:"A cool dusty rose",avail:false,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Bare_-_2_1.webp"},
+{n:"Chic",h:"#bc8282",d:"A nude pink",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Chic_-_2.webp"},
+{n:"Pretty",h:"#df839d",d:"A baby pink",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Pretty_-_2.webp"},
+{n:"Miami",h:"#e9826b",d:"A warm peachy coral",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Miami_-_2.webp"},
+{n:"Flush",h:"#df839d",d:"A cool pink",avail:false,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Flush_-_2.webp"},
+{n:"Pinch",h:"#ab484e",d:"A neutral rose",avail:false,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Pinch_-_2.webp"},
+{n:"Cheeky",h:"#7c393a",d:"A plummy berry",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Cheeky_-_2.webp"},
+{n:"Noir",h:"#5d2429",d:"A sheer plum",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Noir_-_2.webp"}
+];
+function W(u){return u+(u.includes('?')?'&':'?')+'width=500';}
+let slot="A";
+let pickA=3,pickB=4; // Pretty, Miami
+const grid=document.getElementById('grid');
+SHADES.forEach((s,i)=>{
+  const b=document.createElement('button');b.className='swatch';b.dataset.i=i;b.setAttribute('aria-label',s.n+' — '+s.d);
+  b.innerHTML=`<span class="ring"><span class="dot" style="background:${s.h}"></span><span class="ab a">A</span><span class="ab b">B</span></span><span class="sname">${s.n}</span>`;
+  b.onclick=()=>assign(i);
+  grid.appendChild(b);
+});
+function assign(i){
+  if(slot==="A")pickA=i;else pickB=i;
+  paint();
+}
+function paint(){
+  [...grid.children].forEach(c=>{const i=+c.dataset.i;c.classList.toggle('inA',i===pickA);c.classList.toggle('inB',i===pickB);});
+  const A=SHADES[pickA],B=SHADES[pickB];
+  document.getElementById('imgA').src=W(A.img);document.getElementById('imgA').alt=A.n+' on cheek';
+  document.getElementById('nmA').textContent=A.n+(A.sub?' · '+A.sub:'');document.getElementById('ddA').textContent=A.d;document.getElementById('swA').style.background=A.h;
+  document.getElementById('imgB').src=W(B.img);document.getElementById('imgB').alt=B.n+' on cheek';
+  document.getElementById('nmB').textContent=B.n+(B.sub?' · '+B.sub:'');document.getElementById('ddB').textContent=B.d;document.getElementById('swB').style.background=B.h;
+  const aA=document.getElementById('atcA'),aB=document.getElementById('atcB');
+  if(A.avail){aA.disabled=false;aA.innerHTML='Add A — '+A.n+'<span class="pipe">|</span>$34';}else{aA.disabled=true;aA.innerHTML='A sold out — '+A.n;}
+  if(B.avail){aB.disabled=false;aB.innerHTML='Add B — '+B.n+'<span class="pipe">|</span>$34';}else{aB.disabled=true;aB.innerHTML='B sold out — '+B.n;}
+}
+document.querySelectorAll('.changing button').forEach(btn=>{
+  btn.onclick=()=>{
+    slot=btn.dataset.slot;
+    document.querySelectorAll('.changing button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.slot===slot?'true':'false'));
+    document.getElementById('panelA').classList.toggle('active',slot==="A");
+    document.getElementById('panelB').classList.toggle('active',slot==="B");
+    document.getElementById('activeLabel').textContent=slot;
+  };
+});
+paint();
+</script>
+</body>
+</html>

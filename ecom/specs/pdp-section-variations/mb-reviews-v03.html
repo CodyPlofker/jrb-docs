@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miracle Balm Reviews — v03 Stats callout + quote carousel</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;color:#000;background:#fff;-webkit-font-smoothing:antialiased;line-height:1.5;}
+.wrap{max-width:980px;margin:0 auto;padding:48px 20px 64px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;text-align:center;margin-bottom:10px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:34px;text-align:center;text-wrap:balance;margin-bottom:34px;line-height:1.12;}
+/* stats callout */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #e3e3e3;border-radius:3px;overflow:hidden;background:#f8f8f8;}
+.stat{padding:26px 14px;text-align:center;border-right:1px solid #e3e3e3;}
+.stat:last-child{border-right:none;}
+.stat__n{font-family:'Canela',serif;font-weight:300;font-size:40px;line-height:1;margin-bottom:8px;}
+.stat__n .star{font-size:26px;vertical-align:2px;}
+.stat__l{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:10.5px;line-height:1.5;}
+/* carousel */
+.carouter{margin-top:40px;}
+.carlbl{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;text-align:center;margin-bottom:18px;}
+.viewport{overflow:hidden;border:1px solid #e3e3e3;border-radius:3px;}
+.track{display:flex;transition:transform .35s ease;}
+.slide{min-width:100%;padding:40px 56px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.slide__stars{font-size:18px;letter-spacing:2.5px;color:#000;}
+.slide__quote{font-family:'Canela',serif;font-weight:300;font-size:25px;line-height:1.35;text-wrap:balance;max-width:680px;}
+.slide__name{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12.5px;}
+.slide__shade{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:10.5px;margin-top:-10px;}
+.controls{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:18px;}
+.arrow{appearance:none;width:44px;height:44px;border:1px solid #cfcfcf;background:#fff;border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.arrow svg{width:18px;height:18px;}
+.arrow:hover{border-color:#000;}
+.dots{display:flex;gap:9px;}
+.dot{width:8px;height:8px;border-radius:100%;background:#d4d4d4;border:none;padding:0;cursor:pointer;}
+.dot[aria-current="true"]{background:#000;}
+.btn{display:block;width:100%;max-width:340px;margin:36px auto 0;text-align:center;background:#000;color:#fff;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.5px;font-size:13px;padding:14px;border-radius:3px;text-decoration:none;}
+@media(max-width:740px){
+.wrap{padding:36px 16px 48px;}
+.headline{font-size:26px;}
+.stats{grid-template-columns:1fr 1fr;}
+.stat{border-bottom:1px solid #e3e3e3;}
+.stat:nth-child(odd){border-right:1px solid #e3e3e3;}
+.stat:nth-child(2n){border-right:none;}
+.stat:nth-child(3),.stat:nth-child(4){border-bottom:none;}
+.slide{padding:32px 22px;}
+.slide__quote{font-size:21px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">The numbers</div>
+  <h2 class="headline">85,059 reasons to glow</h2>
+
+  <div class="stats">
+    <div class="stat"><div class="stat__n">85,059</div><div class="stat__l">Verified reviews</div></div>
+    <div class="stat"><div class="stat__n">4.23<span class="star">&#9733;</span></div><div class="stat__l">Average rating</div></div>
+    <div class="stat"><div class="stat__n">13</div><div class="stat__l">Shades to choose</div></div>
+    <div class="stat"><div class="stat__n">1</div><div class="stat__l">Balm, endless ways<br>to wear it</div></div>
+  </div>
+
+  <div class="carouter">
+    <div class="carlbl">In their words</div>
+    <div class="viewport">
+      <div class="track" id="track">
+        <div class="slide">
+          <div class="slide__stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="slide__quote">&ldquo;So natural looking and really provides a nice blush without looking overdone.&rdquo;</p>
+          <div class="slide__name">Charlene L.</div>
+          <div class="slide__shade">Au Naturel</div>
+        </div>
+        <div class="slide">
+          <div class="slide__stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="slide__quote">&ldquo;It&rsquo;s light and smooth and evens out my skin tone with no thick heaviness.&rdquo;</p>
+          <div class="slide__name">Randi B.</div>
+          <div class="slide__shade">Dusty Rose</div>
+        </div>
+        <div class="slide">
+          <div class="slide__stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="slide__quote">&ldquo;You don&rsquo;t need very much&hellip; a great value for a high quality product.&rdquo;</p>
+          <div class="slide__name">Monica L.</div>
+          <div class="slide__shade">Au Naturel</div>
+        </div>
+        <div class="slide">
+          <div class="slide__stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="slide__quote">&ldquo;I&rsquo;ve been using Miracle Balm for some time now. Love the healthy glow it brings.&rdquo;</p>
+          <div class="slide__name">Ann M.</div>
+          <div class="slide__shade">Golden Hour</div>
+        </div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="arrow" id="prev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="dots" id="dots"></div>
+      <button class="arrow" id="next" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+    </div>
+  </div>
+
+  <a class="btn" href="#">Read all 85,059 reviews</a>
+</div>
+<script>
+(function(){
+  var track=document.getElementById('track');
+  var slides=track.children.length;
+  var i=0;
+  var dotsWrap=document.getElementById('dots');
+  for(var d=0;d<slides;d++){
+    var b=document.createElement('button');
+    b.className='dot';b.setAttribute('aria-label','Go to review '+(d+1));
+    if(d===0)b.setAttribute('aria-current','true');
+    (function(idx){b.addEventListener('click',function(){go(idx);});})(d);
+    dotsWrap.appendChild(b);
+  }
+  var dots=dotsWrap.children;
+  function go(n){i=(n+slides)%slides;track.style.transform='translateX(-'+(i*100)+'%)';for(var k=0;k<dots.length;k++)dots[k].setAttribute('aria-current',k===i?'true':'false');}
+  document.getElementById('prev').addEventListener('click',function(){go(i-1);});
+  document.getElementById('next').addEventListener('click',function(){go(i+1);});
+})();
+</script>
+</body>
+</html>

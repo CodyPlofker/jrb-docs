@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FS Shade — v03 2-question live finder</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:520px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 4px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.5;}
+/* finder panel — the hero */
+.finder{margin-top:20px;background:#f8f8f8;border-radius:3px;padding:18px 16px;}
+.fstep{display:flex;align-items:baseline;gap:8px;margin-bottom:9px;}
+.fnum{font-family:'GeogrotesqueCondBoldWeb',sans-serif;font-size:11px;letter-spacing:.6px;}
+.q{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:13px;}
+.opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.opt{appearance:none;border:1px solid #d4d4d4;background:#fff;border-radius:3px;cursor:pointer;padding:10px 14px;font-family:'RingsideWideWeb',sans-serif;font-size:13px;min-height:44px;flex:1;min-width:90px;}
+.opt[aria-pressed="true"]{border-color:#000;background:#000;color:#fff;}
+.opts.depth .opt{flex:0 1 calc(50% - 4px);}
+.freset{appearance:none;background:none;border:none;cursor:pointer;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:11px;letter-spacing:.5px;text-decoration:underline;padding:4px 0;color:#000;}
+/* recommendation banner */
+.rec{display:none;margin-top:16px;border:1px solid #000;border-radius:3px;padding:14px;align-items:center;gap:14px;}
+.rec.show{display:flex;}
+.rec img{width:78px;height:78px;border-radius:3px;object-fit:cover;background:#f8f8f8;flex-shrink:0;}
+.rec .rl{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:11px;}
+.rec .rn{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:19px;margin:2px 0;}
+.rec .rd{font-family:'RingsideWideWeb',sans-serif;font-size:12px;}
+/* grid */
+.ghead{display:flex;justify-content:space-between;align-items:baseline;margin:24px 0 14px;}
+.glabel{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:14px;}
+.gcount{font-family:'RingsideWideWeb',sans-serif;font-size:12px;}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px 6px;}
+.swatch{appearance:none;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0;min-height:44px;transition:opacity .2s;}
+.swatch.dim{opacity:.22;}
+.ring{width:30px;height:30px;border-radius:100%;border:1.5px solid #d4d4d4;display:flex;align-items:center;justify-content:center;transition:border-color .15s,box-shadow .15s;}
+.dot{width:25px;height:25px;border-radius:100%;}
+.swatch[aria-pressed="true"] .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.swatch.match .ring{border-color:#000;}
+.sname{font-family:'RingsideWideWeb',sans-serif;font-size:8.5px;line-height:1.1;text-align:center;letter-spacing:-.2px;}
+.atc{margin-top:20px;}
+.atc button{width:100%;appearance:none;border:none;border-radius:3px;cursor:pointer;height:46px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:13px;letter-spacing:.6px;background:#000;color:#fff;}
+.atc button:disabled{background:#e4e4e4;color:#8a8a8a;cursor:not-allowed;}
+.atc .pipe{opacity:.55;margin:0 8px;}
+.note{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">30 shades · medium-to-full, buildable</div>
+  <h2 class="headline">Two questions narrows 30 to one.</h2>
+  <p class="sub">Answer both and the grid below filters live, with one shade pre-selected for you. Natural skin finish, built for on-the-go.</p>
+
+  <div class="finder">
+    <div class="fstep"><span class="fnum">01</span><span class="q">What's your undertone?</span></div>
+    <div class="opts under" data-group="under">
+      <button class="opt" data-val="cool">Cool / pink</button>
+      <button class="opt" data-val="neutral">Neutral</button>
+      <button class="opt" data-val="warm">Warm / golden</button>
+    </div>
+    <div class="fstep"><span class="fnum">02</span><span class="q">How deep is your skin?</span></div>
+    <div class="opts depth" data-group="depth">
+      <button class="opt" data-val="fair">Fair</button>
+      <button class="opt" data-val="light">Light</button>
+      <button class="opt" data-val="medium">Medium</button>
+      <button class="opt" data-val="deep">Deep</button>
+    </div>
+    <button class="freset" id="reset">Reset filters</button>
+
+    <div class="rec" id="rec">
+      <img id="rec-img" src="" alt="">
+      <div>
+        <div class="rl">We'd start you at</div>
+        <div class="rn" id="rec-name">—</div>
+        <div class="rd" id="rec-desc"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ghead">
+    <span class="glabel">All shades</span>
+    <span class="gcount" id="gcount">Showing all 30</span>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <div class="atc"><button id="atc" disabled>Pick a shade to add</button></div>
+  <p class="note">A near-match still blends — the buildable formula sheers out, so you don't have to land it exactly.</p>
+</div>
+
+<script>
+const SHADES=[
+{n:"Pale Alabaster",h:"#f1ddc6",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_1.jpg?v=1777924896"},
+{n:"Alabaster",h:"#efd6bd",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_10.jpg?v=1777925395"},
+{n:"Bisque",h:"#eccdb0",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_19.jpg?v=1777991567"},
+{n:"Linen",h:"#ecd0b8",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_28.jpg?v=1777991768"},
+{n:"Warm Linen",h:"#e8c6a6",g:"fair",u:"warm",d:"Fair with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_29.jpg?v=1777991792"},
+{n:"Porcelain",h:"#e6c3a6",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_55.jpg?v=1777991814"},
+{n:"Fair",h:"#e3bda0",g:"fair",u:"cool",d:"Fair with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_56.jpg?v=1778074299"},
+{n:"Neutral Fair",h:"#e2bb9d",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_55_1.jpg?v=1778074281"},
+{n:"Ivory",h:"#ddb293",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_57.jpg?v=1778074322"},
+{n:"Light",h:"#d8ab8a",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_82.jpg?v=1778074341"},
+{n:"Sand",h:"#d6a988",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_83.jpg?v=1778074361"},
+{n:"Beige",h:"#cf9f7f",g:"light",u:"neutral",d:"Light with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_84.jpg?v=1778074380"},
+{n:"Warm Beige",h:"#cb9876",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_109.jpg?v=1778074399"},
+{n:"Neutral Beige",h:"#c69273",g:"light",u:"neutral",d:"Light with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_110.jpg?v=1778074448"},
+{n:"Medium",h:"#bd8868",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_111.jpg?v=1778074466"},
+{n:"Warm Medium",h:"#b8825f",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_136.jpg?v=1778074517"},
+{n:"Neutral Medium",h:"#b27c5b",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_141.jpg?v=1778074535"},
+{n:"Neutral Honey",h:"#a9714f",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_146_2.jpg?v=1778074627"},
+{n:"Medium Honey",h:"#a36a48",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_137.jpg?v=1778074645"},
+{n:"Honey",h:"#9b6242",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_142.jpg?v=1778074662"},
+{n:"Warm Honey",h:"#94592f",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_147_1.jpg?v=1778075035"},
+{n:"Golden",h:"#8a5430",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_138.jpg?v=1778075124"},
+{n:"Hazelnut",h:"#7c4a30",g:"deep",u:"warm",d:"Deep with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_143.jpg?v=1778075141"},
+{n:"Pecan",h:"#724229",g:"deep",u:"neutral",d:"Deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_139.jpg?v=1778075176"},
+{n:"Almond",h:"#693c27",g:"deep",u:"warm",d:"Deep with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_139_1.jpg?v=1778075205"},
+{n:"Walnut",h:"#5e3623",g:"deep",u:"warm",d:"Deep with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_144_1.jpg?v=1778075345"},
+{n:"Cinnamon",h:"#552f20",g:"deep",u:"cool",d:"Deep with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_149.jpg?v=1778075361"},
+{n:"Chestnut",h:"#4b2a1e",g:"deep",u:"cool",d:"Deep with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_140.jpg?v=1778075377"},
+{n:"Deep",h:"#3f231a",g:"deep",u:"neutral",d:"Deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_145.jpg?v=1778075391"},
+{n:"Espresso",h:"#321b14",g:"deep",u:"neutral",d:"Deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_150.jpg?v=1778075404"}
+];
+function W(u){return u+(u.includes('?')?'&':'?')+'width=300';}
+const grid=document.getElementById('grid');
+let selected=null,pick={under:null,depth:null};
+SHADES.forEach((s,i)=>{
+  const b=document.createElement('button');b.className='swatch';b.setAttribute('aria-pressed','false');b.dataset.i=i;b.setAttribute('aria-label',s.n);
+  b.innerHTML=`<span class="ring"><span class="dot" style="background:${s.h}"></span></span><span class="sname">${s.n}</span>`;
+  b.onclick=()=>select(i);
+  grid.appendChild(b);
+});
+function select(i){
+  selected=i;const s=SHADES[i];
+  [...grid.children].forEach(c=>c.setAttribute('aria-pressed',+c.dataset.i===i));
+  const atc=document.getElementById('atc');atc.disabled=false;atc.innerHTML='Add to bag — '+s.n+'<span class="pipe">|</span>$38';
+}
+document.querySelectorAll('.opts').forEach(g=>{
+  g.querySelectorAll('.opt').forEach(o=>{
+    o.onclick=()=>{
+      g.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-pressed','false'));
+      o.setAttribute('aria-pressed','true');
+      pick[g.dataset.group]=o.dataset.val;
+      applyFilter();
+    };
+  });
+});
+document.getElementById('reset').onclick=()=>{
+  pick={under:null,depth:null};
+  document.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-pressed','false'));
+  applyFilter();
+};
+function applyFilter(){
+  // matches = shades meeting whichever filters are set
+  const match=s=>(!pick.under||s.u===pick.under)&&(!pick.depth||s.g===pick.depth);
+  let n=0;
+  [...grid.children].forEach((c,i)=>{
+    const ok=match(SHADES[i]);
+    c.classList.toggle('dim',!(ok));
+    c.classList.toggle('match',ok&&(pick.under||pick.depth));
+    if(ok)n++;
+  });
+  const any=pick.under||pick.depth;
+  document.getElementById('gcount').textContent=any?`${n} match${n===1?'':'es'} highlighted`:'Showing all 30';
+  // recommendation once BOTH answered
+  const rec=document.getElementById('rec');
+  if(pick.under&&pick.depth){
+    let cands=SHADES.filter(s=>s.g===pick.depth);
+    let best=cands.find(s=>s.u===pick.under)||cands.find(s=>s.u==='neutral')||cands[Math.floor(cands.length/2)];
+    const idx=SHADES.indexOf(best);
+    document.getElementById('rec-img').src=W(best.img);
+    document.getElementById('rec-img').alt=best.n+' Foundation Stick';
+    document.getElementById('rec-name').textContent=best.n;
+    document.getElementById('rec-desc').textContent=best.d+'.';
+    rec.classList.add('show');
+    select(idx);
+  }else{
+    rec.classList.remove('show');
+  }
+}
+</script>
+</body>
+</html>

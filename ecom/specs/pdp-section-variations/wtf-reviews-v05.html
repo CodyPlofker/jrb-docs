@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WTF Reviews — v05 Filterable grid</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;color:#000;background:#fff;-webkit-font-smoothing:antialiased;line-height:1.5;}
+.wrap{max-width:1080px;margin:0 auto;padding:48px 20px 64px;}
+.head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:32px;text-wrap:balance;line-height:1.12;margin:8px 0 4px;}
+.ratingline{display:flex;align-items:center;gap:10px;margin-bottom:26px;}
+.ratingline .stars{color:#000;font-size:16px;letter-spacing:1.5px;}
+.ratingline .count{font-family:'RingsideWideWeb';font-size:15px;}
+.filterlbl{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;margin-bottom:11px;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.chip{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:11px;padding:9px 15px;border:1px solid #cfcfcf;border-radius:3px;background:#fff;cursor:pointer;min-height:38px;}
+.chip:hover{border-color:#000;}
+.chip.is-active{background:#000;color:#fff;border-color:#000;}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.card{border:1px solid #e3e3e3;border-radius:3px;padding:20px 20px 22px;display:flex;flex-direction:column;gap:9px;background:#fff;}
+.card.is-hidden{display:none;}
+.card__top{display:flex;align-items:center;justify-content:space-between;}
+.card__stars{color:#000;font-size:14px;letter-spacing:1.4px;}
+.card__tag{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:10px;color:#000;border:1px solid #d4d4d4;border-radius:2px;padding:3px 7px;}
+.card__quote{font-family:'RingsideWideWeb';font-size:14px;line-height:1.55;flex:1;}
+.card__meta{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:10.5px;display:flex;align-items:center;gap:7px;padding-top:11px;border-top:1px solid #ededed;}
+.verified{display:inline-flex;align-items:center;gap:4px;}
+.verified svg{width:12px;height:12px;}
+.empty{display:none;font-family:'RingsideWideWeb';font-size:14px;padding:30px 0;text-align:center;}
+@media(max-width:980px){.grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:740px){
+.wrap{padding:36px 16px 48px;}
+.headline{font-size:25px;}
+.grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <span class="eyebrow">Reviews</span>
+  </div>
+  <h2 class="headline">Filter the reviews by what matters to you.</h2>
+  <div class="ratingline">
+    <span class="stars" aria-label="4.5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    <span class="count">53,381 reviews &middot; 4.5&#9733;</span>
+  </div>
+
+  <div class="filterlbl">Filter by concern</div>
+  <div class="chips" id="chips" role="group" aria-label="Filter reviews">
+    <button class="chip is-active" data-filter="all">All reviews</button>
+    <button class="chip" data-filter="dry">Dry skin</button>
+    <button class="chip" data-filter="fine-lines">Fine lines</button>
+    <button class="chip" data-filter="natural">Natural finish</button>
+    <button class="chip" data-filter="coverage">Coverage</button>
+    <button class="chip" data-filter="match">Shade match</button>
+  </div>
+
+  <div class="grid" id="grid">
+    <div class="card" data-tags="dry natural">
+      <div class="card__top"><span class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="card__tag">Dry skin</span></div>
+      <p class="card__quote">&ldquo;This foundation works well for me &mdash; I have very dry skin and it&rsquo;s one of the only things that doesn&rsquo;t dry out my face. Very happy with it.&rdquo;</p>
+      <div class="card__meta"><span>Shade: Fair</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </div>
+    <div class="card" data-tags="fine-lines natural">
+      <div class="card__top"><span class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="card__tag">Fine lines</span></div>
+      <p class="card__quote">&ldquo;Goes on effortlessly, lays easily and covers well without settling in my laugh lines. A wonderful product!&rdquo;</p>
+      <div class="card__meta"><span>Shade: Beige</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </div>
+    <div class="card" data-tags="natural match">
+      <div class="card__top"><span class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="card__tag">Natural finish</span></div>
+      <p class="card__quote">&ldquo;I love that it doesn&rsquo;t look like I&rsquo;m wearing foundation and softens wrinkles.&rdquo;</p>
+      <div class="card__meta"><span>Shade: Light</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </div>
+    <div class="card" data-tags="match">
+      <div class="card__top"><span class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="card__tag">Shade match</span></div>
+      <p class="card__quote">&ldquo;The match was perfect. It&rsquo;s like you&rsquo;re not wearing anything at all! Love the smell!&rdquo;</p>
+      <div class="card__meta"><span>Shade: Porcelain</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </div>
+    <div class="card" data-tags="coverage natural">
+      <div class="card__top"><span class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="card__tag">Coverage</span></div>
+      <p class="card__quote">&ldquo;This foundation has just enough coverage. It looks so natural. I love how moisturizing it is. It&rsquo;s now my go-to.&rdquo;</p>
+      <div class="card__meta"><span>Shade: Porcelain</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </div>
+    <div class="card" data-tags="coverage match">
+      <div class="card__top"><span class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="card__tag">Coverage</span></div>
+      <p class="card__quote">&ldquo;Good coverage that lasts all day. Color is perfect for my skin tone.&rdquo;</p>
+      <div class="card__meta"><span>Shade: Fair</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </div>
+    <div class="card" data-tags="dry coverage">
+      <div class="card__top"><span class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="card__tag">Dry skin</span></div>
+      <p class="card__quote">&ldquo;Love this foundation. Light &mdash; but covers some blemishes. Wonderful for dry skin.&rdquo;</p>
+      <div class="card__meta"><span>Shade: Porcelain</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </div>
+    <div class="card" data-tags="fine-lines coverage">
+      <div class="card__top"><span class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="card__tag">Fine lines</span></div>
+      <p class="card__quote">&ldquo;Just enough coverage, doesn&rsquo;t make more lines on your face.&rdquo;</p>
+      <div class="card__meta"><span>Shade: Light</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </div>
+    <div class="card" data-tags="natural fine-lines">
+      <div class="card__top"><span class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="card__tag">Natural finish</span></div>
+      <p class="card__quote">&ldquo;It&rsquo;s like a foundation and moisturizer all in one! It doesn&rsquo;t settle in wrinkles and looks super natural and dewy &mdash; the color is a perfect match.&rdquo;</p>
+      <div class="card__meta"><span>Shade: Beige</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </div>
+  </div>
+  <p class="empty" id="empty">No reviews match that filter yet.</p>
+</div>
+<script>
+(function(){
+  var chips=document.getElementById('chips');
+  var cards=Array.prototype.slice.call(document.querySelectorAll('#grid .card'));
+  var empty=document.getElementById('empty');
+  chips.addEventListener('click',function(e){
+    var btn=e.target.closest('.chip');if(!btn)return;
+    Array.prototype.forEach.call(chips.children,function(c){c.classList.remove('is-active');});
+    btn.classList.add('is-active');
+    var f=btn.getAttribute('data-filter');var shown=0;
+    cards.forEach(function(card){
+      var ok=(f==='all')||(' '+card.getAttribute('data-tags')+' ').indexOf(' '+f+' ')>-1;
+      card.classList.toggle('is-hidden',!ok);if(ok)shown++;
+    });
+    empty.style.display=shown?'none':'block';
+  });
+})();
+</script>
+</body>
+</html>

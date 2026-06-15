@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lip Recharge Shade — v04 Compare two shades</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+img{display:block;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;line-height:1.08;text-wrap:balance;}
+.sub{font-family:'RingsideWideWeb',sans-serif;line-height:1.55;}
+.label{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
+.mono{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.5px;}
+.stars{letter-spacing:1px;font-size:15px;color:#000;}
+
+.wrap{max-width:560px;margin:0 auto;padding:34px 20px 48px;}
+.eyebrow{margin-bottom:2px;}
+.headline{font-size:29px;margin:6px 0 6px;}
+.sub{font-size:13.5px;max-width:50ch;}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px;position:relative;}
+.vs{position:absolute;left:50%;top:42px;translate:-50% 0;z-index:2;background:#fff;border:1px solid #000;border-radius:100%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-family:'BaseMonoWideWeb',monospace;font-size:11px;}
+.col{}
+.col .pane{width:100%;aspect-ratio:4/5;border-radius:3px;overflow:hidden;background:#f8f8f8;border:1px solid #e4e4e4;}
+.col .pane img{width:100%;height:100%;object-fit:cover;}
+.col .cn{font-family:'Canela',serif;font-weight:300;font-size:21px;line-height:1.05;margin:10px 0 3px;display:flex;align-items:center;gap:8px;}
+.col .cdot{width:14px;height:14px;border-radius:100%;border:1px solid rgba(0,0,0,.14);flex:0 0 auto;}
+.col .cd{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.45;}
+.col .cd::first-letter{text-transform:uppercase;}
+.col select{margin-top:10px;width:100%;appearance:none;border:1px solid #d4d4d4;border-radius:2px;background:#fff;padding:11px 32px 11px 12px;font-family:'BaseMonoWideWeb',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23000' fill='none' stroke-width='1.3'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+.col .pickbtn{margin-top:8px;width:100%;appearance:none;background:#000;color:#fff;border:none;border-radius:3px;height:42px;cursor:pointer;font-family:'BaseMonoWideWeb',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.5px;}
+.howto{margin-top:24px;border:1px solid #e4e4e4;border-radius:3px;padding:16px;background:#f8f8f8;}
+.howto h3{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12.5px;margin-bottom:10px;}
+.howto ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.howto li{font-family:'RingsideWideWeb',sans-serif;font-size:12.5px;line-height:1.5;padding-left:18px;position:relative;}
+.howto li::before{content:"";position:absolute;left:0;top:7px;width:7px;height:7px;border-radius:100%;background:#000;}
+.honest{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.55;margin-top:16px;}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Compare shades</div>
+  <h2 class="headline">Torn between two? See them together.</h2>
+  <p class="sub">Both are sheer washes, so the difference is subtle. Put them side by side on real lips, then pick.</p>
+
+  <div class="cmp">
+    <span class="vs">VS</span>
+    <div class="col">
+      <div class="pane"><img id="imgA" src="" alt=""></div>
+      <div class="cn"><span class="cdot" id="dotA"></span><span id="nameA"></span></div>
+      <div class="cd" id="descA"></div>
+      <select id="selA"></select>
+      <button class="pickbtn" id="pickA">Pick this one</button>
+    </div>
+    <div class="col">
+      <div class="pane"><img id="imgB" src="" alt=""></div>
+      <div class="cn"><span class="cdot" id="dotB"></span><span id="nameB"></span></div>
+      <div class="cd" id="descB"></div>
+      <select id="selB"></select>
+      <button class="pickbtn" id="pickB">Pick this one</button>
+    </div>
+  </div>
+
+  <div class="howto">
+    <h3>Between two shades? Here's how to pick</h3>
+    <ul>
+      <li>Go cooler (Petal, Pink Lilac, Dahlia) for a fresh, your-lips-but-better pink.</li>
+      <li>Go warmer (Champagne, Me) when you want a soft nude-gold that disappears into your tone.</li>
+      <li>Want it to actually read? Sangria and Lilac give the most payoff &mdash; still sheer, never overdone.</li>
+      <li>Truly can't decide? On The Rocks is clear &mdash; pure shine, zero color commitment.</li>
+    </ul>
+  </div>
+  <p class="honest">Remember: even the boldest shades sheer out on contact and leave a wash of color that never looks heavy. You can't go wrong.</p>
+</div>
+<script>
+const C="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/";
+function W(u){return u+(u.includes('?')?'&':'?')+'width=900';}
+
+const SH=[
+{n:'On The Rocks',h:'#e9dfe0',d:'is clear',fam:'Clear',depth:'all',undertone:'neutral',tone:'medium',pack:C+'OTR_Lip_Recharge_PDP_-_1.png?v=1773763814',lip:C+'OTR_Lip_Recharge_PDP_-_2.jpg?v=1772135120',smear:C+'OTR_Lip_Recharge_PDP_-_3_5ef92c5d-4e7d-4910-a7ad-d7b94c06058c.png?v=1772135136'},
+{n:'Petal',h:'#ed97a2',d:'is a sheer pale pink',fam:'Pale pink',depth:'fair',undertone:'cool',tone:'fair',pack:C+'Petal_Lip_Recharge_PDP_-_1.png?v=1772726302',lip:C+'Petal_Lip_Recharge_PDP_-_2.png?v=1772135253',smear:C+'Petal_Lip_Recharge_PDP_-_3.png?v=1772135258'},
+{n:'Champagne',h:'#e8b192',d:'is a sheer gold with multi-dimensional shimmer',fam:'Gold shimmer',depth:'fair',undertone:'warm',tone:'fair',pack:C+'Champagne_Lip_Recharge_PDP_-_1.png?v=1772726302',lip:C+'Champagne_Lip_Recharge_PDP_-_2.png?v=1772135468',smear:C+'Champagne_Lip_Recharge_PDP_-_3.png?v=1772135475'},
+{n:'Rosé',h:'#d14662',d:'is a sheer pink with gold shimmer',fam:'Pink + gold',depth:'light',undertone:'warm',tone:'fair',pack:C+'Rose_Lip_Recharge_PDP_-_1.png?v=1772726302',lip:C+'Rose_Lip_Recharge_PDP_-_2_1.png?v=1772138261',smear:C+'Rose_Lip_Recharge_PDP_-_3_1.png?v=1772138263'},
+{n:'Pink Lilac',h:'#da6a7e',d:'is a sheer cool pink with subtle monochromatic shimmer',fam:'Cool pink',depth:'light',undertone:'cool',tone:'light',pack:C+'PinkLilac_Lip_Recharge_PDP_-_1.png?v=1772726302',lip:C+'PinkLilac_Lip_Recharge_PDP_-_2_1.png?v=1772135383',smear:C+'PinkLilac_Lip_Recharge_PDP_-_3.png?v=1772135390'},
+{n:'Lilac',h:'#ad8cbf',d:'is a sheer lavender with multi-dimensional shimmer',fam:'Lavender',depth:'medium',undertone:'cool',tone:'medium',pack:C+'Lilac_Lip_Recharge_PDP_-_1_1.png?v=1772726302',lip:C+'Lilac_Lip_Recharge_PDP_-_2_1.png?v=1772139009',smear:C+'Lilac_Lip_Recharge_PDP_-_3.png?v=1772138954'},
+{n:'Me',h:'#a8625a',d:'is a sheer nude brown',fam:'Nude brown',depth:'medium',undertone:'neutral',tone:'light',pack:C+'Me_Lip_Recharge_PDP_-_1.png?v=1772726302',lip:C+'Me_Lip_Recharge_PDP_-_2.png?v=1772138464',smear:C+'Me_Lip_Recharge_PDP_-_3.png?v=1772138459'},
+{n:'Dahlia',h:'#b13a4a',d:'is a sheer rosy pink with monochromatic shimmer',fam:'Rosy pink',depth:'medium',undertone:'cool',tone:'medium',pack:C+'Dahlia_Lip_Recharge_PDP_-_1.png?v=1772726302',lip:C+'Dahlia_Lip_Recharge_PDP_-_2.png?v=1772138370',smear:C+'Dahlia_Lip_Recharge_PDP_-_3.png?v=1772138373'},
+{n:'Sangria',h:'#820d39',d:'is a sheer berry',fam:'Berry',depth:'deep',undertone:'cool',tone:'deep',pack:C+'Sangria_Lip_Recharge_PDP_-_1_1.png?v=1772726302',lip:C+'Sangria_Lip_Recharge_PDP_-_2.png?v=1772138661',smear:C+'Sangria_Lip_Recharge_PDP_-_3.png?v=1772138658'}
+];
+let A=1,B=8; // Petal vs Sangria by default
+const selA=document.getElementById('selA'),selB=document.getElementById('selB');
+SH.forEach((s,i)=>{
+  selA.appendChild(new Option(s.n,i));selB.appendChild(new Option(s.n,i));
+});
+function paint(side,i){const s=SH[i];
+  document.getElementById('img'+side).src=W(s.lip);
+  document.getElementById('img'+side).alt=s.n+' Lip Recharge on lips';
+  document.getElementById('name'+side).textContent=s.n;
+  document.getElementById('desc'+side).textContent=s.n+' '+s.d+'.';
+  document.getElementById('dot'+side).style.background=s.h;
+}
+selA.value=A;selB.value=B;paint('A',A);paint('B',B);
+selA.onchange=()=>{A=+selA.value;paint('A',A);};
+selB.onchange=()=>{B=+selB.value;paint('B',B);};
+document.getElementById('pickA').onclick=()=>flash('A');
+document.getElementById('pickB').onclick=()=>flash('B');
+function flash(side){const btn=document.getElementById('pick'+side);const o=btn.textContent;
+  btn.textContent='Added to bag \u2713';setTimeout(()=>btn.textContent=o,1400);}
+</script>
+</body></html>

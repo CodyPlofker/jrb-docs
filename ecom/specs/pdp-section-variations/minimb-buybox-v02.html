@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mini Miracle Balm Buybox v02 — Expectation-led</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1180px;margin:0 auto;padding:32px 20px 56px;}
+.grid{display:grid;grid-template-columns:1fr;gap:26px;}
+@media(min-width:860px){.grid{grid-template-columns:1fr 1fr;gap:48px;align-items:start;}}
+
+.gallery .main-img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:3px;background:#f8f8f8;display:block;}
+.thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.thumbs img{width:60px;height:60px;object-fit:cover;border-radius:3px;border:1px solid #d4d4d4;cursor:pointer;background:#f8f8f8;}
+.thumbs img.sel{border-color:#000;}
+
+/* name row with rating badge pulled up beside it */
+.name-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.pname{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;font-size:22px;letter-spacing:1.18px;margin:6px 0 0;line-height:1.1;}
+.rbadge{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px;margin-top:2px;}
+.rbadge .stars{display:inline-flex;gap:2px;}
+.rbadge .stars svg{width:15px;height:15px;}
+.rbadge .rcount{font-family:'RingsideWideWeb';font-size:12px;white-space:nowrap;}
+
+/* the one-line bold statement (chips collapsed) */
+.statement{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:14px;line-height:1.45;margin:16px 0 4px;text-wrap:balance;}
+.statement .dot{margin:0 6px;opacity:.4;}
+.price{font-family:'RingsideWideWeb';font-size:20px;margin:16px 0 4px;}
+.desc{font-size:14px;line-height:1.6;margin:12px 0 6px;max-width:48ch;}
+
+.shade-head{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 10px;}
+.shade-label{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;}
+.shade-current{font-family:'RingsideWideWeb';font-size:13px;}
+.swatches{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;max-width:360px;}
+.sw{width:28px;height:28px;border-radius:100%;border:1px solid #d4d4d4;padding:2px;cursor:pointer;background:none;display:flex;align-items:center;justify-content:center;}
+.sw.sel{border-color:#000;border-width:1.5px;}
+.sw i{display:block;width:24px;height:24px;border-radius:100%;}
+
+.atc{display:flex;align-items:center;justify-content:center;width:100%;height:44px;background:#000;color:#fff;border:none;border-radius:3px;font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:13px;letter-spacing:.5px;cursor:pointer;margin-top:22px;}
+.atc .pipe{opacity:.45;margin:0 12px;}
+.note{font-family:'RingsideWideWeb';font-size:12px;text-align:center;margin-top:10px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="grid">
+    <div class="gallery">
+      <img class="main-img" id="mainImg" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/new_mini_dustyrose_1_d467d24b-4cec-4785-a43b-1144b3b6a675.jpg?v=1747424591&width=900" alt="Mini Miracle Balm in Dusty Rose">
+      <div class="thumbs" id="thumbs">
+        <img class="sel" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/new_mini_dustyrose_1_d467d24b-4cec-4785-a43b-1144b3b6a675.jpg?v=1747424591&width=200" alt="Dusty Rose">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/new_mini_flushed_1_45783b62-782a-4f07-9666-4ccf059f2296.jpg?v=1747424591&width=200" alt="Flushed">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/new_mini_goldenhour_1_a4a70d12-0c07-4760-b0f4-dd9176f572b2.jpg?v=1747424591&width=200" alt="Golden Hour">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/new_mini_pinkybronze_1_fd1f07cf-a70c-4501-82c3-35d305be45b7.jpg?v=1747424592&width=200" alt="Pinky Bronze">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/new_mini_cocoabronze_1_73372527-bd9d-419e-95bc-9ce43f615da2.jpg?v=1747424592&width=200" alt="Cocoa Bronze">
+      </div>
+    </div>
+
+    <div class="info">
+      <div class="eyebrow">Highlighter · Blush · Bronzer</div>
+      <div class="name-row">
+        <h1 class="pname">Mini Miracle Balm</h1>
+        <div class="rbadge">
+          <span class="stars" id="starsTop"></span>
+          <span class="rcount">6,074 reviews &middot; 4.4&#9733;</span>
+        </div>
+      </div>
+
+      <!-- chips collapsed into one bold statement under the title -->
+      <p class="statement">Sheer wash of color<span class="dot">&middot;</span>Travel &amp; trial size<span class="dot">&middot;</span>A little goes a long way</p>
+
+      <div class="price">$20.00</div>
+      <p class="desc">The travel size of our cult light-reflecting balm. Tap it on cheeks, lips, or anywhere you want a healthy glow — the low-commitment way to find your shade.</p>
+
+      <div class="shade-head">
+        <span class="shade-label">Shade — 15 available</span>
+        <span class="shade-current" id="shadeCur">Dusty Rose</span>
+      </div>
+      <div class="swatches" id="sw"></div>
+
+      <button class="atc">Add to bag<span class="pipe">|</span>$20.00</button>
+      <p class="note">Free shipping over $55 · Easy returns</p>
+    </div>
+  </div>
+</div>
+
+<script>
+var SH=[["Au Naturel", "#d8a784", "files/new_minimb_aunaturel_a8d161e5-c4f2-4e68-93ef-ffa9f280dd6e.jpg?v=1747424591"], ["Happy Hour", "#d98a76", "files/new_mini_happyhour_1_7e3cc716-c386-48bb-9b1c-5de5f9663592.jpg?v=1747424592"], ["Dusty Rose", "#cf8a7e", "files/new_mini_dustyrose_1_d467d24b-4cec-4785-a43b-1144b3b6a675.jpg?v=1747424591"], ["Flushed", "#d07f76", "files/new_mini_flushed_1_45783b62-782a-4f07-9666-4ccf059f2296.jpg?v=1747424591"], ["Pinched Cheeks", "#c97f7a", "files/new_mini_pinchedcheeks_1_7f17fa28-a51e-441c-b1f1-bc3d59feb101.jpg?v=1747424592"], ["Miami Beach", "#d98b66", "files/new_mini_miamibeach_1_cdee9bce-f2a0-4182-b08b-7d3e6462986a.jpg?v=1747424592"], ["Golden Hour", "#e0a96b", "files/new_mini_goldenhour_1_a4a70d12-0c07-4760-b0f4-dd9176f572b2.jpg?v=1747424591"], ["Magic Hour", "#d59a76", "files/new_mini_magichour_1_144f9e8f-0cf6-499f-b0ea-b5fcb370de54.jpg?v=1747424591"], ["Chic", "#c98f72", "files/mini_chic_1.jpg?v=1747424592"], ["Pinky Bronze", "#c08868", "files/new_mini_pinkybronze_1_fd1f07cf-a70c-4501-82c3-35d305be45b7.jpg?v=1747424592"], ["Bronze", "#b07a52", "files/new_mini_bronze_1_8850b6b1-d388-4250-9766-0cda75b13901.jpg?v=1747424591"], ["Cheeky", "#cc8576", "files/Mini_MB_PDP_cheeky_1.jpg?v=1772222459"], ["Tawny", "#a96f4c", "files/new_mini_tawny_1_f07266e6-a68a-463f-a4dc-a397878214bb.jpg?v=1747424591"], ["Sunkissed", "#bd8154", "files/new_mini_sunkissed_1_6c2511c1-de64-4e82-bc42-4cb7085084c3.jpg?v=1747424591"], ["Cocoa Bronze", "#8f5d3c", "files/new_mini_cocoabronze_1_73372527-bd9d-419e-95bc-9ce43f615da2.jpg?v=1747424592"]];
+var BASE="https://cdn.shopify.com/s/files/1/0424/9527/9254/";
+var star='<svg viewBox="0 0 24 24" fill="#000"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z"/></svg>';
+document.getElementById('starsTop').innerHTML=star.repeat(4)+'<svg viewBox="0 0 24 24"><defs><linearGradient id="h"><stop offset="40%" stop-color="#000"/><stop offset="40%" stop-color="#fff"/></linearGradient></defs><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z" fill="url(#h)" stroke="#000"/></svg>';
+var sw=document.getElementById('sw');
+SH.forEach(function(s,i){var b=document.createElement('button');b.className='sw'+(i===2?' sel':'');b.innerHTML='<i style="background:'+s[1]+'"></i>';b.title=s[0];b.setAttribute('aria-label',s[0]);b.onclick=function(){document.querySelectorAll('.sw').forEach(function(x){x.classList.remove('sel')});b.classList.add('sel');document.getElementById('shadeCur').textContent=s[0];document.getElementById('mainImg').src=BASE+s[2].replace('?v=','?width=900&v=');};sw.appendChild(b);});
+var thumbs=document.getElementById('thumbs').children;
+for(var t=0;t<thumbs.length;t++){(function(el){el.onclick=function(){for(var k=0;k<thumbs.length;k++)thumbs[k].classList.remove('sel');el.classList.add('sel');document.getElementById('mainImg').src=el.src.replace('width=200','width=900');};})(thumbs[t]);}
+</script>
+</body>
+</html>

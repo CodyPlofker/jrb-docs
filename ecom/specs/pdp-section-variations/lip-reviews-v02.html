@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lip Recharge Reviews — v02 Shade-filtered</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;color:#000;background:#fff;-webkit-font-smoothing:antialiased;line-height:1.5;}
+.wrap{max-width:980px;margin:0 auto;padding:48px 20px 64px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;text-align:center;margin-bottom:10px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:34px;text-align:center;text-wrap:balance;margin-bottom:8px;line-height:1.12;}
+.subline{font-family:'RingsideWideWeb';font-size:15px;text-align:center;margin-bottom:6px;}
+.ratingline{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:28px;}
+.ratingline .stars{color:#000;font-size:16px;letter-spacing:1.5px;}
+.ratingline .count{font-family:'RingsideWideWeb';font-size:15px;}
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-bottom:8px;}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid #d4d4d4;background:#fff;border-radius:3px;padding:8px 14px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:11px;cursor:pointer;min-height:40px;color:#000;transition:border-color .15s,background .15s;}
+.chip .dot{width:15px;height:15px;border-radius:100%;border:1px solid #d4d4d4;display:inline-block;}
+.chip[aria-pressed="true"]{border-color:#000;background:#000;color:#fff;}
+.chip[aria-pressed="true"] .dot{border-color:#fff;}
+.filtnote{font-family:'BaseMonoWideWeb',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.4px;text-align:center;margin:18px 0 18px;}
+/* review list */
+.list{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.rev{border:1px solid #e3e3e3;border-radius:3px;padding:18px 18px 18px;display:flex;flex-direction:column;gap:9px;background:#fff;}
+.rev[hidden]{display:none;}
+.rev__stars{font-size:14px;letter-spacing:1.5px;color:#000;}
+.rev__title{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;}
+.rev__quote{font-family:'RingsideWideWeb';font-size:14px;line-height:1.55;}
+.rev__meta{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:10px;border-top:1px solid #ededed;margin-top:auto;}
+.rev__shade{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:11px;display:flex;align-items:center;gap:7px;}
+.dot{width:13px;height:13px;border-radius:100%;border:1px solid #d4d4d4;display:inline-block;flex-shrink:0;}
+.verified{display:inline-flex;align-items:center;gap:4px;font-family:'BaseMonoWideWeb',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;}
+.verified svg{width:12px;height:12px;}
+.empty{grid-column:1/-1;text-align:center;font-family:'RingsideWideWeb';font-size:14px;padding:30px 0;}
+.empty[hidden]{display:none;}
+@media(max-width:680px){
+.wrap{padding:36px 16px 48px;}
+.headline{font-size:26px;}
+.list{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">See it on real customers</div>
+  <h2 class="headline">Find the shade your lips will love</h2>
+  <p class="subline">Sheer by design &mdash; pick a shade to read reviews from people who bought it.</p>
+  <div class="ratingline">
+    <span class="stars" aria-label="4.66 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    <span class="count">863 reviews &middot; 4.66&#9733;</span>
+  </div>
+
+  <div class="chips" id="chips">
+    <button class="chip" data-shade="all" aria-pressed="true">All shades</button>
+    <button class="chip" data-shade="On The Rocks" aria-pressed="false"><span class="dot" style="background:#f5f3f3"></span>On The Rocks</button>
+    <button class="chip" data-shade="Petal" aria-pressed="false"><span class="dot" style="background:#d14662"></span>Petal</button>
+    <button class="chip" data-shade="Pink Lilac" aria-pressed="false"><span class="dot" style="background:#ed97a2"></span>Pink Lilac</button>
+    <button class="chip" data-shade="Champagne" aria-pressed="false"><span class="dot" style="background:#da6a7e"></span>Champagne</button>
+    <button class="chip" data-shade="Ros&eacute;" aria-pressed="false"><span class="dot" style="background:#e8b192"></span>Ros&eacute;</button>
+    <button class="chip" data-shade="Lilac" aria-pressed="false"><span class="dot" style="background:#ad8cbf"></span>Lilac</button>
+  </div>
+  <p class="filtnote" id="filtnote">Showing all shades</p>
+
+  <div class="list" id="list">
+    <article class="rev" data-shade="Petal">
+      <div class="rev__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rev__title">Love the colors and cooling effect</div>
+      <p class="rev__quote">&ldquo;Love the colors and cooling effect. Not tacky and leaves my lips so hydrated.&rdquo;</p>
+      <div class="rev__meta"><span class="rev__shade"><span class="dot" style="background:#d14662"></span>Petal</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </article>
+    <article class="rev" data-shade="Petal">
+      <div class="rev__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rev__title">Long lasting, perfect hint of color</div>
+      <p class="rev__quote">&ldquo;Long lasting, moisturizing, perfect hint of natural color &mdash; and I love the metal tip.&rdquo;</p>
+      <div class="rev__meta"><span class="rev__shade"><span class="dot" style="background:#d14662"></span>Petal</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </article>
+    <article class="rev" data-shade="Pink Lilac">
+      <div class="rev__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rev__title">I am into it, I love it</div>
+      <p class="rev__quote">&ldquo;I am not into lip gloss or treatments, but I&rsquo;ve used this every day since. The metal tip is genius &mdash; cooling, and applies perfectly.&rdquo;</p>
+      <div class="rev__meta"><span class="rev__shade"><span class="dot" style="background:#ed97a2"></span>Pink Lilac</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </article>
+    <article class="rev" data-shade="Pink Lilac">
+      <div class="rev__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rev__title">Lasting lacquer loveliness</div>
+      <p class="rev__quote">&ldquo;Love this for its gloss that lasts, soothing metal applicator, softly enough tint and cooling sensation.&rdquo;</p>
+      <div class="rev__meta"><span class="rev__shade"><span class="dot" style="background:#ed97a2"></span>Pink Lilac</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </article>
+    <article class="rev" data-shade="On The Rocks">
+      <div class="rev__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rev__title">Lasts so long</div>
+      <p class="rev__quote">&ldquo;I was hesitant to try the clear one, but it&rsquo;s the first lip product I&rsquo;ve tried that lasted so long. I use it at night and it&rsquo;s still there when I wake up.&rdquo;</p>
+      <div class="rev__meta"><span class="rev__shade"><span class="dot" style="background:#f5f3f3"></span>On The Rocks</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </article>
+    <article class="rev" data-shade="On The Rocks">
+      <div class="rev__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rev__title">Happy lips</div>
+      <p class="rev__quote">&ldquo;The texture and the metal tip make your lips feel like they&rsquo;re getting a massage every time you use it.&rdquo;</p>
+      <div class="rev__meta"><span class="rev__shade"><span class="dot" style="background:#f5f3f3"></span>On The Rocks</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </article>
+    <article class="rev" data-shade="Champagne">
+      <div class="rev__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rev__title">Layers beautifully</div>
+      <p class="rev__quote">&ldquo;This color is just beautiful over any Miracle Balm on your lips, or any lipstick I have.&rdquo;</p>
+      <div class="rev__meta"><span class="rev__shade"><span class="dot" style="background:#da6a7e"></span>Champagne</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </article>
+    <article class="rev" data-shade="Champagne">
+      <div class="rev__stars">&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rev__title">Delicious</div>
+      <p class="rev__quote">&ldquo;Love the texture and the sparkle. Absolutely delicious.&rdquo;</p>
+      <div class="rev__meta"><span class="rev__shade"><span class="dot" style="background:#da6a7e"></span>Champagne</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </article>
+    <article class="rev" data-shade="Ros&eacute;">
+      <div class="rev__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rev__title">Cooling and sheer</div>
+      <p class="rev__quote">&ldquo;Cooling feel of this is very nice. Goes on easily. Nice sheer coverage.&rdquo;</p>
+      <div class="rev__meta"><span class="rev__shade"><span class="dot" style="background:#e8b192"></span>Ros&eacute;</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </article>
+    <article class="rev" data-shade="Lilac">
+      <div class="rev__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="rev__title">My new favorite</div>
+      <p class="rev__quote">&ldquo;This gloss looks so good alone or on top of liner. Flatters my daughter&rsquo;s fair tones and my more olive skin. Love!&rdquo;</p>
+      <div class="rev__meta"><span class="rev__shade"><span class="dot" style="background:#ad8cbf"></span>Lilac</span><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+    </article>
+    <p class="empty" id="empty" hidden>No reviews for this shade yet.</p>
+  </div>
+</div>
+<script>
+(function(){
+  var chips=document.querySelectorAll('#chips .chip');
+  var revs=document.querySelectorAll('#list .rev');
+  var note=document.getElementById('filtnote');
+  var empty=document.getElementById('empty');
+  function apply(shade){
+    var n=0;
+    revs.forEach(function(r){
+      var show = (shade==='all') || (r.getAttribute('data-shade')===shade);
+      r.hidden=!show; if(show)n++;
+    });
+    empty.hidden = n!==0;
+    note.textContent = shade==='all' ? 'Showing all shades' : ('Showing reviews for '+shade+' · '+n+(n===1?' review':' reviews'));
+  }
+  chips.forEach(function(c){
+    c.addEventListener('click',function(){
+      chips.forEach(function(x){x.setAttribute('aria-pressed','false');});
+      c.setAttribute('aria-pressed','true');
+      apply(c.getAttribute('data-shade'));
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Just Enough Tinted Moisturizer — Variation Gallery</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, Helvetica, Arial, sans-serif; background: #0b0b0b; color: #fff; }
+    header { position: sticky; top: 0; z-index: 100; background: #000; border-bottom: 1px solid #222; }
+    .bar { display:flex; align-items:center; justify-content:space-between; padding: 10px 20px 0; }
+    .bar h1 { font-size: 13px; font-weight: 600; letter-spacing:.5px; text-transform: uppercase; }
+    .bar a { font-size: 11px; color:#ff2e92; text-decoration:none; text-transform:uppercase; letter-spacing:.5px; }
+    .tabs-l1 { display: flex; gap: 4px; padding: 8px 20px 0; flex-wrap: wrap; }
+    .tabs-l1 button { font-family: inherit; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; padding: 10px 16px; background: transparent; color: #888; border: 0; border-bottom: 2px solid transparent; cursor: pointer; transition: all .15s; }
+    .tabs-l1 button:hover { color: #fff; }
+    .tabs-l1 button.active { color: #fff; border-bottom-color: #ff2e92; }
+    .tabs-l2 { display: flex; gap: 4px; padding: 10px 20px; flex-wrap: wrap; background: #0b0b0b; border-top: 1px solid #222; min-height: 48px; }
+    .tabs-l2 button { font-family: inherit; font-size: 10px; text-transform: uppercase; letter-spacing: .4px; padding: 6px 12px; background: transparent; color: #aaa; border: 1px solid #2a2a2a; border-radius: 2px; cursor: pointer; transition: all .15s; white-space: nowrap; }
+    .tabs-l2 button:hover { color: #fff; border-color: #555; }
+    .tabs-l2 button.active { background: #fff; color: #000; border-color: #fff; }
+    .frame-wrap { background: #fff; }
+    iframe { width: 100%; height: calc(100vh - 150px); border: 0; display: block; background: #fff; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="bar"><h1>Just Enough Tinted Moisturizer</h1><a href="index.html">&larr; All PDPs</a></div>
+    <nav class="tabs-l1" id="tabs1"></nav>
+    <nav class="tabs-l2" id="tabs2"></nav>
+  </header>
+  <div class="frame-wrap"><iframe id="frame" src=""></iframe></div>
+  <script>
+    const groups = [{"name": "1. Buy Box", "variants": [["v01 Classic", "jetm-buybox-v01.html"], ["v02 Expectation-led", "jetm-buybox-v02.html"], ["v03 Mobile-stacked", "jetm-buybox-v03.html"], ["v04 Editorial", "jetm-buybox-v04.html"], ["v05 Trust-forward", "jetm-buybox-v05.html"]]}, {"name": "2. Shade Finder", "variants": [["v01 Grid + match", "jetm-shade-v01.html"], ["v02 Depth tabs", "jetm-shade-v02.html"], ["v03 2-Q finder", "jetm-shade-v03.html"], ["v04 Compare two", "jetm-shade-v04.html"], ["v05 On-skin swap", "jetm-shade-v05.html"]]}, {"name": "3. Reviews", "variants": [["v01 Summary + photos", "jetm-reviews-v01.html"], ["v02 Shade-filtered", "jetm-reviews-v02.html"], ["v03 Stats + carousel", "jetm-reviews-v03.html"], ["v04 Editorial quote", "jetm-reviews-v04.html"], ["v05 Filter grid", "jetm-reviews-v05.html"]]}, {"name": "4. Value Props", "variants": [["v01 Icon strip", "jetm-valueprops-v01.html"], ["v02 Benefit trio", "jetm-valueprops-v02.html"], ["v03 Returns band", "jetm-valueprops-v03.html"], ["v04 Pair-with", "jetm-valueprops-v04.html"], ["v05 Comparison", "jetm-valueprops-v05.html"]]}, {"name": "5. FAQ", "variants": [["v01 Accordion", "jetm-faq-v01.html"], ["v02 Two-column", "jetm-faq-v02.html"], ["v03 Objection-buster", "jetm-faq-v03.html"], ["v04 Is / Isn't", "jetm-faq-v04.html"], ["v05 Founder voice", "jetm-faq-v05.html"]]}];
+    const tabs1 = document.getElementById('tabs1');
+    const tabs2 = document.getElementById('tabs2');
+    const frame = document.getElementById('frame');
+    let activeGroup = 0, activeVariant = 0;
+    function renderL1(){ tabs1.innerHTML=''; groups.forEach((g,i)=>{const b=document.createElement('button');b.textContent=g.name;if(i===activeGroup)b.classList.add('active');b.onclick=()=>{activeGroup=i;activeVariant=0;render();};tabs1.appendChild(b);}); }
+    function renderL2(){ tabs2.innerHTML=''; groups[activeGroup].variants.forEach((v,i)=>{const b=document.createElement('button');b.textContent=v[0];if(i===activeVariant)b.classList.add('active');b.onclick=()=>{activeVariant=i;render();};tabs2.appendChild(b);}); }
+    function render(){ renderL1(); renderL2(); frame.src=groups[activeGroup].variants[activeVariant][1]; }
+    render();
+  </script>
+</body>
+</html>

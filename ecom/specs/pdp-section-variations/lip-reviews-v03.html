@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lip Recharge Reviews — v03 Stats + manual quote carousel</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;color:#000;background:#f8f8f8;-webkit-font-smoothing:antialiased;line-height:1.5;}
+.wrap{max-width:940px;margin:0 auto;padding:52px 20px 64px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;text-align:center;margin-bottom:10px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:34px;text-align:center;text-wrap:balance;margin-bottom:36px;line-height:1.12;}
+/* stats row */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #e3e3e3;border-radius:3px;background:#fff;overflow:hidden;margin-bottom:14px;}
+.stat{padding:26px 16px;text-align:center;border-right:1px solid #e3e3e3;}
+.stat:last-child{border-right:none;}
+.stat__num{font-family:'Canela',serif;font-weight:300;font-size:44px;line-height:1;margin-bottom:8px;}
+.stat__lbl{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:11px;}
+.stat__stars{color:#000;font-size:18px;letter-spacing:2px;margin-bottom:8px;}
+/* carousel */
+.carousel{background:#fff;border:1px solid #e3e3e3;border-radius:3px;padding:36px 28px 26px;position:relative;}
+.quotemark{font-family:'Canela',serif;font-weight:300;font-size:64px;line-height:.6;color:#000;text-align:center;height:38px;}
+.slides{position:relative;min-height:170px;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;gap:14px;opacity:0;visibility:hidden;transition:opacity .25s;}
+.slide.active{opacity:1;visibility:visible;position:relative;}
+.slide__stars{color:#000;font-size:16px;letter-spacing:1.5px;}
+.slide__quote{font-family:'Canela',serif;font-weight:300;font-size:23px;line-height:1.35;text-align:center;text-wrap:balance;max-width:640px;}
+.slide__meta{display:flex;align-items:center;gap:10px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:11px;}
+.slide__meta .dot{width:14px;height:14px;border-radius:100%;border:1px solid #d4d4d4;display:inline-block;}
+.verified{display:inline-flex;align-items:center;gap:4px;}
+.verified svg{width:12px;height:12px;}
+.divider{color:#cfcfcf;}
+.controls{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:24px;}
+.arrow{width:44px;height:44px;border:1px solid #d4d4d4;background:#fff;border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.arrow svg{width:16px;height:16px;stroke:#000;stroke-width:2;fill:none;}
+.dots{display:flex;gap:8px;}
+.cdot{width:8px;height:8px;border-radius:100%;background:#d4d4d4;border:none;padding:0;cursor:pointer;}
+.cdot.on{background:#000;}
+@media(max-width:680px){
+.wrap{padding:38px 16px 48px;}
+.headline{font-size:26px;}
+.stats{grid-template-columns:1fr;}
+.stat{border-right:none;border-bottom:1px solid #e3e3e3;}
+.stat:last-child{border-bottom:none;}
+.slide__quote{font-size:20px;}
+.carousel{padding:30px 18px 22px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">By the numbers</div>
+  <h2 class="headline">A lip treatment people keep reaching for</h2>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat__stars" aria-label="4.66 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="stat__lbl">4.66 average rating</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num">863</div>
+      <div class="stat__lbl">Verified reviews</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num">93%</div>
+      <div class="stat__lbl">Would recommend</div>
+    </div>
+  </div>
+
+  <div class="carousel">
+    <div class="quotemark">&ldquo;</div>
+    <div class="slides" id="slides">
+      <div class="slide active">
+        <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="slide__quote">Long lasting, moisturizing, perfect hint of natural color &mdash; and I love the metal tip.</p>
+        <div class="slide__meta"><span class="dot" style="background:#d14662"></span>Petal<span class="divider">|</span><span class="verified"><svg viewBox="0 0 24 24" stroke="#000" stroke-width="2.5" fill="none"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+      </div>
+      <div class="slide">
+        <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="slide__quote">The texture and the metal tip make your lips feel like they&rsquo;re getting a massage every time you use it.</p>
+        <div class="slide__meta"><span class="dot" style="background:#f5f3f3"></span>On The Rocks<span class="divider">|</span><span class="verified"><svg viewBox="0 0 24 24" stroke="#000" stroke-width="2.5" fill="none"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+      </div>
+      <div class="slide">
+        <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="slide__quote">The only product I&rsquo;ve found recently to actually hydrate my incredibly dry lips. A noticeable difference in just a few days.</p>
+        <div class="slide__meta"><span class="dot" style="background:#d14662"></span>Petal<span class="divider">|</span><span class="verified"><svg viewBox="0 0 24 24" stroke="#000" stroke-width="2.5" fill="none"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+      </div>
+      <div class="slide">
+        <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="slide__quote">I am not into lip gloss or treatments, but I&rsquo;ve used this every day since. The metal tip is genius &mdash; cooling, and applies perfectly.</p>
+        <div class="slide__meta"><span class="dot" style="background:#ed97a2"></span>Pink Lilac<span class="divider">|</span><span class="verified"><svg viewBox="0 0 24 24" stroke="#000" stroke-width="2.5" fill="none"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+      </div>
+      <div class="slide">
+        <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="slide__quote">Love this for its gloss that lasts, soothing metal applicator, softly enough tint and cooling sensation.</p>
+        <div class="slide__meta"><span class="dot" style="background:#ed97a2"></span>Pink Lilac<span class="divider">|</span><span class="verified"><svg viewBox="0 0 24 24" stroke="#000" stroke-width="2.5" fill="none"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="arrow" id="prev" aria-label="Previous review"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="dots" id="dots"></div>
+      <button class="arrow" id="next" aria-label="Next review"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var slides=Array.prototype.slice.call(document.querySelectorAll('#slides .slide'));
+  var dotsWrap=document.getElementById('dots');
+  var i=0;
+  slides.forEach(function(_,idx){
+    var b=document.createElement('button');
+    b.className='cdot'+(idx===0?' on':'');
+    b.setAttribute('aria-label','Go to review '+(idx+1));
+    b.addEventListener('click',function(){go(idx);});
+    dotsWrap.appendChild(b);
+  });
+  var dots=Array.prototype.slice.call(dotsWrap.children);
+  function go(n){
+    slides[i].classList.remove('active');dots[i].classList.remove('on');
+    i=(n+slides.length)%slides.length;
+    slides[i].classList.add('active');dots[i].classList.add('on');
+  }
+  document.getElementById('prev').addEventListener('click',function(){go(i-1);});
+  document.getElementById('next').addEventListener('click',function(){go(i+1);});
+})();
+</script>
+</body>
+</html>

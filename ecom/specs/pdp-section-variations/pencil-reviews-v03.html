@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Face Pencil Reviews — v03 Stats Callout + Quote Carousel</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+:root{
+  --font-display:GeogrotesqueCondBoldWeb,'Arial Black',Impact,sans-serif;
+  --font-mono:BaseMonoWideWeb,Courier,'Courier New',sans-serif;
+  --font-body:RingsideWideWeb,Helvetica,Arial,sans-serif;
+  --font-serif:Canela,serif;
+  --font-articulat:ArticulatCF,'Arial Black',Impact,sans-serif;
+  --color-border:#d0d0d0;--ease-primary:cubic-bezier(.39,.575,.565,1);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:#fff;color:#000;font-family:var(--font-body);font-size:16px;-webkit-font-smoothing:antialiased;letter-spacing:.025em;}
+.rv{padding:44px 20px 52px;background:#fff;}
+.rv__inner{max-width:980px;margin:0 auto;}
+.rv__eyebrow{font-family:var(--font-display);font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:0 0 10px;text-align:center;}
+.rv__title{font-family:var(--font-serif);font-weight:300;font-size:28px;line-height:1.2;letter-spacing:.5px;margin:0 auto 30px;text-wrap:balance;max-width:16ch;text-align:center;}
+
+/* stats callout */
+.rv__stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #000;border-radius:3px;overflow:hidden;margin-bottom:38px;}
+.rv__stat{padding:24px 14px;text-align:center;border-right:1px solid #ededed;}
+.rv__stat:last-child{border-right:none;}
+.rv__stat-num{font-family:var(--font-serif);font-weight:300;font-size:38px;line-height:1;display:block;margin-bottom:8px;}
+.rv__stat-num sup{font-size:.5em;vertical-align:super;}
+.rv__stat-label{font-family:var(--font-mono);font-size:9.5px;font-weight:550;letter-spacing:.8px;text-transform:uppercase;line-height:1.45;color:#000;}
+.rv__ministars{display:flex;justify-content:center;gap:1px;margin-top:6px;color:#000;}
+.rv__ministars svg{width:11px;height:11px;display:block;}
+
+/* carousel */
+.rv__carousel{position:relative;background:#f8f8f8;border-radius:3px;overflow:hidden;}
+.rv__track-wrap{overflow:hidden;}
+.rv__track{display:flex;transition:transform .4s var(--ease-primary);}
+.rv__slide{flex:0 0 100%;padding:36px 26px 30px;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.rv__qmark{font-family:var(--font-serif);font-size:60px;line-height:.6;height:34px;color:#000;}
+.rv__cstars{display:flex;gap:2px;color:#000;margin:14px 0 18px;}
+.rv__cstars svg{width:16px;height:16px;display:block;}
+.rv__quote{font-family:var(--font-serif);font-weight:300;font-size:21px;line-height:1.45;margin:0 0 22px;max-width:30ch;text-wrap:balance;}
+.rv__attr{display:flex;align-items:center;gap:10px;}
+.rv__swatch{width:24px;height:24px;border-radius:100%;border:1px solid var(--color-border);flex-shrink:0;}
+.rv__attr-text{font-family:var(--font-body);font-size:13px;text-align:left;line-height:1.4;}
+.rv__attr-text b{font-weight:700;display:block;}
+.rv__attr-text span{font-family:var(--font-mono);font-size:10px;font-weight:550;letter-spacing:1px;text-transform:uppercase;color:rgba(0,0,0,.55);}
+
+.rv__nav{display:flex;align-items:center;justify-content:center;gap:18px;padding:0 0 26px;}
+.rv__arrow{width:44px;height:44px;border:1px solid var(--color-border);background:#fff;border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .3s var(--ease-primary);}
+.has-mouse .rv__arrow:hover{border-color:#000;}
+.rv__arrow svg{width:15px;height:15px;}
+.rv__dots{display:flex;gap:7px;}
+.rv__dot{width:7px;height:7px;border-radius:100%;background:#d0d0d0;border:none;padding:0;cursor:pointer;transition:background .3s;}
+.rv__dot.is-active{background:#000;}
+
+@media(min-width:768px){
+  .rv{padding:72px 40px 80px;}
+  .rv__title{font-size:40px;}
+  .rv__stat{padding:34px 18px;}
+  .rv__stat-num{font-size:50px;}
+  .rv__stat-label{font-size:11px;letter-spacing:1px;}
+  .rv__slide{padding:54px 60px 44px;}
+  .rv__quote{font-size:27px;}
+}
+</style>
+</head>
+<body>
+<section class="rv">
+  <div class="rv__inner">
+    <p class="rv__eyebrow">Reviews</p>
+    <h2 class="rv__title">The numbers behind the pencil</h2>
+
+    <div class="rv__stats">
+      <div class="rv__stat">
+        <span class="rv__stat-num">25,847</span>
+        <span class="rv__stat-label">Verified reviews</span>
+      </div>
+      <div class="rv__stat">
+        <span class="rv__stat-num">4.4<sup>&#9733;</sup></span>
+        <span class="rv__stat-label">Average rating</span>
+        <div class="rv__ministars">
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+        </div>
+      </div>
+      <div class="rv__stat">
+        <span class="rv__stat-num">90<sup>%</sup></span>
+        <span class="rv__stat-label">Would recommend</span>
+      </div>
+    </div>
+
+    <div class="rv__carousel">
+      <div class="rv__track-wrap">
+        <div class="rv__track" id="rvTrack">
+          <div class="rv__slide">
+            <span class="rv__qmark">&ldquo;</span>
+            <div class="rv__cstars"><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></div>
+            <p class="rv__quote">It&rsquo;s creamy and blends with just a few dabs. A natural-looking solution to the imperfections that come with years of exposure.</p>
+            <div class="rv__attr"><span class="rv__swatch" style="background:#c79873;"></span><span class="rv__attr-text"><b>Shade 11</b><span>Verified</span></span></div>
+          </div>
+
+          <div class="rv__slide">
+            <span class="rv__qmark">&ldquo;</span>
+            <div class="rv__cstars"><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></div>
+            <p class="rv__quote">This pencil literally melts into my skin tone and neutralizes my dark spots and under-eye dark circles!</p>
+            <div class="rv__attr"><span class="rv__swatch" style="background:#a06e4c;"></span><span class="rv__attr-text"><b>Shade 10</b><span>Verified</span></span></div>
+          </div>
+
+          <div class="rv__slide">
+            <span class="rv__qmark">&ldquo;</span>
+            <div class="rv__cstars"><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></div>
+            <p class="rv__quote">Light and creamy and the shade is awesome. Perfection in a pencil.</p>
+            <div class="rv__attr"><span class="rv__swatch" style="background:#edd2ba;"></span><span class="rv__attr-text"><b>Shade 1</b><span>Verified</span></span></div>
+          </div>
+
+          <div class="rv__slide">
+            <span class="rv__qmark">&ldquo;</span>
+            <div class="rv__cstars"><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></div>
+            <p class="rv__quote">Easy to apply, does not settle into lines. Goes on smooth and blends seamlessly.</p>
+            <div class="rv__attr"><span class="rv__swatch" style="background:#caa07a;"></span><span class="rv__attr-text"><b>Shade 2</b><span>Verified</span></span></div>
+          </div>
+
+          <div class="rv__slide">
+            <span class="rv__qmark">&ldquo;</span>
+            <div class="rv__cstars"><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></div>
+            <p class="rv__quote">The consistency of this product is perfect. It blends well and feels comfortable, staying in place when layering with foundation.</p>
+            <div class="rv__attr"><span class="rv__swatch" style="background:#a06e4c;"></span><span class="rv__attr-text"><b>Shade 10</b><span>Verified</span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv__nav">
+        <button class="rv__arrow" id="rvPrev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="rv__dots" id="rvDots"></div>
+        <button class="rv__arrow" id="rvNext" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var track=document.getElementById('rvTrack');
+  var slides=track.children.length;
+  var idx=0;
+  var dotsWrap=document.getElementById('rvDots');
+  for(var i=0;i<slides;i++){
+    var d=document.createElement('button');
+    d.className='rv__dot'+(i===0?' is-active':'');
+    d.setAttribute('aria-label','Go to review '+(i+1));
+    d.dataset.i=i; dotsWrap.appendChild(d);
+  }
+  var dots=Array.prototype.slice.call(dotsWrap.children);
+  function go(n){
+    idx=(n+slides)%slides;
+    track.style.transform='translateX(-'+(idx*100)+'%)';
+    dots.forEach(function(dot,i){dot.classList.toggle('is-active',i===idx);});
+  }
+  document.getElementById('rvPrev').addEventListener('click',function(){go(idx-1);});
+  document.getElementById('rvNext').addEventListener('click',function(){go(idx+1);});
+  dotsWrap.addEventListener('click',function(e){var b=e.target.closest('.rv__dot');if(b)go(+b.dataset.i);});
+})();
+document.addEventListener('mousemove',function m(){document.body.classList.add('has-mouse');document.removeEventListener('mousemove',m);});
+</script>
+</body>
+</html>

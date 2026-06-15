@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miracle Balm Shade — v01 Inline grid + Help me match</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:520px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 4px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.5;}
+.shade-head{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 14px;}
+.shade-label{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:14px;}
+.shade-picked{font-family:'RingsideWideWeb',sans-serif;font-size:13px;}
+.shade-picked b{font-family:'ArticulatCF',sans-serif;font-weight:700;}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px 8px;}
+.swatch{appearance:none;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;padding:0;}
+.ring{width:44px;height:44px;border-radius:100%;border:1.5px solid #d4d4d4;display:flex;align-items:center;justify-content:center;transition:border-color .15s;}
+.ring .dot{width:38px;height:38px;border-radius:100%;}
+.swatch[aria-pressed="true"] .ring{border-color:#000;}
+.sname{font-family:'RingsideWideWeb',sans-serif;font-size:10px;line-height:1.15;text-align:center;letter-spacing:-.2px;}
+.detail{margin-top:20px;border:1px solid #e6e6e6;border-radius:3px;padding:14px;display:flex;gap:14px;align-items:center;}
+.detail img{width:88px;height:88px;border-radius:3px;object-fit:cover;flex-shrink:0;background:#f8f8f8;}
+.detail .dname{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:16px;}
+.detail .dtag{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:10px;margin-top:3px;}
+.detail .ddesc{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.45;margin-top:6px;}
+.detail .ddesc::first-letter{text-transform:uppercase;}
+/* help me match */
+.match{margin-top:18px;border:1px solid #000;border-radius:3px;overflow:hidden;}
+.match-toggle{width:100%;background:#fff;border:none;cursor:pointer;padding:15px 16px;display:flex;justify-content:space-between;align-items:center;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:13px;letter-spacing:.5px;min-height:44px;}
+.match-toggle .plus{font-family:'RingsideWideWeb',sans-serif;font-size:20px;line-height:1;font-weight:400;transition:transform .2s;}
+.match.open .match-toggle .plus{transform:rotate(45deg);}
+.match-body{display:none;padding:0 16px 18px;border-top:1px solid #ededed;}
+.match.open .match-body{display:block;}
+.q{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;margin:16px 0 9px;}
+.opts{display:flex;gap:8px;flex-wrap:wrap;}
+.opt{appearance:none;border:1px solid #d4d4d4;background:#fff;border-radius:3px;cursor:pointer;padding:9px 14px;font-family:'RingsideWideWeb',sans-serif;font-size:13px;min-height:44px;}
+.opt[aria-pressed="true"]{border-color:#000;background:#000;color:#fff;}
+.result{display:none;margin-top:18px;background:#f8f8f8;border-radius:3px;padding:14px;align-items:center;gap:14px;}
+.result.show{display:flex;}
+.result img{width:72px;height:72px;border-radius:3px;object-fit:cover;flex-shrink:0;background:#fff;}
+.result .rlabel{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:11px;}
+.result .rname{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:18px;margin:2px 0 8px;}
+.result .rbtn{appearance:none;border:none;background:#000;color:#fff;border-radius:2px;cursor:pointer;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:12px;letter-spacing:.5px;padding:11px 16px;min-height:44px;}
+.note{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;margin-top:12px;}
+.atc{margin-top:22px;width:100%;background:#000;color:#fff;border:none;border-radius:3px;cursor:pointer;height:44px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:13px;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:12px;}
+.atc .pipe{opacity:.45;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">15 shades · sheer wash of color</div>
+  <h2 class="headline">Find your shade — right here.</h2>
+  <p class="sub">Melts in, never greasy. Tap any shade to see it on skin, or let us match you in two taps. A little goes a long way.</p>
+
+  <div class="shade-head">
+    <span class="shade-label">Shade</span>
+    <span class="shade-picked">Selected: <b id="picked">Au Naturel</b></span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="detail" id="detail">
+    <img id="detail-img" src="" alt="">
+    <div>
+      <div class="dname" id="detail-name"></div>
+      <div class="dtag" id="detail-tag"></div>
+      <div class="ddesc" id="detail-desc"></div>
+    </div>
+  </div>
+
+  <div class="match" id="match">
+    <button class="match-toggle" id="matchToggle" aria-expanded="false">
+      <span>Not sure? Help me match</span><span class="plus">+</span>
+    </button>
+    <div class="match-body">
+      <div class="q">1. What do you want it to do?</div>
+      <div class="opts" data-group="job">
+        <button class="opt" data-val="glow">Lit-from-within glow</button>
+        <button class="opt" data-val="blush">A flush of color</button>
+        <button class="opt" data-val="bronze">Warmth / bronze</button>
+      </div>
+      <div class="q">2. Your skin depth</div>
+      <div class="opts" data-group="depth">
+        <button class="opt" data-val="fair">Fair</button>
+        <button class="opt" data-val="light">Light</button>
+        <button class="opt" data-val="medium">Medium</button>
+        <button class="opt" data-val="deep">Deep</button>
+      </div>
+      <div class="result" id="result">
+        <img id="res-img" src="" alt="">
+        <div>
+          <div class="rlabel">A good place to start</div>
+          <div class="rname" id="res-name">—</div>
+          <button class="rbtn" id="res-btn">Select this shade</button>
+        </div>
+      </div>
+      <p class="note">A starting point, not a verdict. Miracle Balm is a sheer wash of color, so it flatters a range of skin tones — a near-match still looks like skin.</p>
+    </div>
+  </div>
+
+  <button class="atc">Add to bag <span class="pipe">|</span> $38</button>
+</div>
+
+<script>
+const SHADES=[
+{n:"Au Naturel",h:"#ffeae6",d:"is a clear balm with subtle opal pearl for all skin tones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/MiracleBalm_AuNaturel_1.jpg?v=1739188719",job:"glow",depth:["fair","light","medium","deep"],tag:"Clear glow"},
+{n:"Happy Hour",h:"#d8a9a1",d:"is a cool sheer pink with silver shimmer for fair to medium-tan skin tones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/miraclebalm_happyhour_1.jpg?v=1739188719",job:"blush",depth:["fair","light","medium"],tag:"Cool pink"},
+{n:"Dusty Rose",h:"#be7e84",d:"is a cool, rosy pink sheer tint for fair to medium skin tones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_DustyRose_1.jpg?v=1739188718",job:"blush",depth:["fair","light","medium"],tag:"Rosy pink"},
+{n:"Flushed",h:"#e25668",d:"is a cool pink with a subtle sheen and sheer coverage for all skin tones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/mb_flushed_1_9d09a315-2a3e-4ab5-a6e8-61e35870284e.jpg?v=1750177846",job:"blush",depth:["fair","light","medium","deep"],tag:"Cool pink"},
+{n:"Pinched Cheeks",h:"#da6c81",d:"is a medium rosy pink with subtle multidimensional shimmer for fair to dark skin tones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/miraclebalm_pinchedcheeks_1_5bdaee7f-49a5-4702-b43c-6d6c87252f44.jpg?v=1739188719",job:"blush",depth:["fair","light","medium","deep"],tag:"Rosy pink"},
+{n:"Chic",h:"#c36d69",d:"is a nude pink tint for fair to medium-dark skin tones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/Mini_MB_PDP_Launch_1_2.jpg?v=1772536137",job:"blush",depth:["fair","light","medium"],tag:"Nude pink"},
+{n:"Miami Beach",h:"#f55849",d:"is a warm peachy coral with subtle gold shimmer and sheer coverage for all skin tones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/MiracleBalm_miamibeach_1.jpg?v=1739188719",job:"glow",depth:["fair","light","medium","deep"],tag:"Peach coral"},
+{n:"Golden Hour",h:"#e18046",d:"is a warm, sheer gold with multidimensional shimmer for all skin tones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_GoldenHour_1.jpg?v=1739188719",job:"glow",depth:["fair","light","medium","deep"],tag:"Warm gold"},
+{n:"Magic Hour",h:"#c68655",d:"is a cool, sheer bronze with silver shimmer for light to medium-dark skin",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_MagicHour_1.jpg?v=1739188719",job:"bronze",depth:["light","medium","deep"],tag:"Cool bronze"},
+{n:"Pinky Bronze",h:"#93504a",d:"is a warm pinky brown with low shimmer for fair to dark skin tones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/MiracleBalm_PinkyBronze_1_7a5080a3-e92b-4965-a8fa-883f50c50f4b.jpg?v=1739188720",job:"bronze",depth:["fair","light","medium","deep"],tag:"Pinky brown"},
+{n:"Bronze",h:"#844323",d:"is a warm brown sheer tint for fair to dark skin tones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_Bronze_1.jpg?v=1739188719",job:"bronze",depth:["light","medium","deep"],tag:"Warm brown"},
+{n:"Cheeky",h:"#7b1e1c",d:"is a plum berry for medium to deep skin tones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/Mini_MB_PDP_Launch_1_3.jpg?v=1772536202",job:"blush",depth:["medium","deep"],tag:"Plum berry"},
+{n:"Tawny",h:"#973331",d:"is a reddish-brown sheer tint for medium to dark skin",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_Tawny_1.jpg?v=1739188719",job:"bronze",depth:["medium","deep"],tag:"Reddish brown"},
+{n:"Sunkissed",h:"#85382e",d:"is a deep reddish bronze tint that is sheer for light to deep skin tones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/Miracle_Balm_SunKissed_1.jpg?v=1739188719",job:"bronze",depth:["light","medium","deep"],tag:"Reddish bronze"},
+{n:"Cocoa Bronze",h:"#652e23",d:"is a deep plummy bronze for medium to deep skin tones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/miraclebalm_cocoabronze_1_e37bde81-a91b-44d3-b116-cb5d67fa8a7b.jpg?v=1739188719",job:"bronze",depth:["medium","deep"],tag:"Plummy bronze"}
+];
+const grid=document.getElementById('grid');
+let selected=0;
+function W(u){return u+(u.includes('?')?'&':'?')+'width=800';}
+SHADES.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.className='swatch';b.setAttribute('aria-pressed',i===selected);
+  b.innerHTML=`<span class="ring"><span class="dot" style="background:${s.h}"></span></span><span class="sname">${s.n}</span>`;
+  b.onclick=()=>select(i);
+  grid.appendChild(b);
+});
+function select(i){
+  selected=i;const s=SHADES[i];
+  [...grid.children].forEach((c,j)=>c.setAttribute('aria-pressed',j===i));
+  document.getElementById('picked').textContent=s.n;
+  document.getElementById('detail-img').src=W(s.img);
+  document.getElementById('detail-name').textContent=s.n;
+  document.getElementById('detail-tag').textContent=s.tag;
+  document.getElementById('detail-desc').textContent=s.d;
+}
+select(0);
+const match=document.getElementById('match');
+document.getElementById('matchToggle').onclick=()=>{const o=match.classList.toggle('open');document.getElementById('matchToggle').setAttribute('aria-expanded',o);};
+let pick={job:null,depth:null};
+document.querySelectorAll('.opts').forEach(g=>{
+  g.querySelectorAll('.opt').forEach(o=>{
+    o.onclick=()=>{
+      g.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-pressed','false'));
+      o.setAttribute('aria-pressed','true');
+      pick[g.dataset.group]=o.dataset.val;
+      recommend();
+    };
+  });
+});
+function recommend(){
+  if(!pick.job||!pick.depth)return;
+  let cands=SHADES.filter(s=>s.job===pick.job&&s.depth.includes(pick.depth));
+  if(!cands.length)cands=SHADES.filter(s=>s.depth.includes(pick.depth));
+  if(!cands.length)cands=SHADES;
+  const best=cands[0];const idx=SHADES.indexOf(best);
+  document.getElementById('res-img').src=W(best.img);
+  document.getElementById('res-name').textContent=best.n;
+  document.getElementById('result').classList.add('show');
+  document.getElementById('res-btn').onclick=()=>{select(idx);window.scrollTo({top:0,behavior:'smooth'});};
+}
+</script>
+</body>
+</html>

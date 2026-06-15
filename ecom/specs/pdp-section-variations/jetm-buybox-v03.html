@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JETM Buybox v03 — Mobile-stacked</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:460px;margin:0 auto;padding:0 0 96px;}
+
+.hero-img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#f8f8f8;}
+.thumbs{display:flex;gap:8px;padding:10px 16px 0;overflow-x:auto;}
+.thumbs img{width:58px;height:58px;flex:none;object-fit:cover;border-radius:3px;border:1px solid #d4d4d4;cursor:pointer;background:#f8f8f8;}
+.thumbs img.sel{border-color:#000;}
+
+.body{padding:18px 16px 0;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.pname{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;font-size:22px;letter-spacing:1.18px;margin:6px 0 8px;line-height:1.1;}
+.rating{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.stars{display:inline-flex;gap:2px;}
+.stars svg{width:16px;height:16px;}
+.rcount{font-family:'RingsideWideWeb';font-size:14px;}
+.desc{font-size:14px;line-height:1.6;margin:0 0 4px;}
+
+/* benefit chips ABOVE swatches */
+.exp{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px;}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid #d4d4d4;border-radius:3px;padding:8px 11px;font-family:'RingsideWideWeb';font-size:12.5px;background:#fff;}
+.chip svg{width:13px;height:13px;flex:none;}
+
+.shade-head{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 10px;}
+.shade-label{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;}
+.shade-current{font-family:'RingsideWideWeb';font-size:13px;}
+.swatches{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;}
+.sw{width:28px;height:28px;border-radius:100%;border:1px solid #d4d4d4;padding:2px;cursor:pointer;background:none;display:flex;align-items:center;justify-content:center;}
+.sw.sel{border-color:#000;border-width:1.5px;}
+.sw i{display:block;width:24px;height:24px;border-radius:100%;}
+
+/* sticky ATC bar */
+.stickybar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #d4d4d4;padding:10px 16px;display:flex;align-items:center;gap:12px;max-width:460px;margin:0 auto;}
+.stickybar .meta{flex:none;}
+.stickybar .mt-name{font-family:'GeogrotesqueCondBoldWeb';text-transform:uppercase;font-size:12px;letter-spacing:.6px;line-height:1.1;}
+.stickybar .mt-price{font-family:'RingsideWideWeb';font-size:14px;}
+.atc{flex:1;display:flex;align-items:center;justify-content:center;height:44px;background:#000;color:#fff;border:none;border-radius:3px;font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:13px;letter-spacing:.5px;cursor:pointer;}
+.atc .pipe{opacity:.45;margin:0 10px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- IMAGE FIRST -->
+  <img class="hero-img" id="mainImg" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_alabaster_2_edit.jpg?v=1743696369&width=800" alt="Just Enough Tinted Moisturizer">
+  <div class="thumbs" id="thumbs">
+    <img class="sel" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_alabaster_2_edit.jpg?v=1743696369&width=200" data-big="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_alabaster_2_edit.jpg?v=1743696369&width=800" alt="">
+    <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_alabaster_3_edit.jpg?v=1743696369&width=200" data-big="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_alabaster_3_edit.jpg?v=1743696369&width=800" alt="">
+    <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_alabaster_1.jpg?v=1741887001&width=200" data-big="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_alabaster_1.jpg?v=1741887001&width=800" alt="">
+    <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_alabaster_4.jpg?v=1741887001&width=200" data-big="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_alabaster_4.jpg?v=1741887001&width=800" alt="">
+  </div>
+
+  <div class="body">
+    <!-- TITLE + RATING -->
+    <div class="eyebrow">Tinted Moisturizer</div>
+    <h1 class="pname">Just Enough Tinted Moisturizer</h1>
+    <div class="rating">
+      <span class="stars" id="starsTop"></span>
+      <span class="rcount">7,187 reviews &middot; 4.6&#9733;</span>
+    </div>
+    <p class="desc">A lightweight tinted moisturizer that smooths and evens skin tone with a soft touch of coverage. It hides redness, looks natural, and feels like nothing on your skin.</p>
+
+    <!-- BENEFIT CHIPS ABOVE SWATCHES -->
+    <div class="exp">
+      <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg>Sheer coverage</span>
+      <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg>Soft, natural finish</span>
+      <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg>No SPF</span>
+    </div>
+
+    <!-- SWATCHES -->
+    <div class="shade-head">
+      <span class="shade-label">Shade — 16 available</span>
+      <span class="shade-current" id="shadeCur">Alabaster</span>
+    </div>
+    <div class="swatches" id="sw"></div>
+  </div>
+</div>
+
+<!-- STICKY ATC -->
+<div class="stickybar">
+  <div class="meta">
+    <div class="mt-name">Just Enough</div>
+    <div class="mt-price">$44.00</div>
+  </div>
+  <button class="atc">Add to bag<span class="pipe">|</span>$44.00</button>
+</div>
+
+<script>
+var SH=[["Alabaster","#f3ddc9","JETM_alabaster_1.jpg?v=1741887001"],["Porcelain","#eed3bb","JETM_porcelain_1.jpg?v=1741887001"],["Fair","#ecccb0","JETM_fair_1.jpg?v=1741887001"],["Ivory","#e8c4a4","JETM_ivory_1.jpg?v=1741887001"],["Light","#e2b896","JETM_light_1.jpg?v=1741887001"],["Beige","#d9aa84","JETM_beige_1.jpg?v=1741887002"],["Medium","#cf9b72","JETM_medium_1.jpg?v=1741887001"],["Medium Honey","#c89065","JETM_mediumhoney_1.jpg?v=1741887001"],["Honey","#bd825a","JETM_honey_1.jpg?v=1741887001"],["Golden","#b3784f","JETM_golden_1.jpg?v=1741887001"],["Pecan","#a56b43","JETM_pecan_1.jpg?v=1741887002"],["Almond","#965d39","JETM_Almond_1.jpg?v=1741887001"],["Cinnamon","#85502f","JETM_cinnamon_1.jpg?v=1741887002"],["Chestnut","#6f4226","JETM_chestnut_1.jpg?v=1741887001"],["Deep","#5a341d","JETM_deep_1.jpg?v=1741887001"],["Espresso","#432615","JETM_espresso_1.jpg?v=1741887001"]];
+var CDN="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/";
+var star='<svg viewBox="0 0 24 24" fill="#000"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z"/></svg>';
+document.getElementById('starsTop').innerHTML=star.repeat(4)+'<svg viewBox="0 0 24 24"><defs><linearGradient id="h3"><stop offset="62%" stop-color="#000"/><stop offset="62%" stop-color="#fff"/></linearGradient></defs><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z" fill="url(#h3)" stroke="#000"/></svg>';
+var sw=document.getElementById('sw');
+SH.forEach(function(s,i){var b=document.createElement('button');b.className='sw'+(i===0?' sel':'');b.innerHTML='<i style="background:'+s[1]+'"></i>';b.title=s[0];b.onclick=function(){document.querySelectorAll('.sw').forEach(function(x){x.classList.remove('sel')});b.classList.add('sel');document.getElementById('shadeCur').textContent=s[0];document.getElementById('mainImg').src=CDN+s[2]+'&width=800';};sw.appendChild(b);});
+var thumbs=document.getElementById('thumbs').children;
+for(var t=0;t<thumbs.length;t++){(function(el){el.onclick=function(){for(var k=0;k<thumbs.length;k++)thumbs[k].classList.remove('sel');el.classList.add('sel');document.getElementById('mainImg').src=el.getAttribute('data-big');};})(thumbs[t]);}
+</script>
+</body>
+</html>

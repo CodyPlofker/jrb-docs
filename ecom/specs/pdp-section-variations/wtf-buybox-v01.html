@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WTF Buybox v01 — Classic</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1180px;margin:0 auto;padding:32px 20px 56px;}
+.grid{display:grid;grid-template-columns:1fr;gap:28px;}
+@media(min-width:860px){.grid{grid-template-columns:1.05fr .95fr;gap:48px;align-items:start;}}
+
+/* gallery */
+.gallery .main-img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:3px;background:#f8f8f8;display:block;}
+.thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.thumbs img{width:62px;height:62px;object-fit:cover;border-radius:3px;border:1px solid #d4d4d4;cursor:pointer;background:#f8f8f8;}
+.thumbs img.sel{border-color:#000;}
+
+/* info */
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.pname{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;font-size:22px;letter-spacing:1.18px;margin:6px 0 10px;line-height:1.1;}
+.rating{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.stars{display:inline-flex;gap:2px;}
+.stars svg{width:16px;height:16px;}
+.rcount{font-family:'RingsideWideWeb';font-size:14px;}
+.price{font-family:'RingsideWideWeb';font-size:20px;margin-bottom:6px;}
+.desc{font-size:14px;line-height:1.6;margin:14px 0 18px;max-width:46ch;}
+
+/* expectation strip */
+.exp{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0;}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid #d4d4d4;border-radius:3px;padding:8px 12px;font-family:'RingsideWideWeb';font-size:12.5px;background:#fff;}
+.chip svg{width:13px;height:13px;flex:none;}
+
+/* shade label */
+.shade-head{display:flex;justify-content:space-between;align-items:baseline;margin:20px 0 10px;}
+.shade-label{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;}
+.shade-current{font-family:'RingsideWideWeb';font-size:13px;}
+.swatches{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;max-width:360px;}
+.sw{width:28px;height:28px;border-radius:100%;border:1px solid #d4d4d4;padding:2px;cursor:pointer;background:none;display:flex;align-items:center;justify-content:center;}
+.sw.sel{border-color:#000;border-width:1.5px;}
+.sw i{display:block;width:24px;height:24px;border-radius:100%;}
+
+/* ATC */
+.atc{display:flex;align-items:center;justify-content:center;gap:0;width:100%;height:44px;background:#000;color:#fff;border:none;border-radius:3px;font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:13px;letter-spacing:.5px;cursor:pointer;margin-top:22px;}
+.atc .pipe{opacity:.45;margin:0 12px;}
+.note{font-family:'RingsideWideWeb';font-size:12px;text-align:center;margin-top:10px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="grid">
+    <!-- GALLERY -->
+    <div class="gallery">
+      <img class="main-img" id="mainImg" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504&width=900" alt="What The Foundation">
+      <div class="thumbs" id="thumbs">
+        <img class="sel" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504&width=200" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Fair_01_cc.jpg?v=1755118504&width=200" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Beige_01_cc.jpg?v=1755118504&width=200" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Medium_01_cc.jpg?v=1755118504&width=200" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Honey_01_cc.jpg?v=1755118504&width=200" alt="">
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="info">
+      <div class="eyebrow">Foundation</div>
+      <h1 class="pname">What The Foundation</h1>
+      <div class="rating">
+        <span class="stars" id="starsTop"></span>
+        <span class="rcount">53,379 reviews · 4.46&#9733;</span>
+      </div>
+      <div class="price">$46.00</div>
+      <p class="desc">Our take on a foundation, offering light-medium, buildable coverage. Its ultra-nourishing formula blends seamlessly into the skin, leaving you with an even, fresh complexion that looks like your skin on its best day.</p>
+
+      <!-- EXPECTATION STRIP -->
+      <div class="exp">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg>Light-to-medium, buildable</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg>Looks like skin, not makeup</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg>Best on normal-to-dry skin</span>
+      </div>
+
+      <!-- SHADES -->
+      <div class="shade-head">
+        <span class="shade-label">Shade — 16 available</span>
+        <span class="shade-current" id="shadeCur">Porcelain</span>
+      </div>
+      <div class="swatches" id="sw"></div>
+
+      <button class="atc">Add to bag<span class="pipe">|</span>$46.00</button>
+      <p class="note">Free shipping over $50 · Easy returns</p>
+    </div>
+  </div>
+</div>
+
+<script>
+var SH=[["Alabaster","#f3ddc9"],["Porcelain","#eed3bb"],["Fair","#ecccb0"],["Ivory","#e8c4a4"],["Light","#e2b896"],["Beige","#d9aa84"],["Medium","#cf9b72"],["Medium Honey","#c89065"],["Honey","#bd825a"],["Golden","#b3784f"],["Pecan","#a56b43"],["Almond","#965d39"],["Cinnamon","#85502f"],["Chestnut","#6f4226"],["Deep","#5a341d"],["Espresso","#432615"]];
+var star='<svg viewBox="0 0 24 24" fill="#000"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z"/></svg>';
+document.getElementById('starsTop').innerHTML=star.repeat(4)+'<svg viewBox="0 0 24 24"><defs><linearGradient id="h"><stop offset="46%" stop-color="#000"/><stop offset="46%" stop-color="#fff"/></linearGradient></defs><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z" fill="url(#h)" stroke="#000"/></svg>';
+var sw=document.getElementById('sw');
+SH.forEach(function(s,i){var b=document.createElement('button');b.className='sw'+(i===1?' sel':'');b.innerHTML='<i style="background:'+s[1]+'"></i>';b.title=s[0];b.onclick=function(){document.querySelectorAll('.sw').forEach(function(x){x.classList.remove('sel')});b.classList.add('sel');document.getElementById('shadeCur').textContent=s[0];};sw.appendChild(b);});
+var thumbs=document.getElementById('thumbs').children;
+for(var t=0;t<thumbs.length;t++){(function(el){el.onclick=function(){for(var k=0;k<thumbs.length;k++)thumbs[k].classList.remove('sel');el.classList.add('sel');document.getElementById('mainImg').src=el.src.replace('width=200','width=900');};})(thumbs[t]);}
+</script>
+</body>
+</html>

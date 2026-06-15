@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WTF Shade — v04 Compare two shades</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:520px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 4px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0 0;}
+.col{border:1px solid #e6e6e6;border-radius:3px;overflow:hidden;}
+.col.active{border-color:#000;}
+.col .ph{background:#f8f8f8;font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:10px;padding:8px 12px;border-bottom:1px solid #ededed;display:flex;justify-content:space-between;align-items:center;}
+.col .ph .pick{appearance:none;border:1px solid #000;background:#000;color:#fff;border-radius:2px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:9px;letter-spacing:.5px;padding:4px 8px;cursor:pointer;}
+.col.active .ph .pick{background:#fff;color:#000;}
+.col img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
+.col .body{padding:12px;}
+.col .cn{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:16px;}
+.col .cd{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.45;margin-top:4px;}
+.col .cd::first-letter{text-transform:uppercase;}
+.swatchrow{display:flex;align-items:center;gap:7px;margin-top:10px;}
+.swatchrow .sw{width:22px;height:22px;border-radius:100%;border:1.5px solid #d4d4d4;}
+.swatchrow .lab{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:.5px;font-size:10px;}
+.tip{margin-top:18px;background:#f8f8f8;border-radius:3px;padding:16px;}
+.tip .th{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;margin-bottom:8px;}
+.tip p{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.55;}
+.tip p+p{margin-top:8px;}
+.picker{margin-top:22px;}
+.pl{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:13px;margin-bottom:12px;}
+.grid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px 8px;}
+.swatch{appearance:none;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0;}
+.ring{width:28px;height:28px;border-radius:100%;border:1.5px solid #d4d4d4;display:flex;align-items:center;justify-content:center;}
+.dot{width:24px;height:24px;border-radius:100%;}
+.swatch.inA .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.swatch.inB .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.sname{font-family:'RingsideWideWeb',sans-serif;font-size:9px;line-height:1.1;text-align:center;letter-spacing:-.2px;}
+.hint{font-family:'RingsideWideWeb',sans-serif;font-size:11px;margin-top:10px;}
+.hint b{font-family:'ArticulatCF',sans-serif;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">16 shades · compare side-by-side</div>
+  <h2 class="headline">Torn between two? See them next to each other.</h2>
+  <p class="sub">Add any two shades to compare on real skin before you commit.</p>
+
+  <div class="compare">
+    <div class="col active" id="colA">
+      <div class="ph">Shade A <button class="pick" data-slot="A">Selected</button></div>
+      <img id="imgA" src="" alt="">
+      <div class="body">
+        <div class="cn" id="nameA">—</div>
+        <div class="cd" id="descA"></div>
+        <div class="swatchrow"><span class="sw" id="swA"></span><span class="lab" id="toneA"></span></div>
+      </div>
+    </div>
+    <div class="col" id="colB">
+      <div class="ph">Shade B <button class="pick" data-slot="B">Select</button></div>
+      <img id="imgB" src="" alt="">
+      <div class="body">
+        <div class="cn" id="nameB">—</div>
+        <div class="cd" id="descB"></div>
+        <div class="swatchrow"><span class="sw" id="swB"></span><span class="lab" id="toneB"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    <div class="th">Between two shades? Here's how to pick</div>
+    <p>WTF is light-to-medium and <b>buildable</b>, so it sheers down to meet your skin — a near-match still blends in.</p>
+    <p>Tend to warm up in the sun? Size up to the deeper of the two. Match to your face and neck, not your hand. When in doubt, lighter reads more natural since it won't sit on top.</p>
+  </div>
+
+  <div class="picker">
+    <div class="pl">Tap to load into the active column (<span id="activeLabel">A</span>)</div>
+    <div class="grid" id="grid"></div>
+    <p class="hint">Active column highlighted above — tap <b>Select</b> on the other column to fill it, then keep tapping shades to swap.</p>
+  </div>
+</div>
+
+<script>
+const SHADES=[
+{n:"Alabaster",h:"#f0d9bd",d:"is pale with neutral pink undertones",t:"Cool",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_alabaster_1.jpg?v=1755118504"},
+{n:"Porcelain",h:"#f2cca1",d:"is pale with neutral undertones",t:"Neutral",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504"},
+{n:"Fair",h:"#e9b08d",d:"is fair with cool undertones",t:"Cool",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Fair_01_cc.jpg?v=1755118504"},
+{n:"Ivory",h:"#d6a37f",d:"is fair with warm undertones",t:"Warm",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/ivory_PDP_1_cc.jpg?v=1755118504"},
+{n:"Light",h:"#d2a473",d:"is light with warm undertones",t:"Warm",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Light_cc.jpg?v=1755118504"},
+{n:"Beige",h:"#c89172",d:"is light to medium with neutral undertones",t:"Neutral",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Beige_01_cc.jpg?v=1755118504"},
+{n:"Medium",h:"#b97f51",d:"is medium with neutral warm undertones",t:"Neutral",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Medium_01_cc.jpg?v=1755118504"},
+{n:"Medium Honey",h:"#ba7049",d:"is medium to tan with neutral warm undertones",t:"Warm",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_MediumHoney_01_cc.jpg?v=1755118504"},
+{n:"Honey",h:"#a65631",d:"is medium to tan with warm undertones",t:"Warm",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Honey_01_cc.jpg?v=1755118504"},
+{n:"Golden",h:"#894e30",d:"is tan with warm undertones",t:"Warm",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_golden_1_cc.jpg?v=1755118505"},
+{n:"Pecan",h:"#873a2a",d:"is dark with neutral undertones",t:"Neutral",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Pecan_01_cc.jpg?v=1755118504"},
+{n:"Almond",h:"#673524",d:"is dark with warm undertones",t:"Warm",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_almond_1_cc.jpg?v=1755118505"},
+{n:"Cinnamon",h:"#792f22",d:"is dark with cool undertones",t:"Cool",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Cinnamon_01_cc.jpg?v=1755118504"},
+{n:"Chestnut",h:"#62271f",d:"is dark to deep with cool undertones",t:"Cool",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Chestnut_01.png?v=1755118504"},
+{n:"Deep",h:"#49221b",d:"is deep with neutral undertones",t:"Neutral",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Deep_01.png?v=1755118504"},
+{n:"Espresso",h:"#351a13",d:"is very deep with neutral undertones",t:"Neutral",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Espresso_01.png?v=1755118504"}
+];
+function W(u){return u+(u.includes('?')?'&':'?')+'width=800';}
+let slot={A:1,B:5},active='A';
+const grid=document.getElementById('grid');
+SHADES.forEach((s,i)=>{
+  const b=document.createElement('button');b.className='swatch';b.dataset.i=i;
+  b.innerHTML=`<span class="ring"><span class="dot" style="background:${s.h}"></span></span><span class="sname">${s.n}</span>`;
+  b.onclick=()=>load(i);
+  grid.appendChild(b);
+});
+function paint(which){
+  const s=SHADES[slot[which]];
+  document.getElementById('img'+which).src=W(s.img);
+  document.getElementById('name'+which).textContent=s.n;
+  document.getElementById('desc'+which).textContent=s.d;
+  document.getElementById('sw'+which).style.background=s.h;
+  document.getElementById('tone'+which).textContent=s.t+' undertone';
+}
+function load(i){slot[active]=i;paint(active);marks();}
+function setActive(w){
+  active=w;
+  document.getElementById('colA').classList.toggle('active',w==='A');
+  document.getElementById('colB').classList.toggle('active',w==='B');
+  document.querySelector('[data-slot="A"]').textContent=w==='A'?'Selected':'Select';
+  document.querySelector('[data-slot="B"]').textContent=w==='B'?'Selected':'Select';
+  document.getElementById('activeLabel').textContent=w;
+}
+document.querySelectorAll('.pick').forEach(p=>p.onclick=()=>setActive(p.dataset.slot));
+function marks(){
+  [...grid.children].forEach((c,i)=>{
+    c.classList.toggle('inA',i===slot.A);
+    c.classList.toggle('inB',i===slot.B);
+  });
+}
+paint('A');paint('B');setActive('A');marks();
+</script>
+</body>
+</html>

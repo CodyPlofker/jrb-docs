@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FS Shade — v02 Depth-grouped tabs</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:560px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 4px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.5;}
+/* tabs */
+.tabs{display:flex;gap:6px;margin:22px 0 6px;position:sticky;top:0;background:#fff;padding:8px 0;z-index:5;}
+.tab{flex:1;appearance:none;border:1px solid #d4d4d4;background:#fff;border-radius:3px;cursor:pointer;padding:0 4px;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:border-color .15s,background .15s;}
+.tab[aria-selected="true"]{border-color:#000;background:#000;}
+.tab .tn{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;color:#000;}
+.tab[aria-selected="true"] .tn{color:#fff;}
+.tab .tswatch{display:flex;gap:2px;}
+.tab .tsw{width:9px;height:9px;border-radius:100%;}
+.tab .tcount{font-family:'BaseMonoWideWeb',monospace;font-size:9px;color:#000;}
+.tab[aria-selected="true"] .tcount{color:#fff;}
+.grouphint{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;margin:10px 0 16px;}
+.grouphint b{font-family:'ArticulatCF',sans-serif;font-weight:700;}
+/* shade cards */
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.card{appearance:none;text-align:left;border:1px solid #e6e6e6;background:#fff;border-radius:3px;cursor:pointer;overflow:hidden;display:flex;flex-direction:column;transition:border-color .15s;padding:0;}
+.card[aria-pressed="true"]{border-color:#000;box-shadow:0 0 0 1px #000;}
+.card .thumb{aspect-ratio:1/1;background:#f8f8f8;position:relative;}
+.card .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.card .chip{position:absolute;left:8px;top:8px;width:22px;height:22px;border-radius:100%;border:1.5px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.15);}
+.card .meta{padding:10px 11px 12px;}
+.card .cn{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:13px;}
+.card .cu{font-family:'RingsideWideWeb',sans-serif;font-size:11px;margin-top:2px;}
+.card .csel{font-family:'BaseMonoWideWeb',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;margin-top:7px;display:none;}
+.card[aria-pressed="true"] .csel{display:block;}
+/* selected bar + atc */
+.bar{margin-top:22px;border-top:1px solid #ededed;padding-top:16px;display:flex;align-items:center;gap:12px;}
+.bar .bdot{width:30px;height:30px;border-radius:100%;border:1.5px solid #000;flex-shrink:0;}
+.bar .bn{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:14px;}
+.bar .bd{font-family:'RingsideWideWeb',sans-serif;font-size:12px;}
+.atc{margin-top:14px;}
+.atc button{width:100%;appearance:none;border:none;border-radius:3px;cursor:pointer;height:46px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:13px;letter-spacing:.6px;background:#000;color:#fff;}
+.atc .pipe{opacity:.55;margin:0 8px;}
+.note{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;margin-top:12px;}
+@media(max-width:420px){.cards{grid-template-columns:repeat(2,1fr);gap:10px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">30 shades · medium-to-full, buildable</div>
+  <h2 class="headline">Start with your depth.</h2>
+  <p class="sub">Thirty shades is a lot — so pick your depth first, then see each one on the stick. Natural skin finish, built for on-the-go.</p>
+
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <p class="grouphint" id="grouphint"></p>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="bar" id="bar">
+    <span class="bdot" id="bdot"></span>
+    <span>
+      <span class="bn" id="bn"></span><br>
+      <span class="bd" id="bd"></span>
+    </span>
+  </div>
+  <div class="atc"><button id="atc">Select a shade<span class="pipe">|</span>$38</button></div>
+  <p class="note">Between two depths? The buildable formula sheers out, so a near-match still blends in.</p>
+</div>
+
+<script>
+const SHADES=[
+{n:"Pale Alabaster",h:"#f1ddc6",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_1.jpg?v=1777924896"},
+{n:"Alabaster",h:"#efd6bd",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_10.jpg?v=1777925395"},
+{n:"Bisque",h:"#eccdb0",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_19.jpg?v=1777991567"},
+{n:"Linen",h:"#ecd0b8",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_28.jpg?v=1777991768"},
+{n:"Warm Linen",h:"#e8c6a6",g:"fair",u:"warm",d:"Fair with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_29.jpg?v=1777991792"},
+{n:"Porcelain",h:"#e6c3a6",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_55.jpg?v=1777991814"},
+{n:"Fair",h:"#e3bda0",g:"fair",u:"cool",d:"Fair with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_56.jpg?v=1778074299"},
+{n:"Neutral Fair",h:"#e2bb9d",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_55_1.jpg?v=1778074281"},
+{n:"Ivory",h:"#ddb293",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_57.jpg?v=1778074322"},
+{n:"Light",h:"#d8ab8a",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_82.jpg?v=1778074341"},
+{n:"Sand",h:"#d6a988",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_83.jpg?v=1778074361"},
+{n:"Beige",h:"#cf9f7f",g:"light",u:"neutral",d:"Light with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_84.jpg?v=1778074380"},
+{n:"Warm Beige",h:"#cb9876",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_109.jpg?v=1778074399"},
+{n:"Neutral Beige",h:"#c69273",g:"light",u:"neutral",d:"Light with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_110.jpg?v=1778074448"},
+{n:"Medium",h:"#bd8868",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_111.jpg?v=1778074466"},
+{n:"Warm Medium",h:"#b8825f",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_136.jpg?v=1778074517"},
+{n:"Neutral Medium",h:"#b27c5b",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_141.jpg?v=1778074535"},
+{n:"Neutral Honey",h:"#a9714f",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_146_2.jpg?v=1778074627"},
+{n:"Medium Honey",h:"#a36a48",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_137.jpg?v=1778074645"},
+{n:"Honey",h:"#9b6242",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_142.jpg?v=1778074662"},
+{n:"Warm Honey",h:"#94592f",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_147_1.jpg?v=1778075035"},
+{n:"Golden",h:"#8a5430",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_138.jpg?v=1778075124"},
+{n:"Hazelnut",h:"#7c4a30",g:"deep",u:"warm",d:"Deep with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_143.jpg?v=1778075141"},
+{n:"Pecan",h:"#724229",g:"deep",u:"neutral",d:"Deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_139.jpg?v=1778075176"},
+{n:"Almond",h:"#693c27",g:"deep",u:"warm",d:"Deep with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_139_1.jpg?v=1778075205"},
+{n:"Walnut",h:"#5e3623",g:"deep",u:"warm",d:"Deep with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_144_1.jpg?v=1778075345"},
+{n:"Cinnamon",h:"#552f20",g:"deep",u:"cool",d:"Deep with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_149.jpg?v=1778075361"},
+{n:"Chestnut",h:"#4b2a1e",g:"deep",u:"cool",d:"Deep with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_140.jpg?v=1778075377"},
+{n:"Deep",h:"#3f231a",g:"deep",u:"neutral",d:"Deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_145.jpg?v=1778075391"},
+{n:"Espresso",h:"#321b14",g:"deep",u:"neutral",d:"Deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_150.jpg?v=1778075404"}
+];
+const GROUPS=[
+{k:"fair",label:"Fair",hint:"Eight fair shades — for the lightest skin that other lines run too dark on. Start lighter; the formula sheers out."},
+{k:"light",label:"Light",hint:"Six light shades, from cool-neutral Beige to warm Ivory and Sand."},
+{k:"medium",label:"Medium",hint:"Eight medium shades spanning neutral Medium through warm, golden Honey."},
+{k:"deep",label:"Deep",hint:"Eight deep shades, from warm Hazelnut to the deepest, neutral Espresso."}
+];
+function W(u){return u+(u.includes('?')?'&':'?')+'width=300';}
+const tabsEl=document.getElementById('tabs'),cardsEl=document.getElementById('cards');
+let activeG="fair",selected=null;
+GROUPS.forEach(gr=>{
+  const arr=SHADES.filter(s=>s.g===gr.k);
+  const t=document.createElement('button');t.className='tab';t.setAttribute('role','tab');t.setAttribute('aria-selected',gr.k===activeG);
+  const sw=arr.slice(0,3).map(s=>`<span class="tsw" style="background:${s.h}"></span>`).join('');
+  t.innerHTML=`<span class="tn">${gr.label}</span><span class="tswatch">${sw}</span><span class="tcount">${arr.length} shades</span>`;
+  t.onclick=()=>{activeG=gr.k;render();};
+  tabsEl.appendChild(t);
+});
+function render(){
+  [...tabsEl.children].forEach((t,i)=>t.setAttribute('aria-selected',GROUPS[i].k===activeG));
+  document.getElementById('grouphint').innerHTML='<b>'+GROUPS.find(g=>g.k===activeG).label+':</b> '+GROUPS.find(g=>g.k===activeG).hint;
+  cardsEl.innerHTML='';
+  SHADES.filter(s=>s.g===activeG).forEach(s=>{
+    const idx=SHADES.indexOf(s);
+    const c=document.createElement('button');c.className='card';c.setAttribute('aria-pressed',idx===selected);
+    c.innerHTML=`<span class="thumb"><span class="chip" style="background:${s.h}"></span><img src="${W(s.img)}" alt="${s.n} Foundation Stick" loading="lazy"></span><span class="meta"><span class="cn">${s.n}</span><span class="cu">${s.u.charAt(0).toUpperCase()+s.u.slice(1)} undertone</span><span class="csel">✓ Selected</span></span>`;
+    c.onclick=()=>{selected=idx;render();updateBar();};
+    cardsEl.appendChild(c);
+  });
+}
+function updateBar(){
+  if(selected===null)return;const s=SHADES[selected];
+  document.getElementById('bdot').style.background=s.h;
+  document.getElementById('bn').textContent=s.n;
+  document.getElementById('bd').textContent=s.d;
+  document.getElementById('atc').innerHTML='Add to bag — '+s.n+'<span class="pipe">|</span>$38';
+}
+render();
+</script>
+</body>
+</html>

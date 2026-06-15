@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lip Recharge Buybox v03 — Mobile-stacked</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:440px;margin:0 auto;padding:0 0 96px;}
+
+.hero img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#f8f8f8;}
+.dots{display:flex;justify-content:center;gap:6px;padding:12px 0 4px;}
+.dots span{width:7px;height:7px;border-radius:100%;background:#d4d4d4;}
+.dots span.on{background:#000;}
+
+.pad{padding:6px 20px 0;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.pname{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;font-size:22px;letter-spacing:1.18px;margin:5px 0 8px;line-height:1.1;}
+.rating{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.stars{display:inline-flex;gap:2px;}
+.stars svg{width:16px;height:16px;}
+.rcount{font-family:'RingsideWideWeb';font-size:14px;}
+.price{font-family:'RingsideWideWeb';font-size:20px;margin-bottom:14px;}
+
+/* benefit chips ABOVE swatches */
+.exp{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px;}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid #d4d4d4;border-radius:3px;padding:8px 11px;font-family:'RingsideWideWeb';font-size:12.5px;background:#fff;}
+.chip svg{width:13px;height:13px;flex:none;}
+.chip.color i{width:12px;height:12px;border-radius:100%;flex:none;background:linear-gradient(135deg,#e8a9ad,#c98fb0);border:1px solid rgba(0,0,0,.18);}
+
+.shade-head{display:flex;justify-content:space-between;align-items:baseline;margin:4px 0 10px;}
+.shade-label{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;}
+.shade-current{font-family:'RingsideWideWeb';font-size:13px;}
+.swatches{display:grid;grid-template-columns:repeat(9,1fr);gap:9px;}
+.sw{width:28px;height:28px;border-radius:100%;border:1px solid #d4d4d4;padding:2px;cursor:pointer;background:none;display:flex;align-items:center;justify-content:center;}
+.sw.sel{border-color:#000;border-width:1.5px;}
+.sw i{display:block;width:24px;height:24px;border-radius:100%;}
+
+.desc{font-size:14px;line-height:1.6;margin:18px 0 8px;}
+
+/* sticky ATC bar pinned bottom */
+.stickybar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #e3e3e3;padding:10px 16px calc(10px + env(safe-area-inset-bottom));z-index:20;}
+.stickybar .inner{max-width:440px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+.stickybar .mini{width:42px;height:42px;border-radius:3px;object-fit:cover;background:#f8f8f8;flex:none;}
+.atc{flex:1;display:flex;align-items:center;justify-content:center;height:46px;background:#000;color:#fff;border:none;border-radius:3px;font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:13px;letter-spacing:.5px;cursor:pointer;}
+.atc .pipe{opacity:.45;margin:0 12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- IMAGE FIRST -->
+  <div class="hero">
+    <img id="mainImg" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/Rose_Lip_Recharge_PDP_-_1.png?v=1772726302&width=900" alt="Lip Recharge — Rosé">
+  </div>
+  <div class="dots"><span class="on"></span><span></span><span></span></div>
+
+  <div class="pad">
+    <!-- TITLE + RATING -->
+    <div class="eyebrow">Lip Treatment</div>
+    <h1 class="pname">Lip Recharge</h1>
+    <div class="rating">
+      <span class="stars" id="starsTop"></span>
+      <span class="rcount">863 reviews &middot; 4.66&#9733;</span>
+    </div>
+    <div class="price">$24.00</div>
+
+    <!-- BENEFIT CHIPS ABOVE SWATCHES -->
+    <div class="exp">
+      <span class="chip color"><i></i>Sheer wash of color</span>
+      <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg>Cushiony, moisturizing feel</span>
+      <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg>Subtle vanilla-mint scent</span>
+    </div>
+
+    <!-- SWATCHES -->
+    <div class="shade-head">
+      <span class="shade-label">Shade — 9 available</span>
+      <span class="shade-current" id="shadeCur">Rosé</span>
+    </div>
+    <div class="swatches" id="sw"></div>
+
+    <p class="desc">A sheer, tinted lip treatment that refreshes, smooths and moisturizes on contact — finished with a cooling metal applicator. Throw on for nourishment, tint and shine.</p>
+  </div>
+</div>
+
+<!-- STICKY ATC -->
+<div class="stickybar">
+  <div class="inner">
+    <img class="mini" id="miniImg" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/Rose_Lip_Recharge_PDP_-_1.png?v=1772726302&width=120" alt="">
+    <button class="atc">Add to bag<span class="pipe">|</span>$24.00</button>
+  </div>
+</div>
+
+<script>
+var SH=[
+["On The Rocks","#e7d9d2","OTR_Lip_Recharge_PDP_-_1.png?v=1773763814"],
+["Petal","#e8a9ad","Petal_Lip_Recharge_PDP_-_1.png?v=1772726302"],
+["Pink Lilac","#c98fb0","PinkLilac_Lip_Recharge_PDP_-_1.png?v=1772726302"],
+["Champagne","#d8a98f","Champagne_Lip_Recharge_PDP_-_1.png?v=1772726302"],
+["Rosé","#cf8f86","Rose_Lip_Recharge_PDP_-_1.png?v=1772726302"],
+["Dahlia","#a8475a","Dahlia_Lip_Recharge_PDP_-_1.png?v=1772726302"],
+["Me","#9c5a52","Me_Lip_Recharge_PDP_-_1.png?v=1772726302"],
+["Sangria","#8e2f3f","Sangria_Lip_Recharge_PDP_-_1_1.png?v=1772726302"],
+["Lilac","#b487b3","Lilac_Lip_Recharge_PDP_-_1_1.png?v=1772726302"]
+];
+var CDN="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/";
+var star='<svg viewBox="0 0 24 24" fill="#000"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z"/></svg>';
+document.getElementById('starsTop').innerHTML=star.repeat(4)+'<svg viewBox="0 0 24 24"><defs><linearGradient id="h3"><stop offset="66%" stop-color="#000"/><stop offset="66%" stop-color="#fff"/></linearGradient></defs><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z" fill="url(#h3)" stroke="#000"/></svg>';
+var sw=document.getElementById('sw');
+SH.forEach(function(s,i){var b=document.createElement('button');b.className='sw'+(i===4?' sel':'');b.innerHTML='<i style="background:'+s[1]+'"></i>';b.title=s[0];b.setAttribute('aria-label',s[0]);b.onclick=function(){document.querySelectorAll('.sw').forEach(function(x){x.classList.remove('sel')});b.classList.add('sel');document.getElementById('shadeCur').textContent=s[0];var u=CDN+s[2];document.getElementById('mainImg').src=u+'&width=900';document.getElementById('miniImg').src=u+'&width=120';};sw.appendChild(b);});
+</script>
+</body>
+</html>

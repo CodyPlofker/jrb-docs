@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WTF Buybox v05 — Trust-forward</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1180px;margin:0 auto;padding:32px 20px 56px;}
+.grid{display:grid;grid-template-columns:1fr;gap:28px;}
+@media(min-width:860px){.grid{grid-template-columns:1fr 1fr;gap:48px;align-items:start;}}
+
+.gallery img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:3px;background:#f8f8f8;display:block;}
+
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.pname{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;font-size:22px;letter-spacing:1.18px;margin:6px 0 10px;line-height:1.1;}
+
+/* rating bar pulled up */
+.ratebar{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid #e3e3e3;border-bottom:1px solid #e3e3e3;margin-bottom:16px;}
+.stars{display:inline-flex;gap:2px;}.stars svg{width:17px;height:17px;}
+.rval{font-family:'ArticulatCF';font-weight:700;font-size:15px;}
+.rcount{font-family:'RingsideWideWeb';font-size:14px;}
+
+.price{font-family:'RingsideWideWeb';font-size:20px;margin-bottom:6px;}
+.desc{font-size:14px;line-height:1.6;margin:12px 0 18px;max-width:46ch;}
+
+/* chips as bordered tags */
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 20px;}
+.tag{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:11px;border:1.5px solid #000;border-radius:3px;padding:7px 11px;}
+
+.shade-head{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 10px;}
+.shade-label{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;}
+.shade-current{font-family:'RingsideWideWeb';font-size:13px;}
+.swatches{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;max-width:380px;}
+.sw{width:28px;height:28px;border-radius:100%;border:1px solid #d4d4d4;padding:2px;cursor:pointer;background:none;display:flex;align-items:center;justify-content:center;}
+.sw.sel{border-color:#000;border-width:1.5px;}
+.sw i{display:block;width:24px;height:24px;border-radius:100%;}
+
+.atc{display:flex;align-items:center;justify-content:center;width:100%;height:44px;background:#000;color:#fff;border:none;border-radius:3px;font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:13px;letter-spacing:.5px;cursor:pointer;margin-top:20px;}
+.atc .pipe{opacity:.45;margin:0 12px;}
+
+/* 3-icon value props */
+.vp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;}
+.vp .v{display:flex;flex-direction:column;align-items:center;text-align:center;gap:7px;background:#f8f8f8;border-radius:3px;padding:14px 8px;}
+.vp .v svg{width:22px;height:22px;}
+.vp .v span{font-family:'RingsideWideWeb';font-size:11.5px;line-height:1.35;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="grid">
+    <div class="gallery">
+      <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Fair_01_cc.jpg?v=1755118504&width=900" alt="What The Foundation in Fair">
+    </div>
+
+    <div class="info">
+      <div class="eyebrow">Foundation</div>
+      <h1 class="pname">What The Foundation</h1>
+
+      <!-- RATING + COUNT PULLED UP -->
+      <div class="ratebar">
+        <span class="stars" id="stars"></span>
+        <span class="rval">4.46</span>
+        <span class="rcount">· 53,379 reviews</span>
+      </div>
+
+      <div class="price">$46.00 · 16 shades</div>
+      <p class="desc">Light-medium, buildable coverage. Its ultra-nourishing formula blends seamlessly into the skin, leaving you with an even, fresh complexion that looks like your skin on its best day.</p>
+
+      <!-- CHIPS AS BORDERED TAGS -->
+      <div class="tags">
+        <span class="tag">Light-to-medium, buildable</span>
+        <span class="tag">Looks like skin, not makeup</span>
+        <span class="tag">Best on normal-to-dry skin</span>
+      </div>
+
+      <div class="shade-head">
+        <span class="shade-label">Shade</span>
+        <span class="shade-current" id="shadeCur">Fair</span>
+      </div>
+      <div class="swatches" id="sw"></div>
+
+      <button class="atc">Add to bag<span class="pipe">|</span>$46.00</button>
+
+      <!-- 3-ICON VALUE PROPS -->
+      <div class="vp">
+        <div class="v">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.6"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg>
+          <span>Pay over time with Shop Pay</span>
+        </div>
+        <div class="v">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.6"><path d="M3 14V7a1 1 0 0 1 1-1h11v9M15 9h4l2 3v2h-6"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span>Free shipping over $50</span>
+        </div>
+        <div class="v">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.6"><path d="M3 7l4-4M3 7l4 4M3 7h12a6 6 0 0 1 0 12H8"/></svg>
+          <span>Easy returns</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var SH=[["Alabaster","#f3ddc9"],["Porcelain","#eed3bb"],["Fair","#ecccb0"],["Ivory","#e8c4a4"],["Light","#e2b896"],["Beige","#d9aa84"],["Medium","#cf9b72"],["Medium Honey","#c89065"],["Honey","#bd825a"],["Golden","#b3784f"],["Pecan","#a56b43"],["Almond","#965d39"],["Cinnamon","#85502f"],["Chestnut","#6f4226"],["Deep","#5a341d"],["Espresso","#432615"]];
+var star='<svg viewBox="0 0 24 24" fill="#000"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z"/></svg>';
+document.getElementById('stars').innerHTML=star.repeat(4)+'<svg viewBox="0 0 24 24"><defs><linearGradient id="h"><stop offset="46%" stop-color="#000"/><stop offset="46%" stop-color="#fff"/></linearGradient></defs><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z" fill="url(#h)" stroke="#000"/></svg>';
+var sw=document.getElementById('sw');
+SH.forEach(function(s,i){var b=document.createElement('button');b.className='sw'+(i===2?' sel':'');b.innerHTML='<i style="background:'+s[1]+'"></i>';b.title=s[0];b.onclick=function(){document.querySelectorAll('.sw').forEach(function(x){x.classList.remove('sel')});b.classList.add('sel');document.getElementById('shadeCur').textContent=s[0];};sw.appendChild(b);});
+</script>
+</body>
+</html>

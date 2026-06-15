@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Face Pencil Reviews — v01 Summary Bar + Photo Reviews</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+:root{
+  --font-display:GeogrotesqueCondBoldWeb,'Arial Black',Impact,sans-serif;
+  --font-mono:BaseMonoWideWeb,Courier,'Courier New',sans-serif;
+  --font-body:RingsideWideWeb,Helvetica,Arial,sans-serif;
+  --font-serif:Canela,serif;
+  --font-articulat:ArticulatCF,'Arial Black',Impact,sans-serif;
+  --color-border:#d0d0d0;--ease-primary:cubic-bezier(.39,.575,.565,1);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:#fff;color:#000;font-family:var(--font-body);font-size:16px;-webkit-font-smoothing:antialiased;letter-spacing:.025em;}
+.rv{padding:44px 20px 52px;background:#fff;}
+.rv__inner{max-width:1080px;margin:0 auto;}
+.rv__eyebrow{font-family:var(--font-display);font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:0 0 10px;}
+.rv__title{font-family:var(--font-serif);font-weight:300;font-size:28px;line-height:1.2;letter-spacing:.5px;margin:0 0 26px;text-wrap:balance;max-width:14ch;}
+
+/* summary bar */
+.rv__summary{display:grid;grid-template-columns:1fr;gap:28px;padding:26px 0 30px;border-top:1px solid #000;border-bottom:1px solid #ededed;margin-bottom:30px;}
+.rv__score{display:flex;flex-direction:column;align-items:flex-start;gap:8px;}
+.rv__score-num{font-family:var(--font-serif);font-weight:300;font-size:54px;line-height:.9;}
+.rv__stars{display:flex;align-items:center;position:relative;height:18px;color:#000;}
+.rv__stars-outline{display:flex;align-items:center;}
+.rv__stars-outline svg,.rv__stars-filled svg{width:18px;height:18px;padding:1px;flex-shrink:0;display:block;}
+.rv__stars-filled{display:flex;align-items:center;position:absolute;top:0;left:0;overflow:hidden;height:100%;}
+.rv__score-count{font-family:var(--font-body);font-size:16px;font-weight:325;letter-spacing:.025em;margin-top:4px;}
+.rv__rec{font-family:var(--font-mono);font-size:11px;font-weight:550;letter-spacing:1px;text-transform:uppercase;}
+
+/* distribution */
+.rv__dist{display:flex;flex-direction:column;gap:9px;width:100%;}
+.rv__dist-row{display:flex;align-items:center;gap:10px;}
+.rv__dist-label{display:flex;align-items:center;gap:3px;font-family:var(--font-body);font-size:13px;width:24px;flex-shrink:0;}
+.rv__dist-label svg{width:12px;height:12px;display:block;}
+.rv__dist-track{position:relative;flex:1;height:7px;background:#ededed;border-radius:2px;overflow:hidden;}
+.rv__dist-fill{position:absolute;top:0;left:0;height:100%;background:#000;border-radius:2px;}
+.rv__dist-pct{font-family:var(--font-body);font-size:13px;width:38px;text-align:right;flex-shrink:0;}
+
+/* objection-answer banner */
+.rv__answer{font-family:var(--font-articulat);font-weight:700;font-size:13px;letter-spacing:.3px;text-transform:uppercase;line-height:1.5;background:#f8f8f8;border-radius:3px;padding:16px 18px;margin-bottom:30px;text-wrap:balance;}
+
+/* photo reviews grid */
+.rv__grid{display:grid;grid-template-columns:1fr;gap:18px;}
+.rv__card{border:1px solid var(--color-border);border-radius:3px;overflow:hidden;display:flex;flex-direction:column;}
+.rv__card-media{aspect-ratio:1/1;overflow:hidden;background:#f8f8f8;}
+.rv__card-media img{width:100%;height:100%;object-fit:cover;display:block;}
+.rv__card-body{padding:20px 20px 22px;display:flex;flex-direction:column;flex:1;}
+.rv__cstars{display:flex;gap:2px;color:#000;margin-bottom:12px;}
+.rv__cstars svg{width:15px;height:15px;display:block;}
+.rv__cquote{font-family:var(--font-body);font-size:15px;line-height:1.6;flex:1;margin:0 0 16px;}
+.rv__cfoot{display:flex;align-items:center;gap:9px;border-top:1px solid #ededed;padding-top:13px;}
+.rv__swatch{width:22px;height:22px;border-radius:100%;border:1px solid var(--color-border);flex-shrink:0;}
+.rv__cmeta{display:flex;flex-direction:column;gap:2px;}
+.rv__cshade{font-family:var(--font-body);font-size:13px;font-weight:700;}
+.rv__cverif{font-family:var(--font-mono);font-size:10px;font-weight:550;letter-spacing:1px;text-transform:uppercase;color:rgba(0,0,0,.55);display:flex;align-items:center;gap:5px;}
+.rv__check{width:11px;height:11px;display:block;}
+
+@media(min-width:768px){
+  .rv{padding:72px 40px 80px;}
+  .rv__title{font-size:42px;}
+  .rv__summary{grid-template-columns:0.55fr 1fr;gap:56px;align-items:center;padding:34px 0 38px;}
+  .rv__answer{font-size:16px;padding:20px 24px;}
+  .rv__grid{grid-template-columns:repeat(3,1fr);gap:22px;}
+}
+</style>
+</head>
+<body>
+<section class="rv">
+  <div class="rv__inner">
+    <p class="rv__eyebrow">Reviews</p>
+    <h2 class="rv__title">25,847 faces. One easy pencil.</h2>
+
+    <div class="rv__summary">
+      <div class="rv__score">
+        <span class="rv__score-num">4.4</span>
+        <div class="rv__stars" aria-label="4.4 out of 5 stars">
+          <div class="rv__stars-outline">
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+          </div>
+          <div class="rv__stars-filled" style="width:88%;">
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          </div>
+        </div>
+        <span class="rv__score-count">25,847 reviews</span>
+        <span class="rv__rec">90% would recommend</span>
+      </div>
+
+      <div class="rv__dist">
+        <div class="rv__dist-row"><span class="rv__dist-label">5<svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></span><span class="rv__dist-track"><span class="rv__dist-fill" style="width:68%"></span></span><span class="rv__dist-pct">68%</span></div>
+        <div class="rv__dist-row"><span class="rv__dist-label">4<svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></span><span class="rv__dist-track"><span class="rv__dist-fill" style="width:15%"></span></span><span class="rv__dist-pct">15%</span></div>
+        <div class="rv__dist-row"><span class="rv__dist-label">3<svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></span><span class="rv__dist-track"><span class="rv__dist-fill" style="width:11%"></span></span><span class="rv__dist-pct">11%</span></div>
+        <div class="rv__dist-row"><span class="rv__dist-label">2<svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></span><span class="rv__dist-track"><span class="rv__dist-fill" style="width:4%"></span></span><span class="rv__dist-pct">4%</span></div>
+        <div class="rv__dist-row"><span class="rv__dist-label">1<svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></span><span class="rv__dist-track"><span class="rv__dist-fill" style="width:2%"></span></span><span class="rv__dist-pct">2%</span></div>
+      </div>
+    </div>
+
+    <p class="rv__answer">Worried it&rsquo;ll drag or settle into lines? The most-mentioned words in these reviews: creamy, blends, melts in, doesn&rsquo;t cake.</p>
+
+    <div class="rv__grid">
+      <article class="rv__card">
+        <div class="rv__card-media"><img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FacePencil_new11_1.jpg?width=800" alt="The Face Pencil on real skin, Shade 11" loading="lazy" width="800" height="800"></div>
+        <div class="rv__card-body">
+          <div class="rv__cstars"><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></div>
+          <p class="rv__cquote">&ldquo;It&rsquo;s creamy and blends with just a few dabs. Along with the foundation, this pencil adds easy touchup to spider veins and the spots that appear with ageing &mdash; a natural-looking solution.&rdquo;</p>
+          <div class="rv__cfoot">
+            <span class="rv__swatch" style="background:#c79873;"></span>
+            <span class="rv__cmeta"><span class="rv__cshade">Shade 11</span><span class="rv__cverif"><svg class="rv__check" viewBox="0 0 16 16"><path d="M6.5 11.5L3 8l1.1-1.1 2.4 2.4 5-5L12.6 5.4z" fill="currentColor"/></svg>Verified</span></span>
+          </div>
+        </div>
+      </article>
+
+      <article class="rv__card">
+        <div class="rv__card-media"><img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FacePencil_new13_1.jpg?width=800" alt="The Face Pencil on real skin, Shade 10" loading="lazy" width="800" height="800"></div>
+        <div class="rv__card-body">
+          <div class="rv__cstars"><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></div>
+          <p class="rv__cquote">&ldquo;This pencil literally melts into my skin tone and neutralizes my dark spots and under-eye dark circles!&rdquo;</p>
+          <div class="rv__cfoot">
+            <span class="rv__swatch" style="background:#a06e4c;"></span>
+            <span class="rv__cmeta"><span class="rv__cshade">Shade 10</span><span class="rv__cverif"><svg class="rv__check" viewBox="0 0 16 16"><path d="M6.5 11.5L3 8l1.1-1.1 2.4 2.4 5-5L12.6 5.4z" fill="currentColor"/></svg>Verified</span></span>
+          </div>
+        </div>
+      </article>
+
+      <article class="rv__card">
+        <div class="rv__card-media"><img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FacePencil_new17_1.jpg?width=800" alt="The Face Pencil on real skin, Shade 9" loading="lazy" width="800" height="800"></div>
+        <div class="rv__card-body">
+          <div class="rv__cstars"><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg><svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></div>
+          <p class="rv__cquote">&ldquo;I don&rsquo;t think I can live without the Face Pencil! I draw it on over an imperfection, and you can&rsquo;t even tell the difference in color &mdash; the flaw is gone. It&rsquo;s magical!&rdquo;</p>
+          <div class="rv__cfoot">
+            <span class="rv__swatch" style="background:#b07f59;"></span>
+            <span class="rv__cmeta"><span class="rv__cshade">Shade 9</span><span class="rv__cverif"><svg class="rv__check" viewBox="0 0 16 16"><path d="M6.5 11.5L3 8l1.1-1.1 2.4 2.4 5-5L12.6 5.4z" fill="currentColor"/></svg>Verified</span></span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+</body>
+</html>

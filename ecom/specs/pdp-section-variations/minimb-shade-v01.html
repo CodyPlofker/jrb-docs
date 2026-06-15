@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mini Miracle Balm — Shade v01 (Inline grid + Help me match)</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:16px;color:#000;background:#fff;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:680px;margin:0 auto;padding:40px 20px 56px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:18px;color:#000;}
+.title{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.15;letter-spacing:.5px;margin:8px 0 6px;text-wrap:balance;}
+.sub{font-family:'RingsideWideWeb';font-size:15px;line-height:1.5;color:#000;max-width:46ch;}
+.selbar{display:flex;align-items:center;gap:14px;margin:24px 0 18px;padding:14px;border:1px solid #d0d0d0;border-radius:3px;}
+.selbar__img{width:64px;height:64px;border-radius:3px;overflow:hidden;flex:0 0 64px;background:#f8f8f8;}
+.selbar__img img{width:100%;height:100%;object-fit:cover;display:block;}
+.selbar__meta{flex:1;min-width:0;}
+.selbar__label{font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:11px;letter-spacing:.4px;color:#000;}
+.selbar__name{font-family:'GeogrotesqueCondBoldWeb';text-transform:uppercase;font-size:22px;letter-spacing:1.18px;line-height:1.1;margin-top:2px;}
+.selbar__desc{font-family:'RingsideWideWeb';font-size:13px;line-height:1.35;color:#000;margin-top:3px;}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px 10px;margin-bottom:8px;}
+.sw{display:flex;flex-direction:column;align-items:center;gap:7px;background:none;border:none;cursor:pointer;padding:0;}
+.sw__ring{width:28px;height:28px;border-radius:100%;border:1px solid #d4d4d4;display:flex;align-items:center;justify-content:center;transition:border-color .4s cubic-bezier(.39,.575,.565,1);}
+.sw__dot{width:24px;height:24px;border-radius:100%;display:block;}
+.sw.is-active .sw__ring{border-color:#000;}
+.has-mouse .sw:hover .sw__ring{border-color:#000;}
+.sw__name{font-family:'RingsideWideWeb';font-size:11px;line-height:1.15;text-align:center;color:#000;letter-spacing:.1px;}
+.matchcard{margin-top:26px;border:1px solid #d0d0d0;border-radius:3px;overflow:hidden;}
+.matchcard__head{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f8f8f8;border:none;cursor:pointer;padding:16px 18px;text-align:left;}
+.matchcard__h{font-family:'ArticulatCF';font-weight:700;font-size:14px;letter-spacing:.3px;color:#000;}
+.matchcard__hint{font-family:'RingsideWideWeb';font-size:12px;color:#000;margin-top:3px;}
+.plus{position:relative;width:18px;height:18px;flex:0 0 18px;}
+.plus::before,.plus::after{content:"";position:absolute;background:#000;left:0;top:8.5px;width:18px;height:1px;}
+.plus::after{transform:rotate(90deg);transition:opacity .25s ease;}
+.matchcard.open .plus::after{opacity:0;}
+.matchcard__body{display:none;padding:18px;}
+.matchcard.open .matchcard__body{display:block;}
+.qrow{margin-bottom:16px;}
+.qlabel{font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:11px;letter-spacing:.4px;color:#000;margin-bottom:8px;}
+.opts{display:flex;flex-wrap:wrap;gap:8px;}
+.opt{font-family:'RingsideWideWeb';font-size:13px;padding:9px 14px;border:1px solid #d0d0d0;border-radius:3px;background:#fff;cursor:pointer;color:#000;min-height:40px;}
+.opt.sel{border-color:#000;background:#000;color:#fff;}
+.has-mouse .opt:not(.sel):hover{border-color:#000;}
+.result{margin-top:6px;padding:16px;background:#f8f8f8;border-radius:3px;display:none;align-items:center;gap:14px;}
+.result.show{display:flex;}
+.result__img{width:60px;height:60px;border-radius:3px;overflow:hidden;flex:0 0 60px;}
+.result__img img{width:100%;height:100%;object-fit:cover;display:block;}
+.result__label{font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:10px;letter-spacing:.4px;}
+.result__name{font-family:'GeogrotesqueCondBoldWeb';text-transform:uppercase;font-size:20px;letter-spacing:1.18px;margin-top:2px;}
+.result__note{font-family:'RingsideWideWeb';font-size:12px;line-height:1.4;margin-top:4px;}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;height:44px;margin-top:18px;background:#000;color:#fff;border:1px solid #000;border-radius:3px;font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:13px;letter-spacing:.4px;cursor:pointer;transition:all .4s cubic-bezier(.39,.575,.565,1);gap:0;}
+.btn__price{padding-left:14px;margin-left:14px;border-left:1px solid rgba(255,255,255,.45);}
+.has-mouse .btn:hover{background:#fff;color:#000;border-color:#d0d0d0;}
+.has-mouse .btn:hover .btn__price{border-left-color:#d0d0d0;}
+.reassure{font-family:'RingsideWideWeb';font-size:12px;line-height:1.4;color:#000;text-align:center;margin-top:12px;}
+@media (max-width:420px){.grid{grid-template-columns:repeat(4,1fr);}.title{font-size:26px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Choose your color</p>
+  <h2 class="title">15 color families. Every one shown on real skin.</h2>
+  <p class="sub">Miracle Balm reads differently in the jar than it does on your face — so we photographed each shade tapped onto skin, not scooped from the tin. Tap any color to see it worn.</p>
+
+  <div class="selbar">
+    <div class="selbar__img"><img id="selImg" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/new_minimb_aunaturel_a8d161e5-c4f2-4e68-93ef-ffa9f280dd6e.jpg?v=1747424591&width=400" alt="Au Naturel on skin"></div>
+    <div class="selbar__meta">
+      <div class="selbar__label">Now showing</div>
+      <div class="selbar__name" id="selName">Au Naturel</div>
+      <div class="selbar__desc" id="selDesc">A barely-there nude wash — your skin, a touch more awake.</div>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="matchcard" id="matchcard">
+    <button class="matchcard__head" id="matchHead" aria-expanded="false">
+      <span>
+        <span class="matchcard__h">Not sure which one? Help me match</span>
+        <span class="matchcard__hint">Answer two quick questions — no quiz page, stay right here.</span>
+      </span>
+      <span class="plus"></span>
+    </button>
+    <div class="matchcard__body">
+      <div class="qrow">
+        <div class="qlabel">What are you after?</div>
+        <div class="opts" data-q="undertone">
+          <button class="opt" data-v="cool">A cool, pink flush</button>
+          <button class="opt" data-v="neutral">A natural, your-skin nude</button>
+          <button class="opt" data-v="warm">A warm, sun-kissed glow</button>
+        </div>
+      </div>
+      <div class="qrow">
+        <div class="qlabel">Your skin depth</div>
+        <div class="opts" data-q="depth">
+          <button class="opt" data-v="fair">Fair</button>
+          <button class="opt" data-v="light">Light</button>
+          <button class="opt" data-v="medium">Medium</button>
+          <button class="opt" data-v="deep">Deep</button>
+        </div>
+      </div>
+      <div class="result" id="result">
+        <div class="result__img"><img id="resImg" src="" alt=""></div>
+        <div>
+          <div class="result__label">We'd start you with</div>
+          <div class="result__name" id="resName">—</div>
+          <div class="result__note" id="resNote"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn">Add Mini Miracle Balm <span class="btn__price">$20</span></button>
+  <p class="reassure">A trial size to find your color before the full size. A little goes a long way.</p>
+</div>
+
+<script>
+const CDN='https://cdn.shopify.com/s/files/1/0424/9527/9254/files/';
+const shades=[
+ {n:'Au Naturel',hex:'#c98f74',u:'neutral',d:'fair',img:'new_minimb_aunaturel_a8d161e5-c4f2-4e68-93ef-ffa9f280dd6e.jpg?v=1747424591',desc:'A barely-there nude wash — your skin, a touch more awake.'},
+ {n:'Happy Hour',hex:'#d98a73',u:'warm',d:'light',img:'new_mini_happyhour_1_7e3cc716-c386-48bb-9b1c-5de5f9663592.jpg?v=1747424592',desc:'A warm peachy-coral flush, like a second glass in.'},
+ {n:'Dusty Rose',hex:'#c08374',u:'cool',d:'light',img:'new_mini_dustyrose_1_d467d24b-4cec-4785-a43b-1144b3b6a675.jpg?v=1747424591',desc:'A soft muted-rose tint — quiet, pretty, neutral-cool.'},
+ {n:'Flushed',hex:'#cf7d6e',u:'cool',d:'medium',img:'new_mini_flushed_1_45783b62-782a-4f07-9666-4ccf059f2296.jpg?v=1747424591',desc:'A true pink-rose flush, like you just came in from the cold.'},
+ {n:'Pinched Cheeks',hex:'#c86f63',u:'cool',d:'medium',img:'new_mini_pinchedcheeks_1_7f17fa28-a51e-441c-b1f1-bc3d59feb101.jpg?v=1747424592',desc:'A rosy berry-pink — the just-pinched look, dialed up.'},
+ {n:'Miami Beach',hex:'#d98568',u:'warm',d:'medium',img:'new_mini_miamibeach_1_cdee9bce-f2a0-4182-b08b-7d3e6462986a.jpg?v=1747424592',desc:'A warm coral glow with a vacation finish.'},
+ {n:'Golden Hour',hex:'#caa06a',u:'warm',d:'light',img:'new_mini_goldenhour_1_a4a70d12-0c07-4760-b0f4-dd9176f572b2.jpg?v=1747424591',desc:'A golden champagne highlight that catches the light.'},
+ {n:'Magic Hour',hex:'#c98a6a',u:'warm',d:'medium',img:'new_mini_magichour_1_144f9e8f-0cf6-499f-b0ea-b5fcb370de54.jpg?v=1747424591',desc:'A warm peach-bronze in-between — glow and color in one.'},
+ {n:'Chic',hex:'#b5806f',u:'neutral',d:'medium',img:'mini_chic_1.jpg?v=1747424592',desc:'A neutral rosy-brown — your-cheeks-but-polished.'},
+ {n:'Pinky Bronze',hex:'#bb7a64',u:'neutral',d:'medium',img:'new_mini_pinkybronze_1_fd1f07cf-a70c-4501-82c3-35d305be45b7.jpg?v=1747424592',desc:'A pink-leaning bronze — warmth with a rosy lift.'},
+ {n:'Bronze',hex:'#a4724f',u:'warm',d:'deep',img:'new_mini_bronze_1_8850b6b1-d388-4250-9766-0cda75b13901.jpg?v=1747424591',desc:'A true sun-warmed bronze for an all-over tan finish.'},
+ {n:'Cheeky',hex:'#c2756a',u:'cool',d:'medium',img:'Mini_MB_PDP_cheeky_1.jpg?v=1772222459',desc:'A rosy mauve-pink with a fresh, flushed finish.'},
+ {n:'Tawny',hex:'#b07458',u:'warm',d:'deep',img:'new_mini_tawny_1_f07266e6-a68a-463f-a4dc-a397878214bb.jpg?v=1747424591',desc:'A warm tawny-brown that melts into deeper skin.'},
+ {n:'Sunkissed',hex:'#c08560',u:'warm',d:'medium',img:'new_mini_sunkissed_1_6c2511c1-de64-4e82-bc42-4cb7085084c3.jpg?v=1747424591',desc:'A warm bronzed glow, like a week in the sun.'},
+ {n:'Cocoa Bronze',hex:'#8f5a42',u:'warm',d:'deep',img:'new_mini_cocoabronze_1_73372527-bd9d-419e-95bc-9ce43f615da2.jpg?v=1747424592',desc:'A rich cocoa-bronze built for deep skin tones.'}
+];
+// fix any typo hexes defensively
+shades.forEach(s=>{if(!/^#[0-9a-fA-F]{6}$/.test(s.hex))s.hex='#a87a5c';});
+const grid=document.getElementById('grid');
+shades.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.className='sw'+(i===0?' is-active':'');
+  b.innerHTML=`<span class="sw__ring"><span class="sw__dot" style="background:${s.hex}"></span></span><span class="sw__name">${s.n}</span>`;
+  b.addEventListener('click',()=>select(i));
+  grid.appendChild(b);
+});
+function select(i){
+  document.querySelectorAll('.sw').forEach((el,j)=>el.classList.toggle('is-active',j===i));
+  const s=shades[i];
+  document.getElementById('selImg').src=CDN+s.img+'&width=400';
+  document.getElementById('selImg').alt=s.n+' on skin';
+  document.getElementById('selName').textContent=s.n;
+  document.getElementById('selDesc').textContent=s.desc;
+}
+// matcher
+const mc=document.getElementById('matchcard');
+document.getElementById('matchHead').addEventListener('click',()=>{
+  const open=mc.classList.toggle('open');
+  document.getElementById('matchHead').setAttribute('aria-expanded',open);
+});
+const answers={undertone:null,depth:null};
+document.querySelectorAll('.opts').forEach(group=>{
+  group.querySelectorAll('.opt').forEach(opt=>{
+    opt.addEventListener('click',()=>{
+      group.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+      opt.classList.add('sel');
+      answers[group.dataset.q]=opt.dataset.v;
+      recommend();
+    });
+  });
+});
+function recommend(){
+  if(!answers.undertone||!answers.depth)return;
+  let pool=shades.filter(s=>s.u===answers.undertone);
+  if(!pool.length)pool=shades.slice();
+  const order=['fair','light','medium','deep'];
+  pool.sort((a,b)=>Math.abs(order.indexOf(a.d)-order.indexOf(answers.depth))-Math.abs(order.indexOf(b.d)-order.indexOf(answers.depth)));
+  const pick=pool[0];
+  const idx=shades.indexOf(pick);
+  document.getElementById('resImg').src=CDN+pick.img+'&width=300';
+  document.getElementById('resName').textContent=pick.n;
+  document.getElementById('resNote').textContent=pick.desc;
+  document.getElementById('result').classList.add('show');
+  select(idx);
+}
+document.addEventListener('mousemove',function add(){document.body.classList.add('has-mouse');document.removeEventListener('mousemove',add);});
+</script>
+</body>
+</html>

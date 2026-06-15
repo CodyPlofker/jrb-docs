@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blushing Stick Reviews — v02 Shade-filtered reviews</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;color:#000;background:#fff;-webkit-font-smoothing:antialiased;line-height:1.5;}
+.wrap{max-width:960px;margin:0 auto;padding:48px 20px 64px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;text-align:center;margin-bottom:10px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:34px;text-align:center;text-wrap:balance;margin-bottom:6px;line-height:1.12;}
+.subline{text-align:center;font-family:'RingsideWideWeb';font-size:15px;margin-bottom:8px;}
+.ratingline{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:26px;}
+.ratingline .stars{font-size:16px;letter-spacing:1.5px;color:#000;}
+.ratingline .count{font-family:'RingsideWideWeb';font-size:15px;}
+/* filter chips */
+.filterlabel{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;text-align:center;margin-bottom:12px;}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-bottom:30px;}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid #d4d4d4;background:#fff;border-radius:3px;padding:8px 14px;cursor:pointer;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:11px;min-height:44px;}
+.chip[aria-pressed="true"]{border-color:#000;background:#000;color:#fff;}
+.chip[aria-pressed="true"] .dot{box-shadow:0 0 0 1.5px #fff;}
+.dot{width:16px;height:16px;border-radius:100%;display:inline-block;flex:none;}
+/* review grid */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.card{border:1px solid #e3e3e3;border-radius:3px;padding:20px 20px 18px;display:flex;flex-direction:column;gap:10px;background:#fff;}
+.card__top{display:flex;align-items:center;gap:12px;}
+.swatch{width:34px;height:34px;border-radius:100%;flex:none;border:1px solid #d4d4d4;}
+.card__shade{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:11px;}
+.card__stars{font-size:14px;letter-spacing:1.5px;color:#000;margin-top:2px;}
+.card__quote{font-family:'RingsideWideWeb';font-size:14.5px;line-height:1.55;flex:1;}
+.card__meta{display:flex;align-items:center;gap:6px;font-family:'BaseMonoWideWeb',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.4px;padding-top:8px;border-top:1px solid #ededed;}
+.card__meta svg{width:12px;height:12px;}
+.empty{display:none;text-align:center;font-family:'RingsideWideWeb';font-size:14px;padding:34px 0;color:#000;}
+.btn{display:block;width:100%;max-width:340px;margin:36px auto 0;text-align:center;background:#000;color:#fff;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.5px;font-size:13px;padding:14px;border-radius:3px;text-decoration:none;}
+@media(max-width:740px){
+.wrap{padding:36px 16px 48px;}
+.headline{font-size:26px;}
+.grid{grid-template-columns:1fr;gap:14px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Real reviews by shade</div>
+  <h2 class="headline">See your shade on real customers.</h2>
+  <p class="subline">Filter 641 verified reviews by the shade they actually bought.</p>
+  <div class="ratingline"><span class="stars" aria-label="4.66 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="count">641 reviews &middot; 4.66&#9733;</span></div>
+
+  <div class="filterlabel">Filter by shade</div>
+  <div class="chips" id="chips">
+    <button class="chip" data-shade="all" aria-pressed="true">All shades</button>
+    <button class="chip" data-shade="Bare" aria-pressed="false"><span class="dot" style="background:#d6919c"></span>Bare</button>
+    <button class="chip" data-shade="Joy" aria-pressed="false"><span class="dot" style="background:#df839d"></span>Joy</button>
+    <button class="chip" data-shade="Pretty" aria-pressed="false"><span class="dot" style="background:#bd828c"></span>Pretty</button>
+    <button class="chip" data-shade="Chic" aria-pressed="false"><span class="dot" style="background:#bc8282"></span>Chic</button>
+    <button class="chip" data-shade="Flush" aria-pressed="false"><span class="dot" style="background:#894556"></span>Flush</button>
+    <button class="chip" data-shade="Cheeky" aria-pressed="false"><span class="dot" style="background:#ab484e"></span>Cheeky</button>
+  </div>
+
+  <div class="grid" id="grid">
+    <article class="card" data-shade="Bare">
+      <div class="card__top"><span class="swatch" style="background:#d6919c"></span><div><div class="card__shade">Bare</div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+      <p class="card__quote">&ldquo;Beautiful natural shade. Blends into my cheeks easily. Looks pretty and feels great on my lips too.&rdquo;</p>
+      <div class="card__meta"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified buyer</div>
+    </article>
+    <article class="card" data-shade="Bare">
+      <div class="card__top"><span class="swatch" style="background:#d6919c"></span><div><div class="card__shade">Bare</div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+      <p class="card__quote">&ldquo;Feels great on my skin and looks very natural.&rdquo;</p>
+      <div class="card__meta"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified buyer</div>
+    </article>
+    <article class="card" data-shade="Joy">
+      <div class="card__top"><span class="swatch" style="background:#df839d"></span><div><div class="card__shade">Joy</div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+      <p class="card__quote">&ldquo;Joy is the perfect name for the color I purchased. It&rsquo;s beautiful, and it makes me happy. Formula is creamy and long lasting. A little goes a long way.&rdquo;</p>
+      <div class="card__meta"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified buyer</div>
+    </article>
+    <article class="card" data-shade="Joy">
+      <div class="card__top"><span class="swatch" style="background:#df839d"></span><div><div class="card__shade">Joy</div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+      <p class="card__quote">&ldquo;Works well with stick foundation. Great shade. A little goes a long way. Smooth, absorbs well.&rdquo;</p>
+      <div class="card__meta"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified buyer</div>
+    </article>
+    <article class="card" data-shade="Pretty">
+      <div class="card__top"><span class="swatch" style="background:#bd828c"></span><div><div class="card__shade">Pretty</div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+      <p class="card__quote">&ldquo;It adds color &amp; definition to my cheeks without overdoing it plus it goes on so smoothly.&rdquo;</p>
+      <div class="card__meta"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified buyer</div>
+    </article>
+    <article class="card" data-shade="Pretty">
+      <div class="card__top"><span class="swatch" style="background:#bd828c"></span><div><div class="card__shade">Pretty</div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+      <p class="card__quote">&ldquo;Love how easy it goes on and how natural it looks!&rdquo;</p>
+      <div class="card__meta"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified buyer</div>
+    </article>
+    <article class="card" data-shade="Chic">
+      <div class="card__top"><span class="swatch" style="background:#bc8282"></span><div><div class="card__shade">Chic</div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+      <p class="card__quote">&ldquo;The color, texture, and staying power of the blush stick is excellent. I really like the magnetic top too!&rdquo;</p>
+      <div class="card__meta"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified buyer</div>
+    </article>
+    <article class="card" data-shade="Chic">
+      <div class="card__top"><span class="swatch" style="background:#bc8282"></span><div><div class="card__shade">Chic</div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+      <p class="card__quote">&ldquo;Highly pigmented color and blends so easily.&rdquo;</p>
+      <div class="card__meta"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified buyer</div>
+    </article>
+    <article class="card" data-shade="Flush">
+      <div class="card__top"><span class="swatch" style="background:#894556"></span><div><div class="card__shade">Flush</div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+      <p class="card__quote">&ldquo;Perfect amount of color. Looks so natural and lasts all day.&rdquo;</p>
+      <div class="card__meta"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified buyer</div>
+    </article>
+    <article class="card" data-shade="Cheeky">
+      <div class="card__top"><span class="swatch" style="background:#ab484e"></span><div><div class="card__shade">Cheeky</div><div class="card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+      <p class="card__quote">&ldquo;Love the colour, finally found a blush colour that I enjoy having on my skin.&rdquo;</p>
+      <div class="card__meta"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified buyer</div>
+    </article>
+  </div>
+  <p class="empty" id="empty">No reviews for this shade yet.</p>
+
+  <a class="btn" href="#">Read all 641 reviews</a>
+</div>
+<script>
+(function(){
+  var chips=document.querySelectorAll('#chips .chip');
+  var cards=document.querySelectorAll('#grid .card');
+  var empty=document.getElementById('empty');
+  function apply(shade){
+    var shown=0;
+    cards.forEach(function(c){
+      var ok = shade==='all' || c.getAttribute('data-shade')===shade;
+      c.style.display = ok ? '' : 'none';
+      if(ok) shown++;
+    });
+    empty.style.display = shown===0 ? 'block' : 'none';
+  }
+  chips.forEach(function(chip){
+    chip.addEventListener('click',function(){
+      chips.forEach(function(c){c.setAttribute('aria-pressed','false');});
+      chip.setAttribute('aria-pressed','true');
+      apply(chip.getAttribute('data-shade'));
+    });
+  });
+})();
+</script>
+</body>
+</html>

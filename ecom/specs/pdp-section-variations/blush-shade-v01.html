@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blushing Stick Shade — v01 Inline grid + Help me match</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:520px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 6px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.55;}
+/* selected preview */
+.preview{display:flex;align-items:center;gap:14px;margin:22px 0 18px;}
+.preview img{width:96px;height:96px;border-radius:3px;object-fit:cover;flex-shrink:0;background:#f8f8f8;}
+.preview .pn{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:18px;line-height:1.05;}
+.preview .pd{font-family:'RingsideWideWeb',sans-serif;font-size:13px;margin-top:3px;}
+.preview .ps{font-family:'RingsideWideWeb',sans-serif;font-size:12px;margin-top:7px;display:inline-block;border:1px solid #d4d4d4;border-radius:3px;padding:3px 8px;}
+/* grid */
+.gridhead{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 13px;}
+.gridhead .lab{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:13px;}
+.gridhead .cnt{font-family:'RingsideWideWeb',sans-serif;font-size:12px;}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px 6px;}
+.swatch{appearance:none;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;padding:0;transition:opacity .2s;position:relative;}
+.swatch.dim{opacity:.24;}
+.ring{width:42px;height:42px;border-radius:100%;border:1.5px solid #d4d4d4;display:flex;align-items:center;justify-content:center;transition:border-color .15s,box-shadow .15s;position:relative;}
+.dot{width:36px;height:36px;border-radius:100%;}
+.swatch[aria-pressed="true"] .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.swatch.rec .ring{border-color:#000;}
+.swatch.rec .ring::after{content:"";position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:100%;background:#ff2e92;}
+.sname{font-family:'RingsideWideWeb',sans-serif;font-size:11px;line-height:1.1;text-align:center;letter-spacing:-.1px;}
+.soldout{font-family:'BaseMonoWideWeb',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.4px;opacity:.6;}
+/* help-me-match expander */
+.match{margin-top:24px;border:1px solid #000;border-radius:3px;overflow:hidden;}
+.match>summary{list-style:none;cursor:pointer;padding:15px 16px;display:flex;justify-content:space-between;align-items:center;font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:13px;}
+.match>summary::-webkit-details-marker{display:none;}
+.match>summary .ic{font-family:'BaseMonoWideWeb',monospace;font-size:18px;line-height:1;transition:transform .2s;}
+.match[open]>summary .ic{transform:rotate(45deg);}
+.match .body{padding:4px 16px 18px;border-top:1px solid #ececec;}
+.q{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;margin:16px 0 9px;}
+.opts{display:flex;gap:8px;flex-wrap:wrap;}
+.opt{appearance:none;border:1px solid #d4d4d4;background:#fff;border-radius:3px;cursor:pointer;padding:9px 13px;font-family:'RingsideWideWeb',sans-serif;font-size:13px;min-height:44px;}
+.opt[aria-pressed="true"]{border-color:#000;background:#000;color:#fff;}
+.result{display:none;margin-top:16px;background:#f8f8f8;border-radius:3px;padding:14px;align-items:center;gap:13px;}
+.result.show{display:flex;}
+.result img{width:64px;height:64px;border-radius:3px;object-fit:cover;flex-shrink:0;}
+.result .rl{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:11px;}
+.result .rn{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:16px;margin:2px 0 1px;}
+.result .rd{font-family:'RingsideWideWeb',sans-serif;font-size:12px;}
+/* atc */
+.atc{margin-top:20px;}
+.atc button{width:100%;appearance:none;border:none;border-radius:3px;cursor:pointer;height:46px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:13px;letter-spacing:.6px;background:#000;color:#fff;}
+.atc .pipe{opacity:.55;margin:0 8px;}
+.note{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">9 shades · cream blush + lip · a little goes a long way</div>
+  <h2 class="headline">Pick your flush.</h2>
+  <p class="sub">Blushing Stick is a buttery lip and cheek tint that starts light and builds naturally. There's no wrong shade &mdash; just pick the flush you want. Not sure? Tap <em>Help me match</em> below.</p>
+
+  <div class="preview">
+    <img id="pv-img" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Miami_-_2.webp?width=400" alt="Blushing Stick on cheek">
+    <div>
+      <div class="pn" id="pv-name">Miami</div>
+      <div class="pd" id="pv-desc">A warm peachy coral</div>
+      <span class="ps">Cream blush + lip · seconds, not minutes</span>
+    </div>
+  </div>
+
+  <div class="gridhead">
+    <span class="lab">Shade</span>
+    <span class="cnt">9 shades · tap to preview on cheek</span>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <details class="match">
+    <summary>Help me match <span class="ic">+</span></summary>
+    <div class="body">
+      <div class="q">What pull do you want?</div>
+      <div class="opts" data-group="under">
+        <button class="opt" data-val="cool">Cool / pink</button>
+        <button class="opt" data-val="neutral">Neutral rose</button>
+        <button class="opt" data-val="warm">Warm / peach</button>
+      </div>
+      <div class="q">How much color?</div>
+      <div class="opts" data-group="depth">
+        <button class="opt" data-val="light">Just a hint</button>
+        <button class="opt" data-val="medium">A true flush</button>
+        <button class="opt" data-val="deep">Bold &amp; rich</button>
+      </div>
+      <div class="result" id="result">
+        <img id="r-img" src="" alt="">
+        <div>
+          <div class="rl">We'd start you at</div>
+          <div class="rn" id="r-name">&mdash;</div>
+          <div class="rd" id="r-desc"></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <div class="atc">
+    <button id="atc">Add to cart — Miami<span class="pipe">|</span>$34</button>
+  </div>
+  <p class="note">It starts light and builds, so any shade sheers out for a soft wash or layers up for a true flush.</p>
+</div>
+
+<script>
+const SHADES=[
+{n:"Joy",sub:"Emily's Shade",h:"#894556",d:"A sheer raspberry",u:"cool",p:"medium",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Joy_-_2.webp"},
+{n:"Bare",h:"#b1848f",d:"A cool dusty rose",u:"cool",p:"light",avail:false,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Bare_-_2_1.webp"},
+{n:"Chic",h:"#bc8282",d:"A nude pink",u:"neutral",p:"light",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Chic_-_2.webp"},
+{n:"Pretty",h:"#df839d",d:"A baby pink",u:"cool",p:"light",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Pretty_-_2.webp"},
+{n:"Miami",h:"#e9826b",d:"A warm peachy coral",u:"warm",p:"medium",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Miami_-_2.webp"},
+{n:"Flush",h:"#df839d",d:"A cool pink",u:"cool",p:"medium",avail:false,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Flush_-_2.webp"},
+{n:"Pinch",h:"#ab484e",d:"A neutral rose",u:"neutral",p:"medium",avail:false,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Pinch_-_2.webp"},
+{n:"Cheeky",h:"#7c393a",d:"A plummy berry",u:"cool",p:"deep",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Cheeky_-_2.webp"},
+{n:"Noir",h:"#5d2429",d:"A sheer plum",u:"cool",p:"deep",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Noir_-_2.webp"}
+];
+function W(u){return u+(u.includes('?')?'&':'?')+'width=400';}
+const grid=document.getElementById('grid');
+let selected=4;
+SHADES.forEach((s,i)=>{
+  const b=document.createElement('button');b.className='swatch';b.setAttribute('aria-pressed',i===selected?'true':'false');b.dataset.i=i;b.setAttribute('aria-label',s.n+' — '+s.d+(s.avail?'':' (sold out)'));
+  b.innerHTML=`<span class="ring"><span class="dot" style="background:${s.h}"></span></span><span class="sname">${s.n}</span>`+(s.avail?'':'<span class="soldout">Sold out</span>');
+  b.onclick=()=>select(i);
+  grid.appendChild(b);
+});
+function select(i){
+  selected=i;const s=SHADES[i];
+  [...grid.children].forEach(c=>c.setAttribute('aria-pressed',c.dataset.i==i?'true':'false'));
+  document.getElementById('pv-img').src=W(s.img);
+  document.getElementById('pv-name').textContent=s.n+(s.sub?' — '+s.sub:'');
+  document.getElementById('pv-desc').textContent=s.d;
+  const atc=document.getElementById('atc');
+  if(s.avail){atc.disabled=false;atc.innerHTML='Add to cart — '+s.n+'<span class="pipe">|</span>$34';}
+  else{atc.disabled=true;atc.innerHTML='Sold out — '+s.n;}
+}
+document.querySelectorAll('.opts').forEach(g=>{
+  g.querySelectorAll('.opt').forEach(o=>{
+    o.onclick=()=>{
+      g.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-pressed','false'));
+      o.setAttribute('aria-pressed','true');pick[g.dataset.group]=o.dataset.val;match();
+    };
+  });
+});
+let pick={under:null,depth:null};
+function match(){
+  if(!pick.under||!pick.depth)return;
+  let cands=SHADES.filter(s=>s.avail);
+  let exact=cands.filter(s=>s.u===pick.under&&s.p===pick.depth);
+  let best=exact[0]||cands.filter(s=>s.u===pick.under).sort((a,b)=>rank(a.p,pick.depth)-rank(b.p,pick.depth))[0]||cands[0];
+  const r=document.getElementById('result');r.classList.add('show');
+  document.getElementById('r-img').src=W(best.img);
+  document.getElementById('r-name').textContent=best.n;
+  document.getElementById('r-desc').textContent=best.d+' — tap it in the grid to confirm';
+  const idx=SHADES.indexOf(best);
+  [...grid.children].forEach(c=>c.classList.toggle('rec',c.dataset.i==idx));
+}
+function rank(p,target){const order={light:0,medium:1,deep:2};return Math.abs(order[p]-order[target]);}
+document.getElementById('atc').onclick=()=>{};
+</script>
+</body>
+</html>

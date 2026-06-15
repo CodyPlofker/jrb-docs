@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blushing Stick Shade — v03 2-question live finder</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:520px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 6px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.55;}
+/* two-question rows, full width segmented */
+.qrow{margin-top:20px;}
+.q{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;margin:0 0 9px;display:flex;align-items:center;gap:8px;}
+.q .num{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:100%;background:#000;color:#fff;font-family:'RingsideWideWeb',sans-serif;font-size:10px;}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+.seg button{appearance:none;border:1px solid #d4d4d4;background:#fff;border-radius:3px;cursor:pointer;padding:11px 6px;font-family:'RingsideWideWeb',sans-serif;font-size:12.5px;min-height:48px;line-height:1.2;}
+.seg button[aria-pressed="true"]{border-color:#000;background:#000;color:#fff;}
+.reset{margin-top:14px;background:none;border:none;cursor:pointer;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:11px;letter-spacing:.5px;text-decoration:underline;color:#000;padding:6px 0;}
+/* recommendation hero */
+.rec{display:none;margin-top:22px;border:1px solid #000;border-radius:3px;overflow:hidden;}
+.rec.show{display:block;}
+.rec .top{display:flex;gap:0;}
+.rec .top img{width:42%;aspect-ratio:1/1;object-fit:cover;background:#f8f8f8;flex-shrink:0;}
+.rec .top .info{padding:14px 14px;display:flex;flex-direction:column;justify-content:center;}
+.rec .rl{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:11px;}
+.rec .rn{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:20px;margin:3px 0 2px;}
+.rec .rd{font-family:'RingsideWideWeb',sans-serif;font-size:13px;}
+.rec .why{font-family:'RingsideWideWeb',sans-serif;font-size:11.5px;margin-top:8px;line-height:1.45;}
+/* grid */
+.gridhead{display:flex;justify-content:space-between;align-items:baseline;margin:24px 0 13px;}
+.gridhead .lab{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:13px;}
+.gridhead .cnt{font-family:'RingsideWideWeb',sans-serif;font-size:12px;}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px 6px;}
+.swatch{appearance:none;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;padding:0;transition:opacity .2s;}
+.swatch.dim{opacity:.22;pointer-events:none;}
+.ring{width:42px;height:42px;border-radius:100%;border:1.5px solid #d4d4d4;display:flex;align-items:center;justify-content:center;transition:border-color .15s,box-shadow .15s;position:relative;}
+.dot{width:36px;height:36px;border-radius:100%;}
+.swatch[aria-pressed="true"] .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.swatch.rec-dot .ring{border-color:#000;}
+.swatch.rec-dot .ring::after{content:"";position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:100%;background:#ff2e92;}
+.sname{font-family:'RingsideWideWeb',sans-serif;font-size:11px;line-height:1.1;text-align:center;}
+.atc{margin-top:20px;}
+.atc button{width:100%;appearance:none;border:none;border-radius:3px;cursor:pointer;height:46px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:13px;letter-spacing:.6px;background:#000;color:#fff;}
+.atc button:disabled{background:#e4e4e4;color:#8a8a8a;cursor:not-allowed;}
+.atc .pipe{opacity:.55;margin:0 8px;}
+.note{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">9 shades · cream blush + lip</div>
+  <h2 class="headline">Two questions &mdash; we'll narrow it to your flush.</h2>
+  <p class="sub">There's no depth-matching here, just color. Tell us the pull you want and how much, the grid filters live, and we star a starting point.</p>
+
+  <div class="qrow">
+    <div class="q"><span class="num">1</span>What pull do you want?</div>
+    <div class="seg" data-group="under">
+      <button data-val="cool">Cool / pink</button>
+      <button data-val="neutral">Neutral rose</button>
+      <button data-val="warm">Warm / peach</button>
+    </div>
+  </div>
+  <div class="qrow">
+    <div class="q"><span class="num">2</span>How much color?</div>
+    <div class="seg" data-group="depth">
+      <button data-val="light">Just a hint</button>
+      <button data-val="medium">A true flush</button>
+      <button data-val="deep">Bold &amp; rich</button>
+    </div>
+  </div>
+  <button class="reset" id="reset">Reset / show all 9</button>
+
+  <div class="rec" id="rec">
+    <div class="top">
+      <img id="rec-img" src="" alt="">
+      <div class="info">
+        <div class="rl">Start here</div>
+        <div class="rn" id="rec-name">&mdash;</div>
+        <div class="rd" id="rec-desc"></div>
+        <div class="why" id="rec-why"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gridhead">
+    <span class="lab">Shade</span>
+    <span class="cnt" id="cnt">All 9 — answer above to narrow</span>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <div class="atc"><button id="atc" disabled>Pick a shade</button></div>
+  <p class="note">A near match still works &mdash; every shade sheers out or layers up, so you can't really get it wrong.</p>
+</div>
+
+<script>
+const SHADES=[
+{n:"Joy",sub:"Emily's Shade",h:"#894556",d:"A sheer raspberry",u:"cool",p:"medium",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Joy_-_2.webp"},
+{n:"Bare",h:"#b1848f",d:"A cool dusty rose",u:"cool",p:"light",avail:false,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Bare_-_2_1.webp"},
+{n:"Chic",h:"#bc8282",d:"A nude pink",u:"neutral",p:"light",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Chic_-_2.webp"},
+{n:"Pretty",h:"#df839d",d:"A baby pink",u:"cool",p:"light",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Pretty_-_2.webp"},
+{n:"Miami",h:"#e9826b",d:"A warm peachy coral",u:"warm",p:"medium",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Miami_-_2.webp"},
+{n:"Flush",h:"#df839d",d:"A cool pink",u:"cool",p:"medium",avail:false,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Flush_-_2.webp"},
+{n:"Pinch",h:"#ab484e",d:"A neutral rose",u:"neutral",p:"medium",avail:false,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Pinch_-_2.webp"},
+{n:"Cheeky",h:"#7c393a",d:"A plummy berry",u:"cool",p:"deep",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Cheeky_-_2.webp"},
+{n:"Noir",h:"#5d2429",d:"A sheer plum",u:"cool",p:"deep",avail:true,img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Noir_-_2.webp"}
+];
+const ULAB={cool:"a cool, pink",neutral:"a neutral rose",warm:"a warm, peachy"};
+const PLAB={light:"a soft hint of",medium:"a true",deep:"a bold, rich"};
+function W(u){return u+(u.includes('?')?'&':'?')+'width=500';}
+const grid=document.getElementById('grid');
+let selected=-1,pick={under:null,depth:null},recIdx=-1;
+SHADES.forEach((s,i)=>{
+  const b=document.createElement('button');b.className='swatch';b.setAttribute('aria-pressed','false');b.dataset.i=i;b.setAttribute('aria-label',s.n+' — '+s.d);
+  b.innerHTML=`<span class="ring"><span class="dot" style="background:${s.h}"></span></span><span class="sname">${s.n}</span>`;
+  b.onclick=()=>select(i);
+  grid.appendChild(b);
+});
+function select(i){
+  if(!SHADES[i].avail)return;
+  selected=i;const s=SHADES[i];
+  [...grid.children].forEach(c=>c.setAttribute('aria-pressed',c.dataset.i==i?'true':'false'));
+  const atc=document.getElementById('atc');atc.disabled=false;atc.innerHTML='Add to cart — '+s.n+'<span class="pipe">|</span>$34';
+}
+document.querySelectorAll('.seg').forEach(g=>{
+  g.querySelectorAll('button').forEach(o=>{
+    o.onclick=()=>{
+      g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));
+      o.setAttribute('aria-pressed','true');pick[g.dataset.group]=o.dataset.val;apply();
+    };
+  });
+});
+function apply(){
+  const cnt=document.getElementById('cnt');let shown=0;
+  [...grid.children].forEach(c=>{
+    const s=SHADES[c.dataset.i];c.classList.remove('rec-dot');
+    let ok=true;
+    if(pick.depth)ok=ok&&s.p===pick.depth;
+    c.classList.toggle('dim',!ok);if(ok)shown++;
+  });
+  if(pick.under&&pick.depth){
+    let cands=SHADES.filter(s=>s.avail&&s.p===pick.depth);
+    let best=cands.find(s=>s.u===pick.under)||SHADES.filter(s=>s.avail&&s.u===pick.under)[0]||cands[0]||SHADES.find(s=>s.avail);
+    recIdx=SHADES.indexOf(best);
+    grid.children[recIdx].classList.add('rec-dot');grid.children[recIdx].classList.remove('dim');
+    const r=document.getElementById('rec');r.classList.add('show');
+    document.getElementById('rec-img').src=W(best.img);
+    document.getElementById('rec-name').textContent=best.n+(best.sub?' — '+best.sub:'');
+    document.getElementById('rec-desc').textContent=best.d;
+    document.getElementById('rec-why').textContent='You wanted '+ULAB[pick.under]+' flush with '+PLAB[pick.depth]+' color. Tap it in the grid to add.';
+    cnt.textContent=cands.length+' '+pick.depth+'-intensity shades — pick starred';
+  } else if(pick.depth){
+    cnt.textContent=shown+' shades at that intensity — now pick the pull';
+    document.getElementById('rec').classList.remove('show');
+  } else {
+    cnt.textContent='All 9 — answer above to narrow';
+    document.getElementById('rec').classList.remove('show');
+  }
+}
+document.getElementById('reset').onclick=()=>{
+  pick={under:null,depth:null};recIdx=-1;
+  document.querySelectorAll('.seg button').forEach(o=>o.setAttribute('aria-pressed','false'));
+  [...grid.children].forEach(c=>c.classList.remove('dim','rec-dot'));
+  document.getElementById('rec').classList.remove('show');
+  document.getElementById('cnt').textContent='All 9 — answer above to narrow';
+};
+</script>
+</body>
+</html>

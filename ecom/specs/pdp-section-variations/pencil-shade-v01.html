@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Face Pencil Shade — v01 Inline grid + Help me match</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:520px;margin:0 auto;padding:30px 18px 46px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.08;text-wrap:balance;margin:8px 0 6px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.55;}
+.starline{display:flex;align-items:center;gap:7px;font-family:'RingsideWideWeb',sans-serif;font-size:13px;margin-top:9px;}
+.stars{letter-spacing:1px;font-size:14px;color:#000;}
+button{font-family:inherit;}
+
+.head-row{margin-bottom:14px;}
+.metaline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.chip{display:inline-flex;align-items:center;border:1px solid #d4d4d4;border-radius:3px;padding:6px 10px;font-family:'RingsideWideWeb',sans-serif;font-size:11px;line-height:1;}
+.selbar{display:flex;align-items:center;gap:11px;background:#f8f8f8;border:1px solid #ededed;border-radius:3px;padding:12px;margin:16px 0;}
+.selbar .sd{width:38px;height:38px;border-radius:100%;border:1.5px solid #000;flex-shrink:0;}
+.selbar .nm{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:15px;}
+.selbar .ds{font-family:'RingsideWideWeb',sans-serif;font-size:11.5px;line-height:1.35;margin-top:2px;}
+.matcher{border:1px solid #d4d4d4;border-radius:3px;margin:0 0 18px;overflow:hidden;}
+.matcher>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:14px;font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:13px;}
+.matcher>summary::-webkit-details-marker{display:none;}
+.matcher>summary .pm{font-family:'BaseMonoWideWeb',monospace;font-size:18px;line-height:1;}
+.matcher[open]>summary .pm:before{content:'\2212';}
+.matcher:not([open])>summary .pm:before{content:'+';}
+.mbody{padding:0 14px 16px;}
+.q{font-family:'RingsideWideWeb',sans-serif;font-size:12.5px;margin:6px 0 8px;}
+.opts{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;}
+.opt{appearance:none;border:1px solid #d4d4d4;background:#fff;border-radius:3px;min-height:44px;padding:0 14px;cursor:pointer;font-family:'BaseMonoWideWeb',monospace;font-size:11px;letter-spacing:.4px;text-transform:uppercase;display:flex;align-items:center;}
+.opt[aria-pressed="true"]{border-color:#000;background:#000;color:#fff;}
+.rec{display:none;align-items:center;gap:11px;border-top:1px solid #ededed;padding-top:14px;margin-top:2px;}
+.rec.on{display:flex;}
+.rec .rd{width:42px;height:42px;border-radius:100%;border:1.5px solid #000;flex-shrink:0;}
+.rec .rt{font-family:'RingsideWideWeb',sans-serif;font-size:11px;line-height:1.4;}
+.rec .rt b{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:14px;display:block;}
+.rec .gobtn{margin-left:auto;appearance:none;border:none;background:#000;color:#fff;border-radius:3px;height:40px;padding:0 14px;cursor:pointer;font-family:'BaseMonoWideWeb',monospace;font-size:11px;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px 6px;}
+.sw{appearance:none;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0;min-height:44px;}
+.ring{width:30px;height:30px;border-radius:100%;border:1.5px solid #d4d4d4;display:flex;align-items:center;justify-content:center;transition:.15s;}
+.dot{width:24px;height:24px;border-radius:100%;}
+.sw[aria-pressed="true"] .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.sw.match .ring{border-color:#000;box-shadow:0 0 0 1px #000,0 0 0 4px rgba(0,0,0,.06);}
+.snm{font-family:'RingsideWideWeb',sans-serif;font-size:9.5px;}
+.atc{margin-top:20px;}
+.atc button{width:100%;appearance:none;border:none;border-radius:3px;cursor:pointer;height:46px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:13px;letter-spacing:.6px;background:#000;color:#fff;}
+.atc .pipe{opacity:.55;margin:0 8px;}
+.foot{font-family:'RingsideWideWeb',sans-serif;font-size:11.5px;line-height:1.55;margin-top:12px;}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head-row">
+    <div class="eyebrow">25 shades &middot; concealer pencil</div>
+    <h2 class="headline">Find your match.</h2>
+    <p class="sub">Depth-matched to your skin, not your foundation. Pick a deeper shade to conceal, or a lighter one to brighten under the eyes.</p>
+    <div class="starline"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span>25,847 reviews &middot; 4.4&#9733;</span></div>
+  </div>
+
+  <div class="selbar">
+    <span class="sd" id="selDot"></span>
+    <span><span class="nm" id="selName"></span><span class="ds" id="selDesc"></span></span>
+  </div>
+
+  <details class="matcher" id="matcher">
+    <summary>Help me match <span class="pm"></span></summary>
+    <div class="mbody">
+      <div class="q">1 &middot; How deep is your skin?</div>
+      <div class="opts" id="qDepth">
+        <button class="opt" data-v="Fair">Fair</button>
+        <button class="opt" data-v="Light">Light</button>
+        <button class="opt" data-v="Medium">Medium</button>
+        <button class="opt" data-v="Deep">Deep</button>
+      </div>
+      <div class="q">2 &middot; What&#8217;s your undertone?</div>
+      <div class="opts" id="qTone">
+        <button class="opt" data-v="Cool">Cool / pink</button>
+        <button class="opt" data-v="Neutral">Neutral</button>
+        <button class="opt" data-v="Warm">Warm / yellow</button>
+      </div>
+      <div class="rec" id="rec">
+        <span class="rd" id="recDot"></span>
+        <span class="rt"><b id="recName"></b><span id="recDesc"></span></span>
+        <button class="gobtn" id="recGo">Show me</button>
+      </div>
+    </div>
+  </details>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="atc"><button id="atc">Add to bag<span class="pipe">|</span>$28</button></div>
+  <p class="foot">Creamy and blendable, so a near-match still melts in &mdash; you don&#8217;t have to land it exactly.</p>
+</div>
+<script>
+const S=[
+{n:1,nm:"Shade 01",h:"#ffe9d5",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/JonesRoad_FacePencil_Shade1_01.jpg?v=1739188766",d:"is for pale skin with neutral undertones",sh:"Pale skin with neutral",dp:"Fair",tn:"Neutral"},
+{n:2,nm:"Shade 02",h:"#fee7df",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R2.jpg?v=1739188766",d:"is for fair skin with neutral undertones",sh:"Fair skin with neutral",dp:"Fair",tn:"Neutral"},
+{n:3,nm:"Shade 03",h:"#ffefd3",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R3.jpg?v=1739188766",d:"is for fair skin with yellow undertones",sh:"Fair skin with yellow",dp:"Fair",tn:"Warm"},
+{n:4,nm:"Shade 04",h:"#fee5c2",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R4.jpg?v=1739188766",d:"is for light skin with yellow undertones",sh:"Light skin with yellow",dp:"Light",tn:"Warm"},
+{n:5,nm:"Shade 05",h:"#fdd1b2",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R5.jpg?v=1739188766",d:"is for light skin with cool pink undertones",sh:"Light skin with cool pink",dp:"Light",tn:"Cool"},
+{n:6,nm:"Shade 06",h:"#fbc79a",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FacePencil_new6_1.jpg?v=1739188766",d:"is for light skin with neutral undertones",sh:"Light skin with neutral",dp:"Light",tn:"Neutral"},
+{n:7,nm:"Shade 07",h:"#fed7a0",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R7.jpg?v=1739188766",d:"is for light skin with peachy neutral undertones",sh:"Light skin with peachy neutral",dp:"Light",tn:"Warm"},
+{n:8,nm:"Shade 08",h:"#fec299",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R8.jpg?v=1739188766",d:"is for light-medium skin with neutral-peachy undertones",sh:"Light-medium skin with neutral-peachy",dp:"Light",tn:"Warm"},
+{n:9,nm:"Shade 09",h:"#fdcf92",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R9.jpg?v=1739188767",d:"is for light-medium skin with yellow undertones",sh:"Light-medium skin with yellow",dp:"Light",tn:"Warm"},
+{n:10,nm:"Shade 10",h:"#f6c995",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R10.jpg?v=1739188767",d:"is for light-medium skin with cool undertones",sh:"Light-medium skin with cool",dp:"Light",tn:"Cool"},
+{n:11,nm:"Shade 11",h:"#fbba86",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FacePencil_new11_1.jpg?v=1739188767",d:"is for light-medium skin with neutral undertones",sh:"Light-medium skin with neutral",dp:"Light",tn:"Neutral"},
+{n:12,nm:"Shade 12",h:"#fbc288",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/R12.jpg?v=1739188767",d:"is for medium skin with cool undertones",sh:"Medium skin with cool",dp:"Medium",tn:"Cool"},
+{n:13,nm:"Shade 13",h:"#f0af6d",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FacePencil_new13_1.jpg?v=1739188767",d:"is for medium skin with neutral undertones",sh:"Medium skin with neutral",dp:"Medium",tn:"Neutral"},
+{n:14,nm:"Shade 14",h:"#e5ab62",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R14.jpg?v=1739188767",d:"is for medium skin with peachy undertones",sh:"Medium skin with peachy",dp:"Medium",tn:"Warm"},
+{n:15,nm:"Shade 15",h:"#e5ab62",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R15.jpg?v=1739188767",d:"is for medium skin with warm undertones",sh:"Medium skin with warm",dp:"Medium",tn:"Warm"},
+{n:16,nm:"Shade 16",h:"#f0a75c",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R16.jpg?v=1739188767",d:"is for medium-dark skin with neutral honey undertones",sh:"Medium-dark skin with neutral honey",dp:"Medium",tn:"Warm"},
+{n:17,nm:"Shade 17",h:"#eb965d",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FacePencil_new17_1.jpg?v=1739188768",d:"is for medium-dark skin with neutral undertones",sh:"Medium-dark skin with neutral",dp:"Medium",tn:"Neutral"},
+{n:18,nm:"Shade 18",h:"#c47b38",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R18.jpg?v=1739188768",d:"is for medium-dark skin with warm honey undertones",sh:"Medium-dark skin with warm honey",dp:"Medium",tn:"Warm"},
+{n:19,nm:"Shade 19",h:"#a66135",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R19.jpg?v=1739188768",d:"is for dark skin with yellow undertones",sh:"Dark skin with yellow",dp:"Deep",tn:"Warm"},
+{n:20,nm:"Shade 20",h:"#984c29",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R20.jpg?v=1739188768",d:"is for dark skin with cinnamon undertones",sh:"Dark skin with cinnamon",dp:"Deep",tn:"Warm"},
+{n:21,nm:"Shade 21",h:"#8a512f",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R21.jpg?v=1739188768",d:"is for dark skin with warm golden undertones",sh:"Dark skin with warm golden",dp:"Deep",tn:"Warm"},
+{n:22,nm:"Shade 22",h:"#783b21",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R22.jpg?v=1739188768",d:"is for deep skin with warm cinnamon undertones",sh:"Deep skin with warm cinnamon",dp:"Deep",tn:"Warm"},
+{n:23,nm:"Shade 23",h:"#67311d",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R23.jpg?v=1739188768",d:"is for deep skin with cool cinnamon undertones",sh:"Deep skin with cool cinnamon",dp:"Deep",tn:"Cool"},
+{n:24,nm:"Shade 24",h:"#4a2a14",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R24.jpg?v=1739188768",d:"is for deep chocolate skin",sh:"Deep chocolate skin",dp:"Deep",tn:"Neutral"},
+{n:25,nm:"Shade 25",h:"#3a2111",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/products/1R25.jpg?v=1739188768",d:"is for deep espresso skin",sh:"Deep espresso skin",dp:"Deep",tn:"Neutral"}
+];
+
+function W(u){return u+(u.includes('?')?'&':'?')+'width=800';}
+
+const grid=document.getElementById('grid');
+let sel=4;
+S.forEach((s,i)=>{
+  const b=document.createElement('button');b.className='sw';b.dataset.i=i;b.setAttribute('aria-pressed',i===sel);b.setAttribute('aria-label',s.nm+', '+s.d);
+  b.innerHTML=`<span class="ring"><span class="dot" style="background:${s.h}"></span></span><span class="snm">${s.n}</span>`;
+  b.onclick=()=>select(i);grid.appendChild(b);
+});
+function select(i){
+  sel=i;const s=S[i];
+  document.getElementById('selDot').style.background=s.h;
+  document.getElementById('selName').textContent=s.nm;
+  document.getElementById('selDesc').textContent=cap(s.d);
+  document.getElementById('atc').innerHTML='Add to bag &mdash; '+s.nm+'<span class="pipe">|</span>$28';
+  [...grid.children].forEach((c,j)=>c.setAttribute('aria-pressed',j===i));
+}
+function cap(t){return t.charAt(0).toUpperCase()+t.slice(1);}
+select(sel);
+// matcher
+let pickDepth=null,pickTone=null;
+function bind(id,set){document.getElementById(id).querySelectorAll('.opt').forEach(o=>{o.onclick=()=>{
+  [...o.parentNode.children].forEach(x=>x.setAttribute('aria-pressed','false'));o.setAttribute('aria-pressed','true');set(o.dataset.v);recompute();};});}
+bind('qDepth',v=>pickDepth=v);bind('qTone',v=>pickTone=v);
+function recompute(){
+  if(!pickDepth||!pickTone)return;
+  let pool=S.filter(s=>s.dp===pickDepth);
+  let cand=pool.filter(s=>s.tn===pickTone);
+  if(!cand.length)cand=pool.filter(s=>s.tn==='Neutral');
+  if(!cand.length)cand=pool;
+  const r=cand[Math.floor(cand.length/2)];
+  window._rec=S.indexOf(r);
+  document.getElementById('recDot').style.background=r.h;
+  document.getElementById('recName').textContent=r.nm;
+  document.getElementById('recDesc').textContent=cap(r.d);
+  document.getElementById('rec').classList.add('on');
+  [...grid.children].forEach((c,j)=>c.classList.toggle('match',j===window._rec));
+}
+document.getElementById('recGo').onclick=()=>{select(window._rec);window.scrollTo({top:0,behavior:'smooth'});};
+
+</script>
+</body>
+</html>

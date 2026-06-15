@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lip Recharge Buybox v02 — Expectation-led</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1180px;margin:0 auto;padding:32px 20px 56px;}
+.grid{display:grid;grid-template-columns:1fr;gap:28px;}
+@media(min-width:860px){.grid{grid-template-columns:1fr 1fr;gap:48px;align-items:start;}}
+
+.gallery .main-img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:3px;background:#f8f8f8;display:block;}
+.thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.thumbs img{width:62px;height:62px;object-fit:cover;border-radius:3px;border:1px solid #d4d4d4;cursor:pointer;background:#f8f8f8;}
+.thumbs img.sel{border-color:#000;}
+
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.titlerow{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:6px 0 14px;}
+.pname{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;font-size:22px;letter-spacing:1.18px;line-height:1.1;}
+.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid #d4d4d4;border-radius:3px;padding:5px 9px;}
+.badge .stars{display:inline-flex;gap:1px;}
+.badge .stars svg{width:13px;height:13px;}
+.badge .rcount{font-family:'RingsideWideWeb';font-size:12px;}
+
+/* the bold one-line expectation statement */
+.exp-line{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:14px;line-height:1.45;margin:0 0 16px;display:flex;align-items:center;gap:9px;}
+.exp-line .dot{width:13px;height:13px;border-radius:100%;flex:none;background:linear-gradient(135deg,#e8a9ad,#c98fb0);border:1px solid rgba(0,0,0,.2);}
+.exp-line b{font-weight:700;}
+.exp-line .sep{opacity:.35;font-weight:700;margin:0 2px;}
+
+.price{font-family:'RingsideWideWeb';font-size:20px;margin-bottom:6px;}
+.desc{font-size:14px;line-height:1.6;margin:12px 0 18px;max-width:50ch;}
+
+.shade-head{display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 10px;}
+.shade-label{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;}
+.shade-current{font-family:'RingsideWideWeb';font-size:13px;}
+.swatches{display:grid;grid-template-columns:repeat(9,1fr);gap:10px;max-width:380px;}
+.sw{width:28px;height:28px;border-radius:100%;border:1px solid #d4d4d4;padding:2px;cursor:pointer;background:none;display:flex;align-items:center;justify-content:center;}
+.sw.sel{border-color:#000;border-width:1.5px;}
+.sw i{display:block;width:24px;height:24px;border-radius:100%;}
+
+.atc{display:flex;align-items:center;justify-content:center;width:100%;height:44px;background:#000;color:#fff;border:none;border-radius:3px;font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:13px;letter-spacing:.5px;cursor:pointer;margin-top:22px;}
+.atc .pipe{opacity:.45;margin:0 12px;}
+.note{font-family:'RingsideWideWeb';font-size:12px;text-align:center;margin-top:10px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="grid">
+    <!-- GALLERY -->
+    <div class="gallery">
+      <img class="main-img" id="mainImg" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/PinkLilac_Lip_Recharge_PDP_-_1.png?v=1772726302&width=900" alt="Lip Recharge — Pink Lilac">
+      <div class="thumbs" id="thumbs">
+        <img class="sel" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/PinkLilac_Lip_Recharge_PDP_-_1.png?v=1772726302&width=200" data-big="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/PinkLilac_Lip_Recharge_PDP_-_1.png?v=1772726302&width=900" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/PinkLilac_Lip_Recharge_PDP_-_2_1.png?v=1772726302&width=200" data-big="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/PinkLilac_Lip_Recharge_PDP_-_2_1.png?v=1772726302&width=900" alt="">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/PinkLilac_Lip_Recharge_PDP_-_3.png?v=1772726302&width=200" data-big="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/PinkLilac_Lip_Recharge_PDP_-_3.png?v=1772726302&width=900" alt="">
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="info">
+      <div class="eyebrow">Lip Treatment</div>
+      <div class="titlerow">
+        <h1 class="pname">Lip Recharge</h1>
+        <span class="badge">
+          <span class="stars" id="starsTop"></span>
+          <span class="rcount">863 reviews &middot; 4.66&#9733;</span>
+        </span>
+      </div>
+
+      <!-- BOLD ONE-LINE EXPECTATION STATEMENT -->
+      <p class="exp-line"><span class="dot"></span><b>A sheer wash of color</b><span class="sep">/</span>cushiony &amp; moisturizing<span class="sep">/</span>subtle vanilla-mint scent</p>
+
+      <div class="price">$24.00</div>
+      <p class="desc">A tinted lip treatment that refreshes, smooths and moisturizes on contact through antioxidants, moisture-boosting peptides and a cooling metal applicator. Sheer color — not clear, never heavy.</p>
+
+      <!-- SHADES -->
+      <div class="shade-head">
+        <span class="shade-label">Shade — 9 available</span>
+        <span class="shade-current" id="shadeCur">Pink Lilac</span>
+      </div>
+      <div class="swatches" id="sw"></div>
+
+      <button class="atc">Add to bag<span class="pipe">|</span>$24.00</button>
+      <p class="note">Free shipping over $50 &middot; Easy returns</p>
+    </div>
+  </div>
+</div>
+
+<script>
+var SH=[
+["On The Rocks","#e7d9d2","OTR_Lip_Recharge_PDP_-_1.png?v=1773763814"],
+["Petal","#e8a9ad","Petal_Lip_Recharge_PDP_-_1.png?v=1772726302"],
+["Pink Lilac","#c98fb0","PinkLilac_Lip_Recharge_PDP_-_1.png?v=1772726302"],
+["Champagne","#d8a98f","Champagne_Lip_Recharge_PDP_-_1.png?v=1772726302"],
+["Rosé","#cf8f86","Rose_Lip_Recharge_PDP_-_1.png?v=1772726302"],
+["Dahlia","#a8475a","Dahlia_Lip_Recharge_PDP_-_1.png?v=1772726302"],
+["Me","#9c5a52","Me_Lip_Recharge_PDP_-_1.png?v=1772726302"],
+["Sangria","#8e2f3f","Sangria_Lip_Recharge_PDP_-_1_1.png?v=1772726302"],
+["Lilac","#b487b3","Lilac_Lip_Recharge_PDP_-_1_1.png?v=1772726302"]
+];
+var CDN="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/";
+var star='<svg viewBox="0 0 24 24" fill="#000"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z"/></svg>';
+document.getElementById('starsTop').innerHTML=star.repeat(4)+'<svg viewBox="0 0 24 24"><defs><linearGradient id="h2"><stop offset="66%" stop-color="#000"/><stop offset="66%" stop-color="#fff"/></linearGradient></defs><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z" fill="url(#h2)" stroke="#000"/></svg>';
+var sw=document.getElementById('sw');
+SH.forEach(function(s,i){var b=document.createElement('button');b.className='sw'+(i===2?' sel':'');b.innerHTML='<i style="background:'+s[1]+'"></i>';b.title=s[0];b.setAttribute('aria-label',s[0]);b.onclick=function(){document.querySelectorAll('.sw').forEach(function(x){x.classList.remove('sel')});b.classList.add('sel');document.getElementById('shadeCur').textContent=s[0];document.getElementById('mainImg').src=CDN+s[2]+'&width=900';};sw.appendChild(b);});
+var thumbs=document.getElementById('thumbs').children;
+for(var t=0;t<thumbs.length;t++){(function(el){el.onclick=function(){for(var k=0;k<thumbs.length;k++)thumbs[k].classList.remove('sel');el.classList.add('sel');document.getElementById('mainImg').src=el.getAttribute('data-big');};})(thumbs[t]);}
+</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FS Buybox v01 — Classic</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1180px;margin:0 auto;padding:32px 20px 56px;}
+.grid{display:grid;grid-template-columns:1fr;gap:28px;}
+@media(min-width:860px){.grid{grid-template-columns:1.05fr .95fr;gap:48px;align-items:start;}}
+
+/* gallery */
+.gallery .main-img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:3px;background:#f8f8f8;display:block;}
+.thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.thumbs img{width:62px;height:62px;object-fit:cover;border-radius:3px;border:1px solid #d4d4d4;cursor:pointer;background:#f8f8f8;}
+.thumbs img.sel{border-color:#000;}
+
+/* info */
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.pname{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;font-size:22px;letter-spacing:1.18px;margin:6px 0 10px;line-height:1.1;}
+.rating{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.stars{display:inline-flex;gap:2px;}
+.stars svg{width:16px;height:16px;}
+.rcount{font-family:'RingsideWideWeb';font-size:14px;}
+.price{font-family:'RingsideWideWeb';font-size:20px;margin-bottom:6px;}
+.desc{font-size:14px;line-height:1.6;margin:14px 0 18px;max-width:46ch;}
+
+/* expectation strip */
+.exp-label{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:11px;margin:18px 0 8px;}
+.exp{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px;}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid #d4d4d4;border-radius:3px;padding:8px 12px;font-family:'RingsideWideWeb';font-size:12.5px;background:#fff;}
+.chip svg{width:13px;height:13px;flex:none;}
+
+/* shade label */
+.shade-head{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 10px;}
+.shade-label{font-family:'ArticulatCF';font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;}
+.shade-current{font-family:'RingsideWideWeb';font-size:13px;}
+.swatches{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;max-width:360px;}
+.sw{width:28px;height:28px;border-radius:100%;border:1px solid #d4d4d4;padding:2px;cursor:pointer;background:none;display:flex;align-items:center;justify-content:center;}
+.sw.sel{border-color:#000;border-width:1.5px;}
+.sw i{display:block;width:24px;height:24px;border-radius:100%;}
+
+/* ATC */
+.atc{display:flex;align-items:center;justify-content:center;gap:0;width:100%;height:44px;background:#000;color:#fff;border:none;border-radius:3px;font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:13px;letter-spacing:.5px;cursor:pointer;margin-top:22px;}
+.atc .pipe{opacity:.45;margin:0 12px;}
+.note{font-family:'RingsideWideWeb';font-size:12px;text-align:center;margin-top:10px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="grid">
+    <!-- GALLERY -->
+    <div class="gallery">
+      <img class="main-img" id="mainImg" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_1.jpg?v=1777924896&width=900" alt="Your Skin Foundation Stick">
+      <div class="thumbs" id="thumbs">
+        <img class="sel" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_1.jpg?v=1777924896&width=200" alt="Pale Alabaster">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_56.jpg?v=1778074299&width=200" alt="Fair">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_84.jpg?v=1778074380&width=200" alt="Beige">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_111.jpg?v=1778074466&width=200" alt="Medium">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_142.jpg?v=1778074662&width=200" alt="Honey">
+        <img src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_145.jpg?v=1778075391&width=200" alt="Deep">
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="info">
+      <div class="eyebrow">Foundation Stick</div>
+      <h1 class="pname">Your Skin Foundation Stick</h1>
+      <div class="rating">
+        <span class="stars" id="starsTop"></span>
+        <span class="rcount">457 reviews &middot; 4.67&#9733;</span>
+      </div>
+      <div class="price">$38.00</div>
+      <p class="desc">Medium-to-full, buildable coverage that looks and feels like your best skin. As lightweight as a foundation stick can get &mdash; the creamy formula glides on and blends effortlessly for a smooth, natural finish. Never cakey, never heavy.</p>
+
+      <!-- EXPECTATION STRIP -->
+      <div class="exp-label">What to expect</div>
+      <div class="exp">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg>Medium-to-full, buildable</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg>Natural skin finish</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg>Built for on-the-go</span>
+      </div>
+
+      <!-- SHADES -->
+      <div class="shade-head">
+        <span class="shade-label">Shade &mdash; 30 available</span>
+        <span class="shade-current" id="shadeCur">Pale Alabaster</span>
+      </div>
+      <div class="swatches" id="sw"></div>
+
+      <button class="atc">Add to bag<span class="pipe">|</span>$38.00</button>
+      <p class="note">Free shipping over $50 &middot; Easy returns</p>
+    </div>
+  </div>
+</div>
+
+<script>
+var SH=[["Pale Alabaster","#f6e2d2","FS_-_PDP_-_1.jpg?v=1777924896"],["Alabaster","#f3ddc9","FS_-_PDP_-_10.jpg?v=1777925395"],["Bisque","#f0d8c2","FS_-_PDP_-_19.jpg?v=1777991567"],["Linen","#eed3bb","FS_-_PDP_-_28.jpg?v=1777991768"],["Warm Linen","#ecceb4","FS_-_PDP_-_29.jpg?v=1777991792"],["Porcelain","#eacdb6","FS_-_PDP_-_55.jpg?v=1777991814"],["Fair","#e8c8af","FS_-_PDP_-_56.jpg?v=1778074299"],["Neutral Fair","#e6c5ab","FS_-_PDP_-_55_1.jpg?v=1778074281"],["Ivory","#e4c1a4","FS_-_PDP_-_57.jpg?v=1778074322"],["Light","#e0bb9c","FS_-_PDP_-_82.jpg?v=1778074341"],["Sand","#dcb593","FS_-_PDP_-_83.jpg?v=1778074361"],["Beige","#d8af8b","FS_-_PDP_-_84.jpg?v=1778074380"],["Warm Beige","#d3a884","FS_-_PDP_-_109.jpg?v=1778074399"],["Neutral Beige","#cfa37c","FS_-_PDP_-_110.jpg?v=1778074448"],["Medium","#cb9d74","FS_-_PDP_-_111.jpg?v=1778074466"],["Warm Medium","#c5966c","FS_-_PDP_-_136.jpg?v=1778074517"],["Neutral Medium","#bf8f64","FS_-_PDP_-_141.jpg?v=1778074535"],["Neutral Honey","#b98860","FS_-_PDP_-_146_2.jpg?v=1778074627"],["Medium Honey","#b3825b","FS_-_PDP_-_137.jpg?v=1778074645"],["Honey","#ac7b55","FS_-_PDP_-_142.jpg?v=1778074662"],["Warm Honey","#a5744f","FS_-_PDP_-_147_1.jpg?v=1778075035"],["Golden","#9e6d49","FS_-_PDP_-_138.jpg?v=1778075124"],["Hazelnut","#946542","FS_-_PDP_-_143.jpg?v=1778075141"],["Pecan","#8a5d3b","FS_-_PDP_-_139.jpg?v=1778075176"],["Almond","#7f5535","FS_-_PDP_-_139_1.jpg?v=1778075205"],["Walnut","#724b2e","FS_-_PDP_-_144_1.jpg?v=1778075345"],["Cinnamon","#664229","FS_-_PDP_-_149.jpg?v=1778075361"],["Chestnut","#583922","FS_-_PDP_-_140.jpg?v=1778075377"],["Deep","#49301c","FS_-_PDP_-_145.jpg?v=1778075391"],["Espresso","#392515","FS_-_PDP_-_150.jpg?v=1778075404"]];
+var BASE='https://cdn.shopify.com/s/files/1/0424/9527/9254/files/';
+var star='<svg viewBox="0 0 24 24" fill="#000"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z"/></svg>';
+document.getElementById('starsTop').innerHTML=star.repeat(4)+'<svg viewBox="0 0 24 24"><defs><linearGradient id="h"><stop offset="67%" stop-color="#000"/><stop offset="67%" stop-color="#fff"/></linearGradient></defs><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z" fill="url(#h)" stroke="#000"/></svg>';
+var sw=document.getElementById('sw');
+SH.forEach(function(s,i){var b=document.createElement('button');b.className='sw'+(i===0?' sel':'');b.innerHTML='<i style="background:'+s[1]+'"></i>';b.title=s[0];b.onclick=function(){document.querySelectorAll('.sw').forEach(function(x){x.classList.remove('sel')});b.classList.add('sel');document.getElementById('shadeCur').textContent=s[0];document.getElementById('mainImg').src=BASE+s[2]+'&width=900';};sw.appendChild(b);});
+var thumbs=document.getElementById('thumbs').children;
+for(var t=0;t<thumbs.length;t++){(function(el){el.onclick=function(){for(var k=0;k<thumbs.length;k++)thumbs[k].classList.remove('sel');el.classList.add('sel');document.getElementById('mainImg').src=el.src.replace('width=200','width=900');};})(thumbs[t]);}
+</script>
+</body>
+</html>

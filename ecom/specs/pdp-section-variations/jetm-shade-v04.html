@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JETM Shade — v04 Compare two shades</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:520px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 4px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.5;}
+/* between-two note */
+.pick-note{margin-top:18px;border:1px solid #000;border-radius:3px;padding:13px 16px;}
+.pick-note .t{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;}
+.pick-note .s{font-family:'RingsideWideWeb',sans-serif;font-size:12.5px;line-height:1.5;margin-top:5px;}
+.pick-note .fair{font-family:'RingsideWideWeb',sans-serif;font-size:12.5px;line-height:1.5;margin-top:7px;}
+.pick-note .fair a{color:#000;text-decoration:underline;cursor:pointer;font-family:'ArticulatCF',sans-serif;font-weight:700;}
+/* compare slots */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px;}
+.slot{border:1px solid #e6e6e6;border-radius:3px;padding:12px;text-align:center;}
+.slot.active{border-color:#000;box-shadow:0 0 0 1px #000;}
+.slot .slotlab{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:11px;margin-bottom:9px;}
+.slot .ph{width:100%;aspect-ratio:1;border-radius:3px;background:#f8f8f8;display:flex;align-items:center;justify-content:center;font-family:'RingsideWideWeb',sans-serif;font-size:12px;color:#000;border:1px dashed #c9c9c9;}
+.slot img{width:100%;aspect-ratio:1;border-radius:3px;object-fit:cover;display:none;}
+.slot.filled img{display:block;}
+.slot.filled .ph{display:none;}
+.slot .sn{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:13px;margin-top:8px;min-height:16px;}
+.slot .sd{font-family:'RingsideWideWeb',sans-serif;font-size:11px;line-height:1.3;margin-top:2px;min-height:14px;}
+.slot .sd::first-letter{text-transform:uppercase;}
+.slotpick{margin-top:9px;}
+.slotpick button{width:100%;appearance:none;border:1px solid #000;background:#fff;color:#000;border-radius:2px;cursor:pointer;height:38px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:11px;letter-spacing:.5px;}
+.slot.filled .slotpick button{background:#000;color:#fff;}
+/* which slot are we filling */
+.target{display:flex;gap:8px;margin:18px 0 12px;align-items:center;}
+.target .lab{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:13px;}
+.target .seg{display:flex;border:1px solid #d4d4d4;border-radius:3px;overflow:hidden;margin-left:auto;}
+.target .seg button{appearance:none;border:none;background:#fff;cursor:pointer;padding:8px 14px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:11px;letter-spacing:.5px;min-height:40px;}
+.target .seg button[aria-pressed="true"]{background:#000;color:#fff;}
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(8,1fr);gap:14px 8px;}
+.swatch{appearance:none;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0;}
+.ring{width:30px;height:30px;border-radius:100%;border:1.5px solid #d4d4d4;display:flex;align-items:center;justify-content:center;transition:border-color .15s,box-shadow .15s;}
+.dot{width:24px;height:24px;border-radius:100%;}
+.swatch.inA .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.swatch.inB .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.sname{font-family:'RingsideWideWeb',sans-serif;font-size:9px;line-height:1.1;text-align:center;letter-spacing:-.2px;}
+.tag{font-family:'GeogrotesqueCondBoldWeb',sans-serif;font-size:8px;letter-spacing:.5px;}
+/* final ATC */
+.atc{margin-top:20px;}
+.atc .label{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;margin-bottom:8px;}
+.atc .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.atc button{appearance:none;border:none;border-radius:3px;cursor:pointer;height:46px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:12px;letter-spacing:.5px;background:#000;color:#fff;}
+.atc button:disabled{background:#e4e4e4;color:#8a8a8a;cursor:not-allowed;}
+.note{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">16 shades · sheer coverage · soft, natural finish</div>
+  <h2 class="headline">Torn between two shades? See them side by side.</h2>
+  <p class="sub">Just Enough is sheer with no SPF. Drop two shades into the slots, compare them on skin, then add the one that's right.</p>
+
+  <div class="pick-note">
+    <div class="t">Between two shades? Here's how to pick</div>
+    <div class="s">Because Just Enough is sheer, go one step deeper for a more lived-in look, or one step lighter to keep it barely-there. The undertone (cool / neutral / warm) matters more than the depth.</div>
+    <div class="fair">Always too light for everything? Load <a id="loadFair">Alabaster</a> into slot A &mdash; it's our palest neutral &mdash; and compare it against Porcelain.</div>
+  </div>
+
+  <div class="compare">
+    <div class="slot" id="slotA">
+      <div class="slotlab">Slot A</div>
+      <div class="ph">Empty</div>
+      <img id="imgA" src="" alt="">
+      <div class="sn" id="snA"></div>
+      <div class="sd" id="sdA"></div>
+      <div class="slotpick"><button data-slot="A">Fill A</button></div>
+    </div>
+    <div class="slot" id="slotB">
+      <div class="slotlab">Slot B</div>
+      <div class="ph">Empty</div>
+      <img id="imgB" src="" alt="">
+      <div class="sn" id="snB"></div>
+      <div class="sd" id="sdB"></div>
+      <div class="slotpick"><button data-slot="B">Fill B</button></div>
+    </div>
+  </div>
+
+  <div class="target">
+    <span class="lab">Tap a shade to fill</span>
+    <div class="seg">
+      <button data-slot="A" aria-pressed="true">Slot A</button>
+      <button data-slot="B" aria-pressed="false">Slot B</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="atc">
+    <div class="label">Add your pick</div>
+    <div class="row">
+      <button id="atcA" disabled>Add slot A</button>
+      <button id="atcB" disabled>Add slot B</button>
+    </div>
+  </div>
+  <p class="note">Sheer and natural &mdash; a near-match still blends, so either of two adjacent shades will usually work.</p>
+</div>
+
+<script>
+const SHADES=[
+{n:"Alabaster",h:"#f0d9bd",d:"palest, neutral",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_alabaster_1.jpg?v=1741887001"},
+{n:"Porcelain",h:"#f2cca1",d:"fair, neutral",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_porcelain_1.jpg?v=1741887001"},
+{n:"Fair",h:"#e9b08d",d:"fair, cool",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_fair_1.jpg?v=1741887001"},
+{n:"Ivory",h:"#d6a37f",d:"fair to light, warm",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_ivory_1.jpg?v=1741887001"},
+{n:"Light",h:"#d2a473",d:"light, warm",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_light_1.jpg?v=1741887001"},
+{n:"Beige",h:"#c89172",d:"light to medium, neutral",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_beige_1.jpg?v=1741887002"},
+{n:"Medium",h:"#b97f51",d:"medium, neutral-warm",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_medium_1.jpg?v=1741887001"},
+{n:"Medium Honey",h:"#ba7049",d:"medium, warm",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_mediumhoney_1.jpg?v=1741887001"},
+{n:"Honey",h:"#a65631",d:"medium to tan, warm",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_honey_1.jpg?v=1741887001"},
+{n:"Golden",h:"#894e30",d:"tan, warm",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_golden_1.jpg?v=1741887001"},
+{n:"Pecan",h:"#873a2a",d:"tan to deep, neutral",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_pecan_1.jpg?v=1741887002"},
+{n:"Almond",h:"#663624",d:"deep, warm",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_Almond_1.jpg?v=1741887001"},
+{n:"Cinnamon",h:"#792f22",d:"deep, neutral",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_cinnamon_1.jpg?v=1741887002"},
+{n:"Chestnut",h:"#62271f",d:"deep, cool",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_chestnut_1.jpg?v=1741887001"},
+{n:"Deep",h:"#49221b",d:"very deep, neutral",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_deep_1.jpg?v=1741887001"},
+{n:"Espresso",h:"#351a13",d:"deepest, neutral",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_espresso_1.jpg?v=1741887001"}
+];
+function W(u){return u+(u.includes('?')?'&':'?')+'width=800';}
+const grid=document.getElementById('grid');
+let target='A',A=-1,B=-1;
+SHADES.forEach((s,i)=>{
+  const b=document.createElement('button');b.className='swatch';b.dataset.i=i;b.setAttribute('aria-label',s.n);
+  b.innerHTML=`<span class="ring"><span class="dot" style="background:${s.h}"></span></span><span class="sname">${s.n}</span>`;
+  b.onclick=()=>fill(i);
+  grid.appendChild(b);
+});
+function fill(i){
+  if(target==='A')A=i;else B=i;
+  paintGrid();paintSlots();
+}
+function paintGrid(){
+  [...grid.children].forEach(c=>{const i=+c.dataset.i;c.classList.toggle('inA',i===A);c.classList.toggle('inB',i===B);
+    const old=c.querySelector('.tag');if(old)old.remove();
+    if(i===A||i===B){const t=document.createElement('span');t.className='tag';t.textContent=i===A?'A':'B';c.appendChild(t);}
+  });
+}
+function paintSlots(){
+  fillSlot('A',A);fillSlot('B',B);
+  document.getElementById('slotA').classList.toggle('active',target==='A');
+  document.getElementById('slotB').classList.toggle('active',target==='B');
+}
+function fillSlot(k,i){
+  const slot=document.getElementById('slot'+k);
+  if(i<0){slot.classList.remove('filled');document.getElementById('sn'+k).textContent='';document.getElementById('sd'+k).textContent='';document.getElementById('atc'+k).disabled=true;document.getElementById('atc'+k).textContent='Add slot '+k;return;}
+  const s=SHADES[i];slot.classList.add('filled');
+  document.getElementById('img'+k).src=W(s.img);
+  document.getElementById('sn'+k).textContent=s.n;
+  document.getElementById('sd'+k).textContent=s.d+' undertones';
+  const a=document.getElementById('atc'+k);a.disabled=false;a.innerHTML='Add '+s.n;
+}
+// slot target selectors
+document.querySelectorAll('.seg button, .slotpick button').forEach(b=>{
+  b.onclick=()=>{
+    target=b.dataset.slot;
+    document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.slot===target));
+    paintSlots();
+  };
+});
+document.getElementById('loadFair').onclick=()=>{target='A';A=0;document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.slot==='A'));paintGrid();paintSlots();window.scrollTo({top:document.querySelector('.compare').offsetTop-20,behavior:'smooth'});};
+paintSlots();
+</script>
+</body>
+</html>

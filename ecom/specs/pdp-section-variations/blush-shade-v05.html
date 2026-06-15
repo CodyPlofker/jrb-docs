@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blushing Stick Shade — v05 Visual shade-on-skin swap</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:480px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 16px;}
+/* hero on-skin */
+.stage{position:relative;border-radius:3px;overflow:hidden;background:#f8f8f8;aspect-ratio:1/1;}
+.stage img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .25s ease;}
+.stage .label{position:absolute;left:0;bottom:0;right:0;padding:16px 16px 14px;background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0));color:#fff;}
+.stage .ln{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:20px;line-height:1.05;}
+.stage .ld{font-family:'RingsideWideWeb',sans-serif;font-size:13px;margin-top:3px;}
+.stage .so{position:absolute;top:12px;right:12px;background:#fff;color:#000;font-family:'BaseMonoWideWeb',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.5px;padding:4px 8px;border-radius:2px;display:none;}
+.stage.sold .so{display:block;}
+/* detail row: smear card thumbnail */
+.detail{display:flex;align-items:center;gap:12px;margin-top:14px;}
+.detail img{width:72px;height:72px;border-radius:3px;object-fit:cover;flex-shrink:0;background:#f8f8f8;}
+.detail .dt{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:11px;}
+.detail .dx{font-family:'RingsideWideWeb',sans-serif;font-size:12.5px;margin-top:4px;line-height:1.5;}
+/* swatch rail */
+.railhead{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 12px;}
+.railhead .lab{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:13px;}
+.railhead .cnt{font-family:'RingsideWideWeb',sans-serif;font-size:12px;}
+.rail{display:grid;grid-template-columns:repeat(5,1fr);gap:16px 6px;}
+.swatch{appearance:none;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;padding:0;position:relative;}
+.ring{width:44px;height:44px;border-radius:100%;border:1.5px solid #d4d4d4;display:flex;align-items:center;justify-content:center;transition:border-color .15s,box-shadow .15s;}
+.dot{width:38px;height:38px;border-radius:100%;}
+.swatch[aria-pressed="true"] .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.swatch.unavail{opacity:.45;}
+.swatch.unavail .ring{border-style:dashed;}
+.sname{font-family:'RingsideWideWeb',sans-serif;font-size:10.5px;text-align:center;line-height:1.1;}
+.atc{margin-top:22px;}
+.atc button{width:100%;appearance:none;border:none;border-radius:3px;cursor:pointer;height:46px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:13px;letter-spacing:.6px;background:#000;color:#fff;}
+.atc button:disabled{background:#e4e4e4;color:#8a8a8a;cursor:not-allowed;}
+.atc .pipe{opacity:.55;margin:0 8px;}
+.note{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">9 shades · cream blush + lip</div>
+  <h2 class="headline">See it on the cheek before you choose.</h2>
+
+  <div class="stage" id="stage">
+    <img id="stage-img" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Miami_-_2.webp?width=800" alt="Miami worn on the cheek">
+    <span class="so">Sold out</span>
+    <span class="label">
+      <span class="ln" id="stage-name">Miami</span>
+      <span class="ld" id="stage-desc">A warm peachy coral</span>
+    </span>
+  </div>
+
+  <div class="detail">
+    <img id="smear-img" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Miami_-_3.webp?width=300" alt="Miami swatch">
+    <div>
+      <div class="dt">The swatch, up close</div>
+      <div class="dx">Buttery cream texture &mdash; starts light, blends seamlessly, builds naturally.</div>
+    </div>
+  </div>
+
+  <div class="railhead">
+    <span class="lab">Tap a shade to try it on</span>
+    <span class="cnt">9 shades</span>
+  </div>
+  <div class="rail" id="rail"></div>
+
+  <div class="atc"><button id="atc">Add to cart — Miami<span class="pipe">|</span>$34</button></div>
+  <p class="note">Same buttery formula in every shade &mdash; lip and cheek in one, a little goes a long way.</p>
+</div>
+
+<script>
+const SHADES=[
+{n:"Joy",sub:"Emily's Shade",h:"#894556",d:"A sheer raspberry",avail:true,onskin:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Joy_-_2.webp",smear:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Joy_-_3.webp"},
+{n:"Bare",h:"#b1848f",d:"A cool dusty rose",avail:false,onskin:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Bare_-_2_1.webp",smear:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Bare_-_3.webp"},
+{n:"Chic",h:"#bc8282",d:"A nude pink",avail:true,onskin:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Chic_-_2.webp",smear:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Chic_-_3.webp"},
+{n:"Pretty",h:"#df839d",d:"A baby pink",avail:true,onskin:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Pretty_-_2.webp",smear:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Pretty_-_3.webp"},
+{n:"Miami",h:"#e9826b",d:"A warm peachy coral",avail:true,onskin:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Miami_-_2.webp",smear:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Miami_-_3.webp"},
+{n:"Flush",h:"#df839d",d:"A cool pink",avail:false,onskin:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Flush_-_2.webp",smear:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Flush_-_3.webp"},
+{n:"Pinch",h:"#ab484e",d:"A neutral rose",avail:false,onskin:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Pinch_-_2.webp",smear:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Pinch_-_3.webp"},
+{n:"Cheeky",h:"#7c393a",d:"A plummy berry",avail:true,onskin:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Cheeky_-_2.webp",smear:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Cheeky_-_3.webp"},
+{n:"Noir",h:"#5d2429",d:"A sheer plum",avail:true,onskin:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Noir_-_2.webp",smear:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/BS_PDP_Noir_-_3.webp"}
+];
+function W(u,w){return u+(u.includes('?')?'&':'?')+'width='+w;}
+const rail=document.getElementById('rail');
+let selected=4;
+SHADES.forEach((s,i)=>{
+  const b=document.createElement('button');b.className='swatch'+(s.avail?'':' unavail');b.setAttribute('aria-pressed',i===selected?'true':'false');b.dataset.i=i;b.setAttribute('aria-label',s.n+' — '+s.d+(s.avail?'':' (sold out)'));
+  b.innerHTML=`<span class="ring"><span class="dot" style="background:${s.h}"></span></span><span class="sname">${s.n}</span>`;
+  b.onclick=()=>select(i);
+  rail.appendChild(b);
+});
+const stageImg=document.getElementById('stage-img');
+function select(i){
+  selected=i;const s=SHADES[i];
+  [...rail.children].forEach(c=>c.setAttribute('aria-pressed',c.dataset.i==i?'true':'false'));
+  stageImg.style.opacity='0';
+  setTimeout(()=>{
+    stageImg.src=W(s.onskin,800);stageImg.alt=s.n+' worn on the cheek';stageImg.style.opacity='1';
+  },130);
+  document.getElementById('stage-name').textContent=s.n+(s.sub?' — '+s.sub:'');
+  document.getElementById('stage-desc').textContent=s.d;
+  document.getElementById('stage').classList.toggle('sold',!s.avail);
+  const sm=document.getElementById('smear-img');sm.src=W(s.smear,300);sm.alt=s.n+' swatch';
+  const atc=document.getElementById('atc');
+  if(s.avail){atc.disabled=false;atc.innerHTML='Add to cart — '+s.n+'<span class="pipe">|</span>$34';}
+  else{atc.disabled=true;atc.innerHTML='Sold out — '+s.n;}
+}
+</script>
+</body>
+</html>

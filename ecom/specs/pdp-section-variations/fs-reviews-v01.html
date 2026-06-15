@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FS Reviews — v01 Summary + Distribution</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+:root{
+  --font-display:GeogrotesqueCondBoldWeb,'Arial Black',Impact,sans-serif;
+  --font-mono:BaseMonoWideWeb,Courier,'Courier New',sans-serif;
+  --font-body:RingsideWideWeb,Helvetica,Arial,sans-serif;
+  --font-serif:Canela,serif;
+  --font-articulat:ArticulatCF,Helvetica,Arial,sans-serif;
+  --color-black:#000;--color-white:#fff;--color-border:#d0d0d0;
+  --ease-primary:cubic-bezier(.39,.575,.565,1);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:#fff;color:#000;font-family:var(--font-body);font-size:16px;-webkit-font-smoothing:antialiased;}
+.rv{padding:48px 20px;background:#fff;}
+.rv__inner{max-width:1100px;margin:0 auto;}
+.rv__eyebrow{font-family:var(--font-display);font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#000;text-align:center;margin:0 0 10px;}
+.rv__title{font-family:var(--font-serif);font-weight:300;font-size:30px;line-height:1.2;letter-spacing:.5px;text-align:center;color:#000;text-wrap:balance;margin:0 0 32px;}
+
+/* Summary bar */
+.rv__summary{display:flex;flex-direction:column;gap:28px;border:1px solid #e0e0e0;border-radius:3px;padding:28px 24px;margin-bottom:32px;}
+.rv__score{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;}
+.rv__score-num{font-family:var(--font-serif);font-weight:300;font-size:58px;line-height:1;color:#000;}
+.rv__stars{display:flex;align-items:center;position:relative;height:20px;color:#000;}
+.rv__stars-outline{display:flex;align-items:center;}
+.rv__stars-outline svg,.rv__stars-filled svg{width:20px;height:20px;padding:1px;flex-shrink:0;display:block;}
+.rv__stars-filled{display:flex;align-items:center;position:absolute;top:0;left:0;overflow:hidden;height:100%;}
+.rv__score-count{font-family:var(--font-body);font-size:14px;letter-spacing:.025em;color:#000;}
+.rv__rec{font-family:var(--font-mono);font-size:11px;font-weight:550;letter-spacing:1px;text-transform:uppercase;color:#000;margin-top:2px;}
+
+/* Distribution */
+.rv__dist{display:flex;flex-direction:column;gap:9px;}
+.rv__dist-row{display:flex;align-items:center;gap:10px;}
+.rv__dist-label{font-family:var(--font-mono);font-size:12px;letter-spacing:.5px;color:#000;width:38px;flex-shrink:0;display:flex;align-items:center;gap:3px;}
+.rv__dist-label svg{width:12px;height:12px;display:block;color:#000;}
+.rv__dist-track{flex:1;height:8px;background:#ededed;border-radius:2px;overflow:hidden;}
+.rv__dist-fill{height:100%;background:#000;border-radius:2px;}
+.rv__dist-pct{font-family:var(--font-mono);font-size:12px;letter-spacing:.5px;color:#000;width:34px;text-align:right;flex-shrink:0;}
+
+/* Review grid */
+.rv__grid{display:grid;grid-template-columns:1fr;gap:16px;}
+.rv__card{background:#fff;border:1px solid var(--color-border);border-radius:3px;padding:26px 24px;display:flex;flex-direction:column;}
+.rv__cstars{display:flex;align-items:center;gap:3px;margin-bottom:14px;color:#000;}
+.rv__cstars svg{width:14px;height:14px;flex-shrink:0;display:block;}
+.rv__cbody{font-family:var(--font-body);font-size:15px;line-height:1.6;color:#000;flex:1;}
+.rv__cfoot{border-top:1px solid #e8e8e8;padding-top:14px;margin-top:18px;display:flex;align-items:center;gap:9px;}
+.rv__swatch{width:22px;height:22px;border-radius:100%;border:1px solid var(--color-border);flex-shrink:0;}
+.rv__cmeta{display:flex;flex-direction:column;gap:3px;}
+.rv__cshade{font-family:var(--font-body);font-size:13px;font-weight:700;color:#000;}
+.rv__cverif{font-family:var(--font-mono);font-size:10px;font-weight:550;letter-spacing:1px;text-transform:uppercase;color:rgba(0,0,0,.5);}
+
+@media(min-width:768px){
+  .rv{padding:80px 32px;}
+  .rv__title{font-size:42px;}
+  .rv__summary{flex-direction:row;align-items:center;gap:56px;padding:40px 44px;}
+  .rv__score{flex:0 0 230px;border-right:1px solid #e0e0e0;padding-right:48px;}
+  .rv__dist{flex:1;}
+  .rv__grid{grid-template-columns:repeat(3,1fr);gap:20px;}
+}
+</style>
+</head>
+<body>
+<section class="rv">
+  <div class="rv__inner">
+    <p class="rv__eyebrow">Reviews</p>
+    <h2 class="rv__title">Real skin. Real finish. Read for yourself.</h2>
+
+    <div class="rv__summary">
+      <div class="rv__score">
+        <span class="rv__score-num">4.7</span>
+        <div class="rv__stars" aria-label="4.7 out of 5 stars">
+          <div class="rv__stars-outline">
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M9.38711 11.9007L12.0835 14.3853L11.8206 10.7253L15.4448 10.1683L12.4256 8.11108L14.2545 4.92967L10.7338 6.00159L9.38711 2.59757L8.04044 6.00159L4.5197 4.92967L6.34863 8.11108L3.32946 10.1683L6.9536 10.7253L6.69072 14.3853L9.38711 11.9007ZM5.56489 16.7222L5.93736 11.5359L0.787109 10.7443L5.07899 7.81986L2.48771 3.31213L7.476 4.83087L9.38711 0L11.2982 4.83087L16.2865 3.31213L13.6952 7.81986L17.9871 10.7443L12.8369 11.5359L13.2093 16.7222L9.38711 13.2L5.56489 16.7222Z" fill="currentColor"/></svg>
+          </div>
+          <div class="rv__stars-filled" style="width:94%;">
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 18 17" xmlns="http://www.w3.org/2000/svg"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          </div>
+        </div>
+        <span class="rv__score-count">Based on 457 reviews</span>
+        <span class="rv__rec">95% would recommend</span>
+      </div>
+
+      <div class="rv__dist">
+        <div class="rv__dist-row">
+          <span class="rv__dist-label">5<svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></span>
+          <span class="rv__dist-track"><span class="rv__dist-fill" style="width:81%"></span></span>
+          <span class="rv__dist-pct">81%</span>
+        </div>
+        <div class="rv__dist-row">
+          <span class="rv__dist-label">4<svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></span>
+          <span class="rv__dist-track"><span class="rv__dist-fill" style="width:11%"></span></span>
+          <span class="rv__dist-pct">11%</span>
+        </div>
+        <div class="rv__dist-row">
+          <span class="rv__dist-label">3<svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></span>
+          <span class="rv__dist-track"><span class="rv__dist-fill" style="width:5%"></span></span>
+          <span class="rv__dist-pct">5%</span>
+        </div>
+        <div class="rv__dist-row">
+          <span class="rv__dist-label">2<svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></span>
+          <span class="rv__dist-track"><span class="rv__dist-fill" style="width:2%"></span></span>
+          <span class="rv__dist-pct">2%</span>
+        </div>
+        <div class="rv__dist-row">
+          <span class="rv__dist-label">1<svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg></span>
+          <span class="rv__dist-track"><span class="rv__dist-fill" style="width:2%"></span></span>
+          <span class="rv__dist-pct">2%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rv__grid">
+      <article class="rv__card">
+        <div class="rv__cstars">
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+        </div>
+        <p class="rv__cbody">&ldquo;I liked that it was light weight coverage and didn&rsquo;t cake or sink into my wrinkles.&rdquo;</p>
+        <div class="rv__cfoot">
+          <span class="rv__swatch" style="background:#c08a5e;"></span>
+          <span class="rv__cmeta"><span class="rv__cshade">Shade: Warm Medium</span><span class="rv__cverif">Verified Buyer</span></span>
+        </div>
+      </article>
+
+      <article class="rv__card">
+        <div class="rv__cstars">
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+        </div>
+        <p class="rv__cbody">&ldquo;Buildable coverage without looking &lsquo;made up.&rsquo; Glides on smoothy, blends easily (brush recommended) and stays put all day. Doesn&rsquo;t settle into lines.&rdquo;</p>
+        <div class="rv__cfoot">
+          <span class="rv__swatch" style="background:#d3a279;"></span>
+          <span class="rv__cmeta"><span class="rv__cshade">Shade: Beige</span><span class="rv__cverif">Verified Buyer</span></span>
+        </div>
+      </article>
+
+      <article class="rv__card">
+        <div class="rv__cstars">
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 18 17"><path d="M5.36372 16.7222L5.73622 11.5359L0.585938 10.7443L4.87784 7.81986L2.2865 3.31213L7.27483 4.83087L9.18594 0L11.097 4.83087L16.0853 3.31213L13.4941 7.81986L17.7859 10.7443L12.6357 11.5359L13.0082 16.7222L9.18594 13.2L5.36372 16.7222Z" fill="currentColor"/></svg>
+        </div>
+        <p class="rv__cbody">&ldquo;The foundation that I&rsquo;ve always wanted. It&rsquo;s light coverage and it feels light. It just disappears into my skin rather than sitting on top. I have oily skin, so I do powder my forehead.&rdquo;</p>
+        <div class="rv__cfoot">
+          <span class="rv__swatch" style="background:#d0a07a;"></span>
+          <span class="rv__cmeta"><span class="rv__cshade">Shade: Neutral Beige</span><span class="rv__cverif">Verified Buyer</span></span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+</body>
+</html>

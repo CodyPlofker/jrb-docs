@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JETM Shade — v01 Inline grid + Help me match</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:520px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 4px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.5;}
+.shade-head{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 14px;gap:12px;}
+.shade-label{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:14px;}
+.shade-picked{font-family:'RingsideWideWeb',sans-serif;font-size:13px;text-align:right;}
+.shade-picked b{font-family:'ArticulatCF',sans-serif;font-weight:700;}
+.shade-picked.empty{color:#000;}
+.grid{display:grid;grid-template-columns:repeat(8,1fr);gap:12px 8px;}
+.swatch{appearance:none;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0;}
+.ring{width:30px;height:30px;border-radius:100%;border:1.5px solid #d4d4d4;display:flex;align-items:center;justify-content:center;transition:border-color .15s,box-shadow .15s;}
+.dot{width:24px;height:24px;border-radius:100%;}
+.swatch[aria-pressed="true"] .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.sname{font-family:'RingsideWideWeb',sans-serif;font-size:9px;line-height:1.1;text-align:center;letter-spacing:-.2px;}
+/* empty-state prompt that lives where the detail card will go */
+.detail{margin-top:18px;border:1px dashed #c9c9c9;border-radius:3px;padding:18px 16px;text-align:center;}
+.detail.chosen{border:1px solid #e6e6e6;border-style:solid;text-align:left;display:flex;gap:14px;align-items:center;}
+.detail .empty-t{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:14px;}
+.detail .empty-s{font-family:'RingsideWideWeb',sans-serif;font-size:12px;margin-top:5px;}
+.detail img{display:none;width:64px;height:64px;border-radius:3px;object-fit:cover;flex-shrink:0;}
+.detail.chosen img{display:block;}
+.detail.chosen .empty-block{display:none;}
+.detail .dwrap{display:none;}
+.detail.chosen .dwrap{display:block;}
+.detail .dname{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:15px;}
+.detail .ddesc{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.45;margin-top:3px;}
+.detail .ddesc::first-letter{text-transform:uppercase;}
+.atc{margin-top:16px;}
+.atc button{width:100%;appearance:none;border:none;border-radius:3px;cursor:pointer;height:46px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:13px;letter-spacing:.6px;background:#000;color:#fff;}
+.atc button:disabled{background:#e4e4e4;color:#8a8a8a;cursor:not-allowed;}
+.atc .pipe{opacity:.55;margin:0 8px;}
+/* fair-skin nudge */
+.fair{margin-top:16px;border:1px solid #000;border-radius:3px;padding:13px 16px;display:flex;gap:12px;align-items:center;cursor:pointer;background:#fff;width:100%;text-align:left;}
+.fair .fdot{width:30px;height:30px;border-radius:100%;border:1.5px solid #d4d4d4;flex-shrink:0;background:#f0d9bd;}
+.fair .ft{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;}
+.fair .fs{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.45;margin-top:3px;}
+.fair .farrow{margin-left:auto;font-family:'RingsideWideWeb',sans-serif;font-size:18px;}
+/* help me match */
+.match{margin-top:14px;border:1px solid #000;border-radius:3px;overflow:hidden;}
+.match-toggle{width:100%;background:#fff;border:none;cursor:pointer;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:13px;letter-spacing:.5px;min-height:48px;}
+.match-toggle .plus{font-family:'RingsideWideWeb',sans-serif;font-size:20px;line-height:1;transition:transform .2s;}
+.match.open .match-toggle .plus{transform:rotate(45deg);}
+.match-body{display:none;padding:0 16px 18px;border-top:1px solid #ededed;}
+.match.open .match-body{display:block;}
+.q{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;margin:16px 0 9px;}
+.opts{display:flex;gap:8px;flex-wrap:wrap;}
+.opt{appearance:none;border:1px solid #d4d4d4;background:#fff;border-radius:3px;cursor:pointer;padding:9px 14px;font-family:'RingsideWideWeb',sans-serif;font-size:13px;min-height:44px;}
+.opt[aria-pressed="true"]{border-color:#000;background:#000;color:#fff;}
+.result{display:none;margin-top:18px;background:#f8f8f8;border-radius:3px;padding:16px;align-items:center;gap:14px;}
+.result.show{display:flex;}
+.result img{width:64px;height:64px;border-radius:3px;object-fit:cover;flex-shrink:0;}
+.result .rlabel{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:11px;}
+.result .rname{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:18px;margin:2px 0 8px;}
+.result .rbtn{appearance:none;border:none;background:#000;color:#fff;border-radius:2px;cursor:pointer;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:12px;letter-spacing:.5px;padding:10px 16px;min-height:44px;}
+.note{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">16 shades · sheer coverage · no SPF</div>
+  <h2 class="headline">Pick your shade — it sheers out, so close still blends.</h2>
+  <p class="sub">Just Enough is a soft, natural finish — not full coverage. Tap a shade to see it on skin, or let us match you in two taps.</p>
+
+  <div class="shade-head">
+    <span class="shade-label">Shade</span>
+    <span class="shade-picked empty" id="picked">Select your shade</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="detail" id="detail">
+    <div class="empty-block">
+      <div class="empty-t">No shade selected yet</div>
+      <div class="empty-s">Choose a shade above to preview it on real skin — nothing's pre-picked for you.</div>
+    </div>
+    <img id="detail-img" src="" alt="">
+    <div class="dwrap">
+      <div class="dname" id="detail-name"></div>
+      <div class="ddesc" id="detail-desc"></div>
+    </div>
+  </div>
+
+  <div class="atc">
+    <button id="atc" disabled>Select a shade<span id="atc-extra"></span></button>
+  </div>
+
+  <button class="fair" id="fairBtn">
+    <span class="fdot"></span>
+    <span>
+      <span class="ft">Fairer than fair?</span>
+      <span class="fs">If the lightest tinted moisturizers usually run dark on you, start with Alabaster — our palest neutral.</span>
+    </span>
+    <span class="farrow">&rsaquo;</span>
+  </button>
+
+  <div class="match" id="match">
+    <button class="match-toggle" id="matchToggle" aria-expanded="false">
+      <span>Not sure? Help me match</span><span class="plus">+</span>
+    </button>
+    <div class="match-body">
+      <div class="q">1. Your undertone</div>
+      <div class="opts" data-group="under">
+        <button class="opt" data-val="cool">Cool / pink</button>
+        <button class="opt" data-val="neutral">Neutral</button>
+        <button class="opt" data-val="warm">Warm / golden</button>
+      </div>
+      <div class="q">2. Your depth</div>
+      <div class="opts" data-group="depth">
+        <button class="opt" data-val="fair">Fair</button>
+        <button class="opt" data-val="light">Light</button>
+        <button class="opt" data-val="medium">Medium</button>
+        <button class="opt" data-val="tan">Tan</button>
+        <button class="opt" data-val="deep">Deep</button>
+      </div>
+      <div class="result" id="result">
+        <img id="res-img" src="" alt="">
+        <div>
+          <div class="rlabel">Your starting point</div>
+          <div class="rname" id="res-name">&mdash;</div>
+          <button class="rbtn" id="res-btn">Select this shade</button>
+        </div>
+      </div>
+      <p class="note">A starting point, not a verdict &mdash; Just Enough is sheer, so most people land within one shade and a near-match still blends in.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const SHADES=[
+{n:"Alabaster",h:"#f0d9bd",d:"is the palest shade with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_alabaster_1.jpg?v=1741887001",u:"neutral",p:"fair"},
+{n:"Porcelain",h:"#f2cca1",d:"is fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_porcelain_1.jpg?v=1741887001",u:"neutral",p:"fair"},
+{n:"Fair",h:"#e9b08d",d:"is fair with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_fair_1.jpg?v=1741887001",u:"cool",p:"fair"},
+{n:"Ivory",h:"#d6a37f",d:"is fair to light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_ivory_1.jpg?v=1741887001",u:"warm",p:"light"},
+{n:"Light",h:"#d2a473",d:"is light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_light_1.jpg?v=1741887001",u:"warm",p:"light"},
+{n:"Beige",h:"#c89172",d:"is light to medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_beige_1.jpg?v=1741887002",u:"neutral",p:"light"},
+{n:"Medium",h:"#b97f51",d:"is medium with neutral warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_medium_1.jpg?v=1741887001",u:"neutral",p:"medium"},
+{n:"Medium Honey",h:"#ba7049",d:"is medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_mediumhoney_1.jpg?v=1741887001",u:"warm",p:"medium"},
+{n:"Honey",h:"#a65631",d:"is medium to tan with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_honey_1.jpg?v=1741887001",u:"warm",p:"tan"},
+{n:"Golden",h:"#894e30",d:"is tan with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_golden_1.jpg?v=1741887001",u:"warm",p:"tan"},
+{n:"Pecan",h:"#873a2a",d:"is tan to deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_pecan_1.jpg?v=1741887002",u:"neutral",p:"tan"},
+{n:"Almond",h:"#663624",d:"is deep with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_Almond_1.jpg?v=1741887001",u:"warm",p:"deep"},
+{n:"Cinnamon",h:"#792f22",d:"is deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_cinnamon_1.jpg?v=1741887002",u:"neutral",p:"deep"},
+{n:"Chestnut",h:"#62271f",d:"is deep with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_chestnut_1.jpg?v=1741887001",u:"cool",p:"deep"},
+{n:"Deep",h:"#49221b",d:"is very deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_deep_1.jpg?v=1741887001",u:"neutral",p:"deep"},
+{n:"Espresso",h:"#351a13",d:"is the deepest shade with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_espresso_1.jpg?v=1741887001",u:"neutral",p:"deep"}
+];
+const grid=document.getElementById('grid');
+let selected=-1;
+function W(u){return u+(u.includes('?')?'&':'?')+'width=800';}
+SHADES.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.className='swatch';b.setAttribute('aria-pressed','false');b.setAttribute('aria-label',s.n);
+  b.innerHTML=`<span class="ring"><span class="dot" style="background:${s.h}"></span></span><span class="sname">${s.n}</span>`;
+  b.onclick=()=>select(i);
+  grid.appendChild(b);
+});
+function select(i){
+  selected=i;const s=SHADES[i];
+  [...grid.children].forEach((c,j)=>c.setAttribute('aria-pressed',j===i));
+  const picked=document.getElementById('picked');
+  picked.classList.remove('empty');picked.innerHTML='Selected: <b>'+s.n+'</b>';
+  const d=document.getElementById('detail');d.classList.add('chosen');
+  document.getElementById('detail-img').src=W(s.img);
+  document.getElementById('detail-name').textContent=s.n;
+  document.getElementById('detail-desc').textContent=s.d;
+  const atc=document.getElementById('atc');atc.disabled=false;
+  atc.innerHTML='Add to cart — '+s.n+'<span class="pipe">|</span>$44';
+}
+// fair-skin entry
+document.getElementById('fairBtn').onclick=()=>{select(0);document.getElementById('detail').scrollIntoView({behavior:'smooth',block:'center'});};
+// help me match
+const match=document.getElementById('match');
+document.getElementById('matchToggle').onclick=()=>{const o=match.classList.toggle('open');document.getElementById('matchToggle').setAttribute('aria-expanded',o);};
+let pick={under:null,depth:null};
+document.querySelectorAll('.opts').forEach(g=>{
+  g.querySelectorAll('.opt').forEach(o=>{
+    o.onclick=()=>{
+      g.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-pressed','false'));
+      o.setAttribute('aria-pressed','true');
+      pick[g.dataset.group]=o.dataset.val;
+      recommend();
+    };
+  });
+});
+function recommend(){
+  if(!pick.under||!pick.depth)return;
+  let cands=SHADES.filter(s=>s.p===pick.depth);
+  if(!cands.length)cands=SHADES;
+  let best=cands.find(s=>s.u===pick.under)||cands[0];
+  const idx=SHADES.indexOf(best);
+  document.getElementById('res-img').src=W(best.img);
+  document.getElementById('res-name').textContent=best.n;
+  document.getElementById('result').classList.add('show');
+  document.getElementById('res-btn').onclick=()=>{select(idx);window.scrollTo({top:0,behavior:'smooth'});};
+}
+</script>
+</body>
+</html>

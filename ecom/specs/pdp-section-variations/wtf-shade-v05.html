@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WTF Shade — v05 Shade-on-skin swap</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:480px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 4px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;}
+.stage{position:relative;margin:20px 0 0;border-radius:3px;overflow:hidden;background:#f8f8f8;aspect-ratio:1/1;}
+.stage img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .25s ease;}
+.caption{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0));color:#fff;}
+.caption .cl{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:10px;opacity:.9;}
+.caption .cn{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:22px;line-height:1;margin-top:2px;}
+.caption .cd{font-family:'RingsideWideWeb',sans-serif;font-size:11px;margin-top:5px;opacity:.95;}
+.caption .cd::first-letter{text-transform:uppercase;}
+.onskin-tag{position:absolute;top:12px;left:12px;background:#fff;color:#000;font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:.5px;font-size:9px;padding:5px 9px;border-radius:2px;}
+.row{display:flex;justify-content:space-between;align-items:baseline;margin:20px 0 12px;}
+.row .lab{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:13px;}
+.row .count{font-family:'RingsideWideWeb',sans-serif;font-size:12px;}
+.strip{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;}
+.strip::-webkit-scrollbar{height:0;}
+.swatch{flex:0 0 auto;appearance:none;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0;scroll-snap-align:start;}
+.ring{width:38px;height:38px;border-radius:100%;border:1.5px solid #d4d4d4;display:flex;align-items:center;justify-content:center;transition:border-color .15s;}
+.dot{width:32px;height:32px;border-radius:100%;}
+.swatch[aria-pressed="true"] .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.sname{font-family:'RingsideWideWeb',sans-serif;font-size:9px;line-height:1.1;text-align:center;max-width:46px;}
+.scrollhint{font-family:'RingsideWideWeb',sans-serif;font-size:11px;text-align:center;margin-top:2px;}
+.note{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;margin-top:16px;border-top:1px solid #ededed;padding-top:14px;}
+.note b{font-family:'ArticulatCF',sans-serif;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">16 shades · seen on real skin</div>
+  <h2 class="headline">Tap a shade. See it on skin.</h2>
+  <p class="sub">Looks like skin, not makeup. The image swaps instantly — no quiz, no redirect.</p>
+
+  <div class="stage">
+    <span class="onskin-tag">On skin · no filter</span>
+    <img id="hero" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504&width=800" alt="What The Foundation in Porcelain on skin">
+    <div class="caption">
+      <div class="cl">What The Foundation</div>
+      <div class="cn" id="hero-name">Porcelain</div>
+      <div class="cd" id="hero-desc">is pale with neutral undertones</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <span class="lab">Shade</span>
+    <span class="count" id="counter">2 / 16</span>
+  </div>
+  <div class="strip" id="strip"></div>
+  <p class="scrollhint">Swipe to see all 16 &rarr;</p>
+
+  <p class="note"><b>Light-to-medium, buildable.</b> WTF sheers to meet your skin, so a near-match still blends. Match to your face and neck — not your hand.</p>
+</div>
+
+<script>
+const SHADES=[
+{n:"Alabaster",h:"#f0d9bd",d:"is pale with neutral pink undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_alabaster_1.jpg?v=1755118504"},
+{n:"Porcelain",h:"#f2cca1",d:"is pale with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_porcelain_1_cc.jpg?v=1755118504"},
+{n:"Fair",h:"#e9b08d",d:"is fair with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Fair_01_cc.jpg?v=1755118504"},
+{n:"Ivory",h:"#d6a37f",d:"is fair with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/ivory_PDP_1_cc.jpg?v=1755118504"},
+{n:"Light",h:"#d2a473",d:"is light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Light_cc.jpg?v=1755118504"},
+{n:"Beige",h:"#c89172",d:"is light to medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Beige_01_cc.jpg?v=1755118504"},
+{n:"Medium",h:"#b97f51",d:"is medium with neutral warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Medium_01_cc.jpg?v=1755118504"},
+{n:"Medium Honey",h:"#ba7049",d:"is medium to tan with neutral warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_MediumHoney_01_cc.jpg?v=1755118504"},
+{n:"Honey",h:"#a65631",d:"is medium to tan with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Honey_01_cc.jpg?v=1755118504"},
+{n:"Golden",h:"#894e30",d:"is tan with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_golden_1_cc.jpg?v=1755118505"},
+{n:"Pecan",h:"#873a2a",d:"is dark with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Pecan_01_cc.jpg?v=1755118504"},
+{n:"Almond",h:"#673524",d:"is dark with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/wtf_almond_1_cc.jpg?v=1755118505"},
+{n:"Cinnamon",h:"#792f22",d:"is dark with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Cinnamon_01_cc.jpg?v=1755118504"},
+{n:"Chestnut",h:"#62271f",d:"is dark to deep with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Chestnut_01.png?v=1755118504"},
+{n:"Deep",h:"#49221b",d:"is deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Deep_01.png?v=1755118504"},
+{n:"Espresso",h:"#351a13",d:"is very deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/WTF_Espresso_01.png?v=1755118504"}
+];
+function W(u){return u+(u.includes('?')?'&':'?')+'width=800';}
+const strip=document.getElementById('strip'),hero=document.getElementById('hero');
+let selected=1;
+SHADES.forEach((s,i)=>{
+  const b=document.createElement('button');b.className='swatch';b.setAttribute('aria-pressed',i===selected);
+  b.innerHTML=`<span class="ring"><span class="dot" style="background:${s.h}"></span></span><span class="sname">${s.n}</span>`;
+  b.onclick=()=>select(i);
+  strip.appendChild(b);
+});
+function select(i){
+  selected=i;const s=SHADES[i];
+  [...strip.children].forEach((c,j)=>c.setAttribute('aria-pressed',j===i));
+  hero.style.opacity='0';
+  setTimeout(()=>{
+    hero.src=W(s.img);hero.alt='What The Foundation in '+s.n+' on skin';
+    document.getElementById('hero-name').textContent=s.n;
+    document.getElementById('hero-desc').textContent=s.d;
+    hero.style.opacity='1';
+  },120);
+  document.getElementById('counter').textContent=(i+1)+' / 16';
+}
+</script>
+</body>
+</html>

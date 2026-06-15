@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mini Miracle Balm — Shade v02 (Depth-grouped tabs + on-skin thumbnails)</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;font-size:16px;color:#000;background:#fff;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:760px;margin:0 auto;padding:40px 20px 56px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:18px;}
+.title{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.15;letter-spacing:.5px;margin:8px 0 6px;text-wrap:balance;}
+.sub{font-family:'RingsideWideWeb';font-size:15px;line-height:1.5;max-width:50ch;}
+.tabs{display:flex;gap:0;margin:26px 0 4px;border-bottom:1px solid #d0d0d0;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tab{font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:13px;letter-spacing:.355px;color:#757575;background:none;border:none;border-bottom:2px solid transparent;padding:12px 14px;cursor:pointer;white-space:nowrap;min-height:44px;transition:color .4s cubic-bezier(.39,.575,.565,1);}
+.tab .ct{font-family:'RingsideWideWeb';font-size:11px;color:inherit;text-transform:none;letter-spacing:0;margin-left:5px;opacity:.75;}
+.tab.active{color:#000;border-bottom-color:#000;}
+.has-mouse .tab:not(.active):hover{color:#000;}
+.tabnote{font-family:'RingsideWideWeb';font-size:12px;line-height:1.4;margin:14px 0 18px;color:#000;}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 12px;}
+.card{background:none;border:none;padding:0;cursor:pointer;text-align:left;}
+.card__media{aspect-ratio:1/1;overflow:hidden;border-radius:3px;border:1px solid #ededed;position:relative;background:#f8f8f8;}
+.card__media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s cubic-bezier(.39,.575,.565,1);}
+.has-mouse .card:hover .card__media img{transform:scale(1.04);}
+.card.is-active .card__media{border-color:#000;box-shadow:0 0 0 1px #000 inset;}
+.card__check{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:100%;background:#000;display:none;align-items:center;justify-content:center;}
+.card.is-active .card__check{display:flex;}
+.card__check svg{width:10px;height:10px;}
+.card__name{font-family:'GeogrotesqueCondBoldWeb';text-transform:uppercase;font-size:14px;letter-spacing:.6px;margin-top:9px;line-height:1.1;}
+.card__desc{font-family:'RingsideWideWeb';font-size:11px;line-height:1.35;margin-top:4px;color:#000;}
+.empty{font-family:'RingsideWideWeb';font-size:13px;color:#000;padding:24px 0;grid-column:1/-1;}
+.foot{margin-top:28px;padding-top:20px;border-top:1px solid #ededed;display:flex;align-items:center;gap:14px;}
+.foot__img{width:54px;height:54px;border-radius:3px;overflow:hidden;flex:0 0 54px;}
+.foot__img img{width:100%;height:100%;object-fit:cover;display:block;}
+.foot__meta{flex:1;min-width:0;}
+.foot__label{font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:10px;letter-spacing:.4px;}
+.foot__name{font-family:'GeogrotesqueCondBoldWeb';text-transform:uppercase;font-size:20px;letter-spacing:1.18px;margin-top:2px;}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;height:44px;margin-top:18px;background:#000;color:#fff;border:1px solid #000;border-radius:3px;font-family:'BaseMonoWideWeb';text-transform:uppercase;font-size:13px;letter-spacing:.4px;cursor:pointer;transition:all .4s cubic-bezier(.39,.575,.565,1);}
+.btn__price{padding-left:14px;margin-left:14px;border-left:1px solid rgba(255,255,255,.45);}
+.has-mouse .btn:hover{background:#fff;color:#000;border-color:#d0d0d0;}
+.has-mouse .btn:hover .btn__price{border-left-color:#d0d0d0;}
+.reassure{font-family:'RingsideWideWeb';font-size:12px;line-height:1.4;text-align:center;margin-top:12px;}
+@media (max-width:560px){.cards{grid-template-columns:repeat(2,1fr);}.title{font-size:26px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Find your color family</p>
+  <h2 class="title">Browse by depth — then see it on real skin.</h2>
+  <p class="sub">Mini Miracle Balm comes in 15 color families. Pick the depth closest to yours and every shade below is shown tapped on skin, not in the tin — because the jar never tells the truth.</p>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-d="all">All <span class="ct">15</span></button>
+    <button class="tab" data-d="fair">Fair <span class="ct">3</span></button>
+    <button class="tab" data-d="light">Light <span class="ct">4</span></button>
+    <button class="tab" data-d="medium">Medium <span class="ct">5</span></button>
+    <button class="tab" data-d="deep">Deep <span class="ct">3</span></button>
+  </div>
+  <p class="tabnote" id="tabnote">All 15 color families, lightest to deepest. Every shade is sheer — depth is a starting point, not a rule.</p>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="foot">
+    <div class="foot__img"><img id="fImg" src="https://cdn.shopify.com/s/files/1/0424/9527/9254/files/new_minimb_aunaturel_a8d161e5-c4f2-4e68-93ef-ffa9f280dd6e.jpg?v=1747424591&width=300" alt="Au Naturel on skin"></div>
+    <div class="foot__meta">
+      <div class="foot__label">Selected</div>
+      <div class="foot__name" id="fName">Au Naturel</div>
+    </div>
+  </div>
+  <button class="btn">Add to bag <span class="btn__price">$20</span></button>
+  <p class="reassure">Trial size — try your color, then size up. A little goes a long way.</p>
+</div>
+
+<script>
+const CDN='https://cdn.shopify.com/s/files/1/0424/9527/9254/files/';
+const shades=[
+ {n:'Au Naturel',d:'fair',img:'new_minimb_aunaturel_a8d161e5-c4f2-4e68-93ef-ffa9f280dd6e.jpg?v=1747424591',desc:'Barely-there nude wash.',o:0},
+ {n:'Golden Hour',d:'light',img:'new_mini_goldenhour_1_a4a70d12-0c07-4760-b0f4-dd9176f572b2.jpg?v=1747424591',desc:'Golden champagne highlight.',o:1},
+ {n:'Dusty Rose',d:'light',img:'new_mini_dustyrose_1_d467d24b-4cec-4785-a43b-1144b3b6a675.jpg?v=1747424591',desc:'Soft muted-rose tint.',o:2},
+ {n:'Happy Hour',d:'light',img:'new_mini_happyhour_1_7e3cc716-c386-48bb-9b1c-5de5f9663592.jpg?v=1747424592',desc:'Warm peachy-coral flush.',o:3},
+ {n:'Flushed',d:'medium',img:'new_mini_flushed_1_45783b62-782a-4f07-9666-4ccf059f2296.jpg?v=1747424591',desc:'True pink-rose flush.',o:4},
+ {n:'Pinched Cheeks',d:'medium',img:'new_mini_pinchedcheeks_1_7f17fa28-a51e-441c-b1f1-bc3d59feb101.jpg?v=1747424592',desc:'Rosy berry-pink.',o:5},
+ {n:'Miami Beach',d:'medium',img:'new_mini_miamibeach_1_cdee9bce-f2a0-4182-b08b-7d3e6462986a.jpg?v=1747424592',desc:'Warm coral glow.',o:6},
+ {n:'Magic Hour',d:'medium',img:'new_mini_magichour_1_144f9e8f-0cf6-499f-b0ea-b5fcb370de54.jpg?v=1747424591',desc:'Warm peach-bronze.',o:7},
+ {n:'Chic',d:'medium',img:'mini_chic_1.jpg?v=1747424592',desc:'Neutral rosy-brown.',o:8},
+ {n:'Pinky Bronze',d:'medium',img:'new_mini_pinkybronze_1_fd1f07cf-a70c-4501-82c3-35d305be45b7.jpg?v=1747424592',desc:'Pink-leaning bronze.',o:9},
+ {n:'Cheeky',d:'fair',img:'Mini_MB_PDP_cheeky_1.jpg?v=1772222459',desc:'Rosy mauve-pink flush.',o:10},
+ {n:'Sunkissed',d:'medium',img:'new_mini_sunkissed_1_6c2511c1-de64-4e82-bc42-4cb7085084c3.jpg?v=1747424591',desc:'Warm bronzed glow.',o:11},
+ {n:'Tawny',d:'deep',img:'new_mini_tawny_1_f07266e6-a68a-463f-a4dc-a397878214bb.jpg?v=1747424591',desc:'Warm tawny-brown.',o:12},
+ {n:'Bronze',d:'deep',img:'new_mini_bronze_1_8850b6b1-d388-4250-9766-0cda75b13901.jpg?v=1747424591',desc:'True sun-warmed bronze.',o:13},
+ {n:'Cocoa Bronze',d:'deep',img:'new_mini_cocoabronze_1_73372527-bd9d-419e-95bc-9ce43f615da2.jpg?v=1747424592',desc:'Rich cocoa-bronze.',o:14}
+];
+const notes={
+ all:'All 15 color families, lightest to deepest. Every shade is sheer — depth is a starting point, not a rule.',
+ fair:'Soft, low-contrast washes that sit naturally on fair skin without going chalky.',
+ light:'Warm and rosy tints that read fresh and lit-from-within on light skin.',
+ medium:'Our widest band — rosy flushes through warm glows for medium skin.',
+ deep:'Rich, warm bronzes built to actually show up on deep skin.'
+};
+const CHECK='<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 6.2L4.6 9L10 2.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+let activeOrder=0;
+const cards=document.getElementById('cards');
+function render(filter){
+  cards.innerHTML='';
+  const list=shades.filter(s=>filter==='all'||s.d===filter).sort((a,b)=>a.o-b.o);
+  if(!list.length){cards.innerHTML='<p class="empty">No shades in this group.</p>';return;}
+  list.forEach(s=>{
+    const c=document.createElement('button');
+    c.className='card'+(s.o===activeOrder?' is-active':'');
+    c.innerHTML=`<div class="card__media"><img src="${CDN+s.img}&width=400" alt="${s.n} on skin"><span class="card__check">${CHECK}</span></div><div class="card__name">${s.n}</div><div class="card__desc">${s.desc}</div>`;
+    c.addEventListener('click',()=>{activeOrder=s.o;render(filter);setFoot(s);});
+    cards.appendChild(c);
+  });
+}
+function setFoot(s){
+  document.getElementById('fImg').src=CDN+s.img+'&width=300';
+  document.getElementById('fImg').alt=s.n+' on skin';
+  document.getElementById('fName').textContent=s.n;
+}
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tabnote').textContent=notes[t.dataset.d];
+    render(t.dataset.d);
+  });
+});
+render('all');
+document.addEventListener('mousemove',function add(){document.body.classList.add('has-mouse');document.removeEventListener('mousemove',add);});
+</script>
+</body>
+</html>

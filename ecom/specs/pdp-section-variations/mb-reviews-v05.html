@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miracle Balm Reviews — v05 Concern-filtered review grid</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;color:#000;background:#fff;-webkit-font-smoothing:antialiased;line-height:1.5;}
+.wrap{max-width:1080px;margin:0 auto;padding:48px 20px 64px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;text-align:center;margin-bottom:10px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:32px;text-align:center;text-wrap:balance;margin-bottom:6px;line-height:1.14;}
+.scoreline{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:26px;}
+.scoreline .st{font-size:16px;letter-spacing:2px;color:#000;}
+.scoreline .ct{font-family:'RingsideWideWeb';font-size:14px;}
+/* chips */
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-bottom:28px;}
+.chip{appearance:none;cursor:pointer;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:11px;padding:9px 15px;border:1px solid #d4d4d4;border-radius:3px;background:#fff;color:#000;line-height:1;min-height:36px;}
+.chip[aria-pressed="true"]{background:#000;color:#fff;border-color:#000;}
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.card{border:1px solid #e3e3e3;border-radius:3px;padding:18px 18px 20px;display:flex;flex-direction:column;gap:9px;background:#fff;}
+.card.hide{display:none;}
+.card__top{display:flex;align-items:center;justify-content:space-between;}
+.card__stars{font-size:14px;letter-spacing:1.5px;color:#000;}
+.card__tag{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.3px;font-size:9.5px;opacity:.6;}
+.card__quote{font-family:'RingsideWideWeb';font-size:14px;line-height:1.55;flex:1;}
+.card__name{font-family:'ArticulatCF';font-weight:600;letter-spacing:.3px;font-size:12.5px;padding-top:11px;border-top:1px solid #ededed;}
+.empty{display:none;text-align:center;font-family:'RingsideWideWeb';font-size:14px;padding:30px 0;}
+.btn{display:block;width:100%;max-width:340px;margin:36px auto 0;text-align:center;background:#000;color:#fff;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.5px;font-size:13px;padding:14px;border-radius:3px;text-decoration:none;}
+@media(max-width:740px){
+.wrap{padding:36px 16px 48px;}
+.headline{font-size:25px;}
+.grid{grid-template-columns:1fr;gap:14px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Real reviews, filtered for you</div>
+  <h2 class="headline">What does it actually do?</h2>
+  <div class="scoreline"><span class="st" aria-label="4.23 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span><span class="ct">85,059 reviews &middot; 4.23&#9733;</span></div>
+
+  <div class="chips" role="group" aria-label="Filter reviews">
+    <button class="chip" data-filter="all" aria-pressed="true">All</button>
+    <button class="chip" data-filter="natural" aria-pressed="false">Natural finish</button>
+    <button class="chip" data-filter="notheavy" aria-pressed="false">Not heavy / greasy</button>
+    <button class="chip" data-filter="littlegoes" aria-pressed="false">A little goes far</button>
+    <button class="chip" data-filter="dryskin" aria-pressed="false">Dry / fine lines</button>
+    <button class="chip" data-filter="easy" aria-pressed="false">Easy to apply</button>
+  </div>
+
+  <div class="grid" id="grid">
+    <div class="card" data-tags="natural easy">
+      <div class="card__top"><div class="card__stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><span class="card__tag">Natural finish</span></div>
+      <p class="card__quote">&ldquo;So natural looking and really provides a nice blush without looking overdone. So easy to put on, even for a non-makeup artist!&rdquo;</p>
+      <span class="card__name">Charlene L.</span>
+    </div>
+    <div class="card" data-tags="notheavy dryskin">
+      <div class="card__top"><div class="card__stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><span class="card__tag">Not heavy</span></div>
+      <p class="card__quote">&ldquo;I love this product. It&rsquo;s light and smooth and evens out my skin tone with no thick heaviness.&rdquo;</p>
+      <span class="card__name">Randi B.</span>
+    </div>
+    <div class="card" data-tags="natural">
+      <div class="card__top"><div class="card__stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><span class="card__tag">Healthy glow</span></div>
+      <p class="card__quote">&ldquo;I&rsquo;ve been using Miracle Balm for some time now. Love the healthy glow it brings.&rdquo;</p>
+      <span class="card__name">Ann M.</span>
+    </div>
+    <div class="card" data-tags="littlegoes natural">
+      <div class="card__top"><div class="card__stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><span class="card__tag">A little goes far</span></div>
+      <p class="card__quote">&ldquo;Anywhere I want a little bit of glow&hellip; you get a very large amount of product and you don&rsquo;t need very much. A great value for a high quality product.&rdquo;</p>
+      <span class="card__name">Monica L.</span>
+    </div>
+    <div class="card" data-tags="littlegoes dryskin easy">
+      <div class="card__top"><div class="card__stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><span class="card__tag">Multi-use</span></div>
+      <p class="card__quote">&ldquo;I really love Au Naturel. I apply the tiniest amount under my foundation as a base, use it on my lips, mix it with other shades&hellip; I use it every single day.&rdquo;</p>
+      <span class="card__name">Laurie R.</span>
+    </div>
+    <div class="card" data-tags="natural">
+      <div class="card__top"><div class="card__stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><span class="card__tag">Long-time favorite</span></div>
+      <p class="card__quote">&ldquo;After years of spending a ton of money on blushes and foundations, Jones Road products are superb. Dusty Rose on my cheeks&hellip; the best!&rdquo;</p>
+      <span class="card__name">Gail E.</span>
+    </div>
+  </div>
+  <p class="empty" id="empty">No reviews match that filter yet.</p>
+
+  <a class="btn" href="#">Read all 85,059 reviews</a>
+</div>
+<script>
+(function(){
+  var chips=document.querySelectorAll('.chip');
+  var cards=document.querySelectorAll('.card');
+  var empty=document.getElementById('empty');
+  chips.forEach(function(chip){
+    chip.addEventListener('click',function(){
+      chips.forEach(function(c){c.setAttribute('aria-pressed','false');});
+      chip.setAttribute('aria-pressed','true');
+      var f=chip.getAttribute('data-filter');
+      var shown=0;
+      cards.forEach(function(card){
+        var match=(f==='all')||card.getAttribute('data-tags').split(' ').indexOf(f)>-1;
+        card.classList.toggle('hide',!match);
+        if(match)shown++;
+      });
+      empty.style.display=shown?'none':'block';
+    });
+  });
+})();
+</script>
+</body>
+</html>

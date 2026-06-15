@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WTF Reviews — v03 Stats callout + manual carousel</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'RingsideWideWeb',Helvetica,Arial,sans-serif;color:#000;background:#fff;-webkit-font-smoothing:antialiased;line-height:1.5;}
+.wrap{max-width:1000px;margin:0 auto;padding:48px 20px 64px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;text-align:center;margin-bottom:10px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:33px;text-align:center;text-wrap:balance;margin-bottom:36px;line-height:1.12;}
+/* stats callout */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #e3e3e3;border-radius:3px;overflow:hidden;margin-bottom:44px;}
+.stat{text-align:center;padding:30px 16px;border-right:1px solid #e3e3e3;}
+.stat:last-child{border-right:none;}
+.stat__num{font-family:'Canela',serif;font-weight:300;font-size:46px;line-height:1;}
+.stat__num .star{font-size:30px;}
+.stat__lbl{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:11px;margin-top:10px;}
+/* manual carousel */
+.carwrap{position:relative;background:#f8f8f8;border:1px solid #e3e3e3;border-radius:3px;overflow:hidden;}
+.viewport{overflow:hidden;}
+.cartrack{display:flex;transition:transform .4s ease;}
+.slide{min-width:100%;padding:44px 56px 40px;text-align:center;}
+.slide__stars{color:#000;font-size:18px;letter-spacing:2px;margin-bottom:18px;}
+.slide__quote{font-family:'Canela',serif;font-weight:300;font-size:25px;line-height:1.36;text-wrap:pretty;max-width:680px;margin:0 auto 18px;}
+.slide__meta{font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;letter-spacing:.4px;font-size:11px;display:inline-flex;align-items:center;gap:8px;}
+.verified{display:inline-flex;align-items:center;gap:4px;}
+.verified svg{width:12px;height:12px;}
+.nav{display:flex;align-items:center;justify-content:center;gap:18px;padding:0 0 26px;}
+.arrow{width:44px;height:44px;border:1px solid #cfcfcf;background:#fff;border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.arrow:hover{border-color:#000;}
+.arrow svg{width:18px;height:18px;stroke:#000;}
+.dots{display:flex;gap:8px;}
+.cdot{width:8px;height:8px;border-radius:100%;background:#cfcfcf;border:none;padding:0;cursor:pointer;}
+.cdot.is-active{background:#000;}
+@media(max-width:740px){
+.wrap{padding:36px 16px 48px;}
+.headline{font-size:25px;}
+.stats{grid-template-columns:1fr;}
+.stat{border-right:none;border-bottom:1px solid #e3e3e3;}
+.stat:last-child{border-bottom:none;}
+.slide{padding:34px 20px 30px;}
+.slide__quote{font-size:20px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">The numbers</div>
+  <h2 class="headline">Loved by more than fifty thousand people.</h2>
+
+  <div class="stats">
+    <div class="stat"><div class="stat__num">53,381</div><div class="stat__lbl">Verified reviews</div></div>
+    <div class="stat"><div class="stat__num">4.5<span class="star">&#9733;</span></div><div class="stat__lbl">Average rating</div></div>
+    <div class="stat"><div class="stat__num">90%</div><div class="stat__lbl">Would recommend</div></div>
+  </div>
+
+  <div class="carwrap">
+    <div class="viewport">
+      <div class="cartrack" id="track">
+        <div class="slide">
+          <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="slide__quote">&ldquo;I&rsquo;ve been searching for the perfect &lsquo;no makeup&rsquo; makeup look &mdash; something that doesn&rsquo;t even look like you&rsquo;re wearing foundation &mdash; and this is exactly what I wanted.&rdquo;</p>
+          <span class="slide__meta">Shade: Fair <span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></span>
+        </div>
+        <div class="slide">
+          <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="slide__quote">&ldquo;It&rsquo;s like a foundation and moisturizer all in one! It doesn&rsquo;t settle in wrinkles and looks super natural and dewy &mdash; and the color is a perfect match.&rdquo;</p>
+          <span class="slide__meta">Shade: Beige <span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></span>
+        </div>
+        <div class="slide">
+          <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="slide__quote">&ldquo;This foundation has just enough coverage. It looks so natural. I love how moisturizing it is. It&rsquo;s now my go-to.&rdquo;</p>
+          <span class="slide__meta">Shade: Porcelain <span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></span>
+        </div>
+        <div class="slide">
+          <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="slide__quote">&ldquo;Of all the JR products, this is my favorite! I love the feel of it and the way it completely levels out the complexion.&rdquo;</p>
+          <span class="slide__meta">Shade: Honey <span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Verified</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="arrow" id="prev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
+      <div class="dots" id="dots"></div>
+      <button class="arrow" id="next" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var track=document.getElementById('track');
+  var slides=track.children.length;
+  var i=0;
+  var dots=document.getElementById('dots');
+  for(var d=0;d<slides;d++){var b=document.createElement('button');b.className='cdot'+(d===0?' is-active':'');b.setAttribute('aria-label','Go to review '+(d+1));(function(idx){b.onclick=function(){i=idx;upd();};})(d);dots.appendChild(b);}
+  function upd(){track.style.transform='translateX(-'+(i*100)+'%)';var cd=dots.children;for(var k=0;k<cd.length;k++){cd[k].classList.toggle('is-active',k===i);}}
+  document.getElementById('next').onclick=function(){i=(i+1)%slides;upd();};
+  document.getElementById('prev').onclick=function(){i=(i-1+slides)%slides;upd();};
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FS Shade — v04 Compare two shades</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:520px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 4px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.5;}
+/* compare stage */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;}
+.slot{border:1px solid #e6e6e6;border-radius:3px;overflow:hidden;position:relative;cursor:pointer;}
+.slot.active{border-color:#000;box-shadow:0 0 0 1px #000;}
+.slot .slabel{position:absolute;top:8px;left:8px;font-family:'GeogrotesqueCondBoldWeb',sans-serif;font-size:10px;letter-spacing:.8px;background:#000;color:#fff;padding:3px 7px;border-radius:2px;z-index:2;}
+.slot .editing{position:absolute;top:8px;right:8px;font-family:'BaseMonoWideWeb',monospace;font-size:8.5px;letter-spacing:.4px;background:#fff;border:1px solid #000;padding:3px 6px;border-radius:2px;z-index:2;display:none;}
+.slot.active .editing{display:block;}
+.slot .pic{aspect-ratio:1/1;background:#f8f8f8;}
+.slot .pic img{width:100%;height:100%;object-fit:cover;display:block;}
+.slot .empty{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;background:#f8f8f8;}
+.slot .empty span{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.35;}
+.slot .smeta{padding:10px 11px 12px;display:flex;align-items:center;gap:8px;}
+.slot .sdot{width:22px;height:22px;border-radius:100%;border:1.5px solid #000;flex-shrink:0;}
+.slot .sn{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:12px;line-height:1.1;}
+.slot .su{font-family:'RingsideWideWeb',sans-serif;font-size:10px;}
+.swapnote{text-align:center;font-family:'BaseMonoWideWeb',monospace;font-size:10px;letter-spacing:.5px;text-transform:uppercase;margin:12px 0 4px;}
+/* between-two note */
+.between{margin-top:6px;border:1px solid #000;border-radius:3px;padding:13px 15px;}
+.between .bt{font-family:'ArticulatCF',sans-serif;font-weight:700;font-size:13px;letter-spacing:.3px;margin-bottom:6px;}
+.between .bb{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;}
+.between .bb b{font-family:'ArticulatCF',sans-serif;font-weight:700;}
+/* picker grid */
+.ghead{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 12px;}
+.glabel{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:14px;}
+.gtarget{font-family:'RingsideWideWeb',sans-serif;font-size:12px;}
+.gtarget b{font-family:'ArticulatCF',sans-serif;font-weight:700;}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px 6px;}
+.swatch{appearance:none;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0;min-height:44px;}
+.ring{width:30px;height:30px;border-radius:100%;border:1.5px solid #d4d4d4;display:flex;align-items:center;justify-content:center;transition:border-color .15s,box-shadow .15s;}
+.dot{width:25px;height:25px;border-radius:100%;}
+.swatch.inA .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.swatch.inB .ring{border-color:#000;box-shadow:0 0 0 1px #000;}
+.sname{font-family:'RingsideWideWeb',sans-serif;font-size:8.5px;line-height:1.1;text-align:center;letter-spacing:-.2px;}
+.atcrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;}
+.atcrow button{appearance:none;border:none;border-radius:3px;cursor:pointer;height:46px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:11px;letter-spacing:.4px;background:#000;color:#fff;padding:0 6px;}
+.atcrow button:disabled{background:#e4e4e4;color:#8a8a8a;cursor:not-allowed;}
+.note{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">30 shades · medium-to-full, buildable</div>
+  <h2 class="headline">Torn between two? Compare them.</h2>
+  <p class="sub">Tap a slot, then pick a shade to load it. See both side by side before you commit. Natural skin finish, built for on-the-go.</p>
+
+  <div class="compare">
+    <div class="slot active" id="slotA" data-slot="A">
+      <span class="slabel">A</span><span class="editing">Choosing…</span>
+      <div class="body" id="bodyA"><div class="empty"><span>Tap a shade below to fill slot A</span></div></div>
+    </div>
+    <div class="slot" id="slotB" data-slot="B">
+      <span class="slabel">B</span><span class="editing">Choosing…</span>
+      <div class="body" id="bodyB"><div class="empty"><span>Then switch to B and pick again</span></div></div>
+    </div>
+  </div>
+  <div class="swapnote" id="swapnote">Filling slot A — pick a shade</div>
+
+  <div class="between">
+    <div class="bt">Between two shades? Here's how to pick.</div>
+    <div class="bb">Go with the <b>warmer or deeper</b> of the two if you're often in the sun or wear bronzer — it reads more natural than going too light. The formula is buildable and sheers out, so the lighter pick still works for low days. When in doubt, match your <b>jaw, not your hand.</b></div>
+  </div>
+
+  <div class="ghead">
+    <span class="glabel">Shade</span>
+    <span class="gtarget" id="gtarget">Loading into <b>A</b></span>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <div class="atcrow">
+    <button id="atcA" disabled>Add A</button>
+    <button id="atcB" disabled>Add B</button>
+  </div>
+  <p class="note">Most people land within one shade of their pick — a near-match still blends in.</p>
+</div>
+
+<script>
+const SHADES=[
+{n:"Pale Alabaster",h:"#f1ddc6",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_1.jpg?v=1777924896"},
+{n:"Alabaster",h:"#efd6bd",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_10.jpg?v=1777925395"},
+{n:"Bisque",h:"#eccdb0",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_19.jpg?v=1777991567"},
+{n:"Linen",h:"#ecd0b8",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_28.jpg?v=1777991768"},
+{n:"Warm Linen",h:"#e8c6a6",g:"fair",u:"warm",d:"Fair with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_29.jpg?v=1777991792"},
+{n:"Porcelain",h:"#e6c3a6",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_55.jpg?v=1777991814"},
+{n:"Fair",h:"#e3bda0",g:"fair",u:"cool",d:"Fair with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_56.jpg?v=1778074299"},
+{n:"Neutral Fair",h:"#e2bb9d",g:"fair",u:"neutral",d:"Fair with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_55_1.jpg?v=1778074281"},
+{n:"Ivory",h:"#ddb293",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_57.jpg?v=1778074322"},
+{n:"Light",h:"#d8ab8a",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_82.jpg?v=1778074341"},
+{n:"Sand",h:"#d6a988",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_83.jpg?v=1778074361"},
+{n:"Beige",h:"#cf9f7f",g:"light",u:"neutral",d:"Light with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_84.jpg?v=1778074380"},
+{n:"Warm Beige",h:"#cb9876",g:"light",u:"warm",d:"Light with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_109.jpg?v=1778074399"},
+{n:"Neutral Beige",h:"#c69273",g:"light",u:"neutral",d:"Light with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_110.jpg?v=1778074448"},
+{n:"Medium",h:"#bd8868",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_111.jpg?v=1778074466"},
+{n:"Warm Medium",h:"#b8825f",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_136.jpg?v=1778074517"},
+{n:"Neutral Medium",h:"#b27c5b",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_141.jpg?v=1778074535"},
+{n:"Neutral Honey",h:"#a9714f",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_146_2.jpg?v=1778074627"},
+{n:"Medium Honey",h:"#a36a48",g:"medium",u:"neutral",d:"Medium with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_137.jpg?v=1778074645"},
+{n:"Honey",h:"#9b6242",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_142.jpg?v=1778074662"},
+{n:"Warm Honey",h:"#94592f",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_147_1.jpg?v=1778075035"},
+{n:"Golden",h:"#8a5430",g:"medium",u:"warm",d:"Medium with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_138.jpg?v=1778075124"},
+{n:"Hazelnut",h:"#7c4a30",g:"deep",u:"warm",d:"Deep with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_143.jpg?v=1778075141"},
+{n:"Pecan",h:"#724229",g:"deep",u:"neutral",d:"Deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_139.jpg?v=1778075176"},
+{n:"Almond",h:"#693c27",g:"deep",u:"warm",d:"Deep with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_139_1.jpg?v=1778075205"},
+{n:"Walnut",h:"#5e3623",g:"deep",u:"warm",d:"Deep with warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_144_1.jpg?v=1778075345"},
+{n:"Cinnamon",h:"#552f20",g:"deep",u:"cool",d:"Deep with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_149.jpg?v=1778075361"},
+{n:"Chestnut",h:"#4b2a1e",g:"deep",u:"cool",d:"Deep with cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_140.jpg?v=1778075377"},
+{n:"Deep",h:"#3f231a",g:"deep",u:"neutral",d:"Deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_145.jpg?v=1778075391"},
+{n:"Espresso",h:"#321b14",g:"deep",u:"neutral",d:"Deep with neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/FS_-_PDP_-_150.jpg?v=1778075404"}
+];
+function W(u){return u+(u.includes('?')?'&':'?')+'width=300';}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+const grid=document.getElementById('grid');
+let target='A',slots={A:null,B:null};
+SHADES.forEach((s,i)=>{
+  const b=document.createElement('button');b.className='swatch';b.dataset.i=i;b.setAttribute('aria-label',s.n);
+  b.innerHTML=`<span class="ring"><span class="dot" style="background:${s.h}"></span></span><span class="sname">${s.n}</span>`;
+  b.onclick=()=>loadShade(i);
+  grid.appendChild(b);
+});
+document.getElementById('slotA').onclick=()=>setTarget('A');
+document.getElementById('slotB').onclick=()=>setTarget('B');
+function setTarget(t){
+  target=t;
+  document.getElementById('slotA').classList.toggle('active',t==='A');
+  document.getElementById('slotB').classList.toggle('active',t==='B');
+  document.getElementById('gtarget').innerHTML='Loading into <b>'+t+'</b>';
+  document.getElementById('swapnote').textContent='Filling slot '+t+' — pick a shade';
+}
+function loadShade(i){
+  slots[target]=i;
+  renderSlot(target);
+  paintGrid();
+  // auto-advance to B after first A pick for a natural compare flow
+  if(target==='A'&&slots.B===null){setTarget('B');}
+  else{document.getElementById('swapnote').textContent='Tap slot A or B to change it';}
+}
+function renderSlot(t){
+  const i=slots[t];const s=SHADES[i];
+  document.getElementById('body'+t).innerHTML=
+    `<div class="pic"><img src="${W(s.img)}" alt="${s.n} Foundation Stick"></div>`+
+    `<div class="smeta"><span class="sdot" style="background:${s.h}"></span><span><span class="sn">${s.n}</span><br><span class="su">${cap(s.u)} · ${cap(s.g)}</span></span></div>`;
+  const btn=document.getElementById('atc'+t);btn.disabled=false;btn.textContent='Add '+t+' · '+s.n;
+}
+function paintGrid(){
+  [...grid.children].forEach((c,i)=>{
+    c.classList.toggle('inA',slots.A===i);
+    c.classList.toggle('inB',slots.B===i);
+  });
+}
+setTarget('A');
+</script>
+</body>
+</html>

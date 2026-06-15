@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JETM Shade — v02 Depth-grouped tabs</title>
+<style>
+@font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300;font-display:swap;}
+@font-face{font-family:'RingsideWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'BaseMonoWideWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype');font-weight:400;font-display:swap;}
+@font-face{font-family:'GeogrotesqueCondBoldWeb';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
+@font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Bold.otf') format('opentype');font-weight:700;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#fff;color:#000;font-family:'RingsideWideWeb',sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5;}
+.wrap{max-width:520px;margin:0 auto;padding:32px 20px 48px;}
+.eyebrow{font-family:'GeogrotesqueCondBoldWeb',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:12px;}
+.headline{font-family:'Canela',serif;font-weight:300;font-size:30px;line-height:1.1;text-wrap:balance;margin:8px 0 4px;}
+.sub{font-family:'RingsideWideWeb',sans-serif;font-size:13px;line-height:1.5;}
+.selbar{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 12px;}
+.selbar .lab{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:14px;}
+.selbar .pick{font-family:'RingsideWideWeb',sans-serif;font-size:13px;}
+.selbar .pick b{font-family:'ArticulatCF',sans-serif;font-weight:700;}
+.selbar .pick.empty{color:#000;}
+/* tabs */
+.tabs{display:flex;gap:6px;border-bottom:1px solid #e4e4e4;margin-bottom:4px;}
+.tab{flex:1;appearance:none;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;padding:11px 4px 9px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:11px;letter-spacing:.4px;color:#000;min-height:44px;}
+.tab[aria-selected="true"]{border-bottom-color:#000;}
+.tab small{display:block;font-family:'RingsideWideWeb',sans-serif;text-transform:none;letter-spacing:0;font-size:10px;margin-top:2px;}
+/* fair-skin callout shown only on Fair tab */
+.fairnote{display:none;margin:14px 0 4px;border:1px solid #000;border-radius:3px;padding:11px 14px;}
+.fairnote.show{display:block;}
+.fairnote .t{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:11px;}
+.fairnote .s{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.45;margin-top:3px;}
+/* shade rows with on-skin thumb */
+.panel{display:none;margin-top:14px;}
+.panel.show{display:block;}
+.row{width:100%;appearance:none;background:#fff;border:1px solid #e6e6e6;border-radius:3px;cursor:pointer;display:flex;align-items:center;gap:13px;padding:10px 12px;margin-bottom:9px;text-align:left;min-height:64px;}
+.row[aria-pressed="true"]{border-color:#000;box-shadow:0 0 0 1px #000;}
+.row .thumb{width:46px;height:46px;border-radius:3px;object-fit:cover;flex-shrink:0;}
+.row .rname{font-family:'ArticulatCF',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.3px;font-size:14px;}
+.row .rdesc{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.35;margin-top:2px;}
+.row .rdesc::first-letter{text-transform:uppercase;}
+.row .chk{margin-left:auto;width:22px;height:22px;border-radius:100%;border:1.5px solid #d4d4d4;flex-shrink:0;position:relative;}
+.row[aria-pressed="true"] .chk{border-color:#000;background:#000;}
+.row[aria-pressed="true"] .chk::after{content:"";position:absolute;left:7px;top:3px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);}
+.atc{margin-top:18px;}
+.atc button{width:100%;appearance:none;border:none;border-radius:3px;cursor:pointer;height:46px;font-family:'BaseMonoWideWeb',monospace;text-transform:uppercase;font-size:13px;letter-spacing:.6px;background:#000;color:#fff;}
+.atc button:disabled{background:#e4e4e4;color:#8a8a8a;cursor:not-allowed;}
+.atc .pipe{opacity:.55;margin:0 8px;}
+.note{font-family:'RingsideWideWeb',sans-serif;font-size:12px;line-height:1.5;margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">16 shades · sheer coverage · soft, natural finish</div>
+  <h2 class="headline">Start with your depth, then pick the exact shade.</h2>
+  <p class="sub">Just Enough is a soft, natural finish &mdash; not full coverage, no SPF. Browse by depth and see each shade on real skin.</p>
+
+  <div class="selbar">
+    <span class="lab">Shade</span>
+    <span class="pick empty" id="pick">None selected yet</span>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-g="fair">Fair<small>4 shades</small></button>
+    <button class="tab" role="tab" aria-selected="false" data-g="light">Light<small>3 shades</small></button>
+    <button class="tab" role="tab" aria-selected="false" data-g="medium">Medium<small>4 shades</small></button>
+    <button class="tab" role="tab" aria-selected="false" data-g="deep">Deep<small>5 shades</small></button>
+  </div>
+
+  <div class="fairnote show" id="fairnote">
+    <div class="t">Fairer than fair?</div>
+    <div class="s">If other tinted moisturizers always run too dark, start at the top &mdash; Alabaster is our palest neutral.</div>
+  </div>
+
+  <div id="panels"></div>
+
+  <div class="atc">
+    <button id="atc" disabled>Select a shade</button>
+  </div>
+  <p class="note">Sheer and natural &mdash; a near-match still blends, so you don't have to land it perfectly.</p>
+</div>
+
+<script>
+const SHADES=[
+{n:"Alabaster",h:"#f0d9bd",d:"palest, neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_alabaster_1.jpg?v=1741887001",p:"fair"},
+{n:"Porcelain",h:"#f2cca1",d:"fair, neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_porcelain_1.jpg?v=1741887001",p:"fair"},
+{n:"Fair",h:"#e9b08d",d:"fair, cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_fair_1.jpg?v=1741887001",p:"fair"},
+{n:"Ivory",h:"#d6a37f",d:"fair to light, warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_ivory_1.jpg?v=1741887001",p:"fair"},
+{n:"Light",h:"#d2a473",d:"light, warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_light_1.jpg?v=1741887001",p:"light"},
+{n:"Beige",h:"#c89172",d:"light to medium, neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_beige_1.jpg?v=1741887002",p:"light"},
+{n:"Medium",h:"#b97f51",d:"medium, neutral-warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_medium_1.jpg?v=1741887001",p:"light"},
+{n:"Medium Honey",h:"#ba7049",d:"medium, warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_mediumhoney_1.jpg?v=1741887001",p:"medium"},
+{n:"Honey",h:"#a65631",d:"medium to tan, warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_honey_1.jpg?v=1741887001",p:"medium"},
+{n:"Golden",h:"#894e30",d:"tan, warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_golden_1.jpg?v=1741887001",p:"medium"},
+{n:"Pecan",h:"#873a2a",d:"tan to deep, neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_pecan_1.jpg?v=1741887002",p:"medium"},
+{n:"Almond",h:"#663624",d:"deep, warm undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_Almond_1.jpg?v=1741887001",p:"deep"},
+{n:"Cinnamon",h:"#792f22",d:"deep, neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_cinnamon_1.jpg?v=1741887002",p:"deep"},
+{n:"Chestnut",h:"#62271f",d:"deep, cool undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_chestnut_1.jpg?v=1741887001",p:"deep"},
+{n:"Deep",h:"#49221b",d:"very deep, neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_deep_1.jpg?v=1741887001",p:"deep"},
+{n:"Espresso",h:"#351a13",d:"deepest, neutral undertones",img:"https://cdn.shopify.com/s/files/1/0424/9527/9254/files/JETM_espresso_1.jpg?v=1741887001",p:"deep"}
+];
+const GROUPS=['fair','light','medium','deep'];
+function W(u){return u+(u.includes('?')?'&':'?')+'width=400';}
+let selected=null;
+const panels=document.getElementById('panels');
+GROUPS.forEach(g=>{
+  const p=document.createElement('div');p.className='panel'+(g==='fair'?' show':'');p.dataset.g=g;
+  SHADES.forEach((s,i)=>{
+    if(s.p!==g)return;
+    const b=document.createElement('button');b.className='row';b.setAttribute('aria-pressed','false');b.dataset.i=i;b.setAttribute('aria-label',s.n);
+    b.innerHTML=`<img class="thumb" src="${W(s.img)}" alt=""><span><span class="rname">${s.n}</span><span class="rdesc">${s.d}</span></span><span class="chk"></span>`;
+    b.onclick=()=>select(i);
+    p.appendChild(b);
+  });
+  panels.appendChild(p);
+});
+function select(i){
+  selected=i;const s=SHADES[i];
+  document.querySelectorAll('.row').forEach(r=>r.setAttribute('aria-pressed',r.dataset.i==i));
+  const pk=document.getElementById('pick');pk.classList.remove('empty');pk.innerHTML='Selected: <b>'+s.n+'</b>';
+  const atc=document.getElementById('atc');atc.disabled=false;atc.innerHTML='Add to cart — '+s.n+'<span class="pipe">|</span>$44';
+}
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected','false'));
+    t.setAttribute('aria-selected','true');
+    const g=t.dataset.g;
+    document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('show',p.dataset.g===g));
+    document.getElementById('fairnote').classList.toggle('show',g==='fair');
+  };
+});
+</script>
+</body>
+</html>
