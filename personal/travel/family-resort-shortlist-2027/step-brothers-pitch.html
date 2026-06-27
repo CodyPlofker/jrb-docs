@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2027 Friends Trip — Step Brothers Pitch</title>
+  <meta name="description" content="A Step Brothers-style parody pitch deck for the 2027 family resort trip." />
+  <style>
+    :root{
+      --black:#050505;
+      --blue:#0057ff;
+      --cyan:#00ecff;
+      --gold:#ffd000;
+      --red:#ff2e2e;
+      --paper:#f5f0dc;
+      --ink:#0b0b0b;
+      --ease:cubic-bezier(.2,1,.2,1);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-snap-type:y mandatory;background:var(--black);overscroll-behavior:none}
+    body{margin:0;background:var(--black);color:white;font-family:Impact,"Arial Black",system-ui,sans-serif;overflow-x:hidden;overscroll-behavior:none;text-transform:uppercase}
+    .progress{position:fixed;left:0;top:0;height:7px;width:0;background:linear-gradient(90deg,var(--red),var(--gold),var(--cyan));z-index:10;box-shadow:0 0 18px var(--gold)}
+    .dots{position:fixed;right:18px;top:50%;transform:translateY(-50%);display:grid;gap:9px;z-index:9}.dots button{width:12px;height:12px;border-radius:50%;border:2px solid white;background:transparent}.dots button.active{background:var(--gold);border-color:var(--gold);transform:scale(1.35)}
+    .slide{height:100svh;min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;overflow:hidden;display:grid;place-items:center;padding:clamp(20px,5vw,62px);isolation:isolate}
+    .slide:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,rgba(0,236,255,.35),transparent 28%),radial-gradient(circle at 70% 70%,rgba(255,46,46,.28),transparent 32%),linear-gradient(135deg,#001f7f,#050505 48%,#26003e);z-index:-2}
+    .slide:after{content:"";position:absolute;inset:-20%;background:repeating-linear-gradient(-8deg,rgba(255,255,255,.06) 0 2px,transparent 2px 18px);z-index:-1;transform:rotate(-2deg)}
+    .paper{background:var(--paper);color:var(--ink)}.paper:before{background:linear-gradient(135deg,#fdf7df,#e9d39a)}.paper:after{background:repeating-linear-gradient(0deg,rgba(0,0,0,.06) 0 1px,transparent 1px 28px)}
+    .meme{background:#020b19;padding:0}.meme:before,.meme:after{display:none}.meme img{height:100svh;width:100%;object-fit:contain;background:#020b19;display:block}
+    .deck-card{width:min(1100px,100%);position:relative;text-align:center}.label{display:inline-block;background:var(--gold);color:#000;padding:10px 14px;border:4px solid #000;box-shadow:8px 8px 0 #000;font-size:clamp(14px,2vw,24px);letter-spacing:.06em;transform:rotate(-2deg);margin-bottom:28px}.mega{font-size:clamp(72px,18vw,230px);line-height:.78;letter-spacing:-.07em;text-shadow:8px 8px 0 #000,14px 14px 0 var(--red);margin:0}.paper .mega{text-shadow:8px 8px 0 var(--gold),13px 13px 0 #000;color:#001f7f}.sub{font-family:Arial,system-ui,sans-serif;text-transform:none;font-weight:900;font-size:clamp(18px,3vw,36px);line-height:1.05;max-width:850px;margin:30px auto 0;letter-spacing:-.04em}.three{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:34px}.chip{background:white;color:#000;border:4px solid #000;border-radius:999px;padding:11px 16px;box-shadow:6px 6px 0 var(--red);font-size:clamp(13px,2vw,22px)}
+    .word-slide .mega{font-size:clamp(82px,21vw,260px)}.word-slide .sub{background:rgba(0,0,0,.75);border:4px solid white;padding:18px 22px;box-shadow:10px 10px 0 var(--red);transform:rotate(1deg)}.paper.word-slide .sub{background:#000;color:white}.number{position:absolute;left:clamp(18px,4vw,54px);top:clamp(20px,5vw,62px);font-size:clamp(56px,11vw,132px);color:var(--gold);text-shadow:5px 5px 0 #000;line-height:.8}.stamp{position:absolute;right:clamp(14px,4vw,50px);bottom:clamp(20px,5vw,58px);border:6px solid var(--red);color:var(--red);padding:10px 14px;font-size:clamp(16px,3vw,42px);transform:rotate(-8deg);background:rgba(255,255,255,.9)}
+    .photo-bg{position:absolute;inset:0;z-index:-2}.photo-bg img{width:100%;height:100%;object-fit:cover;filter:saturate(1.2) contrast(1.05) brightness(.65)}.photo-bg:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.72),rgba(0,87,255,.28))}
+    .split{display:grid;grid-template-columns:1fr .9fr;gap:28px;align-items:center;text-align:left}.pitch-list{display:grid;gap:13px}.pitch-list div{background:rgba(255,255,255,.92);color:#000;border:4px solid #000;padding:18px;box-shadow:8px 8px 0 var(--gold);font-size:clamp(17px,2.4vw,32px);line-height:.95}.closing .mega{font-size:clamp(62px,14vw,180px)}
+    @media(max-width:760px){.dots{display:none}.slide{padding:24px 18px}.mega{font-size:clamp(66px,22vw,108px)}.word-slide .mega{font-size:clamp(76px,24vw,126px)}.sub{font-size:20px}.label{font-size:13px;margin-bottom:20px}.split{grid-template-columns:1fr;text-align:center}.pitch-list div{font-size:18px;padding:14px}.number{font-size:54px}.stamp{font-size:16px;right:16px;bottom:18px}.chip{font-size:12px;padding:9px 11px}.three{gap:8px}.meme img{height:100svh}}
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div><nav class="dots" id="dots" aria-label="Slide navigation"></nav>
+
+  <section class="slide paper">
+    <div class="deck-card">
+      <span class="label">Prestige Vacationwide Presents</span>
+      <h1 class="mega">Group Trip<br>Concept</h1>
+      <p class="sub">One simple business idea: adults relax, kids disappear into activities, nobody debates lunch.</p>
+      <div class="three"><span class="chip">World class?</span><span class="chip">Possibly.</span><span class="chip">Necessary? Yes.</span></div>
+    </div>
+  </section>
+
+  <section class="slide word-slide">
+    <div class="number">01</div>
+    <div class="deck-card">
+      <span class="label">Primary revenue driver</span>
+      <h2 class="mega">All<br>Inclusive</h2>
+      <p class="sub">Meals. Drinks. Pool. Beach. No family-wide group text about dinner reservations.</p>
+    </div>
+    <div class="stamp">Approved</div>
+  </section>
+
+  <section class="slide word-slide paper">
+    <div class="number">02</div>
+    <div class="deck-card">
+      <span class="label">Luxury-adjacent operational excellence</span>
+      <h2 class="mega">Amenities</h2>
+      <p class="sub">Waterpark, beach, pools, restaurants, spa, teen zone, activities. The more built-in, the less anyone has to plan.</p>
+    </div>
+    <div class="stamp">Huge</div>
+  </section>
+
+  <section class="slide word-slide">
+    <div class="number">03</div>
+    <div class="deck-card">
+      <span class="label">The whole thesis</span>
+      <h2 class="mega">Kids<br>Club</h2>
+      <p class="sub">This is the unlock. Kids get their own trip. Adults get a trip too.</p>
+    </div>
+    <div class="stamp">Critical</div>
+  </section>
+
+  <section class="slide closing">
+    <div class="photo-bg"><img src="https://52efe9fcc4d4255a3e14-4b65870d4fb22f8d702ba22b9ca688b8.ssl.cf1.rackcdn.com/u/FPM_Imagine_Kids_Club_LR.jpg" alt="Kids club playroom" /></div>
+    <div class="deck-card split">
+      <div>
+        <span class="label">The pitch in one sentence</span>
+        <h2 class="mega">Happy kids.<br>Free adults.</h2>
+      </div>
+      <div class="pitch-list">
+        <div>Kids have somewhere to go.</div>
+        <div>Adults have somewhere to sit.</div>
+        <div>The group has fewer jobs.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide meme" aria-label="Investors possibly you closing slide">
+    <img src="./assets/investors-possibly-you.jpg" alt="Investors possibly you meme with two people pointing at the camera" />
+  </section>
+
+  <script>
+    class SlidePresentation{
+      constructor(){this.slides=[...document.querySelectorAll('.slide')];this.progress=document.getElementById('progress');this.dots=document.getElementById('dots');this.index=0;this.buildDots();this.observe();this.bind();this.update();}
+      buildDots(){this.slides.forEach((_,i)=>{const b=document.createElement('button');b.setAttribute('aria-label',`Go to slide ${i+1}`);b.addEventListener('click',()=>this.go(i));this.dots.appendChild(b);});this.dotButtons=[...this.dots.children];}
+      observe(){const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){this.index=this.slides.indexOf(e.target);this.update();}})},{threshold:.58});this.slides.forEach(s=>io.observe(s));}
+      bind(){
+        document.addEventListener('keydown',e=>{if(['ArrowDown','ArrowRight',' '].includes(e.key)){e.preventDefault();this.go(this.index+1)} if(['ArrowUp','ArrowLeft'].includes(e.key)){e.preventDefault();this.go(this.index-1)}});
+        let locked=false;
+        document.addEventListener('wheel',e=>{e.preventDefault();if(locked||Math.abs(e.deltaY)<12)return;locked=true;this.go(this.index+(e.deltaY>0?1:-1));setTimeout(()=>locked=false,720);},{passive:false});
+        let y=0;
+        document.addEventListener('touchstart',e=>{y=e.touches[0].clientY},{passive:true});
+        document.addEventListener('touchend',e=>{const d=y-e.changedTouches[0].clientY;if(Math.abs(d)>42){e.preventDefault?.();this.go(this.index+(d>0?1:-1));}},{passive:false});
+      }
+      go(i){this.index=Math.max(0,Math.min(this.slides.length-1,i));this.slides[this.index].scrollIntoView({behavior:'smooth'});this.update();}
+      update(){this.progress.style.width=`${((this.index+1)/this.slides.length)*100}%`;this.dotButtons?.forEach((b,i)=>b.classList.toggle('active',i===this.index));}
+    }
+    new SlidePresentation();
+  </script>
+</body>
+</html>
